@@ -331,7 +331,9 @@ public final class WorkspaceConfiguration: Configuration {
 
     _isSDG = true
     optIntoAllTasks()
-    if ¬openSource {
+    if openSource {
+      documentation.api.serveFromGitHubPagesBranch = true
+    } else {
       documentation.api.generate = false
       documentation.api.enforceCoverage = false
       documentation.readMe.manage = false
@@ -390,9 +392,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    let needsAPIDocumentation = WorkspaceContext.current.manifest.products.contains(where: {
-      $0.type == .library
-    })
+    let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
 
     assert(documentation.currentVersion ≠ nil, "No version specified.")
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
@@ -403,12 +403,6 @@ public final class WorkspaceConfiguration: Configuration {
         assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
       }
       assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
-
-      if needsAPIDocumentation,
-        documentation.api.encryptedTravisCIDeploymentKey == nil
-      {
-        assertionFailure("No Travis CI deployment key specified.")
-      }
 
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")

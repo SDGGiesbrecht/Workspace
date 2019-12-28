@@ -128,62 +128,22 @@ public struct APIDocumentationConfiguration: Codable {
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
-  /// An encrypted Travis CI deployment key.
+  // @crossReference(APIDocumentationConfiguration.serveFromGitHubPagesBranch)
+  /// Whether or not to automatically serve the documentation using GitHub Pages.
   ///
-  /// By specifying this, projects with continuous integration management active can avoid checking generated files into the main branch.
+  /// By setting this to `true`, projects with continuous integration management active can avoid checking generated files into the main branch.
   ///
-  /// With the following set‐up, Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the gh&#x2D;pages branch, making the `docs` directory unnecessary.
+  /// Workspace will only generate documentation in continuous integration and stop generating it locally. (If needed for coverage checks, Workspace may still do so in a temporary directory.) The generated documentation will be automatically published to GitHub Pages via the gh&#x2D;pages branch, making the `docs` directory unnecessary.
+  public var serveFromGitHubPagesBranch: Bool = false
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.serveFromGitHubPagesBranch)
+  /// Ob Arbeitsbereich die Dokumentation automatisch durch GitHub Seiten veröffentlichen soll.
   ///
-  /// Requirements:
+  /// Mit dieser Einstellung eingeschalltet, Projekte mit aktivierten Verwaltung von fortlaufenden Einbindung können das Eintragen der erstellten Dateien zur Hauptzweig vermeiden.
   ///
-  /// 1. A GitHub [access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
-  /// 2. The Travis gem. `$ gem install travis`
-  ///
-  /// Set‐Up:
-  ///
-  /// 1. Navigate to a local clone of the repository:
-  ///     ```shell
-  ///     $ cd some/path
-  ///     ```
-  /// 2. Encrypt the access token:
-  ///     ```shell
-  ///     $ travis encrypt "GITHUB_TOKEN=some‐token"
-  ///     ```
-  /// 3. Specify the encrypted access token for this option.
-  /// 5. Set GitHub Pages to [serve from the gh&#x2D;pages branch](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
-  ///
-  /// - Note: Workspace does not understand Travis’ encryption, and does not attempt to read or use the key. All this option does is tell Workspace to (a) include the encrypted key when configuring Travis CI, and (b) keep generated documentation out of the repository.
-  public var encryptedTravisCIDeploymentKey: String?
-  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.encryptedTravisCIDeploymentKey)
-  /// Eine verschlüsselte Travis‐CI‐Verteilungsschlüssel.
-  ///
-  /// Mit dieser Einstellung, Projekte mit aktivierten Verwaltung von fortlaufenden Einbindung können das Eintragen der erstellten Dateien zur Hauptzweig vermeiden.
-  ///
-  /// Mit dem folgeneden Einrichtung, wird Arbeitsbereich die Dokumentation nur während fortlaufenden Einbindung erstellen, und aufhören, es auf lokalen Geräte zu erstellen. (Falls es für Abdeckungsprüfungen benötigt wird, erstellt es Arbeitsbereich nur in eine vorübergehende Verzeichnis.) Die erstellte Dokumentation wird automatisch zu GitHub Pages durch den gh&#x2D;pages Zweig, damit das `docs` Verzeichnis unnötig wird.
-  ///
-  /// Voraussetzungen:
-  ///
-  /// 1. Ein GitHub‐[Zugriffszeichen](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
-  /// 2. Der Travis Edelstein. `$ gem install travis`
-  ///
-  /// Einrichtung:
-  ///
-  /// 1. Zur lokalen Nachbau des Lagers gehen:
-  ///     ```shell
-  ///     $ cd den/Pfad
-  ///     ```
-  /// 2. Das Zugriffszeichen verschlüsseln:
-  ///     ```shell
-  ///     $ travis encrypt "GITHUB_TOKEN=das‐zeichen"
-  ///     ```
-  /// 3. Gebe die verschlüsselte Zugriffszeichen bei dieser Einstellung an.
-  /// 5. Stelle GitHub‐Pages ein, das es [vom gh&#x2D;pages‐Zweig dient](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#enabling-github-pages-to-publish-your-site-from-master-or-gh-pages).
-  ///
-  /// - Note: Arbeitsbereich versteht Travis’ Verschlüsselung nicht, und versucht nicht das Schlüssel zu lesen. Diese Einstellung erlaubt es Arbeitsbereich nur (a) das Schüssel in die Travis‐CI‐Konfiguration einzuschließen und (b) das es die erstellte Dokumentation aus dem Lager halten soll.
-  public var verschlüsselterTravisCIVerteilungsschlüssel: Zeichenkette? {
-    get { return encryptedTravisCIDeploymentKey }
-    set { encryptedTravisCIDeploymentKey = newValue }
+  /// Arbeitsbereich wird die Dokumentation nur während fortlaufenden Einbindung erstellen, und aufhören, es auf lokalen Geräte zu erstellen. (Falls es für Abdeckungsprüfungen benötigt wird, erstellt es Arbeitsbereich nur in eine vorübergehende Verzeichnis.) Die erstellte Dokumentation wird automatisch zu GitHub Pages durch den gh&#x2D;pages Zweig, damit das `docs` Verzeichnis unnötig wird.
+  public var durchGitHubSeitenVeröffentlichen: Bool {
+    get { return serveFromGitHubPagesBranch }
+    set { serveFromGitHubPagesBranch = newValue }
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

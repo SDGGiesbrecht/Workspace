@@ -39,7 +39,7 @@ extension PackageRepository {
     }
 
     try refreshGitHubWorkflows(output: output)
-    try refreshTravisCI(output: output)
+    delete(location.appendingPathComponent(".travis.yml"), output: output)
   }
 
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
@@ -125,35 +125,6 @@ extension PackageRepository {
         output: output
       )
     }
-  }
-
-  private func refreshTravisCI(output: Command.Output) throws {
-    var travisConfiguration: [String] = [
-      "language: generic",
-      "matrix:",
-      "  include:"
-    ]
-
-    for job in try relevantJobs(output: output) {
-      travisConfiguration.append(
-        contentsOf: try job.travisScript(configuration: configuration(output: output))
-      )
-    }
-
-    travisConfiguration.append(contentsOf: [
-      "",
-      "cache:",
-      "  directories:",
-      "  \u{2D} $HOME/\(PackageRepository.macOSCachePath)",
-      "  \u{2D} $HOME/\(PackageRepository.linuxCachePath)"
-    ])
-
-    try adjustForWorkspace(&travisConfiguration)
-    var travisConfigurationFile = try TextFile(
-      possiblyAt: location.appendingPathComponent(".travis.yml")
-    )
-    travisConfigurationFile.body = travisConfiguration.joinedAsLines()
-    try travisConfigurationFile.writeChanges(for: self, output: output)
   }
 
   private func adjustForWorkspace(_ configuration: inout [String]) throws {

@@ -57,14 +57,12 @@ extension Workspace.Validate {
         var validationStatus = ValidationStatus()
 
         if options.job == .deployment {
-          try TravisCI.keepAlive {  // @exempt(from: tests)
-            try executeAsStep(
-              validationStatus: &validationStatus,
-              arguments: arguments,
-              options: options,
-              output: output
-            )
-          }
+          try executeAsStep(
+            validationStatus: &validationStatus,
+            arguments: arguments,
+            options: options,
+            output: output
+          )
         } else {
           try executeAsStep(
             validationStatus: &validationStatus,
@@ -157,7 +155,7 @@ extension Workspace.Validate {
       if options.job.includes(job: .miscellaneous) {
         if try ¬options.project.configuration(output: output).documentation.api.generate
           ∨ options.project.configuration(output: output).documentation.api
-          .encryptedTravisCIDeploymentKey ≠ nil,
+          .serveFromGitHubPagesBranch,
           try options.project.configuration(output: output).documentation.api
             .enforceCoverage
         {

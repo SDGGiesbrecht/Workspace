@@ -23,7 +23,6 @@ extension ProcessInfo {
   public static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
 
   public static let isPullRequest =
-    ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
-      ∨ ProcessInfo.processInfo.environment["TRAVIS_PULL_REQUEST"]  // @exempt(from: tests)
-      .flatMap({ Int($0) }) ≠ nil  // @exempt(from: tests)
+    ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
+      ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
 }

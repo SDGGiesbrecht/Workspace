@@ -2,11 +2,7 @@ $ arbeitsbereich document help •no‐colour
 
 arbeitsbereich dokumentieren erstellt Dokumentation über die Programmierschnittstellen.
 
-Die Dokumentation wird in einem „docs“‐Verzeichnis im Projektwurzel erstellt. Mit der unter dem folgenden Verweis beschriebenen GitHub‐Einstellungen, kann man die Dokumentation direkt vom Lager aus veröffentlichen.
-
-https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/#publishing-your-github-pages-site-from-a-docs-folder-on-your-master-branch
-
-(Wenn Sie die erstellte Dateien nicht in „master“ eintragen wollen, siehen Sie die Dokumentation zu „verschlüsselterTravisCIVerteilungsSchlüssel“ für eine fortgeschrittene Methode.)
+Normaleweise wird die Dokumentation in einem „docs“‐Verzeichnis im Projektwurzel erstellt. Projekt auf GitHub können stattdessen die „durchGitHubSeitenVeröffentlichen“ konfigurationseinstellung einschalten, um die Dokumentation durch GitHub Seiten automatisch zu veröffentlichen.
 
 Unterbefehle
 

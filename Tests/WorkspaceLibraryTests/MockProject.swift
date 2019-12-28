@@ -145,13 +145,6 @@ extension PackageRepository {
           for command in commands {
             FileType.resetUnsupportedFileTypes()
 
-            if ProcessInfo.isInContinuousIntegration {
-              // Travis CI needs periodic output of some sort; otherwise it assumes the tests have stalled.
-              Shell.default.run(command: [
-                "echo", "Tests continuing...", ">", "/dev/tty"
-              ])
-            }
-
             print(StrictString("$ workspace ") + command.joined(separator: " "))
             let specificationName: StrictString =
               "\(location.lastPathComponent) (\(command.joined(separator: " ")))"

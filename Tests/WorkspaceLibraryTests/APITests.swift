@@ -254,11 +254,11 @@ class APITests: TestCase {
       [:]
     )
     configuration.dokumentation.programmierschnittstelle
-      .verschlüsselterTravisCIVerteilungsschlüssel = ""
+      .durchGitHubSeitenVeröffentlichen = true
     XCTAssertEqual(
       configuration.dokumentation.programmierschnittstelle
-        .verschlüsselterTravisCIVerteilungsschlüssel,
-      ""
+        .durchGitHubSeitenVeröffentlichen,
+      true
     )
     configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
       "..."
@@ -594,7 +594,7 @@ class APITests: TestCase {
     konfiguration.dokumentation.lokalisationen = ["de"]
     konfiguration.dokumentation.programmierschnittstelle.erstellen = true
     konfiguration.dokumentation.programmierschnittstelle
-      .verschlüsselterTravisCIVerteilungsschlüssel = "..."
+      .durchGitHubSeitenVeröffentlichen = true
     konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
     var commands: [[StrictString]] = [
       ["auffrischen", "skripte"],
@@ -1123,7 +1123,7 @@ class APITests: TestCase {
     configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
     configuration.documentation.primaryAuthor = "John Doe"
     configuration.documentation.api.yearFirstPublished = 2017
-    configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
+    configuration.documentation.api.serveFromGitHubPagesBranch = true
     configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
     configuration.documentation.localizations = [
       "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
@@ -1205,7 +1205,7 @@ class APITests: TestCase {
     configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
     configuration.documentation.primaryAuthor = "John Doe"
     configuration.documentation.api.yearFirstPublished = 2017
-    configuration.documentation.api.encryptedTravisCIDeploymentKey = "0123456789abcdef"
+    configuration.documentation.api.serveFromGitHubPagesBranch = true
     configuration.gitHub.administrators = ["John Doe"]
     configuration.documentation.localizations = [
       "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"

@@ -157,7 +157,7 @@ extension Workspace.Validate {
       if options.job.includes(job: .miscellaneous) {
         if try ¬options.project.configuration(output: output).documentation.api.generate
           ∨ options.project.configuration(output: output).documentation.api
-          .encryptedTravisCIDeploymentKey ≠ nil,
+          .serveFromGitHubPagesBranch,
           try options.project.configuration(output: output).documentation.api
             .enforceCoverage
         {

@@ -187,9 +187,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return try project.configuration(output: output).documentation.api.generate
         ∧ project.hasTargetsToDocument()
         ∧ (
-          try project.configuration(output: output).documentation.api
-            .encryptedTravisCIDeploymentKey
-        ) ≠ nil
+          try project.configuration(output: output)
+            .documentation.api.serveFromGitHubPagesBranch
+        )
     }
   }
 
@@ -374,77 +374,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS:
       return "appletvsimulator"
     }
-  }
-
-  internal func travisScript(configuration: WorkspaceConfiguration) throws -> [String] {
-    let localization = configuration.developmentInterfaceLocalization()
-    var result: [String] = [
-      "    \u{2D} name: \u{22}" + String(name.resolved(for: localization)) + "\u{22}",
-      "      os: " + travisOperatingSystemKey
-    ]
-    if self == .deployment {
-      guard let key = configuration.documentation.api.encryptedTravisCIDeploymentKey else {
-        unreachable()
-      }
-
-      result.append(contentsOf: [
-        "      env:",
-        "        \u{2D} secure: \u{22}" + key + "\u{22}",
-        "      if: branch = master and (not type = pull_request)",
-        "",
-        "      deploy:",
-        "        provider: pages",
-        "        local_dir: " + PackageRepository.documentationDirectoryName,
-        "        github_token: $GITHUB_TOKEN",
-        "        skip_cleanup: true"
-      ])
-    }
-
-    switch platform {
-    case .macOS:
-      var version = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-      if version.hasSuffix(".0") {  // @exempt(from: tests)
-        version.removeLast(2)
-      }
-      result.append("      osx_image: xcode\(version)")
-    case .linux:
-      result.append("      dist: bionic")
-    case .iOS, .watchOS, .tvOS:
-      unreachable()
-    }
-
-    if let sdk = travisSDKKey {
-      result.append(contentsOf: [
-        "      language: objective\u{2D}c",
-        "      xcode_sdk: " + sdk
-      ])
-    }
-
-    result.append("      script:")
-
-    func commandEntry(_ command: String) -> String {
-      return "        \u{2D} \u{22}\(escapeCommand(command))\u{22}"
-    }
-
-    if platform == .macOS {
-      result.append(contentsOf: [
-        commandEntry("git config \u{2D}\u{2D}global protocol.version 1")
-      ])
-    }
-
-    if platform == .linux {
-      result.append(contentsOf: [
-        commandEntry(swiftVersionSelection),
-        commandEntry(swiftVersionFetch)
-      ])
-    }
-
-    result.append(contentsOf: [
-      commandEntry(refreshCommand),
-      commandEntry(validateCommand)
-    ])
-
-    return result
   }
 }
 

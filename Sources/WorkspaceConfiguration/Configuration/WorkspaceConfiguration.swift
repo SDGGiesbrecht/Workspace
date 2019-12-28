@@ -404,12 +404,6 @@ public final class WorkspaceConfiguration: Configuration {
       }
       assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
-      if needsAPIDocumentation,
-        documentation.api.encryptedTravisCIDeploymentKey == nil
-      {
-        assertionFailure("No Travis CI deployment key specified.")
-      }
-
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")
       }

@@ -2,5 +2,5 @@ $ arbeitsbereich refresh read‐me •no‐colour
 
 Lies‐mich wird aufgefrischt ...
 
-Keine Lokalisationen sind angegeben. (dokumentation.localisationen)
+Das Lies‐mich für „zxx“ fehlt. (dokumentation.liesMich.inhalt
 9223372036854775807

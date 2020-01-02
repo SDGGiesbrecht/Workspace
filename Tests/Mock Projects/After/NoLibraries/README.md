@@ -1,5 +1,3 @@
-
-
-macOS • Linux • iOS • watchOS • tvOS
-
 # NoLibraries
+
+A description of this package.

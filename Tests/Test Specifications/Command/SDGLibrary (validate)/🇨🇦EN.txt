@@ -4,9 +4,6 @@ $ workspace validate •no‐colour
 Validating “SDG”...
 
 
-Normalizing files...
-
-
 Proofreading source code... (§1)
 
 .github/CONTRIBUTING.md
@@ -27,10 +24,9 @@ Proofreading source code... (§1)
 .github/ISSUE_TEMPLATE/🇺🇸EN Feature Request.md
 .github/ISSUE_TEMPLATE/🇺🇸EN Question.md
 .github/PULL_REQUEST_TEMPLATE.md
-.github/workflows/Documentation Deployment.yaml
 .github/workflows/Workspace Validation.yaml
 .gitignore
-LICENSE.md
+Documentation/Related Projects.md
 Other/GeneratedData.json
 Package.swift
 README.md
@@ -65,21 +61,20 @@ Checking test coverage on macOS... (§7)
 Parsing report for “Sources/Library/SDG.swift”...
 Parsing report for “Tests/SDGTests/SDGTests.swift”...
 Sources/Library/SDG.swift
+Line 37
+    // customPreviousLineToken
+
+Line 40
+  func anotherExemption() {  // customSameLineToken
+
 
 Checking documentation coverage... (§8)
 
-Parsing “Library”...
-Loading inheritance from “Dependency”...
-Processing API...
-Generating HTML...
-...Library...
-...Library...
-...Library...
-...Library...
-...Library...
-...Library...
-...Library...
-...Library...
+
+No original copyright date is specified.
+(Configure it under “documentation.api.yearFirstPublished”.)
+
+There are no localizations specified. (documentation.localizations)
 
 Summary
 
@@ -90,8 +85,8 @@ Summary
 ✓ There are no compiler warnings for watchOS.
 ✓ There are no compiler warnings for tvOS.
 ✓ Tests pass on macOS.
-✓ Test coverage is complete on macOS.
-✓ Documentation coverage is complete.
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§7”)
+✗ Failed to process documentation. (See [⌘F] “§8”)
 
 
 Workspace encountered unsupported file types:
@@ -103,7 +98,5 @@ If these are standard file types, please report them at
 https://github.com/SDGGiesbrecht/Workspace/issues
 To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.
 
-
-“SDG” passes validation.
-
-0
+“SDG” fails validation.
+2

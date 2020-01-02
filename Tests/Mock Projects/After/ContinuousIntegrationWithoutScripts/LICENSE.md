@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright ©2019 the ContinuousIntegrationWithoutScripts project contributors
+Copyright ©2020 the ContinuousIntegrationWithoutScripts project contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal

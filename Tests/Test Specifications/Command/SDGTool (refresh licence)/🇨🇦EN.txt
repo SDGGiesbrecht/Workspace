@@ -2,5 +2,5 @@ $ workspace refresh licence •no‐colour
 
 Refreshing licence...
 
-Writing to “LICENSE.md”...
-0
+No licence has been selected. (licence.licence)
+9223372036854775807

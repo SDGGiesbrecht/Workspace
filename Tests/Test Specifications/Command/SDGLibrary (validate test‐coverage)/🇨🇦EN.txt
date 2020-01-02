@@ -1,11 +1,5 @@
 $ workspace validate test‐coverage •no‐colour
 
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to “SDG.xcodeproj/project.pbxproj”...
-
 Testing on macOS... (§1)
 
 [$ swift...]
@@ -15,11 +9,15 @@ Checking test coverage on macOS... (§2)
 Parsing report for “Sources/Library/SDG.swift”...
 Parsing report for “Tests/SDGTests/SDGTests.swift”...
 Sources/Library/SDG.swift
+Line 37
+    // customPreviousLineToken
+
+Line 40
+  func anotherExemption() {  // customSameLineToken
+
 
 ✓ Tests pass on macOS.
-✓ Test coverage is complete on macOS.
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
 
-
-“SDG” passes validation.
-
-0
+“SDG” fails validation.
+2

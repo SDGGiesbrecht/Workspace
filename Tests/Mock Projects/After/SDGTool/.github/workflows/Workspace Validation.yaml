@@ -4,9 +4,9 @@
 # Diese Quelldatei ist Teil des qeulloffenen SDG‐Projekt.
 # https://example.github.io/SDG/SDG
 #
-# Copyright ©2019 John Doe and the SDG project contributors.
-# Urheberrecht ©2019 John Doe und die Mitwirkenden des SDG‐Projekts.
-# ©2019
+# Copyright ©2020 John Doe and the SDG project contributors.
+# Urheberrecht ©2020 John Doe und die Mitwirkenden des SDG‐Projekts.
+# ©2020
 #
 # Soli Deo gloria.
 #
@@ -48,6 +48,48 @@ jobs:
         eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.2
+        xcversion select 11.2
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job ios
+  watchOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.2
+        xcversion select 11.2
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job watchos
+  tvOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}
+        path: ~/Library/Caches/ca.solideogloria.Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.2
+        xcversion select 11.2
+        './Refresh (macOS).command'
+        './Validate (macOS).command' •job tvos
   Miscellaneous:
     runs-on: ubuntu-18.04
     steps:

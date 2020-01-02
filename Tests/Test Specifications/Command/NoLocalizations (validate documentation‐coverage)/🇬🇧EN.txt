@@ -6,38 +6,9 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”.)
 
-Parsing ‘NoLocalizations’...
-Loading inheritance from ‘Swift’...
-Loading inheritance from ‘Foundation’...
-Loading inheritance from ‘Dispatch’...
-Loading inheritance from ‘XCTest’...
-Processing API...
-Generating HTML...
+There are no localisations specified. (documentation.localisations)
 
-A localisation has no copyright specified: English (United Kingdom)
-(Configure it under “documentation.api.copyrightNotice”.)
-
-
-A symbol has no description:
-NoLocalizations.🇬🇧EN
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above ‘Package(name: "NoLocalizations"’.)
-
-
-A symbol has no description:
-NoLocalizations.🇬🇧EN
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above ‘.library(name: "NoLocalizations"’.)
-
-...NoLocalizations...
-
-A symbol has no description:
-NoLocalizations.🇬🇧EN
-(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above ‘.target(name: "NoLocalizations"’.)
-
-
-✗ Documentation coverage is incomplete. (See [⌘F] ‘§1’)
+✗ Failed to process documentation. (See [⌘F] ‘§1’)
 
 ‘NoLocalizations’ fails validation.
 2

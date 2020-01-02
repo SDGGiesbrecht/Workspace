@@ -2,5 +2,5 @@ $ workspace refresh read‐me •no‐colour
 
 Refreshing read‐me...
 
-There is no read‐me for “English (United Kingdom)”. (documentation.readMe.contents)
+There are no localizations specified. (documentation.localizations)
 9223372036854775807

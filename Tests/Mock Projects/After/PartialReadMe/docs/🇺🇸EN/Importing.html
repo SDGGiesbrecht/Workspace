@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<!--
+
+ -->
+
+<html dir="ltr" lang="en-US">
+ <head>
+  <meta charset="utf&#x002D;8">
+  <title>Importing</title>
+  <link rel="stylesheet" href="../CSS/Root.css">
+  <link rel="stylesheet" href="../CSS/Swift.css">
+  <link rel="stylesheet" href="../CSS/Site.css">
+  <script src="../JavaScript/Site.js"></script>
+ </head>
+ <body>
+  <header class="navigation‐bar">
+   <nav class="navigation‐bar">
+    <div class="navigation‐path" dir="ltr">
+
+<a id="current‐language‐icon" onmouseenter="showLanguageSwitch(this)"><span>🇺🇸EN</span></a>
+<div id="language‐switch" onmouseleave="hideLanguageSwitch(this)">
+<a href="../🇨🇦EN/Importing.html">🇨🇦EN</a>
+<a href="../🇬🇧EN/Importing.html">🇬🇧EN</a>
+<a href="../🇩🇪DE/Einführung.html">🇩🇪DE</a>
+</div>
+<a href="../🇺🇸EN/PartialReadMe.html">PartialReadMe</a>
+<span>Importing</span>
+
+    </div>
+    <div>
+     <span class="swift blockquote"><span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><a href="http://example.com"><span class="text">http://example.com</span></a><span class="punctuation">"</span></span><span class="punctuation">,</span> <span class="punctuation">.</span><span class="external identifier">upToNextMinor</span><span class="punctuation">(</span><span class="external identifier">from</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><span class="text">0.1.0</span><span class="punctuation">"</span></span><span class="punctuation">)</span><span class="punctuation">)</span></span>
+    </div>
+   </nav>
+  </header>
+  <div class="content‐container">
+   <header class="index">
+    <nav class="index">
+
+<div id="Package‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Package</a>
+<a href="../🇺🇸EN/PartialReadMe.html">
+PartialReadMe
+</a>
+</div>
+<div>
+<a class="heading" href="../🇺🇸EN/Importing.html">Importing</a>
+</div>
+<div id="library‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Library Products</a>
+<a href="../🇺🇸EN/Libraries/PartialReadMe.html">
+PartialReadMe
+</a>
+</div>
+<div id="target‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Modules</a>
+<a href="../🇺🇸EN/Modules/PartialReadMe.html">
+PartialReadMe
+</a>
+</div>
+
+    </nav>
+   </header>
+   <main>
+
+
+
+    <div class="main‐text‐column">
+     <div class="title">
+      
+      
+      <h1>Importing</h1>
+      
+     </div>
+
+
+
+<p>PartialReadMe provides a library for use with the <a href="https://swift.org/package-manager/">Swift Package Manager</a>.</p>
+
+<p>Simply add PartialReadMe as a dependency in <code class="swift"><span class="external identifier">Package</span><span class="punctuation">.</span><span class="external identifier">swift</span></code>:</p>
+
+<code class="swift blockquote"><span class="keyword">let</span> <span class="external identifier">package</span> <span class="punctuation">=</span> <span class="external identifier">Package</span><span class="punctuation">(</span>
+    <span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">MyPackage</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span>
+    <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">http://example.com</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="punctuation">.</span><span class="external identifier">upToNextMinor</span><span class="punctuation">(</span><span class="external identifier">from</span><span class="punctuation">:</span> <span class="external identifier">Version</span><span class="punctuation">(</span><span class="number">0</span><span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">0</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">)</span><span class="punctuation">,</span>
+    <span class="punctuation">]</span><span class="punctuation">,</span>
+    <span class="external identifier">targets</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+        <span class="punctuation">.</span><span class="external identifier">target</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">MyTarget</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">dependencies</span><span class="punctuation">:</span> <span class="punctuation">[</span>
+            <span class="punctuation">.</span><span class="external identifier">productItem</span><span class="punctuation">(</span><span class="external identifier">name</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">PartialReadMe</span><span class="string‐punctuation">"</span></span><span class="punctuation">,</span> <span class="external identifier">package</span><span class="punctuation">:</span> <span class="string"><span class="string‐punctuation">"</span><span class="text">PartialReadMe</span><span class="string‐punctuation">"</span></span><span class="punctuation">)</span><span class="punctuation">,</span>
+        <span class="punctuation">]</span><span class="punctuation">)</span>
+    <span class="punctuation">]</span>
+<span class="punctuation">)</span></code>
+
+<p>The module can then be imported in source files:</p>
+
+<code class="swift blockquote"><span class="keyword">import</span> <a href="../🇺🇸EN/PartialReadMe.html"><span class="external identifier">PartialReadMe</span></a></code>
+
+    </div>
+
+
+
+   </main>
+   <header class="platforms">
+<span>
+Linux
+</span>
+<span>
+iOS
+</span>
+<span>
+macOS
+</span>
+<span>
+tvOS
+</span>
+<span>
+watchOS
+</span>
+   </header>
+  </div>
+  <footer dir="ltr">
+   <span>
+Copyright ©2018–2020 the PartialReadMe project contributors. All rights reserved.
+</span>
+   <span dir="ltr" lang="en-US">Generated with <a href="https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Workspace.html">Workspace</a>. <span lang="la-IT">Soli Deo gloria.</span></span>
+  </footer>
+  <script>contractIndex("");</script>
+ </body>
+</html>

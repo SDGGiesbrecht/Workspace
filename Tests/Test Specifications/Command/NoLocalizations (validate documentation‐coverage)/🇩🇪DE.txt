@@ -6,38 +6,9 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
 
-„NoLocalizations“ wird zerteilt ...
-Erbe von „Swift“ wird geladen ...
-Erbe von „Foundation“ wird geladen ...
-Erbe von „Dispatch“ wird geladen ...
-Erbe von „XCTest“ wird geladen ...
-Die Programmierschnitstelle wird verarbeitet ...
-Auszeichnung wird erstellt ...
+Keine Lokalisationen sind angegeben. (dokumentation.localisationen)
 
-Einer Lokalization fehlt die Urheberrechtsschutzvermerk: Englisch (Vereinigtes Königreich)
-(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)
-
-
-Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇬🇧EN
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "NoLocalizations"“.)
-
-
-Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇬🇧EN
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "NoLocalizations"“.)
-
-... NoLocalizations ...
-
-Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇬🇧EN
-(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "NoLocalizations"“.)
-
-
-✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)
+✗ Die Dokumentationsverarbeitung ist fehlgeschlagen. (Siehe [⌘F] „§1“)
 
 „NoLocalizations“ besteht die Überprüfung nicht.
 2

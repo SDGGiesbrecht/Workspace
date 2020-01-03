@@ -63,7 +63,7 @@ extension PackageRepository {
         }
       case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
         buildCommand = { output in
-          var log = try self.build(
+          let log = try self.build(
             for: job.buildSDK,
             reportProgress: { report in
               if let relevant = Xcode.abbreviate(output: report) {
@@ -71,13 +71,6 @@ extension PackageRepository {
               }
             }
           ).get()
-
-          // #workaround(SDGSwift 0.18.1, Meaningless warnings caused by SwiftPM.)
-          let linesArray = log.lines.lazy.filter { line in
-            return ¬line.line.contains("ld: warning: directory not found for option".scalars)
-          }
-          log = linesArray.map({ String($0.line) }).joined(separator: "\n")
-
           return ¬Xcode.warningsOccurred(during: log)
         }
       case .miscellaneous, .deployment:

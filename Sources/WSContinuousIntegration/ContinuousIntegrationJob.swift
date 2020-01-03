@@ -231,7 +231,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private var gitHubActionMachine: String {
     switch platform {
     case .macOS:
-      // #workaround(workspace version 0.27.0, GitHub doesn’t provide version specificity.)
+      // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
       return "macos\u{2D}latest"
     case .linux:
       return "ubuntu\u{2D}18.04"

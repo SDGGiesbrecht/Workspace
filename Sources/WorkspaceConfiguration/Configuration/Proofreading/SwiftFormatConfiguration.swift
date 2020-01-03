@@ -41,7 +41,7 @@ extension SwiftFormatConfiguration.Configuration {
     configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
     // Bugs currently result in false positives.
-    // #workaround(Swift 5.1.2, Can these be restored?)
+    // #workaround(Swift 5.1.3, Can these be restored?)
     configuration.rules["AlwaysUseLowerCamelCase"] = false
     configuration.rules["BlankLineBetweenMembers"] = false
     configuration.rules["CaseIndentLevelEqualsSwitch"] = false

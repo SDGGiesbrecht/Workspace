@@ -343,7 +343,7 @@ extension PackageRepository {
           }
 
           #if !os(Linux)
-            // #workaround(Linux has false positives during dead link check.)
+            // GitHub actions on Linux have false positives during the dead link check.
             let documentationDirectory = location.appendingPathComponent("docs")
             if (try? documentationDirectory.checkResourceIsReachable()) == true {
               let warnings = Site<InterfaceLocalization>.validate(

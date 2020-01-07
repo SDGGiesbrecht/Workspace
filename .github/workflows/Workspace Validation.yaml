@@ -38,6 +38,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Validate
       run: |
+        sudo apt-get install libsqlite3-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
   iOS:

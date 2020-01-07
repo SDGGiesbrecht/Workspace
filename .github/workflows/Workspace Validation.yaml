@@ -39,7 +39,7 @@ jobs:
     - name: Validate
       run: |
         apt-get update
-        apt-get install --assume-yes libsqlite3-dev
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
   iOS:

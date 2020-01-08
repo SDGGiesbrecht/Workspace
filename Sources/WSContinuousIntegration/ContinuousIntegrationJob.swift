@@ -309,9 +309,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       unreachable()
     }
 
-    func commandEntry(_ command: String, escaping: Bool = true) -> String {
-      let processed = escaping ? escapeCommand(command) : command
-      return "        \(processed)"
+    func commandEntry(_ command: String) -> String {
+      return "        \(escapeCommand(command))"
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)

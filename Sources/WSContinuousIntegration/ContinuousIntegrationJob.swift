@@ -240,6 +240,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  private var dockerImage: String? {
+    switch platform {
+    case .macOS, .iOS, .watchOS, .tvOS:
+      return nil
+    case .linux:
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      return "swift:\(version)\u{2D}bionic"
+    }
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -279,6 +289,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var result: [String] = [
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
+      ]
+    if let container = dockerImage {
+      result += [
+        "    container: \(container)"
+      ]
+    }
+    result += [
       "    steps:",
       "    \u{2D} uses: actions/checkout@v1",
       "    \u{2D} uses: actions/cache@v1",
@@ -287,7 +304,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     func cacheEntry(os: String, path: String) -> [String] {
       return [
-        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}",
+        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
         "        path: ~/\(path)"
       ]
     }
@@ -319,8 +336,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .linux:
       result.append(contentsOf: [
-        commandEntry("sudo apt\u{2D}get update"),
-        commandEntry("sudo apt\u{2D}get install libsqlite3\u{2D}dev libncurses\u{2D}dev"),
+        commandEntry("apt\u{2D}get update"),
+        commandEntry("apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes libsqlite3\u{2D}dev libncurses\u{2D}dev"),
         commandEntry(swiftVersionSelection),
         commandEntry(swiftVersionFetch, escaping: false)
       ])

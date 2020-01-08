@@ -281,7 +281,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var result: [String] = [
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
-      ]
+    ]
     if let container = dockerImage {
       result += [
         "    container: \(container)"
@@ -328,7 +328,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),
-        commandEntry("apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes libsqlite3\u{2D}dev libncurses\u{2D}dev"),
+        commandEntry(
+          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes libsqlite3\u{2D}dev libncurses\u{2D}dev"
+        ),
       ])
     case .iOS, .watchOS, .tvOS:
       unreachable()

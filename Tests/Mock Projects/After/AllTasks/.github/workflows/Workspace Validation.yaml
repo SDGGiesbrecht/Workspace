@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Validate
       run: |
@@ -27,18 +27,17 @@ jobs:
         './Validate (macOS).command' •job macos
   Linux:
     runs-on: ubuntu-18.04
+    container: swift:5.1.2-bionic
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('Refresh*') }}
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/.cache/ca.solideogloria.Workspace
     - name: Validate
       run: |
-        sudo apt-get update
-        sudo apt-get install libsqlite3-dev libncurses-dev
-        export SWIFT_VERSION=5.1.2
-        eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+        apt-get update
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
   iOS:
@@ -47,7 +46,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Validate
       run: |
@@ -61,7 +60,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Validate
       run: |
@@ -75,7 +74,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/Library/Caches/ca.solideogloria.Workspace
     - name: Validate
       run: |
@@ -85,17 +84,16 @@ jobs:
         './Validate (macOS).command' •job tvos
   Miscellaneous:
     runs-on: ubuntu-18.04
+    container: swift:5.1.2-bionic
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('Refresh*') }}
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: ~/.cache/ca.solideogloria.Workspace
     - name: Validate
       run: |
-        sudo apt-get update
-        sudo apt-get install libsqlite3-dev libncurses-dev
-        export SWIFT_VERSION=5.1.2
-        eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+        apt-get update
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job miscellaneous

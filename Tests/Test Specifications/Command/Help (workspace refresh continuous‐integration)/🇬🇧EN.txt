@@ -8,8 +8,6 @@ Special Thanks:
 
 • GitHub (https://github.com)
 
-• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.
-
 Subcommands
 
 help displays usage information.

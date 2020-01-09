@@ -16,7 +16,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/.cache/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Prüfen
       run: |
         apt-get update

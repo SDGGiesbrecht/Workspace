@@ -18,7 +18,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/Library/Caches/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         xcversion install 11.2
@@ -33,7 +33,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/.cache/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         apt-get update
@@ -47,7 +47,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/Library/Caches/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         xcversion install 11.2
@@ -61,7 +61,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/Library/Caches/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         xcversion install 11.2
@@ -75,7 +75,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/Library/Caches/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         xcversion install 11.2
@@ -90,7 +90,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: ~/.cache/ca.solideogloria.Workspace
+        path: .build/SDG/Workspace
     - name: Validate
       run: |
         apt-get update

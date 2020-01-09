@@ -141,33 +141,28 @@ internal enum Script: Int, CaseIterable {
         + version + "/"
       let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
         + version + "/"
-
-      let buildLocation: StrictString = "/tmp/Workspace"
+      let repositoryCacheDirectory: StrictString = ".build/SDG"
+      let repositoryCachePath: StrictString = repositoryCacheDirectory + "/Workspace/"
 
       return [
-        ("if workspace version > /dev/null 2>&1 ; then") as StrictString,
-        ("    echo \u{22}Using system install of Workspace...\u{22}") as StrictString,
-        ("    workspace " + arguments) as StrictString,
-        ("elif " + macOSCachePath + "workspace version > /dev/null 2>&1 ; then")
-          as StrictString,
-        ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
-        ("    " + macOSCachePath + "workspace " + arguments) as StrictString,
-        ("elif " + linuxCachePath + "workspace version > /dev/null 2>&1 ; then")
-          as StrictString,
-        ("    echo \u{22}Using cached build of Workspace...\u{22}") as StrictString,
-        ("    " + linuxCachePath + "workspace " + arguments) as StrictString,
-        ("else") as StrictString,
-        ("    echo \u{22}No cached build detected, fetching Workspace...\u{22}")
-          as StrictString,
-        ("    rm \u{2D}rf " + buildLocation) as StrictString,
-        ("    git clone https://github.com/SDGGiesbrecht/Workspace " + buildLocation)
-          as StrictString,
-        ("    cd " + buildLocation) as StrictString,
-        ("    swift build \u{2D}\u{2D}configuration release") as StrictString,
-        ("    " + enterRepository()) as StrictString,
-        ("    " + buildLocation + "/.build/release/workspace " + arguments) as StrictString,
-        ("    rm \u{2D}rf " + buildLocation) as StrictString,
-        ("fi") as StrictString
+        "if workspace version > /dev/null 2>&1 ; then",
+        "    echo \u{22}Using system install of Workspace...\u{22}",
+        "    workspace \(arguments)",
+        "elif \(macOSCachePath)workspace version > /dev/null 2>&1 ; then",
+        "    echo \u{22}Using system cache of Workspace...\u{22}",
+        "    \(macOSCachePath)workspace \(arguments)",
+        "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
+        "    echo \u{22}Using system cache of Workspace...\u{22}",
+        "    \(linuxCachePath)workspace \(arguments)",
+        "elif \(repositoryCachePath)workspace version > /dev/null 2>&1 ; then",
+        "    echo \u{22}Using repository cache of Workspace...\u{22}",
+        "    \(repositoryCachePath)workspace \(arguments)",
+        "else",
+        "    echo \u{22}No cached build detected, fetching Workspace...\u{22}",
+        "    export OVERRIDE_INSTALLATION_DIRECTORY=\(repositoryCacheDirectory)",
+        "    curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} 0.28.0 \u{22}\u{22} workspace",
+        "    \(repositoryCachePath)workspace \(arguments)",
+        "fi"
       ]
     }
   }

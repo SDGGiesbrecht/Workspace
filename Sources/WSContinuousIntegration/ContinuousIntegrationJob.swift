@@ -19,6 +19,7 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
+import WSScripts
 import WSDocumentation
 
 public enum ContinuousIntegrationJob: Int, CaseIterable {
@@ -294,17 +295,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "      with:",
     ]
 
-    func cacheEntry(os: String, path: String) -> [String] {
+    func cacheEntry(os: String) -> [String] {
       return [
         "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: .build/SDG/Workspace"
+        "        path: \(PackageRepository.repositoryCachePath)"
       ]
     }
     switch platform {
     case .macOS:
-      result.append(contentsOf: cacheEntry(os: "macOS", path: PackageRepository.macOSCachePath))
+      result.append(contentsOf: cacheEntry(os: "macOS"))
     case .linux:
-      result.append(contentsOf: cacheEntry(os: "Linux", path: PackageRepository.linuxCachePath))
+      result.append(contentsOf: cacheEntry(os: "Linux"))
     case .iOS, .watchOS, .tvOS:
       unreachable()
     }
@@ -340,6 +341,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       commandEntry(refreshCommand),
       commandEntry(validateCommand)
     ])
+
+    switch platform {
+    case .macOS, .iOS, .watchOS, .tvOS:
+      break
+    case .linux:
+      result.append(commandEntry("chmod -R a+rwx \(PackageRepository.repositoryCachePath)"))
+    }
 
     if self == .deployment {
       result.append(contentsOf: [

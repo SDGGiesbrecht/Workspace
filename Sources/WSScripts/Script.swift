@@ -141,8 +141,6 @@ internal enum Script: Int, CaseIterable {
         + version + "/"
       let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
         + version + "/"
-      let repositoryCacheDirectory: StrictString = ".build/SDG"
-      let repositoryCachePath: StrictString = repositoryCacheDirectory + "/Workspace/"
 
       return [
         "if workspace version > /dev/null 2>&1 ; then",
@@ -154,14 +152,14 @@ internal enum Script: Int, CaseIterable {
         "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
         "    echo \u{22}Using system cache of Workspace...\u{22}",
         "    \(linuxCachePath)workspace \(arguments)",
-        "elif \(repositoryCachePath)workspace version > /dev/null 2>&1 ; then",
+        "elif \(PackageRepository.repositoryCachePath)/workspace version > /dev/null 2>&1 ; then",
         "    echo \u{22}Using repository cache of Workspace...\u{22}",
-        "    \(repositoryCachePath)workspace \(arguments)",
+        "    \(PackageRepository.repositoryCachePath)/workspace \(arguments)",
         "else",
         "    echo \u{22}No cached build detected, fetching Workspace...\u{22}",
-        "    export OVERRIDE_INSTALLATION_DIRECTORY=\(repositoryCacheDirectory)",
+        "    export OVERRIDE_INSTALLATION_DIRECTORY=\(PackageRepository.repositoryCacheDirectory)",
         "    curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} 0.28.0 \u{22}\u{22} workspace",
-        "    \(repositoryCachePath)workspace \(arguments)",
+        "    \(PackageRepository.repositoryCachePath)/workspace \(arguments)",
         "fi"
       ]
     }

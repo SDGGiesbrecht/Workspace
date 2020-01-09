@@ -323,6 +323,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
+        "WSScripts",
         "WSDocumentation"
       ]
     ),

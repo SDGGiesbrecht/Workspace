@@ -20,6 +20,9 @@ import WSProject
 
 extension PackageRepository {
 
+  internal static let repositoryCacheDirectory: StrictString = ".build/SDG"
+  public static let repositoryCachePath: StrictString = repositoryCacheDirectory + "/Workspace"
+
   public func refreshScripts(output: Command.Output) throws {
 
     for deprecated in Script.deprecatedFileNames {

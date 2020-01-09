@@ -50,13 +50,6 @@ extension PackageRepository {
     }
   }
 
-  internal static var macOSCachePath: String {
-    return "Library/Caches/ca.solideogloria.Workspace"
-  }
-  internal static var linuxCachePath: String {
-    return ".cache/ca.solideogloria.Workspace"
-  }
-
   private func refreshGitHubWorkflow(
     name: UserFacing<StrictString, InterfaceLocalization>,
     onConditions: [String],

@@ -297,7 +297,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     func cacheEntry(os: String, path: String) -> [String] {
       return [
         "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: ~/\(path)"
+        "        path: .build/SDG/Workspace"
       ]
     }
     switch platform {

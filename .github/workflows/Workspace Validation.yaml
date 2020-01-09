@@ -46,6 +46,7 @@ jobs:
         apt-get install --assume-yes libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
+        chmod -R a+rwx .build/SDG/Workspace
   iOS:
     runs-on: macos-latest
     steps:
@@ -89,3 +90,4 @@ jobs:
         apt-get install --assume-yes libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job miscellaneous
+        chmod -R a+rwx .build/SDG/Workspace

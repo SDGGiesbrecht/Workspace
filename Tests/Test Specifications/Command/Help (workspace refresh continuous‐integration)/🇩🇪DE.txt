@@ -8,8 +8,6 @@ Besonderer Dank:
 
 • GitHub (https://github.com)
 
-• Kyle Fuller und das Swift Version Manager (https://github.com/kylef/swiftenv), fortlaufende Einbindung auf Linux ermöglicht.
-
 Unterbefehle
 
 hilfe zeigt Gebrauchsinformationen an.

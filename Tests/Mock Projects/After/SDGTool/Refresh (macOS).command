@@ -9,18 +9,17 @@ if workspace version > /dev/null 2>&1 ; then
     echo "Using system install of Workspace..."
     workspace refresh $1 $2 •use‐version 0.28.0
 elif ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.28.0/workspace version > /dev/null 2>&1 ; then
-    echo "Using cached build of Workspace..."
+    echo "Using system cache of Workspace..."
     ~/Library/Caches/ca.solideogloria.Workspace/Versions/0.28.0/workspace refresh $1 $2 •use‐version 0.28.0
 elif ~/.cache/ca.solideogloria.Workspace/Versions/0.28.0/workspace version > /dev/null 2>&1 ; then
-    echo "Using cached build of Workspace..."
+    echo "Using system cache of Workspace..."
     ~/.cache/ca.solideogloria.Workspace/Versions/0.28.0/workspace refresh $1 $2 •use‐version 0.28.0
+elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+    echo "Using repository cache of Workspace..."
+    .build/SDG/Workspace/workspace refresh $1 $2 •use‐version 0.28.0
 else
     echo "No cached build detected, fetching Workspace..."
-    rm -rf /tmp/Workspace
-    git clone https://github.com/SDGGiesbrecht/Workspace /tmp/Workspace
-    cd /tmp/Workspace
-    swift build --configuration release
-    cd "${REPOSITORY}"
-    /tmp/Workspace/.build/release/workspace refresh $1 $2 •use‐version 0.28.0
-    rm -rf /tmp/Workspace
+    export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+    curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.28.0 "" workspace
+    .build/SDG/Workspace/workspace refresh $1 $2 •use‐version 0.28.0
 fi

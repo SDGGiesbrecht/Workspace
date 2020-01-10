@@ -19,6 +19,7 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
+import WSScripts
 import WSDocumentation
 
 public enum ContinuousIntegrationJob: Int, CaseIterable {
@@ -204,14 +205,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private var swiftVersionSelection: String {
-    let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
-    return "export SWIFT_VERSION=\(version)"
-  }
-  private var swiftVersionFetch: String {
-    return
-      "eval \u{22}$(curl \u{2D}sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv\u{2D}install.sh)\u{22}"
-  }
   private var refreshCommand: String {
     return "\u{27}./Refresh (macOS).command\u{27}"
   }
@@ -237,6 +230,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "ubuntu\u{2D}18.04"
     case .iOS, .watchOS, .tvOS:
       unreachable()
+    }
+  }
+
+  private var dockerImage: String? {
+    switch platform {
+    case .macOS, .iOS, .watchOS, .tvOS:
+      return nil
+    case .linux:
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      return "swift:\(version)\u{2D}bionic"
     }
   }
 
@@ -279,30 +282,36 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var result: [String] = [
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
+    ]
+    if let container = dockerImage {
+      result += [
+        "    container: \(container)"
+      ]
+    }
+    result += [
       "    steps:",
       "    \u{2D} uses: actions/checkout@v1",
       "    \u{2D} uses: actions/cache@v1",
       "      with:",
     ]
 
-    func cacheEntry(os: String, path: String) -> [String] {
+    func cacheEntry(os: String) -> [String] {
       return [
-        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}",
-        "        path: ~/\(path)"
+        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+        "        path: \(PackageRepository.repositoryCachePath)"
       ]
     }
     switch platform {
     case .macOS:
-      result.append(contentsOf: cacheEntry(os: "macOS", path: PackageRepository.macOSCachePath))
+      result.append(contentsOf: cacheEntry(os: "macOS"))
     case .linux:
-      result.append(contentsOf: cacheEntry(os: "Linux", path: PackageRepository.linuxCachePath))
+      result.append(contentsOf: cacheEntry(os: "Linux"))
     case .iOS, .watchOS, .tvOS:
       unreachable()
     }
 
-    func commandEntry(_ command: String, escaping: Bool = true) -> String {
-      let processed = escaping ? escapeCommand(command) : command
-      return "        \(processed)"
+    func commandEntry(_ command: String) -> String {
+      return "        \(escapeCommand(command))"
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
@@ -319,10 +328,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .linux:
       result.append(contentsOf: [
-        commandEntry("sudo apt\u{2D}get update"),
-        commandEntry("sudo apt\u{2D}get install libsqlite3\u{2D}dev libncurses\u{2D}dev"),
-        commandEntry(swiftVersionSelection),
-        commandEntry(swiftVersionFetch, escaping: false)
+        commandEntry("apt\u{2D}get update"),
+        commandEntry(
+          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes curl libsqlite3\u{2D}dev libncurses\u{2D}dev"
+        ),
       ])
     case .iOS, .watchOS, .tvOS:
       unreachable()
@@ -332,6 +341,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       commandEntry(refreshCommand),
       commandEntry(validateCommand)
     ])
+
+    switch platform {
+    case .macOS, .iOS, .watchOS, .tvOS:
+      break
+    case .linux:
+      result.append(commandEntry("chmod \u{2D}R a+rwx ."))
+    }
 
     if self == .deployment {
       result.append(contentsOf: [

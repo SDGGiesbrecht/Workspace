@@ -50,8 +50,6 @@ extension Workspace.Refresh {
             "Special Thanks:",
             "",
             "• GitHub (https://github.com)",
-            "",
-            "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
           ].joinedAsLines()
         case .englishUnitedStates, .englishCanada:
           return [
@@ -60,8 +58,6 @@ extension Workspace.Refresh {
             "Special Thanks:",
             "",
             "• GitHub (https://github.com)",
-            "",
-            "• Kyle Fuller and Swift Version Manager (https://github.com/kylef/swiftenv), which makes continuous integration possible on Linux.",
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
@@ -70,8 +66,6 @@ extension Workspace.Refresh {
             "Besonderer Dank:",
             "",
             "• GitHub (https://github.com)",
-            "",
-            "• Kyle Fuller und das Swift Version Manager (https://github.com/kylef/swiftenv), fortlaufende Einbindung auf Linux ermöglicht.",
           ].joinedAsLines()
         }
       })

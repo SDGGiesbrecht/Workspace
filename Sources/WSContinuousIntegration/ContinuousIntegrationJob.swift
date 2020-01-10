@@ -330,7 +330,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),
         commandEntry(
-          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes libsqlite3\u{2D}dev libncurses\u{2D}dev"
+          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes curl libsqlite3\u{2D}dev libncurses\u{2D}dev"
         ),
       ])
     case .iOS, .watchOS, .tvOS:
@@ -346,7 +346,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS, .iOS, .watchOS, .tvOS:
       break
     case .linux:
-      result.append(commandEntry("chmod -R a+rwx \(PackageRepository.repositoryCachePath)"))
+      result.append(commandEntry("chmod \u{2D}R a+rwx ."))
     }
 
     if self == .deployment {

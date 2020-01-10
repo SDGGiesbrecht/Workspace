@@ -44,7 +44,7 @@ jobs:
     - name: Validate
       run: |
         apt-get update
-        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
         './Refresh (macOS).command'
         './Validate (macOS).command' •job linux
         chmod -R a+rwx .build/SDG/Workspace
@@ -56,7 +56,7 @@ jobs:
     - uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
+        path: .
     - name: Validate
       run: |
         apt-get update

@@ -28,13 +28,13 @@ jobs:
         path: .build/SDG/Workspace
     - name: Validate
       run: |
-        xcversion install 11.2
-        xcversion select 11.2
+        xcversion install 11.3
+        xcversion select 11.3
         './Refresh (macOS).command'
         './Validate (macOS).command' •job macos
   Linux:
     runs-on: ubuntu-18.04
-    container: swift:5.1.2-bionic
+    container: swift:5.1.3-bionic
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
@@ -50,7 +50,7 @@ jobs:
         chmod -R a+rwx .
   Miscellaneous:
     runs-on: ubuntu-18.04
-    container: swift:5.1.2-bionic
+    container: swift:5.1.3-bionic
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1

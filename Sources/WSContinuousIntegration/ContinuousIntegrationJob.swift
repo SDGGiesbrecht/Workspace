@@ -218,7 +218,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
   }
   private func validateCommand(configuration: WorkspaceConfiguration) -> String {
-    return appendLanguage(to: "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))", configuration: configuration)
+    return appendLanguage(
+      to:
+        "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))",
+      configuration: configuration
+    )
   }
 
   func escapeCommand(_ command: String) -> String {

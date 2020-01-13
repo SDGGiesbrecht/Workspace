@@ -210,7 +210,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
       let argument = StrictString(languages.lazy.map({ $0._iconOrCode }).joined(separator: ";"))
-      command.append(contentsOf: " •language \(argument)")
+      command.append(contentsOf: " •language \u{27}\(argument)\u{27}")
     }
     return command
   }

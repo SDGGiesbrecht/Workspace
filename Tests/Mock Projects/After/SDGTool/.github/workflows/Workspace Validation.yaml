@@ -30,8 +30,8 @@ jobs:
       run: |
         xcversion install 11.3
         xcversion select 11.3
-        './Refresh (macOS).command' •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
-        './Validate (macOS).command' •job macos •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
+        './Refresh (macOS).command' •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
+        './Validate (macOS).command' •job macos •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
   Linux:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
@@ -45,8 +45,8 @@ jobs:
       run: |
         apt-get update
         apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
-        './Validate (macOS).command' •job linux •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
+        './Refresh (macOS).command' •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
+        './Validate (macOS).command' •job linux •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
         chmod -R a+rwx .
   Miscellaneous:
     runs-on: ubuntu-18.04
@@ -61,6 +61,6 @@ jobs:
       run: |
         apt-get update
         apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
-        './Validate (macOS).command' •job miscellaneous •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
+        './Refresh (macOS).command' •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
+        './Validate (macOS).command' •job miscellaneous •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
         chmod -R a+rwx .

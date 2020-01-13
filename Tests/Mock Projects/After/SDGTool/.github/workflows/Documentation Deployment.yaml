@@ -34,8 +34,8 @@ jobs:
       run: |
         apt-get update
         apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command'
-        './Validate (macOS).command' •job deployment
+        './Refresh (macOS).command' •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
+        './Validate (macOS).command' •job deployment •language 🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx
         chmod -R a+rwx .
     - name: Deploy
       run: |

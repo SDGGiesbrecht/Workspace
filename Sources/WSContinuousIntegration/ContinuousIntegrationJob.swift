@@ -205,11 +205,20 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private func refreshCommand() -> String {
-    return "\u{27}./Refresh (macOS).command\u{27}"
+  private func appendLanguage(to command: String, configuration: WorkspaceConfiguration) -> String {
+    var command = command
+    let languages = configuration.documentation.localisations
+    if ¬languages.isEmpty {
+      let argument = StrictString(languages.lazy.map({ $0._iconOrCode }).joined(separator: ";"))
+      command.append(contentsOf: " •language \(argument)")
+    }
+    return command
   }
-  private func validateCommand() -> String {
-    return "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))"
+  private func refreshCommand(configuration: WorkspaceConfiguration) -> String {
+    return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
+  }
+  private func validateCommand(configuration: WorkspaceConfiguration) -> String {
+    return appendLanguage(to: "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))", configuration: configuration)
   }
 
   func escapeCommand(_ command: String) -> String {
@@ -337,8 +346,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     result.append(contentsOf: [
-      commandEntry(refreshCommand()),
-      commandEntry(validateCommand())
+      commandEntry(refreshCommand(configuration: configuration)),
+      commandEntry(validateCommand(configuration: configuration))
     ])
 
     switch platform {

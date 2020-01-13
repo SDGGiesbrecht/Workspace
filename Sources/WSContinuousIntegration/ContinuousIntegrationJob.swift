@@ -205,12 +205,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private var refreshCommand: String {
+  private func refreshCommand() -> String {
     return "\u{27}./Refresh (macOS).command\u{27}"
   }
-  private var validateCommand: String {
-    return "\u{27}./Validate (macOS).command\u{27} •job "
-      + String(argumentName.resolved(for: .englishCanada))
+  private func validateCommand() -> String {
+    return "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))"
   }
 
   func escapeCommand(_ command: String) -> String {
@@ -338,8 +337,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     result.append(contentsOf: [
-      commandEntry(refreshCommand),
-      commandEntry(validateCommand)
+      commandEntry(refreshCommand()),
+      commandEntry(validateCommand())
     ])
 
     switch platform {

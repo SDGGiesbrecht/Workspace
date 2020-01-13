@@ -129,7 +129,7 @@ internal enum Script: Int, CaseIterable {
     for project: PackageRepository,
     output: Command.Output
   ) throws -> [StrictString] {
-    let command = command.appending(contentsOf: " $1 $2")
+    let command = command.appending(contentsOf: " $1 $2 $3 $4")
 
     if try project.isWorkspaceProject() {
       return ["swift run workspace " + command]

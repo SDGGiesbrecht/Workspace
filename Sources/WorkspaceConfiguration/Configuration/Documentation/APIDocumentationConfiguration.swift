@@ -146,6 +146,11 @@ public struct APIDocumentationConfiguration: Codable {
     set { serveFromGitHubPagesBranch = newValue }
   }
 
+  private static func escape(_ scalars: [Unicode.Scalar], in replacements: inout [StrictString: StrictString]) {
+    for scalar in scalars {
+      replacements[StrictString(scalar)] = "[U+\(scalar.hexadecimalCode)]"
+    }
+  }
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(APIDocumentationConfiguration.fileNameReplacements)
   /// Replacements to apply to the file names of the generated documentation.
@@ -154,15 +159,12 @@ public struct APIDocumentationConfiguration: Codable {
   ///
   /// The default replacements are enough for Linux and macOS file systems. If the documentation needs to be saved to a Windows file system, use `applyWindowsCompatibilityFileNameReplacements()`.
   public var fileNameReplacements: [StrictString: StrictString] = {
-    // macOS/Linux file name constraints.
-    let invalidCharacters: [Unicode.Scalar] = [
+    var result: [StrictString: StrictString] = [:]
+    APIDocumentationConfiguration.escape([
+      // macOS and Linux file name constraints.
       "\u{0}",
       "/"
-    ]
-    var result: [StrictString: StrictString] = [:]
-    for character in invalidCharacters {
-      result[StrictString(character)] = "[U+\(character.hexadecimalCode)]"
-    }
+    ], in: &result)
     return result
   }()
   // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.fileNameReplacements)
@@ -179,12 +181,23 @@ public struct APIDocumentationConfiguration: Codable {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
   /// Adds file name replacements necessary for Windows file systems.
-  public func applyWindowsCompatibilityFileNameReplacements() {
-
+  public mutating func applyWindowsCompatibilityFileNameReplacements() {
+    APIDocumentationConfiguration.escape([
+      // From https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
+      "<",
+      ">",
+      ":",
+      "\u{22}",
+      "/",
+      "\u{5C}",
+      "|",
+      "?",
+      "*"
+    ], in: &fileNameReplacements)
   }
   // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
   /// Fügt Ersetzungen hinzu, die für Windows‐Dateisysteme nötig sind.
-  public func dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen() {
+  public mutating func dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen() {
     applyWindowsCompatibilityFileNameReplacements()
   }
 

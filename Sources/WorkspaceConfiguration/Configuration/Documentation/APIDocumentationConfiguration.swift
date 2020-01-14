@@ -151,6 +151,8 @@ public struct APIDocumentationConfiguration: Codable {
   /// Replacements to apply to the file names of the generated documentation.
   ///
   /// Each occurrence of a key in a filename will be replaced by its corresponding value.
+  ///
+  /// The default replacements are enough for Linux and macOS file systems. If the documentation needs to be saved to a Windows file system, use `applyWindowsCompatibilityFileNameReplacements()`.
   public var fileNameReplacements: [StrictString: StrictString] = {
     // macOS/Linux file name constraints.
     let invalidCharacters: [Unicode.Scalar] = [
@@ -167,9 +169,23 @@ public struct APIDocumentationConfiguration: Codable {
   /// Ersetzungen, die die Dateinamen der erstellte Dokumentation untergehen sollen.
   ///
   /// Jedes Mal, das eine Schlüssel in eine Dateiname vorkommt, wird es mit dem entsprechenden Wert ersetzt.
-  public var dateinamenErsetzungen: [StrengeZeichenkette: StrengeZeichenkette] {
+  ///
+  /// Die Standardersetzungen sind für Linux und macOS Dateisysteme ausreichend. Für den Fall, dass die Dokumentation auf einem Windows‐Dateisystem gespeichert werden muss, gibt es `dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()`.
+  public var dateinamensersetzungen: [StrengeZeichenkette: StrengeZeichenkette] {
     get { return fileNameReplacements }
     set { fileNameReplacements = newValue }
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
+  /// Adds file name replacements necessary for Windows file systems.
+  public func applyWindowsCompatibilityFileNameReplacements() {
+
+  }
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
+  /// Fügt Ersetzungen hinzu, die für Windows‐Dateisysteme nötig sind.
+  public func dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen() {
+    applyWindowsCompatibilityFileNameReplacements()
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)

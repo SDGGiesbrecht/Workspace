@@ -41,6 +41,20 @@ jobs:
         './Refresh (macOS).command' •language '🇮🇱עב'
         './Validate (macOS).command' •job linux •language '🇮🇱עב'
         chmod -R a+rwx .
+  tvOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇮🇱עב'
+        './Validate (macOS).command' •job tvos •language '🇮🇱עב'
   iOS:
     runs-on: macos-latest
     steps:
@@ -69,20 +83,6 @@ jobs:
         xcversion select 11.3
         './Refresh (macOS).command' •language '🇮🇱עב'
         './Validate (macOS).command' •job watchos •language '🇮🇱עב'
-  tvOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇮🇱עב'
-        './Validate (macOS).command' •job tvos •language '🇮🇱עב'
   Miscellaneous:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic

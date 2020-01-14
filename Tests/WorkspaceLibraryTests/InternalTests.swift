@@ -78,6 +78,14 @@ class InternalTests: TestCase {
     ).execute(with: []).get()
   }
 
+  func testPlatform() {
+    for platform in Platform.allCases {
+      for localization in ContentLocalization.allCases {
+        _ = platform._isolatedName(for: localization)
+      }
+    }
+  }
+
   func testXcodeProjectFormat() {
     // .gitignore interferes with testing this reliably in a mock project.
     _ = FileType.xcodeProject.syntax

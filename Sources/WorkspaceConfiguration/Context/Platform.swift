@@ -27,29 +27,31 @@ public enum Platform: String, Codable, CaseIterable {
 
   // MARK: - Cases
 
+  // These are sorted (and iterated) by date.
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// macOS.
-  case macOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// Linux.
-  case linux
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// iOS.
-  case iOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// watchOS.
-  case watchOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// tvOS.
-  case tvOS
+  case macOS  // 1976‐04‐11 (Apple Computer)
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Windows.
-  case windows
+  case windows  // 1981‐08‐12 (MS‐DOS)
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Linux.
+  case linux  // 1991‐09‐17
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// tvOS.
+  case tvOS  // 2007‐01‐09 (Apple TV Software)
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// iOS.
+  case iOS  // 2007‐06‐29
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// watchOS.
+  case watchOS  // 2015‐04‐24
 
   // MARK: - Properties
 

@@ -27,11 +27,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   // MARK: - Cases
 
   case macOS
+  case windows
   case linux
+  case tvOS
   case iOS
   case watchOS
-  case tvOS
-  case windows
   case miscellaneous
   case deployment
 

@@ -91,3 +91,10 @@ jobs:
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         chmod -R a+rwx .
+  Windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Validate
+        run: |
+          echo "Checkout succeeded."

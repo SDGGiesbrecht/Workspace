@@ -147,6 +147,21 @@ public struct APIDocumentationConfiguration: Codable {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(APIDocumentationConfiguration.fileNameReplacements)
+  /// Replacements to apply to the file names of the generated documentation.
+  ///
+  /// Each occurrence of a key in a filename will be replaced by its corresponding value.
+  public var fileNameReplacements: [StrictString: StrictString] = [:]
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.fileNameReplacements)
+  /// Ersetzungen, die die Dateinamen der erstellte Dokumentation untergehen sollen.
+  ///
+  /// Jedes Mal, das eine Schlüssel in eine Dateiname vorkommt, wird es mit dem entsprechenden Wert ersetzt.
+  public var dateinamenErsetzungen: [StrengeZeichenkette: StrengeZeichenkette] {
+    get { return fileNameReplacements }
+    set { fileNameReplacements = newValue }
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(APIDocumentationConfiguration.ignoredDependencies)
   /// Dependency module names known to be irrelevant to documentation.
   ///

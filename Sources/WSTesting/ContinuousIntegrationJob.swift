@@ -56,6 +56,8 @@ extension ContinuousIntegrationJob {
       return "watchOS"
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
+    case .windows:  // @exempt(from: tests) Unreachable from Linux.
+      return "Windows"
     case .miscellaneous, .deployment:
       unreachable()
     }
@@ -72,6 +74,8 @@ extension ContinuousIntegrationJob {
       return "watchOS"
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
+    case .windows:  // @exempt(from: tests) Unreachable from Linux.
+      return "Windows"
     case .miscellaneous, .deployment:
       unreachable()
     }
@@ -87,7 +91,7 @@ extension ContinuousIntegrationJob {
       return .watchOS
     case .tvOS:
       return .tvOS(simulator: false)
-    case .macOS, .linux, .miscellaneous, .deployment:
+    case .macOS, .linux, .windows, .miscellaneous, .deployment:
       unreachable()
     }
   }
@@ -100,7 +104,7 @@ extension ContinuousIntegrationJob {
     case .tvOS:  // @exempt(from: tests)
       // @exempt(from: tests) Tested separately.
       return .tvOS(simulator: true)
-    case .macOS, .linux, .watchOS, .miscellaneous, .deployment:
+    case .macOS, .linux, .watchOS, .windows, .miscellaneous, .deployment:
       unreachable()
     }
   }

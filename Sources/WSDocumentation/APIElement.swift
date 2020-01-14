@@ -430,7 +430,10 @@ extension APIElement {
 
   // MARK: - Localization
 
-  internal func determine(localizations: [LocalizationIdentifier]) {
+  internal func determine(
+    localizations: [LocalizationIdentifier],
+    customReplacements: [(StrictString, StrictString)]
+  ) {
 
     let parsed = documentation.resolved(localizations: localizations)
     localizedDocumentation = parsed.documentation
@@ -447,7 +450,7 @@ extension APIElement {
     var unique = 0
     var groups: [StrictString: [APIElement]] = [:]
     for child in children {
-      child.determine(localizations: localizations)
+      child.determine(localizations: localizations, customReplacements: customReplacements)
       let crossReference = child.crossReference
         ?? {
           unique += 1
@@ -461,16 +464,24 @@ extension APIElement {
           group[indexA].addLocalizations(
             from: group[indexB],
             isSame: indexA == indexB,
-            globalScope: globalScope
+            globalScope: globalScope,
+            customReplacements: customReplacements
           )
         }
       }
     }
   }
 
-  private func addLocalizations(from other: APIElement, isSame: Bool, globalScope: Bool) {
+  private func addLocalizations(
+    from other: APIElement,
+    isSame: Bool,
+    globalScope: Bool,
+    customReplacements: [(StrictString, StrictString)]
+  ) {
     for (localization, _) in other.localizedDocumentation {
-      localizedEquivalentFileNames[localization] = other.fileName
+      localizedEquivalentFileNames[localization] = other.fileName(
+        customReplacements: customReplacements
+      )
       localizedEquivalentDirectoryNames[localization] = other.directoryName(
         for: localization,
         globalScope: globalScope,
@@ -534,8 +545,11 @@ extension APIElement {
     return true
   }
 
-  private var fileName: StrictString {
-    return Page.sanitize(fileName: StrictString(name.source()))
+  private func fileName(customReplacements: [(StrictString, StrictString)]) -> StrictString {
+    return Page.sanitize(
+      fileName: StrictString(name.source()),
+      customReplacements: customReplacements
+    )
   }
   private func directoryName(
     for localization: LocalizationIdentifier,
@@ -737,8 +751,12 @@ extension APIElement {
     }
   }
 
-  internal func localizedFileName(for localization: LocalizationIdentifier) -> StrictString {
-    return localizedEquivalentFileNames[localization] ?? fileName
+  internal func localizedFileName(
+    for localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)]
+  ) -> StrictString {
+    return localizedEquivalentFileNames[localization]
+      ?? fileName(customReplacements: customReplacements)
   }
   internal func localizedDirectoryName(
     for localization: LocalizationIdentifier,
@@ -755,13 +773,15 @@ extension APIElement {
 
   internal func pageURL(
     in outputDirectory: URL,
-    for localization: LocalizationIdentifier
+    for localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)]
   ) -> URL {
     return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
   }
 
   internal func determinePaths(
     for localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)],
     namespace: StrictString = ""
   ) -> [String: String] {
     return autoreleasepool {
@@ -772,27 +792,41 @@ extension APIElement {
       switch self {
       case .package(let package):
         for library in package.libraries {
-          links = APIElement.library(library).determinePaths(for: localization)
+          links = APIElement.library(library).determinePaths(
+            for: localization,
+            customReplacements: customReplacements
+          )
             .mergedByOverwriting(from: links)
         }
       case .library(let library):
         path += localizedDirectoryName(for: localization) + "/"
         for module in library.modules {
-          links = APIElement.module(module).determinePaths(for: localization)
+          links = APIElement.module(module).determinePaths(
+            for: localization,
+            customReplacements: customReplacements
+          )
             .mergedByOverwriting(from: links)
         }
       case .module(let module):
         path += localizedDirectoryName(for: localization) + "/"
         for child in module.children {
-          links = child.determinePaths(for: localization).mergedByOverwriting(from: links)
+          links = child.determinePaths(for: localization, customReplacements: customReplacements)
+            .mergedByOverwriting(from: links)
         }
       case .type, .extension, .protocol:
         path += namespace + localizedDirectoryName(for: localization) + "/"
         var newNamespace = namespace
         newNamespace.append(contentsOf: localizedDirectoryName(for: localization) + "/")
-        newNamespace.append(contentsOf: localizedFileName(for: localization) + "/")
+        newNamespace.append(
+          contentsOf: localizedFileName(for: localization, customReplacements: customReplacements)
+            + "/"
+        )
         for child in children where child.receivesPage {
-          links = child.determinePaths(for: localization, namespace: newNamespace)
+          links = child.determinePaths(
+            for: localization,
+            customReplacements: customReplacements,
+            namespace: newNamespace
+          )
             .mergedByOverwriting(from: links)
         }
       case .case, .initializer, .subscript, .operator, .precedence:
@@ -815,7 +849,7 @@ extension APIElement {
         unreachable()
       }
 
-      path += localizedFileName(for: localization) + ".html"
+      path += localizedFileName(for: localization, customReplacements: customReplacements) + ".html"
       relativePagePath[localization] = path
       if case .type = self {
         links[name.source().truncated(before: "<")] = String(path)

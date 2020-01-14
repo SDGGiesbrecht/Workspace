@@ -37,6 +37,7 @@ internal class CommandPage: Page {
     platforms: StrictString,
     command: CommandInterfaceInformation,
     copyright: StrictString,
+    customReplacements: [(StrictString, StrictString)],
     output: Command.Output
   ) {
 
@@ -104,7 +105,11 @@ internal class CommandPage: Page {
       CommandPage.generateDiscussionSection(localization: localization, interface: interface)
     )
     content.append(
-      CommandPage.generateSubcommandsSection(localization: localization, interface: interface)
+      CommandPage.generateSubcommandsSection(
+        localization: localization,
+        interface: interface,
+        customReplacements: customReplacements
+      )
     )
     content.append(
       CommandPage.generateOptionsSection(localization: localization, interface: interface)
@@ -215,7 +220,8 @@ internal class CommandPage: Page {
 
   private static func generateSubcommandsSection(
     localization: LocalizationIdentifier,
-    interface: CommandInterface
+    interface: CommandInterface,
+    customReplacements: [(StrictString, StrictString)]
   ) -> StrictString {
 
     let heading: StrictString
@@ -249,7 +255,7 @@ internal class CommandPage: Page {
           }
           let tokens = [command] + arguments
 
-          var link = Page.sanitize(fileName: interface.name)
+          var link = Page.sanitize(fileName: interface.name, customReplacements: customReplacements)
           link += "/"
           link += CommandPage.subcommandsDirectoryName(for: localization)
           link += "/"

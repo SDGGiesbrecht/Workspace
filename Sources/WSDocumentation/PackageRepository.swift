@@ -46,6 +46,17 @@ extension PackageRepository {
     return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
   }
 
+  private func customFileNameReplacements(output: Command.Output) throws -> [(
+    StrictString, StrictString
+  )] {
+    let dictionary = try configuration(output: output).documentation.api.fileNameReplacements
+    var array: [(StrictString, StrictString)] = []
+    for key in dictionary.keys.sorted() {
+      array.append((key, dictionary[key]!))
+    }
+    return array
+  }
+
   private func platforms(
     output: Command.Output
   ) throws -> [LocalizationIdentifier: [StrictString]] {
@@ -60,7 +71,10 @@ extension PackageRepository {
     return result
   }
 
-  private func loadCommandLineInterface(output: Command.Output) throws -> PackageCLI {
+  private func loadCommandLineInterface(
+    output: Command.Output,
+    customReplacements: [(StrictString, StrictString)]
+  ) throws -> PackageCLI {
     let productsURL = try productsDirectory(releaseConfiguration: false).get()
     let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
       switch product.type {
@@ -74,7 +88,8 @@ extension PackageRepository {
     let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
     return PackageCLI(
       tools: toolLocations,
-      localizations: try configuration(output: output).documentation.localizations
+      localizations: try configuration(output: output).documentation.localizations,
+      customReplacements: customReplacements
     )
   }
 
@@ -276,12 +291,14 @@ extension PackageRepository {
     )
 
     let developmentLocalization = try self.developmentLocalization(output: output)
+    let customReplacements = try customFileNameReplacements(output: output)
+
     let api = try PackageAPI(
       package: cachedPackageGraph(),
       ignoredDependencies: configuration.documentation.api.ignoredDependencies,
       reportProgress: { output.print($0) }
     )
-    let cli = try loadCommandLineInterface(output: output)
+    let cli = try loadCommandLineInterface(output: output, customReplacements: customReplacements)
 
     var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
     if ¬coverageCheckOnly {
@@ -302,11 +319,13 @@ extension PackageRepository {
       relatedProjects: relatedProjects,
       about: configuration.documentation.about,
       copyright: copyright,
+      customReplacements: customReplacements,
       output: output
     )
 
     try interface.outputHTML(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: documentationStatus,
       output: output,
       coverageCheckOnly: coverageCheckOnly

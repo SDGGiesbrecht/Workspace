@@ -599,7 +599,8 @@ class APITests: TestCase {
     konfiguration.dokumentation.programmierschnittstelle
       .durchGitHubSeitenVeröffentlichen = true
     konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
-    konfiguration.dokumentation.programmierschnittstelle.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+    konfiguration.dokumentation.programmierschnittstelle
+      .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
     var commands: [[StrictString]] = [
       ["auffrischen", "skripte"],
       ["auffrischen", "git"],

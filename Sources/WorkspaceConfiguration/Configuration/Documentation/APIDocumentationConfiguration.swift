@@ -151,7 +151,18 @@ public struct APIDocumentationConfiguration: Codable {
   /// Replacements to apply to the file names of the generated documentation.
   ///
   /// Each occurrence of a key in a filename will be replaced by its corresponding value.
-  public var fileNameReplacements: [StrictString: StrictString] = [:]
+  public var fileNameReplacements: [StrictString: StrictString] = {
+    // macOS/Linux file name constraints.
+    let invalidCharacters: [Unicode.Scalar] = [
+      "\u{0}",
+      "/"
+    ]
+    var result: [StrictString: StrictString] = [:]
+    for character in invalidCharacters {
+      result[StrictString(character)] = "[U+\(character.hexadecimalCode)]"
+    }
+    return result
+  }()
   // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.fileNameReplacements)
   /// Ersetzungen, die die Dateinamen der erstellte Dokumentation untergehen sollen.
   ///

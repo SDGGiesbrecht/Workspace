@@ -26,13 +26,7 @@ internal class Page {
     fileName: StrictString,
     customReplacements: [(StrictString, StrictString)]
   ) -> StrictString {
-    // U+0000 is invalid to begin with.
-
-    // U+002F
-    // Brackets are not valid in either identifiers or operators, so no name clashes.
-    var result = fileName.replacingMatches(for: "/".scalars, with: "[U+002F]".scalars)
-
-    // Apply custom replacements.
+    var result = fileName
     for (key, value) in customReplacements {
       result.replaceMatches(for: key, with: value)
     }

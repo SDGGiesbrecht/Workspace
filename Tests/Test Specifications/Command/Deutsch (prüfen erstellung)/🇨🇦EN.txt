@@ -4,22 +4,22 @@ Checking build for macOS... (§1)
 
 [$ swift...]
 
-Checking build for iOS... (§2)
+Checking build for tvOS... (§2)
 
 [$ xcodebuild...]
 
-Checking build for watchOS... (§3)
+Checking build for iOS... (§3)
 
 [$ xcodebuild...]
 
-Checking build for tvOS... (§4)
+Checking build for watchOS... (§4)
 
 [$ xcodebuild...]
 
 ✓ There are no compiler warnings for macOS.
+✓ There are no compiler warnings for tvOS.
 ✓ There are no compiler warnings for iOS.
 ✓ There are no compiler warnings for watchOS.
-✓ There are no compiler warnings for tvOS.
 
 
 “Deutsch” passes validation.

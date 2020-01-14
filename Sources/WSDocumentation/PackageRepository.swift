@@ -63,7 +63,7 @@ extension PackageRepository {
     var result: [LocalizationIdentifier: [StrictString]] = [:]
     for localization in try configuration(output: output).documentation.localizations {
       var list: [StrictString] = []
-      for platform in try configuration(output: output).supportedPlatforms {
+      for platform in try configuration(output: output).supportedPlatforms.sorted() {
         list.append(platform._isolatedName(for: localization._bestMatch))
       }
       result[localization] = list.sorted()

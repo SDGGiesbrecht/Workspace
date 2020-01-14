@@ -4,22 +4,22 @@ Erstellung für macOS wird geprüft ... (§1)
 
 [$ swift...]
 
-Erstellung für iOS wird geprüft ... (§2)
+Erstellung für tvOS wird geprüft ... (§2)
 
 [$ xcodebuild...]
 
-Erstellung für watchOS wird geprüft ... (§3)
+Erstellung für iOS wird geprüft ... (§3)
 
 [$ xcodebuild...]
 
-Erstellung für tvOS wird geprüft ... (§4)
+Erstellung für watchOS wird geprüft ... (§4)
 
 [$ xcodebuild...]
 
 ✓ Es gibt keine Übersetzerwarnungen zu macOS.
+✓ Es gibt keine Übersetzerwarnungen zu tvOS.
 ✓ Es gibt keine Übersetzerwarnungen zu iOS.
 ✓ Es gibt keine Übersetzerwarnungen zu watchOS.
-✓ Es gibt keine Übersetzerwarnungen zu tvOS.
 
 
 „Deutsch“ besteht die Überprüfung.

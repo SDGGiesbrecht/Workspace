@@ -580,7 +580,7 @@ internal struct PackageInterface {
 
   private static func generate(platforms: [StrictString]) -> StrictString {
     var result: [StrictString] = []
-    for platform in platforms.sorted() {
+    for platform in platforms {
       result.append(
         ElementSyntax(
           "span",

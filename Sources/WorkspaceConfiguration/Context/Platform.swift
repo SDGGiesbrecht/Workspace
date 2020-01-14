@@ -63,11 +63,23 @@ public enum Platform: String, Codable, CaseIterable {
         .deutschDeutschland:
         return "macOS"
       }
+    case .windows:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Windows"
+      }
     case .linux:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "Linux"
+      }
+    case .tvOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "tvOS"
       }
     case .iOS:
       switch localization {
@@ -80,18 +92,6 @@ public enum Platform: String, Codable, CaseIterable {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "watchOS"
-      }
-    case .tvOS:
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "tvOS"
-      }
-    case .windows:
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "Windows"
       }
     }
   }

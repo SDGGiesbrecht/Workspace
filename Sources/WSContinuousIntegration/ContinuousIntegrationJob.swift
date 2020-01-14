@@ -55,12 +55,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "macOS"
         }
       })
+    case .windows:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "Windows"
+        }
+      })
     case .linux:
       return UserFacing({ (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "Linux"
+        }
+      })
+    case .tvOS:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "tvOS"
         }
       })
     case .iOS:
@@ -77,22 +93,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "watchOS"
-        }
-      })
-    case .tvOS:
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-          .deutschDeutschland:
-          return "tvOS"
-        }
-      })
-    case .windows:
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-          .deutschDeutschland:
-          return "Windows"
         }
       })
     case .miscellaneous:
@@ -126,12 +126,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "macos"
         }
       })
+    case .windows:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "windows"
+        }
+      })
     case .linux:
       return UserFacing({ (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "linux"
+        }
+      })
+    case .tvOS:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "tvos"
         }
       })
     case .iOS:
@@ -148,22 +164,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "watchos"
-        }
-      })
-    case .tvOS:
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-          .deutschDeutschland:
-          return "tvos"
-        }
-      })
-    case .windows:
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-          .deutschDeutschland:
-          return "windows"
         }
       })
     case .miscellaneous:
@@ -191,16 +191,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch self {
     case .macOS:
       return try .macOS ∈ project.configuration(output: output).supportedPlatforms
+    case .windows:
+      return try .windows ∈ project.configuration(output: output).supportedPlatforms
     case .linux:
       return try .linux ∈ project.configuration(output: output).supportedPlatforms
+    case .tvOS:
+      return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
     case .iOS:
       return try .iOS ∈ project.configuration(output: output).supportedPlatforms
     case .watchOS:
       return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
-    case .tvOS:
-      return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
-    case .windows:
-      return try .windows ∈ project.configuration(output: output).supportedPlatforms
     case .miscellaneous:
       return true
     case .deployment:
@@ -215,12 +215,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public var platform: Platform {
     switch self {
-    case .macOS, .iOS, .watchOS, .tvOS:
+    case .macOS, .tvOS, .iOS, .watchOS:
       return .macOS
-    case .linux, .miscellaneous, .deployment:
-      return .linux
     case .windows:
       return .windows
+    case .linux, .miscellaneous, .deployment:
+      return .linux
     }
   }
 
@@ -259,13 +259,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS:
       // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
       return "macos\u{2D}latest"
-    case .linux:
-      return "ubuntu\u{2D}18.04"
-    case .iOS, .watchOS, .tvOS:
-      unreachable()
     case .windows:
       // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
       return "windows\u{2D}latest"
+    case .linux:
+      return "ubuntu\u{2D}18.04"
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
     }
   }
 
@@ -276,7 +276,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
       return "swift:\(version)\u{2D}bionic"
-    case .iOS, .watchOS, .tvOS:
+    case .tvOS, .iOS, .watchOS:
       unreachable()
     }
   }
@@ -342,12 +342,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS:
       result.append(contentsOf: cacheEntry(os: "macOS"))
-    case .linux:
-      result.append(contentsOf: cacheEntry(os: "Linux"))
-    case .iOS, .watchOS, .tvOS:
-      unreachable()
     case .windows:
       result.append(contentsOf: cacheEntry(os: "Windows"))
+    case .linux:
+      result.append(contentsOf: cacheEntry(os: "Linux"))
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
     }
 
     func commandEntry(_ command: String, escaping: Bool = true) -> String {
@@ -367,6 +367,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("xcversion install \(xcodeVersion)"),
         commandEntry("xcversion select \(xcodeVersion)")
       ])
+    case .windows:
+      break
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),
@@ -374,10 +376,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes curl libsqlite3\u{2D}dev libncurses\u{2D}dev"
         ),
       ])
-    case .iOS, .watchOS, .tvOS:
+    case .tvOS, .iOS, .watchOS:
       unreachable()
-    case .windows:
-      break
     }
 
     switch platform {
@@ -393,7 +393,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     switch platform {
-    case .macOS, .iOS, .watchOS, .tvOS, .windows:
+    case .macOS, .windows, .tvOS, .iOS, .watchOS:
       break
     case .linux:
       result.append(commandEntry("chmod \u{2D}R a+rwx ."))
@@ -425,7 +425,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .linux, .iOS, .watchOS, .tvOS, .windows, .miscellaneous:
+      case .macOS, .windows, .linux, .tvOS, .iOS, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

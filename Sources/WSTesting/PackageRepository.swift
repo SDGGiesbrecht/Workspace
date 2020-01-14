@@ -61,7 +61,9 @@ extension PackageRepository {
           ).get()
           return ¬SwiftCompiler.warningsOccurred(during: log)
         }
-      case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
+      case .windows, .miscellaneous, .deployment:
+        unreachable()
+      case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
         buildCommand = { output in
           let log = try self.build(
             for: job.buildSDK,
@@ -73,8 +75,6 @@ extension PackageRepository {
           ).get()
           return ¬Xcode.warningsOccurred(during: log)
         }
-      case .windows, .miscellaneous, .deployment:
-        unreachable()
       }
 
       if try buildCommand(output) {
@@ -166,7 +166,9 @@ extension PackageRepository {
           return false
         }
       }
-    case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
+    case .windows, .miscellaneous, .deployment:
+      unreachable()
+    case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       testCommand = { output in
         switch self.test(
           on: job.testSDK,
@@ -191,8 +193,6 @@ extension PackageRepository {
           return true
         }
       }
-    case .windows, .miscellaneous, .deployment:
-      unreachable()
     }
 
     if testCommand(output) {
@@ -290,7 +290,9 @@ extension PackageRepository {
           return
         }
         report = fromPackageManager  // @exempt(from: tests)
-      case .iOS, .watchOS, .tvOS:  // @exempt(from: tests) Unreachable from Linux.
+      case .windows, .miscellaneous, .deployment:
+        unreachable()
+      case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
         guard
           let fromXcode = try codeCoverageReport(
             on: job.testSDK,
@@ -311,8 +313,6 @@ extension PackageRepository {
           return
         }
         report = fromXcode
-      case .windows, .miscellaneous, .deployment:
-        unreachable()
       }
 
       var irrelevantFiles: Set<URL> = []

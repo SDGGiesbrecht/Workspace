@@ -42,7 +42,11 @@ internal struct PackageCLI {
 
   // MARK: - Initialization
 
-  internal init(tools: [URL], localizations: [LocalizationIdentifier]) {
+  internal init(
+    tools: [URL],
+    localizations: [LocalizationIdentifier],
+    customReplacements: [(StrictString, StrictString)]
+  ) {
     var commands: [StrictString: CommandInterfaceInformation] = [:]
     for tool in tools {
       for localization in localizations {
@@ -58,7 +62,10 @@ internal struct PackageCLI {
             default: CommandInterfaceInformation()].interfaces[localization] = modifiedInterface
 
           let directory = PackageCLI.toolsDirectory(for: localization)
-          let filename = Page.sanitize(fileName: interface.name)
+          let filename = Page.sanitize(
+            fileName: interface.name,
+            customReplacements: customReplacements
+          )
           let path = directory + "/" + filename + ".html"
 
           commands[interface.identifier]!.relativePagePath[localization] = path

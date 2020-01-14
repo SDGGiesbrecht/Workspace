@@ -146,6 +146,70 @@ public struct APIDocumentationConfiguration: Codable {
     set { serveFromGitHubPagesBranch = newValue }
   }
 
+  private static func escape(
+    _ scalars: [Unicode.Scalar],
+    in replacements: inout [StrictString: StrictString]
+  ) {
+    for scalar in scalars {
+      replacements[StrictString(scalar)] = "[U+\(scalar.hexadecimalCode)]"
+    }
+  }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(APIDocumentationConfiguration.fileNameReplacements)
+  /// Replacements to apply to the file names of the generated documentation.
+  ///
+  /// Each occurrence of a key in a filename will be replaced by its corresponding value.
+  ///
+  /// The default replacements are enough for Linux and macOS file systems. If the documentation needs to be saved to a Windows file system, use `applyWindowsCompatibilityFileNameReplacements()`.
+  public var fileNameReplacements: [StrictString: StrictString] = {
+    var result: [StrictString: StrictString] = [:]
+    APIDocumentationConfiguration.escape(
+      [
+        // macOS and Linux file name constraints.
+        "\u{0}",
+        "/"
+      ],
+      in: &result
+    )
+    return result
+  }()
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.fileNameReplacements)
+  /// Ersetzungen, die die Dateinamen der erstellte Dokumentation untergehen sollen.
+  ///
+  /// Jedes Mal, das eine Schlüssel in eine Dateiname vorkommt, wird es mit dem entsprechenden Wert ersetzt.
+  ///
+  /// Die Standardersetzungen sind für Linux und macOS Dateisysteme ausreichend. Für den Fall, dass die Dokumentation auf einem Windows‐Dateisystem gespeichert werden muss, gibt es `dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()`.
+  public var dateinamensersetzungen: [StrengeZeichenkette: StrengeZeichenkette] {
+    get { return fileNameReplacements }
+    set { fileNameReplacements = newValue }
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
+  /// Adds file name replacements necessary for Windows file systems.
+  public mutating func applyWindowsCompatibilityFileNameReplacements() {
+    APIDocumentationConfiguration.escape(
+      [
+        // From https://docs.microsoft.com/en-us/windows/win32/fileio/naming-a-file
+        "<",
+        ">",
+        ":",
+        "\u{22}",
+        "/",
+        "\u{5C}",
+        "|",
+        "?",
+        "*"
+      ],
+      in: &fileNameReplacements
+    )
+  }
+  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.applyWindowsCompatibilityFileNameReplacements)
+  /// Fügt Ersetzungen hinzu, die für Windows‐Dateisysteme nötig sind.
+  public mutating func dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen() {
+    applyWindowsCompatibilityFileNameReplacements()
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(APIDocumentationConfiguration.ignoredDependencies)
   /// Dependency module names known to be irrelevant to documentation.

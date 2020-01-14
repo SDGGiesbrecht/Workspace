@@ -73,7 +73,7 @@ extension PackageRepository {
           ).get()
           return ¬Xcode.warningsOccurred(during: log)
         }
-      case .miscellaneous, .deployment:
+      case .windows, .miscellaneous, .deployment:
         unreachable()
       }
 
@@ -191,7 +191,7 @@ extension PackageRepository {
           return true
         }
       }
-    case .miscellaneous, .deployment:
+    case .windows, .miscellaneous, .deployment:
       unreachable()
     }
 
@@ -311,7 +311,7 @@ extension PackageRepository {
           return
         }
         report = fromXcode
-      case .miscellaneous, .deployment:
+      case .windows, .miscellaneous, .deployment:
         unreachable()
       }
 

@@ -47,6 +47,10 @@ public enum Platform: String, Codable, CaseIterable {
   /// tvOS.
   case tvOS
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Windows.
+  case windows
+
   // MARK: - Properties
 
   public func _isolatedName(for localization: ContentLocalization) -> StrictString {
@@ -80,6 +84,12 @@ public enum Platform: String, Codable, CaseIterable {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "tvOS"
+      }
+    case .windows:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Windows"
       }
     }
   }

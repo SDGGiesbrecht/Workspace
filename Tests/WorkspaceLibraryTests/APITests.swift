@@ -179,6 +179,7 @@ class APITests: TestCase {
     configuration.documentation.about["🇺🇸EN"] = ""
     configuration.documentation.api.yearFirstPublished = 2018
     configuration.documentation.api.ignoredDependencies.remove("Swift")
+    configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
     configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] = false
     configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] = false
     configuration.documentation.relatedProjects = [
@@ -388,6 +389,8 @@ class APITests: TestCase {
     XCTAssert(configuration.normalise)
     configuration.normalisieren = false
     XCTAssertFalse(configuration.normalisieren)
+    configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen = [:]
+    XCTAssertEqual(configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen, [:])
   }
 
   func testConfiguartionContext() {
@@ -596,6 +599,8 @@ class APITests: TestCase {
     konfiguration.dokumentation.programmierschnittstelle
       .durchGitHubSeitenVeröffentlichen = true
     konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
+    konfiguration.dokumentation.programmierschnittstelle
+      .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
     var commands: [[StrictString]] = [
       ["auffrischen", "skripte"],
       ["auffrischen", "git"],
@@ -696,6 +701,7 @@ class APITests: TestCase {
     configuration.documentation.localizations = ["zxx"]
     configuration.xcode.manage = true
     configuration.documentation.repositoryURL = URL(string: "http://example.com")!
+    configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
     PackageRepository(mock: "FailingDocumentationCoverage").test(
       commands: [
         ["validate", "documentation‐coverage"],

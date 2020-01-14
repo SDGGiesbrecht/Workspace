@@ -607,6 +607,7 @@ internal struct PackageInterface {
     relatedProjects: [LocalizationIdentifier: StrictString],
     about: [LocalizationIdentifier: StrictString],
     copyright: [LocalizationIdentifier?: StrictString],
+    customReplacements: [(StrictString, StrictString)],
     output: Command.Output
   ) {
 
@@ -637,10 +638,16 @@ internal struct PackageInterface {
 
     self.packageIdentifiers = api.identifierList()
 
-    APIElement.package(api).determine(localizations: localizations)
+    APIElement.package(api).determine(
+      localizations: localizations,
+      customReplacements: customReplacements
+    )
     var paths: [LocalizationIdentifier: [String: String]] = [:]
     for localization in localizations {
-      paths[localization] = APIElement.package(api).determinePaths(for: localization)
+      paths[localization] = APIElement.package(api).determinePaths(
+        for: localization,
+        customReplacements: customReplacements
+      )
     }
     APIElement.package(api).determineLocalizedPaths(localizations: localizations)
     self.symbolLinks = paths.mapValues { localization in
@@ -695,6 +702,7 @@ internal struct PackageInterface {
 
   internal func outputHTML(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -712,30 +720,35 @@ internal struct PackageInterface {
 
     try outputPackagePages(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: status,
       output: output,
       coverageCheckOnly: coverageCheckOnly
     )
     try outputToolPages(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: status,
       output: output,
       coverageCheckOnly: coverageCheckOnly
     )
     try outputLibraryPages(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: status,
       output: output,
       coverageCheckOnly: coverageCheckOnly
     )
     try outputModulePages(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: status,
       output: output,
       coverageCheckOnly: coverageCheckOnly
     )
     try outputTopLevelSymbols(
       to: outputDirectory,
+      customReplacements: customReplacements,
       status: status,
       output: output,
       coverageCheckOnly: coverageCheckOnly
@@ -778,18 +791,23 @@ internal struct PackageInterface {
       output: output
     )
 
-    try outputRedirects(to: outputDirectory)
+    try outputRedirects(to: outputDirectory, customReplacements: customReplacements)
   }
 
   private func outputPackagePages(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
       try autoreleasepool {
-        let pageURL = api.pageURL(in: outputDirectory, for: localization)
+        let pageURL = api.pageURL(
+          in: outputDirectory,
+          for: localization,
+          customReplacements: customReplacements
+        )
         try SymbolPage(
           localization: localization,
           allLocalizations: localizations,
@@ -815,6 +833,7 @@ internal struct PackageInterface {
 
   private func outputToolPages(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -837,6 +856,7 @@ internal struct PackageInterface {
             platforms: platforms[localization]!,
             command: tool,
             copyright: copyright(for: localization, status: status),
+            customReplacements: customReplacements,
             output: output
           ).contents.save(to: location)
 
@@ -845,6 +865,7 @@ internal struct PackageInterface {
             namespace: [tool],
             to: outputDirectory,
             localization: localization,
+            customReplacements: customReplacements,
             status: status,
             output: output
           )
@@ -855,6 +876,7 @@ internal struct PackageInterface {
 
   private func outputLibraryPages(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -863,7 +885,11 @@ internal struct PackageInterface {
       for library in api.libraries.lazy.map({ APIElement.library($0) })
       where library.exists(in: localization) {
         try autoreleasepool {
-          let location = library.pageURL(in: outputDirectory, for: localization)
+          let location = library.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
           try SymbolPage(
             localization: localization,
             allLocalizations: localizations,
@@ -889,6 +915,7 @@ internal struct PackageInterface {
 
   private func outputModulePages(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -897,7 +924,11 @@ internal struct PackageInterface {
       for module in api.modules.lazy.map({ APIElement.module($0) })
       where module.exists(in: localization) {
         try autoreleasepool {
-          let location = module.pageURL(in: outputDirectory, for: localization)
+          let location = module.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
           try SymbolPage(
             localization: localization,
             allLocalizations: localizations,
@@ -923,6 +954,7 @@ internal struct PackageInterface {
 
   private func outputTopLevelSymbols(
     to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -939,7 +971,11 @@ internal struct PackageInterface {
       ].joined()
       where symbol.exists(in: localization) {
         try autoreleasepool {
-          let location = symbol.pageURL(in: outputDirectory, for: localization)
+          let location = symbol.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
           let section: IndexSectionIdentifier
           switch symbol {
           case .package, .library, .module, .case, .initializer, .subscript, .conformance:
@@ -991,6 +1027,7 @@ internal struct PackageInterface {
               sectionIdentifier: section,
               to: outputDirectory,
               localization: localization,
+              customReplacements: customReplacements,
               status: status,
               output: output,
               coverageCheckOnly: coverageCheckOnly
@@ -1024,6 +1061,7 @@ internal struct PackageInterface {
           sectionIdentifier: section,
           to: outputDirectory,
           localization: localization,
+          customReplacements: customReplacements,
           status: status,
           output: output,
           coverageCheckOnly: coverageCheckOnly
@@ -1038,6 +1076,7 @@ internal struct PackageInterface {
     sectionIdentifier: IndexSectionIdentifier,
     to outputDirectory: URL,
     localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output,
     coverageCheckOnly: Bool
@@ -1046,7 +1085,11 @@ internal struct PackageInterface {
     for symbol in [parent.children, parent.localizedChildren].joined()
     where symbol.receivesPage ∧ symbol.exists(in: localization) {
       try autoreleasepool {
-        let location = symbol.pageURL(in: outputDirectory, for: localization)
+        let location = symbol.pageURL(
+          in: outputDirectory,
+          for: localization,
+          customReplacements: customReplacements
+        )
 
         var modifiedRoot: StrictString = "../../"
         for _ in namespace.indices {
@@ -1087,6 +1130,7 @@ internal struct PackageInterface {
             sectionIdentifier: sectionIdentifier,
             to: outputDirectory,
             localization: localization,
+            customReplacements: customReplacements,
             status: status,
             output: output,
             coverageCheckOnly: coverageCheckOnly
@@ -1101,6 +1145,7 @@ internal struct PackageInterface {
     namespace: [CommandInterfaceInformation],
     to outputDirectory: URL,
     localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)],
     status: DocumentationStatus,
     output: Command.Output
   ) throws {
@@ -1123,7 +1168,10 @@ internal struct PackageInterface {
           nestedPagePath += "/"
           nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
           nestedPagePath += "/"
-          nestedPagePath += Page.sanitize(fileName: localized.name)
+          nestedPagePath += Page.sanitize(
+            fileName: localized.name,
+            customReplacements: customReplacements
+          )
           nestedPagePath += ".html"
           information.relativePagePath[otherLocalization] = nestedPagePath
         }
@@ -1149,6 +1197,7 @@ internal struct PackageInterface {
           platforms: platforms[localization]!,
           command: information,
           copyright: copyright(for: localization, status: status),
+          customReplacements: customReplacements,
           output: output
         ).contents.save(to: location)
 
@@ -1157,6 +1206,7 @@ internal struct PackageInterface {
           namespace: navigation,
           to: outputDirectory,
           localization: localization,
+          customReplacements: customReplacements,
           status: status,
           output: output
         )
@@ -1243,7 +1293,10 @@ internal struct PackageInterface {
     }
   }
 
-  private func outputRedirects(to outputDirectory: URL) throws {
+  private func outputRedirects(
+    to outputDirectory: URL,
+    customReplacements: [(StrictString, StrictString)]
+  ) throws {
     // Out of directories.
     var handled = Set<URL>()
     for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
@@ -1273,7 +1326,11 @@ internal struct PackageInterface {
         String(localization._directoryName)
       )
       let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-      let pageURL = api.pageURL(in: outputDirectory, for: localization)
+      let pageURL = api.pageURL(
+        in: outputDirectory,
+        for: localization,
+        customReplacements: customReplacements
+      )
       if redirectURL ≠ pageURL {
         try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
       }

@@ -700,6 +700,7 @@ class APITests: TestCase {
     configuration.documentation.localizations = ["zxx"]
     configuration.xcode.manage = true
     configuration.documentation.repositoryURL = URL(string: "http://example.com")!
+    configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
     PackageRepository(mock: "FailingDocumentationCoverage").test(
       commands: [
         ["validate", "documentation‐coverage"],

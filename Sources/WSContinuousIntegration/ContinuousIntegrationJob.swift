@@ -242,16 +242,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "ubuntu\u{2D}18.04"
     case .iOS, .watchOS, .tvOS:
       unreachable()
+    case .windows:
+      // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
+      return "windows\u{2D}latest"
     }
   }
 
   private var dockerImage: String? {
     switch platform {
-    case .macOS, .iOS, .watchOS, .tvOS:
+    case .macOS, .windows:
       return nil
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
       return "swift:\(version)\u{2D}bionic"
+    case .iOS, .watchOS, .tvOS:
+      unreachable()
     }
   }
 
@@ -320,6 +325,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: cacheEntry(os: "Linux"))
     case .iOS, .watchOS, .tvOS:
       unreachable()
+    case .windows:
+      result.append(contentsOf: cacheEntry(os: "Windows"))
     }
 
     func commandEntry(_ command: String) -> String {
@@ -347,15 +354,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .iOS, .watchOS, .tvOS:
       unreachable()
+    case .windows:
+      break
     }
 
-    result.append(contentsOf: [
-      commandEntry(refreshCommand(configuration: configuration)),
-      commandEntry(validateCommand(configuration: configuration))
-    ])
+    switch platform {
+    case .macOS, .linux, .iOS, .watchOS, .tvOS:
+      result.append(contentsOf: [
+        commandEntry(refreshCommand(configuration: configuration)),
+        commandEntry(validateCommand(configuration: configuration))
+      ])
+    case .windows:
+      result.append(contentsOf: [
+        commandEntry("echo \u{22}Checkout succeeded.\u{22}")
+      ])
+    }
 
     switch platform {
-    case .macOS, .iOS, .watchOS, .tvOS:
+    case .macOS, .iOS, .watchOS, .tvOS, .windows:
       break
     case .linux:
       result.append(commandEntry("chmod \u{2D}R a+rwx ."))

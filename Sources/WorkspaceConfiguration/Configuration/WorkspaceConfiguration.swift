@@ -119,7 +119,7 @@ public final class WorkspaceConfiguration: Configuration {
   /// The platforms the project supports.
   ///
   /// The default assumes support for all platforms.
-  public var supportedPlatforms: Set<Platform> = Set(Platform.allCases)
+  public var supportedPlatforms: Set<Platform> = Set(Platform.allCases.filter({ $0 ≠ .windows }))
   // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.supportedPlatforms)
   /// Die Schichte, die das Projekt unterstützt.
   ///

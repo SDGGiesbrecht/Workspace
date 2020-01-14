@@ -350,8 +350,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: cacheEntry(os: "Windows"))
     }
 
-    func commandEntry(_ command: String) -> String {
-      return "        \(escapeCommand(command))"
+    func commandEntry(_ command: String, escaping: Bool = true) -> String {
+      let result = escaping ? escapeCommand(command) : command
+      return "        \(result)"
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
@@ -387,7 +388,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .windows:
       result.append(contentsOf: [
-        commandEntry("echo \u{22}Checkout succeeded.\u{22}")
+        commandEntry("echo \u{22}Checkout succeeded.\u{22}", escaping: false)
       ])
     }
 

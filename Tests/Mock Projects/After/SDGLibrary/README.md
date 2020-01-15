@@ -15,7 +15,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-macOS • Linux • iOS • watchOS • tvOS
+macOS • Linux • tvOS • iOS • watchOS
 
 [Documentation](https://example.github.io/SDG/%F0%9F%87%A8%F0%9F%87%A6EN)
 

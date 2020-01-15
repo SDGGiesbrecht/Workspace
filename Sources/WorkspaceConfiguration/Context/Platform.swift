@@ -23,33 +23,35 @@ import WSLocalizations
 public typealias Schicht = Platform
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Platform)
 /// A platform.
-public enum Platform: String, Codable, CaseIterable {
+public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
 
   // MARK: - Cases
 
+  // These are sorted (and iterated) by date.
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// macOS.
-  case macOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// Linux.
-  case linux
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// iOS.
-  case iOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// watchOS.
-  case watchOS
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// tvOS.
-  case tvOS
+  case macOS  // 1976‐04‐11 (Apple Computer)
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Windows.
-  case windows
+  case windows  // 1981‐08‐12 (MS‐DOS)
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Linux.
+  case linux  // 1991‐09‐17
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// tvOS.
+  case tvOS  // 2007‐01‐09 (Apple TV Software)
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// iOS.
+  case iOS  // 2007‐06‐29
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// watchOS.
+  case watchOS  // 2015‐04‐24
 
   // MARK: - Properties
 
@@ -61,11 +63,23 @@ public enum Platform: String, Codable, CaseIterable {
         .deutschDeutschland:
         return "macOS"
       }
+    case .windows:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Windows"
+      }
     case .linux:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "Linux"
+      }
+    case .tvOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "tvOS"
       }
     case .iOS:
       switch localization {
@@ -78,18 +92,6 @@ public enum Platform: String, Codable, CaseIterable {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "watchOS"
-      }
-    case .tvOS:
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "tvOS"
-      }
-    case .windows:
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "Windows"
       }
     }
   }

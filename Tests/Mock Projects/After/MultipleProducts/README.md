@@ -1,6 +1,6 @@
 
 
-macOS • Linux • iOS • watchOS • tvOS
+macOS • Linux • tvOS • iOS • watchOS
 
 # MultipleProducts
 

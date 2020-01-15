@@ -29,8 +29,10 @@ extension LocalizationIdentifier {
   }
 
   internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
-    let localizationDirectory = String(file.path(relativeTo: outputDirectory)
-      .prefix(upTo: "/")?.contents ?? "")
+    let localizationDirectory = String(
+      file.path(relativeTo: outputDirectory)
+        .prefix(upTo: "/")?.contents ?? ""
+    )
     let identifier = LocalizationIdentifier(localizationDirectory)
     if identifier.icon ≠ nil {
       return AnyLocalization(code: identifier.code)

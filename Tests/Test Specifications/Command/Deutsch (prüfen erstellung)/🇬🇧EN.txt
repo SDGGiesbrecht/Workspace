@@ -8,20 +8,21 @@ Checking build for tvOS... (§2)
 
 [$ xcodebuild...]
 
+
 Checking build for iOS... (§3)
 
 [$ xcodebuild...]
+
 
 Checking build for watchOS... (§4)
 
 [$ xcodebuild...]
 
+
 ✓ There are no compiler warnings for macOS.
-✓ There are no compiler warnings for tvOS.
-✓ There are no compiler warnings for iOS.
-✓ There are no compiler warnings for watchOS.
+✗ Build failed for tvOS. (See [⌘F] ‘§2’)
+✗ Build failed for iOS. (See [⌘F] ‘§3’)
+✗ Build failed for watchOS. (See [⌘F] ‘§4’)
 
-
-‘Deutsch’ passes validation.
-
-0
+‘Deutsch’ fails validation.
+2

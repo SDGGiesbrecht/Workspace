@@ -44,6 +44,7 @@ section:last-child {
 
 p {
     margin: 0;
+    text-indent: 0;
 }
 p:not(:first-child) {
     margin-top: 0.7em;

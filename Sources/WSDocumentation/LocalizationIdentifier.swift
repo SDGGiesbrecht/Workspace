@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import WSProject
@@ -25,5 +26,18 @@ extension LocalizationIdentifier {
       return nil
     }
     return supported.textDirection
+  }
+
+  internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
+    let localizationDirectory = String(
+      file.path(relativeTo: outputDirectory)
+        .prefix(upTo: "/")?.contents ?? ""
+    )
+    let identifier = LocalizationIdentifier(localizationDirectory)
+    if identifier.icon ≠ nil {
+      return AnyLocalization(code: identifier.code)
+    } else {
+      return AnyLocalization(code: "und")
+    }
   }
 }

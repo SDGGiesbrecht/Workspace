@@ -381,15 +381,16 @@ extension PackageRepository {
 
   private func redirectExistingURLs(outputDirectory: URL) throws {
     if (try? outputDirectory.checkResourceIsReachable()) == true {
-      let generalRedirect = Redirect(target: "index.html")
-      let indexRedirect = Redirect(target: "../index.html")
       for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
         try autoreleasepool {
+          let localizationDirectory = String(file.path(relativeTo: outputDirectory)
+            .prefix(upTo: "/")?.contents ?? "")
+          let localization = AnyLocalization(code: LocalizationIdentifier(localizationDirectory).code)
           if file.pathExtension == "html" {
             if file.lastPathComponent == "index.html" {
-              try indexRedirect.contents.save(to: file)
+              try DocumentSyntax.redirect(language: localization, target: URL(fileURLWithPath: "../index.html")).source().save(to: file)
             } else {
-              try generalRedirect.contents.save(to: file)
+              try DocumentSyntax.redirect(language: localization, target: URL(fileURLWithPath: "index.html")).source().save(to: file)
             }
           } else {
             try? FileManager.default.removeItem(at: file)

@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "SDGSwift",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
+        "state": {
+          "branch": null,
+          "revision": "124a6bd0a6637fe53bea70e8da9a23d60e336c0a",
+          "version": "0.19.0"
+        }
+      },
+      {
         "package": "SDGWeb",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {

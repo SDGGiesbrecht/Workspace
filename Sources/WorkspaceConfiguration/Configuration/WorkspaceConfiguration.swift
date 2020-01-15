@@ -353,6 +353,9 @@ public final class WorkspaceConfiguration: Configuration {
       .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
     )
     documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
+    )
+    documentation.relatedProjects.append(
       .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
     )
     documentation.relatedProjects.append(

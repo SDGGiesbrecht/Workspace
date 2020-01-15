@@ -1312,15 +1312,21 @@ internal struct PackageInterface {
           let redirect = directory.appendingPathComponent("index.html")
           if (try? redirect.checkResourceIsReachable()) ≠ true {
             // Do not overwrite if there is a file name clash.
-            try Redirect(target: "../index.html").contents.save(to: redirect)
+            try DocumentSyntax.redirect(
+              language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
+              target: URL(fileURLWithPath: "../index.html")
+            ).source().save(to: redirect)
           }
         }
       }
     }
 
     // To home page.
-    try Redirect(target: String(developmentLocalization._directoryName) + "/index.html")
-      .contents.save(to: outputDirectory.appendingPathComponent("index.html"))
+    let root = outputDirectory.appendingPathComponent("index.html")
+    try DocumentSyntax.redirect(
+      language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
+      target: URL(fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html")
+    ).source().save(to: root)
     for localization in localizations {
       let localizationDirectory = outputDirectory.appendingPathComponent(
         String(localization._directoryName)
@@ -1332,7 +1338,10 @@ internal struct PackageInterface {
         customReplacements: customReplacements
       )
       if redirectURL ≠ pageURL {
-        try Redirect(target: pageURL.lastPathComponent).contents.save(to: redirectURL)
+        try DocumentSyntax.redirect(
+          language: AnyLocalization(code: localization.code),
+          target: URL(fileURLWithPath: pageURL.lastPathComponent)
+        ).source().save(to: redirectURL)
       }
     }
   }

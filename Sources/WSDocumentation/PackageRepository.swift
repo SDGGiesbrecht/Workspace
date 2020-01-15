@@ -383,14 +383,17 @@ extension PackageRepository {
     if (try? outputDirectory.checkResourceIsReachable()) == true {
       for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
         try autoreleasepool {
-          let localizationDirectory = String(file.path(relativeTo: outputDirectory)
-            .prefix(upTo: "/")?.contents ?? "")
-          let localization = AnyLocalization(code: LocalizationIdentifier(localizationDirectory).code)
           if file.pathExtension == "html" {
             if file.lastPathComponent == "index.html" {
-              try DocumentSyntax.redirect(language: localization, target: URL(fileURLWithPath: "../index.html")).source().save(to: file)
+              try DocumentSyntax.redirect(
+                language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
+                target: URL(fileURLWithPath: "../index.html")
+              ).source().save(to: file)
             } else {
-              try DocumentSyntax.redirect(language: localization, target: URL(fileURLWithPath: "index.html")).source().save(to: file)
+              try DocumentSyntax.redirect(
+                language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
+                target: URL(fileURLWithPath: "index.html")
+              ).source().save(to: file)
             }
           } else {
             try? FileManager.default.removeItem(at: file)

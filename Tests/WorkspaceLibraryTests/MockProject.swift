@@ -20,6 +20,7 @@ import SDGCollections
 import WSGeneralTestImports
 
 import SDGExternalProcess
+import SDGHTML
 import SDGWeb
 
 import WSProject
@@ -346,7 +347,7 @@ extension PackageRepository {
             // GitHub actions on Linux have false positives during the dead link check.
             let documentationDirectory = location.appendingPathComponent("docs")
             if (try? documentationDirectory.checkResourceIsReachable()) == true {
-              let warnings = Site<InterfaceLocalization>.validate(
+              let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(
                 site: documentationDirectory
               )
               if ¬warnings.isEmpty {

@@ -66,7 +66,7 @@ extension PackageRepository {
       for platform in try configuration(output: output).supportedPlatforms.sorted() {
         list.append(platform._isolatedName(for: localization._bestMatch))
       }
-      result[localization] = list.sorted()
+      result[localization] = list
     }
     return result
   }

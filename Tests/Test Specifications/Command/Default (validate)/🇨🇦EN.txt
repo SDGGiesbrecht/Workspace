@@ -46,18 +46,18 @@ Checking build for macOS... (§2)
 
 [$ swift...]
 
-Checking build for iOS... (§3)
+Checking build for tvOS... (§3)
 
 [$ xcodebuild...]
 
-Checking build for watchOS... (§4)
+Checking build for iOS... (§4)
 
 [$ xcodebuild...]
 
-
-Checking build for tvOS... (§5)
+Checking build for watchOS... (§5)
 
 [$ xcodebuild...]
+
 
 Testing on macOS... (§6)
 
@@ -80,9 +80,9 @@ Summary
 
 ✗ Source code fails proofreading. (See [⌘F] “§1”)
 ✓ There are no compiler warnings for macOS.
-✓ There are no compiler warnings for iOS.
-✗ Build failed for watchOS. (See [⌘F] “§4”)
 ✓ There are no compiler warnings for tvOS.
+✓ There are no compiler warnings for iOS.
+✗ Build failed for watchOS. (See [⌘F] “§5”)
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
 ✗ Failed to process documentation. (See [⌘F] “§8”)

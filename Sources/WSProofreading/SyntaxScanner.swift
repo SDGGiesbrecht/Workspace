@@ -50,7 +50,7 @@ internal class RuleSyntaxScanner: SyntaxScanner {
 
   // MARK: - SyntaxScanner
 
-  internal override func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+  internal func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
     for rule in rules {
       rule.check(
         node,
@@ -64,7 +64,7 @@ internal class RuleSyntaxScanner: SyntaxScanner {
     return true
   }
 
-  internal override func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
+  internal func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
     for rule in rules {
       rule.check(
         node,
@@ -78,7 +78,7 @@ internal class RuleSyntaxScanner: SyntaxScanner {
     return true
   }
 
-  internal override func visit(_ node: Trivia, context: TriviaContext) -> Bool {
+  internal func visit(_ node: Trivia, context: TriviaContext) -> Bool {
     for rule in rules {
       rule.check(
         node,
@@ -92,7 +92,7 @@ internal class RuleSyntaxScanner: SyntaxScanner {
     return true
   }
 
-  internal override func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+  internal func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
     for rule in rules {
       rule.check(
         node,

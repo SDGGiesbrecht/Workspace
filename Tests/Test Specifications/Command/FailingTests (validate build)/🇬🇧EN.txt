@@ -11,22 +11,22 @@ Checking build for macOS... (§1)
 
 [$ swift...]
 
-Checking build for iOS... (§2)
+Checking build for tvOS... (§2)
 
 [$ xcodebuild...]
 
-Checking build for watchOS... (§3)
+Checking build for iOS... (§3)
 
 [$ xcodebuild...]
 
-Checking build for tvOS... (§4)
+Checking build for watchOS... (§4)
 
 [$ xcodebuild...]
 
 ✗ There are compiler warnings for macOS. (See [⌘F] ‘§1’)
-✗ There are compiler warnings for iOS. (See [⌘F] ‘§2’)
-✗ There are compiler warnings for watchOS. (See [⌘F] ‘§3’)
-✗ There are compiler warnings for tvOS. (See [⌘F] ‘§4’)
+✗ There are compiler warnings for tvOS. (See [⌘F] ‘§2’)
+✗ There are compiler warnings for iOS. (See [⌘F] ‘§3’)
+✗ There are compiler warnings for watchOS. (See [⌘F] ‘§4’)
 
 ‘FailingTests’ fails validation.
 2

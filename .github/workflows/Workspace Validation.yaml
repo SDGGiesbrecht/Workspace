@@ -17,6 +17,20 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-latest
     steps:
@@ -34,15 +48,76 @@ jobs:
         echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
-        if [ -z "$INCLUDE" ]; then echo "Failed to set up Visual Studio."; exit 1; fi
+        if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
         cd "${repository_directory}"
-        mkdir -p .build/Windows
-        cd .build/Windows
+        mkdir -p '.build/Windows'
+        cd '.build/Windows'
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
-        echo "Fetching Swift... (This is expected to take about 10 minutes.)"
-        python swift-build.py --build-id "VS2019 Swift 5.2" --latest-artifacts --filter windows-x64 --download > /dev/null
+        echo 'Fetching Swift... (This is could to take up to 10 minutes.)'
+        python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
         7z x toolchain-windows-x64.zip
         7z x sdk-windows-x64.zip
         cd "${repository_directory}"
-        .build/Windows/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe --version
+        '.build/Windows/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe' --version
+        echo "Checkout succeeded."
+  Linux:
+    runs-on: ubuntu-18.04
+    container: swift:5.1.3-bionic
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        apt-get update
+        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        chmod -R a+rwx .
+  tvOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  Miscellaneous:
+    runs-on: ubuntu-18.04
+    container: swift:5.1.3-bionic
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        apt-get update
+        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        chmod -R a+rwx .

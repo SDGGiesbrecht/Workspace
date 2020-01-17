@@ -40,7 +40,14 @@ jobs:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Validate
+      shell: bash
       run: |
+        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
+        echo 'export -p > exported_environment.sh' > nested_bash.sh
+        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
+        cmd "/c export_environment.bat"
+        source ./exported_environment.sh
+        if [ -z "$INCLUDE" ]; then echo "Failed to set up Visual Studio."; exit 1; fi
         echo "Checkout succeeded."
   Linux:
     runs-on: ubuntu-18.04

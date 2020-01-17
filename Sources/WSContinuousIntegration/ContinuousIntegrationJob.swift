@@ -380,7 +380,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry("echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh"),
         commandEntry(
-          "echo \u{27}vcvarsall.bat x64 && \u{22}C:/Program Files/Git/usr/bin/bash\u{22} -c ./nested_bash.sh\u{27} > export_environment.bat",
+          "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
           escaping: false
         ),
         commandEntry("cmd \u{22}/c export_environment.bat\u{22}", escaping: false),

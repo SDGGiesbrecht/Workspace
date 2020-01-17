@@ -40,6 +40,7 @@ jobs:
         cd .build/SDG/Windows
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
+        echo "Fetching Swift... (This is expected to take about 10 minutes.)"
         python swift-build.py --build-id "VS2019 Swift 5.2" --latest-artifacts --filter windows-x64 --download > /dev/null
         7z x toolchain-windows-x64.zip
         7z x sdk-windows-x64.zip

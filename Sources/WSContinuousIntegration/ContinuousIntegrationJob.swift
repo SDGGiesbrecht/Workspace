@@ -356,10 +356,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-    result.append(contentsOf: [
-      "    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))",
-      "      run: |",
-    ])
+    result.append("    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))")
+
+    switch platform {
+    case .macOS, .linux, .tvOS, .iOS, .watchOS:
+      break
+    case .windows:
+      result.append("      shell: bash")
+    }
+
+    result.append("      run: |")
 
     switch platform {
     case .macOS:
@@ -368,7 +374,22 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("xcversion select \(xcodeVersion)")
       ])
     case .windows:
-      break
+      result.append(contentsOf: [
+        commandEntry(
+          "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"
+        ),
+        commandEntry("echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh"),
+        commandEntry(
+          "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+          escaping: false
+        ),
+        commandEntry("cmd \u{22}/c export_environment.bat\u{22}", escaping: false),
+        commandEntry("source ./exported_environment.sh"),
+        commandEntry(
+          "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{22}Failed to set up Visual Studio.\u{22}; exit 1; fi",
+          escaping: false
+        )
+      ])
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),

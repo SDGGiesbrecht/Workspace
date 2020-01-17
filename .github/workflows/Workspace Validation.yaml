@@ -67,7 +67,7 @@ jobs:
         cd bin
         pwd
         ls
-        swift.exe --version
+        ./swift.exe --version
         cd "${repository_directory}"
         .build/SDG/Windows/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe --version
         echo "Checkout succeeded."

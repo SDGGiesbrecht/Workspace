@@ -45,4 +45,5 @@ jobs:
         7z x toolchain-windows-x64.zip
         7z x sdk-windows-x64.zip
         ls
+        toolcain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
         echo "Checkout succeeded."

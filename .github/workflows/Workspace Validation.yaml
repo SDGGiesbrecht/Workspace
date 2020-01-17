@@ -36,8 +36,8 @@ jobs:
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo "Failed to set up Visual Studio."; exit 1; fi
         cd "${repository_directory}"
-        mkdir -p .build/SDG/Windows/Utilities
-        curl -o .build/SDG/Windows/Utilities/swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
+        mkdir -p .build/SDG/Windows
+        curl -o .build/SDG/Windows/swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
-        python .build/SDG/Windows/Utilities/swift-build.py --build-id "VS2019 Swift 5.2" --latest-artifacts --filter windows-x64 --download
+        python .build/SDG/Windows/swift-build.py --build-id "VS2019 Swift 5.2" --latest-artifacts --filter windows-x64 --download
         echo "Checkout succeeded."

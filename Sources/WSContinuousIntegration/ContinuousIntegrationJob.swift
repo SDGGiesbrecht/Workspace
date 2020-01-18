@@ -395,17 +395,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
-        commandEntry("mkdir \u{2D}p '\(experimentalDirectory)'"),
+        commandEntry("mkdir \u{2D}p \u{27}\(experimentalDirectory)\u{27}"),
         commandEntry("cd \u{27}\(experimentalDirectory)\u{27}"),
         commandEntry(
-          "curl \u{2D}o swift\u{2D}build.py 'https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift-build.py'"
+          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
         ),
         commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
         commandEntry(
           "echo \u{27}Fetching Swift... (This is could to take up to 10 minutes.)\u{27}"
         ),
         commandEntry(
-          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest-artifacts \u{2D}\u{2D}filter windows-x64 \u{2D}\u{2D}download > /dev/null"
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{27}artifacts \u{2D}\u{2D}filter windows\u{27}x64 \u{2D}\u{2D}download > /dev/null"
         ),
         commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
         commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),

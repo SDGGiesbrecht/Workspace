@@ -625,6 +625,10 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
+      name: "WSWindowsTool",
+      path: "Tests/WSWindowsTool"
+    ),
+    .target(
       name: "WSConfigurationExample",
       dependencies: [
         "WorkspaceConfiguration",

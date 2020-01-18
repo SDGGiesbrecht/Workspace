@@ -405,7 +405,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "echo \u{27}Fetching Swift... (This is could to take up to 10 minutes.)\u{27}"
         ),
         commandEntry(
-          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{27}artifacts \u{2D}\u{2D}filter windows\u{27}x64 \u{2D}\u{2D}download > /dev/null"
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter windows\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
         ),
         commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
         commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),

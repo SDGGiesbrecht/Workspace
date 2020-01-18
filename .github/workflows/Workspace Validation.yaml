@@ -17,20 +17,6 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
-  macOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-latest
     steps:
@@ -60,64 +46,5 @@ jobs:
         7z x sdk-windows-x64.zip
         cd "${repository_directory}"
         '.build/SDG/Experimental Swift/toolchain-windows-x64/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe' --version
-        echo "Checkout succeeded."
-  Linux:
-    runs-on: ubuntu-18.04
-    container: swift:5.1.3-bionic
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        chmod -R a+rwx .
-  tvOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-  iOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-  Miscellaneous:
-    runs-on: ubuntu-18.04
-    container: swift:5.1.3-bionic
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        chmod -R a+rwx .
+        cmake -S .github/workflows/Windows -B .build/SDG/CMake
+        cmake --build .build/SDG/CMake

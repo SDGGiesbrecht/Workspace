@@ -157,7 +157,7 @@ internal enum Script: Int, CaseIterable {
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
         "else",
         "    echo \u{22}No cached build detected, fetching Workspace...\u{22}",
-        "    export OVERRIDE_INSTALLATION_DIRECTORY=\(PackageRepository.repositoryWorkspaceCacheDirectory)",
+        "    export OVERRIDE_INSTALLATION_DIRECTORY=\(PackageRepository.repositorySDGDirectory)",
         "    curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} 0.28.0 \u{22}\u{22} workspace",
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
         "fi"

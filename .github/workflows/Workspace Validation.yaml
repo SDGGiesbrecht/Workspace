@@ -45,7 +45,7 @@ jobs:
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64 Toolchains
         7z x sdk-windows-x64.zip
-        mv sdk-windows-x64/* Toolchains/
+        mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms
         ls
         cd Toolchains
         pwd

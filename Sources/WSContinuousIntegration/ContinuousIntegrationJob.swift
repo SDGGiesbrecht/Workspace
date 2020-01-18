@@ -38,6 +38,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   public static let currentSwiftVersion = Version(5, 1, 3)
   public static let currentXcodeVersion = Version(11, 3, 0)
 
+  private static let experimentalDirectory = PackageRepository.repositorySDGDirectory
+    + "/Experimental Swift"
+
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
     .tvOS
@@ -336,7 +339,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     func cacheEntry(os: String) -> [String] {
       return [
         "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: \(PackageRepository.repositoryCachePath)"
+        "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
       ]
     }
     switch platform {
@@ -374,7 +377,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("xcversion select \(xcodeVersion)")
       ])
     case .windows:
+      let experimentalDirectory = ContinuousIntegrationJob.experimentalDirectory
       result.append(contentsOf: [
+        commandEntry("repository_directory=$(pwd)"),
         commandEntry(
           "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"
         ),
@@ -386,8 +391,27 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cmd \u{22}/c export_environment.bat\u{22}", escaping: false),
         commandEntry("source ./exported_environment.sh"),
         commandEntry(
-          "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{22}Failed to set up Visual Studio.\u{22}; exit 1; fi",
+          "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{27}Failed to set up Visual Studio.\u{27}; exit 1; fi",
           escaping: false
+        ),
+        commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
+        commandEntry("mkdir \u{2D}p \u{27}\(experimentalDirectory)\u{27}"),
+        commandEntry("cd \u{27}\(experimentalDirectory)\u{27}"),
+        commandEntry(
+          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
+        ),
+        commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
+        commandEntry(
+          "echo \u{27}Fetching Swift... (This is could to take up to 10 minutes.)\u{27}"
+        ),
+        commandEntry(
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter windows\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
+        ),
+        commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
+        commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
+        commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
+        commandEntry(
+          "\u{27}\(experimentalDirectory)/toolchain\u{2D}windows\u{2D}x64/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift.exe\u{27} \u{2D}\u{2D}version"
         )
       ])
     case .linux:

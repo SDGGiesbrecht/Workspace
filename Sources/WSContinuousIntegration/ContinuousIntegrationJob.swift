@@ -38,8 +38,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   public static let currentSwiftVersion = Version(5, 1, 3)
   public static let currentXcodeVersion = Version(11, 3, 0)
 
-  #warning("Make dependent on repository cache path.")
-  private static let experimentalDirectory = ".build/Windows"
+  private static let experimentalDirectory = PackageRepository.repositorySDGDirectory + "/Experimental Swift"
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -339,7 +338,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     func cacheEntry(os: String) -> [String] {
       return [
         "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: \(PackageRepository.repositoryCachePath)"
+        "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
       ]
     }
     switch platform {

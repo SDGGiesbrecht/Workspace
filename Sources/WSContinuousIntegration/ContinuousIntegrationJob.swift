@@ -38,7 +38,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   public static let currentSwiftVersion = Version(5, 1, 3)
   public static let currentXcodeVersion = Version(11, 3, 0)
 
-  private static let experimentalDirectory = PackageRepository.repositorySDGDirectory + "/Experimental Swift"
+  private static let experimentalDirectory = PackageRepository.repositorySDGDirectory
+    + "/Experimental Swift"
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,

@@ -50,6 +50,9 @@ jobs:
         cd Toolchains
         pwd
         ls
+        cd Library
+        pwd
+        ls
         cd Developer
         pwd
         ls

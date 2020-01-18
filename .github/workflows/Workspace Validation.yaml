@@ -42,10 +42,17 @@ jobs:
         python -m pip install --user azure-devops tabulate
         echo 'Fetching Swift... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
-        7z x toolchain-windows-x64.zip -o/c
-        7z x sdk-windows-x64.zip -o/c
+        7z x toolchain-windows-x64.zip -oToolchains
+        7z x sdk-windows-x64.zip -oToolchains
+        ls
+        cd Toolchains
+        pwd
+        ls
+        cd Developer
+        pwd
+        ls
         cd "${repository_directory}"
-        '/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe' --version
-        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        '.build/SDG/Experimental Swift/Toolchains/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe' --version
+        export PATH="${repository_directory}/.build/SDG/Experimental Swift/Toolchains/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake
         cmake --build .build/SDG/CMake

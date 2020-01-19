@@ -65,7 +65,7 @@ jobs:
         developer_directory="${experimental_Swift_directory}/Toolchains/Library/Developer"
         toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
         export PATH="${toolchain_bin_directory}:${PATH}"
-        "${toolchain_bin_directory}/swift.exe" --version
+        swift --version
         cmake_directory='.build/SDG/CMake'
         sdk_resource_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift"
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')

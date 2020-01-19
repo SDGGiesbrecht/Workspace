@@ -430,8 +430,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry("export PATH=\u{22}${toolchain_bin_directory}:${PATH}\u{22}", escaping: false),
-        // #warning(Use the one in path?)
-        commandEntry("\u{22}${toolchain_bin_directory}/swift.exe\u{22} \u{2D}\u{2D}version", escaping: false),
+        commandEntry("swift \u{2D}\u{2D}version"),
         commandEntry("cmake_directory=\u{27}.build/SDG/CMake\u{27}"),
         commandEntry(
           "sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}",

@@ -436,6 +436,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(validateCommand(configuration: configuration))
       ])
     case .windows:
+      // #workaround(Limited to Workspace until CMake is automatically configured.)
       if try project.isWorkspaceProject() {
         result.append(contentsOf: [
           commandEntry("cmake -G Ninja -S .github/workflows/Windows -B \u{22}${cmake_directory}\u{22} -DCMAKE_Swift_FLAGS=\u{22}-resource-dir ${sdk_resource_directory_windows}\u{22}"),

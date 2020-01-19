@@ -53,5 +53,5 @@ jobs:
         export PATH="${toolchain_bin_directory}:${PATH}"
         "${toolchain_bin_directory}/swift.exe" --version
         cmake_directory=".build/SDG/CMake"
-        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift"
+        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift"
         cmake --build "${cmake_directory}"

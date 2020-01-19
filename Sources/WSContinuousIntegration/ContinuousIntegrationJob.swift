@@ -317,7 +317,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  internal func gitHubWorkflowJob(for project: PackageRepository, output: Command.Output) throws -> [String] {
+  internal func gitHubWorkflowJob(for project: PackageRepository, output: Command.Output) throws
+    -> [String]
+  {
     let configuration = try project.configuration(output: output)
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
@@ -396,7 +398,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
-        commandEntry("experimental_Swift_directory=\u{22}${repository_directory}/\(experimentalDirectory)\u{22}", escaping: false),
+        commandEntry(
+          "experimental_Swift_directory=\u{22}${repository_directory}/\(experimentalDirectory)\u{22}",
+          escaping: false
+        ),
         commandEntry("mkdir \u{2D}p \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry("cd \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry(
@@ -412,16 +417,30 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
         commandEntry("mv toolchain-windows-x64 Toolchains"),
         commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
-        commandEntry("mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms"),
+        commandEntry(
+          "mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms"
+        ),
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
-        commandEntry("developer_directory=\u{22}${experimental_Swift_directory}/Toolchains/Library/Developer\u{22}", escaping: false),
-        commandEntry("toolchain_bin_directory=\u{22}${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin\u{22}", escaping: false),
+        commandEntry(
+          "developer_directory=\u{22}${experimental_Swift_directory}/Toolchains/Library/Developer\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "toolchain_bin_directory=\u{22}${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin\u{22}",
+          escaping: false
+        ),
         commandEntry("export PATH=\u{22}${toolchain_bin_directory}:${PATH}\u{22}", escaping: false),
         // #warning(Use the one in path?)
         commandEntry("\u{22}${toolchain_bin_directory}/swift.exe\u{22} --version", escaping: false),
         commandEntry("cmake_directory='.build/SDG/CMake'"),
-        commandEntry("sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}", escaping: false),
-        commandEntry("sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed -e 's/^\u{5C}///' -e 's/\u{5C}//\u{5C}\u{5C}/g' -e 's/^./\u{5C}0:/')", escaping: false)
+        commandEntry(
+          "sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed -e 's/^\u{5C}///' -e 's/\u{5C}//\u{5C}\u{5C}/g' -e 's/^./\u{5C}0:/')",
+          escaping: false
+        )
       ])
     case .linux:
       result.append(contentsOf: [
@@ -444,7 +463,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       // #workaround(Limited to Workspace until CMake is automatically configured.)
       if try project.isWorkspaceProject() {
         result.append(contentsOf: [
-          commandEntry("cmake -G Ninja -S .github/workflows/Windows -B \u{22}${cmake_directory}\u{22} -DCMAKE_Swift_FLAGS=\u{22}-resource-dir ${sdk_resource_directory_windows}\u{22}", escaping: false),
+          commandEntry(
+            "cmake -G Ninja -S .github/workflows/Windows -B \u{22}${cmake_directory}\u{22} -DCMAKE_Swift_FLAGS=\u{22}-resource-dir ${sdk_resource_directory_windows}\u{22}",
+            escaping: false
+          ),
           commandEntry("cmake --build \u{22}${cmake_directory}\u{22}", escaping: false)
         ])
       }

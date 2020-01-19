@@ -317,7 +317,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  internal func gitHubWorkflowJob(configuration: WorkspaceConfiguration) -> [String] {
+  internal func gitHubWorkflowJob(for project: PackageRepository, output: Command.Output) throws -> [String] {
+    let configuration = try project.configuration(output: output)
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
     var result: [String] = [
@@ -412,7 +413,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
         commandEntry(
           "\u{27}\(experimentalDirectory)/toolchain\u{2D}windows\u{2D}x64/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift.exe\u{27} \u{2D}\u{2D}version"
-        )
+        ),
+        commandEntry("cmake_directory='.build/SDG/CMake'"),
+        commandEntry("sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}"),
+        commandEntry("sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed -e 's/^\u{5C}///' -e 's/\u{5C}//\u{5C}\u{5C}/g' -e 's/^./\u{5C}0:/')")
       ])
     case .linux:
       result.append(contentsOf: [
@@ -432,9 +436,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(validateCommand(configuration: configuration))
       ])
     case .windows:
-      result.append(contentsOf: [
-        commandEntry("echo \u{22}Checkout succeeded.\u{22}", escaping: false)
-      ])
+      if try project.isWorkspaceProject() {
+        result.append(contentsOf: [
+          commandEntry("cmake -G Ninja -S .github/workflows/Windows -B \u{22}${cmake_directory}\u{22} -DCMAKE_Swift_FLAGS=\u{22}-resource-dir ${sdk_resource_directory_windows}\u{22}"),
+          commandEntry("cmake --build \u{22}${cmake_directory}\u{22}")
+        ])
+      }
     }
 
     switch platform {

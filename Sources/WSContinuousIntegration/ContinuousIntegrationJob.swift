@@ -426,19 +426,19 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry(
-          "toolchain_bin_directory=\u{22}${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin\u{22}",
+          "toolchain_bin_directory=\u{22}${developer_directory}/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin\u{22}",
           escaping: false
         ),
         commandEntry("export PATH=\u{22}${toolchain_bin_directory}:${PATH}\u{22}", escaping: false),
         // #warning(Use the one in path?)
-        commandEntry("\u{22}${toolchain_bin_directory}/swift.exe\u{22} --version", escaping: false),
-        commandEntry("cmake_directory='.build/SDG/CMake'"),
+        commandEntry("\u{22}${toolchain_bin_directory}/swift.exe\u{22} \u{2D}\u{2D}version", escaping: false),
+        commandEntry("cmake_directory=\u{27}.build/SDG/CMake\u{27}"),
         commandEntry(
           "sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}",
           escaping: false
         ),
         commandEntry(
-          "sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed -e 's/^\u{5C}///' -e 's/\u{5C}//\u{5C}\u{5C}/g' -e 's/^./\u{5C}0:/')",
+          "sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed \u{2D}e \u{27}s/^\u{5C}///\u{27} \u{2D}e \u{27}s/\u{5C}//\u{5C}\u{5C}/g\u{27} \u{2D}e \u{27}s/^./\u{5C}0:/\u{27})",
           escaping: false
         )
       ])
@@ -464,10 +464,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       if try project.isWorkspaceProject() {
         result.append(contentsOf: [
           commandEntry(
-            "cmake -G Ninja -S .github/workflows/Windows -B \u{22}${cmake_directory}\u{22} -DCMAKE_Swift_FLAGS=\u{22}-resource-dir ${sdk_resource_directory_windows}\u{22}",
+            "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B \u{22}${cmake_directory}\u{22} \u{2D}DCMAKE_Swift_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows}\u{22}",
             escaping: false
           ),
-          commandEntry("cmake --build \u{22}${cmake_directory}\u{22}", escaping: false)
+          commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false)
         ])
       }
     }

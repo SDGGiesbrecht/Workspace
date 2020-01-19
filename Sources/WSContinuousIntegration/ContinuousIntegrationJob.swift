@@ -396,8 +396,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
-        commandEntry("mkdir \u{2D}p \u{27}\(experimentalDirectory)\u{27}"),
-        commandEntry("cd \u{27}\(experimentalDirectory)\u{27}"),
+        commandEntry("experimental_Swift_directory=\u{22}${repository_directory}/\(experimentalDirectory)\u{22}"),
+        commandEntry("mkdir \u{2D}p \u{22}${experimental_Swift_directory}\u{22}"),
+        commandEntry("cd \u{22}${experimental_Swift_directory}\u{22}"),
         commandEntry(
           "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
         ),

@@ -36,8 +36,11 @@ jobs:
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
         cd "${repository_directory}"
-        mkdir -p '.build/SDG/Experimental Swift'
-        cd '.build/SDG/Experimental Swift'
+        echo "Repository: ${repository_directory}"
+        experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental Swift"
+        echo "Experimental Swift: ${experimental_Swift_directory}"
+        mkdir -p "${experimental_Swift_directory}"
+        cd "${experimental_Swift_directory}"
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Fetching Swift... (This is could to take up to 10 minutes.)'
@@ -46,18 +49,13 @@ jobs:
         mv toolchain-windows-x64 Toolchains
         7z x sdk-windows-x64.zip
         mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms
-        ls
-        cd Toolchains
-        pwd
-        ls
-        cd Library
-        pwd
-        ls
-        cd Developer
-        pwd
-        ls
         cd "${repository_directory}"
-        '.build/SDG/Experimental Swift/Toolchains/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift.exe' --version
-        export PATH="${repository_directory}/.build/SDG/Experimental Swift/Toolchains/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake
-        cmake --build .build/SDG/CMake
+        developer_directory="${experimental_Swift_directory}/Toolchains/Library/Developer"
+        echo "Developer: ${developer_directory}"
+        toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
+        echo "Toolchain bin: ${toolchain_bin_directory}"
+        export PATH="${toolchain_bin_directory}:${PATH}"
+        "${toolchain_bin_directory}/swift.exe" --version
+        cmake_directory=".build/SDG/CMake"
+        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift'
+        cmake --build "${cmake_directory}"

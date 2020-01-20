@@ -124,6 +124,7 @@ public enum FileType {
   // MARK: - Cases
 
   case c
+  case cMake
   case cPlusPlus
   case css
   case gitIgnore
@@ -144,6 +145,7 @@ public enum FileType {
   case yaml
 
   private static let specialNames: [String: FileType] = [
+    "CMakeLists.txt": .cMake,
     "Package.swift": .swiftPackageManifest
   ]
 
@@ -151,6 +153,7 @@ public enum FileType {
     "c": .c,
     "cc": .cPlusPlus,
     "clang\u{2D}format": .yaml,
+    "cmake": .cMake,
     "cpp": .cPlusPlus,
     "command": .shell,
     "css": .css,
@@ -218,7 +221,7 @@ public enum FileType {
         lineCommentSyntax: LineCommentSyntax(start: "#"),
         requiredFirstLineToken: "#!"
       )
-    case .gitIgnore, .yaml:
+    case .cMake, .gitIgnore, .yaml:
       return FileSyntax(
         blockCommentSyntax: nil,
         lineCommentSyntax: LineCommentSyntax(start: "#")

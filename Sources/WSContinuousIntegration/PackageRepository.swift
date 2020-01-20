@@ -153,7 +153,7 @@ extension PackageRepository {
       var cmake: [String] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
-        "project(\(package.name) LANGUAGES Swift)"
+        "project(\u{22}\(package.name)\u{22} LANGUAGES Swift)"
       ]
 
       for target in package.targets where target.name == "WSWindowsTool" {
@@ -163,12 +163,12 @@ extension PackageRepository {
         case .executable:
           cmake.append(contentsOf: [
             "",
-            "add_executable(\(target.name)"
+            "add_executable(\u{22}\(target.name)\u{22}"
           ])
           for source in target.sources.paths {
             let absoluteURL = URL(fileURLWithPath: source.pathString)
             let relativeURL = absoluteURL.path(relativeTo: location)
-            cmake.append("  ../../../\(relativeURL)")
+            cmake.append("  \u{22}../../../\(relativeURL)\u{22}")
           }
           cmake.append(")")
         case .test:

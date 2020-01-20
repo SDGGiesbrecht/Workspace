@@ -184,7 +184,7 @@ extension PackageRepository {
           case .executable:
             cmake.append("add_executable(" + sanitize(target.name))
           case .test:
-            #warning("Not supported yet.")
+            cmake.append("add_executable(" + sanitize(target.name))
           case .systemModule:
             break
           }
@@ -193,14 +193,20 @@ extension PackageRepository {
             let relativeURL = absoluteURL.path(relativeTo: location)
             cmake.append("  " + quote("../../../\(relativeURL)"))
           }
-          cmake.append(")")
-          let dependencies = target.dependencyTargets
-          if ¬dependencies.isEmpty {
-            cmake.append("target_link_libraries(" + sanitize(target.name))
-            for dependency in target.dependencyTargets {
-              cmake.append("  " + sanitize(dependency.name))
-            }
+          switch target.type {
+          case .library, .executable, .test:
             cmake.append(")")
+
+            let dependencies = target.dependencyTargets
+            if ¬dependencies.isEmpty {
+              cmake.append("target_link_libraries(" + sanitize(target.name))
+              for dependency in target.dependencyTargets {
+                cmake.append("  " + sanitize(dependency.name))
+              }
+              cmake.append(")")
+            }
+          case .systemModule:
+            break
           }
         }
       }

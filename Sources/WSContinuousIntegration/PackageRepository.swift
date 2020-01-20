@@ -164,7 +164,9 @@ extension PackageRepository {
       var cmake: [String] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
-        "project(\(sanitize(package.name)) LANGUAGES Swift)"
+        "project(\(sanitize(package.name)) LANGUAGES Swift)",
+        "",
+        "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
       ]
 
       let rootTargets = package.targets

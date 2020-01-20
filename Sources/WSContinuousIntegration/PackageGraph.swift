@@ -24,6 +24,7 @@ extension PackageGraph {
   func sortedNodes() -> [GraphNode] {
     var deterministicTargets: [GraphNode] = reachableTargets.map({ $0 })
       + reachableProducts.map({ $0 })
+    deterministicTargets.sort(by: { $0.name < $1.name })
     var sortedTargets: [GraphNode] = []
     while ¬deterministicTargets.isEmpty {
       let next = deterministicTargets.firstIndex(where: { possible in

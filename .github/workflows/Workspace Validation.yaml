@@ -57,3 +57,5 @@ jobs:
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
         cmake --build "${cmake_directory}"
+        cd "${cmake_directory}"
+        ctest

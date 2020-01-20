@@ -630,6 +630,7 @@ let package = Package(
     ),
     .target(
       name: "WSWindowsTool",
+      dependencies: ["WSWindowsLibrary"],
       path: "Tests/WSWindowsTool"
     ),
     .target(

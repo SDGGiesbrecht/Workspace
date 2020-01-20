@@ -149,12 +149,25 @@ extension PackageRepository {
     if try ¬relevantJobs(output: output).contains(.windows) {
       delete(url, output: output)
     } else {
-      let manifest = try self.manifest().get()
+      let package = try self.package().get()
       var cmake: [String] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
-        "project(\(manifest.name) LANGUAGES Swift)"
+        "project(\(package.name) LANGUAGES Swift)"
       ]
+
+      for target in package.targets where target.name == "WSWindowsTool" {
+        cmake.append(contentsOf: [
+          "",
+          "add_executable(\(target.name)"
+        ])
+        for source in target.sources.paths {
+          let absoluteURL = URL(fileURLWithPath: source.pathString)
+          let relativeURL = absoluteURL.path(relativeTo: location)
+          cmake.append("  ../../../\(relativeURL)")
+        }
+        cmake.append(")")
+      }
 
       var cmakeFile = try TextFile(possiblyAt: url)
       cmakeFile.body = cmake.joinedAsLines()

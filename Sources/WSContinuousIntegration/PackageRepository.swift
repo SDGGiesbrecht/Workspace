@@ -74,7 +74,7 @@ extension PackageRepository {
 
     for job in try relevantJobs(output: output)
     where jobFilter(job) {
-      workflow.append(contentsOf: job.gitHubWorkflowJob(configuration: configuration))
+      workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
     }
 
     try adjustForWorkspace(&workflow)

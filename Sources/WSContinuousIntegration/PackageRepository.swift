@@ -120,6 +120,7 @@ extension PackageRepository {
         output: output
       )
     }
+    try refreshCMake(output: output)
   }
 
   private func adjustForWorkspace(_ configuration: inout [String]) throws {
@@ -140,6 +141,20 @@ extension PackageRepository {
         )
         return line
       }
+    }
+  }
+
+  private func refreshCMake(output: Command.Output) throws {
+    let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
+    if try relevantJobs(output: output).contains(.windows) {
+      delete(url, output: output)
+    } else {
+      var cmake: [String] = [
+      ]
+
+      var cmakeFile = try TextFile(possiblyAt: url)
+      cmakeFile.body = cmake.joinedAsLines()
+      try cmakeFile.writeChanges(for: self, output: output)
     }
   }
 }

@@ -210,7 +210,9 @@ extension PackageRepository {
             cmake.append(
               "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})"
             )
-            cmake.append("target_compile_options(\(sanitize(target.name)) PRIVATE -enable-testing)")
+            cmake.append(
+              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
+            )
           case .executable, .test, .systemModule:
             break
           }

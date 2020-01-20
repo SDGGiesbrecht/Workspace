@@ -634,6 +634,10 @@ let package = Package(
       dependencies: ["WSWindowsLibrary"],
       path: "Tests/WSWindowsTool"
     ),
+    .testTarget(
+      name: "WSWindowsTests",
+      dependencies: ["WSWindowsLibrary"]
+    ),
     .target(
       name: "WSConfigurationExample",
       dependencies: [

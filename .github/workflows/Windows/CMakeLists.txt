@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.15)
 project("Workspace" LANGUAGES Swift)
 
 option(BUILD_SHARED_LIBS "Use dynamic linking" YES)
+option(BUILD_TESTING "Build tests" YES)
+include(CTest)
 
 add_library("WSWindowsLibrary"
   "../../../Tests/WSWindowsLibrary/WSWindowsLibrary.swift"
@@ -12,12 +14,13 @@ add_library("WSWindowsLibrary"
 set_target_properties("WSWindowsLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})
 target_compile_options("WSWindowsLibrary" PRIVATE -enable-testing)
 
-add_library("WSWindowsTests"
+add_executable("WSWindowsTests"
   "../../../Tests/WSWindowsTests/WSWindowsTests.swift"
 )
 target_link_libraries("WSWindowsTests" PRIVATE
   "WSWindowsLibrary"
 )
+add_test(NAME WSWindowsTests COMMAND WSWindowsTests)
 
 add_executable("WSWindowsTool"
   "../../../Tests/WSWindowsTool/main.swift"

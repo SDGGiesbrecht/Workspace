@@ -150,25 +150,34 @@ extension PackageRepository {
       delete(url, output: output)
     } else {
       let package = try self.package().get()
+
+      func quote(_ string: String) -> String {
+        return "\u{22}\(string)\u{22}"
+      }
+      func sanitize(_ string: String) -> String {
+        return quote(String(string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })))
+      }
+
       var cmake: [String] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
-        "project(\u{22}\(package.name)\u{22} LANGUAGES Swift)"
+        "project(\(sanitize(package.name)) LANGUAGES Swift)"
       ]
 
-      for target in package.targets where target.name == "WSWindowsTool" {
+      #warning("Dependencies not supported yet.")
+      for target in package.targets where target.dependencies.isEmpty {
         switch target.type {
         case .library:
           #warning("Not supported yet.")
         case .executable:
           cmake.append(contentsOf: [
             "",
-            "add_executable(\u{22}\(target.name)\u{22}"
+            "add_executable(" + sanitize(target.name)
           ])
           for source in target.sources.paths {
             let absoluteURL = URL(fileURLWithPath: source.pathString)
             let relativeURL = absoluteURL.path(relativeTo: location)
-            cmake.append("  \u{22}../../../\(relativeURL)\u{22}")
+            cmake.append("  " + quote("../../../\(relativeURL)"))
           }
           cmake.append(")")
         case .test:

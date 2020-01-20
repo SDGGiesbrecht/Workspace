@@ -215,13 +215,13 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 19, 0))
+      .upToNextMinor(from: Version(0, 19, 1))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       .exact(Version(0, 0, 50100))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 0, 0))
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 0, 1))
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)

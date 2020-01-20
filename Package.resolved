@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "124a6bd0a6637fe53bea70e8da9a23d60e336c0a",
-          "version": "0.19.0"
+          "revision": "6f94e0f33eea7f2fffe3d1d062a4acd8ea751a91",
+          "version": "0.19.1"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
           "branch": null,
-          "revision": "770bc806af0b1b7a1c470a7714b49c65932ee73d",
-          "version": "5.0.0"
+          "revision": "d1affa89023744fa942b16b3bf5d0fe56876ac3e",
+          "version": "5.0.1"
         }
       },
       {

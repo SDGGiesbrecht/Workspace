@@ -153,18 +153,6 @@ extension PackageRepository {
     } else {
       let package = try self.package().get()
       let graph = try self.packageGraph().get()
-      var deterministicDependencies = graph.reachableTargets.sorted(by: { $0.name < $1.name })
-      var sortedDependencies: [ResolvedTarget] = []
-      while ¬deterministicDependencies.isEmpty {
-        let next = deterministicDependencies.firstIndex(where: { possible in
-          return possible.dependencies.allSatisfy({ dependency in
-            return sortedDependencies.contains(where: { handled in
-              return handled.name == dependency.product?.name ?? dependency.target?.name
-            })
-          })
-        })!
-        sortedDependencies.append(deterministicDependencies.remove(at: next))
-      }
 
       func quote(_ string: String) -> String {
         return "\u{22}\(string)\u{22}"
@@ -181,25 +169,32 @@ extension PackageRepository {
 
       #warning("Dependencies not supported yet.")
       let rootTargets = package.targets
-      for target in sortedDependencies
-      where rootTargets.contains(where: { $0.name == target.name }) {
-        cmake.append("")
-        switch target.type {
-        case .library:
-          cmake.append("add_library(" + sanitize(target.name))
-        case .executable:
-          cmake.append("add_executable(" + sanitize(target.name))
-        case .test:
-          #warning("Not supported yet.")
-        case .systemModule:
-          break
+      for node in graph.sortedNodes()
+      where rootTargets.contains(where: { $0.name == node.name })
+        ∧ node.recursiveDependencyNodes.allSatisfy({ type(of: $0) == ResolvedTarget.self })
+      {
+        if node.name == "WorkspaceProjectConfiguration" {
+          print(node.recursiveDependencyNodes.map({ $0.name }))
         }
-        for source in target.sources.paths {
-          let absoluteURL = URL(fileURLWithPath: source.pathString)
-          let relativeURL = absoluteURL.path(relativeTo: location)
-          cmake.append("  " + quote("../../../\(relativeURL)"))
+        if let target = graph.target(named: node.name) {
+          cmake.append("")
+          switch target.type {
+          case .library:
+            cmake.append("add_library(" + sanitize(target.name))
+          case .executable:
+            cmake.append("add_executable(" + sanitize(target.name))
+          case .test:
+            #warning("Not supported yet.")
+          case .systemModule:
+            break
+          }
+          for source in target.sources.paths {
+            let absoluteURL = URL(fileURLWithPath: source.pathString)
+            let relativeURL = absoluteURL.path(relativeTo: location)
+            cmake.append("  " + quote("../../../\(relativeURL)"))
+          }
+          cmake.append(")")
         }
-        cmake.append(")")
       }
 
       var cmakeFile = try TextFile(possiblyAt: url)

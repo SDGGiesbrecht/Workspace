@@ -157,16 +157,25 @@ extension PackageRepository {
       ]
 
       for target in package.targets where target.name == "WSWindowsTool" {
-        cmake.append(contentsOf: [
-          "",
-          "add_executable(\(target.name)"
-        ])
-        for source in target.sources.paths {
-          let absoluteURL = URL(fileURLWithPath: source.pathString)
-          let relativeURL = absoluteURL.path(relativeTo: location)
-          cmake.append("  ../../../\(relativeURL)")
+        switch target.type {
+        case .library:
+          #warning("Not supported yet.")
+        case .executable:
+          cmake.append(contentsOf: [
+            "",
+            "add_executable(\(target.name)"
+          ])
+          for source in target.sources.paths {
+            let absoluteURL = URL(fileURLWithPath: source.pathString)
+            let relativeURL = absoluteURL.path(relativeTo: location)
+            cmake.append("  ../../../\(relativeURL)")
+          }
+          cmake.append(")")
+        case .test:
+          #warning("Not supported yet.")
+        case .systemModule:
+          break
         }
-        cmake.append(")")
       }
 
       var cmakeFile = try TextFile(possiblyAt: url)

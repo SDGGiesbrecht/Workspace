@@ -19,6 +19,8 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
+import PackageModel
+
 extension PackageRepository {
 
   public func refreshContinuousIntegration(output: Command.Output) throws {
@@ -151,6 +153,23 @@ extension PackageRepository {
     } else {
       let package = try self.package().get()
       let graph = try self.packageGraph().get()
+      var deterministicDependencies = graph.reachableTargets.sorted(by: { $0.name < $1.name })
+      var sortedDependencies: [ResolvedTarget] = []
+      while ¬deterministicDependencies.isEmpty {
+        guard let next = deterministicDependencies.firstIndex(where: { possible in
+          print("Possible: \(possible)")
+          return possible.dependencies.allSatisfy({ dependency in
+            print("Dependency: \(dependency)")
+            return sortedDependencies.contains(where: { handled in
+              print("Handled: \(handled)")
+              let equal = handled.name == dependency.product?.name ?? dependency.target?.name
+              print("Equal: \(equal)")
+              return equal
+            })
+          })
+        })!
+        sortedDependencies.append(deterministicDependencies.remove(at: next))
+      }
 
       func quote(_ string: String) -> String {
         return "\u{22}\(string)\u{22}"
@@ -167,8 +186,8 @@ extension PackageRepository {
 
       #warning("Dependencies not supported yet.")
       let rootTargets = package.targets
-      for target in graph.reachableTargets
-      where target.dependencies.isEmpty ∧ rootTargets.contains(where: { $0.name == target.name }) {
+      for target in sortedDependencies
+      where rootTargets.contains(where: { $0.name == target.name }) {
         cmake.append("")
         switch target.type {
         case .library:

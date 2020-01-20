@@ -625,6 +625,10 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
+      name: "WSWindowsLibrary",
+      path: "Tests/WSWindowsLibrary"
+    ),
+    .target(
       name: "WSWindowsTool",
       path: "Tests/WSWindowsTool"
     ),

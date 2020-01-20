@@ -17,3 +17,7 @@
 public func helloWorld() {
   print("Hello, world!")
 }
+
+internal func helloTests() {
+  print("Hello, tests!")
+}

@@ -15,3 +15,12 @@
  */
 
 @testable import WSWindowsLibrary
+
+import XCTest
+
+final class WindowsTests: XCTestCase {
+
+  func testTests() {
+    helloTests()
+  }
+}

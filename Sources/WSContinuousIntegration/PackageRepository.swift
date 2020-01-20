@@ -181,10 +181,6 @@ extension PackageRepository {
         // #workaround(Not testable yet.)
         .allSatisfy({ type(of: $0) == ResolvedTarget.self })  // @exempt(from: tests)
       {
-        if node.name == "WorkspaceProjectConfiguration" {
-          // @exempt(from: tests) #workaround(Not testable yet.)
-          print(node.recursiveDependencyNodes.map({ $0.name }))
-        }
         if let target = graph.target(named: node.name) {
           cmake.append("")
           switch target.type {

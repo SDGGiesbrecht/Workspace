@@ -149,8 +149,11 @@ extension PackageRepository {
     if try ¬relevantJobs(output: output).contains(.windows) {
       delete(url, output: output)
     } else {
+      let manifest = try self.manifest().get()
       var cmake: [String] = [
-        "cmake_minimum_required(VERSION 3.15)"
+        "cmake_minimum_required(VERSION 3.15)",
+        "",
+        "project(\(manifest.name) LANGUAGES Swift)"
       ]
 
       var cmakeFile = try TextFile(possiblyAt: url)

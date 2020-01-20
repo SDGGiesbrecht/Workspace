@@ -156,15 +156,10 @@ extension PackageRepository {
       var deterministicDependencies = graph.reachableTargets.sorted(by: { $0.name < $1.name })
       var sortedDependencies: [ResolvedTarget] = []
       while ¬deterministicDependencies.isEmpty {
-        guard let next = deterministicDependencies.firstIndex(where: { possible in
-          print("Possible: \(possible)")
+        let next = deterministicDependencies.firstIndex(where: { possible in
           return possible.dependencies.allSatisfy({ dependency in
-            print("Dependency: \(dependency)")
             return sortedDependencies.contains(where: { handled in
-              print("Handled: \(handled)")
-              let equal = handled.name == dependency.product?.name ?? dependency.target?.name
-              print("Equal: \(equal)")
-              return equal
+              return handled.name == dependency.product?.name ?? dependency.target?.name
             })
           })
         })!

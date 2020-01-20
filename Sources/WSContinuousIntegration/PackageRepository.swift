@@ -158,7 +158,12 @@ extension PackageRepository {
         return "\u{22}\(string)\u{22}"
       }
       func sanitize(_ string: String) -> String {
-        return quote(String(string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })))
+        return quote(
+          String(
+            // #workaround(Not testable yet.)
+            string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })  // @exempt(from: tests)
+          )
+        )
       }
 
       var cmake: [String] = [
@@ -172,7 +177,9 @@ extension PackageRepository {
       let rootTargets = package.targets
       for node in graph.sortedNodes()
       where rootTargets.contains(where: { $0.name == node.name })
-        ∧ node.recursiveDependencyNodes.allSatisfy({ type(of: $0) == ResolvedTarget.self })
+        ∧ node.recursiveDependencyNodes
+        // #workaround(Not testable yet.)
+        .allSatisfy({ type(of: $0) == ResolvedTarget.self })  // @exempt(from: tests)
       {
         if node.name == "WorkspaceProjectConfiguration" {
           print(node.recursiveDependencyNodes.map({ $0.name }))
@@ -184,7 +191,7 @@ extension PackageRepository {
             cmake.append("add_library(" + sanitize(target.name))
           case .executable:
             cmake.append("add_executable(" + sanitize(target.name))
-          case .systemModule:
+          case .systemModule:  // @exempt(from: tests)
             break
           }
           for source in target.sources.paths {
@@ -204,7 +211,7 @@ extension PackageRepository {
               }
               cmake.append(")")
             }
-          case .systemModule:
+          case .systemModule:  // @exempt(from: tests)
             break
           }
           switch target.type {

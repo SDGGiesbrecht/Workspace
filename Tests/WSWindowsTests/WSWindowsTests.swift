@@ -21,6 +21,8 @@
 final class WindowsTests /*: XCTestCase*/ {
 
   func testTests() {
+    // @exempt(from: tests) #workaround(Not testable yet.)
+    helloWorld()
     helloTests()
   }
 }

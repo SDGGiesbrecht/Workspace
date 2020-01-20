@@ -15,9 +15,11 @@
  */
 
 public func helloWorld() {
+  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, world!")
 }
 
 internal func helloTests() {
+  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, tests!")
 }

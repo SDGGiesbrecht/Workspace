@@ -31,6 +31,7 @@ extension ResolvedTarget: GraphNode {
   var dependencyTargets: [ResolvedTarget] {
     return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
       if let product = dependency.product {
+        // @exempt(from: tests) #workaround(Not testable yet.)
         return product.targets
       } else {
         return [dependency.target!]

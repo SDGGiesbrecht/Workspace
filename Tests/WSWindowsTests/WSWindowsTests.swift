@@ -1,5 +1,5 @@
 /*
- main.swift
+ WSWindowsTests.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,6 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSWindowsLibrary
+@testable import WSWindowsLibrary
 
-helloWorld()
+//import XCTest
+
+final class WindowsTests /*: XCTestCase*/ {
+
+  func testTests() {
+    // @exempt(from: tests) #workaround(Not testable yet.)
+    helloWorld()
+    helloTests()
+  }
+}

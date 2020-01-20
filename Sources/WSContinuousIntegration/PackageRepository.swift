@@ -19,6 +19,8 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
+import PackageModel
+
 extension PackageRepository {
 
   public func refreshContinuousIntegration(output: Command.Output) throws {
@@ -120,6 +122,7 @@ extension PackageRepository {
         output: output
       )
     }
+    try refreshCMake(output: output)
   }
 
   private func adjustForWorkspace(_ configuration: inout [String]) throws {
@@ -140,6 +143,91 @@ extension PackageRepository {
         )
         return line
       }
+    }
+  }
+
+  private func refreshCMake(output: Command.Output) throws {
+    let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
+    if try ¬relevantJobs(output: output).contains(.windows) {
+      delete(url, output: output)
+    } else {
+      let package = try self.package().get()
+      let graph = try self.packageGraph().get()
+
+      func quote(_ string: String) -> String {
+        return "\u{22}\(string)\u{22}"
+      }
+      func sanitize(_ string: String) -> String {
+        return quote(
+          String(
+            // #workaround(Not testable yet.)
+            string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })  // @exempt(from: tests)
+          )
+        )
+      }
+
+      var cmake: [String] = [
+        "cmake_minimum_required(VERSION 3.15)",
+        "",
+        "project(\(sanitize(package.name)) LANGUAGES Swift)",
+        "",
+        "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
+      ]
+
+      let rootTargets = package.targets
+      for node in graph.sortedNodes()
+      where rootTargets.contains(where: { $0.name == node.name })
+        ∧ node.recursiveDependencyNodes
+        // #workaround(Not testable yet.)
+        .allSatisfy({ type(of: $0) == ResolvedTarget.self })  // @exempt(from: tests)
+      {
+        if let target = graph.target(named: node.name) {
+          cmake.append("")
+          switch target.type {
+          case .library, .test:
+            cmake.append("add_library(" + sanitize(target.name))
+          case .executable:
+            cmake.append("add_executable(" + sanitize(target.name))
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
+          for source in target.sources.paths {
+            let absoluteURL = URL(fileURLWithPath: source.pathString)
+            let relativeURL = absoluteURL.path(relativeTo: location)
+            cmake.append("  " + quote("../../../\(relativeURL)"))
+          }
+          switch target.type {
+          case .library, .executable, .test:
+            cmake.append(")")
+
+            let dependencies = target.dependencyTargets
+            if ¬dependencies.isEmpty {
+              cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
+              for dependency in target.dependencyTargets {
+                cmake.append("  " + sanitize(dependency.name))
+              }
+              cmake.append(")")
+            }
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
+          switch target.type {
+          case .library:
+            cmake.append(
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})"
+            )
+            cmake.append(
+              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
+            )
+          case .executable, .test, .systemModule:
+            break
+          }
+        }
+      }
+
+      var cmakeFile = try TextFile(possiblyAt: url)
+      cmakeFile.body = cmake.joinedAsLines()
+      try cmakeFile.writeChanges(for: self, output: output)
     }
   }
 }

@@ -324,7 +324,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSScripts",
-        "WSDocumentation"
+        "WSDocumentation",
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
       ]
     ),
 
@@ -625,8 +626,17 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
+      name: "WSWindowsLibrary",
+      path: "Tests/WSWindowsLibrary"
+    ),
+    .target(
       name: "WSWindowsTool",
+      dependencies: ["WSWindowsLibrary"],
       path: "Tests/WSWindowsTool"
+    ),
+    .testTarget(
+      name: "WSWindowsTests",
+      dependencies: ["WSWindowsLibrary"]
     ),
     .target(
       name: "WSConfigurationExample",

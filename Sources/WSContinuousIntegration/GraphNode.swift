@@ -1,5 +1,5 @@
 /*
- main.swift
+ GraphNode.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,6 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSWindowsLibrary
+internal protocol GraphNode {
+  var name: String { get }
+  var dependencyNodes: [GraphNode] { get }
+}
 
-helloWorld()
+extension GraphNode {
+  var recursiveDependencyNodes: [GraphNode] {
+    return dependencyNodes.flatMap({ $0.recursiveDependencyNodes }).prepending(self)
+  }
+}

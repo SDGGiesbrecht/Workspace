@@ -1,5 +1,5 @@
 /*
- main.swift
+ ResolvedProduct.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,6 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSWindowsLibrary
+import PackageModel
 
-helloWorld()
+extension ResolvedProduct: GraphNode {
+
+  var dependencyNodes: [GraphNode] {
+    return targets
+  }
+}

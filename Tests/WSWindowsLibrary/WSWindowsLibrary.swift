@@ -1,5 +1,5 @@
 /*
- main.swift
+ WSWindowsLibrary.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,6 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSWindowsLibrary
+public func helloWorld() {
+  // @exempt(from: tests) #workaround(Not testable yet.)
+  print("Hello, world!")
+}
 
-helloWorld()
+internal func helloTests() {
+  // @exempt(from: tests) #workaround(Not testable yet.)
+  print("Hello, tests!")
+}

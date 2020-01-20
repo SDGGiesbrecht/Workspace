@@ -18,7 +18,7 @@
 
 //import XCTest
 
-final class WindowsTests/*: XCTestCase*/ {
+final class WindowsTests /*: XCTestCase*/ {
 
   func testTests() {
     helloTests()

@@ -170,7 +170,6 @@ extension PackageRepository {
       let rootTargets = package.targets
       for node in graph.sortedNodes()
       where rootTargets.contains(where: { $0.name == node.name })
-        // #workaround(Depdendencies not supported yet.)
         ∧ node.recursiveDependencyNodes.allSatisfy({ type(of: $0) == ResolvedTarget.self })
       {
         if node.name == "WorkspaceProjectConfiguration" {
@@ -197,7 +196,7 @@ extension PackageRepository {
 
             let dependencies = target.dependencyTargets
             if ¬dependencies.isEmpty {
-              cmake.append("target_link_libraries(" + sanitize(target.name))
+              cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
               for dependency in target.dependencyTargets {
                 cmake.append("  " + sanitize(dependency.name))
               }
@@ -208,7 +207,10 @@ extension PackageRepository {
           }
           switch target.type {
           case .library:
-            cmake.append("target_compile_options(\(sanitize(target.name)) PUBLIC -enable-testing)")
+            cmake.append(
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})"
+            )
+            cmake.append("target_compile_options(\(sanitize(target.name)) PRIVATE -enable-testing)")
           case .executable, .test, .systemModule:
             break
           }

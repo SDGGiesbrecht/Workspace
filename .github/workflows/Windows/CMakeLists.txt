@@ -7,7 +7,7 @@ project("Workspace" LANGUAGES Swift)
 add_library("WSWindowsLibrary"
   "../../../Tests/WSWindowsLibrary/WSWindowsLibrary.swift"
 )
-set_target_properties(WSWindowsLibrary PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})
+set_target_properties("WSWindowsLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})
 target_compile_options("WSWindowsLibrary" PRIVATE -enable-testing)
 
 add_executable("WSWindowsTool"

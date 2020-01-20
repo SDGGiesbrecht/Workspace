@@ -146,7 +146,7 @@ extension PackageRepository {
 
   private func refreshCMake(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
-    if try relevantJobs(output: output).contains(.windows) {
+    if try ¬relevantJobs(output: output).contains(.windows) {
       delete(url, output: output)
     } else {
       var cmake: [String] = [

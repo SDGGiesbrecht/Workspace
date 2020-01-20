@@ -150,6 +150,7 @@ extension PackageRepository {
       delete(url, output: output)
     } else {
       let package = try self.package().get()
+      let graph = try self.packageGraph().get()
 
       func quote(_ string: String) -> String {
         return "\u{22}\(string)\u{22}"
@@ -165,26 +166,26 @@ extension PackageRepository {
       ]
 
       #warning("Dependencies not supported yet.")
-      for target in package.targets where target.dependencies.isEmpty {
+      let rootTargets = package.targets
+      for target in graph.reachableTargets
+      where target.dependencies.isEmpty ∧ rootTargets.contains(where: { $0.name == target.name }) {
+        cmake.append("")
         switch target.type {
         case .library:
-          #warning("Not supported yet.")
+          cmake.append("add_library(" + sanitize(target.name))
         case .executable:
-          cmake.append(contentsOf: [
-            "",
-            "add_executable(" + sanitize(target.name)
-          ])
-          for source in target.sources.paths {
-            let absoluteURL = URL(fileURLWithPath: source.pathString)
-            let relativeURL = absoluteURL.path(relativeTo: location)
-            cmake.append("  " + quote("../../../\(relativeURL)"))
-          }
-          cmake.append(")")
+          cmake.append("add_executable(" + sanitize(target.name))
         case .test:
           #warning("Not supported yet.")
         case .systemModule:
           break
         }
+        for source in target.sources.paths {
+          let absoluteURL = URL(fileURLWithPath: source.pathString)
+          let relativeURL = absoluteURL.path(relativeTo: location)
+          cmake.append("  " + quote("../../../\(relativeURL)"))
+        }
+        cmake.append(")")
       }
 
       var cmakeFile = try TextFile(possiblyAt: url)

@@ -194,6 +194,14 @@ extension PackageRepository {
             cmake.append("  " + quote("../../../\(relativeURL)"))
           }
           cmake.append(")")
+          let dependencies = target.dependencyTargets
+          if ¬dependencies.isEmpty {
+            cmake.append("target_link_libraries(" + sanitize(target.name))
+            for dependency in target.dependencyTargets {
+              cmake.append("  " + sanitize(dependency.name))
+            }
+            cmake.append(")")
+          }
         }
       }
 

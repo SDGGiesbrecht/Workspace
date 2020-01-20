@@ -11,3 +11,6 @@ add_library("WSWindowsLibrary"
 add_executable("WSWindowsTool"
   "../../../Tests/WSWindowsTool/main.swift"
 )
+target_link_libraries("WSWindowsTool"
+  "WSWindowsLibrary"
+)

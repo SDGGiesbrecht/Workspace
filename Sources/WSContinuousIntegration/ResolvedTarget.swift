@@ -27,4 +27,14 @@ extension ResolvedTarget: GraphNode {
       }
     }
   }
+
+  var dependencyTargets: [ResolvedTarget] {
+    return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
+      if let product = dependency.product {
+        return product.targets
+      } else {
+        return [dependency.target!]
+      }
+    }
+  }
 }

@@ -167,10 +167,10 @@ extension PackageRepository {
         "project(\(sanitize(package.name)) LANGUAGES Swift)"
       ]
 
-      #warning("Dependencies not supported yet.")
       let rootTargets = package.targets
       for node in graph.sortedNodes()
       where rootTargets.contains(where: { $0.name == node.name })
+        // #workaround(Depdendencies not supported yet.)
         ∧ node.recursiveDependencyNodes.allSatisfy({ type(of: $0) == ResolvedTarget.self })
       {
         if node.name == "WorkspaceProjectConfiguration" {
@@ -179,11 +179,9 @@ extension PackageRepository {
         if let target = graph.target(named: node.name) {
           cmake.append("")
           switch target.type {
-          case .library:
+          case .library, .test:
             cmake.append("add_library(" + sanitize(target.name))
           case .executable:
-            cmake.append("add_executable(" + sanitize(target.name))
-          case .test:
             cmake.append("add_executable(" + sanitize(target.name))
           case .systemModule:
             break
@@ -206,6 +204,12 @@ extension PackageRepository {
               cmake.append(")")
             }
           case .systemModule:
+            break
+          }
+          switch target.type {
+          case .library:
+            cmake.append("target_compile_options(\(sanitize(target.name)) PUBLIC -enable-testing)")
+          case .executable, .test, .systemModule:
             break
           }
         }

@@ -1881,9 +1881,7 @@ internal class SymbolPage: Page {
   ) -> [StrictString] {
     var result: [StrictString] = []
     conformanceProcessing: for conformance in symbol.conformances {
-      // #workaround(SDGSwift 0.19.0, Should use “conformance.type” directly, but for access control bug.)
-      let type = conformance.genericName
-      let name = type.syntaxHighlightedHTML(
+      let name = conformance.type.syntaxHighlightedHTML(
         inline: true,
         internalIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks

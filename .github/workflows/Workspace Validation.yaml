@@ -43,10 +43,12 @@ jobs:
         python -m pip install --user azure-devops tabulate
         echo 'Fetching Swift... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
+        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64 Toolchains
         7z x sdk-windows-x64.zip
         mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms
+        7z x ICU.zip
         cd "${repository_directory}"
         developer_directory="${experimental_Swift_directory}/Toolchains/Library/Developer"
         toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
@@ -59,5 +61,5 @@ jobs:
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
         cmake --build "${cmake_directory}"
         cd "${cmake_directory}"
-        export PATH="${sdk_user_directory}/bin:${PATH}"
+        export PATH="${sdk_user_directory}/bin:${experimental_Swift_directory}/ICU/bin64:${PATH}"
         ctest --output-on-failure

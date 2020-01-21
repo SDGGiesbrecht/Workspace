@@ -42,6 +42,7 @@ jobs:
     - name: Validate
       shell: bash
       run: |
+        echo 'Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)'
         repository_directory=$(pwd)
         cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
         echo 'export -p > exported_environment.sh' > nested_bash.sh
@@ -49,15 +50,17 @@ jobs:
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
+        echo 'Fetching ICU...'
         cd "${repository_directory}"
         experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental_Swift"
         mkdir -p "${experimental_Swift_directory}"
         cd "${experimental_Swift_directory}"
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
         7z x ICU.zip -oICU
+        echo 'Fetching Swift...'
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
-        echo 'Fetching Swift... (This is could to take up to 10 minutes.)'
+        echo 'Downloading... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64 Toolchains
@@ -68,14 +71,18 @@ jobs:
         toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
         export PATH="${toolchain_bin_directory}:${PATH}"
         swift --version
+        echo 'Setting up CMake...'
         cmake_directory='.build/SDG/CMake'
         sdk_user_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
         sdk_resource_directory="${sdk_user_directory}/lib/swift"
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
+        echo 'Building Workspace...'
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
         cmake --build "${cmake_directory}"
+        echo 'Fetching Swift’s runtime dependencies...'
         cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"
         cp -R "${sdk_user_directory}/bin/"* "${cmake_directory}/bin/"
+        echo 'Testing Workspace...'
         cd "${cmake_directory}"
         ctest --output-on-failure
   Linux:

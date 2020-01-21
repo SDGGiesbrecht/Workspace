@@ -61,6 +61,7 @@ jobs:
         cd "${cmake_directory}"
         export PATH="${sdk_user_directory}/bin:${PATH}"
         echo "${PATH}"
+        cd bin
         ls
         cd "${cmake_directory}"
         ctest --output-on-failure

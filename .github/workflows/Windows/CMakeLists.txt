@@ -4,8 +4,9 @@ cmake_minimum_required(VERSION 3.15)
 
 project("Workspace" LANGUAGES Swift)
 
-option(BUILD_SHARED_LIBS "Use dynamic linking" YES)
 include(CTest)
+
+option(BUILD_SHARED_LIBS "Use dynamic linking" YES)
 
 add_library("WSWindowsLibrary"
   "../../../Tests/WSWindowsLibrary/WSWindowsLibrary.swift"

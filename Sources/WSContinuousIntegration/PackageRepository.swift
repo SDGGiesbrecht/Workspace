@@ -171,6 +171,13 @@ extension PackageRepository {
         "",
         "project(\(sanitize(package.name)) LANGUAGES Swift)",
         "",
+        "include(CTest)",
+        "",
+        "set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)",
+        "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+        "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+        "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
+        "",
         "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
       ]
 
@@ -184,9 +191,9 @@ extension PackageRepository {
         if let target = graph.target(named: node.name) {
           cmake.append("")
           switch target.type {
-          case .library, .test:
+          case .library:
             cmake.append("add_library(" + sanitize(target.name))
-          case .executable:
+          case .executable, .test:
             cmake.append("add_executable(" + sanitize(target.name))
           case .systemModule:  // @exempt(from: tests)
             break
@@ -214,13 +221,18 @@ extension PackageRepository {
           switch target.type {
           case .library:
             cmake.append(
-              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})"
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
             )
             cmake.append(
               "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
             )
-          case .executable, .test, .systemModule:
+          case .executable, .systemModule:
             break
+          case .test:
+            cmake.append(contentsOf: [
+              "add_test(NAME \(sanitize(target.name)) COMMAND \(sanitize(target.name)))",
+              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
+            ])
           }
         }
       }

@@ -382,6 +382,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       let experimentalDirectory = ContinuousIntegrationJob.experimentalDirectory
       result.append(contentsOf: [
+        commandEntry(
+          "echo \u{27}Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)\u{27}"
+        ),
         commandEntry("repository_directory=$(pwd)"),
         commandEntry(
           "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"
@@ -397,6 +400,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{27}Failed to set up Visual Studio.\u{27}; exit 1; fi",
           escaping: false
         ),
+        commandEntry("echo \u{27}Fetching ICU...\u{27}"),
         commandEntry("cd \u{22}${repository_directory}\u{22}", escaping: false),
         commandEntry(
           "experimental_Swift_directory=\u{22}${repository_directory}/\(experimentalDirectory)\u{22}",
@@ -405,11 +409,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("mkdir \u{2D}p \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry("cd \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry(
+          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip \u{2D}\u{2D}output ICU.zip"
+        ),
+        commandEntry("7z x ICU.zip \u{2D}oICU"),
+        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
+        commandEntry(
           "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
         ),
         commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
         commandEntry(
-          "echo \u{27}Fetching Swift... (This is could to take up to 10 minutes.)\u{27}"
+          "echo \u{27}Downloading... (This is could to take up to 10 minutes.)\u{27}"
         ),
         commandEntry(
           "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter windows\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
@@ -431,9 +440,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry("export PATH=\u{22}${toolchain_bin_directory}:${PATH}\u{22}", escaping: false),
         commandEntry("swift \u{2D}\u{2D}version"),
+        commandEntry("echo \u{27}Setting up CMake...\u{27}"),
         commandEntry("cmake_directory=\u{27}.build/SDG/CMake\u{27}"),
         commandEntry(
-          "sdk_resource_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift\u{22}",
+          "sdk_user_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "sdk_resource_directory=\u{22}${sdk_user_directory}/lib/swift\u{22}",
           escaping: false
         ),
         commandEntry(
@@ -460,11 +474,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .windows:
       result.append(contentsOf: [
+        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry(
           "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B \u{22}${cmake_directory}\u{22} \u{2D}DCMAKE_Swift_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows}\u{22}",
           escaping: false
         ),
-        commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false)
+        commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false),
+        commandEntry("echo \u{27}Fetching Swift’s runtime dependencies...\u{27}"),
+        commandEntry(
+          "cp \u{2D}R \u{22}${experimental_Swift_directory}/ICU/bin64/\u{22}* \u{22}${cmake_directory}/bin/\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "cp \u{2D}R \u{22}${sdk_user_directory}/bin/\u{22}* \u{22}${cmake_directory}/bin/\u{22}",
+          escaping: false
+        ),
+        commandEntry("echo \u{27}Testing \(try project.packageName())...\u{27}"),
+        commandEntry("cd \u{22}${cmake_directory}\u{22}", escaping: false),
+        commandEntry("ctest \u{2D}\u{2D}output\u{2D}on\u{2D}failure")
       ])
     }
 

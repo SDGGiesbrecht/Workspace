@@ -41,6 +41,13 @@ jobs:
         cd "${experimental_Swift_directory}"
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
         7z x ICU.zip
+        ls
+        cd ICU
+        pwd
+        ls
+        cd bin64
+        pwd
+        ls
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Fetching Swift... (This is could to take up to 10 minutes.)'

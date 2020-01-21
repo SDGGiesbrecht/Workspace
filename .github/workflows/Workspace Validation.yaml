@@ -53,9 +53,11 @@ jobs:
         export PATH="${toolchain_bin_directory}:${PATH}"
         swift --version
         cmake_directory='.build/SDG/CMake'
-        sdk_resource_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift"
+        sdk_user_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
+        sdk_resource_directory="${sdk_user_directory}/lib/swift"
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
         cmake --build "${cmake_directory}"
         cd "${cmake_directory}"
+        export PATH="${sdk_resource_directory}/bin:${PATH}"
         ctest --output-on-failure

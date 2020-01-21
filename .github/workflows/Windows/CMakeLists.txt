@@ -22,9 +22,9 @@ target_compile_options("WSWindowsLibrary" PRIVATE -enable-testing)
 add_executable("WSWindowsTests"
   "../../../Tests/WSWindowsTests/WSWindowsTests.swift"
 )
-target_link_libraries("WSWindowsTests" PRIVATE
-  "WSWindowsLibrary"
-)
+# target_link_libraries("WSWindowsTests" PRIVATE
+#   "WSWindowsLibrary"
+# )
 add_test(NAME "WSWindowsTests" COMMAND "WSWindowsTests")
 set_property(TEST "WSWindowsTests" PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/lib")
 

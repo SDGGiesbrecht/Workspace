@@ -382,7 +382,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       let experimentalDirectory = ContinuousIntegrationJob.experimentalDirectory
       result.append(contentsOf: [
-        commandEntry("echo 'Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)'"),
+        commandEntry(
+          "echo 'Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)'"
+        ),
         commandEntry("repository_directory=$(pwd)"),
         commandEntry(
           "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"

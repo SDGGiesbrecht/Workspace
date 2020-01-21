@@ -58,4 +58,5 @@ jobs:
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
         cmake --build "${cmake_directory}"
         cd "${cmake_directory}"
+        export PATH="${cmake_directory}:${PATH}"
         ctest --output-on-failure

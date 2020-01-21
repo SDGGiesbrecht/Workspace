@@ -405,7 +405,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry("mkdir \u{2D}p \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry("cd \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
-        commandEntry("curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip --output ICU.zip"),
+        commandEntry(
+          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip --output ICU.zip"
+        ),
         commandEntry("7z x ICU.zip \u{2D}oICU"),
         commandEntry(
           "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
@@ -435,8 +437,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("export PATH=\u{22}${toolchain_bin_directory}:${PATH}\u{22}", escaping: false),
         commandEntry("swift \u{2D}\u{2D}version"),
         commandEntry("cmake_directory=\u{27}.build/SDG/CMake\u{27}"),
-        commandEntry("sdk_user_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr\u{22}", escaping: false),
-        commandEntry("sdk_resource_directory=\u{22}${sdk_user_directory}/lib/swift\u{22}", escaping: false),
+        commandEntry(
+          "sdk_user_directory=\u{22}${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "sdk_resource_directory=\u{22}${sdk_user_directory}/lib/swift\u{22}",
+          escaping: false
+        ),
         commandEntry(
           "sdk_resource_directory_windows=$(echo \u{22}${sdk_resource_directory}\u{22} | sed \u{2D}e \u{27}s/^\u{5C}///\u{27} \u{2D}e \u{27}s/\u{5C}//\u{5C}\u{5C}/g\u{27} \u{2D}e \u{27}s/^./\u{5C}0:/\u{27})",
           escaping: false
@@ -466,8 +474,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           escaping: false
         ),
         commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false),
-        commandEntry("cp \u{2D}R \u{22}${experimental_Swift_directory}/ICU/bin64/\u{22}* \u{22}${cmake_directory}/bin/\u{22}", escaping: false),
-        commandEntry("cp \u{2D}R \u{22}${sdk_user_directory}/bin/\u{22}* \u{22}${cmake_directory}/bin/\u{22}", escaping: false),
+        commandEntry(
+          "cp \u{2D}R \u{22}${experimental_Swift_directory}/ICU/bin64/\u{22}* \u{22}${cmake_directory}/bin/\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "cp \u{2D}R \u{22}${sdk_user_directory}/bin/\u{22}* \u{22}${cmake_directory}/bin/\u{22}",
+          escaping: false
+        ),
         commandEntry("cd \u{22}${cmake_directory}\u{22}", escaping: false),
         commandEntry("ctest \u{2D}\u{2D}output\u{2D}on\u{2D}failure")
       ])

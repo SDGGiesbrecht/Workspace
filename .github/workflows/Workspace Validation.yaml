@@ -63,5 +63,6 @@ jobs:
         echo "${PATH}"
         cd "${sdk_user_directory}/bin"
         ls
-        cd "${cmake_directory}"
+        cd "${repository_directory}/${cmake_directory}"
+        cp -R "${experimental_Swift_directory}/Toolchains/Library" "/c/Library"
         ctest --output-on-failure

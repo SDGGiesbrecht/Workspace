@@ -20,8 +20,8 @@ add_executable("WSWindowsTests"
 target_link_libraries("WSWindowsTests" PRIVATE
   "WSWindowsLibrary"
 )
-add_test(NAME WSWindowsTests COMMAND WSWindowsTests)
-set_property(TEST WSWindowsTests PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
+add_test(NAME "WSWindowsTests" COMMAND "WSWindowsTests")
+set_property(TEST "WSWindowsTests" PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}")
 
 add_executable("WSWindowsTool"
   "../../../Tests/WSWindowsTool/main.swift"

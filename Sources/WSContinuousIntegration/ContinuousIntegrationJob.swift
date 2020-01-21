@@ -464,7 +464,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B \u{22}${cmake_directory}\u{22} \u{2D}DCMAKE_Swift_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows}\u{22}",
           escaping: false
         ),
-        commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false)
+        commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false),
+        commandEntry("cd \u{22}${cmake_directory}\u{22}", escaping: false),
+        commandEntry("ctest")
       ])
     }
 

@@ -171,6 +171,8 @@ extension PackageRepository {
         "",
         "project(\(sanitize(package.name)) LANGUAGES Swift)",
         "",
+        "include(CTest)",
+        "",
         "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
       ]
 
@@ -184,9 +186,9 @@ extension PackageRepository {
         if let target = graph.target(named: node.name) {
           cmake.append("")
           switch target.type {
-          case .library, .test:
+          case .library:
             cmake.append("add_library(" + sanitize(target.name))
-          case .executable:
+          case .executable, .test:
             cmake.append("add_executable(" + sanitize(target.name))
           case .systemModule:  // @exempt(from: tests)
             break
@@ -219,8 +221,13 @@ extension PackageRepository {
             cmake.append(
               "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
             )
-          case .executable, .test, .systemModule:
+          case .executable, .systemModule:
             break
+          case .test:
+            cmake.append(contentsOf: [
+              "add_test(NAME \(sanitize(target.name)) COMMAND \(sanitize(target.name)))",
+              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}\u{22})"
+            ])
           }
         }
       }

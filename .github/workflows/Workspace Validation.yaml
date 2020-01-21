@@ -40,7 +40,7 @@ jobs:
         mkdir -p "${experimental_Swift_directory}"
         cd "${experimental_Swift_directory}"
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
-        7z x ICU.zip
+        7z x ICU.zip -oICU
         ls
         cd ICU
         pwd

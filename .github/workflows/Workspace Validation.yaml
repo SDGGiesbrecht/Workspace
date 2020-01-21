@@ -63,5 +63,5 @@ jobs:
         cd "${cmake_directory}"
         export PATH="${experimental_Swift_directory}/ICU/bin64:${PATH}"
         export PATH="${sdk_user_directory}/bin:${PATH}"
-        dumpbin '/dependents' bin/WSWindowsTests.exe
+        dumpbin //dependents bin/WSWindowsTests.exe
         ctest --output-on-failure

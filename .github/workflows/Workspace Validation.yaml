@@ -36,6 +36,14 @@ jobs:
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
+        echo "Significant environment:"
+        echo "${UniversalCRTSdkDir}"
+        echo "${UCRTVersion}"
+        echo "${VCToolsInstallDir}"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}\include\module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}\include\visualc.apinotes"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}\Include\${UCRTVersion}\um\module.modulemap"
         echo 'Fetching ICU...'
         cd "${repository_directory}"
         experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental_Swift"
@@ -48,10 +56,6 @@ jobs:
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}\include\module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}\include\visualc.apinotes"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}\Include\${UCRTVersion}\um\module.modulemap"
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64 Toolchains
         7z x sdk-windows-x64.zip

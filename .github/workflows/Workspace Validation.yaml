@@ -60,4 +60,6 @@ jobs:
         cmake --build "${cmake_directory}"
         cd "${cmake_directory}"
         export PATH="${sdk_user_directory}/bin:${PATH}"
+        echo "${PATH}"
+        cd "${cmake_directory}"
         ctest --output-on-failure

@@ -466,7 +466,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false),
         commandEntry("cd \u{22}${cmake_directory}\u{22}", escaping: false),
-        commandEntry("ctest")
+        commandEntry("ctest \u{2D}\u{2D}output\u{2D}on\u{2D}failure")
       ])
     }
 

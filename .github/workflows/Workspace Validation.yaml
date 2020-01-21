@@ -63,8 +63,4 @@ jobs:
         cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"
         cp -R "${sdk_user_directory}/bin/"* "${cmake_directory}/bin/"
         cd "${cmake_directory}"
-        cd bin
-        ls
-        cd ..
-        dumpbin //dependents bin/WSWindowsTests.exe
         ctest --output-on-failure

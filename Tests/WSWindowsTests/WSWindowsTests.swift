@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-//@testable import WSWindowsLibrary
+@testable import WSWindowsLibrary
 
 //import XCTest
 
@@ -22,7 +22,7 @@ final class WindowsTests /*: XCTestCase*/ {
 
   func testTests() {
     // @exempt(from: tests) #workaround(Not testable yet.)
-    //helloWorld()
-    //helloTests()
+    helloWorld()
+    helloTests()
   }
 }

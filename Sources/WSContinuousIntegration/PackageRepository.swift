@@ -173,6 +173,11 @@ extension PackageRepository {
         "",
         "include(CTest)",
         "",
+        "set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)",
+        "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+        "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+        "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
+        "",
         "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
       ]
 
@@ -216,7 +221,7 @@ extension PackageRepository {
           switch target.type {
           case .library:
             cmake.append(
-              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR})"
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
             )
             cmake.append(
               "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
@@ -224,9 +229,10 @@ extension PackageRepository {
           case .executable, .systemModule:
             break
           case .test:
+            #warning("Better variable for LD_LIBRARY_PATH?")
             cmake.append(contentsOf: [
               "add_test(NAME \(sanitize(target.name)) COMMAND \(sanitize(target.name)))",
-              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}\u{22})"
+              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/lib\u{22})"
             ])
           }
         }

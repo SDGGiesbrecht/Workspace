@@ -229,10 +229,9 @@ extension PackageRepository {
           case .executable, .systemModule:
             break
           case .test:
-            #warning("Better variable for LD_LIBRARY_PATH?")
             cmake.append(contentsOf: [
               "add_test(NAME \(sanitize(target.name)) COMMAND \(sanitize(target.name)))",
-              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/lib\u{22})"
+              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
             ])
           }
         }

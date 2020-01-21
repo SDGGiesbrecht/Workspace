@@ -381,7 +381,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .windows:
       let experimentalDirectory = ContinuousIntegrationJob.experimentalDirectory
-      #warning("MSVC2017?")
       result.append(contentsOf: [
         commandEntry("repository_directory=$(pwd)"),
         commandEntry(

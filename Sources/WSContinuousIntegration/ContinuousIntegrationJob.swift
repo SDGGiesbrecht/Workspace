@@ -409,7 +409,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("mkdir \u{2D}p \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry("cd \u{22}${experimental_Swift_directory}\u{22}", escaping: false),
         commandEntry(
-          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip --output ICU.zip"
+          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip \u{2D}\u{2D}output ICU.zip"
         ),
         commandEntry("7z x ICU.zip \u{2D}oICU"),
         commandEntry("echo 'Fetching Swift...'"),

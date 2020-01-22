@@ -68,17 +68,13 @@ jobs:
 
         echo 'Setting up CMake...'
         cmake_directory='.build/SDG/CMake'
-        sdk_user_directory="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
-        sdk_resource_directory="${sdk_user_directory}/lib/swift"
-        sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
 
         echo 'Building Workspace...'
-        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows" -DCMAKE_Swift_LINK_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows"
+        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}"
         cmake --build "${cmake_directory}"
 
         echo 'Fetching Swift’s runtime dependencies...'
         cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"
-        cp -R "${sdk_user_directory}/bin/"* "${cmake_directory}/bin/"
 
         echo 'Testing Workspace...'
         cd "${cmake_directory}"

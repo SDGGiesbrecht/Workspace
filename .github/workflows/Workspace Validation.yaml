@@ -74,6 +74,7 @@ jobs:
 
         echo 'Building Workspace...'
         echo "${PATH}"
+        cmd "/c echo %PATH%"
         cmake -G Ninja -S .github/workflows/Windows -B '.build/SDG/CMake'
         cmake --build '.build/SDG/CMake'
 

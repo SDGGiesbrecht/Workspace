@@ -423,6 +423,22 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift 5.2\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter windows\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
         ),
+        commandEntry(
+          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/module.modulemap\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/visualc.apinotes\u{22}",
+          escaping: false
+        ),
+        commandEntry(
+          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap\u{22}",
+          escaping: false
+        ),
         commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
         commandEntry("mv toolchain\u{2D}windows\u{2D}x64 Toolchains"),
         commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
@@ -476,7 +492,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry(
-          "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B \u{22}${cmake_directory}\u{22} \u{2D}DCMAKE_Swift_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows}\u{22}",
+          "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B \u{22}${cmake_directory}\u{22} \u{2D}DCMAKE_Swift_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows} \u{2D}L${sdk_resource_directory_windows}\u{5C}windows\u{22} \u{2D}DCMAKE_Swift_LINK_FLAGS=\u{22}\u{2D}resource\u{2D}dir ${sdk_resource_directory_windows} \u{2D}L${sdk_resource_directory_windows}\u{5C}windows\u{22}",
           escaping: false
         ),
         commandEntry("cmake \u{2D}\u{2D}build \u{22}${cmake_directory}\u{22}", escaping: false),

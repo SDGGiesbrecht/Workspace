@@ -62,6 +62,10 @@ jobs:
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64 Toolchains
         7z x sdk-windows-x64.zip
@@ -77,7 +81,7 @@ jobs:
         sdk_resource_directory="${sdk_user_directory}/lib/swift"
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
         echo 'Building Workspace...'
-        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows}"
+        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows" -DCMAKE_Swift_LINK_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows"
         cmake --build "${cmake_directory}"
         echo 'Fetching Swift’s runtime dependencies...'
         cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"

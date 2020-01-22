@@ -14,9 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Dispatch
+
 public func helloWorld() {
   // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, world!")
+  print(DispatchQueue(label: "Hello, Dispatch!"))
 }
 
 internal func helloTests() {

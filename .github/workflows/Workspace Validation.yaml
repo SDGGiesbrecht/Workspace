@@ -65,8 +65,8 @@ jobs:
 
         echo 'Fetching ICU...'
         icu_directory="${repository_directory}/.build/SDG/ICU"
-        mkdir -p "${ICU_directory}"
-        cd "${ICU_directory}"
+        mkdir -p "${icu_directory}"
+        cd "${icu_directory}"
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
         7z x ICU.zip -oicu-64.2
         mv icu-64.2 /c/Library/icu-64.2

@@ -85,7 +85,7 @@ jobs:
         cd "${repository_directory}"
 
         echo 'Building Workspace...'
-        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake
+        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms/Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift'
         cmake --build '.build/SDG/CMake'
 
         echo 'Testing Workspace...'

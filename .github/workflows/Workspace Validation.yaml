@@ -50,44 +50,47 @@ jobs:
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
-        echo 'Fetching ICU...'
         cd "${repository_directory}"
-        experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental_Swift"
-        mkdir -p "${experimental_Swift_directory}"
-        cd "${experimental_Swift_directory}"
-        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
-        7z x ICU.zip -oICU
+
+        echo 'Fetching Windows platform module maps...'
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+
         echo 'Fetching Swift...'
+        mkdir -p .build/SDG/Experimental_Swift
+        cd .build/SDG/Experimental_Swift
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
-        echo 'Downloading... (This is could to take up to 10 minutes.)'
+        echo 'Downloading... (This could take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
         7z x toolchain-windows-x64.zip
-        mv toolchain-windows-x64 Toolchains
+        mv toolchain-windows-x64/Library /c/Library
         7z x sdk-windows-x64.zip
-        mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms
+        mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
         cd "${repository_directory}"
-        developer_directory="${experimental_Swift_directory}/Toolchains/Library/Developer"
-        toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
-        export PATH="${toolchain_bin_directory}:${PATH}"
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        mkdir -p /c/Library/Swift/Current
+        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
+        export PATH="/c/Library/Swift/Current/bin:${PATH}"
         swift --version
-        echo 'Setting up CMake...'
-        cmake_directory='.build/SDG/CMake'
-        sdk_user_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
-        sdk_resource_directory="${sdk_user_directory}/lib/swift"
-        sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
+
+        echo 'Fetching ICU...'
+        mkdir -p .build/SDG/ICU
+        cd .build/SDG/ICU
+        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
+        7z x ICU.zip -oICU-64.2
+        mv ICU-64.2 /c/Library/ICU-64.2
+        mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
+        export PATH="/c/Library/ICU-64.2/bin:${PATH}"
+        cd "${repository_directory}"
+
         echo 'Building Workspace...'
-        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows" -DCMAKE_Swift_LINK_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows"
-        cmake --build "${cmake_directory}"
-        echo 'Fetching Swift’s runtime dependencies...'
-        cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"
-        cp -R "${sdk_user_directory}/bin/"* "${cmake_directory}/bin/"
+        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -LC:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows' -DCMAKE_Swift_LINK_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -LC:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows'
+        cmake --build '.build/SDG/CMake'
         echo 'Testing Workspace...'
-        cd "${cmake_directory}"
+        cd .build/SDG/CMake
         ctest --output-on-failure
   Linux:
     runs-on: ubuntu-18.04

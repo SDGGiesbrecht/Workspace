@@ -17,20 +17,6 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
-  macOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-latest
     steps:
@@ -50,102 +36,50 @@ jobs:
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
-        echo 'Fetching ICU...'
         cd "${repository_directory}"
+
+        echo 'Fetching Windows platform module maps...'
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+
+        echo 'Fetching Swift...'
         experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental_Swift"
         mkdir -p "${experimental_Swift_directory}"
         cd "${experimental_Swift_directory}"
-        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
-        7z x ICU.zip -oICU
-        echo 'Fetching Swift...'
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This is could to take up to 10 minutes.)'
         python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/master/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
         7z x toolchain-windows-x64.zip
-        mv toolchain-windows-x64 Toolchains
+        mv toolchain-windows-x64/Library /c/Library
         7z x sdk-windows-x64.zip
-        mv sdk-windows-x64/Library/Developer/Platforms Toolchains/Library/Developer/Platforms
+        mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        echo $PATH
+        which swift
+
+        echo 'Fetching ICU...'
+        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
+        7z x ICU.zip -oICU
         cd "${repository_directory}"
-        developer_directory="${experimental_Swift_directory}/Toolchains/Library/Developer"
-        toolchain_bin_directory="${developer_directory}/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin"
-        export PATH="${toolchain_bin_directory}:${PATH}"
         swift --version
+
         echo 'Setting up CMake...'
         cmake_directory='.build/SDG/CMake'
-        sdk_user_directory="${developer_directory}/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
+        sdk_user_directory="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr"
         sdk_resource_directory="${sdk_user_directory}/lib/swift"
         sdk_resource_directory_windows=$(echo "${sdk_resource_directory}" | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
+
         echo 'Building Workspace...'
         cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}" -DCMAKE_Swift_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows" -DCMAKE_Swift_LINK_FLAGS="-resource-dir ${sdk_resource_directory_windows} -L${sdk_resource_directory_windows}\windows"
         cmake --build "${cmake_directory}"
+
         echo 'Fetching Swift’s runtime dependencies...'
         cp -R "${experimental_Swift_directory}/ICU/bin64/"* "${cmake_directory}/bin/"
         cp -R "${sdk_user_directory}/bin/"* "${cmake_directory}/bin/"
+
         echo 'Testing Workspace...'
         cd "${cmake_directory}"
         ctest --output-on-failure
-  Linux:
-    runs-on: ubuntu-18.04
-    container: swift:5.1.3-bionic
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        chmod -R a+rwx .
-  tvOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-  iOS:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        xcversion install 11.3
-        xcversion select 11.3
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-  Miscellaneous:
-    runs-on: ubuntu-18.04
-    container: swift:5.1.3-bionic
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
-      with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
-    - name: Validate
-      run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        chmod -R a+rwx .

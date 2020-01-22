@@ -59,8 +59,14 @@ jobs:
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         mkdir -p /c/Library/Swift/Current
         cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
+        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin/* /c/Library/Swift/Current/bin
         export PATH="/c/Library/Swift/Current/bin:${PATH}"
         swift --version
+
+        cd /c/Library/Swift/Current/bin
+        pwd
+        ls
+        cd "${repository_directory}"
 
         echo 'Fetching ICU...'
         mkdir -p .build/SDG/ICU
@@ -70,6 +76,29 @@ jobs:
         mv ICU-64.2 /c/Library/ICU-64.2
         mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
+        cd "${repository_directory}"
+
+        cd /Library/Developer/Platforms/Windows.platform/Developer
+        pwd
+        ls
+        cd Library
+        pwd
+        ls
+        cd XCTest-development
+        pwd
+        ls
+        cd usr
+        pwd
+        ls
+        cd lib
+        pwd
+        ls
+        cd swift
+        pwd
+        ls
+        cd windows
+        pwd
+        ls
         cd "${repository_directory}"
 
         echo 'Building Workspace...'

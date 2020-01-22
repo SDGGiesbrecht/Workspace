@@ -14,11 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
 import Dispatch
 
 public func helloWorld() {
   // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, world!")
+  print(NSString(string: "Hello, Foundation!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
 }
 

@@ -57,8 +57,8 @@ jobs:
         7z x sdk-windows-x64.zip
         mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        echo $PATH
-        which swift
+        cp /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
+        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin:${PATH}"
 
         echo 'Fetching ICU...'
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip

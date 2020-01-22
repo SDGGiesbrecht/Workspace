@@ -45,9 +45,8 @@ jobs:
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
 
         echo 'Fetching Swift...'
-        experimental_Swift_directory="${repository_directory}/.build/SDG/Experimental_Swift"
-        mkdir -p "${experimental_Swift_directory}"
-        cd "${experimental_Swift_directory}"
+        mkdir -p '.build/SDG/Experimental_Swift'
+        cd '.build/SDG/Experimental_Swift'
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This could to take up to 10 minutes.)'
@@ -64,9 +63,8 @@ jobs:
         swift --version
 
         echo 'Fetching ICU...'
-        icu_directory="${repository_directory}/.build/SDG/ICU"
-        mkdir -p "${icu_directory}"
-        cd "${icu_directory}"
+        mkdir -p '.build/SDG/ICU'
+        cd '.build/SDG/ICU'
         curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
         7z x ICU.zip -oICU-64.2
         mv ICU-64.2 /c/Library/ICU-64.2
@@ -74,13 +72,10 @@ jobs:
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
         cd "${repository_directory}"
 
-        echo 'Setting up CMake...'
-        cmake_directory='.build/SDG/CMake'
-
         echo 'Building Workspace...'
-        cmake -G Ninja -S .github/workflows/Windows -B "${cmake_directory}"
-        cmake --build "${cmake_directory}"
+        cmake -G Ninja -S .github/workflows/Windows -B '.build/SDG/CMake'
+        cmake --build '.build/SDG/CMake'
 
         echo 'Testing Workspace...'
-        cd "${cmake_directory}"
+        cd '.build/SDG/CMake'
         ctest --output-on-failure

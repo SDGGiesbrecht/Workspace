@@ -479,7 +479,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}"),
         commandEntry("echo \u{27}Testing \(try project.packageName())...\u{27}"),
         commandEntry("cd .build/SDG/CMake"),
-        commandEntry("ctest \u{2D}\u{2D}output\u{2D}on\u{2D}failure")
+        commandEntry("ctest \u{2D}\u{2D}verbose")
       ])
     }
 

@@ -42,4 +42,4 @@ target_link_libraries(WindowsMain PRIVATE
   "WSWindowsTests"
 )
 add_test(NAME WindowsMain COMMAND WindowsMain)
-set_property(TEST "WindowsMain" PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+set_property(TEST WindowsMain PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")

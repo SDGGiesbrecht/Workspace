@@ -204,6 +204,17 @@ extension PackageRepository {
             cmake.append("  " + quote("../../../\(relativeURL)"))
           }
           switch target.type {
+          case .library, .test:
+            cmake.append(
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
+            )
+            cmake.append(
+              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
+            )
+          case .executable, .systemModule:
+            break
+          }
+          switch target.type {
           case .library, .executable, .test:
             cmake.append(")")
 
@@ -216,17 +227,6 @@ extension PackageRepository {
               cmake.append(")")
             }
           case .systemModule:  // @exempt(from: tests)
-            break
-          }
-          switch target.type {
-          case .library, .test:
-            cmake.append(
-              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
-            )
-            cmake.append(
-              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
-            )
-          case .executable, .systemModule:
             break
           }
         }

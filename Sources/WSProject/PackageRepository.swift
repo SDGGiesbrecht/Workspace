@@ -17,6 +17,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import SDGExternalProcess
 
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
@@ -137,6 +138,7 @@ extension PackageRepository {
     setenv(variable, "true", 1 /* overwrite */)
     defer {
       unsetenv(variable)
+      _ = try? Shell.default.run(command: ["git", "checkout", "Package.resolved"]).get()
     }
     return try closure()
   }

@@ -484,6 +484,7 @@ let package = Package(
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
@@ -665,13 +666,18 @@ let package = Package(
 func adjustForWindows() {
   // #workaround(SDGCommandLine 1.2.5, Repository incompatible with Windows file system.)
   package.dependencies.removeAll(where: { $0.url.contains("SDGCommandLine") })
+  let impossibleProducts: Set<String> = [
+    "SDGCommandLine",
+    "SDGExportedCommandLineInterface",
+    "SDGCommandLineTestUtilities"
+  ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       switch dependency {
       case ._targetItem, ._byNameItem:
         return false
       case ._productItem(let name, _):
-        return name.hasPrefix("SDGCommandLine")
+        return impossibleProducts.contains(name)
       }
     })
   }

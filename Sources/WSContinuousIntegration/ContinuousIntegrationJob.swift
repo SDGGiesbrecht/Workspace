@@ -452,17 +452,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("export PATH=\u{22}/c/Library/ICU\u{2D}64.2/bin:${PATH}\u{22}"),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
-        commandEntry("echo \u{27}Fetching package graph...\u{27}"),
       ])
-      let graph = try project.cachedPackageGraph()
-      for package in graph.packages.sorted(by: { $0.name < $1.name }) {
-        if let version = package.underlyingPackage.manifest.version {
-          let url = package.underlyingPackage.manifest.url
-          result.append(
-            commandEntry("git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false")
-          )
-        }
-      }
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),
@@ -482,6 +472,19 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .windows:
       result.append(contentsOf: [
+        commandEntry("echo \u{27}Fetching package graph...\u{27}"),
+        ])
+      let graph = try project.cachedPackageGraph()
+      for package in graph.packages.sorted(by: { $0.name < $1.name }) {
+        if let version = package.underlyingPackage.manifest.version {
+          let url = package.underlyingPackage.manifest.url
+          result.append(
+            commandEntry("git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false")
+          )
+        }
+      }
+      result.append(contentsOf: [
+        "",
         commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry(
           "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27} \u{2D}DCMAKE_Swift_LINK_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}"

@@ -661,3 +661,26 @@ let package = Package(
     )
   ]
 )
+
+func adjustForWindows() {
+  // #workaround(SDGCommandLine 1.2.5, Repository incompatible with Windows file system.)
+  package.dependencies.removeAll(where: { $0.url.contains("SDGCommandLine") })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._targetItem, ._byNameItem:
+        return false
+      case ._productItem(let name, _):
+        return name.hasPrefix("SDGCommandLine")
+      }
+    })
+  }
+}
+#if os(Windows)
+  adjustForWindows()
+#endif
+import Foundation
+// #workaround(workspace 0.28.0, Until packages work natively on windows.)
+if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
+  adjustForWindows()
+}

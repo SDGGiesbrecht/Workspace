@@ -17,6 +17,20 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-latest
     steps:
@@ -63,11 +77,6 @@ jobs:
         export PATH="/c/Library/Swift/Current/bin:${PATH}"
         swift --version
 
-        cd /c/Library/Swift/Current/bin
-        pwd
-        ls
-        cd "${repository_directory}"
-
         echo 'Fetching ICU...'
         mkdir -p .build/SDG/ICU
         cd .build/SDG/ICU
@@ -78,35 +87,69 @@ jobs:
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
         cd "${repository_directory}"
 
-        cd /c/Library/Developer/Platforms/Windows.platform/Developer
-        pwd
-        ls
-        cd Library
-        pwd
-        ls
-        cd XCTest-development
-        pwd
-        ls
-        cd usr
-        pwd
-        ls
-        cd lib
-        pwd
-        ls
-        cd swift
-        pwd
-        ls
-        cd windows
-        pwd
-        ls
-        cd x86_64
-        pwd
-        ls
-        cd "${repository_directory}"
-
         echo 'Building Workspace...'
         cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows' -DCMAKE_Swift_LINK_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
         cmake --build '.build/SDG/CMake'
         echo 'Testing Workspace...'
         cd .build/SDG/CMake
         ctest --output-on-failure
+  Linux:
+    runs-on: ubuntu-18.04
+    container: swift:5.1.3-bionic
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        apt-get update
+        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        chmod -R a+rwx .
+  tvOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  iOS:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        xcversion install 11.3
+        xcversion select 11.3
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  Miscellaneous:
+    runs-on: ubuntu-18.04
+    container: swift:5.1.3-bionic
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        apt-get update
+        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        chmod -R a+rwx .

@@ -273,8 +273,10 @@ extension PackageRepository {
       "import XCTest",
       ""
     ]
+    var testClasses: [(name: String, methods: [String])] = []
     for testTarget in testTargets {
       main.append("@testable import \(testTarget.name)")
+      testClasses.append(contentsOf: try testTarget.testClasses())
     }
     main.append("")
 
@@ -321,12 +323,16 @@ extension PackageRepository {
       ])
     }
 
-    for testTarget in testTargets {
+    for testClass in testClasses {
       main.append(contentsOf: [
-        "extension WindowsTests {",
+        "extension \(testClass.name) {",
         "  static let windowsTests: [XCTestCaseEntry] = [",
         "    testCase([",
-        "      (\u{22}testTests\u{22}, testTests),",
+      ])
+      for method in testClass.methods {
+        main.append("      (\u{22}\(method)\u{22}, \(method)),")
+      }
+      main.append(contentsOf: [
         "    ])",
         "  ]",
         "}",
@@ -337,8 +343,8 @@ extension PackageRepository {
     main.append(contentsOf: [
       "var tests = [XCTestCaseEntry]()"
     ])
-    for testTarget in testTargets {
-      main.append("tests += WindowsTests.windowsTests")
+    for testClass in testClasses {
+      main.append("tests += \(testClass.name).windowsTests")
     }
 
     main.append(contentsOf: [

@@ -452,7 +452,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("export PATH=\u{22}/c/Library/ICU\u{2D}64.2/bin:${PATH}\u{22}"),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
+        commandEntry("echo \u{27}Fetching package graph...\u{27}"),
       ])
+      let graph = try project.cachedPackageGraph()
+      for package in graph.packages.sorted(by: { $0.name < $1.name }) {
+        if let version = package.underlyingPackage.manifest.version {
+          let url = package.underlyingPackage.manifest.url
+          result.append(
+            commandEntry("git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false")
+          )
+        }
+      }
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),

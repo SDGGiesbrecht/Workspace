@@ -153,8 +153,8 @@ extension PackageRepository {
       delete(url, output: output)
       delete(mainURL, output: output)
     } else {
-      let package = try self.package().get()
-      let graph = try self.packageGraph().get()
+      let package = try self.cachedPackage()
+      let graph = try self.cachedPackageGraph()
 
       func quote(_ string: String) -> String {
         return "\u{22}\(string)\u{22}"

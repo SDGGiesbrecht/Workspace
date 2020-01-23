@@ -92,7 +92,7 @@ jobs:
         cmake --build '.build/SDG/CMake'
         echo 'Testing Workspace...'
         cd .build/SDG/CMake
-        ctest --output-on-failure
+        ctest --verbose
   Linux:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic

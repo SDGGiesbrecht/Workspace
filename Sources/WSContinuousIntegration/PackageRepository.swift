@@ -191,9 +191,9 @@ extension PackageRepository {
         if let target = graph.target(named: node.name) {
           cmake.append("")
           switch target.type {
-          case .library:
+          case .library, .test:
             cmake.append("add_library(" + sanitize(target.name))
-          case .executable, .test:
+          case .executable:
             cmake.append("add_executable(" + sanitize(target.name))
           case .systemModule:  // @exempt(from: tests)
             break
@@ -219,7 +219,7 @@ extension PackageRepository {
             break
           }
           switch target.type {
-          case .library:
+          case .library, .test:
             cmake.append(
               "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
             )
@@ -228,14 +228,17 @@ extension PackageRepository {
             )
           case .executable, .systemModule:
             break
-          case .test:
-            cmake.append(contentsOf: [
-              "add_test(NAME \(sanitize(target.name)) COMMAND \(sanitize(target.name)))",
-              "set_property(TEST \(sanitize(target.name)) PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
-            ])
           }
         }
       }
+
+      cmake.append(contentsOf: [
+        "add_executable(WindowsMain",
+        "  WindowsMain.swift",
+        ")",
+        "add_test(NAME WindowsMain COMMAND WindowsMain)",
+        "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
+      ])
 
       var cmakeFile = try TextFile(possiblyAt: url)
       cmakeFile.body = cmake.joinedAsLines()

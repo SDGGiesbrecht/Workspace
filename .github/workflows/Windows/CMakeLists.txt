@@ -35,11 +35,11 @@ target_link_libraries("WSWindowsTool" PRIVATE
   "WSWindowsLibrary"
 )
 
-add_executable("WindowsMain"
-  "WindowsMain.swift"
+add_executable(WindowsMain
+  WindowsMain.swift
 )
-target_link_libraries("WindowsMain" PRIVATE
+target_link_libraries(WindowsMain PRIVATE
   "WSWindowsTests"
 )
-add_test(NAME "WindowsMain" COMMAND "WindowsMain")
+add_test(NAME WindowsMain COMMAND WindowsMain)
 set_property(TEST "WindowsMain" PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")

@@ -182,6 +182,7 @@ extension PackageRepository {
       ]
 
       let rootTargets = package.targets
+      var testTargets: [ResolvedTarget] = []
       for node in graph.sortedNodes()
       where rootTargets.contains(where: { $0.name == node.name })
         ∧ node.recursiveDependencyNodes
@@ -189,6 +190,9 @@ extension PackageRepository {
         .allSatisfy({ type(of: $0) == ResolvedTarget.self })  // @exempt(from: tests)
       {
         if let target = graph.target(named: node.name) {
+          if case .test = target.type {
+            testTargets.append(target)
+          }
           cmake.append("")
           switch target.type {
           case .library, .test:
@@ -204,6 +208,12 @@ extension PackageRepository {
             cmake.append("  " + quote("../../../\(relativeURL)"))
           }
           switch target.type {
+          case .library, .executable, .test:
+            cmake.append(")")
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
+          switch target.type {
           case .library, .test:
             cmake.append(
               "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
@@ -216,12 +226,10 @@ extension PackageRepository {
           }
           switch target.type {
           case .library, .executable, .test:
-            cmake.append(")")
-
             let dependencies = target.dependencyTargets
             if ¬dependencies.isEmpty {
               cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
-              for dependency in target.dependencyTargets {
+              for dependency in dependencies {
                 cmake.append("  " + sanitize(dependency.name))
               }
               cmake.append(")")
@@ -233,9 +241,19 @@ extension PackageRepository {
       }
 
       cmake.append(contentsOf: [
+        "",
         "add_executable(WindowsMain",
         "  WindowsMain.swift",
-        ")",
+        ")"
+      ])
+      if ¬testTargets.isEmpty {
+        cmake.append("target_link_libraries(WindowsMain PRIVATE")
+        for testTarget in testTargets {
+          cmake.append("  " + sanitize(testTarget.name))
+        }
+        cmake.append(")")
+      }
+      cmake.append(contentsOf: [
         "add_test(NAME WindowsMain COMMAND WindowsMain)",
         "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
       ])

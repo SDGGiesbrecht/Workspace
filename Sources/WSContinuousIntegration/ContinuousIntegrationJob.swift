@@ -474,7 +474,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("echo \u{27}Fetching package graph...\u{27}"),
         ])
-      let graph = try project.cachedPackageGraph()
+      let graph = try project.cachedWindowsPackageGraph()
       for package in graph.packages.sorted(by: { $0.name < $1.name }) {
         if let version = package.underlyingPackage.manifest.version {
           let url = package.underlyingPackage.manifest.url

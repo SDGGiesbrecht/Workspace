@@ -26,16 +26,19 @@ import XCTest
     testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)]
   )
 
-  func test<T: XCTestCase>(_ testFunc: @escaping (T) -> () throws -> Void) -> XCTestCaseClosure {
-    return { testCaseType in
-      try testFunc(testCaseType as! T)()
-    }
+  func test<T: XCTestCase>(
+    _ testFunc: @escaping (T) -> () throws -> Void
+  ) -> XCTestCaseClosure {
+    return { try testFunc($0 as! T)() }
   }
-  func testCase<T: XCTestCase>(_ allTests: [(String, (T) -> () throws -> Void)]) -> XCTestCaseEntry
-  {
+
+  func testCase<T: XCTestCase>(
+    _ allTests: [(String, (T) -> () throws -> Void)]
+  ) -> XCTestCaseEntry {
     let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }
     return (T.self, tests)
   }
+
   func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
     for testGroup in testCases {
       let testClass = testGroup.testCaseClass.init()

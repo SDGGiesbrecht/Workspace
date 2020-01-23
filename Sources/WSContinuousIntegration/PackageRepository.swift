@@ -268,7 +268,11 @@ extension PackageRepository {
     }
   }
 
-  private func refreshWindowsMain(testTargets: [ResolvedTarget], url: URL, output: Command.Output) throws {
+  private func refreshWindowsMain(
+    testTargets: [ResolvedTarget],
+    url: URL,
+    output: Command.Output
+  ) throws {
     var main: [String] = [
       "import XCTest",
       ""

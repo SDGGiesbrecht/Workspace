@@ -640,9 +640,9 @@ let package = Package(
       path: "Tests/WSWindowsTool"
     ),
     .target(
-      name: "WSΠαράθυρα",
+      name: "WSWindows‐Unicode",
       dependencies: ["WSWindowsLibrary"],
-      path: "Tests/WSΠαράθυρα"
+      path: "Tests/WSWindowsUnicode"
     ),
     .testTarget(
       name: "WSWindowsTests",

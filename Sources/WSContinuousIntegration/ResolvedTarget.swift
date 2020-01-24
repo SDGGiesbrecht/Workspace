@@ -19,22 +19,11 @@ import Foundation
 import PackageModel
 import SwiftSyntax
 
-extension ResolvedTarget: GraphNode {
-
-  var dependencyNodes: [GraphNode] {
-    return dependencies.map { dependency in
-      if let product = dependency.product {
-        return product
-      } else {
-        return dependency.target!
-      }
-    }
-  }
+extension ResolvedTarget {
 
   var dependencyTargets: [ResolvedTarget] {
     return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
       if let product = dependency.product {
-        // @exempt(from: tests) #workaround(Not testable yet.)
         return product.targets
       } else {
         return [dependency.target!]

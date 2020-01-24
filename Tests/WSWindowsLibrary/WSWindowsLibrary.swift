@@ -24,16 +24,17 @@ import Foundation
 
 import Dispatch
 
+import SwiftFormatConfiguration
+
 public func helloWorld() {
-  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
   print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
+  print(Configuration())
 }
 
 internal func helloTests() {
-  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, tests!")
 }

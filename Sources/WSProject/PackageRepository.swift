@@ -17,6 +17,7 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+import SDGExternalProcess
 
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
@@ -60,7 +61,9 @@ extension PackageRepository {
   private class ManifestCache {
     fileprivate var manifest: PackageModel.Manifest?
     fileprivate var package: PackageModel.Package?
+    fileprivate var windowsPackage: PackageModel.Package?
     fileprivate var packageGraph: PackageGraph?
+    fileprivate var windowsPackageGraph: PackageGraph?
     fileprivate var products: [PackageModel.Product]?
     fileprivate var dependenciesByName: [String: ResolvedPackage]?
   }
@@ -130,10 +133,33 @@ extension PackageRepository {
       return try package().get()
     }
   }
+  private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
+    let variable = "GENERATING_CMAKE_FOR_WINDOWS"
+    setenv(variable, "true", 1 /* overwrite */)
+    defer {
+      unsetenv(variable)
+      _ = try? Shell.default.run(command: ["git", "checkout", "Package.resolved"]).get()
+    }
+    return try closure()
+  }
+  public func cachedWindowsPackage() throws -> PackageModel.Package {
+    return try cached(in: &manifestCache.windowsPackage) {
+      return try PackageRepository.withWindowsEnvironment {
+        return try package().get()
+      }
+    }
+  }
 
   public func cachedPackageGraph() throws -> PackageGraph {
     return try cached(in: &manifestCache.packageGraph) {
       return try packageGraph().get()
+    }
+  }
+  public func cachedWindowsPackageGraph() throws -> PackageGraph {
+    return try cached(in: &manifestCache.windowsPackageGraph) {
+      return try PackageRepository.withWindowsEnvironment {
+        return try packageGraph().get()
+      }
     }
   }
 

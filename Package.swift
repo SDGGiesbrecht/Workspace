@@ -629,6 +629,9 @@ let package = Package(
     ),
     .target(
       name: "WSWindowsLibrary",
+      dependencies: [
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
+      ],
       path: "Tests/WSWindowsLibrary"
     ),
     .target(

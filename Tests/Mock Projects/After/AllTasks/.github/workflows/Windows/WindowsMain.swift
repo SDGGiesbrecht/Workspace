@@ -1,0 +1,26 @@
+/*
+ WindowsMain.swift
+
+
+ ©2020
+
+ This software is subject to copyright law.
+ It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).
+ */
+
+import XCTest
+
+@testable import AllTasksTests
+
+extension AllTasksTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testExample", testExample),
+    ])
+  ]
+}
+
+var tests = [XCTestCaseEntry]()
+tests += AllTasksTests.windowsTests
+
+XCTMain(tests)

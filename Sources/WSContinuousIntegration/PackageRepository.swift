@@ -183,14 +183,8 @@ extension PackageRepository {
         "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
       ]
 
-      let rootTargets = package.targets
       var testTargets: [ResolvedTarget] = []
-      for node in graph.sortedNodes()
-      where rootTargets.contains(where: { $0.name == node.name })
-        ∧ node.recursiveDependencyNodes
-        // #workaround(Not testable yet.)
-        .allSatisfy({ type(of: $0) == ResolvedTarget.self })  // @exempt(from: tests)
-      {
+      for node in graph.sortedNodes() {
         if let target = graph.target(named: node.name) {
           if case .test = target.type {
             testTargets.append(target)

@@ -666,21 +666,98 @@ let package = Package(
 func adjustForWindows() {
   // #workaround(SDGCommandLine 1.2.5, Repository incompatible with Windows file system.)
   package.dependencies.removeAll(where: { $0.url.contains("SDGCommandLine") })
+  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
+  package.dependencies.removeAll(where: { $0.url.contains("SDGCornerstone") })
+  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
+  package.dependencies.removeAll(where: { $0.url.contains("SDGSwift") })
+  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
+  package.dependencies.removeAll(where: { $0.url.contains("SDGWeb") })
   let impossibleProducts: Set<String> = [
+    // SDGCommandLine
     "SDGCommandLine",
+    "SDGCommandLineTestUtilities",
     "SDGExportedCommandLineInterface",
-    "SDGCommandLineTestUtilities"
+    // SDGCornerstone
+    "SDGCalendar",
+    "SDGCollections",
+    "SDGControlFlow",
+    "SDGExternalProcess",
+    "SDGLocalization",
+    "SDGLocalizationTestUtilities",
+    "SDGLogic",
+    "SDGMathematics",
+    "SDGPersistence",
+    "SDGPersistenceTestUtilities",
+    "SDGText",
+    "SDGVersioning",
+    "SDGXCTestUtilities",
+    // SDGSwift
+    "SDGSwift",
+    "SDGSwiftConfiguration",
+    "SDGSwiftConfigurationLoading",
+    "SDGSwiftPackageManager",
+    "SDGSwiftSource",
+    "SDGXcode",
+    // SDGWeb
+    "SDGCSS",
+    "SDGHTML",
+    "SDGWeb"
+  ]
+  let impossibleTargets: Set<String> = [
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator",
+    "WorkspaceProjectConfiguration",
+    "WorkspaceConfiguration",
+    "WorkspaceLibrary",
+    "WorkspaceLibraryTests",
+    "WorkspaceTool",
+    "WSConfigurationExample",
+    "WSContinuousIntegration",
+    "WSCustomTask",
+    "WSDocumentation",
+    "WSExamples",
+    "WSFileHeaders",
+    "WSGit",
+    "WSGitHub",
+    "WSGeneralImports",
+    "WSGeneralTestImports",
+    "WSInterface",
+    "WSLicence",
+    "WSLocalizations",
+    "WSNormalization",
+    "WSOpenSource",
+    "WSParsing",
+    "WSProject",
+    "WSProofreading",
+    "WSResources",
+    "WSScripts",
+    "WSSwift",
+    "WSTesting",
+    "WSValidation",
+    "WSXcode"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       switch dependency {
-      case ._targetItem, ._byNameItem:
-        return false
+      case ._targetItem(let name), ._byNameItem(let name):
+        return impossibleTargets.contains(name)
       case ._productItem(let name, _):
         return impossibleProducts.contains(name)
       }
     })
   }
+  package.targets.removeAll(where: { target in
+    return impossibleTargets.contains(target.name)
+  })
+  // #workaround(workspace 0.28.0, Not feasible on windows yet.)
+  let impossibleWorkspaceProducts: Set<String> = [
+    "arbeitsbereich",
+    "workspace",
+    "WorkspaceConfiguration"
+  ]
+  package.products.removeAll(where: { product in
+    impossibleWorkspaceProducts.contains(product.name)
+  })
 }
 #if os(Windows)
   adjustForWindows()

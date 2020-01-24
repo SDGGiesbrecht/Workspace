@@ -473,13 +473,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       result.append(contentsOf: [
         commandEntry("echo \u{27}Fetching package graph...\u{27}"),
-        ])
+      ])
       let graph = try project.cachedWindowsPackageGraph()
       for package in graph.packages.sorted(by: { $0.name < $1.name }) {
         if let version = package.underlyingPackage.manifest.version {
           let url = package.underlyingPackage.manifest.url
           result.append(
-            commandEntry("git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false")
+            commandEntry(
+              "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
+            )
           )
         }
       }

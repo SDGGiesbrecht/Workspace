@@ -162,8 +162,7 @@ extension PackageRepository {
       func sanitize(_ string: String) -> String {
         return quote(
           String(
-            // #workaround(Not testable yet.)
-            string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })  // @exempt(from: tests)
+            string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })
           )
         )
       }

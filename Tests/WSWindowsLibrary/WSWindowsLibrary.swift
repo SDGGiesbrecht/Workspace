@@ -27,7 +27,6 @@ import Dispatch
 import SwiftFormatConfiguration
 
 public func helloWorld() {
-  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
   print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
@@ -37,6 +36,5 @@ public func helloWorld() {
 }
 
 internal func helloTests() {
-  // @exempt(from: tests) #workaround(Not testable yet.)
   print("Hello, tests!")
 }

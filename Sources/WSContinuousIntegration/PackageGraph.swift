@@ -15,6 +15,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 
 import PackageModel
 import PackageGraph
@@ -24,6 +25,15 @@ extension PackageGraph {
   func sortedNodes() -> [GraphNode] {
     var deterministicTargets: [GraphNode] = reachableTargets.map({ $0 })
       + reachableProducts.map({ $0 })
+    var existing: Set<String> = []
+    deterministicTargets.removeAll(where: { target in
+      if target.name ∈ existing {
+        return true
+      } else {
+        existing.insert(target.name)
+        return false
+      }
+    })
     deterministicTargets.sort(by: { $0.name < $1.name })
     var sortedTargets: [GraphNode] = []
     while ¬deterministicTargets.isEmpty {

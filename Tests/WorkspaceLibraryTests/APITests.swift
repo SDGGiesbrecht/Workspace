@@ -1032,9 +1032,11 @@ class APITests: TestCase {
     configuration.documentation.localizations = ["en"]
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+    configuration.supportedPlatforms.remove(.windows)
     PackageRepository(mock: "OneProductMultipleModules").test(
       commands: [
-        ["refresh", "read‐me"]
+        ["refresh", "read‐me"],
+        ["refresh", "continuous‐integration"]
       ],
       configuration: configuration,
       localizations: FastTestLocalization.self,

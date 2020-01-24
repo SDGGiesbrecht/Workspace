@@ -31,9 +31,10 @@ public let configuration: WorkspaceConfiguration = {
   let configuration = WorkspaceConfiguration()
   configuration._applySDGDefaults()
 
+  configuration.supportedPlatforms.remove(.windows)
+  configuration.supportedPlatforms.remove(.tvOS)
   configuration.supportedPlatforms.remove(.iOS)
   configuration.supportedPlatforms.remove(.watchOS)
-  configuration.supportedPlatforms.remove(.tvOS)
 
   configuration.documentation.currentVersion = Metadata.latestStableVersion
   configuration.documentation.projectWebsite = URL(

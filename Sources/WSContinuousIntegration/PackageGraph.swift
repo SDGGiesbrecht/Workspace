@@ -53,8 +53,4 @@ extension PackageGraph {
     }
     return sorted
   }
-
-  func target(named name: String) -> ResolvedTarget? {
-    return reachableTargets.first(where: { $0.name == name })
-  }
 }

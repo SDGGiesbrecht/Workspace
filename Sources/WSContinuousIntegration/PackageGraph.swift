@@ -22,31 +22,36 @@ import PackageGraph
 
 extension PackageGraph {
 
-  func sortedNodes() -> [GraphNode] {
-    var deterministicTargets: [GraphNode] = reachableTargets.map({ $0 })
-      + reachableProducts.map({ $0 })
-    var existing: Set<String> = []
-    deterministicTargets.removeAll(where: { target in
-      if target.name ∈ existing {
-        return true
-      } else {
-        existing.insert(target.name)
-        return false
+  func sortedReachableTargets() -> [(package: ResolvedPackage, target: ResolvedTarget)] {
+    var discovered: [(package: ResolvedPackage, target: ResolvedTarget)] = []
+    for package in packages {
+      for target in package.targets {
+        discovered.append((package: package, target: target))
       }
-    })
-    deterministicTargets.sort(by: { $0.name < $1.name })
-    var sortedTargets: [GraphNode] = []
-    while ¬deterministicTargets.isEmpty {
-      let next = deterministicTargets.firstIndex(where: { possible in
-        return possible.dependencyNodes.allSatisfy({ dependency in
-          return sortedTargets.contains(where: { handled in
-            return handled.name == dependency.name
-          })
+    }
+
+    let reachable = Set(reachableTargets.map({ $0.name }))
+    discovered.removeAll(where: { $0.target.name ∉ reachable })
+    discovered.sort(by: { ($0.package.name, $0.target.name) < ($1.package.name, $1.target.name) })
+
+    var sorted: [(package: ResolvedPackage, target: ResolvedTarget)] = []
+    while ¬discovered.isEmpty {
+      let next = discovered.firstIndex(where: { possible in
+        return possible.target.dependencies.allSatisfy({ dependency in
+          if let target = dependency.target {
+            return sorted.contains(where: { $0.target.name == target.name })
+          } else {
+            let inherited = dependency.product?.targets
+              ?? []  // @exempt(from: tests) Never nil.
+            return inherited.allSatisfy { productTarget in
+              return sorted.contains(where: { $0.target.name == productTarget.name })
+            }
+          }
         })
       })!
-      sortedTargets.append(deterministicTargets.remove(at: next))
+      sorted.append(discovered.remove(at: next))
     }
-    return sortedTargets
+    return sorted
   }
 
   func target(named name: String) -> ResolvedTarget? {

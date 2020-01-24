@@ -184,55 +184,59 @@ extension PackageRepository {
       ]
 
       var testTargets: [ResolvedTarget] = []
-      for node in graph.sortedNodes() {
-        if let target = graph.target(named: node.name) {
-          if case .test = target.type {
-            testTargets.append(target)
-          }
-          cmake.append("")
-          switch target.type {
-          case .library, .test:
-            cmake.append("add_library(" + sanitize(target.name))
-          case .executable:
-            cmake.append("add_executable(" + sanitize(target.name))
-          case .systemModule:  // @exempt(from: tests)
-            break
-          }
-          for source in target.sources.paths {
-            let absoluteURL = URL(fileURLWithPath: source.pathString)
-            let relativeURL = absoluteURL.path(relativeTo: location)
-            cmake.append("  " + quote("../../../\(relativeURL)"))
-          }
-          switch target.type {
-          case .library, .executable, .test:
-            cmake.append(")")
-          case .systemModule:  // @exempt(from: tests)
-            break
-          }
-          switch target.type {
-          case .library, .test:
-            cmake.append(
-              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
-            )
-            cmake.append(
-              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
-            )
-          case .executable, .systemModule:
-            break
-          }
-          switch target.type {
-          case .library, .executable, .test:
-            let dependencies = target.dependencyTargets
-            if ¬dependencies.isEmpty {
-              cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
-              for dependency in dependencies {
-                cmake.append("  " + sanitize(dependency.name))
-              }
-              cmake.append(")")
+      for packageTarget in graph.sortedReachableTargets() {
+        let target = packageTarget.target
+        var pathPrefix: String = "../../../"
+        if ¬graph.rootPackages.contains(where: { $0.name == packageTarget.package.name }) {
+          pathPrefix += ".build/SDG/Dependencies/\(packageTarget.package.name)/"
+        }
+
+        if case .test = target.type {
+          testTargets.append(target)
+        }
+        cmake.append("")
+        switch target.type {
+        case .library, .test:
+          cmake.append("add_library(" + sanitize(target.name))
+        case .executable:
+          cmake.append("add_executable(" + sanitize(target.name))
+        case .systemModule:  // @exempt(from: tests)
+          break
+        }
+        for source in target.sources.paths {
+          let absoluteURL = URL(fileURLWithPath: source.pathString)
+          let relativeURL = absoluteURL.path(relativeTo: packageTarget.package.path.asURL)
+          cmake.append("  " + quote(pathPrefix + relativeURL))
+        }
+        switch target.type {
+        case .library, .executable, .test:
+          cmake.append(")")
+        case .systemModule:  // @exempt(from: tests)
+          break
+        }
+        switch target.type {
+        case .library, .test:
+          cmake.append(
+            "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
+          )
+          cmake.append(
+            "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
+          )
+        case .executable, .systemModule:
+          break
+        }
+        switch target.type {
+        case .library, .executable, .test:
+          let dependencies = target.dependencyTargets
+          if ¬dependencies.isEmpty {
+            cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
+            for dependency in dependencies {
+              cmake.append("  " + sanitize(dependency.name))
             }
-          case .systemModule:  // @exempt(from: tests)
-            break
+            cmake.append(")")
           }
+        case .systemModule:  // @exempt(from: tests)
+          break
         }
       }
 

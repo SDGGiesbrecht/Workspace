@@ -1,0 +1,6 @@
+$ workspace refresh continuous‐integration •no‐colour
+
+Refreshing continuous integration configuration...
+
+Writing to “.github/workflows/Workspace Validation.yaml”...
+0

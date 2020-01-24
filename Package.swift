@@ -639,6 +639,11 @@ let package = Package(
       dependencies: ["WSWindowsLibrary"],
       path: "Tests/WSWindowsTool"
     ),
+    .target(
+      name: "WSWindowsTool‐Unicode",
+      dependencies: ["WSWindowsLibrary"],
+      path: "Tests/WSWindowsTool‐Unicode"
+    ),
     .testTarget(
       name: "WSWindowsTests",
       dependencies: ["WSWindowsLibrary"]

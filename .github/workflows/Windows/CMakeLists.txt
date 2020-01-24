@@ -46,6 +46,13 @@ target_link_libraries("WSWindowsTool" PRIVATE
   "WSWindowsLibrary"
 )
 
+add_executable("WSWindowsTool_Unicode"
+  "../../../Tests/WSWindowsTool‐Unicode/main.swift"
+)
+target_link_libraries("WSWindowsTool_Unicode" PRIVATE
+  "WSWindowsLibrary"
+)
+
 add_executable(WindowsMain
   WindowsMain.swift
 )

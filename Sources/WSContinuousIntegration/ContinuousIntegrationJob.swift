@@ -434,10 +434,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin"
         ),
-        commandEntry(
-          "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin/* /c/Library/Swift/Current/bin"
-        ),
         commandEntry("export PATH=\u{22}/c/Library/Swift/Current/bin:${PATH}\u{22}"),
+        commandEntry(
+          "export PATH=\u{22}/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin:${PATH}\u{22}"
+        ),
         commandEntry("swift \u{2D}\u{2D}version"),
         "",
         commandEntry("echo \u{27}Fetching ICU...\u{27}"),

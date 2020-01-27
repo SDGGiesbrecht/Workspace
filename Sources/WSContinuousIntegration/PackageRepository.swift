@@ -156,10 +156,10 @@ extension PackageRepository {
       let package = try self.cachedWindowsPackage()
       let graph = try self.cachedWindowsPackageGraph()
 
-      func quote(_ string: String) -> String {
+      func quote(_ string: String) -> StrictString {
         return "\u{22}\(string)\u{22}"
       }
-      func sanitize(_ string: String) -> String {
+      func sanitize(_ string: String) -> StrictString {
         return quote(
           String(
             string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })
@@ -167,7 +167,7 @@ extension PackageRepository {
         )
       }
 
-      var cmake: [String] = [
+      var cmake: [StrictString] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
         "project(\(sanitize(package.name)) LANGUAGES Swift)",
@@ -258,7 +258,7 @@ extension PackageRepository {
       ])
 
       var cmakeFile = try TextFile(possiblyAt: url)
-      cmakeFile.body = cmake.joinedAsLines()
+      cmakeFile.body = String(cmake.joinedAsLines())
       try cmakeFile.writeChanges(for: self, output: output)
 
       try refreshWindowsMain(testTargets: testTargets, url: mainURL, output: output)

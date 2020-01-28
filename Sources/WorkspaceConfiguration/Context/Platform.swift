@@ -94,7 +94,7 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
     case .android:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-           .deutschDeutschland:
+        .deutschDeutschland:
         return "Android"
       }
     case .watchOS:

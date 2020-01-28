@@ -50,7 +50,7 @@ extension PackageRepository {
       // Simulator is unavailable during normal test.
         ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
         // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on Windows.
-        ∨ (job == .windows ∧ isWorkspaceProject())
+        ∨ ((job == .windows ∨ job == .android) ∧ isWorkspaceProject())
     }
   }
 

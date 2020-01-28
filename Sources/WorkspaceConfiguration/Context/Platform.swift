@@ -50,6 +50,10 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   case iOS  // 2007‐06‐29
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Android.
+  case android  // 2008‐09‐23
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// watchOS.
   case watchOS  // 2015‐04‐24
 
@@ -86,6 +90,12 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "iOS"
+      }
+    case .android:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+           .deutschDeutschland:
+        return "Android"
       }
     case .watchOS:
       switch localization {

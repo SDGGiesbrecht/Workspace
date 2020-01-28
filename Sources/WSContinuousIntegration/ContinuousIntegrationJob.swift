@@ -261,12 +261,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "ubuntu\u{2D}18.04"
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      return "ubuntu\u{2D}18.04"
     }
   }
 
   private var dockerImage: String? {
     switch platform {
-    case .macOS, .windows:
+    case .macOS, .windows, .android:
       return nil
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
@@ -346,6 +348,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: cacheEntry(os: "Linux"))
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      result.append(contentsOf: cacheEntry(os: "Android"))
     }
 
     func commandEntry(_ command: String) -> String {
@@ -356,7 +360,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))")
 
     switch platform {
-    case .macOS, .linux, .tvOS, .iOS, .watchOS:
+    case .macOS, .linux, .tvOS, .iOS, .android, .watchOS:
       break
     case .windows:
       result.append("      shell: bash")
@@ -462,6 +466,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      result.append(contentsOf: [
+        commandEntry("Set‐Up")
+      ])
     }
 
     switch platform {
@@ -496,10 +504,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cd .build/SDG/CMake"),
         commandEntry("ctest \u{2D}\u{2D}verbose")
       ])
+    case .android:
+      result.append(contentsOf: [
+        commandEntry("Build")
+      ])
     }
 
     switch platform {
-    case .macOS, .windows, .tvOS, .iOS, .watchOS:
+    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
       break
     case .linux:
       result.append(commandEntry("chmod \u{2D}R a+rwx ."))

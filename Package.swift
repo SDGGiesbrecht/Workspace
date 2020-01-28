@@ -775,3 +775,66 @@ import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
+
+func adjustForAndroid() {
+  // #workaround(SDGSwift 0.19.1, Cannot build for Android yet.)
+  let impossibleProducts: Set<String> = [
+    "SDGSwiftPackageManager",
+    "SDGSwiftSource",
+    "SDGXcode"
+  ]
+  let impossibleTargets: Set<String> = [
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator",
+    "WorkspaceLibrary",
+    "WorkspaceTool",
+    "WSContinuousIntegration",
+    "WSDocumentation",
+    "WSExamples",
+    "WSFileHeaders",
+    "WSGeneralTestImports",
+    "WSGit",
+    "WSGitHub",
+    "WSInterface",
+    "WSLicence",
+    "WSNormalization",
+    "WSOpenSource",
+    "WSParsing",
+    "WSProject",
+    "WSProofreading",
+    "WSResources",
+    "WSScripts",
+    "WSTesting",
+    "WSValidation",
+    "WSXcode"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return true  // #warning(Clean this up.)
+      switch dependency {
+      case ._targetItem(let name), ._byNameItem(let name):
+        return impossibleTargets.contains(name)
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      }
+    })
+  }
+  package.targets.removeAll(where: { target in
+    return !target.name.hasPrefix("WSWindowsLib")  // #warning(Clean this up.)
+    return impossibleTargets.contains(target.name)
+  })
+  let impossibleWorkspaceProducts: Set<String> = [
+    "arbeitsbereich",
+    "workspace"
+  ]
+  package.products.removeAll(where: { product in
+    return true  // #warning(Clean this up.)
+    impossibleWorkspaceProducts.contains(product.name)
+  })
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}

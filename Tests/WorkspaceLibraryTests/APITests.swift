@@ -1193,7 +1193,7 @@ class APITests: TestCase {
       sdg: true,
       localizations: FastTestLocalization.self,
       withDependency: true,
-      overwriteSpecificationInsteadOfFailing: false
+      overwriteSpecificationInsteadOfFailing: true
     )
   }
 

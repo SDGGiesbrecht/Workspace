@@ -54,4 +54,4 @@ jobs:
 
         export TARGETING_ANDROID=true
         sed -i "s|REPOSITORY_DIRECTORY|${repository_directory}|g" .github/workflows/Android/SDK.json
-        swift build --destination .github/workflows/Android/SDK.json --verbose
+        swift build --destination .github/workflows/Android/SDK.json

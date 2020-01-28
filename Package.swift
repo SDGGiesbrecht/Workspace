@@ -786,9 +786,13 @@ func adjustForAndroid() {
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
+    "WorkspaceConfiguration",
+    "WorkspaceProjectConfiguration",
     "WorkspaceLibrary",
     "WorkspaceTool",
+    "WSConfigurationExample",
     "WSContinuousIntegration",
+    "WSCustomTask",
     "WSDocumentation",
     "WSExamples",
     "WSFileHeaders",
@@ -823,7 +827,8 @@ func adjustForAndroid() {
   })
   let impossibleWorkspaceProducts: Set<String> = [
     "arbeitsbereich",
-    "workspace"
+    "workspace",
+    "WorkspaceConfiguration"
   ]
   package.products.removeAll(where: { product in
     impossibleWorkspaceProducts.contains(product.name)

@@ -52,6 +52,7 @@ jobs:
         sudo --preserve-env bash ./setup.sh
         cd "${repository_directory}"
 
+        echo 'Building Workspace...'
         export TARGETING_ANDROID=true
         sed -i "s|REPOSITORY_DIRECTORY|${repository_directory}|g" .github/workflows/Android/SDK.json
         swift build --destination .github/workflows/Android/SDK.json

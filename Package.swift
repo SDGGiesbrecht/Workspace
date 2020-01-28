@@ -779,9 +779,36 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 func adjustForAndroid() {
   // #workaround(SDGSwift 0.19.1, Cannot build for Android yet.)
   let impossibleProducts: Set<String> = [
+    // SDGCommandLine
+    "SDGCommandLine",
+    "SDGCommandLineTestUtilities",
+    "SDGExportedCommandLineInterface",
+    // SDGCornerstone
+    "SDGCalendar",
+    "SDGCollections",
+    "SDGControlFlow",
+    "SDGExternalProcess",
+    "SDGLocalization",
+    "SDGLocalizationTestUtilities",
+    "SDGMathematics",
+    "SDGPersistence",
+    "SDGPersistenceTestUtilities",
+    "SDGText",
+    "SDGVersioning",
+    "SDGXCTestUtilities",
+    // SDGSwift
+    "SDGSwift",
+    "SDGSwiftConfiguration",
+    "SDGSwiftConfigurationLoading",
     "SDGSwiftPackageManager",
     "SDGSwiftSource",
-    "SDGXcode"
+    "SDGXcode",
+    // SDGWeb
+    "SDGCSS",
+    "SDGHTML",
+    "SDGWeb",
+    // SwiftFormat
+    "SwiftFormatConfiguration"
   ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
@@ -796,11 +823,13 @@ func adjustForAndroid() {
     "WSDocumentation",
     "WSExamples",
     "WSFileHeaders",
+    "WSGeneralImports",
     "WSGeneralTestImports",
     "WSGit",
     "WSGitHub",
     "WSInterface",
     "WSLicence",
+    "WSLocalizations",
     "WSNormalization",
     "WSOpenSource",
     "WSParsing",
@@ -808,6 +837,7 @@ func adjustForAndroid() {
     "WSProofreading",
     "WSResources",
     "WSScripts",
+    "WSSwift",
     "WSTesting",
     "WSValidation",
     "WSXcode"

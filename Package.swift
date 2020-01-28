@@ -777,7 +777,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 }
 
 func adjustForAndroid() {
-  // #workaround(SDGSwift 0.19.1, Cannot build for Android yet.)
+  // #workaround(Cannot build for Android yet.)
   let impossibleProducts: Set<String> = [
     // SDGCommandLine
     "SDGCommandLine",

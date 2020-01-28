@@ -31,6 +31,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case linux
   case tvOS
   case iOS
+  case android
   case watchOS
   case miscellaneous
   case deployment
@@ -86,6 +87,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "iOS"
+        }
+      })
+    case .android:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
+          return "Android"
         }
       })
     case .watchOS:
@@ -159,6 +168,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "ios"
         }
       })
+    case .android:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+             .deutschDeutschland:
+          return "android"
+        }
+      })
     case .watchOS:
       return UserFacing({ (localization) in
         switch localization {
@@ -200,6 +217,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
     case .iOS:
       return try .iOS ∈ project.configuration(output: output).supportedPlatforms
+    case .android:
+      return try .android ∈ project.configuration(output: output).supportedPlatforms
     case .watchOS:
       return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
     case .miscellaneous:
@@ -222,6 +241,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .windows
     case .linux, .miscellaneous, .deployment:
       return .linux
+    case .android:
+      return .android
     }
   }
 
@@ -543,7 +564,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .linux, .tvOS, .iOS, .watchOS, .miscellaneous:
+      case .macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

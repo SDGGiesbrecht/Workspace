@@ -498,7 +498,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
         ),
         commandEntry("tar \u{2D}\u{2D}extract \u{2D}\u{2D}file Swift.tar.gz"),
-        commandEntry("sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"),
+        commandEntry(
+          "sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"
+        ),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         commandEntry("swift \u{2D}\u{2D}version"),
         "",

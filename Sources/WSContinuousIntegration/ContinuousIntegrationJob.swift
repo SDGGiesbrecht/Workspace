@@ -396,9 +396,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("xcversion select \(xcodeVersion)")
       ])
     case .windows:
-      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion.string(
-        droppingEmptyPatch: true
-      )
+      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
+        .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         commandEntry(
           "echo \u{27}Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)\u{27}"
@@ -488,16 +487,18 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
+      let version = ContinuousIntegrationJob.currentSwiftVersion
+        .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         commandEntry("echo \u{27}Fetching Swift...\u{27}"),
         commandEntry("repository_directory=$(pwd)"),
         commandEntry("mkdir \u{2D}p .build/SDG/Swift"),
         commandEntry("cd .build/SDG/Swift"),
         commandEntry(
-          "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}5.1.3\u{2D}release/ubuntu1804/swift\u{2D}5.1.3\u{2D}RELEASE/swift\u{2D}5.1.3\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
+          "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
         ),
         commandEntry("tar \u{2D}\u{2D}extract \u{2D}\u{2D}file Swift.tar.gz"),
-        commandEntry("sudo cp \u{2D}R swift\u{2D}5.1.3\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"),
+        commandEntry("sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         commandEntry("swift \u{2D}\u{2D}version"),
         "",
@@ -559,7 +560,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .android:
       result.append(contentsOf: [
-        commandEntry("echo \u{27}Building Workspace...\u{27}"),
+        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry("export TARGETING_ANDROID=true"),
         commandEntry(
           "sed \u{2D}i \u{22}s|REPOSITORY_DIRECTORY|${repository_directory}|g\u{22} .github/workflows/Android/SDK.json"

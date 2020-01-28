@@ -1,5 +1,5 @@
 
 
-macOS • Windows • Linux • tvOS • iOS • watchOS
+macOS • Windows • Linux • tvOS • iOS • Android • watchOS
 
 # NoLibraries

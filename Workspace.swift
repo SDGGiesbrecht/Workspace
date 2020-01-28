@@ -34,6 +34,7 @@ public let configuration: WorkspaceConfiguration = {
   configuration.supportedPlatforms.remove(.windows)
   configuration.supportedPlatforms.remove(.tvOS)
   configuration.supportedPlatforms.remove(.iOS)
+  configuration.supportedPlatforms.remove(.android)
   configuration.supportedPlatforms.remove(.watchOS)
 
   configuration.documentation.currentVersion = Metadata.latestStableVersion

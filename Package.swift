@@ -775,3 +775,100 @@ import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
+
+func adjustForAndroid() {
+  // #workaround(Cannot build for Android yet.)
+  let impossibleProducts: Set<String> = [
+    // SDGCommandLine
+    "SDGCommandLine",
+    "SDGCommandLineTestUtilities",
+    "SDGExportedCommandLineInterface",
+    // SDGCornerstone
+    "SDGCalendar",
+    "SDGCollections",
+    "SDGControlFlow",
+    "SDGExternalProcess",
+    "SDGLocalization",
+    "SDGLocalizationTestUtilities",
+    "SDGMathematics",
+    "SDGPersistence",
+    "SDGPersistenceTestUtilities",
+    "SDGText",
+    "SDGVersioning",
+    "SDGXCTestUtilities",
+    // SDGSwift
+    "SDGSwift",
+    "SDGSwiftConfiguration",
+    "SDGSwiftConfigurationLoading",
+    "SDGSwiftPackageManager",
+    "SDGSwiftSource",
+    "SDGXcode",
+    // SDGWeb
+    "SDGCSS",
+    "SDGHTML",
+    "SDGWeb",
+    // SwiftFormat
+    "SwiftFormatConfiguration"
+  ]
+  let impossibleTargets: Set<String> = [
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator",
+    "WorkspaceConfiguration",
+    "WorkspaceProjectConfiguration",
+    "WorkspaceLibrary",
+    "WorkspaceTool",
+    "WSConfigurationExample",
+    "WSContinuousIntegration",
+    "WSCustomTask",
+    "WSDocumentation",
+    "WSExamples",
+    "WSFileHeaders",
+    "WSGeneralImports",
+    "WSGeneralTestImports",
+    "WSGit",
+    "WSGitHub",
+    "WSInterface",
+    "WSLicence",
+    "WSLocalizations",
+    "WSNormalization",
+    "WSOpenSource",
+    "WSParsing",
+    "WSProject",
+    "WSProofreading",
+    "WSResources",
+    "WSScripts",
+    "WSSwift",
+    "WSTesting",
+    "WSValidation",
+    "WSWindowsTool",  // #workaround(Cannot build for Android yet.)
+    "WSWindows‐Unicode",  // #workaround(Cannot build for Android yet.)
+    "WSXcode"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._targetItem(let name), ._byNameItem(let name):
+        return impossibleTargets.contains(name)
+      case ._productItem(let name, _):
+        return impossibleProducts.contains(name)
+      }
+    })
+  }
+  package.targets.removeAll(where: { target in
+    return impossibleTargets.contains(target.name)
+  })
+  let impossibleWorkspaceProducts: Set<String> = [
+    "arbeitsbereich",
+    "workspace",
+    "WorkspaceConfiguration"
+  ]
+  package.products.removeAll(where: { product in
+    impossibleWorkspaceProducts.contains(product.name)
+  })
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}

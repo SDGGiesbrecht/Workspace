@@ -1,6 +1,6 @@
 
 
-macOS • Windows • Linux
+macOS • Windows • Linux • Android
 
 # Executable
 

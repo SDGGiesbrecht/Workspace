@@ -31,6 +31,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case linux
   case tvOS
   case iOS
+  case android
   case watchOS
   case miscellaneous
   case deployment
@@ -86,6 +87,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "iOS"
+        }
+      })
+    case .android:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "Android"
         }
       })
     case .watchOS:
@@ -159,6 +168,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "ios"
         }
       })
+    case .android:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "android"
+        }
+      })
     case .watchOS:
       return UserFacing({ (localization) in
         switch localization {
@@ -200,6 +217,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
     case .iOS:
       return try .iOS ∈ project.configuration(output: output).supportedPlatforms
+    case .android:
+      return try .android ∈ project.configuration(output: output).supportedPlatforms
     case .watchOS:
       return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
     case .miscellaneous:
@@ -222,6 +241,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .windows
     case .linux, .miscellaneous, .deployment:
       return .linux
+    case .android:
+      return .android
     }
   }
 
@@ -261,12 +282,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "ubuntu\u{2D}18.04"
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      return "ubuntu\u{2D}18.04"
     }
   }
 
   private var dockerImage: String? {
     switch platform {
-    case .macOS, .windows:
+    case .macOS, .windows, .android:
       return nil
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
@@ -346,6 +369,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: cacheEntry(os: "Linux"))
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      result.append(contentsOf: cacheEntry(os: "Android"))
     }
 
     func commandEntry(_ command: String) -> String {
@@ -356,7 +381,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))")
 
     switch platform {
-    case .macOS, .linux, .tvOS, .iOS, .watchOS:
+    case .macOS, .linux, .tvOS, .iOS, .android, .watchOS:
       break
     case .windows:
       result.append("      shell: bash")
@@ -371,9 +396,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("xcversion select \(xcodeVersion)")
       ])
     case .windows:
-      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion.string(
-        droppingEmptyPatch: true
-      )
+      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
+        .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         commandEntry(
           "echo \u{27}Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)\u{27}"
@@ -462,6 +486,46 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .android:
+      let version = ContinuousIntegrationJob.currentSwiftVersion
+        .string(droppingEmptyPatch: true)
+      result.append(contentsOf: [
+        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
+        commandEntry("repository_directory=$(pwd)"),
+        commandEntry("mkdir \u{2D}p .build/SDG/Swift"),
+        commandEntry("cd .build/SDG/Swift"),
+        commandEntry(
+          "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
+        ),
+        commandEntry("tar \u{2D}\u{2D}extract \u{2D}\u{2D}file Swift.tar.gz"),
+        commandEntry(
+          "sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"
+        ),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        commandEntry("swift \u{2D}\u{2D}version"),
+        "",
+        commandEntry("echo \u{27}Fetching Android NDK...\u{27}"),
+        commandEntry("mkdir \u{2D}p .build/SDG/Android"),
+        commandEntry("cd .build/SDG/Android"),
+        commandEntry(
+          "curl \u{2D}o NDK.zip \u{27}https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r16b\u{2D}linux\u{2D}x86_64.zip\u{27}"
+        ),
+        commandEntry("unzip \u{2D}q NDK.zip"),
+        commandEntry(
+          "export ANDROID_NDK_PATH=\u{22}${repository_directory}/.build/SDG/Android/android\u{2D}ndk\u{2D}r16b\u{22}"
+        ),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        "",
+        commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
+        commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
+        commandEntry("cd .build/SDG/Experimental_Swift"),
+        commandEntry(
+          "curl \u{2D}o setup.sh \u{27}https://raw.githubusercontent.com/flowkey/swift\u{2D}android\u{2D}toolchain/master/setup.sh\u{27}"
+        ),
+        commandEntry("sudo \u{2D}\u{2D}preserve\u{2D}env bash ./setup.sh"),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        "",
+      ])
     }
 
     switch platform {
@@ -496,10 +560,19 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cd .build/SDG/CMake"),
         commandEntry("ctest \u{2D}\u{2D}verbose")
       ])
+    case .android:
+      result.append(contentsOf: [
+        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
+        commandEntry("export TARGETING_ANDROID=true"),
+        commandEntry(
+          "sed \u{2D}i \u{22}s|REPOSITORY_DIRECTORY|${repository_directory}|g\u{22} .github/workflows/Android/SDK.json"
+        ),
+        commandEntry("swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json"),
+      ])
     }
 
     switch platform {
-    case .macOS, .windows, .tvOS, .iOS, .watchOS:
+    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
       break
     case .linux:
       result.append(commandEntry("chmod \u{2D}R a+rwx ."))
@@ -531,7 +604,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .linux, .tvOS, .iOS, .watchOS, .miscellaneous:
+      case .macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "sdk": "REPOSITORY_DIRECTORY/.build/SDG/Experimental_Swift/Android.sdk-arm64-v8a",
+  "toolchain-bin-dir": "REPOSITORY_DIRECTORY/.build/SDG/Experimental_Swift/swift-flowkey.xctoolchain/usr/bin",
+  "target": "aarch64-unknown-linux-android",
+  "dynamic-library-extension": "so",
+  "extra-cc-flags": [],
+  "extra-swiftc-flags": [],
+  "extra-cpp-flags": []
+}

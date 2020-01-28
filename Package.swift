@@ -810,7 +810,6 @@ func adjustForAndroid() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return true  // #warning(Clean this up.)
       switch dependency {
       case ._targetItem(let name), ._byNameItem(let name):
         return impossibleTargets.contains(name)
@@ -820,7 +819,6 @@ func adjustForAndroid() {
     })
   }
   package.targets.removeAll(where: { target in
-    return !target.name.hasPrefix("WSWindowsLib")  // #warning(Clean this up.)
     return impossibleTargets.contains(target.name)
   })
   let impossibleWorkspaceProducts: Set<String> = [
@@ -828,7 +826,6 @@ func adjustForAndroid() {
     "workspace"
   ]
   package.products.removeAll(where: { product in
-    return true  // #warning(Clean this up.)
     impossibleWorkspaceProducts.contains(product.name)
   })
 }

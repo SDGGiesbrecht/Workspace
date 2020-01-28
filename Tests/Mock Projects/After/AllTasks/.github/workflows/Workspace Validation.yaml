@@ -133,6 +133,45 @@ jobs:
         xcversion select 11.3
         './Refresh (macOS).command' •language '🇮🇱עב'
         './Validate (macOS).command' •job ios •language '🇮🇱עב'
+  Android:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/cache@v1
+      with:
+        key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Validate
+      run: |
+        echo 'Fetching Swift...'
+        repository_directory=$(pwd)
+        mkdir -p .build/SDG/Swift
+        cd .build/SDG/Swift
+        curl -o Swift.tar.gz 'https://swift.org/builds/swift-5.1.3-release/ubuntu1804/swift-5.1.3-RELEASE/swift-5.1.3-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file Swift.tar.gz
+        sudo cp -R swift-5.1.3-RELEASE-ubuntu18.04/usr/* /usr/
+        cd "${repository_directory}"
+        swift --version
+
+        echo 'Fetching Android NDK...'
+        mkdir -p .build/SDG/Android
+        cd .build/SDG/Android
+        curl -o NDK.zip 'https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip'
+        unzip -q NDK.zip
+        export ANDROID_NDK_PATH="${repository_directory}/.build/SDG/Android/android-ndk-r16b"
+        cd "${repository_directory}"
+
+        echo 'Fetching Swift Android SDK...'
+        mkdir -p .build/SDG/Experimental_Swift
+        cd .build/SDG/Experimental_Swift
+        curl -o setup.sh 'https://raw.githubusercontent.com/flowkey/swift-android-toolchain/master/setup.sh'
+        sudo --preserve-env bash ./setup.sh
+        cd "${repository_directory}"
+
+        echo 'Building AllTasks...'
+        export TARGETING_ANDROID=true
+        sed -i "s|REPOSITORY_DIRECTORY|${repository_directory}|g" .github/workflows/Android/SDK.json
+        swift build --destination .github/workflows/Android/SDK.json
   watchOS:
     runs-on: macos-latest
     steps:

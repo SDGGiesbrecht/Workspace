@@ -37,10 +37,24 @@ jobs:
         cd "${repository_directory}"
         swift --version
 
-        echo 'Fetching Swift Android SDK...'
-        docker create --name experimental compnerd/swift
-        sudo docker cp experimental:/Library /Library
-        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
+        # echo 'Fetching Swift Android SDK...'
+        # docker create --name experimental compnerd/swift
+        # sudo docker cp experimental:/Library /Library
+        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
+
+        echo 'Fetching Swift...'
+        mkdir -p .build/SDG/Experimental_Swift
+        cd .build/SDG/Experimental_Swift
+        curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
+        python -m pip install --user azure-devops tabulate
+        echo 'Downloading... (This could take up to 10 minutes.)'
+        python swift-build.py --build-id 'Ubuntu 18:04 (FlowKey)' --latest-artifacts --download > /dev/null
+        # 7z x toolchain-windows-x64.zip
+        # mv toolchain-windows-x64/Library /c/Library
+        # 7z x sdk-windows-x64.zip
+        # mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
+        ls
+        cd "${repository_directory}"
 
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true

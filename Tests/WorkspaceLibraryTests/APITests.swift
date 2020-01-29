@@ -1033,6 +1033,7 @@ class APITests: TestCase {
     configuration.documentation.currentVersion = Version(1, 0, 0)
     configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
     configuration.supportedPlatforms.remove(.windows)
+    configuration.supportedPlatforms.remove(.android)
     PackageRepository(mock: "OneProductMultipleModules").test(
       commands: [
         ["refresh", "read‐me"],

@@ -57,11 +57,12 @@ jobs:
         ls
         cd ..
 
-        mv toolchain-linux-x64/Library /c/Library
+        mv toolchain-linux-x64/Library /Library
         cd "${repository_directory}"
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
+        echo 'Downloading... (This could take up to 3 minutes.)'
         python swift-build.py --build-id 'VS 2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null
         unzip sdk-android-arm64.zip
 

@@ -55,16 +55,8 @@ jobs:
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
-        echo 'Downloading... (This could take up to 3 minutes.)'
         python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null
         unzip sdk-android-arm64.zip
-
-        ls
-        cd sdk-android-arm64
-        pwd
-        ls
-        cd ..
-
         mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         cd "${repository_directory}"
 

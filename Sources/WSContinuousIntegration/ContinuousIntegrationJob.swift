@@ -504,25 +504,34 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         commandEntry("swift \u{2D}\u{2D}version"),
         "",
-        commandEntry("echo \u{27}Fetching Android NDK...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Android"),
-        commandEntry("cd .build/SDG/Android"),
-        commandEntry(
-          "curl \u{2D}o NDK.zip \u{27}https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r16b\u{2D}linux\u{2D}x86_64.zip\u{27}"
-        ),
-        commandEntry("unzip \u{2D}q NDK.zip"),
-        commandEntry(
-          "export ANDROID_NDK_PATH=\u{22}${repository_directory}/.build/SDG/Android/android\u{2D}ndk\u{2D}r16b\u{22}"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
-        commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
+        commandEntry("echo \u{27}Fetching Swift cross‐compilation toolchain...\u{27}"),
         commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
         commandEntry(
-          "curl \u{2D}o setup.sh \u{27}https://raw.githubusercontent.com/flowkey/swift\u{2D}android\u{2D}toolchain/master/setup.sh\u{27}"
+          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
         ),
-        commandEntry("sudo \u{2D}\u{2D}preserve\u{2D}env bash ./setup.sh"),
+        commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
+        commandEntry("echo \u{27}Downloading... (This could take up to 10 minutes.)\u{27}"),
+        commandEntry(
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}Ubuntu 18.04 (flowkey)\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter toolchain\u{2D}linux\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
+        ),
+        commandEntry("unzip toolchain\u{2D}linux\u{2D}x64.zip"),
+        commandEntry("sudo mv toolchain\u{2D}linux\u{2D}x64/Library /Library"),
+        commandEntry("chmod \u{2D}R a+rwx /Library"),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        commandEntry(
+          "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version"
+        ),
+        "",
+        commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
+        commandEntry("cd .build/SDG/Experimental_Swift"),
+        commandEntry(
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter sdk\u{2D}android\u{2D}arm64 \u{2D}\u{2D}download > /dev/null"
+        ),
+        commandEntry("unzip sdk\u{2D}android\u{2D}arm64.zip"),
+        commandEntry(
+          "mv sdk\u{2D}android\u{2D}arm64/Library/Developer/Platforms /Library/Developer/Platforms"
+        ),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
       ])
@@ -564,9 +573,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry("export TARGETING_ANDROID=true"),
-        commandEntry(
-          "sed \u{2D}i \u{22}s|REPOSITORY_DIRECTORY|${repository_directory}|g\u{22} .github/workflows/Android/SDK.json"
-        ),
         commandEntry("swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json"),
       ])
     }

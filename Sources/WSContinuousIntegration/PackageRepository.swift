@@ -360,7 +360,7 @@ extension PackageRepository {
   }
 
   private func refreshAnroidSDK(output: Command.Output) throws {
-    let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
+    let url = location.appendingPathComponent(".github/workflows/Android/SDK.json")
     if try ¬relevantJobs(output: output).contains(.android) {
       delete(url, output: output)
     } else {
@@ -373,11 +373,11 @@ extension PackageRepository {
         "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}so\u{22},",
         "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
         "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: [],",
+        "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
         "}",
       ]
       var sdkFile = try TextFile(possiblyAt: url)
-      sdkFile.body = sdk.joinedAsLines()
+      sdkFile.contents = sdk.joinedAsLines()
       try sdkFile.writeChanges(for: self, output: output)
     }
   }

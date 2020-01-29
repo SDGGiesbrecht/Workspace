@@ -51,6 +51,7 @@ jobs:
         python swift-build.py --build-id 'Ubuntu 18.04 (flowkey)' --latest-artifacts --filter toolchain-linux-x64 --download > /dev/null
         unzip toolchain-linux-x64.zip
         sudo mv toolchain-linux-x64/Library /Library
+        chmod -R a+rwx /Library
         cd "${repository_directory}"
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
 

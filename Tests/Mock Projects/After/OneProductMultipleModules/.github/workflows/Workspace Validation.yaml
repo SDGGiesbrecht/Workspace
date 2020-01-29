@@ -83,24 +83,28 @@ jobs:
         cd "${repository_directory}"
         swift --version
 
-        echo 'Fetching Android NDK...'
-        mkdir -p .build/SDG/Android
-        cd .build/SDG/Android
-        curl -o NDK.zip 'https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip'
-        unzip -q NDK.zip
-        export ANDROID_NDK_PATH="${repository_directory}/.build/SDG/Android/android-ndk-r16b"
-        cd "${repository_directory}"
-
-        echo 'Fetching Swift Android SDK...'
+        echo 'Fetching Swift cross‐compilation toolchain...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift
-        curl -o setup.sh 'https://raw.githubusercontent.com/flowkey/swift-android-toolchain/master/setup.sh'
-        sudo --preserve-env bash ./setup.sh
+        curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
+        python -m pip install --user azure-devops tabulate
+        echo 'Downloading... (This could take up to 10 minutes.)'
+        python swift-build.py --build-id 'Ubuntu 18.04 (flowkey)' --latest-artifacts --filter toolchain-linux-x64 --download > /dev/null
+        unzip toolchain-linux-x64.zip
+        sudo mv toolchain-linux-x64/Library /Library
+        chmod -R a+rwx /Library
+        cd "${repository_directory}"
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
+
+        echo 'Fetching Swift Android SDK...'
+        cd .build/SDG/Experimental_Swift
+        python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null
+        unzip sdk-android-arm64.zip
+        mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         cd "${repository_directory}"
 
         echo 'Building OneProductMultipleModules...'
         export TARGETING_ANDROID=true
-        sed -i "s|REPOSITORY_DIRECTORY|${repository_directory}|g" .github/workflows/Android/SDK.json
         swift build --destination .github/workflows/Android/SDK.json
   watchOS:
     runs-on: macos-latest

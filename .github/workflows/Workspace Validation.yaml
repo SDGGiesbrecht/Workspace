@@ -50,14 +50,7 @@ jobs:
         echo 'Downloading... (This could take up to 10 minutes.)'
         python swift-build.py --build-id 'Ubuntu 18.04 (FlowKey)' --latest-artifacts --filter toolchain-linux-x64 --download > /dev/null
         unzip toolchain-linux-x64.zip
-
-        ls
-        cd toolchain-linux-x64
-        pwd
-        ls
-        cd ..
-
-        mv toolchain-linux-x64/Library /Library
+        sudo mv toolchain-linux-x64/Library /Library
         cd "${repository_directory}"
 
         echo 'Fetching Swift Android SDK...'

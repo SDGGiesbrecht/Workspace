@@ -504,24 +504,34 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         commandEntry("swift \u{2D}\u{2D}version"),
         "",
-        commandEntry("echo 'Fetching Swift cross‐compilation toolchain...'"),
-        commandEntry("mkdir -p .build/SDG/Experimental_Swift"),
+        commandEntry("echo \u{27}Fetching Swift cross‐compilation toolchain...\u{27}"),
+        commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry("curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'"),
-        commandEntry("python -m pip install --user azure-devops tabulate"),
-        commandEntry("echo 'Downloading... (This could take up to 10 minutes.)'"),
-        commandEntry("python swift-build.py --build-id 'Ubuntu 18.04 (flowkey)' --latest-artifacts --filter toolchain-linux-x64 --download > /dev/null"),
-        commandEntry("unzip toolchain-linux-x64.zip"),
-        commandEntry("sudo mv toolchain-linux-x64/Library /Library"),
-        commandEntry("chmod -R a+rwx /Library"),
+        commandEntry(
+          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
+        ),
+        commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
+        commandEntry("echo \u{27}Downloading... (This could take up to 10 minutes.)\u{27}"),
+        commandEntry(
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}Ubuntu 18.04 (flowkey)\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter toolchain\u{2D}linux\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
+        ),
+        commandEntry("unzip toolchain\u{2D}linux\u{2D}x64.zip"),
+        commandEntry("sudo mv toolchain\u{2D}linux\u{2D}x64/Library /Library"),
+        commandEntry("chmod \u{2D}R a+rwx /Library"),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry("/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version"),
+        commandEntry(
+          "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version"
+        ),
         "",
         commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry("python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null"),
-        commandEntry("unzip sdk-android-arm64.zip"),
-        commandEntry("mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms"),
+        commandEntry(
+          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter sdk\u{2D}android\u{2D}arm64 \u{2D}\u{2D}download > /dev/null"
+        ),
+        commandEntry("unzip sdk\u{2D}android\u{2D}arm64.zip"),
+        commandEntry(
+          "mv sdk\u{2D}android\u{2D}arm64/Library/Developer/Platforms /Library/Developer/Platforms"
+        ),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
       ])

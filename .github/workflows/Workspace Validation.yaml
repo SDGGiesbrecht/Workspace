@@ -52,6 +52,7 @@ jobs:
         unzip toolchain-linux-x64.zip
         sudo mv toolchain-linux-x64/Library /Library
         cd "${repository_directory}"
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
@@ -60,25 +61,7 @@ jobs:
         mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         cd "${repository_directory}"
 
-        cd /Library
-        pwd
-        ls
-        cd /Library/Developer
-        pwd
-        ls
-        cd /Library/Developer/Toolchains
-        pwd
-        ls
-        cd /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain
-        pwd
-        ls
-        cd /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr
-        pwd
-        ls
-        cd /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin
-        pwd
-        ls
-        cd "${repository_directory}"
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swiftc --version
 
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true

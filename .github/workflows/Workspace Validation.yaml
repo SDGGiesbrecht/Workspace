@@ -42,18 +42,36 @@ jobs:
         # sudo docker cp experimental:/Library /Library
         # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
 
-        echo 'Fetching Swift...'
+        echo 'Fetching Swift cross‐compilation toolchain...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This could take up to 10 minutes.)'
-        python swift-build.py --build-id 'Ubuntu 18.04 (FlowKey)' --latest-artifacts --download > /dev/null
-        # 7z x toolchain-windows-x64.zip
-        # mv toolchain-windows-x64/Library /c/Library
-        # 7z x sdk-windows-x64.zip
-        # mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
+        python swift-build.py --build-id 'Ubuntu 18.04 (FlowKey)' --latest-artifacts --filter toolchain-linux-x64 --download > /dev/null
+        unzip toolchain-linux-x64.zip
+
         ls
+        cd toolchain-linux-x64
+        pwd
+        ls
+        cd ..
+
+        mv toolchain-linux-x64/Library /c/Library
+        cd "${repository_directory}"
+
+        echo 'Fetching Swift Android SDK...'
+        cd .build/SDG/Experimental_Swift
+        python swift-build.py --build-id 'VS 2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null
+        unzip sdk-android-arm64.zip
+
+        ls
+        cd sdk-android-arm64
+        pwd
+        ls
+        cd ..
+
+        mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         cd "${repository_directory}"
 
         echo 'Building Workspace...'

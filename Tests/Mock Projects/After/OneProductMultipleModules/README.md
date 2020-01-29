@@ -1,6 +1,6 @@
 
 
-macOS • Linux • tvOS • iOS • Android • watchOS
+macOS • Linux • tvOS • iOS • watchOS
 
 # OneProductMultipleModules
 

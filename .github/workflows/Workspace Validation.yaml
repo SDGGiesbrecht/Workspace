@@ -48,7 +48,7 @@ jobs:
         curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
         python -m pip install --user azure-devops tabulate
         echo 'Downloading... (This could take up to 10 minutes.)'
-        python swift-build.py --build-id 'Ubuntu 18:04 (FlowKey)' --latest-artifacts --download > /dev/null
+        python swift-build.py --build-id 'Ubuntu 18.04 (FlowKey)' --latest-artifacts --download > /dev/null
         # 7z x toolchain-windows-x64.zip
         # mv toolchain-windows-x64/Library /c/Library
         # 7z x sdk-windows-x64.zip

@@ -27,6 +27,17 @@ jobs:
         path: .build/SDG/Workspace
     - name: Validate
       run: |
+        repository_directory=$(pwd)
+        cd ~
+        pwd
+        ls
+        cd Android
+        pwd
+        ls
+        cd Sdk
+        pwd
+        ls
+
         echo 'Fetching Swift...'
         repository_directory=$(pwd)
         mkdir -p .build/SDG/Swift

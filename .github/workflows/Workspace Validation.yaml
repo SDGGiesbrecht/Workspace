@@ -57,6 +57,11 @@ jobs:
         mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         cd "${repository_directory}"
 
+        cd "${ANDROID_HOME}/ndk-bundle/sysroot"
+        pwd
+        ls
+        cd "${repository_directory}"
+
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
-        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld -Xlinker --sysroot="${ANDROID_HOME}/ndk-bundle/sysroot"
+        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld -Xcc --sysroot="${ANDROID_HOME}/ndk-bundle/sysroot" -Xlinker --sysroot="${ANDROID_HOME}/ndk-bundle/sysroot" --verbose

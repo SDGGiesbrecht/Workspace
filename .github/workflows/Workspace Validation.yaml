@@ -28,10 +28,10 @@ jobs:
     - name: Validate
       run: |
         repository_directory=$(pwd)
-        cd "${ANDROID_HOME}/../.."
+        cd "${ANDROID_HOME}"
         pwd
         ls
-        cd Android
+        cd ndk-bundle
         pwd
         ls
         cd Sdk

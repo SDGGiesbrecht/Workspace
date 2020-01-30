@@ -28,7 +28,7 @@ jobs:
     - name: Validate
       run: |
         repository_directory=$(pwd)
-        cd ~
+        cd /
         pwd
         ls
         cd Android

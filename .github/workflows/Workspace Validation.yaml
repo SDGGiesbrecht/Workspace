@@ -28,6 +28,7 @@ jobs:
     - name: Validate
       run: |
         repository_directory=$(pwd)
+        printenv
         cd /
         pwd
         ls

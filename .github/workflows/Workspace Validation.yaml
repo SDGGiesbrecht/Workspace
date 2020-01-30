@@ -28,8 +28,7 @@ jobs:
     - name: Validate
       run: |
         repository_directory=$(pwd)
-        printenv
-        cd /
+        cd "${ANDROID_HOME}"
         pwd
         ls
         cd Android

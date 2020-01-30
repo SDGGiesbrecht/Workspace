@@ -66,4 +66,4 @@ jobs:
 
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
-        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld --verbose
+        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld --verbose -Xlinker "-L${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64"

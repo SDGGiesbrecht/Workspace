@@ -532,6 +532,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "mv sdk\u{2D}android\u{2D}arm64/Library/Developer/Platforms /Library/Developer/Platforms"
         ),
+        commandEntry(
+          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/nkd\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap"
+        ),
+        commandEntry(
+          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}arm64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
+        ),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
       ])

@@ -56,7 +56,6 @@ jobs:
         unzip sdk-android-arm64.zip
         mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/nkd-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap
-        cat /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap
         cd "${repository_directory}"
 
         cd "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64"

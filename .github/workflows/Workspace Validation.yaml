@@ -56,7 +56,7 @@ jobs:
         unzip sdk-android-arm64.zip
         mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/nkd-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap
-        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64/*" /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        # cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64/*" /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
 
         cd /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib
@@ -72,7 +72,6 @@ jobs:
 
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
-        export LIBRARY_PATH=/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib:$LIBRARY_PATH
         swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld -Xcc --sysroot="${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64" -Xclang-linker="${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64" --verbose
 
         echo 'Debugging...'

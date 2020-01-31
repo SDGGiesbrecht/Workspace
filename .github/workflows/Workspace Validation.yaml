@@ -65,4 +65,4 @@ jobs:
 
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
-        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld
+        swift build --destination .github/workflows/Android/SDK.json -Xswiftc -use-ld=lld --verbose

@@ -64,4 +64,32 @@ jobs:
         swift build --destination .github/workflows/Android/SDK.json --verbose \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld || true
+
+        cd /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift
+        pwd
+        ls
+        cd ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
+        pwd
+        ls
+        cd ${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64
+        pwd
+        ls
+        cd "${repository_directory}"
+        
+
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swiftc -v \
+          -sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
+          -g \
+          -L /home/runner/work/Workspace/Workspace/.build/aarch64-unknown-linux-android/debug \
+          -o /home/runner/work/Workspace/Workspace/.build/aarch64-unknown-linux-android/debug/WSWindowsTool \
+          -module-name WSWindowsTool \
+          -emit-executable \
+          -Xlinker '-rpath=$ORIGIN' \
+          @/home/runner/work/Workspace/Workspace/.build/aarch64-unknown-linux-android/debug/WSWindowsTool.product/Objects.LinkFileList \
+          -target aarch64-unknown-linux-android \
+          -resource-dir /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
+          -tools-directory /usr/local/lib/android/sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xclang-linker --gcc-toolchain=/usr/local/lib/android/sdk/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
+          -L /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/lib

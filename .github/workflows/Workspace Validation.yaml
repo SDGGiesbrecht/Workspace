@@ -67,18 +67,6 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld || true
 
-        cd /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift
-        pwd
-        ls
-        cd ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
-        pwd
-        ls
-        cd ${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64
-        pwd
-        ls
-        cd "${repository_directory}"
-        
-
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swiftc -v \
           -sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
           -g \
@@ -92,4 +80,5 @@ jobs:
           -resource-dir /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -tools-directory /usr/local/lib/android/sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xclang-linker --gcc-toolchain=/usr/local/lib/android/sdk/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
+          -Xclang-linker -fuse-ld=lld \
           -L /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/lib

@@ -67,6 +67,8 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld || true
 
+        file .build/aarch64-unknown-linux-android/debug/WSWindowsLibrary.build/WSWindowsLibrary.swiftmodule.o
+
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swiftc -v \
           -sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
           -g \

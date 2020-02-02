@@ -840,7 +840,6 @@ func adjustForAndroid() {
     "WSSwift",
     "WSTesting",
     "WSValidation",
-    "WSWindowsTool",  // #workaround(Cannot build for Android yet.)
     "WSWindows‐Unicode",  // #workaround(Cannot build for Android yet.)
     "WSXcode"
   ]

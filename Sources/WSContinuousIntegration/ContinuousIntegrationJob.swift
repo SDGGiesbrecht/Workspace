@@ -579,7 +579,23 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
         commandEntry("export TARGETING_ANDROID=true"),
-        commandEntry("swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json"),
+        commandEntry(
+          "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/aarch64\u{2D}linux\u{2D}android\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld \u{5C}"
+        ),
+        // #workaround(Swift 5.1.3, Debug mode module wrapping breaks linkage.)
+        commandEntry("  \u{2D}\u{2D}configuration release"),
       ])
     }
 

@@ -68,5 +68,6 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld \
           -Xswiftc -v || true
 
+        file .build/aarch64-unknown-linux-android/debug/WSWindowsLibrary.build/WSWindowsLibrary.swift.o
         file .build/aarch64-unknown-linux-android/debug/WSWindowsLibrary.build/WSWindowsLibrary.swiftmodule.o
         exit 1

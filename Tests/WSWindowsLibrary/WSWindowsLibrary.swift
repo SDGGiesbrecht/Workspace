@@ -14,8 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(Android)  // #workaround(Until Android can import these.)
-  import Foundation
+import Foundation
+  #if !os(Android)  // #workaround(Until Android can import these.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
@@ -30,8 +30,8 @@
 
 public func helloWorld() {
   print("Hello, world!")
+  print(NSString(string: "Hello, Foundation!"))
   #if !os(Android)  // #workaround(Until Android can import these.)
-    print(NSString(string: "Hello, Foundation!"))
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
     print(XMLElement(name: "Hello, FoundationXML!"))
     print(DispatchQueue(label: "Hello, Dispatch!"))

@@ -840,7 +840,6 @@ func adjustForAndroid() {
     "WSSwift",
     "WSTesting",
     "WSValidation",
-    "WSWindows‐Unicode",  // #workaround(Cannot build for Android yet.)
     "WSXcode"
   ]
   for target in package.targets {

@@ -15,7 +15,7 @@
  */
 
 import Foundation
-  #if !os(Android)  // #workaround(Until Android can import these.)
+#if !os(Android)  // #workaround(Until Android can import these.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif

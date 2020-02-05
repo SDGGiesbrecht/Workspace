@@ -186,13 +186,15 @@ jobs:
         echo 'Building SDG...'
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
+          --build-tests --enable-test-discovery \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/aarch64-linux-android \
-          -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld \
-          --configuration release
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/aarch64 \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
+          -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld
   watchOS:
     runs-on: macos-latest
     steps:

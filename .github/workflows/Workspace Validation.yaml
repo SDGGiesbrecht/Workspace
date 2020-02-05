@@ -69,4 +69,4 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/aarch64-linux-android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld \
-          --configuration release
+          --configuration release -Xswiftc -enable-testing

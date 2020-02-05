@@ -814,6 +814,7 @@ func adjustForAndroid() {
     "WorkspaceConfiguration",
     "WorkspaceProjectConfiguration",
     "WorkspaceLibrary",
+    "WorkspaceLibraryTests",
     "WorkspaceTool",
     "WSConfigurationExample",
     "WSContinuousIntegration",

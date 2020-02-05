@@ -533,7 +533,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "mv sdk\u{2D}android\u{2D}arm64/Library/Developer/Platforms /Library/Developer/Platforms"
         ),
         commandEntry(
-          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/nkd\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap"
+          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap"
         ),
         commandEntry(
           "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}arm64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
@@ -590,6 +590,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry(
           "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/aarch64\u{2D}linux\u{2D}android\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/aarch64\u{2D}linux\u{2D}android \u{5C}"
         ),
         commandEntry(
           "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld \u{5C}"

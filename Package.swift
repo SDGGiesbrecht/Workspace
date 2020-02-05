@@ -806,9 +806,7 @@ func adjustForAndroid() {
     // SDGWeb
     "SDGCSS",
     "SDGHTML",
-    "SDGWeb",
-    // SwiftFormat
-    "SwiftFormatConfiguration"
+    "SDGWeb"
   ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",

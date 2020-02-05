@@ -52,11 +52,11 @@ jobs:
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
-        python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-arm64 --download > /dev/null
-        unzip sdk-android-arm64.zip
-        mv sdk-android-arm64/Library/Developer/Platforms /Library/Developer/Platforms
-        sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap
-        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-x86 --download > /dev/null
+        unzip sdk-android-x86.zip
+        mv sdk-android-x86/Library/Developer/Platforms /Library/Developer/Platforms
+        sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/glibc.modulemap
+        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
 
         echo 'Building Workspace...'
@@ -65,9 +65,9 @@ jobs:
           --build-tests --enable-test-discovery \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/aarch64-linux-android \
-          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/aarch64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/i686-linux-android \
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/i686 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld

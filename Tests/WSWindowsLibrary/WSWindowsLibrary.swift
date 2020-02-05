@@ -22,9 +22,11 @@ import Foundation
   #if canImport(FoundationXML)
     import FoundationXML
   #endif
+#endif
 
-  import Dispatch
+import Dispatch
 
+#if !os(Android)  // #workaround(Until Android can import these.)
   import SwiftFormatConfiguration
 #endif
 
@@ -34,7 +36,9 @@ public func helloWorld() {
   #if !os(Android)  // #workaround(Until Android can import these.)
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
     print(XMLElement(name: "Hello, FoundationXML!"))
-    print(DispatchQueue(label: "Hello, Dispatch!"))
+  #endif
+  print(DispatchQueue(label: "Hello, Dispatch!"))
+  #if !os(Android)  // #workaround(Until Android can import these.)
     print(Configuration())
   #endif
 }

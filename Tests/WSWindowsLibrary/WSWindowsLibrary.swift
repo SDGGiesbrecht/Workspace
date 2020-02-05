@@ -15,32 +15,24 @@
  */
 
 import Foundation
-#if !os(Android)  // #workaround(Until Android can import these.)
-  #if canImport(FoundationNetworking)
-    import FoundationNetworking
-  #endif
-  #if canImport(FoundationXML)
-    import FoundationXML
-  #endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+#if canImport(FoundationXML)
+  import FoundationXML
 #endif
 
 import Dispatch
 
-#if !os(Android)  // #workaround(Until Android can import these.)
-  import SwiftFormatConfiguration
-#endif
+import SwiftFormatConfiguration
 
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !os(Android)  // #workaround(Until Android can import these.)
-    print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
-    print(XMLElement(name: "Hello, FoundationXML!"))
-  #endif
+  print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+  print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
-  #if !os(Android)  // #workaround(Until Android can import these.)
-    print(Configuration())
-  #endif
+  print(Configuration())
 }
 
 internal func helloTests() {

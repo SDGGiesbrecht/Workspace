@@ -68,5 +68,6 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/aarch64-linux-android \
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/aarch64 \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld \
           --configuration release -Xswiftc -enable-testing

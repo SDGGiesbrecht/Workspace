@@ -17,7 +17,7 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
-  Android:
+  Android_Build:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
@@ -71,3 +71,21 @@ jobs:
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/i686 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld
+    - uses: actions/upload-artifact@v1
+      with:
+        name: products
+        path: .build/i686-unknown-linux-android/debug
+  Android_Test:
+    runs-on: macos-latest
+    needs: Android_Build
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/download-artifact@v1
+      with:
+        name: products
+        path: .build
+    - name: Validate
+      run: |
+        cd .build
+        pwd
+        ls

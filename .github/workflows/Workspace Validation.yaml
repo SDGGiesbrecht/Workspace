@@ -59,11 +59,6 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-arm64/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
 
-        cd ${ANDROID_HOME}/ndk-bundle/sysroot/usr/include
-        pwd
-        ls
-        cd "${repository_directory}"
-
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \

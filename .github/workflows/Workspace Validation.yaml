@@ -93,5 +93,5 @@ jobs:
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         cmd: |
-          /Users/runner/android-sdk/platform-tools/adb -s emulator-5554 shell pwd
+          /Users/runner/android-sdk/platform-tools/adb -e shell pwd
         abi: x86

@@ -88,9 +88,9 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
-        adb -e shell su 0 ls /data/local
-        adb -e shell su 0 chmod -R a+rwx /data/local
-        adb -e shell mkdir -p /data/data/SDG/.build/i686-unknown-linux-android
+        adb -e shell su 0 ls /data/local/tmp
+        adb -e shell su 0 chmod -R a+rwx /data/local/tmp
+        adb -e shell mkdir -p /data/local/tmp/SDG/.build/i686-unknown-linux-android
         # /Users/runner/android-sdk/platform-tools/adb -e push /data/data/SDG/.build/i686-unknown-linux-android/debug .build/i686-unknown-linux-android/debug
         # ls /data/data/SDG/.build/i686-unknown-linux-android/debug
         # /Users/runner/android-sdk/platform-tools/adb -e shell /data/data/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest

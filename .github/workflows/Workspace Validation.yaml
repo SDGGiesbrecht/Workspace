@@ -89,8 +89,8 @@ jobs:
         echo '
         pwd
         ls
-        ' > .build/SDG/emulator.sh
-        chmod +x .build/SDG/emulator.sh
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
     - uses: malinskiy/action-android/install-sdk@release/0.0.5
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
@@ -98,4 +98,4 @@ jobs:
         # /Users/runner/android-sdk/platform-tools/adb push /data/local/.build .build
         # cd /data/local/.build
         # /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest
-        cmd: .build/SDG/emulator.sh
+        cmd: .build/SDG/Emulator.sh

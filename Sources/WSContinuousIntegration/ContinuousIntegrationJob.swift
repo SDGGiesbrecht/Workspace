@@ -38,6 +38,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public static let currentSwiftVersion = Version(5, 1, 3)
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
+  // #workaround(Swift 5.1.3, Debug builds are broken.)
+  private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
   public static let currentXcodeVersion = Version(11, 3, 0)
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -487,7 +489,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
-      let version = ContinuousIntegrationJob.currentSwiftVersion
+      let version = ContinuousIntegrationJob.workaroundAndroidSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         commandEntry("echo \u{27}Fetching Swift...\u{27}"),
@@ -583,6 +585,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}"
         ),
         commandEntry(
+          "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}"
+        ),
+        commandEntry(
           "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}"
         ),
         commandEntry(
@@ -598,10 +603,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/aarch64\u{2D}linux\u{2D}android \u{5C}"
         ),
         commandEntry(
-          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld \u{5C}"
+          "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/aarch64 \u{5C}"
         ),
-        // #workaround(Swift 5.1.3, Debug mode module wrapping breaks linkage.)
-        commandEntry("  \u{2D}\u{2D}configuration release"),
+
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android \u{5C}"
+        ),
+        commandEntry(
+          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld"
+        )
       ])
     }
 

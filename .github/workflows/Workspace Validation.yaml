@@ -86,7 +86,7 @@ jobs:
     #    path: .build
     - name: Validate
       run: |
-        cd .build
+        # cd .build
         pwd
         ls
     - uses: malinskiy/action-android/install-sdk@release/0.0.5

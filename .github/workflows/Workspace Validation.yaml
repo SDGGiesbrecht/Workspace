@@ -83,7 +83,13 @@ jobs:
   #  - uses: actions/download-artifact@v1
   #    with:
   #      name: products
-  #      path: .build
+  #      path: .build/i686-unknown-linux-android/debug
+    - run: |
+      echo '
+      pwd
+      ls
+      ' > .build/SDG/emulator.sh
+      chmod +x .build/SDG/emulator.sh
     - uses: malinskiy/action-android/install-sdk@release/0.0.5
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
@@ -91,6 +97,4 @@ jobs:
         # /Users/runner/android-sdk/platform-tools/adb push /data/local/.build .build
         # cd /data/local/.build
         # /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest
-        cmd: |
-          pwd
-          ls
+        cmd: .build/SDG/emulator.sh

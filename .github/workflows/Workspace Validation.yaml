@@ -93,7 +93,7 @@ jobs:
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         cmd: |
-          adb shell
+          /Users/runner/android-sdk/platform-tools/adb shell
           pwd
           ls
           exit

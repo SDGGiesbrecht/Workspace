@@ -85,6 +85,7 @@ jobs:
   #      name: products
   #      path: .build/i686-unknown-linux-android/debug
     - run: |
+        mkdir -p .build/SDG
         echo '
         pwd
         ls

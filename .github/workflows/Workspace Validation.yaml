@@ -85,11 +85,11 @@ jobs:
   #      name: products
   #      path: .build/i686-unknown-linux-android/debug
     - run: |
-      echo '
-      pwd
-      ls
-      ' > .build/SDG/emulator.sh
-      chmod +x .build/SDG/emulator.sh
+        echo '
+        pwd
+        ls
+        ' > .build/SDG/emulator.sh
+        chmod +x .build/SDG/emulator.sh
     - uses: malinskiy/action-android/install-sdk@release/0.0.5
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:

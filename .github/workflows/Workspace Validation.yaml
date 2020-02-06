@@ -89,5 +89,7 @@ jobs:
       with:
         abi: x86
         cmd: |
-          /Users/runner/android-sdk/platform-tools/adb -e push /data/local/.build .build
-          /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest
+          /Users/runner/android-sdk/platform-tools/adb push /data/local/.build .build
+          cd /data/local/.build
+          ls
+          # /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest

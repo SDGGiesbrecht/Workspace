@@ -89,3 +89,8 @@ jobs:
         cd .build
         pwd
         ls
+    - uses: malinskiy/action-android/install-sdk@release/0.0.5
+    - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+      with:
+        cmd: echo "Hello, world!" ; pwd ; ls
+        abi: x86

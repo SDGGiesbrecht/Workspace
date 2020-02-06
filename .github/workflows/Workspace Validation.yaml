@@ -88,9 +88,9 @@ jobs:
     - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         abi: x86
+        # /Users/runner/android-sdk/platform-tools/adb push /data/local/.build .build
+        # cd /data/local/.build
+        # /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest
         cmd: |
-          # /Users/runner/android-sdk/platform-tools/adb push /data/local/.build .build
-          # cd /data/local/.build
           pwd
           ls
-          # /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/.build/WorkspacePackageTests.xctest

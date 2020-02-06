@@ -87,6 +87,7 @@ jobs:
     - run: |
         mkdir -p .build/SDG
         echo '
+        set -e
         adb -e shell mkdir -p /data/local/SDG/.build/i686-unknown-linux-android
         /Users/runner/android-sdk/platform-tools/adb -e push /data/local/SDG/.build/i686-unknown-linux-android/debug .build/i686-unknown-linux-android/debug
         ls /data/local/SDG/.build/i686-unknown-linux-android/debug

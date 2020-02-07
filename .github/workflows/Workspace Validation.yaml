@@ -90,7 +90,9 @@ jobs:
         set -e
         adb -e shell su 0 chmod -R a+rwx /data/local/tmp
         adb -e shell mkdir -p /data/local/tmp/SDG/.build/i686-unknown-linux-android
-        /Users/runner/android-sdk/platform-tools/adb -e push /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug .build/i686-unknown-linux-android/debug
+        ls .build/i686-unknown-linux-android/debug
+        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android
+        /Users/runner/android-sdk/platform-tools/adb -e push .build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         /Users/runner/android-sdk/platform-tools/adb -e shell /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh

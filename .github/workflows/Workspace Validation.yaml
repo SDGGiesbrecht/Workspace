@@ -71,6 +71,10 @@ jobs:
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/i686 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld
+
+        echo 'Copying libraries...'
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1
       with:
         name: products

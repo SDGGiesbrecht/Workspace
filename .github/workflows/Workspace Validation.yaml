@@ -90,6 +90,7 @@ jobs:
         name: products
         path: .build/i686-unknown-linux-android/debug
     - run: |
+        otool -L .build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         mkdir -p .build/SDG
         echo '
         set -e

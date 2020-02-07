@@ -52,7 +52,7 @@ jobs:
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
-        python swift-build.py --build-id 'VS2019' --latest-artifacts --filter sdk-android-x86 --download > /dev/null
+        python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter sdk-android-x86 --download > /dev/null
         unzip sdk-android-x86.zip
         mv sdk-android-x86/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/glibc.modulemap

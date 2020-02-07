@@ -88,9 +88,9 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
-        adb -e shell su 0 chmod -R a+rwx /data/local/tmp
-        # adb -e shell mkdir -p /data/local/tmp/SDG/.build/i686-unknown-linux-android
+        # adb -e shell su 0 chmod -R a+rwx /data/local/tmp
         adb -e push .build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
+        adb -e shell chmod -R +x /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh

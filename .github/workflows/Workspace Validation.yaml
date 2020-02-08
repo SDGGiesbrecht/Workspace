@@ -40,7 +40,7 @@ jobs:
         echo 'Fetching Swift cross‐compilation toolchain...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift
-        curl -o toolchain-linux-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip'
+        curl -L -o toolchain-linux-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip'
         unzip toolchain-linux-x64.zip
         sudo mv toolchain-linux-x64/Library /Library
         chmod -R a+rwx /Library
@@ -49,7 +49,7 @@ jobs:
 
         echo 'Fetching Swift Android SDK...'
         cd .build/SDG/Experimental_Swift
-        curl -o sdk-android-x86.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x86.zip'
+        curl -L -o sdk-android-x86.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x86.zip'
         unzip sdk-android-x86.zip
         mv sdk-android-x86/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/glibc.modulemap

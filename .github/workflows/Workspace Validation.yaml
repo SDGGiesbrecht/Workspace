@@ -56,6 +56,10 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
 
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        patchelf --set-soname libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+
         echo 'Fetching ICU...'
         cd .build/SDG/Experimental_Swift
         curl -L -o icu-android-x86.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x86.zip'
@@ -83,7 +87,6 @@ jobs:
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         ls .build/i686-unknown-linux-android/debug/lib/swift/android/i686
-        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftCore.so
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1
       with:

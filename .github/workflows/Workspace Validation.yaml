@@ -72,6 +72,7 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/i686-linux-android \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686 \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/i686 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld

@@ -72,7 +72,6 @@ jobs:
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/i686-linux-android \
-          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686 \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/i686 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld
@@ -81,7 +80,7 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
         cp -R /Library/icu-64/usr/lib/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/* .build/i686-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/* .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1
       with:

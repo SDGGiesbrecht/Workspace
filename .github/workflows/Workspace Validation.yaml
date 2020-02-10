@@ -69,6 +69,11 @@ jobs:
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android \
           -Xswiftc -Xclang-linker -Xswiftc -fuse-ld=lld
 
+        echo 'Debugging tests...'
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump --dylibs-used .build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
+        echo 'Debugging Standard Library...'
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump --dylibs-used .build/i686-unknown-linux-android/debug/libswiftCore.so
+
         echo 'Copying libraries...'
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
@@ -87,7 +92,6 @@ jobs:
         name: products
         path: .build/i686-unknown-linux-android/debug
     - run: |
-        otool -L .build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         mkdir -p .build/SDG
         echo '
         set -e

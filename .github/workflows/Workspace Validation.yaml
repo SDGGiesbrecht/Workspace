@@ -73,12 +73,6 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
-
-        echo 'Debugging tests...'
-        export LD_DEBUG=libs
-        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-readelf --all .build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
-        echo 'Debugging Standard Library...'
-        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-readelf --all .build/i686-unknown-linux-android/debug/libswiftCore.so
     - uses: actions/upload-artifact@v1
       with:
         name: products
@@ -98,7 +92,6 @@ jobs:
         set -e
         adb -e push .build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell chmod -R +x /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
-        adb -e ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell LD_LIBRARY_PATH=/data/local/tmp/SDG/.build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh

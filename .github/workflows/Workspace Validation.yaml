@@ -57,6 +57,8 @@ jobs:
         cd "${repository_directory}"
 
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        sudo apt-get update -y
+        sudo apt-get install -y patchelf
         patchelf --set-soname libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
 

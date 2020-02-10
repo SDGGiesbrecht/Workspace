@@ -81,10 +81,7 @@ jobs:
         cp -R /Library/icu-64/usr/lib/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/* .build/i686-unknown-linux-android/debug
-        ls .build/i686-unknown-linux-android/debug
-        ls .build/i686-unknown-linux-android/debug/lib
-        ls .build/i686-unknown-linux-android/debug/lib/swift
-        ls .build/i686-unknown-linux-android/debug/lib/swift/android
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         ls .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1
@@ -106,10 +103,6 @@ jobs:
         set -e
         adb -e push .build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell chmod -R +x /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
-        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
-        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/lib
-        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/lib/swift
-        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/lib/swift/android
         adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/lib/swift/android/i686
         adb -e shell LD_LIBRARY_PATH=/data/local/tmp/SDG/.build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh

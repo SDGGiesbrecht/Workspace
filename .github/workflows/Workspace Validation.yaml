@@ -83,6 +83,7 @@ jobs:
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         ls .build/i686-unknown-linux-android/debug/lib/swift/android/i686
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftCore.so
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1
       with:

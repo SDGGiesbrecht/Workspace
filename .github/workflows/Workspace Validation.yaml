@@ -92,6 +92,19 @@ jobs:
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
 
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftSwiftOnoneSupport.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftCore.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundation.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftGlibc.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libdl.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libm.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftDispatch.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libdispatch.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libBlocksRuntime.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundationXML.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundationNetworking.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libXCTest.so
+        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libc.so
     - uses: actions/upload-artifact@v1
       with:
         name: products

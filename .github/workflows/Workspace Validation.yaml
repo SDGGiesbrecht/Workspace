@@ -56,6 +56,13 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
 
+        echo 'Fetching ICU...'
+        cd .build/SDG/Experimental_Swift
+        curl -L -o icu-android-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x64.zip'
+        unzip icu-android-x64.zip
+        mv sdk-android-x86/Library/icu-64 /Library/icu-64
+        cd "${repository_directory}"
+
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
@@ -71,6 +78,7 @@ jobs:
 
         echo 'Copying libraries...'
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
+        cp -R /Library/icu-64/usr/lib/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1

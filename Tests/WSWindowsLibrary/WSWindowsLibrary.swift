@@ -15,13 +15,11 @@
  */
 
 import Foundation
-#if !os(Android)  // #workaround(Not available at runtime yet.)
-  #if canImport(FoundationNetworking)
-    import FoundationNetworking
-  #endif
-  #if canImport(FoundationXML)
-    import FoundationXML
-  #endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
+#if canImport(FoundationXML)
+  import FoundationXML
 #endif
 
 import Dispatch
@@ -31,7 +29,7 @@ import SwiftFormatConfiguration
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !os(Android)
+  #if !os(Android)  // #workaround(Not available at runtime yet.)
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif

@@ -105,7 +105,7 @@ jobs:
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundationXML.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundationNetworking.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libXCTest.so
-        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libc.so
+        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libc.so
 
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/liblog.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libc++_shared.so

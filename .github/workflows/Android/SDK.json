@@ -2,7 +2,7 @@
   "version": 1,
   "sdk": "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
   "toolchain-bin-dir": "/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin",
-  "target": "i686-unknown-linux-android",
+  "target": "x86_64-unknown-linux-android",
   "dynamic-library-extension": "so",
   "extra-cc-flags": [],
   "extra-swiftc-flags": [],

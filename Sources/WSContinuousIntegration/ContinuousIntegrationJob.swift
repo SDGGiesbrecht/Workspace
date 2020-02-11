@@ -623,10 +623,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
 
         commandEntry(
-          "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld"
+          "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android"
         ),
         "",
         commandEntry("echo \u{27}Copying libraries...\u{27}"),

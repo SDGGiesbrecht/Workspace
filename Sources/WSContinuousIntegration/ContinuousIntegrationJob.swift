@@ -533,14 +533,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
         ),
         commandEntry("sudo apt\u{2D}get update \u{2D}\u{2D}yes"),
-        commandEntry("sudo apt\u{2D}get install \u{2D}\u{2D}y patchelf"),
+        commandEntry("sudo apt\u{2D}get install \u{2D}\u{2D}yes patchelf"),
         commandEntry(
           "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so"
         ),
         commandEntry(
           "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so"
         ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
         commandEntry(
           "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
         ),

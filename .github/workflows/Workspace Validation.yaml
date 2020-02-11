@@ -69,6 +69,13 @@ jobs:
         mv libicudt64.so /Library/icu-64/usr/lib/libicudt64.so
         cd "${repository_directory}"
 
+        echo 'Fetching zlib...'
+        cd .build/SDG/Experimental_Swift
+        curl -L -o zlib-android-x86.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/zlib-android-x86.zip'
+        unzip zlib-android-x86.zip
+        mv zlib-android-x86.zip/Library/zlib-1.2.11 /Library/zlib-1.2.11
+        cd "${repository_directory}"
+
         echo 'Building Workspace...'
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
@@ -85,6 +92,7 @@ jobs:
         echo 'Copying libraries...'
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
         cp -R /Library/icu-64/usr/lib/* .build/i686-unknown-linux-android/debug
+        cp -R /Library/zlib-1.2.11/usr/lib/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
     - uses: actions/upload-artifact@v1

@@ -15,11 +15,13 @@
  */
 
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
-#endif
-#if canImport(FoundationXML)
-  import FoundationXML
+#if !os(Android)  // #workaround(Not available at runtime yet.)
+  #if canImport(FoundationNetworking)
+    import FoundationNetworking
+  #endif
+  #if canImport(FoundationXML)
+    import FoundationXML
+  #endif
 #endif
 
 import Dispatch

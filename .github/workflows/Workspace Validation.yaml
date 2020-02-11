@@ -54,13 +54,12 @@ jobs:
         mv sdk-android-x86/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/glibc.modulemap
         cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        cd "${repository_directory}"
-
-        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
         sudo apt-get update -y
         sudo apt-get install -y patchelf
-        # patchelf --set-soname libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
-        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        patchelf --replace-needed lib/swift/android/i686/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
+        patchelf --replace-needed lib/swift/android/i686/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        cd "${repository_directory}"
+
 
         echo 'Fetching ICU...'
         cd .build/SDG/Experimental_Swift

@@ -53,13 +53,12 @@ jobs:
         unzip sdk-android-x86.zip
         mv sdk-android-x86/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/i686/glibc.modulemap
-        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo apt-get update -y
         sudo apt-get install -y patchelf
         patchelf --replace-needed lib/swift/android/i686/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
         patchelf --replace-needed lib/swift/android/i686/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftCore.so
+        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cd "${repository_directory}"
-
 
         echo 'Fetching ICU...'
         cd .build/SDG/Experimental_Swift
@@ -85,8 +84,6 @@ jobs:
         cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86/"* .build/i686-unknown-linux-android/debug
         cp -R /Library/icu-64/usr/lib/* .build/i686-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/* .build/i686-unknown-linux-android/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         ls .build/i686-unknown-linux-android/debug/lib/swift/android/i686
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/i686-unknown-linux-android/debug
 
@@ -129,7 +126,7 @@ jobs:
         set -e
         adb -e push .build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell chmod -R +x /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
-        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/lib/swift/android/i686
+        adb -e shell ls /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug
         adb -e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/i686-unknown-linux-android/debug /data/local/tmp/SDG/.build/i686-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh

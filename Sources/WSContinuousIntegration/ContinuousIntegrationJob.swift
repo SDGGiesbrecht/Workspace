@@ -510,12 +510,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
         commandEntry(
-          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
-        ),
-        commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
-        commandEntry("echo \u{27}Downloading... (This could take up to 10 minutes.)\u{27}"),
-        commandEntry(
-          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}Ubuntu 18.04 (flowkey)\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter toolchain\u{2D}linux\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
+          "curl \u{2D}L \u{2D}o toolchain\u{2D}linux\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}linux\u{2D}x64.zip\u{27}"
         ),
         commandEntry("unzip toolchain\u{2D}linux\u{2D}x64.zip"),
         commandEntry("sudo mv toolchain\u{2D}linux\u{2D}x64/Library /Library"),
@@ -528,20 +523,42 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
         commandEntry(
-          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter sdk\u{2D}android\u{2D}arm64 \u{2D}\u{2D}download > /dev/null"
+          "curl \u{2D}L \u{2D}o sdk\u{2D}android\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}android\u{2D}x64.zip\u{27}"
         ),
-        commandEntry("unzip sdk\u{2D}android\u{2D}arm64.zip"),
+        commandEntry("unzip sdk\u{2D}android\u{2D}x64.zip"),
         commandEntry(
-          "mv sdk\u{2D}android\u{2D}arm64/Library/Developer/Platforms /Library/Developer/Platforms"
-        ),
-        commandEntry(
-          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/aarch64/glibc.modulemap"
+          "mv sdk\u{2D}android\u{2D}x64/Library/Developer/Platforms /Library/Developer/Platforms"
         ),
         commandEntry(
-          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}arm64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
+          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
+        ),
+        commandEntry("sudo apt\u{2D}get update \u{2D}\u{2D}yes"),
+        commandEntry("sudo apt\u{2D}get install \u{2D}\u{2D}y patchelf"),
+        commandEntry(
+          "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so"
+        ),
+        commandEntry(
+          "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so"
+        ),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        commandEntry(
+          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
         ),
         commandEntry("cd \u{22}${repository_directory}\u{22}"),
         "",
+        commandEntry("echo \u{27}Fetching ICU...\u{27}"),
+        commandEntry("cd .build/SDG/Experimental_Swift"),
+        commandEntry(
+          "curl \u{2D}L \u{2D}o icu\u{2D}android\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu\u{2D}android\u{2D}x64.zip\u{27}"
+        ),
+        commandEntry("unzip icu\u{2D}android\u{2D}x64.zip"),
+        commandEntry("mv icu\u{2D}android\u{2D}x64/Library/icu\u{2D}64 /Library/icu\u{2D}64"),
+        commandEntry(
+          "curl \u{2D}L \u{2D}o libicudt64.so \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so\u{27}"
+        ),
+        commandEntry("mv libicudt64.so /Library/icu\u{2D}64/usr/lib/libicudt64.so"),
+        commandEntry("cd \u{22}${repository_directory}\u{22}"),
+        ""
       ])
     }
 
@@ -594,16 +611,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}"
         ),
         commandEntry(
-          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/aarch64\u{2D}linux\u{2D}android\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
+          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
         ),
         commandEntry(
           "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}"
         ),
         commandEntry(
-          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/aarch64\u{2D}linux\u{2D}android \u{5C}"
+          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}"
         ),
         commandEntry(
-          "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/aarch64 \u{5C}"
+          "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}"
         ),
 
         commandEntry(
@@ -611,7 +628,57 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry(
           "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}fuse\u{2D}ld=lld"
-        )
+        ),
+        "",
+        commandEntry("echo \u{27}Copying libraries...\u{27}"),
+        commandEntry(
+          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64/\u{22}* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "cp \u{2D}R /Library/icu\u{2D}64/usr/lib/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        "    \u{2D} uses: actions/upload\u{2D}artifact@v1",
+        "      with:",
+        "        name: products",
+        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
+        "  AndroidII:",
+        "    runs\u{2D}on: macos\u{2D}latest",
+        "    needs: Android",
+        "    steps:",
+        "    \u{2D} uses: actions/checkout@v1",
+        "    \u{2D} uses: actions/download\u{2D}artifact@v1",
+        "      with:",
+        "        name: products",
+        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
+        "    \u{2D} run: |",
+        commandEntry("mkdir \u{2D}p .build/SDG"),
+        commandEntry("echo \u{27}"),
+        commandEntry("set \u{2D}e"),
+        commandEntry(
+          "adb \u{2D}e push .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "adb \u{2D}e shell ls /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        ),
+        commandEntry(
+          "adb \u{2D}e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/WorkspacePackageTests.xctest"
+        ),
+        commandEntry("\u{27} > .build/SDG/Emulator.sh"),
+        commandEntry("chmod +x .build/SDG/Emulator.sh"),
+        "    \u{2D} uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
+        "    \u{2D} uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+        "      with:",
+        "        abi: x86_64",
+        "        cmd: .build/SDG/Emulator.sh"
       ])
     }
 

@@ -53,8 +53,8 @@ jobs:
         unzip sdk-android-x64.zip
         mv sdk-android-x64/Library/Developer/Platforms /Library/Developer/Platforms
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
-        sudo apt-get update -y
-        sudo apt-get install -y patchelf
+        sudo apt-get update --yes
+        sudo apt-get install --yes patchelf
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
         cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk

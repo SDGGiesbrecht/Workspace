@@ -98,7 +98,7 @@ jobs:
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libFoundation.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftGlibc.so
         # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libdl.so
-        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libm.so
+        # /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libm.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libswiftDispatch.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libdispatch.so
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/llvm-objdump -p .build/i686-unknown-linux-android/debug/libBlocksRuntime.so

@@ -73,7 +73,7 @@ jobs:
         cd .build/SDG/Experimental_Swift
         curl -L -o zlib-android-x86.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/zlib-android-x86.zip'
         unzip zlib-android-x86.zip
-        mv zlib-android-x86.zip/Library/zlib-1.2.11 /Library/zlib-1.2.11
+        mv zlib-android-x86/Library/zlib-1.2.11 /Library/zlib-1.2.11
         cd "${repository_directory}"
 
         echo 'Building Workspace...'

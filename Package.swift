@@ -709,7 +709,7 @@ let package = Package(
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
-    // #workaround(workspace version 0.29.0, Until real modules work on Windows.)
+    // #workaround(workspace version 0.30.0, Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [
@@ -840,7 +840,7 @@ func adjustForWindows() {
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
-  // #workaround(workspace 0.28.0, Not feasible on windows yet.)
+  // #workaround(workspace 0.90.0, Not feasible on windows yet.)
   let impossibleWorkspaceProducts: Set<String> = [
     "arbeitsbereich",
     "workspace",
@@ -854,19 +854,18 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 import Foundation
-// #workaround(workspace 0.28.0, Until packages work natively on windows.)
+// #workaround(workspace 0.90.0, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
 func adjustForAndroid() {
-  // #workaround(Cannot build for Android yet.)
   let impossibleProducts: Set<String> = [
-    // SDGCommandLine
+    // SDGCommandLine #workaround(SDGCommandLine 1.2.5, No Android support yet.)
     "SDGCommandLine",
     "SDGCommandLineTestUtilities",
     "SDGExportedCommandLineInterface",
-    // SDGCornerstone
+    // SDGCornerstone #workaround(SDGCornerstone 4.2.1, No Android support yet.)
     "SDGCalendar",
     "SDGCollections",
     "SDGControlFlow",
@@ -879,14 +878,14 @@ func adjustForAndroid() {
     "SDGText",
     "SDGVersioning",
     "SDGXCTestUtilities",
-    // SDGSwift
+    // SDGSwift #workaround(SDGCornerstone 0.19.1, No Android support yet.)
     "SDGSwift",
     "SDGSwiftConfiguration",
     "SDGSwiftConfigurationLoading",
     "SDGSwiftPackageManager",
     "SDGSwiftSource",
     "SDGXcode",
-    // SDGWeb
+    // SDGWeb #workaround(SDGWeb 5.0.1, No Android support yet.)
     "SDGCSS",
     "SDGHTML",
     "SDGWeb"

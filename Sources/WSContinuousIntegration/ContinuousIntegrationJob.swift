@@ -437,14 +437,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
         commandEntry(
-          "curl \u{2D}o swift\u{2D}build.py \u{27}https://raw.githubusercontent.com/compnerd/swift\u{2D}build/master/utilities/swift\u{2D}build.py\u{27}"
-        ),
-        commandEntry("python \u{2D}m pip install \u{2D}\u{2D}user azure\u{2D}devops tabulate"),
-        commandEntry(
-          "echo \u{27}Downloading... (This could take up to 10 minutes.)\u{27}"
+          "curl \u{2D}L \u{2D}o toolchain\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip\u{27}"
         ),
         commandEntry(
-          "python swift\u{2D}build.py \u{2D}\u{2D}build\u{2D}id \u{27}VS2019 Swift \(version)\u{27} \u{2D}\u{2D}latest\u{2D}artifacts \u{2D}\u{2D}filter windows\u{2D}x64 \u{2D}\u{2D}download > /dev/null"
+          "curl \u{2D}L \u{2D}o sdk\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}windows\u{2D}x64.zip\u{27}"
         ),
         commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
         commandEntry("mv toolchain\u{2D}windows\u{2D}x64/Library /c/Library"),

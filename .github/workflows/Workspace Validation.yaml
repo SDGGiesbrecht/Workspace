@@ -61,10 +61,8 @@ jobs:
         echo 'Fetching Swift...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift
-        curl -o swift-build.py 'https://raw.githubusercontent.com/compnerd/swift-build/master/utilities/swift-build.py'
-        python -m pip install --user azure-devops tabulate
-        echo 'Downloading... (This could take up to 10 minutes.)'
-        python swift-build.py --build-id 'VS2019 Swift 5.2' --latest-artifacts --filter windows-x64 --download > /dev/null
+        curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
+        curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
         7z x toolchain-windows-x64.zip
         mv toolchain-windows-x64/Library /c/Library
         7z x sdk-windows-x64.zip

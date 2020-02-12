@@ -40,7 +40,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
   // #workaround(Swift 5.1.3, Debug builds are broken.)
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
+
+  private static let currentMacOSVersion = Version(10, 15)
   public static let currentXcodeVersion = Version(11, 3, 0)
+  private static let currentWindowsVersion = "2019"
+  private static let currentLinuxVersion = "18.04"
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -275,17 +279,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private var gitHubActionMachine: String {
     switch platform {
     case .macOS:
-      // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
-      return "macos\u{2D}latest"
+      return "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
-      // #workaround(workspace version 0.28.0, GitHub doesn’t provide version specificity.)
-      return "windows\u{2D}latest"
-    case .linux:
-      return "ubuntu\u{2D}18.04"
+      return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
+    case .linux, .android:
+      return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentLinuxVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
-    case .android:
-      return "ubuntu\u{2D}18.04"
     }
   }
 
@@ -640,7 +640,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "        name: products",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
         "  AndroidII:",
-        "    runs\u{2D}on: macos\u{2D}latest",
+        "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
         "    steps:",
         "    \u{2D} uses: actions/checkout@v1",

@@ -627,6 +627,7 @@ let package = Package(
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
+    // #workaround(workspace version 0.29.0, Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [

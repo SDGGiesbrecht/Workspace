@@ -369,7 +369,7 @@ extension PackageRepository {
         "  \u{22}version\u{22}: 1,",
         "  \u{22}sdk\u{22}: \u{22}/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk\u{22},",
         "  \u{22}toolchain\u{2D}bin\u{2D}dir\u{22}: \u{22}/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin\u{22},",
-        "  \u{22}target\u{22}: \u{22}aarch64\u{2D}unknown\u{2D}linux\u{2D}android\u{22},",
+        "  \u{22}target\u{22}: \u{22}x86_64\u{2D}unknown\u{2D}linux\u{2D}android\u{22},",
         "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}so\u{22},",
         "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
         "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",

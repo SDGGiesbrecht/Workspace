@@ -49,7 +49,7 @@ Workspace automates management of Swift projects.
     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-- Manages projects for macOS, Linux, iOS, watchOS and tvOS.
+- Manages projects for macOS, Windows, Linux, tvOS, iOS, Android and watchOS.
 - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 
 ## Installation

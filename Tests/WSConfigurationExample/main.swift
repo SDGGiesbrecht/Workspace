@@ -25,8 +25,29 @@ import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.
 
 let configuration = WorkspaceConfiguration()
 configuration.optIntoAllTasks()
-configuration.documentation.api.generate = true
+
+configuration.supportedPlatforms = [.macOS, .windows, .linux, .android]
+
+configuration.documentation.currentVersion = Version(1, 0, 0)
+configuration.documentation.projectWebsite = URL(string: "project.uk")
+configuration.documentation.documentationURL = URL(string: "project.uk/Documentation")
+configuration.documentation.repositoryURL = URL(string: "https://github.com/User/Project")
+
 configuration.documentation.api.yearFirstPublished = 2017
+
+configuration.documentation.localisations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "fr", "es"]
+configuration.documentation.api.copyrightNotice = Lazy<[LocalisationIdentifier: StrictString]>(
+  resolve: { configuration in
+    return [
+      "🇬🇧EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
+      "🇺🇸EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
+      "🇨🇦EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
+      "fr": "Droit d’auteur #dates \(configuration.documentation.primaryAuthor!).",
+      "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!)."
+    ]
+  })
+
+configuration.documentation.primaryAuthor = "John Doe"
 // @endExample
 
 // @beispiel(beispielskonfiguration)
@@ -40,6 +61,26 @@ import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.
 
 let konfiguration = ArbeitsbereichKonfiguration()
 konfiguration.alleAufgabenEinschalten()
-konfiguration.dokumentation.programmierschnittstelle.erstellen = wahr
+
+konfiguration.unterstützteSchichte = [.macOS, .windows, .linux, .android]
+
+konfiguration.dokumentation.aktuelleVersion = Version(1, 0, 0)
+konfiguration.dokumentation.projektSeite = URL(string: "projekt.de")
+konfiguration.dokumentation
+  .dokumentationsRessourcenzeiger = URL(string: "projekt.de/Dokumentation")
+konfiguration.dokumentation
+  .lagerRessourcenzeiger = URL(string: "https://github.com/Benutzer/Projekt")
+
 konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2017
+
+konfiguration.dokumentation.lokalisationen = ["🇩🇪DE", "fr"]
+konfiguration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk =
+  BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: { konfiguration in
+    return [
+      "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
+      "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!)."
+    ]
+  })
+
+konfiguration.dokumentation.hauptautor = "Max Mustermann"
 // @beispielBeenden

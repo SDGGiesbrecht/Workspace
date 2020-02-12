@@ -279,7 +279,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private var gitHubActionMachine: String {
     switch platform {
     case .macOS:
-      return "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
+      return
+        "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
     case .linux, .android:

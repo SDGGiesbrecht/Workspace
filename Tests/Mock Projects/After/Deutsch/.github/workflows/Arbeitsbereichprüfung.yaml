@@ -6,7 +6,7 @@ on: [push, pull_request]
 
 jobs:
   macOS:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
@@ -20,7 +20,7 @@ jobs:
         './Refresh (macOS).command' •language '🇩🇪DE'
         './Validate (macOS).command' •job macos •language '🇩🇪DE'
   Windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
@@ -98,7 +98,7 @@ jobs:
         './Validate (macOS).command' •job linux •language '🇩🇪DE'
         chmod -R a+rwx .
   tvOS:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
@@ -112,7 +112,7 @@ jobs:
         './Refresh (macOS).command' •language '🇩🇪DE'
         './Validate (macOS).command' •job tvos •language '🇩🇪DE'
   iOS:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1
@@ -199,7 +199,7 @@ jobs:
         name: products
         path: .build/x86_64-unknown-linux-android/debug
   AndroidII:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     needs: Android
     steps:
     - uses: actions/checkout@v1
@@ -223,7 +223,7 @@ jobs:
         abi: x86_64
         cmd: .build/SDG/Emulator.sh
   watchOS:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
     - uses: actions/checkout@v1
     - uses: actions/cache@v1

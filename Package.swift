@@ -709,7 +709,7 @@ let package = Package(
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
-    // #workaround(workspace version 0.30.0, Until real modules work on Windows.)
+    // #workaround(workspace version 0.30.1, Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [
@@ -840,7 +840,7 @@ func adjustForWindows() {
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
-  // #workaround(workspace 0.30.0, Not feasible on windows yet.)
+  // #workaround(workspace 0.30.1, Not feasible on windows yet.)
   let impossibleWorkspaceProducts: Set<String> = [
     "arbeitsbereich",
     "workspace",
@@ -854,7 +854,7 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 import Foundation
-// #workaround(workspace 0.30.0, Until packages work natively on windows.)
+// #workaround(workspace 0.30.1, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
@@ -878,7 +878,7 @@ func adjustForAndroid() {
     "SDGText",
     "SDGVersioning",
     "SDGXCTestUtilities",
-    // SDGSwift #workaround(SDGCornerstone 0.19.1, No Android support yet.)
+    // SDGSwift #workaround(SDGSwift 0.19.1, No Android support yet.)
     "SDGSwift",
     "SDGSwiftConfiguration",
     "SDGSwiftConfigurationLoading",

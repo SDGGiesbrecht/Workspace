@@ -663,7 +663,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "adb \u{2D}e shell ls /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
         commandEntry(
-          "adb \u{2D}e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/WorkspacePackageTests.xctest"
+          "adb \u{2D}e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
         ),
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),

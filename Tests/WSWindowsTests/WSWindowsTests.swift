@@ -15,6 +15,7 @@
  */
 
 @testable import WSWindowsLibrary
+import WSWindowsC
 
 import XCTest
 
@@ -23,5 +24,6 @@ final class WindowsTests: XCTestCase {
   func testTests() {
     helloWorld()
     helloTests()
+    helloC()
   }
 }

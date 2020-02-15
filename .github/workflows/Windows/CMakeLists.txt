@@ -18,6 +18,10 @@ add_library("WSWindowsC"
 )
 set_target_properties("WSWindowsC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSWindowsC" PRIVATE -enable-testing)
+install(TARGETS WSWindowsC
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin)
 
 add_library("SwiftFormatConfiguration"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"

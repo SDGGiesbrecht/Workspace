@@ -39,7 +39,9 @@ target_link_libraries("WSWindowsLibrary" PRIVATE
 add_library("WSWindowsTests"
   "../../../Tests/WSWindowsTests/WSWindowsTests.swift"
 )
-set_target_properties("WSWindowsTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+set_target_properties("WSWindowsTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY}
+    ../../../Tests/WSWindowsC/include
+)
 target_compile_options("WSWindowsTests" PRIVATE -enable-testing)
 target_link_libraries("WSWindowsTests" PRIVATE
   "WSWindowsLibrary"

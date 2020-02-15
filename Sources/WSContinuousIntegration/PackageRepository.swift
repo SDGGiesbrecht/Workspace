@@ -171,7 +171,7 @@ extension PackageRepository {
       var cmake: [StrictString] = [
         "cmake_minimum_required(VERSION 3.15)",
         "",
-        "project(\(sanitize(package.name)) LANGUAGES Swift)",
+        "project(\(sanitize(package.name)) LANGUAGES Swift C)",
         "",
         "include(CTest)",
         "",

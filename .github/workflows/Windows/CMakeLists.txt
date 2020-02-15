@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.15)
 
-project("Workspace" LANGUAGES Swift)
+project("Workspace" LANGUAGES Swift C)
 
 include(CTest)
 

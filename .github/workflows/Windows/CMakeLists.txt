@@ -13,6 +13,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Use dynamic linking" YES)
 
+add_library("WSWindowsC"
+  "../../../Tests/WSWindowsC/WSWindowsC.c"
+)
+set_target_properties("WSWindowsC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSWindowsC" PRIVATE -enable-testing)
+
 add_library("SwiftFormatConfiguration"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
@@ -37,6 +43,7 @@ set_target_properties("WSWindowsTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES 
 target_compile_options("WSWindowsTests" PRIVATE -enable-testing)
 target_link_libraries("WSWindowsTests" PRIVATE
   "WSWindowsLibrary"
+  "WSWindowsC"
 )
 
 add_executable("WSWindowsTool"

@@ -727,9 +727,16 @@ let package = Package(
       dependencies: ["WSWindowsLibrary"],
       path: "Tests/WSWindowsUnicode"
     ),
+    .target(
+      name: "WSWindowsC",
+      path: "Tests/WSWindowsC"
+    ),
     .testTarget(
       name: "WSWindowsTests",
-      dependencies: ["WSWindowsLibrary"]
+      dependencies: [
+        "WSWindowsLibrary",
+        "WSWindowsC"
+      ]
     ),
     .target(
       name: "WSConfigurationExample",

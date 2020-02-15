@@ -19,9 +19,9 @@ import Foundation
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
-  #if canImport(FoundationXML)
-    import FoundationXML
-  #endif
+#endif
+#if canImport(FoundationXML)
+  import FoundationXML
 #endif
 
 import Dispatch
@@ -33,8 +33,8 @@ public func helloWorld() {
   print(NSString(string: "Hello, Foundation!"))
   #if !os(Android)  // #workaround(Not available at runtime yet.)
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
-    print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
+  print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
   print(Configuration())
 }

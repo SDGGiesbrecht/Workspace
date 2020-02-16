@@ -15,7 +15,7 @@
  */
 
 import Foundation
-#if !os(Android)  // #workaround(Not available at runtime yet.)
+#if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
@@ -31,7 +31,7 @@ import SwiftFormatConfiguration
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !os(Android)  // #workaround(Not available at runtime yet.)
+  #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   #endif
   print(XMLElement(name: "Hello, FoundationXML!"))

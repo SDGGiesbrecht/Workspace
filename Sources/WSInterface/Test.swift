@@ -102,7 +102,7 @@ extension Workspace {
             return  // and continue loop.
           }
 
-          #if TEST_SHIMS
+          #if DEBUG
             if job ∈ ContinuousIntegrationJob.simulatorJobs,
               ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
                 ≠ nil

@@ -302,9 +302,6 @@ let package = Package(
         "WSTesting",
         "WSDocumentation",
         .product(name: "SDGVersioning", package: "SDGCornerstone")
-      ],
-      swiftSettings: [
-        .define("TEST_SHIMS", .when(configuration: .debug))
       ]
     ),
 
@@ -451,9 +448,6 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift")
-      ],
-      swiftSettings: [
-        .define("TEST_SHIMS", .when(configuration: .debug))
       ]
     ),
 

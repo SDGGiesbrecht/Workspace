@@ -20,6 +20,7 @@ import WSGeneralImports
 import WSProject
 
 import PackageModel
+import SwiftFormat
 
 extension PackageRepository {
 
@@ -353,6 +354,16 @@ extension PackageRepository {
       "",
       "XCTMain(tests)"
     ])
+
+    var source = main.joinedAsLines()
+    if let formatConfiguration = try configuration(output: output)
+      .proofreading.swiftFormatConfiguration
+    {
+      let formatter = SwiftFormatter(configuration: formatConfiguration)
+      var result: String = ""
+      try formatter.format(source: source, assumingFileURL: url, to: &result)
+      source = result
+    }
 
     var windowsMain = try TextFile(possiblyAt: url)
     windowsMain.body = main.joinedAsLines()

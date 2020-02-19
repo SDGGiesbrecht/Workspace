@@ -2,7 +2,7 @@ import XCTest
 
 @testable import DeutschTests
 
-extension DeutschTests {
+extension DeutschTests.DeutschTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testExample", testExample),
@@ -11,6 +11,6 @@ extension DeutschTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += DeutschTests.windowsTests
+tests += DeutschTests.DeutschTests.windowsTests
 
 XCTMain(tests)

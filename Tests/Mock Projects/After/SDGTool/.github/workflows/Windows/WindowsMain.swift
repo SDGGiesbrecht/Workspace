@@ -19,7 +19,7 @@ import XCTest
 
 @testable import SDGTests
 
-extension SDGTests {
+extension SDGTests.SDGTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testExample", testExample),
@@ -28,6 +28,6 @@ extension SDGTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += SDGTests.windowsTests
+tests += SDGTests.SDGTests.windowsTests
 
 XCTMain(tests)

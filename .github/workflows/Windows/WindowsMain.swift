@@ -56,7 +56,7 @@ import XCTest
   }
 #endif
 
-extension WindowsTests {
+extension WSWindowsTests.WindowsTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testTests", testTests),
@@ -65,6 +65,6 @@ extension WindowsTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += WindowsTests.windowsTests
+tests += WSWindowsTests.WindowsTests.windowsTests
 
 XCTMain(tests)

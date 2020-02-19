@@ -12,7 +12,7 @@ import XCTest
 
 @testable import AllTasksTests
 
-extension AllTasksTests {
+extension AllTasksTests.AllTasksTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testExample", testExample),
@@ -21,6 +21,6 @@ extension AllTasksTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += AllTasksTests.windowsTests
+tests += AllTasksTests.AllTasksTests.windowsTests
 
 XCTMain(tests)

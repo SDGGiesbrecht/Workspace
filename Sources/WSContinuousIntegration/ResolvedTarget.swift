@@ -49,7 +49,7 @@ extension ResolvedTarget {
               }
             }
           }
-          found.append((name: name, methods: methods))
+          found.append((name: "\(self.name).\(name)", methods: methods))
         }
       }
     }

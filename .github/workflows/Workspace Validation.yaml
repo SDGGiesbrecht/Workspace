@@ -20,8 +20,10 @@ jobs:
   macOS:
     runs-on: macos-10.15
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -34,8 +36,10 @@ jobs:
   Windows:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -101,8 +105,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -116,8 +122,10 @@ jobs:
   tvOS:
     runs-on: macos-10.15
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -130,8 +138,10 @@ jobs:
   iOS:
     runs-on: macos-10.15
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -144,8 +154,10 @@ jobs:
   Android:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -241,8 +253,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache
+      uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

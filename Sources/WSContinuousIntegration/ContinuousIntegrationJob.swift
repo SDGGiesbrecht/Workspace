@@ -302,6 +302,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Check out"
+      case .deutschDeutschland:
+        return "Holen"
+      }
+    })
+  }
+
+  private var cacheStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Cache"
+      case .deutschDeutschland:
+        return "Zwischenspeichern"
+      }
+    })
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -352,8 +374,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     result += [
       "    steps:",
-      "    \u{2D} uses: actions/checkout@v1",
-      "    \u{2D} uses: actions/cache@v1",
+      "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+      "      uses: actions/checkout@v1",
+      "    \u{2D} name: \(cacheStepName.resolved(for: interfaceLocalization))",
+      "      uses: actions/cache@v1",
       "      with:",
     ]
 

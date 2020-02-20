@@ -248,8 +248,10 @@ jobs:
         adb -e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug/WorkspacePackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh
-    - uses: malinskiy/action-android/install-sdk@release/0.0.5
-    - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+    - name: Install emulator
+      uses: malinskiy/action-android/install-sdk@release/0.0.5
+    - name: Test
+      uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         abi: x86_64
         cmd: .build/SDG/Emulator.sh

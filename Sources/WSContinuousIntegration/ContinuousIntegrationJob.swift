@@ -368,6 +368,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var installEmulatorStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install emulator"
+      case .deutschDeutschland:
+        return "Emulator installieren"
+      }
+    })
+  }
+
+  private var testStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Test"
+      case .deutschDeutschland:
+        return "Testen"
+      }
+    })
+  }
+
   private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -726,8 +748,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),
         // #workaround(There is no official action for this yet.)
-        "    \u{2D} uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
-        "    \u{2D} uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+        "    \u{2D} name: \(installEmulatorStepName.resolved(for: interfaceLocalization))",
+        "      uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
+        "    \u{2D} name: \(testStepName.resolved(for: interfaceLocalization))",
+        "      uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
         "      with:",
         "        abi: x86_64",
         "        cmd: .build/SDG/Emulator.sh"

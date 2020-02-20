@@ -135,7 +135,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-           .deutschDeutschland:
+        .deutschDeutschland:
         return "Android II"
       }
     })

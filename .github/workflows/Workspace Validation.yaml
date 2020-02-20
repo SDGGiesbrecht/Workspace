@@ -22,7 +22,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -38,7 +38,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -107,7 +107,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -124,7 +124,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -140,7 +140,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -156,7 +156,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
@@ -261,7 +261,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Cache
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}

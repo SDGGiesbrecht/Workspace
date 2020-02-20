@@ -664,6 +664,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         ),
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),
+        // #workaround(There is no official action for this yet.)
         "    \u{2D} uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
         "    \u{2D} uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
         "      with:",

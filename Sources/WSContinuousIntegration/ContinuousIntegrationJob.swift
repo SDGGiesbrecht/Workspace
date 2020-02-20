@@ -131,6 +131,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       })
     }
   }
+  private var androidIIJobName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+           .deutschDeutschland:
+        return "Android II"
+      }
+    })
+  }
 
   public var argumentName: UserFacing<StrictString, InterfaceLocalization> {
     switch self {
@@ -720,7 +729,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "      with:",
         "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "  AndroidII:",
+        "  Android_II:",
+        "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
         "    steps:",

@@ -357,6 +357,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var prepareScriptStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Prepare script"
+      case .deutschDeutschland:
+        return "Skript vorbereiten"
+      }
+    })
+  }
+
   private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -698,7 +709,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "      with:",
         "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "    \u{2D} run: |",
+        "    \u{2D} name: \(prepareScriptStepName.resolved(for: interfaceLocalization))",
+        "      run: |",
         commandEntry("mkdir \u{2D}p .build/SDG"),
         commandEntry("echo \u{27}"),
         commandEntry("set \u{2D}e"),

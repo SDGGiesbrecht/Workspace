@@ -238,7 +238,8 @@ jobs:
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug
-    - run: |
+    - name: Prepare script
+      run: |
         mkdir -p .build/SDG
         echo '
         set -e

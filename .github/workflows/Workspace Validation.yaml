@@ -222,18 +222,21 @@ jobs:
         cp -R /Library/icu-64/usr/lib/* .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
-    - uses: actions/upload-artifact@v1
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
       with:
-        name: products
+        name: tests
         path: .build/x86_64-unknown-linux-android/debug
   AndroidII:
     runs-on: macos-10.15
     needs: Android
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/download-artifact@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
       with:
-        name: products
+        name: tests
         path: .build/x86_64-unknown-linux-android/debug
     - run: |
         mkdir -p .build/SDG

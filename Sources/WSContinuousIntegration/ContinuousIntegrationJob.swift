@@ -335,6 +335,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var uploadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Upload tests"
+      case .deutschDeutschland:
+        return "Teste hochladen"
+      }
+    })
+  }
+
+  private var downloadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Download tests"
+      case .deutschDeutschland:
+        return "Teste herunterladen"
+      }
+    })
+  }
+
   private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -660,18 +682,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
-        "    \u{2D} uses: actions/upload\u{2D}artifact@v1",
+        "    \u{2D} name: \(uploadTestsStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/upload\u{2D}artifact@v1",
         "      with:",
-        "        name: products",
+        "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
         "  AndroidII:",
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
         "    steps:",
-        "    \u{2D} uses: actions/checkout@v1",
-        "    \u{2D} uses: actions/download\u{2D}artifact@v1",
+        "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/checkout@v1",
+        "    \u{2D} name: \(downloadTestsStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/download\u{2D}artifact@v1",
         "      with:",
-        "        name: products",
+        "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
         "    \u{2D} run: |",
         commandEntry("mkdir \u{2D}p .build/SDG"),

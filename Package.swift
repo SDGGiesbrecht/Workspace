@@ -752,42 +752,11 @@ let package = Package(
 func adjustForWindows() {
   // #workaround(SDGCommandLine 1.2.5, Repository incompatible with Windows file system.)
   package.dependencies.removeAll(where: { $0.url.contains("SDGCommandLine") })
-  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
-  package.dependencies.removeAll(where: { $0.url.contains("SDGCornerstone") })
-  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
-  package.dependencies.removeAll(where: { $0.url.contains("SDGSwift") })
-  // #workaround(SDGCornerstone 4.2.1, Repository incompatible with Windows file system.)
-  package.dependencies.removeAll(where: { $0.url.contains("SDGWeb") })
   let impossibleProducts: Set<String> = [
     // SDGCommandLine
     "SDGCommandLine",
     "SDGCommandLineTestUtilities",
-    "SDGExportedCommandLineInterface",
-    // SDGCornerstone
-    "SDGCalendar",
-    "SDGCollections",
-    "SDGControlFlow",
-    "SDGExternalProcess",
-    "SDGLocalization",
-    "SDGLocalizationTestUtilities",
-    "SDGLogic",
-    "SDGMathematics",
-    "SDGPersistence",
-    "SDGPersistenceTestUtilities",
-    "SDGText",
-    "SDGVersioning",
-    "SDGXCTestUtilities",
-    // SDGSwift
-    "SDGSwift",
-    "SDGSwiftConfiguration",
-    "SDGSwiftConfigurationLoading",
-    "SDGSwiftPackageManager",
-    "SDGSwiftSource",
-    "SDGXcode",
-    // SDGWeb
-    "SDGCSS",
-    "SDGHTML",
-    "SDGWeb"
+    "SDGExportedCommandLineInterface"
   ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
@@ -859,31 +828,7 @@ func adjustForAndroid() {
     // SDGCommandLine #workaround(SDGCommandLine 1.2.5, No Android support yet.)
     "SDGCommandLine",
     "SDGCommandLineTestUtilities",
-    "SDGExportedCommandLineInterface",
-    // SDGCornerstone #workaround(SDGCornerstone 4.2.1, No Android support yet.)
-    "SDGCalendar",
-    "SDGCollections",
-    "SDGControlFlow",
-    "SDGExternalProcess",
-    "SDGLocalization",
-    "SDGLocalizationTestUtilities",
-    "SDGMathematics",
-    "SDGPersistence",
-    "SDGPersistenceTestUtilities",
-    "SDGText",
-    "SDGVersioning",
-    "SDGXCTestUtilities",
-    // SDGSwift #workaround(SDGSwift 0.19.1, No Android support yet.)
-    "SDGSwift",
-    "SDGSwiftConfiguration",
-    "SDGSwiftConfigurationLoading",
-    "SDGSwiftPackageManager",
-    "SDGSwiftSource",
-    "SDGXcode",
-    // SDGWeb #workaround(SDGWeb 5.0.1, No Android support yet.)
-    "SDGCSS",
-    "SDGHTML",
-    "SDGWeb"
+    "SDGExportedCommandLineInterface"
   ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",

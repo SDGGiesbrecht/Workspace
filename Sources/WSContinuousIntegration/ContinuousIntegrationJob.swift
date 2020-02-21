@@ -131,6 +131,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       })
     }
   }
+  private var androidIIJobName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Android II"
+      }
+    })
+  }
 
   public var argumentName: UserFacing<StrictString, InterfaceLocalization> {
     switch self {
@@ -302,6 +311,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Check out"
+      case .deutschDeutschland:
+        return "Holen"
+      }
+    })
+  }
+
+  private var cacheWorkspaceStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Cache Workspace"
+      case .deutschDeutschland:
+        return "Arbeitsbereich zwischenspeichern"
+      }
+    })
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -309,6 +340,61 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Validate"
       case .deutschDeutschland:
         return "Prüfen"
+      }
+    })
+  }
+
+  private var uploadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Upload tests"
+      case .deutschDeutschland:
+        return "Teste hochladen"
+      }
+    })
+  }
+
+  private var downloadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Download tests"
+      case .deutschDeutschland:
+        return "Teste herunterladen"
+      }
+    })
+  }
+
+  private var prepareScriptStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Prepare script"
+      case .deutschDeutschland:
+        return "Skript vorbereiten"
+      }
+    })
+  }
+
+  private var installEmulatorStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install emulator"
+      case .deutschDeutschland:
+        return "Emulator installieren"
+      }
+    })
+  }
+
+  private var testStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Test"
+      case .deutschDeutschland:
+        return "Testen"
       }
     })
   }
@@ -352,8 +438,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     result += [
       "    steps:",
-      "    \u{2D} uses: actions/checkout@v1",
-      "    \u{2D} uses: actions/cache@v1",
+      "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+      "      uses: actions/checkout@v1",
+      "    \u{2D} name: \(cacheWorkspaceStepName.resolved(for: interfaceLocalization))",
+      "      uses: actions/cache@v1",
       "      with:",
     ]
 
@@ -636,20 +724,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
-        "    \u{2D} uses: actions/upload\u{2D}artifact@v1",
+        "    \u{2D} name: \(uploadTestsStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/upload\u{2D}artifact@v1",
         "      with:",
-        "        name: products",
+        "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "  AndroidII:",
+        "  Android_II:",
+        "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
         "    steps:",
-        "    \u{2D} uses: actions/checkout@v1",
-        "    \u{2D} uses: actions/download\u{2D}artifact@v1",
+        "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/checkout@v1",
+        "    \u{2D} name: \(downloadTestsStepName.resolved(for: interfaceLocalization))",
+        "      uses: actions/download\u{2D}artifact@v1",
         "      with:",
-        "        name: products",
+        "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "    \u{2D} run: |",
+        "    \u{2D} name: \(prepareScriptStepName.resolved(for: interfaceLocalization))",
+        "      run: |",
         commandEntry("mkdir \u{2D}p .build/SDG"),
         commandEntry("echo \u{27}"),
         commandEntry("set \u{2D}e"),
@@ -665,8 +758,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),
         // #workaround(There is no official action for this yet.)
-        "    \u{2D} uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
-        "    \u{2D} uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+        "    \u{2D} name: \(installEmulatorStepName.resolved(for: interfaceLocalization))",
+        "      uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
+        "    \u{2D} name: \(testStepName.resolved(for: interfaceLocalization))",
+        "      uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
         "      with:",
         "        abi: x86_64",
         "        cmd: .build/SDG/Emulator.sh"

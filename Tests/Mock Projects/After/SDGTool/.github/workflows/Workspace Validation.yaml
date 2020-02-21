@@ -21,8 +21,10 @@ jobs:
   macOS:
     runs-on: macos-10.15
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -35,8 +37,10 @@ jobs:
   Windows:
     runs-on: windows-2019
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
       with:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -99,8 +103,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -114,8 +120,10 @@ jobs:
   Android:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
       with:
         key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -180,20 +188,25 @@ jobs:
         cp -R /Library/icu-64/usr/lib/* .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
-    - uses: actions/upload-artifact@v1
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
       with:
-        name: products
+        name: tests
         path: .build/x86_64-unknown-linux-android/debug
-  AndroidII:
+  Android_II:
+    name: Android II
     runs-on: macos-10.15
     needs: Android
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/download-artifact@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
       with:
-        name: products
+        name: tests
         path: .build/x86_64-unknown-linux-android/debug
-    - run: |
+    - name: Prepare script
+      run: |
         mkdir -p .build/SDG
         echo '
         set -e
@@ -202,8 +215,10 @@ jobs:
         adb -e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug/SDGPackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh
-    - uses: malinskiy/action-android/install-sdk@release/0.0.5
-    - uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
+    - name: Install emulator
+      uses: malinskiy/action-android/install-sdk@release/0.0.5
+    - name: Test
+      uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         abi: x86_64
         cmd: .build/SDG/Emulator.sh
@@ -211,8 +226,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

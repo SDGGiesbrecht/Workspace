@@ -12,8 +12,10 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - uses: actions/checkout@v1
-    - uses: actions/cache@v1
+    - name: Holen
+      uses: actions/checkout@v1
+    - name: Arbeitsbereich zwischenspeichern
+      uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

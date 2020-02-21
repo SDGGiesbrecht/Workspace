@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "6f94e0f33eea7f2fffe3d1d062a4acd8ea751a91",
-          "version": "0.19.1"
+          "revision": "dc3e3310ca218ac4545a51d9f24aac8e0490ea46",
+          "version": "0.19.2"
         }
       },
       {
@@ -71,15 +71,6 @@
           "branch": null,
           "revision": "a2aa24d236f7535236806190c91a88d791212a3b",
           "version": "0.0.4"
-        }
-      },
-      {
-        "package": "SwiftPM",
-        "repositoryURL": "https://github.com/apple/swift-package-manager.git",
-        "state": {
-          "branch": null,
-          "revision": "9abcc2260438177cecd7cf5185b144d13e74122b",
-          "version": "0.5.0"
         }
       },
       {

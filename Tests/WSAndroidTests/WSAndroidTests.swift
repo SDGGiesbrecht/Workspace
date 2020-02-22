@@ -24,6 +24,10 @@ final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+
+      #warning("Debugging...")
+      print(directory.path)
+
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }
   }

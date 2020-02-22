@@ -22,22 +22,18 @@ import XCTest
 
 final class AndroidTests: XCTestCase {
 
-  func testFileSystemPermissions() throws {
+  func testTemporaryDirectoryPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
     try {
       var directory: URL
       if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
         directory = FileManager.default.temporaryDirectory
-        print("Generic temporary:", directory.path)
       } else {
         directory = URL(fileURLWithPath: NSTemporaryDirectory())
       }
-      print("Directory:", directory.path)
-
       directory.appendPathComponent(UUID().uuidString)
-      print("UUID:", directory.path)
       defer { try? FileManager.default.removeItem(at: directory) }
-      print("Executing closure...")
+
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }()
 

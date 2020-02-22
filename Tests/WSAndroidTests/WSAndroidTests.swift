@@ -23,7 +23,9 @@ import XCTest
 final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
-
+    #warning("Debugging...")
+    print("Here.")
+    #if !os(Android)
     #warning("Debugging...")
     {
       var directory: URL
@@ -76,5 +78,6 @@ final class AndroidTests: XCTestCase {
 
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }
+    #endif
   }
 }

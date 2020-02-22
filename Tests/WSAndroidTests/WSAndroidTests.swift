@@ -23,62 +23,39 @@ import XCTest
 final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
-    #warning("Debugging...")
-    print("Here.");
-    #warning("Debugging...")
+    // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
     try {
       var directory: URL
 
-      let volume = try? FileManager.default.url(
-        for: .documentDirectory,
+      print("No volume‐specific.")
+      if let anyVolume = try? FileManager.default.url(
+        for: .itemReplacementDirectory,
         in: .userDomainMask,
         appropriateFor: nil,
         create: true
-      )
-      #warning("Debugging...")
-      print("Volume:", volume?.path)
-
-      if let itemReplacement = Optional<URL>.none {
-          print("Volume‐specific:", itemReplacement.path)
-          directory = itemReplacement
+        ) {
+        print("Volume‐agnostic:", anyVolume.path)
+        directory = anyVolume
+      } else {
+        print("No volume‐agnostic.")
+        return
+        if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
+          directory = FileManager.default.temporaryDirectory
+          print("Generic temporary:", directory.path)
         } else {
-          print("No volume‐specific.")
-          #warning("Debugging...")
-          return
-          #if !os(Android)
-            if let anyVolume = try? FileManager.default.url(
-              for: .itemReplacementDirectory,
-              in: .userDomainMask,
-              appropriateFor: nil,
-              create: true
-            ) {
-              print("Volume‐agnostic:", anyVolume.path)
-              directory = anyVolume
-            } else {
-              if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
-                directory = FileManager.default.temporaryDirectory
-                print("Generic temporary:", directory.path)
-              } else {
-                directory = URL(fileURLWithPath: NSTemporaryDirectory())
-              }
-            }
-          #endif
+          directory = URL(fileURLWithPath: NSTemporaryDirectory())
         }
-        print("Directory:", directory.path)
+      }
+      print("Directory:", directory.path)
 
-        directory.appendPathComponent(UUID().uuidString)
-        print("UUID:", directory.path)
-        defer { try? FileManager.default.removeItem(at: directory) }
-        print("Executing closure...")
+      directory.appendPathComponent(UUID().uuidString)
+      print("UUID:", directory.path)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      print("Executing closure...")
     }()
 
-    #if !os(Android)
-      #warning("Debugging...")
+    #if !os(Android)  // #workaround(SDGCornerstone 4.3.2, Crashes for other reasons.)
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-
-        #warning("Debugging...")
-        print(directory.path)
-
         try "text".save(to: directory.appendingPathComponent("Text.txt"))
       }
     #endif

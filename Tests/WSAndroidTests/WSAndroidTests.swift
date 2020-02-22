@@ -38,27 +38,13 @@ final class AndroidTests: XCTestCase {
       #warning("Debugging...")
       print("Volume:", volume?.path)
 
-      #warning("Debugging...")
-      let experiment = try FileManager.default.url(
-        for: .itemReplacementDirectory,
-        in: .userDomainMask,
-        appropriateFor: volume,
-        create: false
-      )
-      print("Volume:", experiment.path)
-
-      #warning("Debugging...")
-      #if !os(Android)
-        if let itemReplacement = try? FileManager.default.url(
-          for: .itemReplacementDirectory,
-          in: .userDomainMask,
-          appropriateFor: volume,
-          create: true
-        ) {
+      if let itemReplacement = Optional<URL>.none {
           print("Volume‐specific:", itemReplacement.path)
           directory = itemReplacement
         } else {
           print("No volume‐specific.")
+          #warning("Debugging...")
+          return
           #if !os(Android)
             if let anyVolume = try? FileManager.default.url(
               for: .itemReplacementDirectory,
@@ -84,7 +70,6 @@ final class AndroidTests: XCTestCase {
         print("UUID:", directory.path)
         defer { try? FileManager.default.removeItem(at: directory) }
         print("Executing closure...")
-      #endif
     }()
 
     #if !os(Android)

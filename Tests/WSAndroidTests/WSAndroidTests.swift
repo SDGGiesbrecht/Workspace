@@ -25,6 +25,7 @@ final class AndroidTests: XCTestCase {
   func testFileSystemPermissions() throws {
     #warning("Debugging...")
     print("Here.");
+    #warning("Debugging...")
     {
       var directory: URL
 
@@ -34,18 +35,21 @@ final class AndroidTests: XCTestCase {
         appropriateFor: nil,
         create: true
       )
-      #if !os(Android)
+      #warning("Debugging...")
+      print("Volume:", volume?.path)
+      if let itemReplacement = try? FileManager.default.url(
+        for: .itemReplacementDirectory,
+        in: .userDomainMask,
+        appropriateFor: volume,
+        create: true
+      ) {
+        print("Volume‐specific:", itemReplacement.path)
+        directory = itemReplacement
+      } else {
         #warning("Debugging...")
-        print("Volume:", volume?.path)
-        if let itemReplacement = try? FileManager.default.url(
-          for: .itemReplacementDirectory,
-          in: .userDomainMask,
-          appropriateFor: volume,
-          create: true
-        ) {
-          print("Volume‐specific:", itemReplacement.path)
-          directory = itemReplacement
-        } else {
+        print("No volume‐specific.")
+        fatalError("No volume‐specific.")
+        #if !os(Android)
           if let anyVolume = try? FileManager.default.url(
             for: .itemReplacementDirectory,
             in: .userDomainMask,
@@ -62,9 +66,12 @@ final class AndroidTests: XCTestCase {
               directory = URL(fileURLWithPath: NSTemporaryDirectory())
             }
           }
-        }
-        print("Directory:", directory.path)
+        #endif
+      }
+      print("Directory:", directory.path)
 
+      #warning("Debugging...")
+      #if !os(Android)
         directory.appendPathComponent(UUID().uuidString)
         print("UUID:", directory.path)
         defer { try? FileManager.default.removeItem(at: directory) }

@@ -24,29 +24,16 @@ final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
-    try {
+    {
       var directory: URL
-
-      print("No volume‐specific.")
-      if let anyVolume = try? FileManager.default.url(
-        for: .itemReplacementDirectory,
-        in: .userDomainMask,
-        appropriateFor: nil,
-        create: true
-        ) {
-        print("Volume‐agnostic:", anyVolume.path)
-        directory = anyVolume
+      if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
+        directory = FileManager.default.temporaryDirectory
+        print("Generic temporary:", directory.path)
       } else {
-        print("No volume‐agnostic.")
-        return
-        if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
-          directory = FileManager.default.temporaryDirectory
-          print("Generic temporary:", directory.path)
-        } else {
-          directory = URL(fileURLWithPath: NSTemporaryDirectory())
-        }
+        directory = URL(fileURLWithPath: NSTemporaryDirectory())
       }
       print("Directory:", directory.path)
+      return;
 
       directory.appendPathComponent(UUID().uuidString)
       print("UUID:", directory.path)

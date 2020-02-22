@@ -23,6 +23,52 @@ import XCTest
 final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
+
+    #warning("Debugging...")
+    {
+      var directory: URL
+
+      let volume = try? FileManager.default.url(
+        for: .documentDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: true
+      )
+      print("Volume:", volume?.path)
+      if let itemReplacement = try? FileManager.default.url(
+        for: .itemReplacementDirectory,
+        in: .userDomainMask,
+        appropriateFor: volume,
+        create: true
+      ) {
+        print("Volume‐specific:", itemReplacement.path)
+        directory = itemReplacement
+      } else {
+        if let anyVolume = try? FileManager.default.url(
+          for: .itemReplacementDirectory,
+          in: .userDomainMask,
+          appropriateFor: nil,
+          create: true
+        ) {
+          print("Volume‐agnostic:", anyVolume.path)
+          directory = anyVolume
+        } else {
+          if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
+            directory = FileManager.default.temporaryDirectory
+            print("Generic temporary:", directory.path)
+          } else {
+            directory = URL(fileURLWithPath: NSTemporaryDirectory())
+          }
+        }
+      }
+      print("Directory:", directory.path)
+
+      directory.appendPathComponent(UUID().uuidString)
+      print("UUID:", directory.path)
+      defer { try? FileManager.default.removeItem(at: directory) }
+      print("Executing closure...")
+    }()
+
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
 
       #warning("Debugging...")

@@ -704,6 +704,7 @@ let package = Package(
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
+
     // #workaround(workspace version 0.30.1, Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
@@ -726,6 +727,14 @@ let package = Package(
       name: "WSWindowsTests",
       dependencies: ["WSWindowsLibrary"]
     ),
+    // #workaround(workspace version 0.30.1, Until real tests work on Android)
+    .testTarget(
+      name: "WSAndroidTests",
+      dependencies: [
+        .product(name: "SDGPersistence", package: "SDGCornerstone")
+      ]
+    ),
+
     .target(
       name: "WSConfigurationExample",
       dependencies: [

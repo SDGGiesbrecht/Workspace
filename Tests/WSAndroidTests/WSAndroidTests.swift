@@ -39,6 +39,15 @@ final class AndroidTests: XCTestCase {
       print("Volume:", volume?.path)
 
       #warning("Debugging...")
+      let experiment = try FileManager.default.url(
+        for: .itemReplacementDirectory,
+        in: .userDomainMask,
+        appropriateFor: volume,
+        create: true
+      )
+      print("Volume:", experiment.path)
+
+      #warning("Debugging...")
       #if !os(Android)
         if let itemReplacement = try? FileManager.default.url(
           for: .itemReplacementDirectory,

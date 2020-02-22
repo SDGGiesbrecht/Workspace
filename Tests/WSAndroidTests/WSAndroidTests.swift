@@ -26,7 +26,7 @@ final class AndroidTests: XCTestCase {
     #warning("Debugging...")
     print("Here.");
     #warning("Debugging...")
-    {
+    try {
       var directory: URL
 
       let volume = try? FileManager.default.url(

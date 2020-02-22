@@ -24,7 +24,7 @@ final class AndroidTests: XCTestCase {
 
   func testFileSystemPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
-    {
+    try {
       var directory: URL
       if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
         directory = FileManager.default.temporaryDirectory
@@ -38,6 +38,7 @@ final class AndroidTests: XCTestCase {
       print("UUID:", directory.path)
       defer { try? FileManager.default.removeItem(at: directory) }
       print("Executing closure...")
+      try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }()
 
     #if !os(Android)  // #workaround(SDGCornerstone 4.3.2, Crashes for other reasons.)

@@ -33,7 +33,6 @@ final class AndroidTests: XCTestCase {
         directory = URL(fileURLWithPath: NSTemporaryDirectory())
       }
       print("Directory:", directory.path)
-      return;
 
       directory.appendPathComponent(UUID().uuidString)
       print("UUID:", directory.path)

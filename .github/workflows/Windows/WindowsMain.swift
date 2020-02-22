@@ -16,6 +16,7 @@
 
 import XCTest
 
+@testable import WSAndroidTests
 @testable import WSWindowsTests
 
 #if os(macOS)
@@ -56,6 +57,14 @@ import XCTest
   }
 #endif
 
+extension WSAndroidTests.AndroidTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
+    ])
+  ]
+}
+
 extension WSWindowsTests.WindowsTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
@@ -65,6 +74,7 @@ extension WSWindowsTests.WindowsTests {
 }
 
 var tests = [XCTestCaseEntry]()
+tests += WSAndroidTests.AndroidTests.windowsTests
 tests += WSWindowsTests.WindowsTests.windowsTests
 
 XCTMain(tests)

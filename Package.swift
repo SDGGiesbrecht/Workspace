@@ -761,58 +761,10 @@ let package = Package(
 func adjustForWindows() {
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceTool",
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGit",
-    "WSGitHub",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode"
+    "test‐tvos‐simulator"
   ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem:
-        return false
-      }
-    })
-  }
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
-  })
-  // #workaround(workspace version 0.30.1, Not feasible on windows yet.)
-  let impossibleWorkspaceProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration"
-  ]
-  package.products.removeAll(where: { product in
-    impossibleWorkspaceProducts.contains(product.name)
   })
 }
 #if os(Windows)
@@ -822,67 +774,4 @@ import Foundation
 // #workaround(workspace version 0.30.1, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
-}
-
-func adjustForAndroid() {
-  let impossibleTargets: Set<String> = [
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-    "WorkspaceConfiguration",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceTool",
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSGit",
-    "WSGitHub",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode"
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem:
-        return false
-      }
-    })
-  }
-  package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
-  })
-  let impossibleWorkspaceProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration"
-  ]
-  package.products.removeAll(where: { product in
-    impossibleWorkspaceProducts.contains(product.name)
-  })
-}
-#if os(Android)
-  adjustForAndroid()
-#endif
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
 }

@@ -248,11 +248,11 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 3, 1)
+      from: Version(4, 3, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 2, 5)
+      from: Version(1, 3, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
@@ -759,14 +759,6 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  // #workaround(SDGCommandLine 1.2.5, Repository incompatible with Windows file system.)
-  package.dependencies.removeAll(where: { $0.url.contains("SDGCommandLine") })
-  let impossibleProducts: Set<String> = [
-    // SDGCommandLine
-    "SDGCommandLine",
-    "SDGCommandLineTestUtilities",
-    "SDGExportedCommandLineInterface"
-  ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
@@ -805,8 +797,8 @@ func adjustForWindows() {
       switch dependency {
       case ._targetItem(let name), ._byNameItem(let name):
         return impossibleTargets.contains(name)
-      case ._productItem(let name, _):
-        return impossibleProducts.contains(name)
+      case ._productItem:
+        return false
       }
     })
   }
@@ -833,12 +825,6 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 }
 
 func adjustForAndroid() {
-  let impossibleProducts: Set<String> = [
-    // SDGCommandLine #workaround(SDGCommandLine 1.2.5, No Android support yet.)
-    "SDGCommandLine",
-    "SDGCommandLineTestUtilities",
-    "SDGExportedCommandLineInterface"
-  ]
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
@@ -877,8 +863,8 @@ func adjustForAndroid() {
       switch dependency {
       case ._targetItem(let name), ._byNameItem(let name):
         return impossibleTargets.contains(name)
-      case ._productItem(let name, _):
-        return impossibleProducts.contains(name)
+      case ._productItem:
+        return false
       }
     })
   }

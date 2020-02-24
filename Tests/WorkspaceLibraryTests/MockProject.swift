@@ -146,9 +146,12 @@ extension PackageRepository {
           for command in commands {
             FileType.resetUnsupportedFileTypes()
 
-            print(StrictString("$ workspace ") + command.joined(separator: " "))
+            print(
+              StrictString("$ workspace ")
+                + StrictString(command.joined(separator: " " as StrictString))
+            )
             let specificationName: StrictString =
-              "\(location.lastPathComponent) (\(command.joined(separator: " ")))"
+              "\(location.lastPathComponent) (\(StrictString(command.joined(separator: " " as StrictString))))"
 
             // Special handling of commands with platform differences
             func requireSuccess() {

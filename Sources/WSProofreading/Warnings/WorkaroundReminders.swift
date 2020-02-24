@@ -138,6 +138,6 @@ internal struct WorkaroundReminders: Warning {
           }
         )  // @exempt(from: tests) Meaningless coverage region.
       }
-    #endif
+    #endif  // @exempt(from: tests)
   }
 }

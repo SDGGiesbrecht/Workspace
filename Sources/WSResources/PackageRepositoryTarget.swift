@@ -70,7 +70,7 @@ extension PackageRepository {
           }
           return base.appendingPathComponent(name)
         }
-      #endif
+      #endif  // @exempt(from: tests)
     }
 
     // MARK: - Resources

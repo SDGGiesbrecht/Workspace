@@ -1,0 +1,12 @@
+name: Toolchain Assembly
+
+on: [push, pull_request]
+
+jobs:
+  Linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v1
+    - name: Validate
+      run: |
+        echo 'Hello, world!'

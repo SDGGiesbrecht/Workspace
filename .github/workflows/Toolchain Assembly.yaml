@@ -54,7 +54,6 @@ jobs:
         cd Ninja-ReleaseAssert
         pwd
         ls
-        cd
-        swift-linux-x86_64
+        cd swift-linux-x86_64
         pwd
         ls

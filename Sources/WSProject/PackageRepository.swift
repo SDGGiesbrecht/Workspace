@@ -116,15 +116,15 @@ extension PackageRepository {
     #endif
   }
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
-    // MARK: - Miscellaneous Properties
+  // MARK: - Miscellaneous Properties
 
-    public func isWorkspaceProject() throws -> Bool {
-      return try packageName() == "Workspace"
-    }
+  public func isWorkspaceProject() throws -> Bool {
+    return try packageName() == "Workspace"
+  }
 
-    // MARK: - Manifest
+  // MARK: - Manifest
 
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     public func cachedManifest() throws -> PackageModel.Manifest {
       return try cached(in: &manifestCache.manifest) {
         return try manifest().get()
@@ -136,14 +136,16 @@ extension PackageRepository {
         return try package().get()
       }
     }
-    private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-      let variable = "GENERATING_CMAKE_FOR_WINDOWS"
-      setenv(variable, "true", 1 /* overwrite */)
-      defer {
-        unsetenv(variable)
-      }
-      return try closure()
+  #endif
+  private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
+    let variable = "GENERATING_CMAKE_FOR_WINDOWS"
+    setenv(variable, "true", 1 /* overwrite */)
+    defer {
+      unsetenv(variable)
     }
+    return try closure()
+  }
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     public func cachedWindowsPackage() throws -> PackageModel.Package {
       return try cached(in: &manifestCache.windowsPackage) {
         return try PackageRepository.withWindowsEnvironment {
@@ -164,51 +166,53 @@ extension PackageRepository {
         }
       }
     }
+  #endif
 
-    public func packageName() throws -> StrictString {
-      return StrictString(try cachedManifest().name)
-    }
+  public func packageName() throws -> StrictString {
+    return StrictString(try cachedManifest().name)
+  }
 
-    public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
-      -> StrictString
-    {
-      return try configuration(output: output).projectName[localization] ?? packageName()
-    }
+  public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
+    -> StrictString
+  {
+    return try configuration(output: output).projectName[localization] ?? packageName()
+  }
 
-    public func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
-      let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
-        return LocalizationIdentifier(localization.code)
-      }).resolved()
-      return try projectName(in: identifier, output: output)
-    }
+  public func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+    let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+      return LocalizationIdentifier(localization.code)
+    }).resolved()
+    return try projectName(in: identifier, output: output)
+  }
 
-    public func products() throws -> [PackageModel.Product] {
-      return try cached(in: &manifestCache.products) {
-        var products: [PackageModel.Product] = []
+  public func products() throws -> [PackageModel.Product] {
+    return try cached(in: &manifestCache.products) {
+      var products: [PackageModel.Product] = []
 
-        // Filter out tools which have not been declared as products.
-        let declaredTools: Set<String> = Set(
-          try cachedManifest().products.lazy.map({ $0.name })
-        )
+      // Filter out tools which have not been declared as products.
+      let declaredTools: Set<String> = Set(
+        try cachedManifest().products.lazy.map({ $0.name })
+      )
 
-        for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
-          switch product.type {
-          case .library:
+      for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
+        switch product.type {
+        case .library:
+          products.append(product)
+        case .executable:
+          if product.name ∈ declaredTools {
             products.append(product)
-          case .executable:
-            if product.name ∈ declaredTools {
-              products.append(product)
-            } else {
-              continue  // skip
-            }
-          case .test:
+          } else {
             continue  // skip
           }
+        case .test:
+          continue  // skip
         }
-        return products
       }
+      return products
     }
+  }
 
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     public func dependenciesByName() throws -> [String: ResolvedPackage] {
       return try cached(in: &manifestCache.dependenciesByName) {
         let graph = try cachedPackageGraph()
@@ -220,140 +224,140 @@ extension PackageRepository {
         return result
       }
     }
+  #endif
 
-    // MARK: - Configuration
+  // MARK: - Configuration
 
-    public func configurationContext() throws -> WorkspaceContext {
-      return try cached(in: &configurationCache.configurationContext) {
+  public func configurationContext() throws -> WorkspaceContext {
+    return try cached(in: &configurationCache.configurationContext) {
 
-        let products = try self.products()
-          .map { (product: PackageModel.Product) -> PackageManifest.Product in
+      let products = try self.products()
+        .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-            let type: PackageManifest.Product.ProductType
-            let modules: [String]
-            switch product.type {
-            case .library:
-              type = .library
-              modules = product.targets.map { $0.name }
-            case .executable:
-              type = .executable
-              modules = []
-            case .test:
-              unreachable()
-            }
-
-            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+          let type: PackageManifest.Product.ProductType
+          let modules: [String]
+          switch product.type {
+          case .library:
+            type = .library
+            modules = product.targets.map { $0.name }
+          case .executable:
+            type = .executable
+            modules = []
+          case .test:
+            unreachable()
           }
 
-        let manifest = PackageManifest(
-          _packageName: String(try packageName()),
-          products: products
-        )
-        return WorkspaceContext(_location: location, manifest: manifest)
-      }
-    }
-
-    public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
-      return try cached(in: &configurationCache.configuration) {
-
-        // Provide the context in case resolution happens internally.
-        WorkspaceContext.current = try configurationContext()
-
-        let result: WorkspaceConfiguration
-        if try isWorkspaceProject() {
-          result = WorkspaceProjectConfiguration.configuration
-        } else {
-          result = try WorkspaceConfiguration.load(
-            configuration: WorkspaceConfiguration.self,
-            named: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Workspace"
-              case .deutschDeutschland:
-                return "Arbeitsbereich"
-              }
-            }),
-            from: location,
-            linkingAgainst: "WorkspaceConfiguration",
-            in: SDGSwift.Package(url: Metadata.packageURL),
-            at: Metadata.latestStableVersion,
-            minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
-            context: try configurationContext(),
-            reportProgress: { output.print($0) }
-          ).get()
+          return PackageManifest.Product(_name: product.name, type: type, modules: modules)
         }
 
-        // Force lazy options to resolve under the right context before it changes.
-        let encoded = try JSONEncoder().encode(result)
-        return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
-      }
+      let manifest = PackageManifest(
+        _packageName: String(try packageName()),
+        products: products
+      )
+      return WorkspaceContext(_location: location, manifest: manifest)
     }
+  }
 
-    public func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
-      guard let result = try configuration(output: output).documentation.localizations.first
-      else {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+  public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
+    return try cached(in: &configurationCache.configuration) {
+
+      // Provide the context in case resolution happens internally.
+      WorkspaceContext.current = try configurationContext()
+
+      let result: WorkspaceConfiguration
+      if try isWorkspaceProject() {
+        result = WorkspaceProjectConfiguration.configuration
+      } else {
+        result = try WorkspaceConfiguration.load(
+          configuration: WorkspaceConfiguration.self,
+          named: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishUnitedKingdom:
-              return "There are no localisations specified. (documentation.localisations)"
-            case .englishUnitedStates, .englishCanada:
-              return "There are no localizations specified. (documentation.localizations)"
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Workspace"
             case .deutschDeutschland:
-              return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
+              return "Arbeitsbereich"
             }
-          })
-        )
+          }),
+          from: location,
+          linkingAgainst: "WorkspaceConfiguration",
+          in: SDGSwift.Package(url: Metadata.packageURL),
+          at: Metadata.latestStableVersion,
+          minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
+          context: try configurationContext(),
+          reportProgress: { output.print($0) }
+        ).get()
       }
-      return result
-    }
 
-    public func fileHeader(output: Command.Output) throws -> StrictString {
-      return try cached(in: &configurationCache.fileHeader) {
-        return try configuration(output: output).fileHeaders.contents.resolve(
-          configuration(output: output)
-        )
-      }
+      // Force lazy options to resolve under the right context before it changes.
+      let encoded = try JSONEncoder().encode(result)
+      return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
     }
+  }
 
-    public func documentationCopyright(output: Command.Output) throws -> [LocalizationIdentifier:
-      StrictString]
-    {
-      return try cached(in: &configurationCache.documentationCopyright) {
-        return try configuration(output: output).documentation.api.copyrightNotice.resolve(
-          configuration(output: output)
-        )
-      }
+  public func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+    guard let result = try configuration(output: output).documentation.localizations.first
+    else {
+      throw Command.Error(
+        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom:
+            return "There are no localisations specified. (documentation.localisations)"
+          case .englishUnitedStates, .englishCanada:
+            return "There are no localizations specified. (documentation.localizations)"
+          case .deutschDeutschland:
+            return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
+          }
+        })
+      )
     }
+    return result
+  }
 
-    public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
-      return try cached(in: &configurationCache.readMe) {
-        return try configuration(output: output).documentation.readMe.contents.resolve(
-          configuration(output: output)
-        )
-      }
+  public func fileHeader(output: Command.Output) throws -> StrictString {
+    return try cached(in: &configurationCache.fileHeader) {
+      return try configuration(output: output).fileHeaders.contents.resolve(
+        configuration(output: output)
+      )
     }
+  }
 
-    public func contributingInstructions(output: Command.Output) throws -> [LocalizationIdentifier:
-      Markdown]
-    {
-      return try cached(in: &configurationCache.contributingInstructions) {
-        return try configuration(output: output).gitHub.contributingInstructions.resolve(
-          configuration(output: output)
-        )
-      }
+  public func documentationCopyright(output: Command.Output) throws -> [LocalizationIdentifier:
+    StrictString]
+  {
+    return try cached(in: &configurationCache.documentationCopyright) {
+      return try configuration(output: output).documentation.api.copyrightNotice.resolve(
+        configuration(output: output)
+      )
     }
+  }
 
-    public func issueTemplates(output: Command.Output) throws -> [LocalizationIdentifier:
-      [IssueTemplate]]
-    {
-      return try cached(in: &configurationCache.issueTemplates) {
-        return try configuration(output: output).gitHub.issueTemplates.resolve(
-          configuration(output: output)
-        )
-      }
+  public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+    return try cached(in: &configurationCache.readMe) {
+      return try configuration(output: output).documentation.readMe.contents.resolve(
+        configuration(output: output)
+      )
     }
-  #endif
+  }
+
+  public func contributingInstructions(output: Command.Output) throws -> [LocalizationIdentifier:
+    Markdown]
+  {
+    return try cached(in: &configurationCache.contributingInstructions) {
+      return try configuration(output: output).gitHub.contributingInstructions.resolve(
+        configuration(output: output)
+      )
+    }
+  }
+
+  public func issueTemplates(output: Command.Output) throws -> [LocalizationIdentifier:
+    [IssueTemplate]]
+  {
+    return try cached(in: &configurationCache.issueTemplates) {
+      return try configuration(output: output).gitHub.issueTemplates.resolve(
+        configuration(output: output)
+      )
+    }
+  }
 
   // MARK: - Files
 
@@ -386,26 +390,24 @@ extension PackageRepository {
     }
   }
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
-    public func sourceFiles(output: Command.Output) throws -> [URL] {
-      let configuration = try self.configuration(output: output)
-      let ignoredTypes = configuration.repository.ignoredFileTypes
-      let ignoredPaths = configuration.repository.ignoredPaths.map {
-        location.appendingPathComponent($0)
-      }
+  public func sourceFiles(output: Command.Output) throws -> [URL] {
+    let configuration = try self.configuration(output: output)
+    let ignoredTypes = configuration.repository.ignoredFileTypes
+    let ignoredPaths = configuration.repository.ignoredPaths.map {
+      location.appendingPathComponent($0)
+    }
 
-      return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
-        return try trackedFiles(output: output).filter { url in
-          for path in ignoredPaths {
-            if url.is(in: path) {
-              return false
-            }
+    return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
+      return try trackedFiles(output: output).filter { url in
+        for path in ignoredPaths {
+          if url.is(in: path) {
+            return false
           }
-          return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
         }
+        return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
       }
     }
-  #endif
+  }
 
   public func _withExampleCache(_ operation: () throws -> [StrictString: StrictString]) rethrows
     -> [StrictString: StrictString]

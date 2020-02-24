@@ -794,3 +794,28 @@ import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
+
+func adjustForAndroid() {
+  let impossibleDependencies: Set<String> = [
+    "SwiftPM\u{2D}auto",
+    "SwiftFormat"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._targetItem, ._byNameItem:
+        return false
+      case ._productItem(let name, _):
+        return impossibleDependencies.contains(name)
+      }
+    })
+  }
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+import Foundation
+// #workaround(workspace version 0.30.1, Until packages work natively on windows.)
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
+}

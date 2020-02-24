@@ -25,6 +25,7 @@ import SDGHTML
 import SDGCSS
 
 import WSProject
+import WSParsing
 import WSValidation
 import WSXcode
 

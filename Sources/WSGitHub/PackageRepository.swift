@@ -111,8 +111,8 @@ extension PackageRepository {
           "name: \u{27}\(modifiedName)\u{27}",
           "about: \u{27}\(template.description)\u{27}",
           "title: \u{27}\(template.title ?? "")\u{27}",
-          "labels: \u{27}\(template.labels.joined(separator: ", "))\u{27}",
-          "assignees: \u{27}\(template.assignees.joined(separator: ", "))\u{27}",
+          "labels: \u{27}\(StrictString(template.labels.joined(separator: ", " as StrictString)))\u{27}",
+          "assignees: \u{27}\(StrictString(template.assignees.joined(separator: ", " as StrictString)))\u{27}",
           "",
           "\u{2D}\u{2D}\u{2D}",
           ""

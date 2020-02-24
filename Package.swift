@@ -759,6 +759,19 @@ let package = Package(
 )
 
 func adjustForWindows() {
+  let impossibleDependencies: Set<String> = [
+    "SwiftFormat"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._targetItem, ._byNameItem:
+        return false
+      case ._productItem(let name, _):
+        return impossibleDependencies.contains(name)
+      }
+    })
+  }
   let impossibleTargets: Set<String> = [
     "test‐ios‐simulator",
     "test‐tvos‐simulator"

@@ -902,48 +902,6 @@ target_link_libraries("SDGWeb" PRIVATE
   "SDGCalendar"
 )
 
-add_library("_CSwiftSyntax"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/_CSwiftSyntax/src/atomic-counter.c"
-)
-set_target_properties("_CSwiftSyntax" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("_CSwiftSyntax" PRIVATE -enable-testing)
-
-add_library("SwiftSyntax"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/AbsolutePosition.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/AtomicCounter.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Diagnostic.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/DiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/DiagnosticEngine.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/IncrementalParseTransition.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/JSONDiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/PrintingDiagnosticConsumer.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/RawSyntax.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourceLength.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourceLocation.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SourcePresence.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Syntax.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxChildren.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxClassifier.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxData.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxParser.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/SyntaxVerifier.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/Utils.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxBuilders.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxClassification.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxCollections.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxFactory.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxKind.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxNodes.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/SyntaxRewriter.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/TokenKind.swift"
-  "../../../.build/SDG/Dependencies/SwiftSyntax/Sources/SwiftSyntax/gyb_generated/Trivia.swift"
-)
-set_target_properties("SwiftSyntax" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftSyntax" PRIVATE -enable-testing)
-target_link_libraries("SwiftSyntax" PRIVATE
-  "_CSwiftSyntax"
-)
-
 add_library("WSAndroidTests"
   "../../../Tests/WSAndroidTests/WSAndroidTests.swift"
 )
@@ -1188,6 +1146,18 @@ target_link_libraries("WSLicence" PRIVATE
   "WSProject"
 )
 
+add_library("WSNormalization"
+  "../../../Sources/WSNormalization/Configuration.swift"
+  "../../../Sources/WSNormalization/PackageRepository.swift"
+)
+set_target_properties("WSNormalization" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSNormalization" PRIVATE -enable-testing)
+target_link_libraries("WSNormalization" PRIVATE
+  "WSGeneralImports"
+  "WSProject"
+  "SwiftFormatConfiguration"
+)
+
 add_library("WSParsing"
   "../../../Sources/WSParsing/InterfaceLocalization.swift"
   "../../../Sources/WSParsing/PatternMatch.swift"
@@ -1209,6 +1179,59 @@ target_link_libraries("WSExamples" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSParsing"
+)
+
+add_library("WSProofreading"
+  "../../../Sources/WSProofreading/PackageRepository.swift"
+  "../../../Sources/WSProofreading/ProofreadingReporter.swift"
+  "../../../Sources/WSProofreading/ProofreadingStatus.swift"
+  "../../../Sources/WSProofreading/Reporters/CommandLineProofreadingReporter.swift"
+  "../../../Sources/WSProofreading/Reporters/XcodeProofreadingReporter.swift"
+  "../../../Sources/WSProofreading/Rule.swift"
+  "../../../Sources/WSProofreading/RuleProtocol.swift"
+  "../../../Sources/WSProofreading/Rules/Deprecation/DeprecatedTestManifests.swift"
+  "../../../Sources/WSProofreading/Rules/Documentation/SyntaxColouring.swift"
+  "../../../Sources/WSProofreading/Rules/Functionality/CompatibilityCharacters.swift"
+  "../../../Sources/WSProofreading/Rules/Functionality/Mark.swift"
+  "../../../Sources/WSProofreading/Rules/Intentional/MissingImplementation.swift"
+  "../../../Sources/WSProofreading/Rules/ProofreadingRule.swift"
+  "../../../Sources/WSProofreading/Rules/Source Code Style/CalloutCasing.swift"
+  "../../../Sources/WSProofreading/Rules/Source Code Style/ClosureSignaturePosition.swift"
+  "../../../Sources/WSProofreading/Rules/Source Code Style/ParameterGrouping.swift"
+  "../../../Sources/WSProofreading/Rules/Text Style/Unicode.swift"
+  "../../../Sources/WSProofreading/SourceLocation.swift"
+  "../../../Sources/WSProofreading/SourceRange.swift"
+  "../../../Sources/WSProofreading/StyleViolation.swift"
+  "../../../Sources/WSProofreading/SyntaxRule.swift"
+  "../../../Sources/WSProofreading/SyntaxScanner.swift"
+  "../../../Sources/WSProofreading/TextRule.swift"
+  "../../../Sources/WSProofreading/Warning.swift"
+  "../../../Sources/WSProofreading/Warnings/ManualWarnings.swift"
+  "../../../Sources/WSProofreading/Warnings/WorkaroundReminders.swift"
+)
+set_target_properties("WSProofreading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSProofreading" PRIVATE -enable-testing)
+target_link_libraries("WSProofreading" PRIVATE
+  "WSGeneralImports"
+  "WSProject"
+  "WSCustomTask"
+  "SDGCollections"
+  "SDGExternalProcess"
+  "SDGVersioning"
+  "SDGSwiftSource"
+)
+
+add_library("WSResources"
+  "../../../Sources/WSResources/PackageRepository.swift"
+  "../../../Sources/WSResources/PackageRepositoryTarget.swift"
+)
+set_target_properties("WSResources" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSResources" PRIVATE -enable-testing)
+target_link_libraries("WSResources" PRIVATE
+  "WSGeneralImports"
+  "WSProject"
+  "WSSwift"
+  "SDGSwiftPackageManager"
 )
 
 add_library("WSScripts"
@@ -1287,146 +1310,6 @@ target_link_libraries("WSDocumentation" PRIVATE
   "SDGCSS"
 )
 
-add_library("WSOpenSource"
-  "../../../Sources/WSOpenSource/PackageRepository.swift"
-)
-set_target_properties("WSOpenSource" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSOpenSource" PRIVATE -enable-testing)
-target_link_libraries("WSOpenSource" PRIVATE
-  "WSGeneralImports"
-  "WSProject"
-  "WSExamples"
-  "WSDocumentation"
-  "SDGSwiftSource"
-)
-
-add_library("SwiftFormatCore"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/Context.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/Diagnostic+Rule.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/Rule.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/RuleMask.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/RuleState.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/Syntax+Convenience.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/SyntaxFormatRule.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/SyntaxLintRule.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatCore/Trivia+Convenience.swift"
-)
-set_target_properties("SwiftFormatCore" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormatCore" PRIVATE -enable-testing)
-target_link_libraries("SwiftFormatCore" PRIVATE
-  "SwiftFormatConfiguration"
-  "SwiftSyntax"
-)
-
-add_library("SwiftFormatPrettyPrint"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/Comment.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/Indent+Length.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/OperatorContext.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/PrettyPrint.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/SequenceExprFolding.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/Token.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/TokenStreamCreator.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatPrettyPrint/Verbatim.swift"
-)
-set_target_properties("SwiftFormatPrettyPrint" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormatPrettyPrint" PRIVATE -enable-testing)
-target_link_libraries("SwiftFormatPrettyPrint" PRIVATE
-  "SwiftFormatCore"
-  "SwiftFormatConfiguration"
-)
-
-add_library("SwiftFormatRules"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/AddModifierRewriter.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/AllPublicDeclarationsHaveDocumentation.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/AlwaysUseLowerCamelCase.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/AmbiguousTrailingClosureOverload.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/BeginDocumentationCommentWithOneLineSummary.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/BlankLineBetweenMembers.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/CaseIndentLevelEqualsSwitch.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/DeclSyntax+Comments.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/DoNotUseSemicolons.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/DontRepeatTypeInStaticProperties.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/FullyIndirectEnum.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/FunctionDeclSyntax+Convenience.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/GroupNumericLiterals.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/GroupOverloads.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/IdentifiersMustBeASCII.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ImportsXCTestVisitor.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ModifierListSyntax+Convenience.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/MultiLineTrailingCommas.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NeverForceUnwrap.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NeverUseForceTry.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NeverUseImplicitlyUnwrappedOptionals.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoAccessLevelOnExtensionDeclaration.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoBlockComments.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoCasesWithOnlyFallthrough.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoEmptyTrailingClosureParentheses.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoLabelsInCasePatterns.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoLeadingUnderscores.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoParensAroundConditions.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoPlaygroundLiterals.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/NoVoidReturnOnFunctionSignature.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/OneCasePerLine.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/OneVariableDeclarationPerLine.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/OnlyOneTrailingClosureArgument.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/OrderedImports.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ParameterizedAttributesOnNewLines.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ReindentBlock.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ReplaceTrivia.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ReturnVoidInsteadOfEmptyTuple.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/SemicolonSyntax.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/TokenKind+Convenience.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/TokenSyntax+Convenience.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseEarlyExits.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseEnumForNamespacing.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseLetInEveryBoundCaseVariable.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseShorthandTypeNames.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseSingleLinePropertyGetter.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseSynthesizedInitializer.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseTrailingClosure.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseTripleSlashForDocumentationComments.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/UseWhereClausesInForLoops.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ValidStringLiterals.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/ValidateDocumentationComments.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatRules/VarDeclSyntax+Convenience.swift"
-)
-set_target_properties("SwiftFormatRules" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormatRules" PRIVATE -enable-testing)
-target_link_libraries("SwiftFormatRules" PRIVATE
-  "SwiftFormatCore"
-  "SwiftFormatConfiguration"
-)
-
-add_library("SwiftFormatWhitespaceLinter"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatWhitespaceLinter/WhitespaceLinter.swift"
-)
-set_target_properties("SwiftFormatWhitespaceLinter" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormatWhitespaceLinter" PRIVATE -enable-testing)
-target_link_libraries("SwiftFormatWhitespaceLinter" PRIVATE
-  "SwiftFormatCore"
-  "SwiftSyntax"
-)
-
-add_library("SwiftFormat"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/DebugOptions.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/FormatPipeline.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/LintPipeline.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/Pipelines+Generated.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/SwiftFormatError.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/SwiftFormatter.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormat/SwiftLinter.swift"
-)
-set_target_properties("SwiftFormat" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormat" PRIVATE -enable-testing)
-target_link_libraries("SwiftFormat" PRIVATE
-  "SwiftFormatConfiguration"
-  "SwiftFormatCore"
-  "SwiftFormatPrettyPrint"
-  "SwiftFormatRules"
-  "SwiftFormatWhitespaceLinter"
-  "SwiftSyntax"
-)
-
 add_library("WSContinuousIntegration"
   "../../../Sources/WSContinuousIntegration/ContinuousIntegrationJob.swift"
   "../../../Sources/WSContinuousIntegration/PackageGraph.swift"
@@ -1442,79 +1325,19 @@ target_link_libraries("WSContinuousIntegration" PRIVATE
   "WSDocumentation"
   "SDGSwiftPackageManager"
   "SDGSwiftSource"
-  "SwiftFormat"
-  "SwiftFormatConfiguration"
 )
 
-add_library("WSNormalization"
-  "../../../Sources/WSNormalization/Configuration.swift"
-  "../../../Sources/WSNormalization/PackageRepository.swift"
+add_library("WSOpenSource"
+  "../../../Sources/WSOpenSource/PackageRepository.swift"
 )
-set_target_properties("WSNormalization" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSNormalization" PRIVATE -enable-testing)
-target_link_libraries("WSNormalization" PRIVATE
+set_target_properties("WSOpenSource" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSOpenSource" PRIVATE -enable-testing)
+target_link_libraries("WSOpenSource" PRIVATE
   "WSGeneralImports"
   "WSProject"
-  "SwiftFormatConfiguration"
-  "SwiftFormat"
-  "SwiftFormatConfiguration"
-)
-
-add_library("WSProofreading"
-  "../../../Sources/WSProofreading/PackageRepository.swift"
-  "../../../Sources/WSProofreading/ProofreadingReporter.swift"
-  "../../../Sources/WSProofreading/ProofreadingStatus.swift"
-  "../../../Sources/WSProofreading/Reporters/CommandLineProofreadingReporter.swift"
-  "../../../Sources/WSProofreading/Reporters/XcodeProofreadingReporter.swift"
-  "../../../Sources/WSProofreading/Rule.swift"
-  "../../../Sources/WSProofreading/RuleProtocol.swift"
-  "../../../Sources/WSProofreading/Rules/Deprecation/DeprecatedTestManifests.swift"
-  "../../../Sources/WSProofreading/Rules/Documentation/SyntaxColouring.swift"
-  "../../../Sources/WSProofreading/Rules/Functionality/CompatibilityCharacters.swift"
-  "../../../Sources/WSProofreading/Rules/Functionality/Mark.swift"
-  "../../../Sources/WSProofreading/Rules/Intentional/MissingImplementation.swift"
-  "../../../Sources/WSProofreading/Rules/ProofreadingRule.swift"
-  "../../../Sources/WSProofreading/Rules/Source Code Style/CalloutCasing.swift"
-  "../../../Sources/WSProofreading/Rules/Source Code Style/ClosureSignaturePosition.swift"
-  "../../../Sources/WSProofreading/Rules/Source Code Style/ParameterGrouping.swift"
-  "../../../Sources/WSProofreading/Rules/Text Style/Unicode.swift"
-  "../../../Sources/WSProofreading/SourceLocation.swift"
-  "../../../Sources/WSProofreading/SourceRange.swift"
-  "../../../Sources/WSProofreading/StyleViolation.swift"
-  "../../../Sources/WSProofreading/SyntaxRule.swift"
-  "../../../Sources/WSProofreading/SyntaxScanner.swift"
-  "../../../Sources/WSProofreading/TextRule.swift"
-  "../../../Sources/WSProofreading/Warning.swift"
-  "../../../Sources/WSProofreading/Warnings/ManualWarnings.swift"
-  "../../../Sources/WSProofreading/Warnings/WorkaroundReminders.swift"
-)
-set_target_properties("WSProofreading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSProofreading" PRIVATE -enable-testing)
-target_link_libraries("WSProofreading" PRIVATE
-  "WSGeneralImports"
-  "WSProject"
-  "WSCustomTask"
-  "SDGCollections"
-  "SDGExternalProcess"
-  "SDGVersioning"
+  "WSExamples"
+  "WSDocumentation"
   "SDGSwiftSource"
-  "SwiftFormat"
-  "SwiftFormatConfiguration"
-)
-
-add_library("WSResources"
-  "../../../Sources/WSResources/PackageRepository.swift"
-  "../../../Sources/WSResources/PackageRepositoryTarget.swift"
-)
-set_target_properties("WSResources" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSResources" PRIVATE -enable-testing)
-target_link_libraries("WSResources" PRIVATE
-  "WSGeneralImports"
-  "WSProject"
-  "WSSwift"
-  "SDGSwiftPackageManager"
-  "SwiftFormat"
-  "SwiftFormatConfiguration"
 )
 
 add_library("WSTesting"

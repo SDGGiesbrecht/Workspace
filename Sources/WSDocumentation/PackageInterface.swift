@@ -68,14 +68,16 @@ internal struct PackageInterface {
           ElementSyntax(
             "a",
             attributes: ["href": packageURL],
-            contents: [
-              ElementSyntax(
-                "span",
-                attributes: ["class": "text"],
-                contents: HTML.escapeTextForCharacterData(packageURL),
-                inline: true
-              ).normalizedSource()
-            ].joined(),
+            contents: StrictString(
+              [
+                ElementSyntax(
+                  "span",
+                  attributes: ["class": "text"],
+                  contents: HTML.escapeTextForCharacterData(packageURL),
+                  inline: true
+                ).normalizedSource()
+              ].joined()
+            ),
             inline: true
           ).normalizedSource(),
           ElementSyntax(
@@ -142,27 +144,29 @@ internal struct PackageInterface {
       ElementSyntax(
         "span",
         attributes: ["class": "string"],
-        contents: [
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: "\u{22}",
-            inline: true
-          ).normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "text"],
-            contents: StrictString(specified.string()),
-            inline: true
-          )
-            .normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: "\u{22}",
-            inline: true
-          ).normalizedSource()
-        ].joined(),
+        contents: StrictString(
+          [
+            ElementSyntax(
+              "span",
+              attributes: ["class": "punctuation"],
+              contents: "\u{22}",
+              inline: true
+            ).normalizedSource(),
+            ElementSyntax(
+              "span",
+              attributes: ["class": "text"],
+              contents: StrictString(specified.string()),
+              inline: true
+            )
+              .normalizedSource(),
+            ElementSyntax(
+              "span",
+              attributes: ["class": "punctuation"],
+              contents: "\u{22}",
+              inline: true
+            ).normalizedSource()
+          ].joined()
+        ),
         inline: true
       ).normalizedSource()
     ].joined()
@@ -857,20 +861,22 @@ internal struct PackageInterface {
       for tool in cli.commands.values {
         try autoreleasepool {
           let location = tool.pageURL(in: outputDirectory, for: localization)
-          try CommandPage(
-            localization: localization,
-            allLocalizations: localizations,
-            pathToSiteRoot: "../../",
-            package: api,
-            navigationPath: [tool],
-            packageImport: packageImport,
-            index: indices[localization]!,
-            platforms: platforms[localization]!,
-            command: tool,
-            copyright: copyright(for: localization, status: status),
-            customReplacements: customReplacements,
-            output: output
-          ).contents.save(to: location)
+          #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+            try CommandPage(
+              localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: "../../",
+              package: api,
+              navigationPath: [tool],
+              packageImport: packageImport,
+              index: indices[localization]!,
+              platforms: platforms[localization]!,
+              command: tool,
+              copyright: copyright(for: localization, status: status),
+              customReplacements: customReplacements,
+              output: output
+            ).contents.save(to: location)
+          #endif
 
           try outputNestedCommands(
             of: tool,
@@ -1186,7 +1192,9 @@ internal struct PackageInterface {
           var nestedPagePath = parent.relativePagePath[otherLocalization]!
           nestedPagePath.removeLast(5)  // .html
           nestedPagePath += "/"
-          nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
+          #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+            nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
+          #endif
           nestedPagePath += "/"
           nestedPagePath += Page.sanitize(
             fileName: localized.name,
@@ -1206,20 +1214,22 @@ internal struct PackageInterface {
         var navigation = namespace
         navigation.append(information)
 
-        try CommandPage(
-          localization: localization,
-          allLocalizations: localizations,
-          pathToSiteRoot: modifiedRoot,
-          package: api,
-          navigationPath: navigation,
-          packageImport: packageImport,
-          index: indices[localization]!,
-          platforms: platforms[localization]!,
-          command: information,
-          copyright: copyright(for: localization, status: status),
-          customReplacements: customReplacements,
-          output: output
-        ).contents.save(to: location)
+        #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+          try CommandPage(
+            localization: localization,
+            allLocalizations: localizations,
+            pathToSiteRoot: modifiedRoot,
+            package: api,
+            navigationPath: navigation,
+            packageImport: packageImport,
+            index: indices[localization]!,
+            platforms: platforms[localization]!,
+            command: information,
+            copyright: copyright(for: localization, status: status),
+            customReplacements: customReplacements,
+            output: output
+          ).contents.save(to: location)
+        #endif
 
         try outputNestedCommands(
           of: information,
@@ -1261,54 +1271,56 @@ internal struct PackageInterface {
           )
         }
         documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-        let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
-        let documentation = parsed.api().first!.documentation.last?.documentationComment
+        #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+          let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
+          let documentation = parsed.api().first!.documentation.last?.documentationComment
 
-        var pageContent = ""
-        for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
-          pageContent.append("\n")
-          pageContent.append(
-            contentsOf: paragraph.renderedHTML(
-              localization: localization.code,
-              symbolLinks: symbolLinks[localization]!
-                .mapValues({ String(pathToSiteRoot) + $0 })
+          var pageContent = ""
+          for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
+            pageContent.append("\n")
+            pageContent.append(
+              contentsOf: paragraph.renderedHTML(
+                localization: localization.code,
+                symbolLinks: symbolLinks[localization]!
+                  .mapValues({ String(pathToSiteRoot) + $0 })
+              )
             )
-          )
-        }
+          }
 
-        let page = Page(
-          localization: localization,
-          pathToSiteRoot: pathToSiteRoot,
-          navigationPath: SymbolPage.generateNavigationPath(
+          let page = Page(
             localization: localization,
             pathToSiteRoot: pathToSiteRoot,
-            allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
-              .map({ localization in
-                return (localization: localization, path: location(localization))
-              }),
-            navigationPath: [
-              (
-                label: StrictString(api.name.source()),
-                path: api.relativePagePath[localization]!
-              ),
-              (label: pageTitle, path: pagePath)
-            ]
-          ),
-          packageImport: packageImport,
-          index: indices[localization]!,
-          sectionIdentifier: nil,
-          platforms: platforms[localization]!,
-          symbolImports: "",
-          symbolType: nil,
-          compilationConditions: nil,
-          constraints: nil,
-          title: HTML.escapeTextForCharacterData(pageTitle),
-          content: StrictString(pageContent),
-          extensions: "",
-          copyright: copyright(for: localization, status: status)
-        )
-        let url = outputDirectory.appendingPathComponent(String(location(localization)))
-        try page.contents.save(to: url)
+            navigationPath: SymbolPage.generateNavigationPath(
+              localization: localization,
+              pathToSiteRoot: pathToSiteRoot,
+              allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
+                .map({ localization in
+                  return (localization: localization, path: location(localization))
+                }),
+              navigationPath: [
+                (
+                  label: StrictString(api.name.source()),
+                  path: api.relativePagePath[localization]!
+                ),
+                (label: pageTitle, path: pagePath)
+              ]
+            ),
+            packageImport: packageImport,
+            index: indices[localization]!,
+            sectionIdentifier: nil,
+            platforms: platforms[localization]!,
+            symbolImports: "",
+            symbolType: nil,
+            compilationConditions: nil,
+            constraints: nil,
+            title: HTML.escapeTextForCharacterData(pageTitle),
+            content: StrictString(pageContent),
+            extensions: "",
+            copyright: copyright(for: localization, status: status)
+          )
+          let url = outputDirectory.appendingPathComponent(String(location(localization)))
+          try page.contents.save(to: url)
+        #endif
       }
     }
   }
@@ -1352,17 +1364,19 @@ internal struct PackageInterface {
         String(localization._directoryName)
       )
       let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-      let pageURL = api.pageURL(
-        in: outputDirectory,
-        for: localization,
-        customReplacements: customReplacements
-      )
-      if redirectURL ≠ pageURL {
-        try DocumentSyntax.redirect(
-          language: AnyLocalization(code: localization.code),
-          target: URL(fileURLWithPath: pageURL.lastPathComponent)
-        ).source().save(to: redirectURL)
-      }
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+        let pageURL = api.pageURL(
+          in: outputDirectory,
+          for: localization,
+          customReplacements: customReplacements
+        )
+        if redirectURL ≠ pageURL {
+          try DocumentSyntax.redirect(
+            language: AnyLocalization(code: localization.code),
+            target: URL(fileURLWithPath: pageURL.lastPathComponent)
+          ).source().save(to: redirectURL)
+        }
+      #endif
     }
   }
 }

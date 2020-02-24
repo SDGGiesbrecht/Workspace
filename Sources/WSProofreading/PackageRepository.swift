@@ -36,14 +36,18 @@ extension PackageRepository {
   public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
     let status = ProofreadingStatus(reporter: reporter, output: output)
 
-    var linter: SwiftLinter?
-    if let formatConfiguration = try configuration(output: output).proofreading
-      .swiftFormatConfiguration
-    {
-      let diagnostics = DiagnosticEngine()
-      diagnostics.addConsumer(status)
-      linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
-    }
+    #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      var linter: Bool?
+    #else
+      var linter: SwiftLinter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration
+      {
+        let diagnostics = DiagnosticEngine()
+        diagnostics.addConsumer(status)
+        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+      }
+    #endif
 
     let activeRules = try configuration(output: output).proofreading.rules.sorted()
     if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -78,16 +82,18 @@ extension PackageRepository {
 
           if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
             if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-              let syntax = try SyntaxParser.parseAndRetry(url)
-              try RuleSyntaxScanner(
-                rules: syntaxRules,
-                file: file,
-                project: self,
-                status: status,
-                output: output
-              ).scan(syntax)
+              #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+                let syntax = try SyntaxParser.parseAndRetry(url)
+                try RuleSyntaxScanner(
+                  rules: syntaxRules,
+                  file: file,
+                  project: self,
+                  status: status,
+                  output: output
+                ).scan(syntax)
 
-              try linter?.lint(syntax: syntax, assumingFileURL: url)
+                try linter?.lint(syntax: syntax, assumingFileURL: url)
+              #endif
             }
           }
         }

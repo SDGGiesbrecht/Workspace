@@ -7,9 +7,53 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Fetch
-      run: git clone https://github.com/apple/swift
+    - name: Install dependencies
+      run: |
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes \
+        clang \
+        cmake \
+        git \
+        icu-devtools \
+        libcurl4-openssl-dev \
+        libedit-dev \
+        libicu-dev \
+        libncurses5-dev \
+        libpython-dev \
+        libsqlite3-dev \
+        libxml2-dev \
+        ninja-build \
+        pkg-config \
+        python \
+        python-six \
+        rsync \
+        swig \
+        systemtap-sdt-dev \
+        tzdata \
+        uuid-dev
+    - name: Prepare source directory
+      run: mkdir swift-source
+    - name: Fetch main Swift repository
+      run: |
+        cd swift-source
+        git clone https://github.com/apple/swift.git
+    - name: Update checkouts
+      run: |
+        cd swift-source
+        ./swift/utils/update-checkout --clone
     - name: Build
       run: |
-        cd swift
-        utils/build-script
+        cd swift-source/swift
+        utils/build-script --release
+    - name: Check toolchain
+      run: |
+        cd swift-source/build
+        pwd
+        ls
+        cd Ninja-Release
+        pwd
+        ls
+        cd
+        swift-linux-x86_64
+        pwd
+        ls

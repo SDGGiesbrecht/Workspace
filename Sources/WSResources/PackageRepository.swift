@@ -25,9 +25,13 @@ extension PackageRepository {
   // MARK: - Structure
 
   private func targets() throws -> [Target] {
-    return try cachedPackage().manifest.targets.lazy.map { description in
-      return Target(description: description, package: self)
-    }
+    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      return []
+    #else
+      return try cachedPackage().manifest.targets.lazy.map { description in
+        return Target(description: description, package: self)
+      }
+    #endif
   }
   private func targetsByName() throws -> [String: Target] {
     var byName: [String: Target] = [:]

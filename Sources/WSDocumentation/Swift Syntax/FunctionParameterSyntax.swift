@@ -14,7 +14,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 extension FunctionParameterSyntax: Parameter {

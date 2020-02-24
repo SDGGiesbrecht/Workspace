@@ -16,7 +16,9 @@
 
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 import WSProject

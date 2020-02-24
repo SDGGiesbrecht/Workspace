@@ -17,32 +17,40 @@
 import SDGLogic
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 internal protocol Parameter {
-  var firstName: TokenSyntax? { get }
-  var secondName: TokenSyntax? { get }
-  var optionalType: TypeSyntax? { get }
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    var firstName: TokenSyntax? { get }
+    var secondName: TokenSyntax? { get }
+    var optionalType: TypeSyntax? { get }
+  #endif
 }
 
 extension Parameter {
 
   internal func parameterNames() -> [String] {
-    var result: [String] = []
-    if let second = secondName?.text,
-      ¬second.isEmpty
-    {
-      result.append(second)
-    } else if let first = firstName?.text,
-      ¬first.isEmpty
-    {
-      result.append(first)
-    }
+    #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      return []
+    #else
+      var result: [String] = []
+      if let second = secondName?.text,
+        ¬second.isEmpty
+      {
+        result.append(second)
+      } else if let first = firstName?.text,
+        ¬first.isEmpty
+      {
+        result.append(first)
+      }
 
-    if let type = optionalType {
-      result.append(contentsOf: type.parameterNames())
-    }
-    return result
+      if let type = optionalType {
+        result.append(contentsOf: type.parameterNames())
+      }
+      return result
+    #endif
   }
 }

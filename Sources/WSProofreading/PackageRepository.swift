@@ -18,13 +18,17 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 import WSProject
 import WSCustomTask
 
-import SwiftFormat
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftFormat
+#endif
 import SwiftFormatConfiguration
 
 extension PackageRepository {

@@ -21,7 +21,9 @@ import WSGeneralImports
 
 import WSProject
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 internal struct UnicodeRule: SyntaxRule {

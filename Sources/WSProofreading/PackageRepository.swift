@@ -82,7 +82,8 @@ extension PackageRepository {
 
           if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
             if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-              #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+              // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+              #if !(os(Windows) || os(Android))
                 let syntax = try SyntaxParser.parseAndRetry(url)
                 try RuleSyntaxScanner(
                   rules: syntaxRules,

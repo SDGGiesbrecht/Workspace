@@ -45,32 +45,34 @@ internal struct CalloutCasing: SyntaxRule {
     }
   })
 
-  internal static func check(
-    _ node: ExtendedSyntax,
-    context: ExtendedSyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-    if let token = node as? ExtendedTokenSyntax,
-      token.kind == .callout,
-      let first = token.text.scalars.first,
-      first ∈ CharacterSet.lowercaseLetters
-    {
+      if let token = node as? ExtendedTokenSyntax,
+        token.kind == .callout,
+        let first = token.text.scalars.first,
+        first ∈ CharacterSet.lowercaseLetters
+      {
 
-      var replacement = token.text
-      let first = replacement.removeFirst()
-      replacement.prepend(contentsOf: String(first).uppercased())
+        var replacement = token.text
+        let first = replacement.removeFirst()
+        replacement.prepend(contentsOf: String(first).uppercased())
 
-      reportViolation(
-        in: file,
-        at: token.range(in: context),
-        replacementSuggestion: StrictString(replacement),
-        message: message,
-        status: status
-      )
+        reportViolation(
+          in: file,
+          at: token.range(in: context),
+          replacementSuggestion: StrictString(replacement),
+          message: message,
+          status: status
+        )
+      }
     }
-  }
+  #endif
 }

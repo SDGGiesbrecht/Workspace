@@ -1074,25 +1074,26 @@ import WSProject
         heading: parametersHeading,
         entries:
           validatedParameters
-          .map({
-            (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
-            let term = StrictString(
-              entry.name.syntaxHighlightedHTML(
-                inline: true,
-                internalIdentifiers: [entry.name.text],
-                symbolLinks: [:]
+          .map(
+            { (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
+              let term = StrictString(
+                entry.name.syntaxHighlightedHTML(
+                  inline: true,
+                  internalIdentifiers: [entry.name.text],
+                  symbolLinks: [:]
+                )
               )
-            )
 
-            let description = entry.description.map({ description in
-              description.renderedHTML(
-                localization: localization.code,
-                internalIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks
-              )
-            })
-            return (term: term, description: StrictString(description.joinedAsLines()))
-          })
+              let description = entry.description.map({ description in
+                description.renderedHTML(
+                  localization: localization.code,
+                  internalIdentifiers: packageIdentifiers,
+                  symbolLinks: symbolLinks
+                )
+              })
+              return (term: term, description: StrictString(description.joinedAsLines()))
+            }
+          )
       )
     }
 

@@ -271,131 +271,131 @@ extension PackageRepository {
     }
   }
 
-  private func refreshWindowsMain(
-    testTargets: [ResolvedTarget],
-    url: URL,
-    output: Command.Output
-  ) throws {
-    var main: [String] = [
-      "import XCTest",
-      ""
-    ]
-    var testClasses: [(name: String, methods: [String])] = []
-    for testTarget in testTargets {
-      main.append("@testable import \(testTarget.name)")
-      testClasses.append(contentsOf: try testTarget.testClasses())
-    }
-    main.append("")
-
-    if try isWorkspaceProject() {
-      main.append(contentsOf: [
-        "#if os(macOS)",
-        "  import Foundation",
-        "",
-        "  typealias XCTestCaseClosure = (XCTestCase) throws \u{2D}> Void",
-        "  typealias XCTestCaseEntry = (",
-        "    testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)]",
-        "  )",
-        "",
-        "  func test<T: XCTestCase>(",
-        "    _ testFunc: @escaping (T) \u{2D}> () throws \u{2D}> Void",
-        "  ) \u{2D}> XCTestCaseClosure {",
-        "    return { try testFunc($0 as! T)() }",
-        "  }",
-        "",
-        "  func testCase<T: XCTestCase>(",
-        "    _ allTests: [(String, (T) \u{2D}> () throws \u{2D}> Void)]",
-        "  ) \u{2D}> XCTestCaseEntry {",
-        "    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }",
-        "    return (T.self, tests)",
-        "  }",
-        "",
-        "  func XCTMain(_ testCases: [XCTestCaseEntry]) \u{2D}> Never {",
-        "    for testGroup in testCases {",
-        "      let testClass = testGroup.testCaseClass.init()",
-        "      print(type(of: testClass))",
-        "      for test in testGroup.allTests {",
-        "        print(test.0)",
-        "        do {",
-        "          try test.1(testClass)",
-        "        } catch {",
-        "          print(error.localizedDescription)",
-        "        }",
-        "      }",
-        "    }",
-        "    exit(EXIT_SUCCESS)",
-        "  }",
-        "#endif",
-        "",
-      ])
-    }
-
-    for testClass in testClasses {
-      main.append(contentsOf: [
-        "extension \(testClass.name) {",
-        "  static let windowsTests: [XCTestCaseEntry] = [",
-        "    testCase([",
-      ])
-      for method in testClass.methods {
-        main.append("      (\u{22}\(method)\u{22}, \(method)),")
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    private func refreshWindowsMain(
+      testTargets: [ResolvedTarget],
+      url: URL,
+      output: Command.Output
+    ) throws {
+      var main: [String] = [
+        "import XCTest",
+        ""
+      ]
+      var testClasses: [(name: String, methods: [String])] = []
+      for testTarget in testTargets {
+        main.append("@testable import \(testTarget.name)")
+        testClasses.append(contentsOf: try testTarget.testClasses())
       }
+      main.append("")
+
+      if try isWorkspaceProject() {
+        main.append(contentsOf: [
+          "#if os(macOS)",
+          "  import Foundation",
+          "",
+          "  typealias XCTestCaseClosure = (XCTestCase) throws \u{2D}> Void",
+          "  typealias XCTestCaseEntry = (",
+          "    testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)]",
+          "  )",
+          "",
+          "  func test<T: XCTestCase>(",
+          "    _ testFunc: @escaping (T) \u{2D}> () throws \u{2D}> Void",
+          "  ) \u{2D}> XCTestCaseClosure {",
+          "    return { try testFunc($0 as! T)() }",
+          "  }",
+          "",
+          "  func testCase<T: XCTestCase>(",
+          "    _ allTests: [(String, (T) \u{2D}> () throws \u{2D}> Void)]",
+          "  ) \u{2D}> XCTestCaseEntry {",
+          "    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }",
+          "    return (T.self, tests)",
+          "  }",
+          "",
+          "  func XCTMain(_ testCases: [XCTestCaseEntry]) \u{2D}> Never {",
+          "    for testGroup in testCases {",
+          "      let testClass = testGroup.testCaseClass.init()",
+          "      print(type(of: testClass))",
+          "      for test in testGroup.allTests {",
+          "        print(test.0)",
+          "        do {",
+          "          try test.1(testClass)",
+          "        } catch {",
+          "          print(error.localizedDescription)",
+          "        }",
+          "      }",
+          "    }",
+          "    exit(EXIT_SUCCESS)",
+          "  }",
+          "#endif",
+          "",
+        ])
+      }
+
+      for testClass in testClasses {
+        main.append(contentsOf: [
+          "extension \(testClass.name) {",
+          "  static let windowsTests: [XCTestCaseEntry] = [",
+          "    testCase([",
+        ])
+        for method in testClass.methods {
+          main.append("      (\u{22}\(method)\u{22}, \(method)),")
+        }
+        main.append(contentsOf: [
+          "    ])",
+          "  ]",
+          "}",
+          "",
+        ])
+      }
+
       main.append(contentsOf: [
-        "    ])",
-        "  ]",
-        "}",
-        "",
+        "var tests = [XCTestCaseEntry]()"
       ])
-    }
+      for testClass in testClasses {
+        main.append("tests += \(testClass.name).windowsTests")
+      }
 
-    main.append(contentsOf: [
-      "var tests = [XCTestCaseEntry]()"
-    ])
-    for testClass in testClasses {
-      main.append("tests += \(testClass.name).windowsTests")
-    }
+      main.append(contentsOf: [
+        "",
+        "XCTMain(tests)"
+      ])
 
-    main.append(contentsOf: [
-      "",
-      "XCTMain(tests)"
-    ])
-
-    var source = main.joinedAsLines()
-    if let formatConfiguration = try configuration(output: output)
-      .proofreading.swiftFormatConfiguration
-    {
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      var source = main.joinedAsLines()
+      if let formatConfiguration = try configuration(output: output)
+        .proofreading.swiftFormatConfiguration
+      {
         let formatter = SwiftFormatter(configuration: formatConfiguration)
         var result: String = ""
         try formatter.format(source: source, assumingFileURL: url, to: &result)
         source = result
-      #endif
+      }
+
+      var windowsMain = try TextFile(possiblyAt: url)
+      windowsMain.body = main.joinedAsLines()
+      try windowsMain.writeChanges(for: self, output: output)
     }
 
-    var windowsMain = try TextFile(possiblyAt: url)
-    windowsMain.body = main.joinedAsLines()
-    try windowsMain.writeChanges(for: self, output: output)
-  }
-
-  private func refreshAnroidSDK(output: Command.Output) throws {
-    let url = location.appendingPathComponent(".github/workflows/Android/SDK.json")
-    if try ¬relevantJobs(output: output).contains(.android) {
-      delete(url, output: output)
-    } else {
-      let sdk: [String] = [
-        "{",
-        "  \u{22}version\u{22}: 1,",
-        "  \u{22}sdk\u{22}: \u{22}/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk\u{22},",
-        "  \u{22}toolchain\u{2D}bin\u{2D}dir\u{22}: \u{22}/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin\u{22},",
-        "  \u{22}target\u{22}: \u{22}x86_64\u{2D}unknown\u{2D}linux\u{2D}android\u{22},",
-        "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}so\u{22},",
-        "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
-        "}",
-      ]
-      var sdkFile = try TextFile(possiblyAt: url)
-      sdkFile.contents = sdk.joinedAsLines()
-      try sdkFile.writeChanges(for: self, output: output)
+    private func refreshAnroidSDK(output: Command.Output) throws {
+      let url = location.appendingPathComponent(".github/workflows/Android/SDK.json")
+      if try ¬relevantJobs(output: output).contains(.android) {
+        delete(url, output: output)
+      } else {
+        let sdk: [String] = [
+          "{",
+          "  \u{22}version\u{22}: 1,",
+          "  \u{22}sdk\u{22}: \u{22}/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk\u{22},",
+          "  \u{22}toolchain\u{2D}bin\u{2D}dir\u{22}: \u{22}/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin\u{22},",
+          "  \u{22}target\u{22}: \u{22}x86_64\u{2D}unknown\u{2D}linux\u{2D}android\u{22},",
+          "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}so\u{22},",
+          "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
+          "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
+          "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
+          "}",
+        ]
+        var sdkFile = try TextFile(possiblyAt: url)
+        sdkFile.contents = sdk.joinedAsLines()
+        try sdkFile.writeChanges(for: self, output: output)
+      }
     }
-  }
+  #endif
 }

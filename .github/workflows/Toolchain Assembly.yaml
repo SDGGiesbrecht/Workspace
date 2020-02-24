@@ -10,4 +10,6 @@ jobs:
     - name: Fetch
       run: git clone https://github.com/apple/swift
     - name: Build
-      run: utils/build-script
+      run: |
+        cd swift
+        utils/build-script

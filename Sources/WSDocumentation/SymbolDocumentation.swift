@@ -14,56 +14,58 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import WSGeneralImports
 
-import SDGSwiftSource
+  import SDGSwiftSource
 
-import WSProject
-import WSParsing
+  import WSProject
+  import WSParsing
 
-extension Array where Element == SymbolDocumentation {
+  extension Array where Element == SymbolDocumentation {
 
-  public func resolved(
-    localizations: [LocalizationIdentifier]
-  ) -> (
-    documentation: [LocalizationIdentifier: DocumentationSyntax],
-    crossReference: StrictString?,
-    skipped: Set<LocalizationIdentifier>
-  ) {
-    var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
-    var parent: StrictString?
-    var skipped: Set<LocalizationIdentifier> = []
+    public func resolved(
+      localizations: [LocalizationIdentifier]
+    ) -> (
+      documentation: [LocalizationIdentifier: DocumentationSyntax],
+      crossReference: StrictString?,
+      skipped: Set<LocalizationIdentifier>
+    ) {
+      var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
+      var parent: StrictString?
+      var skipped: Set<LocalizationIdentifier> = []
 
-    for documentation in self {
-      for comment in documentation.developerComments {
-        let content = StrictString(comment.content.text)
-        for match in content.matches(
-          for: InterfaceLocalization.localizationDeclaration
-        ) {
-          let identifier = match.declarationArgument()
-          let localization = LocalizationIdentifier(String(identifier))
-          result[localization] = documentation.documentationComment
-        }
-        for match in content.matches(
-          for: InterfaceLocalization.crossReferenceDeclaration
-        ) {
-          parent = match.declarationArgument()
-        }
-        for match in content.matches(for: InterfaceLocalization.notLocalizedDeclaration) {
-          let identifier = match.declarationArgument()
-          let localization = LocalizationIdentifier(String(identifier))
-          skipped.insert(localization)
+      for documentation in self {
+        for comment in documentation.developerComments {
+          let content = StrictString(comment.content.text)
+          for match in content.matches(
+            for: InterfaceLocalization.localizationDeclaration
+          ) {
+            let identifier = match.declarationArgument()
+            let localization = LocalizationIdentifier(String(identifier))
+            result[localization] = documentation.documentationComment
+          }
+          for match in content.matches(
+            for: InterfaceLocalization.crossReferenceDeclaration
+          ) {
+            parent = match.declarationArgument()
+          }
+          for match in content.matches(for: InterfaceLocalization.notLocalizedDeclaration) {
+            let identifier = match.declarationArgument()
+            let localization = LocalizationIdentifier(String(identifier))
+            skipped.insert(localization)
+          }
         }
       }
-    }
 
-    if localizations.count == 1,
-      let onlyLocalization = localizations.first,
-      result.isEmpty /* No localization tags. */
-    {
-      result[onlyLocalization] = last?.documentationComment
-    }
+      if localizations.count == 1,
+        let onlyLocalization = localizations.first,
+        result.isEmpty /* No localization tags. */
+      {
+        result[onlyLocalization] = last?.documentationComment
+      }
 
-    return (result, parent, skipped)
+      return (result, parent, skipped)
+    }
   }
-}
+#endif

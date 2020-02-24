@@ -19,8 +19,10 @@
 #endif
 import SDGSwiftSource
 
-extension FunctionParameterSyntax: Parameter {
-  var optionalType: TypeSyntax? {
-    return type
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  extension FunctionParameterSyntax: Parameter {
+    var optionalType: TypeSyntax? {
+      return type
+    }
   }
-}
+#endif

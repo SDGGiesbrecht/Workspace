@@ -158,19 +158,21 @@ extension PackageRepository {
               "### [\(name)](\(url.absoluteString))"
             ]
 
-            if let packageDocumentation = try? PackageAPI.documentation(
-              for: package.package().get()
-            ),
-              let documentation = packageDocumentation.resolved(
-                localizations: localizations
-              ).documentation[localization],
-              let description = documentation.descriptionSection
-            {
-              markdown += [
-                "",
-                StrictString(description.text)
-              ]
-            }
+            #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+              if let packageDocumentation = try? PackageAPI.documentation(
+                for: package.package().get()
+              ),
+                let documentation = packageDocumentation.resolved(
+                  localizations: localizations
+                ).documentation[localization],
+                let description = documentation.descriptionSection
+              {
+                markdown += [
+                  "",
+                  StrictString(description.text)
+                ]
+              }
+            #endif
           }
         }
       }
@@ -297,43 +299,45 @@ extension PackageRepository {
     let developmentLocalization = try self.developmentLocalization(output: output)
     let customReplacements = try customFileNameReplacements(output: output)
 
-    let api = try PackageAPI(
-      package: cachedPackageGraph(),
-      ignoredDependencies: configuration.documentation.api.ignoredDependencies,
-      reportProgress: { output.print($0) }
-    )
-    let cli = try loadCommandLineInterface(output: output, customReplacements: customReplacements)
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      let api = try PackageAPI(
+        package: cachedPackageGraph(),
+        ignoredDependencies: configuration.documentation.api.ignoredDependencies,
+        reportProgress: { output.print($0) }
+      )
+      let cli = try loadCommandLineInterface(output: output, customReplacements: customReplacements)
 
-    var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
-    if ¬coverageCheckOnly {
-      relatedProjects = try self.relatedProjects(output: output)
-    }
+      var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
+      if ¬coverageCheckOnly {
+        relatedProjects = try self.relatedProjects(output: output)
+      }
 
-    let interface = PackageInterface(
-      localizations: configuration.documentation.localizations,
-      developmentLocalization: developmentLocalization,
-      api: api,
-      cli: cli,
-      packageURL: configuration.documentation.repositoryURL,
-      version: configuration.documentation.currentVersion,
-      platforms: try platforms(output: output),
-      installation: configuration.documentation.installationInstructions
-        .resolve(configuration),
-      importing: configuration.documentation.importingInstructions.resolve(configuration),
-      relatedProjects: relatedProjects,
-      about: configuration.documentation.about,
-      copyright: copyright,
-      customReplacements: customReplacements,
-      output: output
-    )
+      let interface = PackageInterface(
+        localizations: configuration.documentation.localizations,
+        developmentLocalization: developmentLocalization,
+        api: api,
+        cli: cli,
+        packageURL: configuration.documentation.repositoryURL,
+        version: configuration.documentation.currentVersion,
+        platforms: try platforms(output: output),
+        installation: configuration.documentation.installationInstructions
+          .resolve(configuration),
+        importing: configuration.documentation.importingInstructions.resolve(configuration),
+        relatedProjects: relatedProjects,
+        about: configuration.documentation.about,
+        copyright: copyright,
+        customReplacements: customReplacements,
+        output: output
+      )
 
-    try interface.outputHTML(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: documentationStatus,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
+      try interface.outputHTML(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: documentationStatus,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
+    #endif
   }
 
   // Final steps irrelevent to validation.

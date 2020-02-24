@@ -16,43 +16,45 @@
 
 import Foundation
 
-import PackageModel
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import PackageModel
+  import SwiftSyntax
 
-extension ResolvedTarget {
+  extension ResolvedTarget {
 
-  var dependencyTargets: [ResolvedTarget] {
-    return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
-      if let product = dependency.product {
-        return product.targets
-      } else {
-        return [dependency.target!]
-      }
-    }
-  }
-
-  func testClasses() throws -> [(name: String, methods: [String])] {
-    var found: [(name: String, methods: [String])] = []
-    for file in sources.paths.sorted() {
-      let syntax = try SyntaxParser.parse(file.asURL)
-      for statement in syntax.statements {
-        if let classDeclaration = statement.item as? ClassDeclSyntax {
-          let name = classDeclaration.identifier.text
-          var methods: [String] = []
-          if name.hasSuffix("Tests") {
-            for member in classDeclaration.members.members {
-              if let method = member.decl as? FunctionDeclSyntax {
-                let methodName = method.identifier.text
-                if methodName.hasPrefix("test") {
-                  methods.append(methodName)
-                }
-              }
-            }
-          }
-          found.append((name: "\(self.name).\(name)", methods: methods))
+    var dependencyTargets: [ResolvedTarget] {
+      return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
+        if let product = dependency.product {
+          return product.targets
+        } else {
+          return [dependency.target!]
         }
       }
     }
-    return found
+
+    func testClasses() throws -> [(name: String, methods: [String])] {
+      var found: [(name: String, methods: [String])] = []
+      for file in sources.paths.sorted() {
+        let syntax = try SyntaxParser.parse(file.asURL)
+        for statement in syntax.statements {
+          if let classDeclaration = statement.item as? ClassDeclSyntax {
+            let name = classDeclaration.identifier.text
+            var methods: [String] = []
+            if name.hasSuffix("Tests") {
+              for member in classDeclaration.members.members {
+                if let method = member.decl as? FunctionDeclSyntax {
+                  let methodName = method.identifier.text
+                  if methodName.hasPrefix("test") {
+                    methods.append(methodName)
+                  }
+                }
+              }
+            }
+            found.append((name: "\(self.name).\(name)", methods: methods))
+          }
+        }
+      }
+      return found
+    }
   }
-}
+#endif

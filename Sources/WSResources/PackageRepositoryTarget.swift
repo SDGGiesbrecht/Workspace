@@ -22,8 +22,10 @@ import SDGSwiftPackageManager
 import WSProject
 import WSSwift
 
-import PackageModel
-import SwiftFormat
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import PackageModel
+  import SwiftFormat
+#endif
 
 extension PackageRepository {
 
@@ -70,14 +72,16 @@ extension PackageRepository {
 
       var source = String(try generateSource(for: resources, of: package))
 
-      if let formatConfiguration = try package.configuration(output: output)
-        .proofreading.swiftFormatConfiguration
-      {
-        let formatter = SwiftFormatter(configuration: formatConfiguration)
-        var result: String = ""
-        try formatter.format(source: source, assumingFileURL: resourceFileLocation, to: &result)
-        source = result
-      }
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        if let formatConfiguration = try package.configuration(output: output)
+          .proofreading.swiftFormatConfiguration
+        {
+          let formatter = SwiftFormatter(configuration: formatConfiguration)
+          var result: String = ""
+          try formatter.format(source: source, assumingFileURL: resourceFileLocation, to: &result)
+          source = result
+        }
+      #endif
 
       var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
       resourceFile.body = source

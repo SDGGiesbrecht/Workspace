@@ -14,12 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@_exported import class PackageModel.Manifest
-@_exported import class PackageModel.Package
-@_exported import struct PackageGraph.PackageGraph
-@_exported import class PackageModel.Product
-@_exported import enum PackageModel.ProductType
-@_exported import class PackageModel.ResolvedPackage
-@_exported import class PackageModel.Target
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  @_exported import class PackageModel.Manifest
+  @_exported import class PackageModel.Package
+  @_exported import struct PackageGraph.PackageGraph
+  @_exported import class PackageModel.Product
+  @_exported import enum PackageModel.ProductType
+  @_exported import class PackageModel.ResolvedPackage
+  @_exported import class PackageModel.Target
+#endif
 
 @_exported import WorkspaceConfiguration

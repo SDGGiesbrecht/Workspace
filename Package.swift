@@ -259,6 +259,10 @@ let package = Package(
       .upToNextMinor(from: Version(0, 19, 2))
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+      .exact(Version(0, 5, 0))
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       .exact(Version(0, 0, 50100))
     ),
@@ -365,6 +369,7 @@ let package = Package(
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format")
       ]
     ),
@@ -760,6 +765,7 @@ let package = Package(
 
 func adjustForWindows() {
   let impossibleDependencies: Set<String> = [
+    "SwiftPM\u{2D}auto",
     "SwiftFormat"
   ]
   for target in package.targets {

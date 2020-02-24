@@ -19,11 +19,15 @@ import SDGVersioning
 
 import SDGSwiftPackageManager
 
-import PackageModel
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import PackageModel
+#endif
 
 extension SDGVersioning.Version {
 
-  public init(_ version: PackageModel.Version) {
-    self.init(version.major, version.minor, version.patch)
-  }
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    public init(_ version: PackageModel.Version) {
+      self.init(version.major, version.minor, version.patch)
+    }
+  #endif
 }

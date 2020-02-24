@@ -65,8 +65,10 @@ internal struct WorkaroundReminders: Warning {
         let problemVersion = Version(String(StrictString(parameters.removeLast().contents)))
       {
 
-        var dependency = parameters.map({ StrictString($0.contents) }).joined(
-          separator: " "
+        var dependency = StrictString(
+          parameters
+            .map({ StrictString($0.contents) })
+            .joined(separator: " " as StrictString)
         )
         dependency.trimMarginalWhitespace()
 
@@ -113,25 +115,29 @@ internal struct WorkaroundReminders: Warning {
     for project: PackageRepository,
     output: Command.Output
   ) throws -> SDGVersioning.Version? {
-    if let dependency = try project.dependenciesByName()[String(dependency)],
-      let version = dependency.manifest.version
-    {
-      return Version(version)
-    } else {
-      return cached(
-        in: &dependencyVersionCache[dependency],
-        {
-          if let shellOutput = try? Shell.default.run(
-            command: String(dependency).components(separatedBy: " ")
-          ).get(),
-            let version = Version(firstIn: shellOutput)
+    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      return nil
+    #else
+      if let dependency = try project.dependenciesByName()[String(dependency)],
+        let version = dependency.manifest.version
+      {
+        return Version(version)
+      } else {
+        return cached(
+          in: &dependencyVersionCache[dependency],
           {
-            return version
-          } else {
-            return nil
+            if let shellOutput = try? Shell.default.run(
+              command: String(dependency).components(separatedBy: " ")
+            ).get(),
+              let version = Version(firstIn: shellOutput)
+            {
+              return version
+            } else {
+              return nil
+            }
           }
-        }
-      )  // @exempt(from: tests) Meaningless coverage region.
-    }
+        )  // @exempt(from: tests) Meaningless coverage region.
+      }
+    #endif
   }
 }

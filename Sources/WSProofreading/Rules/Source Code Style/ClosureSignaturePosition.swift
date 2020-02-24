@@ -45,29 +45,31 @@ internal struct ClosureSignaturePosition: SyntaxRule {
     }
   })
 
-  internal static func check(
-    _ node: Syntax,
-    context: SyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    internal static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-    if let signature = node as? ClosureSignatureSyntax,
-      let closure = signature.parent as? ClosureExprSyntax,
-      closure.signature?.indexInParent == signature.indexInParent,
-      let leadingTrivia = signature.leadingTrivia
-    {  // Only nil if the signature does not really exist.
+      if let signature = node as? ClosureSignatureSyntax,
+        let closure = signature.parent as? ClosureExprSyntax,
+        closure.signature?.indexInParent == signature.indexInParent,
+        let leadingTrivia = signature.leadingTrivia
+      {  // Only nil if the signature does not really exist.
 
-      if leadingTrivia.contains(where: { $0.isNewline }) {
-        reportViolation(
-          in: file,
-          at: signature.syntaxRange(in: context),
-          message: message,
-          status: status
-        )
+        if leadingTrivia.contains(where: { $0.isNewline }) {
+          reportViolation(
+            in: file,
+            at: signature.syntaxRange(in: context),
+            message: message,
+            status: status
+          )
+        }
       }
     }
-  }
+  #endif
 }

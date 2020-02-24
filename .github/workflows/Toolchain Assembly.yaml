@@ -7,5 +7,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Fetch Swift repository
+    - name: Fetch
       run: git clone https://github.com/apple/swift
+    - name: Build
+      run: utils/build-script

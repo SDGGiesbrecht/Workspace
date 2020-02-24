@@ -157,115 +157,117 @@ extension PackageRepository {
       delete(url, output: output)
       delete(mainURL, output: output)
     } else {
-      let package = try self.cachedWindowsPackage()
-      let graph = try self.cachedWindowsPackageGraph()
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+        let package = try self.cachedWindowsPackage()
+        let graph = try self.cachedWindowsPackageGraph()
 
-      func quote(_ string: String) -> StrictString {
-        return "\u{22}\(string)\u{22}"
-      }
-      func sanitize(_ string: String) -> StrictString {
-        return quote(
-          String(
-            string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })
+        func quote(_ string: String) -> StrictString {
+          return "\u{22}\(string)\u{22}"
+        }
+        func sanitize(_ string: String) -> StrictString {
+          return quote(
+            String(
+              string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })
+            )
           )
-        )
-      }
-
-      var cmake: [StrictString] = [
-        "cmake_minimum_required(VERSION 3.15)",
-        "",
-        "project(\(sanitize(package.name)) LANGUAGES Swift)",
-        "",
-        "include(CTest)",
-        "",
-        "set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)",
-        "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
-        "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
-        "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
-        "",
-        "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
-      ]
-
-      var testTargets: [ResolvedTarget] = []
-      for packageTarget in graph.sortedReachableTargets() {
-        let target = packageTarget.target
-        var pathPrefix: String = "../../../"
-        if ¬graph.rootPackages.contains(where: { $0.name == packageTarget.package.name }) {
-          pathPrefix += ".build/SDG/Dependencies/\(packageTarget.package.name)/"
         }
 
-        if case .test = target.type {
-          testTargets.append(target)
-        }
-        cmake.append("")
-        switch target.type {
-        case .library, .test:
-          cmake.append("add_library(" + sanitize(target.name))
-        case .executable:
-          cmake.append("add_executable(" + sanitize(target.name))
-        case .systemModule:  // @exempt(from: tests)
-          break
-        }
-        for source in target.sources.paths {
-          let absoluteURL = URL(fileURLWithPath: source.pathString)
-          let relativeURL = absoluteURL.path(relativeTo: packageTarget.package.path.asURL)
-          cmake.append("  " + quote(pathPrefix + relativeURL))
-        }
-        switch target.type {
-        case .library, .executable, .test:
-          cmake.append(")")
-        case .systemModule:  // @exempt(from: tests)
-          break
-        }
-        switch target.type {
-        case .library, .test:
-          cmake.append(
-            "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
-          )
-          cmake.append(
-            "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
-          )
-        case .executable, .systemModule:
-          break
-        }
-        switch target.type {
-        case .library, .executable, .test:
-          let dependencies = target.dependencyTargets
-          if ¬dependencies.isEmpty {
-            cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
-            for dependency in dependencies {
-              cmake.append("  " + sanitize(dependency.name))
-            }
-            cmake.append(")")
+        var cmake: [StrictString] = [
+          "cmake_minimum_required(VERSION 3.15)",
+          "",
+          "project(\(sanitize(package.name)) LANGUAGES Swift)",
+          "",
+          "include(CTest)",
+          "",
+          "set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)",
+          "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+          "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
+          "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
+          "",
+          "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
+        ]
+
+        var testTargets: [ResolvedTarget] = []
+        for packageTarget in graph.sortedReachableTargets() {
+          let target = packageTarget.target
+          var pathPrefix: String = "../../../"
+          if ¬graph.rootPackages.contains(where: { $0.name == packageTarget.package.name }) {
+            pathPrefix += ".build/SDG/Dependencies/\(packageTarget.package.name)/"
           }
-        case .systemModule:  // @exempt(from: tests)
-          break
+
+          if case .test = target.type {
+            testTargets.append(target)
+          }
+          cmake.append("")
+          switch target.type {
+          case .library, .test:
+            cmake.append("add_library(" + sanitize(target.name))
+          case .executable:
+            cmake.append("add_executable(" + sanitize(target.name))
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
+          for source in target.sources.paths {
+            let absoluteURL = URL(fileURLWithPath: source.pathString)
+            let relativeURL = absoluteURL.path(relativeTo: packageTarget.package.path.asURL)
+            cmake.append("  " + quote(pathPrefix + relativeURL))
+          }
+          switch target.type {
+          case .library, .executable, .test:
+            cmake.append(")")
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
+          switch target.type {
+          case .library, .test:
+            cmake.append(
+              "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
+            )
+            cmake.append(
+              "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
+            )
+          case .executable, .systemModule:
+            break
+          }
+          switch target.type {
+          case .library, .executable, .test:
+            let dependencies = target.dependencyTargets
+            if ¬dependencies.isEmpty {
+              cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
+              for dependency in dependencies {
+                cmake.append("  " + sanitize(dependency.name))
+              }
+              cmake.append(")")
+            }
+          case .systemModule:  // @exempt(from: tests)
+            break
+          }
         }
-      }
 
-      cmake.append(contentsOf: [
-        "",
-        "add_executable(WindowsMain",
-        "  WindowsMain.swift",
-        ")"
-      ])
-      if ¬testTargets.isEmpty {
-        cmake.append("target_link_libraries(WindowsMain PRIVATE")
-        for testTarget in testTargets {
-          cmake.append("  " + sanitize(testTarget.name))
+        cmake.append(contentsOf: [
+          "",
+          "add_executable(WindowsMain",
+          "  WindowsMain.swift",
+          ")"
+        ])
+        if ¬testTargets.isEmpty {
+          cmake.append("target_link_libraries(WindowsMain PRIVATE")
+          for testTarget in testTargets {
+            cmake.append("  " + sanitize(testTarget.name))
+          }
+          cmake.append(")")
         }
-        cmake.append(")")
-      }
-      cmake.append(contentsOf: [
-        "add_test(NAME WindowsMain COMMAND WindowsMain)",
-        "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
-      ])
+        cmake.append(contentsOf: [
+          "add_test(NAME WindowsMain COMMAND WindowsMain)",
+          "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
+        ])
 
-      var cmakeFile = try TextFile(possiblyAt: url)
-      cmakeFile.body = String(cmake.joinedAsLines())
-      try cmakeFile.writeChanges(for: self, output: output)
+        var cmakeFile = try TextFile(possiblyAt: url)
+        cmakeFile.body = String(cmake.joinedAsLines())
+        try cmakeFile.writeChanges(for: self, output: output)
 
-      try refreshWindowsMain(testTargets: testTargets, url: mainURL, output: output)
+        try refreshWindowsMain(testTargets: testTargets, url: mainURL, output: output)
+      #endif
     }
   }
 
@@ -361,10 +363,12 @@ extension PackageRepository {
     if let formatConfiguration = try configuration(output: output)
       .proofreading.swiftFormatConfiguration
     {
-      let formatter = SwiftFormatter(configuration: formatConfiguration)
-      var result: String = ""
-      try formatter.format(source: source, assumingFileURL: url, to: &result)
-      source = result
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+        let formatter = SwiftFormatter(configuration: formatConfiguration)
+        var result: String = ""
+        try formatter.format(source: source, assumingFileURL: url, to: &result)
+        source = result
+      #endif
     }
 
     var windowsMain = try TextFile(possiblyAt: url)

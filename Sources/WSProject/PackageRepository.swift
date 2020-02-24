@@ -139,10 +139,12 @@ extension PackageRepository {
   #endif
   private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
     let variable = "GENERATING_CMAKE_FOR_WINDOWS"
-    setenv(variable, "true", 1 /* overwrite */)
-    defer {
-      unsetenv(variable)
-    }
+    #if !os(Windows)
+      setenv(variable, "true", 1 /* overwrite */)
+      defer {
+        unsetenv(variable)
+      }
+    #endif
     return try closure()
   }
   #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
@@ -169,7 +171,11 @@ extension PackageRepository {
   #endif
 
   public func packageName() throws -> StrictString {
-    return StrictString(try cachedManifest().name)
+    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      return "[???]"
+    #else
+      return StrictString(try cachedManifest().name)
+    #endif
   }
 
   public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
@@ -185,34 +191,34 @@ extension PackageRepository {
     return try projectName(in: identifier, output: output)
   }
 
-  public func products() throws -> [PackageModel.Product] {
-    return try cached(in: &manifestCache.products) {
-      var products: [PackageModel.Product] = []
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    public func products() throws -> [PackageModel.Product] {
+      return try cached(in: &manifestCache.products) {
+        var products: [PackageModel.Product] = []
 
-      // Filter out tools which have not been declared as products.
-      let declaredTools: Set<String> = Set(
-        try cachedManifest().products.lazy.map({ $0.name })
-      )
+        // Filter out tools which have not been declared as products.
+        let declaredTools: Set<String> = Set(
+          try cachedManifest().products.lazy.map({ $0.name })
+        )
 
-      for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
-        switch product.type {
-        case .library:
-          products.append(product)
-        case .executable:
-          if product.name ∈ declaredTools {
+        for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
+          switch product.type {
+          case .library:
             products.append(product)
-          } else {
+          case .executable:
+            if product.name ∈ declaredTools {
+              products.append(product)
+            } else {
+              continue  // skip
+            }
+          case .test:
             continue  // skip
           }
-        case .test:
-          continue  // skip
         }
+        return products
       }
-      return products
     }
-  }
 
-  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
     public func dependenciesByName() throws -> [String: ResolvedPackage] {
       return try cached(in: &manifestCache.dependenciesByName) {
         let graph = try cachedPackageGraph()
@@ -231,24 +237,28 @@ extension PackageRepository {
   public func configurationContext() throws -> WorkspaceContext {
     return try cached(in: &configurationCache.configurationContext) {
 
-      let products = try self.products()
-        .map { (product: PackageModel.Product) -> PackageManifest.Product in
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        let products: [PackageManifest.Product] = []
+      #else
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-          let type: PackageManifest.Product.ProductType
-          let modules: [String]
-          switch product.type {
-          case .library:
-            type = .library
-            modules = product.targets.map { $0.name }
-          case .executable:
-            type = .executable
-            modules = []
-          case .test:
-            unreachable()
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .test:
+              unreachable()
+            }
+
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
           }
-
-          return PackageManifest.Product(_name: product.name, type: type, modules: modules)
-        }
+      #endif
 
       let manifest = PackageManifest(
         _packageName: String(try packageName()),

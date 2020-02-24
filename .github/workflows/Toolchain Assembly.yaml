@@ -51,7 +51,7 @@ jobs:
         cd swift-source/build
         pwd
         ls
-        cd Ninja-Release
+        cd Ninja-ReleaseAssert
         pwd
         ls
         cd

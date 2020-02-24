@@ -37,7 +37,11 @@ extension PackageRepository {
   // MARK: - Properties
 
   public func hasTargetsToDocument() throws -> Bool {
-    return try cachedPackage().products.contains(where: { $0.type.isLibrary })
+    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      return true
+    #else
+      return try cachedPackage().products.contains(where: { $0.type.isLibrary })
+    #endif
   }
 
   // MARK: - Configuration

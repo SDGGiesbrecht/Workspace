@@ -45,7 +45,7 @@ public struct ReportSection {
       case .englishUnitedKingdom:
         #if os(macOS)
           return " (See ⌘F ‘" + identifier + "’)"
-        #elseif os(Windows) || os(Linux)
+        #elseif os(Windows) || os(Linux) || os(Android)
           return " (See Ctrl + F ‘" + identifier + "’)"
         #endif
       case .englishUnitedStates, .englishCanada:

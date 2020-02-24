@@ -19,21 +19,21 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-#if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
-import SwiftFormat
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import SwiftFormat
 #endif
 
 extension PackageRepository {
 
   public func normalize(output: Command.Output) throws {
 
-    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
-    var formatter: SwiftFormatter?
-    if let formatConfiguration = try configuration(output: output).proofreading
-      .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-    {
-      formatter = SwiftFormatter(configuration: formatConfiguration)
-    }
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      var formatter: SwiftFormatter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
+      {
+        formatter = SwiftFormatter(configuration: formatConfiguration)
+      }
     #endif
 
     for url in try sourceFiles(output: output) {
@@ -42,19 +42,19 @@ extension PackageRepository {
         if let syntax = FileType(url: url)?.syntax {
           var file = try TextFile(alreadyAt: url)
 
-          #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
-          if let formatter = formatter,
-            file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
-          {
-            let source = file.contents
-            var result: String = ""
-            try formatter.format(
-              source: source,
-              assumingFileURL: file.location,
-              to: &result
-            )
-            file.contents = result
-          }
+          #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+            if let formatter = formatter,
+              file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
+            {
+              let source = file.contents
+              var result: String = ""
+              try formatter.format(
+                source: source,
+                assumingFileURL: file.location,
+                to: &result
+              )
+              file.contents = result
+            }
           #endif
 
           let lines = file.contents.lines.map({ String($0.line) })

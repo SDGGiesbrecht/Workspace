@@ -57,3 +57,8 @@ jobs:
         cd swift-linux-x86_64
         pwd
         ls
+    - name: Upload
+      uses: actions/upload-artifact@v1
+        with:
+          name: Linux
+          path: swift-source/build/Ninja-ReleaseAssert/swift-linux-x86_64

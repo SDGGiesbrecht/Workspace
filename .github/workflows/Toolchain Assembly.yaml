@@ -7,6 +7,5 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Validate
-      run: |
-        echo 'Hello, world!'
+    - name: Fetch Swift repository
+      run: git clone https://github.com/apple/swift

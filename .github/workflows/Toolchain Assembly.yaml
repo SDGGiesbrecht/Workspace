@@ -6,7 +6,8 @@ jobs:
   Linux:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
+    - name: Check out
+      uses: actions/checkout@v1
     - name: Install dependencies
       run: |
         sudo apt-get update --assume-yes

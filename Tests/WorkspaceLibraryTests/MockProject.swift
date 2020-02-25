@@ -104,11 +104,13 @@ extension PackageRepository {
             for: location.lastPathComponent
           )
 
-          // Simulators are not available to all CI jobs and must be tested separately.
-          setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
-          defer {
-            unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
-          }
+          #if !os(Windows)
+            // Simulators are not available to all CI jobs and must be tested separately.
+            setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
+            defer {
+              unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
+            }
+          #endif
           _isDuringSpecificationTest = true
 
           try? FileManager.default.removeItem(at: location)

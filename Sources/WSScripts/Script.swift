@@ -69,7 +69,7 @@ internal enum Script: Int, CaseIterable {
 
   internal var isRelevantOnCurrentDevice: Bool {
     #if os(Windows) || os(Android)
-      // #workaround(workspace version 0.30.1, Until Workspace works on these platforms.)
+      // #workaround(Until Workspace works on these platforms.)
       return false
     #else
       switch self {

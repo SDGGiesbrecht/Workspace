@@ -142,30 +142,32 @@ class APITests: TestCase {
   }
 
   func testCheckedInDocumentation() throws {
-    var output = try mockCommand.withRootBehaviour().execute(with: [
-      "export‐interface", "•language", "en"
-    ]).get()
-    // macOS & Linux have different JSON whitespace.
-    output.scalars.replaceMatches(
-      for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars
-    )
-    try output.save(
-      to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-        .appendingPathComponent("Resources/Tool/English.txt")
-    )
-    output = try mockCommand.withRootBehaviour().execute(with: [
-      "export‐interface", "•language", "de"
-    ]).get()
-    // macOS & Linux have different JSON whitespace.
-    output.scalars.replaceMatches(
-      for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars
-    )
-    try output.save(
-      to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-        .appendingPathComponent("Resources/Tool/Deutsch.txt")
-    )
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "en"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/English.txt")
+      )
+      output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/Deutsch.txt")
+      )
+    #endif
 
     let configuration = WorkspaceConfiguration()
     configuration.optimizeForTests()
@@ -213,7 +215,9 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
+    #if !os(Android)  // #workaround(Emulator lacks Git.)
+      _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
+    #endif
   }
 
   func testConfiguration() {
@@ -579,18 +583,20 @@ class APITests: TestCase {
   }
 
   func testDeutsch() throws {
-    var output = try mockCommand.withRootBehaviour().execute(with: [
-      "export‐interface", "•language", "de"
-    ]).get()
-    // macOS & Linux have different JSON whitespace.
-    output.scalars.replaceMatches(
-      for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-      with: "\n\n".scalars
-    )
-    try output.save(
-      to: PackageRepository.beforeDirectory(for: "Deutsch")
-        .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
-    )
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "Deutsch")
+          .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+      )
+    #endif
 
     let konfiguration = ArbeitsbereichKonfiguration()
     konfiguration.optimizeForTests()
@@ -761,84 +767,86 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    testCommand(
-      Workspace.command,
-      with: ["help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["proofread", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace proofread)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
-        }
-      }
-    #else
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
       testCommand(
         Workspace.command,
-        with: ["refresh", "help"],
+        with: ["help"],
         localizations: InterfaceLocalization.self,
-        uniqueTestName: "Help (workspace refresh)",
+        uniqueTestName: "Help (workspace)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["proofread", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace proofread)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
+        for localization in InterfaceLocalization.allCases {
+          try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
+          }
+        }
+      #else
+        testCommand(
+          Workspace.command,
+          with: ["refresh", "help"],
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Help (workspace refresh)",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
+      testCommand(
+        Workspace.command,
+        with: ["validate", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace validate)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["document", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace document)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "continuous‐integration", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh continuous‐integration)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "examples", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh examples)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "inherited‐documentation", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "resources", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh resources)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "scripts", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh scripts)",
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
-    testCommand(
-      Workspace.command,
-      with: ["validate", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace validate)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["document", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace document)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "continuous‐integration", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh continuous‐integration)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "examples", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh examples)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "inherited‐documentation", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "resources", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh resources)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "scripts", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh scripts)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
   }
 
   func testInvalidResourceDirectory() {
@@ -897,24 +905,26 @@ class APITests: TestCase {
     dictionary["🇬🇧EN"] = false
     XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-    testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("en"),
-      localizations: FastTestLocalization.self,
-      uniqueTestName: "English",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("cmn"),
-      localizations: FastTestLocalization.self,
-      uniqueTestName: "Mandarin",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCustomStringConvertibleConformance(
-      of: LocalizationIdentifier("zxx"),
-      localizations: FastTestLocalization.self,
-      uniqueTestName: "Unknown",
-      overwriteSpecificationInsteadOfFailing: false
-    )
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("en"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "English",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("cmn"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "Mandarin",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("zxx"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "Unknown",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
 
     var identifier = LocalizationIdentifier("zxx")
     identifier.kennzeichen = "de"
@@ -1279,10 +1289,12 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    try FileManager.default.do(in: repositoryRoot) {
-      _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-      _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
-    }
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
+      try FileManager.default.do(in: repositoryRoot) {
+        _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
+        _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+      }
+    #endif
   }
 
   func testTestCoverageExemptionToken() {

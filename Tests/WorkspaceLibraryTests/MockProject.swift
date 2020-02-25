@@ -60,7 +60,7 @@ extension PackageRepository {
     line: UInt = #line
   ) where L: InputLocalization {
 
-    #if !os(Android)  // #workaround(workspace version 0.30.1, Emulator lacks permissions.)
+    #if !os(Android)  // #workaround(Emulator lacks permissions.)
       do {
         try autoreleasepool {
           let developer = URL(fileURLWithPath: "/tmp/Developer")

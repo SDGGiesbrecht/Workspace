@@ -710,7 +710,7 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
 
-    // #workaround(workspace version 0.30.1, Until real modules work on Windows.)
+    // #workaround(Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [
@@ -732,7 +732,7 @@ let package = Package(
       name: "WSWindowsTests",
       dependencies: ["WSWindowsLibrary"]
     ),
-    // #workaround(workspace version 0.30.1, Until real tests work on Android)
+    // #workaround(Until real tests work on Android)
     .testTarget(
       name: "WSAndroidTests",
       dependencies: [
@@ -790,7 +790,7 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 import Foundation
-// #workaround(workspace version 0.30.1, Until packages work natively on windows.)
+// #workaround(Swift 5.1.4, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
@@ -815,7 +815,6 @@ func adjustForAndroid() {
   adjustForAndroid()
 #endif
 import Foundation
-// #workaround(workspace version 0.30.1, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   adjustForAndroid()
 }

@@ -14,13 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension ProductType {
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  extension ProductType {
 
-  public var isLibrary: Bool {
-    if case .library = self {
-      return true
-    } else {
-      return false
+    public var isLibrary: Bool {
+      if case .library = self {
+        return true
+      } else {
+        return false
+      }
     }
   }
-}
+#endif

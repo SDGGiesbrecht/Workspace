@@ -267,7 +267,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
-      let argument = StrictString(languages.lazy.map({ $0._iconOrCode }).joined(separator: ";"))
+      let argument = StrictString(
+        languages.lazy.map({ $0._iconOrCode })
+          .joined(separator: ";" as StrictString)
+      )
       command.append(contentsOf: " •language \u{27}\(argument)\u{27}")
     }
     return command
@@ -656,17 +659,19 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         commandEntry("echo \u{27}Fetching package graph...\u{27}"),
       ])
-      let graph = try project.cachedWindowsPackageGraph()
-      for package in graph.packages.sorted(by: { $0.name < $1.name }) {
-        if let version = package.underlyingPackage.manifest.version {
-          let url = package.underlyingPackage.manifest.url
-          result.append(
-            commandEntry(
-              "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+        let graph = try project.cachedWindowsPackageGraph()
+        for package in graph.packages.sorted(by: { $0.name < $1.name }) {
+          if let version = package.underlyingPackage.manifest.version {
+            let url = package.underlyingPackage.manifest.url
+            result.append(
+              commandEntry(
+                "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
+              )
             )
-          )
+          }
         }
-      }
+      #endif
       result.append(contentsOf: [
         "",
         commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),

@@ -18,6 +18,7 @@ import XCTest
 
 @testable import WSAndroidTests
 @testable import WSWindowsTests
+@testable import WorkspaceLibraryTests
 
 #if os(macOS)
   import Foundation
@@ -73,8 +74,74 @@ extension WSWindowsTests.WindowsTests {
   ]
 }
 
+extension WorkspaceLibraryTests.APITests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testAllDisabled", testAllDisabled),
+      ("testAllTasks", testAllTasks),
+      ("testArray", testArray),
+      ("testBadStyle", testBadStyle),
+      ("testBrokenExample", testBrokenExample),
+      ("testBrokenTests", testBrokenTests),
+      ("testCheckedInDocumentation", testCheckedInDocumentation),
+      ("testCheckForUpdates", testCheckForUpdates),
+      ("testConfiguration", testConfiguration),
+      ("testConfiguartionContext", testConfiguartionContext),
+      ("testContinuousIntegrationWithoutScripts", testContinuousIntegrationWithoutScripts),
+      ("testCustomProofread", testCustomProofread),
+      ("testCustomReadMe", testCustomReadMe),
+      ("testCustomTasks", testCustomTasks),
+      ("testDefaults", testDefaults),
+      ("testDeutsch", testDeutsch),
+      ("testExecutable", testExecutable),
+      ("testFailingCustomTasks", testFailingCustomTasks),
+      ("testFailingCustomValidation", testFailingCustomValidation),
+      ("testFailingDocumentationCoverage", testFailingDocumentationCoverage),
+      ("testFailingTests", testFailingTests),
+      ("testHeaders", testHeaders),
+      ("testHelp", testHelp),
+      ("testInvalidResourceDirectory", testInvalidResourceDirectory),
+      ("testInvalidTarget", testInvalidTarget),
+      ("testIssueTemplate", testIssueTemplate),
+      ("testLazyOption", testLazyOption),
+      ("testLicence", testLicence),
+      ("testLocalizationIdentifier", testLocalizationIdentifier),
+      ("testMissingDocumentation", testMissingDocumentation),
+      ("testMissingExample", testMissingExample),
+      ("testMissingReadMeLocalization", testMissingReadMeLocalization),
+      ("testMultipleProducts", testMultipleProducts),
+      ("testNoLibraries", testNoLibraries),
+      ("testNoLocalizations", testNoLocalizations),
+      ("testNurDeutsch", testNurDeutsch),
+      ("testOneLocalization", testOneLocalization),
+      ("testOneProductMultipleModules", testOneProductMultipleModules),
+      ("testOnlyBritish", testOnlyBritish),
+      ("testPartialReadMe", testPartialReadMe),
+      ("testProofreadingRule", testProofreadingRule),
+      ("testRelatedProject", testRelatedProject),
+      ("testSDGLibrary", testSDGLibrary),
+      ("testSDGTool", testSDGTool),
+      ("testSelfSpecificScripts", testSelfSpecificScripts),
+      ("testTestCoverageExemptionToken", testTestCoverageExemptionToken),
+      ("testUnicodeRuleScope", testUnicodeRuleScope),
+    ])
+  ]
+}
+
+extension WorkspaceLibraryTests.InternalTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testGitIgnoreCoverage", testGitIgnoreCoverage),
+      ("testPlatform", testPlatform),
+      ("testXcodeProjectFormat", testXcodeProjectFormat),
+    ])
+  ]
+}
+
 var tests = [XCTestCaseEntry]()
 tests += WSAndroidTests.AndroidTests.windowsTests
 tests += WSWindowsTests.WindowsTests.windowsTests
+tests += WorkspaceLibraryTests.APITests.windowsTests
+tests += WorkspaceLibraryTests.InternalTests.windowsTests
 
 XCTMain(tests)

@@ -29,7 +29,7 @@ public func run() {  // @exempt(from: tests)
     ProcessInfo.version = Metadata.thisVersion
     ProcessInfo.packageURL = Metadata.packageURL
 
-    #if os(Linux)
+    #if os(Windows) || os(Linux) || os(Android)
       Workspace.command.executeAsMain()
     #else
       let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in

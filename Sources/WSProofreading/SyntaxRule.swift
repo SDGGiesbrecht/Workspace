@@ -16,77 +16,83 @@
 
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 import WSProject
 
 internal protocol SyntaxRule: RuleProtocol {
-  static func check(
-    _ node: Syntax,
-    context: SyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  )
-  static func check(
-    _ node: ExtendedSyntax,
-    context: ExtendedSyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  )
-  static func check(
-    _ node: Trivia,
-    context: TriviaContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  )
-  static func check(
-    _ node: TriviaPiece,
-    context: TriviaPieceContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  )
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: Trivia,
+      context: TriviaContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: TriviaPiece,
+      context: TriviaPieceContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+  #endif
 }
 
 extension SyntaxRule {
-  static func check(
-    _ node: Syntax,
-    context: SyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {}
-  static func check(
-    _ node: ExtendedSyntax,
-    context: ExtendedSyntaxContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {}
-  static func check(
-    _ node: Trivia,
-    context: TriviaContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {}
-  static func check(
-    _ node: TriviaPiece,
-    context: TriviaPieceContext,
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {}
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+    static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    static func check(
+      _ node: Trivia,
+      context: TriviaContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    static func check(
+      _ node: TriviaPiece,
+      context: TriviaPieceContext,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+  #endif
 }

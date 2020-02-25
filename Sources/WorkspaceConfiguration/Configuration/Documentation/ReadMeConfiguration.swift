@@ -80,8 +80,12 @@ public struct ReadMeConfiguration: Codable {
 
       if let provided = localization._reasonableMatch {
         readMe += [
-          Platform.allCases.filter({ configuration.supportedPlatforms.contains($0) }).map(
-            { $0._isolatedName(for: provided) }).joined(separator: " • "),
+          StrictString(
+            Platform.allCases
+              .filter({ configuration.supportedPlatforms.contains($0) })
+              .map({ $0._isolatedName(for: provided) })
+              .joined(separator: " • ".scalars)
+          ),
           ""
         ]
       }
@@ -116,9 +120,9 @@ public struct ReadMeConfiguration: Codable {
           installation
         ]
       }
-      if let importing = configuration.documentation.importingInstructions.resolve(
-        configuration
-      )[localization] {
+      if let importing = configuration.documentation.importingInstructions
+        .resolve(configuration)[localization]
+      {
         let header: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

@@ -68,20 +68,25 @@ internal enum Script: Int, CaseIterable {
   }()
 
   internal var isRelevantOnCurrentDevice: Bool {
-    switch self {
-    case .refreshMacOS, .validateMacOS:
-      #if os(macOS)
-        return true
-      #elseif os(Linux)
-        return true  // Linux scripts use the macOS ones internally.
-      #endif
-    case .refreshLinux, .validateLinux:
-      #if os(macOS)
-        return false
-      #elseif os(Linux)
-        return true
-      #endif
-    }
+    #if os(Windows) || os(Android)
+      // #workaround(Until Workspace works on these platforms.)
+      return false
+    #else
+      switch self {
+      case .refreshMacOS, .validateMacOS:
+        #if os(macOS)
+          return true
+        #elseif os(Linux)
+          return true  // Linux scripts use the macOS ones internally.
+        #endif
+      case .refreshLinux, .validateLinux:
+        #if os(macOS)
+          return false
+        #elseif os(Linux)
+          return true
+        #endif
+      }
+    #endif
   }
 
   internal var isCheckedIn: Bool {

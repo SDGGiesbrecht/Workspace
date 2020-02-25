@@ -24,6 +24,20 @@ extension Array where Element: StringFamily {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Array.joinedAsLines())
   /// Joins an array of strings so that each entry in the array is a line of the string.
   public func joinedAsLines() -> Element {
-    return joined(separator: "\n" as Element)
+    #if os(Android)  // #workaround(SDGCornerstone 4.3.2, “joined” is unavailable.)
+      if isEmpty {
+        return ""
+      } else {
+        var copy = self
+        var result = copy.removeFirst()
+        for entry in copy {
+          result.scalars.append(contentsOf: "\n".scalars)
+          result.scalars.append(contentsOf: entry.scalars)
+        }
+        return result
+      }
+    #else
+      return joined(separator: "\n" as Element)
+    #endif
   }
 }

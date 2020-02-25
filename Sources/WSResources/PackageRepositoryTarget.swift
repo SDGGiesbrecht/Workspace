@@ -22,8 +22,10 @@ import SDGSwiftPackageManager
 import WSProject
 import WSSwift
 
-import PackageModel
-import SwiftFormat
+#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  import PackageModel
+  import SwiftFormat
+#endif
 
 extension PackageRepository {
 
@@ -31,32 +33,44 @@ extension PackageRepository {
 
     // MARK: - Initialization
 
-    internal init(description: TargetDescription, package: PackageRepository) {
-      self.description = description
-      self.package = package
-    }
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      internal init(description: TargetDescription, package: PackageRepository) {
+        self.description = description
+        self.package = package
+      }
+    #endif
 
     // MARK: - Properties
 
-    private let description: TargetDescription
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      private let description: TargetDescription
+    #endif
     private let package: PackageRepository
 
     internal var name: String {
-      return description.name
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        return ""
+      #else
+        return description.name
+      #endif
     }
 
     private var sourceDirectory: URL {
-      if let path = description.path {
-        return URL(fileURLWithPath: path)
-      } else {
-        let base: URL
-        if description.isTest {
-          base = package.location.appendingPathComponent("Tests")
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        return package.location
+      #else
+        if let path = description.path {
+          return URL(fileURLWithPath: path)
         } else {
-          base = package.location.appendingPathComponent("Sources")
+          let base: URL
+          if description.isTest {
+            base = package.location.appendingPathComponent("Tests")
+          } else {
+            base = package.location.appendingPathComponent("Sources")
+          }
+          return base.appendingPathComponent(name)
         }
-        return base.appendingPathComponent(name)
-      }
+      #endif  // @exempt(from: tests)
     }
 
     // MARK: - Resources
@@ -70,14 +84,16 @@ extension PackageRepository {
 
       var source = String(try generateSource(for: resources, of: package))
 
-      if let formatConfiguration = try package.configuration(output: output)
-        .proofreading.swiftFormatConfiguration
-      {
-        let formatter = SwiftFormatter(configuration: formatConfiguration)
-        var result: String = ""
-        try formatter.format(source: source, assumingFileURL: resourceFileLocation, to: &result)
-        source = result
-      }
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        if let formatConfiguration = try package.configuration(output: output)
+          .proofreading.swiftFormatConfiguration
+        {
+          let formatter = SwiftFormatter(configuration: formatConfiguration)
+          var result: String = ""
+          try formatter.format(source: source, assumingFileURL: resourceFileLocation, to: &result)
+          source = result
+        }
+      #endif
 
       var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
       resourceFile.body = source

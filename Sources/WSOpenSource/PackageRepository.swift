@@ -52,20 +52,22 @@ extension PackageRepository {
     }
 
     var fromDocumentation: StrictString = ""
-    if let documentation = try? PackageAPI.documentation(
-      for: package().get()
-    ).resolved(localizations: allLocalizations).documentation[
-      localization]
-    {
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      if let documentation = try? PackageAPI.documentation(
+        for: package().get()
+      ).resolved(localizations: allLocalizations).documentation[
+        localization]
+      {
 
-      if let description = documentation.descriptionSection {
-        fromDocumentation.append(contentsOf: description.text.scalars)
+        if let description = documentation.descriptionSection {
+          fromDocumentation.append(contentsOf: description.text.scalars)
+        }
+        for paragraph in documentation.discussionEntries {
+          fromDocumentation.append(contentsOf: paragraph.text.scalars)
+        }
       }
-      for paragraph in documentation.discussionEntries {
-        fromDocumentation.append(contentsOf: paragraph.text.scalars)
-      }
-    }
-    readMe.replaceMatches(for: "#packageDocumentation".scalars, with: fromDocumentation)
+      readMe.replaceMatches(for: "#packageDocumentation".scalars, with: fromDocumentation)
+    #endif
 
     // Word Elements
 

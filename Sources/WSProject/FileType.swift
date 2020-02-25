@@ -32,7 +32,7 @@ public enum FileType {
   ) throws -> StrictString? {
 
     let expected = try project.configuration(output: output).repository.ignoredFileTypes
-    var unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
+    let unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
       return key ∉ expected
     }
 

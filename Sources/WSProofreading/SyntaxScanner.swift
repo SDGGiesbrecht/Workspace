@@ -16,93 +16,97 @@
 
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 import WSProject
 
-internal class RuleSyntaxScanner: SyntaxScanner {
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  internal class RuleSyntaxScanner: SyntaxScanner {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(
-    rules: [SyntaxRule.Type],
-    file: TextFile,
-    project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
+    internal init(
+      rules: [SyntaxRule.Type],
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-    self.rules = rules
-    self.file = file
-    self.project = project
-    self.status = status
-    self.output = output
-  }
-
-  // MARK: - Properties
-
-  private let rules: [SyntaxRule.Type]
-  private let file: TextFile
-  private let project: PackageRepository
-  private let status: ProofreadingStatus
-  private let output: Command.Output
-
-  // MARK: - SyntaxScanner
-
-  internal func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
-    for rule in rules {
-      rule.check(
-        node,
-        context: context,
-        file: file,
-        project: project,
-        status: status,
-        output: output
-      )
+      self.rules = rules
+      self.file = file
+      self.project = project
+      self.status = status
+      self.output = output
     }
-    return true
-  }
 
-  internal func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
-    for rule in rules {
-      rule.check(
-        node,
-        context: context,
-        file: file,
-        project: project,
-        status: status,
-        output: output
-      )
-    }
-    return true
-  }
+    // MARK: - Properties
 
-  internal func visit(_ node: Trivia, context: TriviaContext) -> Bool {
-    for rule in rules {
-      rule.check(
-        node,
-        context: context,
-        file: file,
-        project: project,
-        status: status,
-        output: output
-      )
-    }
-    return true
-  }
+    private let rules: [SyntaxRule.Type]
+    private let file: TextFile
+    private let project: PackageRepository
+    private let status: ProofreadingStatus
+    private let output: Command.Output
 
-  internal func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
-    for rule in rules {
-      rule.check(
-        node,
-        context: context,
-        file: file,
-        project: project,
-        status: status,
-        output: output
-      )
+    // MARK: - SyntaxScanner
+
+    internal func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+      for rule in rules {
+        rule.check(
+          node,
+          context: context,
+          file: file,
+          project: project,
+          status: status,
+          output: output
+        )
+      }
+      return true
     }
-    return true
+
+    internal func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
+      for rule in rules {
+        rule.check(
+          node,
+          context: context,
+          file: file,
+          project: project,
+          status: status,
+          output: output
+        )
+      }
+      return true
+    }
+
+    internal func visit(_ node: Trivia, context: TriviaContext) -> Bool {
+      for rule in rules {
+        rule.check(
+          node,
+          context: context,
+          file: file,
+          project: project,
+          status: status,
+          output: output
+        )
+      }
+      return true
+    }
+
+    internal func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
+      for rule in rules {
+        rule.check(
+          node,
+          context: context,
+          file: file,
+          project: project,
+          status: status,
+          output: output
+        )
+      }
+      return true
+    }
   }
-}
+#endif

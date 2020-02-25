@@ -59,13 +59,15 @@ extension PackageRepository {
   // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
   // Changes to support files do not require a reset (read‐me, etc.).
   private class ManifestCache {
-    fileprivate var manifest: PackageModel.Manifest?
-    fileprivate var package: PackageModel.Package?
-    fileprivate var windowsPackage: PackageModel.Package?
-    fileprivate var packageGraph: PackageGraph?
-    fileprivate var windowsPackageGraph: PackageGraph?
-    fileprivate var products: [PackageModel.Product]?
-    fileprivate var dependenciesByName: [String: ResolvedPackage]?
+    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      fileprivate var manifest: PackageModel.Manifest?
+      fileprivate var package: PackageModel.Package?
+      fileprivate var windowsPackage: PackageModel.Package?
+      fileprivate var packageGraph: PackageGraph?
+      fileprivate var windowsPackageGraph: PackageGraph?
+      fileprivate var products: [PackageModel.Product]?
+      fileprivate var dependenciesByName: [String: ResolvedPackage]?
+    #endif
   }
   private static var manifestCaches: [URL: ManifestCache] = [:]
   private var manifestCache: ManifestCache {
@@ -122,48 +124,58 @@ extension PackageRepository {
 
   // MARK: - Manifest
 
-  public func cachedManifest() throws -> PackageModel.Manifest {
-    return try cached(in: &manifestCache.manifest) {
-      return try manifest().get()
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    public func cachedManifest() throws -> PackageModel.Manifest {
+      return try cached(in: &manifestCache.manifest) {
+        return try manifest().get()
+      }
     }
-  }
 
-  public func cachedPackage() throws -> PackageModel.Package {
-    return try cached(in: &manifestCache.package) {
-      return try package().get()
-    }
-  }
-  private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-    let variable = "GENERATING_CMAKE_FOR_WINDOWS"
-    setenv(variable, "true", 1 /* overwrite */)
-    defer {
-      unsetenv(variable)
-    }
-    return try closure()
-  }
-  public func cachedWindowsPackage() throws -> PackageModel.Package {
-    return try cached(in: &manifestCache.windowsPackage) {
-      return try PackageRepository.withWindowsEnvironment {
+    public func cachedPackage() throws -> PackageModel.Package {
+      return try cached(in: &manifestCache.package) {
         return try package().get()
       }
     }
+  #endif
+  private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
+    let variable = "GENERATING_CMAKE_FOR_WINDOWS"
+    #if !os(Windows)
+      setenv(variable, "true", 1 /* overwrite */)
+      defer {
+        unsetenv(variable)
+      }
+    #endif
+    return try closure()
   }
-
-  public func cachedPackageGraph() throws -> PackageGraph {
-    return try cached(in: &manifestCache.packageGraph) {
-      return try packageGraph().get()
+  #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    public func cachedWindowsPackage() throws -> PackageModel.Package {
+      return try cached(in: &manifestCache.windowsPackage) {
+        return try PackageRepository.withWindowsEnvironment {
+          return try package().get()
+        }
+      }
     }
-  }
-  public func cachedWindowsPackageGraph() throws -> PackageGraph {
-    return try cached(in: &manifestCache.windowsPackageGraph) {
-      return try PackageRepository.withWindowsEnvironment {
+
+    public func cachedPackageGraph() throws -> PackageGraph {
+      return try cached(in: &manifestCache.packageGraph) {
         return try packageGraph().get()
       }
     }
-  }
+    public func cachedWindowsPackageGraph() throws -> PackageGraph {
+      return try cached(in: &manifestCache.windowsPackageGraph) {
+        return try PackageRepository.withWindowsEnvironment {
+          return try packageGraph().get()
+        }
+      }
+    }
+  #endif
 
   public func packageName() throws -> StrictString {
-    return StrictString(try cachedManifest().name)
+    #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      return "[???]"
+    #else
+      return StrictString(try cachedManifest().name)
+    #endif
   }
 
   public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
@@ -179,68 +191,74 @@ extension PackageRepository {
     return try projectName(in: identifier, output: output)
   }
 
-  public func products() throws -> [PackageModel.Product] {
-    return try cached(in: &manifestCache.products) {
-      var products: [PackageModel.Product] = []
+  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    public func products() throws -> [PackageModel.Product] {
+      return try cached(in: &manifestCache.products) {
+        var products: [PackageModel.Product] = []
 
-      // Filter out tools which have not been declared as products.
-      let declaredTools: Set<String> = Set(
-        try cachedManifest().products.lazy.map({ $0.name })
-      )
+        // Filter out tools which have not been declared as products.
+        let declaredTools: Set<String> = Set(
+          try cachedManifest().products.lazy.map({ $0.name })
+        )
 
-      for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
-        switch product.type {
-        case .library:
-          products.append(product)
-        case .executable:
-          if product.name ∈ declaredTools {
+        for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
+          switch product.type {
+          case .library:
             products.append(product)
-          } else {
+          case .executable:
+            if product.name ∈ declaredTools {
+              products.append(product)
+            } else {
+              continue  // skip
+            }
+          case .test:
             continue  // skip
           }
-        case .test:
-          continue  // skip
         }
+        return products
       }
-      return products
     }
-  }
 
-  public func dependenciesByName() throws -> [String: ResolvedPackage] {
-    return try cached(in: &manifestCache.dependenciesByName) {
-      let graph = try cachedPackageGraph()
+    public func dependenciesByName() throws -> [String: ResolvedPackage] {
+      return try cached(in: &manifestCache.dependenciesByName) {
+        let graph = try cachedPackageGraph()
 
-      var result: [String: ResolvedPackage] = [:]
-      for dependency in graph.packages {
-        result[dependency.name] = dependency
+        var result: [String: ResolvedPackage] = [:]
+        for dependency in graph.packages {
+          result[dependency.name] = dependency
+        }
+        return result
       }
-      return result
     }
-  }
+  #endif
 
   // MARK: - Configuration
 
   public func configurationContext() throws -> WorkspaceContext {
     return try cached(in: &configurationCache.configurationContext) {
 
-      let products = try self.products()
-        .map { (product: PackageModel.Product) -> PackageManifest.Product in
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        let products: [PackageManifest.Product] = []
+      #else
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-          let type: PackageManifest.Product.ProductType
-          let modules: [String]
-          switch product.type {
-          case .library:
-            type = .library
-            modules = product.targets.map { $0.name }
-          case .executable:
-            type = .executable
-            modules = []
-          case .test:
-            unreachable()
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .test:
+              unreachable()
+            }
+
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
           }
-
-          return PackageManifest.Product(_name: product.name, type: type, modules: modules)
-        }
+      #endif
 
       let manifest = PackageManifest(
         _packageName: String(try packageName()),

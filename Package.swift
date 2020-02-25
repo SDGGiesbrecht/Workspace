@@ -259,6 +259,10 @@ let package = Package(
       .upToNextMinor(from: Version(0, 19, 2))
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+      .exact(Version(0, 5, 0))
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       .exact(Version(0, 0, 50100))
     ),
@@ -365,6 +369,7 @@ let package = Package(
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format")
       ]
     ),
@@ -705,7 +710,7 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
 
-    // #workaround(workspace version 0.30.1, Until real modules work on Windows.)
+    // #workaround(Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [
@@ -727,7 +732,7 @@ let package = Package(
       name: "WSWindowsTests",
       dependencies: ["WSWindowsLibrary"]
     ),
-    // #workaround(workspace version 0.30.1, Until real tests work on Android)
+    // #workaround(Until real tests work on Android)
     .testTarget(
       name: "WSAndroidTests",
       dependencies: [
@@ -759,130 +764,57 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  let impossibleTargets: Set<String> = [
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceTool",
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGit",
-    "WSGitHub",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode"
+  let impossibleDependencies: Set<String> = [
+    "SwiftPM\u{2D}auto",
+    "SwiftFormat"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem:
+      case ._targetItem, ._byNameItem:
         return false
+      case ._productItem(let name, _):
+        return impossibleDependencies.contains(name)
       }
     })
   }
+  let impossibleTargets: Set<String> = [
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator"
+  ]
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
-  })
-  // #workaround(workspace version 0.30.1, Not feasible on windows yet.)
-  let impossibleWorkspaceProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration"
-  ]
-  package.products.removeAll(where: { product in
-    impossibleWorkspaceProducts.contains(product.name)
   })
 }
 #if os(Windows)
   adjustForWindows()
 #endif
 import Foundation
-// #workaround(workspace version 0.30.1, Until packages work natively on windows.)
+// #workaround(Swift 5.1.4, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
 func adjustForAndroid() {
-  let impossibleTargets: Set<String> = [
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-    "WorkspaceConfiguration",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceTool",
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSGit",
-    "WSGitHub",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode"
+  let impossibleDependencies: Set<String> = [
+    "SwiftPM\u{2D}auto",
+    "SwiftFormat"
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem:
+      case ._targetItem, ._byNameItem:
         return false
+      case ._productItem(let name, _):
+        return impossibleDependencies.contains(name)
       }
     })
   }
-  package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
-  })
-  let impossibleWorkspaceProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration"
-  ]
-  package.products.removeAll(where: { product in
-    impossibleWorkspaceProducts.contains(product.name)
-  })
 }
 #if os(Android)
   adjustForAndroid()
 #endif
+import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   adjustForAndroid()
 }

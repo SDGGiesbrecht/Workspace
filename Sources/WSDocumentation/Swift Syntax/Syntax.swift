@@ -16,18 +16,22 @@
 
 import WSGeneralImports
 
-import SwiftSyntax
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
-extension Syntax {
+#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  extension Syntax {
 
-  internal func warnUnidentified(
-    file: StaticString = #file,
-    function: StaticString = #function
-  ) {  // @exempt(from: tests)
-    #if UNIDENTIFIED_SYNTAX_WARNINGS
-      let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
-      print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
-    #endif
+    internal func warnUnidentified(
+      file: StaticString = #file,
+      function: StaticString = #function
+    ) {  // @exempt(from: tests)
+      #if UNIDENTIFIED_SYNTAX_WARNINGS
+        let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
+        print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
+      #endif
+    }
   }
-}
+#endif

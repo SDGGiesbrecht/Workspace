@@ -1275,7 +1275,7 @@ internal struct PackageInterface {
           documentationMarkup.append(
             contentsOf: StrictString(
               specifiedContent.lines.lazy.map({ line in
-                return "/// \(line.line))" as StrictString
+                return "/// \(line.line)" as StrictString
               }).joined(separator: "\n" as StrictString)
             )
           )

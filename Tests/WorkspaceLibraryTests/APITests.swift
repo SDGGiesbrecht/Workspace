@@ -1370,11 +1370,13 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Android)  // #workaround(Emulator lacks permissions.)
-      try FileManager.default.do(in: repositoryRoot) {
-        _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-        _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
-      }
+    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+      #if !os(Android)  // #workaround(Emulator lacks permissions.)
+        try FileManager.default.do(in: repositoryRoot) {
+          _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
+          _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+        }
+      #endif
     #endif
   }
 

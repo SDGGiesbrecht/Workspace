@@ -31,8 +31,8 @@ extension Array where Element: StringFamily {
         var copy = self
         var result = copy.removeFirst()
         for entry in copy {
-          result.scalars.append(contentsOf: entry.scalars)
           result.scalars.append(contentsOf: "\n".scalars)
+          result.scalars.append(contentsOf: entry.scalars)
         }
         return result
       }

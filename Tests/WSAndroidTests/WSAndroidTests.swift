@@ -49,6 +49,8 @@ final class AndroidTests: XCTestCase {
     try? FileManager.default.removeItem(at: directory)
     defer { try? FileManager.default.removeItem(at: directory) }
 
+    #warning("Debugging...")
+    print(directory.path)
     try "text".save(to: directory.appendingPathComponent("Text.txt"))
   }
 }

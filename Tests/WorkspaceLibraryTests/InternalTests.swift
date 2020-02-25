@@ -45,37 +45,39 @@ class InternalTests: TestCase {
       ".github"
     ]
 
-    #if !os(Android)  // #workaround(Emulator lacks Git.)
-      _ = try Command(
-        name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-        description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-        directArguments: [],
-        options: [],
-        execution: { (_, _, output: Command.Output) in
+    #if !os(Windows)  // #workaround(Git not found during GitHub action.)
+      #if !os(Android)  // #workaround(Emulator lacks Git.)
+        _ = try Command(
+          name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+          directArguments: [],
+          options: [],
+          execution: { (_, _, output: Command.Output) in
 
-          let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
-          let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
-          let unexpected = relative.filter { path in
+            let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
+            let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+            let unexpected = relative.filter { path in
 
-            for prefix in expectedPrefixes {
-              if path.hasPrefix(prefix) {
-                return false
+              for prefix in expectedPrefixes {
+                if path.hasPrefix(prefix) {
+                  return false
+                }
               }
+
+              return true
             }
 
-            return true
+            XCTAssert(
+              unexpected.isEmpty,
+              [
+                "Unexpected files are being tracked by Git:",
+                unexpected.joinedAsLines()
+              ].joinedAsLines()
+            )
+
           }
-
-          XCTAssert(
-            unexpected.isEmpty,
-            [
-              "Unexpected files are being tracked by Git:",
-              unexpected.joinedAsLines()
-            ].joinedAsLines()
-          )
-
-        }
-      ).execute(with: []).get()
+        ).execute(with: []).get()
+      #endif
     #endif
   }
 

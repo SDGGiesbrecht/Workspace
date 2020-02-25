@@ -952,37 +952,39 @@ class APITests: TestCase {
   }
 
   func testLocalizationIdentifier() {
-    var dictionary: [LocalizationIdentifier: Bool] = [:]
-    dictionary[ContentLocalization.englishCanada] = true
-    XCTAssertEqual(dictionary["🇨🇦EN"], true)
-    dictionary["🇬🇧EN"] = false
-    XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
+    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+      var dictionary: [LocalizationIdentifier: Bool] = [:]
+      dictionary[ContentLocalization.englishCanada] = true
+      XCTAssertEqual(dictionary["🇨🇦EN"], true)
+      dictionary["🇬🇧EN"] = false
+      XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-    #if !os(Android)  // #workaround(Emulator lacks permissions.)
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("en"),
-        localizations: FastTestLocalization.self,
-        uniqueTestName: "English",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("cmn"),
-        localizations: FastTestLocalization.self,
-        uniqueTestName: "Mandarin",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("zxx"),
-        localizations: FastTestLocalization.self,
-        uniqueTestName: "Unknown",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+      #if !os(Android)  // #workaround(Emulator lacks permissions.)
+        testCustomStringConvertibleConformance(
+          of: LocalizationIdentifier("en"),
+          localizations: FastTestLocalization.self,
+          uniqueTestName: "English",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        testCustomStringConvertibleConformance(
+          of: LocalizationIdentifier("cmn"),
+          localizations: FastTestLocalization.self,
+          uniqueTestName: "Mandarin",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+        testCustomStringConvertibleConformance(
+          of: LocalizationIdentifier("zxx"),
+          localizations: FastTestLocalization.self,
+          uniqueTestName: "Unknown",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
+
+      var identifier = LocalizationIdentifier("zxx")
+      identifier.kennzeichen = "de"
+      XCTAssertEqual(identifier.kennzeichen, "de")
+      _ = identifier.symbol
     #endif
-
-    var identifier = LocalizationIdentifier("zxx")
-    identifier.kennzeichen = "de"
-    XCTAssertEqual(identifier.kennzeichen, "de")
-    _ = identifier.symbol
   }
 
   func testMissingDocumentation() {

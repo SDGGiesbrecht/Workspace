@@ -43,4 +43,12 @@ final class AndroidTests: XCTestCase {
       }
     #endif
   }
+
+  func testCachePermissions() throws {
+    let directory = FileManager.default.url(in: .cache, at: "Directory")
+    try? FileManager.default.removeItem(at: directory)
+    defer { try? FileManager.default.removeItem(at: directory) }
+
+    try "text".save(to: directory.appendingPathComponent("Text.txt"))
+  }
 }

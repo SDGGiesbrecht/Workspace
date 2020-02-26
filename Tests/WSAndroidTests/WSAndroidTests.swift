@@ -24,6 +24,32 @@ import SDGXCTestUtilities
 
 final class AndroidTests: TestCase {
 
+  func testCachePermissions() throws {
+    var directory = FileManager.default.url(in: .cache, at: "Directory")
+    try? FileManager.default.removeItem(at: directory)
+    defer { try? FileManager.default.removeItem(at: directory) }
+
+    try "text".save(to: directory.appendingPathComponent("Text.txt"))
+  }
+
+  func testRepositoryPresence() throws {
+    // #workaround(SDGCornerstone 4.3.2, SDGCornerstone test specifications don’t account for the environment.)
+    let thisFile = URL(fileURLWithPath: #file)
+    let compileTimeRepository = thisFile
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+      .deletingLastPathComponent()
+    let relativePath = thisFile.path(relativeTo: compileTimeRepository)
+
+    let runTimeRepository
+      = ProcessInfo.processInfo.environment["PACKAGE_REPOSITORY"].map(URL.init(fileURLWithPath:))
+        ?? compileTimeRepository
+
+    let runTimeFile = runTimeRepository.appendingPathComponent(relativePath)
+    let contents = try String(from: runTimeFile)
+    XCTAssert(contents.contains("func testRepositoryPresence()"))
+  }
+
   func testTemporaryDirectoryPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
     try {
@@ -44,13 +70,5 @@ final class AndroidTests: TestCase {
         try "text".save(to: directory.appendingPathComponent("Text.txt"))
       }
     #endif
-  }
-
-  func testCachePermissions() throws {
-    var directory = FileManager.default.url(in: .cache, at: "Directory")
-    try? FileManager.default.removeItem(at: directory)
-    defer { try? FileManager.default.removeItem(at: directory) }
-
-    try "text".save(to: directory.appendingPathComponent("Text.txt"))
   }
 }

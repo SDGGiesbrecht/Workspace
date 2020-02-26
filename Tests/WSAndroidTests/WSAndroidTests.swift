@@ -20,7 +20,9 @@ import SDGPersistence
 
 import XCTest
 
-final class AndroidTests: XCTestCase {
+import SDGXCTestUtilities
+
+final class AndroidTests: TestCase {
 
   func testTemporaryDirectoryPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
@@ -42,5 +44,13 @@ final class AndroidTests: XCTestCase {
         try "text".save(to: directory.appendingPathComponent("Text.txt"))
       }
     #endif
+  }
+
+  func testCachePermissions() throws {
+    var directory = FileManager.default.url(in: .cache, at: "Directory")
+    try? FileManager.default.removeItem(at: directory)
+    defer { try? FileManager.default.removeItem(at: directory) }
+
+    try "text".save(to: directory.appendingPathComponent("Text.txt"))
   }
 }

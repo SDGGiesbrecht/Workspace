@@ -48,6 +48,11 @@ final class AndroidTests: TestCase {
     let runTimeFile = runTimeRepository.appendingPathComponent(relativePath)
     let contents = try String(from: runTimeFile)
     XCTAssert(contents.contains("func testRepositoryPresence()"))
+
+    let ignored = runTimeRepository.appendingPathComponent(".build/SDG/Ignored/Text.txt")
+    try? FileManager.default.removeItem(at: ignored)
+    defer { try? FileManager.default.removeItem(at: ignored) }
+    try "text".save(to: ignored)
   }
 
   func testTemporaryDirectoryPermissions() throws {

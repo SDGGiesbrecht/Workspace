@@ -35,15 +35,16 @@ final class AndroidTests: TestCase {
   func testRepositoryPresence() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone test specifications don’t account for the environment.)
     let thisFile = URL(fileURLWithPath: #file)
-    let compileTimeRepository = thisFile
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
-      .deletingLastPathComponent()
+    let compileTimeRepository =
+      thisFile
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
+        .deletingLastPathComponent()
     let relativePath = thisFile.path(relativeTo: compileTimeRepository)
 
-    let runTimeRepository
-      = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"].map(URL.init(fileURLWithPath:))
-        ?? compileTimeRepository
+    let runTimeRepository = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"]
+      .map({ URL(fileURLWithPath: $0) })
+      ?? compileTimeRepository
 
     let runTimeFile = runTimeRepository.appendingPathComponent(relativePath)
     let contents = try String(from: runTimeFile)

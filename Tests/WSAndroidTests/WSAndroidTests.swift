@@ -45,9 +45,16 @@ final class AndroidTests: XCTestCase {
   }
 
   func testCachePermissions() throws {
-    let directory = FileManager.default.url(in: .cache, at: "Directory")
+    var directory = FileManager.default.url(in: .cache, at: "Directory")
     #warning("Debugging...")
     print("Got directory:", directory.path)
+    if directory.path.hasPrefix("//") {
+      var repaired = directory.path
+      repaired.removeFirst()
+      directory = URL(fileURLWithPath: repaired)
+    }
+    #warning("Debugging...")
+    print("Repaired directory:", directory.path)
     try? FileManager.default.removeItem(at: directory)
     defer { try? FileManager.default.removeItem(at: directory) }
 

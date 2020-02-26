@@ -42,7 +42,7 @@ final class AndroidTests: TestCase {
     let relativePath = thisFile.path(relativeTo: compileTimeRepository)
 
     let runTimeRepository
-      = ProcessInfo.processInfo.environment["PACKAGE_REPOSITORY"].map(URL.init(fileURLWithPath:))
+      = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"].map(URL.init(fileURLWithPath:))
         ?? compileTimeRepository
 
     let runTimeFile = runTimeRepository.appendingPathComponent(relativePath)

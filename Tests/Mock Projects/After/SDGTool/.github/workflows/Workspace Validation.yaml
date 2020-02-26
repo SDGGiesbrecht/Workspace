@@ -212,7 +212,10 @@ jobs:
         set -e
         adb -e push .build/x86_64-unknown-linux-android/debug /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug
         adb -e shell chmod -R +x /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug
-        adb -e shell LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug/SDGPackageTests.xctest
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug/SDGPackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh
     - name: Install emulator

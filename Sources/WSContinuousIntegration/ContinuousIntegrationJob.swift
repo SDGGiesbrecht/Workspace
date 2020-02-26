@@ -758,9 +758,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
         commandEntry("adb \u{2D}e shell \u{5C}"),
-        commandEntry("  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"),
+        commandEntry(
+          "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"
+        ),
         commandEntry("  HOME=/data/local/tmp/Home \u{5C}"),
-        commandEntry("  /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
+        commandEntry(
+          "  /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
         ),
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),

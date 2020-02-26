@@ -228,12 +228,13 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
-        adb -e push .build/x86_64-unknown-linux-android/debug /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug
-        adb -e shell chmod -R +x /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
         adb -e shell \
-          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
           HOME=/data/local/tmp/Home \
-          /data/local/tmp/SDG/.build/x86_64-unknown-linux-android/debug/DeutschPackageTests.xctest
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/DeutschPackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh
     - name: Emulator installieren

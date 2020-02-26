@@ -28,7 +28,7 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
-        $ANDROID_HOME/android-sdk/platform-tools/emulator -avd emulator -writable-system
+        emulator -avd emulator -writable-system
         adb root
         adb remount
         adb -e shell mkdir /.cache

@@ -909,6 +909,7 @@ set_target_properties("WSAndroidTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES 
 target_compile_options("WSAndroidTests" PRIVATE -enable-testing)
 target_link_libraries("WSAndroidTests" PRIVATE
   "SDGPersistence"
+  "SDGXCTestUtilities"
 )
 
 add_library("WSLocalizations"

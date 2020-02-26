@@ -28,6 +28,7 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
+        adb -e shell mkdir /.cache
         adb -e shell chmod -R +rw /.cache
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh

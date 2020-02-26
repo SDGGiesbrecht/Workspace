@@ -62,6 +62,7 @@ extension WSAndroidTests.AndroidTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
+      ("testCachePermissions", testCachePermissions),
     ])
   ]
 }

@@ -751,19 +751,18 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("mkdir \u{2D}p .build/SDG"),
         commandEntry("echo \u{27}"),
         commandEntry("set \u{2D}e"),
+        commandEntry("adb \u{2D}e push . /data/local/tmp/Package"),
         commandEntry(
-          "adb \u{2D}e push .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+          "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
         commandEntry("adb \u{2D}e shell \u{5C}"),
         commandEntry(
-          "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"
+          "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"
         ),
         commandEntry("  HOME=/data/local/tmp/Home \u{5C}"),
+        commandEntry("  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}"),
         commandEntry(
-          "  /data/local/tmp/SDG/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
+          "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
         ),
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),

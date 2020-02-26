@@ -20,7 +20,9 @@ import SDGPersistence
 
 import XCTest
 
-final class AndroidTests: XCTestCase {
+import SDGXCTestUtilities
+
+final class AndroidTests: TestCase {
 
   func testTemporaryDirectoryPermissions() throws {
     // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)

@@ -736,7 +736,8 @@ let package = Package(
     .testTarget(
       name: "WSAndroidTests",
       dependencies: [
-        .product(name: "SDGPersistence", package: "SDGCornerstone")
+        .product(name: "SDGPersistence", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone")
       ]
     ),
 

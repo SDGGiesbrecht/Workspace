@@ -28,9 +28,13 @@ jobs:
         mkdir -p .build/SDG
         echo '
         set -e
+        echo 'Making writable...'
         emulator -avd emulator -writable-system
+        echo 'Rooting...'
         adb root
+        echo 'Remounting...'
         adb remount
+        echo 'Done.'
         adb -e shell mkdir /.cache
         adb -e shell chmod -R +rw /.cache
         ' > .build/SDG/Emulator.sh

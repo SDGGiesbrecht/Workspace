@@ -45,21 +45,11 @@ final class AndroidTests: XCTestCase {
   }
 
   func testCachePermissions() throws {
-    #warning("Debugging...")
-    print("Starting...")
     let directory = FileManager.default.url(in: .cache, at: "Directory")
     #warning("Debugging...")
     print("Got directory:", directory.path)
     try? FileManager.default.removeItem(at: directory)
-    #warning("Debugging...")
-    print("Deleted.")
-    defer {
-      #warning("Debugging...")
-      print("In deferred.")
-      try? FileManager.default.removeItem(at: directory)
-      #warning("Debugging...")
-      print("Deleted.")
-    }
+    defer { try? FileManager.default.removeItem(at: directory) }
 
     #warning("Debugging...")
     print("Saving...")

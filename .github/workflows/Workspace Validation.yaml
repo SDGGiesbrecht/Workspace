@@ -35,6 +35,7 @@ jobs:
         echo ::set-env DEVELOPER_DIR="${DEVELOPER_DIR}"
     - name: Validate
       run: |
+        printenv
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:

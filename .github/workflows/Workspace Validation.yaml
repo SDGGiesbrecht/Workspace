@@ -27,10 +27,13 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
       run: |
+        set -x
         xcversion install 11.3
         xcversion select 11.3
+    - name: Validate
+      run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
@@ -135,10 +138,13 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
       run: |
+        set -x
         xcversion install 11.3
         xcversion select 11.3
+    - name: Validate
+      run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   iOS:
@@ -151,10 +157,13 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
       run: |
+        set -x
         xcversion install 11.3
         xcversion select 11.3
+    - name: Validate
+      run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Android:

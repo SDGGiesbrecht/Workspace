@@ -290,7 +290,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - GitHub Actions
 
-  private var gitHubActionMachine: String {
+  private var gitHubActionMachine: StrictString {
     switch platform {
     case .macOS:
       return
@@ -304,7 +304,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  private var dockerImage: String? {
+  private var dockerImage: StrictString? {
     switch platform {
     case .macOS, .windows, .android:
       return nil
@@ -314,6 +314,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS, .iOS, .watchOS:
       unreachable()
     }
+  }
+
+  private func runsOn(_ machine: StrictString) -> StrictString {
+    return "    runs\u{2D}on: \(machine)"
+  }
+
+  private func steps() -> StrictString {
+    return "    steps:"
   }
 
   private func step(
@@ -365,7 +373,23 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     )
   }
 
+  private func script(
+    heading: UserFacing<StrictString, InterfaceLocalization>,
+    localization: InterfaceLocalization,
+    commands: [StrictString]
+  ) -> StrictString {
+    var result: [StrictString] = [
+      step(heading, localization: localization),
+      "      run: |"
+    ]
+    for command in commands.prepending("set \u{2D}x") {
+      result.append("        \(command)")
+    }
+    return result.joinedAsLines()
+  }
+
   private func commandEntry(_ command: StrictString) -> StrictString {
+    #warning("Remove.")
     return "        \(command)"
   }
 
@@ -378,7 +402,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     var result: [StrictString] = [
       "  \(name.resolved(for: interfaceLocalization)):",
-      "    runs\u{2D}on: \(gitHubActionMachine)",
+      runsOn(gitHubActionMachine)
     ]
     if let container = dockerImage {
       result += [
@@ -386,14 +410,31 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ]
     }
     result += [
-      "    steps:",
+      steps(),
       step(checkOutStepName, localization: interfaceLocalization),
       checkOut(),
       step(cacheWorkspaceStepName, localization: interfaceLocalization),
       cache()
     ]
 
-    let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
+    switch platform {
+    case .macOS:
+      let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        .string(droppingEmptyPatch: true)
+      result.append(
+        script(
+          heading: setXcodeUpStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "xcversion install \(xcodeVersion)",
+            "xcversion select \(xcodeVersion)",
+          ]
+        )
+      )
+    case .windows, .linux, .tvOS, .iOS, .android, .watchOS:
+      break
+    }
+
     result.append(step(validateStepName, localization: interfaceLocalization))
 
     switch platform {
@@ -407,10 +448,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     switch platform {
     case .macOS:
-      result.append(contentsOf: [
-        commandEntry("xcversion install \(xcodeVersion)"),
-        commandEntry("xcversion select \(xcodeVersion)")
-      ])
+      break
     case .windows:
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
@@ -660,7 +698,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
-        "    steps:",
+        steps(),
         step(checkOutStepName, localization: interfaceLocalization),
         checkOut(),
         step(downloadTestsStepName, localization: interfaceLocalization),
@@ -745,6 +783,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Cache Workspace"
       case .deutschDeutschland:
         return "Arbeitsbereich zwischenspeichern"
+      }
+    })
+  }
+
+  private var setXcodeUpStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Set Xcode up"
+      case .deutschDeutschland:
+        return "Xcode einrichten"
       }
     })
   }

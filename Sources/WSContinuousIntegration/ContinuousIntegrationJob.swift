@@ -403,7 +403,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     } else {
       substitution = "${\(environmentVariable)}"
     }
-    return "echo ::set\u{2D}env name=\(environmentVariable)::\u{22}\(substitution)\u{22}"
+    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::\(substitution)\u{22}"
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {

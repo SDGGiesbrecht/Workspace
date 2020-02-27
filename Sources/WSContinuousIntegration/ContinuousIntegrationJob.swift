@@ -42,7 +42,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
 
   private static let currentMacOSVersion = Version(10, 15)
-  public static let currentXcodeVersion = Version(11, 3, 0)
+  public static let currentXcodeVersion = Version(11, 3, 1)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
 
@@ -388,6 +388,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
+  private func export(_ environmentVariable: StrictString) -> StrictString {
+    return "echo ::set\u{2D}env \(environmentVariable)=\u{22}${\(environmentVariable)}\u{22}"
+  }
+
   private func commandEntry(_ command: StrictString) -> StrictString {
     #warning("Remove.")
     return "        \(command)"
@@ -426,10 +430,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: setXcodeUpStepName,
           localization: interfaceLocalization,
           commands: [
-            "printenv",
-            "xcversion install 10",
-            "xcversion select 10",
-            "printenv"
+            "export DEVELOPER_DIR=/Applications/Xcode_\(xcodeVersion).app/Contents/Developer",
+            "xcodebuild \u{2D}version",
+            export("DEVELOPER_DIR")
           ]
         )
       )

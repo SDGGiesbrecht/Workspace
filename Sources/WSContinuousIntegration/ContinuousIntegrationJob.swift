@@ -350,9 +350,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     result += [
       "    steps:",
-      "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+      step(checkOutStepName, localization: interfaceLocalization),
       "      uses: actions/checkout@v1",
-      "    \u{2D} name: \(cacheWorkspaceStepName.resolved(for: interfaceLocalization))",
+      step(cacheWorkspaceStepName, localization: interfaceLocalization),
       "      uses: actions/cache@v1",
       "      with:",
     ]
@@ -370,7 +370,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-    result.append("    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))")
+    result.append(step(validateStepName, localization: interfaceLocalization))
 
     switch platform {
     case .macOS, .linux, .tvOS, .iOS, .android, .watchOS:
@@ -627,7 +627,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(
           "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
-        "    \u{2D} name: \(uploadTestsStepName.resolved(for: interfaceLocalization))",
+        step(uploadTestsStepName, localization: interfaceLocalization),
         "      uses: actions/upload\u{2D}artifact@v1",
         "      with:",
         "        name: tests",
@@ -637,14 +637,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
         "    needs: Android",
         "    steps:",
-        "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
+        step(checkOutStepName, localization: interfaceLocalization),
         "      uses: actions/checkout@v1",
-        "    \u{2D} name: \(downloadTestsStepName.resolved(for: interfaceLocalization))",
+        step(downloadTestsStepName, localization: interfaceLocalization),
         "      uses: actions/download\u{2D}artifact@v1",
         "      with:",
         "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "    \u{2D} name: \(prepareScriptStepName.resolved(for: interfaceLocalization))",
+        step(prepareScriptStepName, localization: interfaceLocalization),
         "      run: |",
         commandEntry("mkdir \u{2D}p .build/SDG"),
         commandEntry("echo \u{27}"),
@@ -665,9 +665,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("\u{27} > .build/SDG/Emulator.sh"),
         commandEntry("chmod +x .build/SDG/Emulator.sh"),
         // #workaround(There is no official action for this yet.)
-        "    \u{2D} name: \(installEmulatorStepName.resolved(for: interfaceLocalization))",
+        step(installEmulatorStepName, localization: interfaceLocalization),
         "      uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
-        "    \u{2D} name: \(testStepName.resolved(for: interfaceLocalization))",
+        step(testStepName, localization: interfaceLocalization),
         "      uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
         "      with:",
         "        abi: x86_64",
@@ -684,7 +684,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     if self == .deployment {
       result.append(contentsOf: [
-        "    \u{2D} name: \(deployStepName.resolved(for: interfaceLocalization))",
+        step(deployStepName, localization: interfaceLocalization),
         "      run: |",
         "        cd docs",
         "        git init",

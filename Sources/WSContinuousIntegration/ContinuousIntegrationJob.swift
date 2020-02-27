@@ -444,7 +444,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       )
     case .windows:
       result.append(script(shell: "cmd", heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
-        #"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64"#,
+        "\u{22}C:\u{5C}Program Files (x86)\u{5C}Microsoft Visual Studio\u{5C}2019\u{5C}Enterprise\u{5C}VC\u{5C}Auxiliary\u{5C}Build\u{5C}vcvarsall.bat\u{22} x64",
         //"cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
         //"echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
         //"echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",

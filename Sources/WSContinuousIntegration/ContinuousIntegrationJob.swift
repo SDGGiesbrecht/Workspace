@@ -389,7 +389,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func export(_ environmentVariable: StrictString) -> StrictString {
-    return "echo ::set\u{2D}env \(environmentVariable)=\u{22}${\(environmentVariable)}\u{22}"
+    return "echo ::set\u{2D}env name=\(environmentVariable)::\u{22}${\(environmentVariable)}\u{22}"
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {

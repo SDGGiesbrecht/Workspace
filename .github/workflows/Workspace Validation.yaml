@@ -104,6 +104,7 @@ jobs:
     - name: Validate
       shell: bash
       run: |
+        repository_directory=$(pwd)
         echo 'Fetching Windows platform module maps...'
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"

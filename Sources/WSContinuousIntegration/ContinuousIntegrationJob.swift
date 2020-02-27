@@ -512,6 +512,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
+        commandEntry("repository_directory=$(pwd)"),
         commandEntry("echo \u{27}Fetching Windows platform module maps...\u{27}"),
         commandEntry(
           "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}"

@@ -42,7 +42,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
 
   private static let currentMacOSVersion = Version(10, 15)
-  public static let currentXcodeVersion = Version(10, 0, 0)
+  public static let currentXcodeVersion = Version(11, 3, 0)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
 
@@ -427,8 +427,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             "printenv",
-            "xcversion install \(xcodeVersion)",
-            "xcversion select \(xcodeVersion)",
+            "xcversion install 10",
+            "xcversion select 10",
             "printenv"
           ]
         )

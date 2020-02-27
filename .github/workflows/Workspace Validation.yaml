@@ -31,8 +31,8 @@ jobs:
       run: |
         set -x
         printenv
-        xcversion install 10.0
-        xcversion select 10.0
+        xcversion install 10
+        xcversion select 10
         printenv
     - name: Validate
       run: |
@@ -144,8 +144,8 @@ jobs:
       run: |
         set -x
         printenv
-        xcversion install 10.0
-        xcversion select 10.0
+        xcversion install 10
+        xcversion select 10
         printenv
     - name: Validate
       run: |
@@ -165,8 +165,8 @@ jobs:
       run: |
         set -x
         printenv
-        xcversion install 10.0
-        xcversion select 10.0
+        xcversion install 10
+        xcversion select 10
         printenv
     - name: Validate
       run: |

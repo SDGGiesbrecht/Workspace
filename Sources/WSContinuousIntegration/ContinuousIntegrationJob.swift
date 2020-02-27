@@ -263,7 +263,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private func appendLanguage(to command: StrictString, configuration: WorkspaceConfiguration) -> StrictString {
+  private func appendLanguage(to command: StrictString, configuration: WorkspaceConfiguration)
+    -> StrictString
+  {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
@@ -321,15 +323,42 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "    \u{2D} name: \(name.resolved(for: localization))"
   }
 
-  private func uses(_ action: StrictString) -> StrictString {
-    return "      uses: \(action)"
+  private func uses(
+    _ action: StrictString,
+    with: [StrictString: StrictString] = [:]
+  ) -> StrictString {
+    var result: [StrictString] = ["      uses: \(action)"]
+    if ¬with.isEmpty {
+      result.append("      with:")
+      for (key, value) in with.sorted(by: { $0.0 < $1.0 }) {
+        result.append("        \(key): \(value)")
+      }
+    }
+    return result.joinedAsLines()
   }
 
-  private func cacheEntry(os: StrictString) -> [StrictString] {
-    return [
-      "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-      "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
-    ]
+  private func cache() -> StrictString {
+    let os: StrictString
+    switch platform {
+    case .macOS:
+      os = "macOS"
+    case .windows:
+      os = "Windows"
+    case .linux:
+      os = "Linux"
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
+    case .android:
+      os = "Android"
+    }
+    return uses(
+      "actions/cache@v1",
+      with: [
+        "key":
+          "\(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+        "path": PackageRepository.repositoryWorkspaceCacheDirectory
+      ]
+    )
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {
@@ -357,21 +386,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       step(checkOutStepName, localization: interfaceLocalization),
       uses("actions/checkout@v1"),
       step(cacheWorkspaceStepName, localization: interfaceLocalization),
-      uses("actions/cache@v1"),
-      "      with:",
+      cache()
     ]
-    switch platform {
-    case .macOS:
-      result.append(contentsOf: cacheEntry(os: "macOS"))
-    case .windows:
-      result.append(contentsOf: cacheEntry(os: "Windows"))
-    case .linux:
-      result.append(contentsOf: cacheEntry(os: "Linux"))
-    case .tvOS, .iOS, .watchOS:
-      unreachable()
-    case .android:
-      result.append(contentsOf: cacheEntry(os: "Android"))
-    }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
     result.append(step(validateStepName, localization: interfaceLocalization))
@@ -706,7 +722,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   // MARK: - Localized Text
-  
+
   private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {

@@ -51,7 +51,6 @@ jobs:
     - name: Set Visual Studio up
       shell: cmd
       run: |
-        @echo on
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         echo ::set-env name=PATH::%PATH%
         echo ::set-env name=UniversalCRTSdkDir::%UniversalCRTSdkDir%

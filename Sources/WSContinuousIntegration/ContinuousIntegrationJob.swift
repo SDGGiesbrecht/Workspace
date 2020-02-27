@@ -387,6 +387,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var commands = commands
     if shell == "bash" {
       commands.prepend("set \u{2D}x")
+    } else if shell == "cmd" {
+      commands.prepend("echo on")
     }
     for command in commands {
       result.append("        \(command)")
@@ -394,8 +396,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func export(_ environmentVariable: StrictString) -> StrictString {
-    return "echo ::set\u{2D}env name=\(environmentVariable)::\u{22}${\(environmentVariable)}\u{22}"
+  private func export(_ environmentVariable: StrictString, cmd: Bool = false) -> StrictString {
+    let substitution: StrictString
+    if cmd {
+      substitution = "%\(environmentVariable)%"
+    } else {
+      substitution = "${\(environmentVariable)}"
+    }
+    return "echo ::set\u{2D}env name=\(environmentVariable)::\u{22}\(substitution)\u{22}"
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {
@@ -452,10 +460,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         //"set +x",
         //"source ./exported_environment.sh",
         //"set \u{2D}x",
-        export("PATH"),
-        export("UniversalCRTSdkDir"),
-        export("UCRTVersion"),
-        export("VCToolsInstallDir"),
+        export("PATH", cmd: true),
+        export("UniversalCRTSdkDir", cmd: true),
+        export("UCRTVersion", cmd: true),
+        export("VCToolsInstallDir", cmd: true),
       ]))
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break

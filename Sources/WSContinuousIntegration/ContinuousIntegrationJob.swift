@@ -321,6 +321,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "    \u{2D} name: \(name.resolved(for: localization))"
   }
 
+  private func uses(_ action: StrictString) -> StrictString {
+    return "      uses: \(action)"
+  }
+
   private func cacheEntry(os: StrictString) -> [StrictString] {
     return [
       "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
@@ -351,9 +355,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result += [
       "    steps:",
       step(checkOutStepName, localization: interfaceLocalization),
-      "      uses: actions/checkout@v1",
+      uses("actions/checkout@v1"),
       step(cacheWorkspaceStepName, localization: interfaceLocalization),
-      "      uses: actions/cache@v1",
+      uses("actions/cache@v1"),
       "      with:",
     ]
     switch platform {
@@ -628,7 +632,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         ),
         step(uploadTestsStepName, localization: interfaceLocalization),
-        "      uses: actions/upload\u{2D}artifact@v1",
+        uses("actions/upload\u{2D}artifact@v1"),
         "      with:",
         "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
@@ -638,9 +642,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "    needs: Android",
         "    steps:",
         step(checkOutStepName, localization: interfaceLocalization),
-        "      uses: actions/checkout@v1",
+        uses("actions/checkout@v1"),
         step(downloadTestsStepName, localization: interfaceLocalization),
-        "      uses: actions/download\u{2D}artifact@v1",
+        uses("actions/download\u{2D}artifact@v1"),
         "      with:",
         "        name: tests",
         "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
@@ -666,9 +670,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry("chmod +x .build/SDG/Emulator.sh"),
         // #workaround(There is no official action for this yet.)
         step(installEmulatorStepName, localization: interfaceLocalization),
-        "      uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
+        uses("malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5"),
         step(testStepName, localization: interfaceLocalization),
-        "      uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+        uses("malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5"),
         "      with:",
         "        abi: x86_64",
         "        cmd: .build/SDG/Emulator.sh"

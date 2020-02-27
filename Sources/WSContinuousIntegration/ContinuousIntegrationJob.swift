@@ -462,7 +462,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         //export("LIB"),
         //export("LIBPATH"),
         //export("NETFXSDKDir"),
-        //export("PATH"),
+        export("PATH"),
         //export("Platform"),
         //export("PROMPT"), // ?
         export("UniversalCRTSdkDir"), // *

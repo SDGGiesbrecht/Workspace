@@ -337,6 +337,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
+  private func checkOut() -> StrictString {
+    return uses("actions/checkout@v1")
+  }
+
   private func cache() -> StrictString {
     let os: StrictString
     switch platform {
@@ -384,7 +388,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result += [
       "    steps:",
       step(checkOutStepName, localization: interfaceLocalization),
-      uses("actions/checkout@v1"),
+      checkOut(),
       step(cacheWorkspaceStepName, localization: interfaceLocalization),
       cache()
     ]
@@ -658,7 +662,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "    needs: Android",
         "    steps:",
         step(checkOutStepName, localization: interfaceLocalization),
-        uses("actions/checkout@v1"),
+        checkOut(),
         step(downloadTestsStepName, localization: interfaceLocalization),
         uses("actions/download\u{2D}artifact@v1"),
         "      with:",

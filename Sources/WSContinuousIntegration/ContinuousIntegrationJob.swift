@@ -426,8 +426,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: setXcodeUpStepName,
           localization: interfaceLocalization,
           commands: [
+            "printenv",
             "xcversion install \(xcodeVersion)",
             "xcversion select \(xcodeVersion)",
+            "printenv"
           ]
         )
       )

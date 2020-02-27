@@ -380,6 +380,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
+      "      shell: bash",
       "      run: |"
     ]
     for command in commands.prepending("set \u{2D}x") {
@@ -436,7 +437,18 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-    case .windows, .linux, .tvOS, .iOS, .android, .watchOS:
+    case .windows:
+      result.append(script(heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
+        "printenv",
+        "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
+        "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
+        "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+        "cmd \u{22}/c export_environment.bat\u{22}",
+        "source ./exported_environment.sh",
+        "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{27}Failed to set up Visual Studio.\u{27}; exit 1; fi",
+        "printenv"
+      ]))
+    case .linux, .tvOS, .iOS, .android, .watchOS:
       break
     }
 
@@ -459,24 +471,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
-        commandEntry(
-          "echo \u{27}Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)\u{27}"
-        ),
-        commandEntry("repository_directory=$(pwd)"),
-        commandEntry(
-          "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"
-        ),
-        commandEntry("echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh"),
-        commandEntry(
-          "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat"
-        ),
-        commandEntry("cmd \u{22}/c export_environment.bat\u{22}"),
-        commandEntry("source ./exported_environment.sh"),
-        commandEntry(
-          "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{27}Failed to set up Visual Studio.\u{27}; exit 1; fi"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
         commandEntry("echo \u{27}Fetching Windows platform module maps...\u{27}"),
         commandEntry(
           "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}"
@@ -800,6 +794,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Set Xcode up"
       case .deutschDeutschland:
         return "Xcode einrichten"
+      }
+    })
+  }
+
+  private var setVisualStudioUpStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Set Visual Studio up"
+      case .deutschDeutschland:
+        return "Visual Studio einrichten"
       }
     })
   }

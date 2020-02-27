@@ -28,6 +28,7 @@ jobs:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
+      shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
@@ -47,19 +48,21 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Visual Studio up
       shell: bash
       run: |
-        echo 'Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)'
-        repository_directory=$(pwd)
+        set -x
+        printenv
         cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
         echo 'export -p > exported_environment.sh' > nested_bash.sh
         echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
         cmd "/c export_environment.bat"
         source ./exported_environment.sh
         if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
-        cd "${repository_directory}"
-
+        printenv
+    - name: Validate
+      shell: bash
+      run: |
         echo 'Fetching Windows platform module maps...'
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
@@ -140,6 +143,7 @@ jobs:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
+      shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
@@ -160,6 +164,7 @@ jobs:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
+      shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer

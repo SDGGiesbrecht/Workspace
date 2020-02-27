@@ -443,8 +443,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
         "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
         "cmd \u{22}/c export_environment.bat\u{22}",
+        "set +x",
         "source ./exported_environment.sh",
-        export("CommandPromptType"),
+        "set \u{2D}x",
+        export("CommandPromptType"), // ?
         export("DevEnvDir"),
         export("__DOTNET_ADD_64BIT"),
         export("__DOTNET_PREFERRED_BITNESS"),
@@ -454,29 +456,29 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         export("FrameworkDIR64"),
         export("FrameworkVersion"),
         export("FrameworkVersion64"),
-        export("FSHARPINSTALLDIR"),
-        export("HTMLHelpDir"),
+        export("FSHARPINSTALLDIR"), // ?
+        export("HTMLHelpDir"), // ?
         export("INCLUDE"),
         export("LIB"),
         export("LIBPATH"),
         export("NETFXSDKDir"),
         export("PATH"),
         export("Platform"),
-        export("PROMPT"),
-        export("UniversalCRTSdkDir"),
-        export("UCRTVersion"),
+        export("PROMPT"), // ?
+        export("UniversalCRTSdkDir"), // *
+        export("UCRTVersion"), // *
         export("VCIDEInstallDir"),
         export("VCINSTALLDIR"),
-        export("VCToolsInstallDir"),
+        export("VCToolsInstallDir"), // *
         export("VCToolsRedistDir"),
         export("VCToolsVersion"),
         export("VisualStudioVersion"),
         export("VS160COMNTOOLS"),
-        export("VSCMD_ARG_app_plat"),
-        export("VSCMD_ARG_HOST_ARCH"),
-        export("VSCMD_ARG_TGT_ARCH"),
-        export("__VSCMD_PREINIT_PATH"),
-        export("VSCMD_VER"),
+        export("VSCMD_ARG_app_plat"), // ?
+        export("VSCMD_ARG_HOST_ARCH"), // ?
+        export("VSCMD_ARG_TGT_ARCH"), // ?
+        export("__VSCMD_PREINIT_PATH"), // ?
+        export("VSCMD_VER"), // ?
         export("VSINSTALLDIR"),
         export("VSSDKINSTALL"),
         export("VSSDK150INSTALL"),

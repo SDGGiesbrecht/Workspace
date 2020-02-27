@@ -488,6 +488,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
+        commandEntry("printenv"),
         commandEntry("repository_directory=$(pwd)"),
         commandEntry("echo \u{27}Fetching Windows platform module maps...\u{27}"),
         commandEntry(

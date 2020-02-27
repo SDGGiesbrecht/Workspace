@@ -33,7 +33,7 @@ jobs:
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         xcodebuild -version
-        echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
@@ -49,14 +49,20 @@ jobs:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Visual Studio up
-      shell: cmd
-      run: >-
-        echo on &&
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 &&
-        echo ::set-env name=PATH::%PATH% &&
-        echo ::set-env name=UniversalCRTSdkDir::%UniversalCRTSdkDir% &&
-        echo ::set-env name=UCRTVersion::%UCRTVersion% &&
-        echo ::set-env name=VCToolsInstallDir::%VCToolsInstallDir%
+      shell: bash
+      run: |
+        set -x
+        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
+        echo 'export -p > exported_environment.sh' > nested_bash.sh
+        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
+        cmd "/c export_environment.bat"
+        set +x
+        source ./exported_environment.sh
+        set -x
+        echo "::set-env name=PATH::${PATH}"
+        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
+        echo "::set-env name=UCRTVersion::${UCRTVersion}"
+        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
     - name: Validate
       shell: bash
       run: |
@@ -147,7 +153,7 @@ jobs:
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         xcodebuild -version
-        echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
@@ -168,7 +174,7 @@ jobs:
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         xcodebuild -version
-        echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

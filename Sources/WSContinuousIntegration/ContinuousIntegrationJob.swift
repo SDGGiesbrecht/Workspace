@@ -374,43 +374,23 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func script(
-    shell: StrictString = "bash",
     heading: UserFacing<StrictString, InterfaceLocalization>,
     localization: InterfaceLocalization,
     commands: [StrictString]
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
-      "      shell: \(shell)"
+      "      shell: bash",
+      "      run: |"
     ]
-    if shell == "cmd" {
-      result.append("      run: >\u{2D}")
-    } else {
-      result.append("      run: |")
-    }
-    var commands = commands
-    if shell == "bash" {
-      commands.prepend("set \u{2D}x")
-    } else if shell == "cmd" {
-      commands.prepend("echo on")
-      for index in commands.indices.dropLast() {
-        commands[index].append(contentsOf: " &&")
-      }
-    }
-    for command in commands {
+    for command in commands.prepending("set \u{2D}x") {
       result.append("        \(command)")
     }
     return result.joinedAsLines()
   }
 
-  private func export(_ environmentVariable: StrictString, cmd: Bool = false) -> StrictString {
-    let substitution: StrictString
-    if cmd {
-      substitution = "%\(environmentVariable)%"
-    } else {
-      substitution = "\u{22}${\(environmentVariable)}\u{22}"
-    }
-    return "echo ::set\u{2D}env name=\(environmentVariable)::\(substitution)"
+  private func export(_ environmentVariable: StrictString) -> StrictString {
+    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {
@@ -458,19 +438,18 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      result.append(script(shell: "cmd", heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
-        "\u{22}C:\u{5C}Program Files (x86)\u{5C}Microsoft Visual Studio\u{5C}2019\u{5C}Enterprise\u{5C}VC\u{5C}Auxiliary\u{5C}Build\u{5C}vcvarsall.bat\u{22} x64",
-        //"cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
-        //"echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
-        //"echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
-        //"cmd \u{22}/c export_environment.bat\u{22}",
-        //"set +x",
-        //"source ./exported_environment.sh",
-        //"set \u{2D}x",
-        export("PATH", cmd: true),
-        export("UniversalCRTSdkDir", cmd: true),
-        export("UCRTVersion", cmd: true),
-        export("VCToolsInstallDir", cmd: true),
+      result.append(script(heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
+        "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
+        "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
+        "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+        "cmd \u{22}/c export_environment.bat\u{22}",
+        "set +x",
+        "source ./exported_environment.sh",
+        "set \u{2D}x",
+        export("PATH"),
+        export("UniversalCRTSdkDir"),
+        export("UCRTVersion"),
+        export("VCToolsInstallDir"),
       ]))
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break

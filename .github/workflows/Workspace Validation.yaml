@@ -35,7 +35,6 @@ jobs:
         echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
     - name: Validate
       run: |
-        printenv
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
@@ -145,7 +144,7 @@ jobs:
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         xcodebuild -version
-        echo ::set-env DEVELOPER_DIR="${DEVELOPER_DIR}"
+        echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
@@ -165,7 +164,7 @@ jobs:
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         xcodebuild -version
-        echo ::set-env DEVELOPER_DIR="${DEVELOPER_DIR}"
+        echo ::set-env name=DEVELOPER_DIR::"${DEVELOPER_DIR}"
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

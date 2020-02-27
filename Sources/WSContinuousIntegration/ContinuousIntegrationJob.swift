@@ -449,6 +449,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append("      shell: bash")
     }
 
+    #warning("Continue here.")
     result.append("      run: |")
 
     switch platform {

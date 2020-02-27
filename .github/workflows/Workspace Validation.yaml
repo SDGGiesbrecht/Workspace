@@ -30,8 +30,10 @@ jobs:
     - name: Set Xcode up
       run: |
         set -x
+        printenv
         xcversion install 11.3
         xcversion select 11.3
+        printenv
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
@@ -141,8 +143,10 @@ jobs:
     - name: Set Xcode up
       run: |
         set -x
+        printenv
         xcversion install 11.3
         xcversion select 11.3
+        printenv
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
@@ -160,8 +164,10 @@ jobs:
     - name: Set Xcode up
       run: |
         set -x
+        printenv
         xcversion install 11.3
         xcversion select 11.3
+        printenv
     - name: Validate
       run: |
         './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

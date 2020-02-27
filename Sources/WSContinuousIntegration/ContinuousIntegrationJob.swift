@@ -388,7 +388,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     if shell == "bash" {
       commands.prepend("set \u{2D}x")
     } else if shell == "cmd" {
-      commands.prepend("echo on")
+      commands.prepend("@echo on")
     }
     for command in commands {
       result.append("        \(command)")
@@ -401,9 +401,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     if cmd {
       substitution = "%\(environmentVariable)%"
     } else {
-      substitution = "${\(environmentVariable)}"
+      substitution = "\u{22}${\(environmentVariable)}\u{22}"
     }
-    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::\(substitution)\u{22}"
+    return "echo ::set\u{2D}env name=\(environmentVariable)::\(substitution)"
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {

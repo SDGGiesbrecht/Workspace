@@ -263,7 +263,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private func appendLanguage(to command: String, configuration: WorkspaceConfiguration) -> String {
+  private func appendLanguage(to command: StrictString, configuration: WorkspaceConfiguration) -> StrictString {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
@@ -275,10 +275,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     return command
   }
-  private func refreshCommand(configuration: WorkspaceConfiguration) -> String {
+  private func refreshCommand(configuration: WorkspaceConfiguration) -> StrictString {
     return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
   }
-  private func validateCommand(configuration: WorkspaceConfiguration) -> String {
+  private func validateCommand(configuration: WorkspaceConfiguration) -> StrictString {
     return appendLanguage(
       to:
         "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))",
@@ -314,123 +314,32 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Check out"
-      case .deutschDeutschland:
-        return "Holen"
-      }
-    })
+  private func step(
+    _ name: UserFacing<StrictString, InterfaceLocalization>,
+    localization: InterfaceLocalization
+  ) -> StrictString {
+    return "    \u{2D} name: \(name.resolved(for: localization))"
   }
 
-  private var cacheWorkspaceStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Cache Workspace"
-      case .deutschDeutschland:
-        return "Arbeitsbereich zwischenspeichern"
-      }
-    })
+  private func cacheEntry(os: StrictString) -> [StrictString] {
+    return [
+      "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+      "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
+    ]
   }
 
-  private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Validate"
-      case .deutschDeutschland:
-        return "Prüfen"
-      }
-    })
+  private func commandEntry(_ command: StrictString) -> StrictString {
+    return "        \(command)"
   }
 
-  private var uploadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Upload tests"
-      case .deutschDeutschland:
-        return "Teste hochladen"
-      }
-    })
-  }
-
-  private var downloadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Download tests"
-      case .deutschDeutschland:
-        return "Teste herunterladen"
-      }
-    })
-  }
-
-  private var prepareScriptStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Prepare script"
-      case .deutschDeutschland:
-        return "Skript vorbereiten"
-      }
-    })
-  }
-
-  private var installEmulatorStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install emulator"
-      case .deutschDeutschland:
-        return "Emulator installieren"
-      }
-    })
-  }
-
-  private var testStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Test"
-      case .deutschDeutschland:
-        return "Testen"
-      }
-    })
-  }
-
-  private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Deploy"
-      case .deutschDeutschland:
-        return "Verteilen"
-      }
-    })
-  }
-
-  private var deployCommitMessage: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Generated documentation for ${GITHUB_SHA}."
-      case .deutschDeutschland:
-        return "Erstellte Dokumentation für ${GITHUB_SHA}."
-      }
-    })
-  }
-
-  internal func gitHubWorkflowJob(for project: PackageRepository, output: Command.Output) throws
-    -> [String]
-  {
+  internal func gitHubWorkflowJob(
+    for project: PackageRepository,
+    output: Command.Output
+  ) throws -> [StrictString] {
     let configuration = try project.configuration(output: output)
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
-    var result: [String] = [
+    var result: [StrictString] = [
       "  \(name.resolved(for: interfaceLocalization)):",
       "    runs\u{2D}on: \(gitHubActionMachine)",
     ]
@@ -447,13 +356,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "      uses: actions/cache@v1",
       "      with:",
     ]
-
-    func cacheEntry(os: String) -> [String] {
-      return [
-        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
-      ]
-    }
     switch platform {
     case .macOS:
       result.append(contentsOf: cacheEntry(os: "macOS"))
@@ -465,10 +367,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       unreachable()
     case .android:
       result.append(contentsOf: cacheEntry(os: "Android"))
-    }
-
-    func commandEntry(_ command: String) -> String {
-      return "        \(command)"
     }
 
     let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
@@ -801,6 +699,118 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     return result
+  }
+
+  // MARK: - Localized Text
+  
+  private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Check out"
+      case .deutschDeutschland:
+        return "Holen"
+      }
+    })
+  }
+
+  private var cacheWorkspaceStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Cache Workspace"
+      case .deutschDeutschland:
+        return "Arbeitsbereich zwischenspeichern"
+      }
+    })
+  }
+
+  private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate"
+      case .deutschDeutschland:
+        return "Prüfen"
+      }
+    })
+  }
+
+  private var uploadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Upload tests"
+      case .deutschDeutschland:
+        return "Teste hochladen"
+      }
+    })
+  }
+
+  private var downloadTestsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Download tests"
+      case .deutschDeutschland:
+        return "Teste herunterladen"
+      }
+    })
+  }
+
+  private var prepareScriptStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Prepare script"
+      case .deutschDeutschland:
+        return "Skript vorbereiten"
+      }
+    })
+  }
+
+  private var installEmulatorStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install emulator"
+      case .deutschDeutschland:
+        return "Emulator installieren"
+      }
+    })
+  }
+
+  private var testStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Test"
+      case .deutschDeutschland:
+        return "Testen"
+      }
+    })
+  }
+
+  private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Deploy"
+      case .deutschDeutschland:
+        return "Verteilen"
+      }
+    })
+  }
+
+  private var deployCommitMessage: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Generated documentation for ${GITHUB_SHA}."
+      case .deutschDeutschland:
+        return "Erstellte Dokumentation für ${GITHUB_SHA}."
+      }
+    })
   }
 }
 

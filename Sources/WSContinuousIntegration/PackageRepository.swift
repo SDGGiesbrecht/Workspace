@@ -59,7 +59,7 @@ extension PackageRepository {
 
   private func refreshGitHubWorkflow(
     name: UserFacing<StrictString, InterfaceLocalization>,
-    onConditions: [String],
+    onConditions: [StrictString],
     jobFilter: (ContinuousIntegrationJob) -> Bool,
     output: Command.Output
   ) throws {
@@ -67,7 +67,7 @@ extension PackageRepository {
     let interfaceLocalization = configuration.developmentInterfaceLocalization()
     let resolvedName = name.resolved(for: interfaceLocalization)
 
-    var workflow: [String] = [
+    var workflow: [StrictString] = [
       "name: \(resolvedName)",
       ""
     ]
@@ -86,7 +86,7 @@ extension PackageRepository {
     var workflowFile = try TextFile(
       possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
     )
-    workflowFile.body = workflow.joinedAsLines()
+    workflowFile.body = String(workflow.joinedAsLines())
     try workflowFile.writeChanges(for: self, output: output)
   }
 
@@ -129,7 +129,7 @@ extension PackageRepository {
     try refreshAndroidSDK(output: output)
   }
 
-  private func adjustForWorkspace(_ configuration: inout [String]) throws {
+  private func adjustForWorkspace(_ configuration: inout [StrictString]) throws {
     if try isWorkspaceProject() {
       configuration = configuration.map { line in
         var line = line

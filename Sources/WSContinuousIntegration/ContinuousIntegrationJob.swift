@@ -381,12 +381,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
-      "      shell: \(shell)",
-      "      run: |"
+      "      shell: \(shell)"
     ]
+    if shell == "cmd" {
+      result.append("      run: >\u{2D}")
+    } else {
+      result.append("      run: |")
+    }
     var commands = commands
     if shell == "bash" {
       commands.prepend("set \u{2D}x")
+    } else if shell == "cmd" {
+      commands.prepend("echo on")
+      for index in commands.indices.dropLast() {
+        commands[index].append(contentsOf: " &&")
+      }
     }
     for command in commands {
       result.append("        \(command)")

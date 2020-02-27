@@ -446,50 +446,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "set +x",
         "source ./exported_environment.sh",
         "set \u{2D}x",
-        //export("CommandPromptType"), // ?
-        //export("DevEnvDir"),
-        //export("__DOTNET_ADD_64BIT"),
-        //export("__DOTNET_PREFERRED_BITNESS"),
-        //export("ExtensionSdkDir"),
-        //export("Framework40Version"),
-        //export("FrameworkDir"),
-        //export("FrameworkDIR64"),
-        //export("FrameworkVersion"),
-        //export("FrameworkVersion64"),
-        //export("FSHARPINSTALLDIR"), // ?
-        //export("HTMLHelpDir"), // ?
-        //export("INCLUDE"),
-        //export("LIB"),
-        //export("LIBPATH"),
-        //export("NETFXSDKDir"),
         export("PATH"),
-        //export("Platform"),
-        //export("PROMPT"), // ?
-        export("UniversalCRTSdkDir"), // *
-        export("UCRTVersion"), // *
-        //export("VCIDEInstallDir"),
-        //export("VCINSTALLDIR"),
-        export("VCToolsInstallDir"), // *
-        //export("VCToolsRedistDir"),
-        //export("VCToolsVersion"),
-        //export("VisualStudioVersion"),
-        //export("VS160COMNTOOLS"),
-        //export("VSCMD_ARG_app_plat"), // ?
-        //export("VSCMD_ARG_HOST_ARCH"), // ?
-        //export("VSCMD_ARG_TGT_ARCH"), // ?
-        //export("__VSCMD_PREINIT_PATH"), // ?
-        //export("VSCMD_VER"), // ?
-        //export("VSINSTALLDIR"),
-        //export("VSSDKINSTALL"),
-        //export("VSSDK150INSTALL"),
-        //export("WindowsLibPath"),
-        //export("WindowsSdkBinPath"),
-        //export("WindowsSdkDir"),
-        //export("WindowsSDK_ExecutablePath_x64"),
-        //export("WindowsSDK_ExecutablePath_x86"),
-        //export("WindowsSDKLibVersion"),
-        //export("WindowsSdkVerBinPath"),
-        //export("WindowsSDKVersion")
+        export("UniversalCRTSdkDir"),
+        export("UCRTVersion"),
+        export("VCToolsInstallDir"),
       ]))
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break

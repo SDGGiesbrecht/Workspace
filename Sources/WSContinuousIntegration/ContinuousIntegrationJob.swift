@@ -374,16 +374,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func script(
+    shell: StrictString = "bash",
     heading: UserFacing<StrictString, InterfaceLocalization>,
     localization: InterfaceLocalization,
     commands: [StrictString]
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
-      "      shell: bash",
+      "      shell: \(shell)",
       "      run: |"
     ]
-    for command in commands.prepending("set \u{2D}x") {
+    var commands = commands
+    if shell == "bash" {
+      commands.prepend("set \u{2D}x")
+    }
+    for command in commands {
       result.append("        \(command)")
     }
     return result.joinedAsLines()
@@ -438,14 +443,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      result.append(script(heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
-        "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
-        "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
-        "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
-        "cmd \u{22}/c export_environment.bat\u{22}",
-        "set +x",
-        "source ./exported_environment.sh",
-        "set \u{2D}x",
+      result.append(script(shell: "cmd", heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
+        #"C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64"#,
+        //"cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
+        //"echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
+        //"echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+        //"cmd \u{22}/c export_environment.bat\u{22}",
+        //"set +x",
+        //"source ./exported_environment.sh",
+        //"set \u{2D}x",
         export("PATH"),
         export("UniversalCRTSdkDir"),
         export("UCRTVersion"),

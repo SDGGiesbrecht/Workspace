@@ -49,16 +49,9 @@ jobs:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Visual Studio up
-      shell: bash
+      shell: cmd
       run: |
-        set -x
-        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
-        echo 'export -p > exported_environment.sh' > nested_bash.sh
-        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
-        cmd "/c export_environment.bat"
-        set +x
-        source ./exported_environment.sh
-        set -x
+        C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat x64
         echo ::set-env name=PATH::"${PATH}"
         echo ::set-env name=UniversalCRTSdkDir::"${UniversalCRTSdkDir}"
         echo ::set-env name=UCRTVersion::"${UCRTVersion}"

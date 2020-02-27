@@ -387,8 +387,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var commands = commands
     if shell == "bash" {
       commands.prepend("set \u{2D}x")
-    } else if shell == "cmd" {
-      commands.prepend("@echo on")
     }
     for command in commands {
       result.append("        \(command)")

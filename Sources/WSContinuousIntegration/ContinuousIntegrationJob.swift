@@ -425,7 +425,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
   private func copy(
     from origin: StrictString,
-    to destination: StrictString, sudo: Bool = false
+    to destination: StrictString,
+    sudo: Bool = false
   ) -> StrictString {
     return [
       makeDirectory(destination),
@@ -710,7 +711,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "\(ContinuousIntegrationJob.experimentalDownloads)/icu\u{2D}android\u{2D}x64.zip",
               andUnzipTo: "/"
             ),
-            cURL(from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so", to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so")
+            cURL(
+              from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
+              to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so"
+            )
           ]
         )
       ])

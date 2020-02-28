@@ -67,15 +67,25 @@ jobs:
       shell: bash
       run: |
         set -x
-        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap" --location
-        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' --output "${VCToolsInstallDir}/include/module.modulemap" --location
-        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' --output "${VCToolsInstallDir}/include/visualc.apinotes" --location
-        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap" --location
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' \
+          --output "${VCToolsInstallDir}/include/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' \
+          --output "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
     - name: Install Swift
       shell: bash
       run: |
         set -x
-        curl 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' --output 'toolchain-windows-x64.zip' --location
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' \
+          --output 'toolchain-windows-x64.zip'
                 curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
                 curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
                 7z x toolchain-windows-x64.zip

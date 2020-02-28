@@ -405,7 +405,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     } else {
       quotedDestination = "\u{27}\(destination)\u{27}"
     }
-    return "curl \u{27}\(origin)\u{27} \u{2D}\u{2D}output \(quotedDestination) \u{2D}\u{2D}location"
+    return [
+      "curl \u{2D}\u{2D}location \u{5C}",
+      "  \u{27}\(origin)\u{27} \u{5C}",
+      "  \u{2D}\u{2D}output \(quotedDestination)"
+    ].joinedAsLines()
   }
 
   private func cURLAndUnzip(_ url: StrictString) -> StrictString {

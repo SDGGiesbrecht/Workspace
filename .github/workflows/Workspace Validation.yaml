@@ -242,7 +242,7 @@ jobs:
           --output '/tmp/toolchain-linux-x64.zip'
         unzip /tmp/toolchain-linux-x64.zip -d /tmp
         mkdir -p /
-        cp -R /tmp/toolchain-linux-x64/* /
+        sudo cp -R /tmp/toolchain-linux-x64/* /
         chmod -R a+rwx /Library
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
     - name: Fetch Android SDK

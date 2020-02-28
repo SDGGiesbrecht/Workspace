@@ -435,7 +435,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     _ url: StrictString,
     andUnzipTo destination: StrictString,
     windows: Bool = false,
-    doubleWrapped: Bool = false
+    doubleWrapped: Bool = false,
+    sudoCopy: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = zipFileName.truncated(before: ".")
@@ -453,7 +454,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "unzip \(temporaryZip) \u{2D}d /tmp"
       ])
     }
-    result.append(copy(from: temporary, to: destination))
+    result.append(copy(from: temporary, to: destination, sudo: sudoCopy))
     return result.joinedAsLines()
   }
 
@@ -674,7 +675,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           commands: [
             cURL(
               "\(ContinuousIntegrationJob.experimentalDownloads)/toolchain\u{2D}linux\u{2D}x64.zip",
-              andUnzipTo: "/"
+              andUnzipTo: "/",
+              sudoCopy: true
             ),
             grantPermissions(to: "/Library"),
             "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version"

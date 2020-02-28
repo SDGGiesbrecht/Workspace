@@ -573,6 +573,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+      result.append(
+        script(
+          heading: fetchICU,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip",
+              andUnzipTo: "/c/Library/ICU\u{2D}64.2",
+              windows: true
+            ),
+            "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
+            prependPath("/c/Library/ICU\u{2D}64.2/bin")
+          ]
+        )
+      )
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break
     }
@@ -590,24 +605,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("      run: |")
 
     switch platform {
-    case .macOS:
+    case .macOS, .windows:
       break
-    case .windows:
-      result.append(contentsOf: [
-        commandEntry("repository_directory=$(pwd)"),
-        commandEntry("echo \u{27}Fetching ICU...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/ICU"),
-        commandEntry("cd .build/SDG/ICU"),
-        commandEntry(
-          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip \u{2D}\u{2D}output ICU.zip"
-        ),
-        commandEntry("7z x ICU.zip \u{2D}oICU\u{2D}64.2"),
-        commandEntry("mv ICU\u{2D}64.2 /c/Library/ICU\u{2D}64.2"),
-        commandEntry("mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin"),
-        commandEntry("export PATH=\u{22}/c/Library/ICU\u{2D}64.2/bin:${PATH}\u{22}"),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
-      ])
     case .linux:
       result.append(contentsOf: [
         commandEntry("apt\u{2D}get update"),
@@ -897,6 +896,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch WinSDK module maps"
       case .deutschDeutschland:
         return "WinSDK‐Modulabbildungen holen"
+      }
+    })
+  }
+
+  private var fetchICU: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch ICU"
+      case .deutschDeutschland:
+        return "ICU holen"
       }
     })
   }

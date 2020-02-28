@@ -393,6 +393,20 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
   }
 
+  private func curl(
+    from origin: StrictString,
+    to destination: StrictString,
+    allowVariableSubstitution: Bool = false
+  ) -> StrictString {
+    let quotedDestination: StrictString
+    if allowVariableSubstitution {
+      quotedDestination = "\u{22}\(destination)\u{22}"
+    } else {
+      quotedDestination = "\u{27}\(destination)\u{27}"
+    }
+    return "curl \u{27}\(origin)\u{27} \u{2D}\u{2D}output \(quotedDestination) \u{2D}\u{2D}location"
+  }
+
   private func commandEntry(_ command: StrictString) -> StrictString {
     #warning("Remove.")
     return "        \(command)"
@@ -438,27 +452,56 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      result.append(script(heading: setVisualStudioUpStepName, localization: interfaceLocalization, commands: [
-        "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
-        "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
-        "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
-        "cmd \u{22}/c export_environment.bat\u{22}",
-        "set +x",
-        "source ./exported_environment.sh",
-        "set \u{2D}x",
-        export("PATH"),
-        export("UniversalCRTSdkDir"),
-        export("UCRTVersion"),
-        export("VCToolsInstallDir"),
-      ]))
+      result.append(
+        script(
+          heading: setVisualStudioUpStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
+            "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
+            "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+            "cmd \u{22}/c export_environment.bat\u{22}",
+            "set +x",
+            "source ./exported_environment.sh",
+            "set \u{2D}x",
+            export("PATH"),
+            export("UniversalCRTSdkDir"),
+            export("UCRTVersion"),
+            export("VCToolsInstallDir"),
+          ]
+        )
+      )
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
-      result.append(script(heading: fetchWinSDKModuleMaps, localization: interfaceLocalization, commands: [
-        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}",
-        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.modulemap\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/module.modulemap\u{22}",
-        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.apinotes\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/visualc.apinotes\u{22}",
-        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/winsdk.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap\u{22}",
-      ]))
+      let platform: StrictString = "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
+      result.append(
+        script(
+          heading: fetchWinSDKModuleMaps,
+          localization: interfaceLocalization,
+          commands: [
+            curl(
+              from: "\(platform)/ucrt.modulemap",
+              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+            curl(
+              from: "\(platform)/visualc.modulemap",
+              to: "${VCToolsInstallDir}/include/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+            curl(
+              from: "\(platform)/visualc.apinotes",
+              to: "${VCToolsInstallDir}/include/visualc.apinotes",
+              allowVariableSubstitution: true
+            ),
+            curl(
+              from: "\(platform)/winsdk.modulemap",
+              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+          ]
+        )
+      )
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break
     }

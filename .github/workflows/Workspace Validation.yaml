@@ -67,10 +67,10 @@ jobs:
       shell: bash
       run: |
         set -x
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap" --location
+        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' --output "${VCToolsInstallDir}/include/module.modulemap" --location
+        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' --output "${VCToolsInstallDir}/include/visualc.apinotes" --location
+        curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap" --location
     - name: Validate
       shell: bash
       run: |

@@ -240,7 +240,7 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip' \
           --output '/tmp/toolchain-linux-x64.zip'
-        unzip toolchain-linux-x64.zip -d /tmp
+        unzip /tmp/toolchain-linux-x64.zip -d /tmp
         mkdir -p /
         cp -R /tmp/toolchain-linux-x64/* /
         chmod -R a+rwx /Library
@@ -252,7 +252,7 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x64.zip' \
           --output '/tmp/sdk-android-x64.zip'
-        unzip sdk-android-x64.zip -d /tmp
+        unzip /tmp/sdk-android-x64.zip -d /tmp
         mkdir -p /
         cp -R /tmp/sdk-android-x64/* /
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
@@ -269,13 +269,13 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x64.zip' \
           --output '/tmp/icu-android-x64.zip'
-        unzip icu-android-x64.zip -d /tmp
+        unzip /tmp/icu-android-x64.zip -d /tmp
         mkdir -p /
         cp -R /tmp/icu-android-x64/* /
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
           --output '/tmp/libicudt64.so'
-        unzip libicudt64.so -d /tmp
+        unzip /tmp/libicudt64.so -d /tmp
         mkdir -p /Library/icu-64/usr/lib
         cp -R /tmp/libicudt64/* /Library/icu-64/usr/lib
     - name: Validate

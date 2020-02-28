@@ -450,7 +450,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     } else {
       result.append(contentsOf: [
-        "unzip \(zipFileName) \u{2D}d /tmp"
+        "unzip \(temporaryZip) \u{2D}d /tmp"
       ])
     }
     result.append(copy(from: temporary, to: destination))

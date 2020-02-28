@@ -460,6 +460,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
       cURL(from: url, to: temporaryTar),
+      makeDirectory(temporary),
       "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory \(temporary)",
       copy(from: temporary, to: destination)
     ].joinedAsLines()
@@ -738,7 +739,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         commandEntry(validateCommand(configuration: configuration))
       ])
     case .windows:
+      #warning("Debugging...")
       result.append(contentsOf: [
+        commandEntry("printenv")
         commandEntry("echo \u{27}Fetching package graph...\u{27}"),
       ])
       #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)

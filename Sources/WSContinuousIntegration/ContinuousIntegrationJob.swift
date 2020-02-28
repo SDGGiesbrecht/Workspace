@@ -477,8 +477,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
-  private func grantPermissions(to path: StrictString) -> StrictString {
-    return "sudo chmod \u{2D}R a+rwx \(path)"
+  private func grantPermissions(to path: StrictString, sudo: Bool = true) -> StrictString {
+    let prefix = sudo ? "sudo " : ""
+    return "\(prefix)chmod \u{2D}R a+rwx \(path)"
   }
 
   private func export(_ environmentVariable: StrictString) -> StrictString {
@@ -897,7 +898,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
       break
     case .linux:
-      result.append(commandEntry("chmod \u{2D}R a+rwx ."))
+      result.append(script(heading: grantCachPermissionsStepName, localization: interfaceLocalization, commands: [
+        grantPermissions(to: ".", sudo: false)
+      ]))
     }
 
     if self == .deployment {
@@ -1172,6 +1175,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Document"
       case .deutschDeutschland:
         return "Dokumentieren"
+      }
+    })
+  }
+
+  private var grantCachPermissionsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Grant permission to cache"
+      case .deutschDeutschland:
+        return "Zugriffsrechte zum Zwischenspeichern erteilen"
       }
     })
   }

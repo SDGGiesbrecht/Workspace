@@ -53,6 +53,10 @@ jobs:
       run: |
         set -x
         './Validate (macOS).command' •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant cache permissions
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .
     - name: Deploy
       run: |

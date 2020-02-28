@@ -493,11 +493,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
-  private func commandEntry(_ command: StrictString) -> StrictString {
-    #warning("Remove.")
-    return "        \(command)"
-  }
-
   internal func gitHubWorkflowJob(
     for project: PackageRepository,
     output: Command.Output

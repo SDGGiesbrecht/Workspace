@@ -434,12 +434,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     andUnzipTo destination: StrictString,
     windows: Bool = false
   ) -> StrictString {
-    let fileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let temporaryZip: StrictString = "/tmp/\(fileName)"
-    let temporary: StrictString = "/tmp/\(fileName.truncated(before: "."))"
+    let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
+    let fileName = zipFileName.truncated(before: ".")
+    let temporaryZip: StrictString = "/tmp/\(zipFileName)"
+    let temporary: StrictString = "/tmp/\(fileName)"
     var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
     if windows {
-      result.append("7z x \(temporaryZip)")
+      result.append("cd /tmp")
+      result.append("7z x \(zipFileName) \u{2D}o\(fileName)")
+      result.append("ls")
     } else {
     }
     result.append(copy(from: temporary, to: destination))

@@ -86,12 +86,16 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' \
           --output '/tmp/toolchain-windows-x64.zip'
-        7z x /tmp/toolchain-windows-x64.zip
+        cd /tmp
+        7z x toolchain-windows-x64.zip -otoolchain-windows-x64
+        ls
         cp -R /tmp/toolchain-windows-x64 /c
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip' \
           --output '/tmp/sdk-windows-x64.zip'
-        7z x /tmp/sdk-windows-x64.zip
+        cd /tmp
+        7z x sdk-windows-x64.zip -osdk-windows-x64
+        ls
         cp -R /tmp/sdk-windows-x64 /c
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"

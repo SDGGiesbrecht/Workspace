@@ -617,6 +617,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ),
             prependPath("/c/Library/Swift/Current/bin"),
             "swift \u{2D}\u{2D}version",
+            "find /c/Library",
           ]
         )
       )

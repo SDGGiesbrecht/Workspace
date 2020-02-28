@@ -392,6 +392,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
+  private func aptGet(_ packages: [StrictString]) -> StrictString {
+    return [
+      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
+      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages.joined(separator: " " as StrictString))",
+    ].joinedAsLines()
+  }
+
   private func export(_ environmentVariable: StrictString) -> StrictString {
     return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
   }
@@ -524,7 +531,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
       result.append(
         script(
-          heading: fetchWinSDKModuleMaps,
+          heading: fetchWinSDKModuleMapsStepName,
           localization: interfaceLocalization,
           commands: [
             cURL(
@@ -550,10 +557,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+      result.append(
+        script(
+          heading: fetchICUStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip",
+              andUnzipTo: "/c/Library/ICU\u{2D}64.2",
+              windows: true
+            ),
+            "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
+            prependPath("/c/Library/ICU\u{2D}64.2/bin")
+          ]
+        )
+      )
       let downloads = ContinuousIntegrationJob.experimentalDownloads
       result.append(
         script(
-          heading: installSwift,
+          heading: installSwiftStepName,
           localization: interfaceLocalization,
           commands: [
             cURL(
@@ -581,22 +603,26 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+    case .linux:
       result.append(
         script(
-          heading: fetchICU,
+          heading: installSwiftPMDependenciesStepName,
           localization: interfaceLocalization,
           commands: [
-            cURL(
-              "http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip",
-              andUnzipTo: "/c/Library/ICU\u{2D}64.2",
-              windows: true
-            ),
-            "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
-            prependPath("/c/Library/ICU\u{2D}64.2/bin")
+            aptGet(["libsqlite3\u{2D}dev", "libncurses\u{2D}dev"])
           ]
         )
       )
-    case .linux, .tvOS, .iOS, .android, .watchOS:
+      result.append(
+        script(
+          heading: installCURLStepName,
+          localization: interfaceLocalization,
+          commands: [
+            aptGet(["curl"])
+          ]
+        )
+      )
+    case .tvOS, .iOS, .android, .watchOS:
       break
     }
 
@@ -613,15 +639,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     result.append("      run: |")
 
     switch platform {
-    case .macOS, .windows:
+    case .macOS, .windows, .linux:
       break
-    case .linux:
-      result.append(contentsOf: [
-        commandEntry("apt\u{2D}get update"),
-        commandEntry(
-          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes curl libsqlite3\u{2D}dev libncurses\u{2D}dev"
-        ),
-      ])
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
@@ -897,7 +916,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var fetchWinSDKModuleMaps: UserFacing<StrictString, InterfaceLocalization> {
+  private var fetchWinSDKModuleMapsStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -908,7 +927,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var fetchICU: UserFacing<StrictString, InterfaceLocalization> {
+  private var fetchICUStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -919,13 +938,35 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var installSwift: UserFacing<StrictString, InterfaceLocalization> {
+  private var installSwiftPMDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install SwiftPM dependencies"
+      case .deutschDeutschland:
+        return "SwiftPM‐Abhängigkeiten installieren"
+      }
+    })
+  }
+
+  private var installSwiftStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "Install Swift"
       case .deutschDeutschland:
         return "Swift installieren"
+      }
+    })
+  }
+
+  private var installCURLStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install cURL"
+      case .deutschDeutschland:
+        return "cURL installieren"
       }
     })
   }

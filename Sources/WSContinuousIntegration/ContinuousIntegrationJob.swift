@@ -395,7 +395,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
     let prefix = sudo ? "sudo " : ""
-    let packages = packages.joined(separator: " " as StrictString)
+    let packages = StrictString(packages.joined(separator: " " as StrictString))
     return [
       "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
       "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)"

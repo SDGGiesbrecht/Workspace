@@ -191,7 +191,7 @@ jobs:
       run: |
         set -x
         './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Grant cache permissions
+    - name: Grant permission to cache
       shell: bash
       run: |
         set -x
@@ -412,7 +412,7 @@ jobs:
       run: |
         set -x
         './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Grant cache permissions
+    - name: Grant permission to cache
       shell: bash
       run: |
         set -x

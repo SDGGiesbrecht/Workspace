@@ -53,13 +53,15 @@ jobs:
       run: |
         set -x
         './Validate (macOS).command' •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Grant cache permissions
+    - name: Grant permission to cache
       shell: bash
       run: |
         set -x
         chmod -R a+rwx .
     - name: Deploy
+      shell: bash
       run: |
+        set -x
         cd docs
         git init
         git config user.name "${GITHUB_ACTOR}"

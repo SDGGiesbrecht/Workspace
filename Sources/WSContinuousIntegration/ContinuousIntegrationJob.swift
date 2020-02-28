@@ -427,7 +427,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     _ url: StrictString,
     andUnzipTo destination: StrictString,
-    windows: Bool = false
+    windows: Bool = false,
+    doubleWrapped: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = zipFileName.truncated(before: ".")
@@ -435,9 +436,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let temporary: StrictString = "/tmp/\(fileName)"
     var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
     if windows {
+      let output = doubleWrapped ? "." : fileName
       result.append(contentsOf: [
         "cd /tmp",
-        "7z x \(zipFileName) \u{2D}o."
+        "7z x \(zipFileName) \u{2D}o\(output)"
       ])
     } else {
     }
@@ -557,9 +559,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             cURL(
               "\(downloads)/toolchain\u{2D}windows\u{2D}x64.zip",
               andUnzipTo: "/c",
-              windows: true
+              windows: true,
+              doubleWrapped: true
             ),
-            cURL("\(downloads)/sdk\u{2D}windows\u{2D}x64.zip", andUnzipTo: "/c", windows: true),
+            cURL(
+              "\(downloads)/sdk\u{2D}windows\u{2D}x64.zip",
+              andUnzipTo: "/c",
+              windows: true,
+              doubleWrapped: true
+            ),
             prependPath(
               "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
             ),

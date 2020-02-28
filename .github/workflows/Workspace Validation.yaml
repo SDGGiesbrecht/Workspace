@@ -256,8 +256,8 @@ jobs:
         mkdir -p /
         cp -R /tmp/sdk-android-x64/* /
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
-        apt-get update --assume-yes
-        apt-get install --assume-yes patchelf
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes patchelf
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
         mkdir -p Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk

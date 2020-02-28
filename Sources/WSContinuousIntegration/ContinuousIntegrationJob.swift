@@ -393,10 +393,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString]) -> StrictString {
+  private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
+    let prefix = sudo ? "sudo " : ""
+    let packages = packages.joined(separator: " " as StrictString)
     return [
-      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages.joined(separator: " " as StrictString))",
+      "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
+      "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)"
     ].joinedAsLines()
   }
 
@@ -691,7 +693,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               andUnzipTo: "/"
             ),
             "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
-            aptGet(["patchelf"]),
+            aptGet(["patchelf"], sudo: true),
             "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so",
             "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so",
             copy(

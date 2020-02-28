@@ -88,7 +88,6 @@ jobs:
           --output '/tmp/toolchain-windows-x64.zip'
         cd /tmp
         7z x toolchain-windows-x64.zip -o.
-        ls
         mkdir -p /c
         cp -R /tmp/toolchain-windows-x64/* /c
         curl --location \
@@ -96,13 +95,8 @@ jobs:
           --output '/tmp/sdk-windows-x64.zip'
         cd /tmp
         7z x sdk-windows-x64.zip -o.
-        ls
         mkdir -p /c
         cp -R /tmp/sdk-windows-x64/* /c
-        cd /c
-        ls
-        cd Library
-        ls
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         mkdir -p /c/Library/Swift/Current/bin

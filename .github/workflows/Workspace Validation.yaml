@@ -231,7 +231,7 @@ jobs:
           --output '/tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
         tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         mkdir -p /
-        cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
+        sudo cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
         swift --version
     - name: Validate
       run: |

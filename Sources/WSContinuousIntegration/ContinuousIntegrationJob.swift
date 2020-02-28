@@ -421,10 +421,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func makeDirectory(_ directory: StrictString) -> StrictString {
     return "mkdir \u{2D}p \(directory)"
   }
-  private func copy(from origin: StrictString, to destination: StrictString) -> StrictString {
+  private func copy(from origin: StrictString, to destination: StrictString, sudo: Bool = false) -> StrictString {
     return [
       makeDirectory(destination),
-      "cp \u{2D}R \(origin)/* \(destination)"
+      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)"
     ].joinedAsLines()
   }
 
@@ -453,7 +453,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func cURL(
     _ url: StrictString,
-    andUntarTo destination: StrictString
+    andUntarTo destination: StrictString,
+    sudoCopy: Bool = false
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = tarFileName.truncated(before: ".tar")
@@ -462,7 +463,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       cURL(from: url, to: temporaryTar),
       "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp",
-      copy(from: temporary, to: destination)
+      copy(from: temporary, to: destination, sudo: sudoCopy)
     ].joinedAsLines()
   }
 
@@ -651,7 +652,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           commands: [
             cURL(
               "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
-              andUntarTo: "/"
+              andUntarTo: "/",
+              sudoCopy: true
             ),
             "swift \u{2D}\u{2D}version",
           ]

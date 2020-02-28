@@ -698,7 +698,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so",
             copy(
               from: "${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64",
-              to: "Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
+              to: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
             )
           ]
         ),

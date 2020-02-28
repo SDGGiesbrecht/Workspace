@@ -260,8 +260,8 @@ jobs:
         sudo apt-get install --assume-yes patchelf
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
-        mkdir -p Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        cp -R ${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/* Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        cp -R ${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
     - name: Fetch ICU
       shell: bash
       run: |
@@ -278,7 +278,6 @@ jobs:
     - name: Validate
       run: |
         echo 'Building Workspace...'
-        find /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \

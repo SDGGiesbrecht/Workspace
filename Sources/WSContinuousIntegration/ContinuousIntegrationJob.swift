@@ -399,10 +399,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
-  private func export(_ environmentVariable: StrictString) -> StrictString {
-    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
-  }
-
   private func cURL(
     from origin: StrictString,
     to destination: StrictString,
@@ -452,6 +448,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     result.append(copy(from: temporary, to: destination))
     return result.joinedAsLines()
+  }
+
+  private func cURL(
+    _ url: StrictString,
+    andUntarTo destination: StrictString
+  ) -> StrictString {
+    let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
+    let fileName = tarFileName.truncated(before: ".")
+    let temporaryTar: StrictString = "/tmp/\(tarFileName)"
+    let temporary: StrictString = "/tmp/\(fileName)"
+    return [
+      cURL(from: url, to: temporaryTar),
+      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory \(temporary)",
+      copy(from: temporary, to: destination)
+    ].joinedAsLines()
+  }
+
+  private func export(_ environmentVariable: StrictString) -> StrictString {
+    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
   }
 
   private func prependPath(_ entry: StrictString) -> StrictString {
@@ -622,8 +637,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-    case .tvOS, .iOS, .android, .watchOS:
-      break
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
+    case .android:
+      let version = ContinuousIntegrationJob.workaroundAndroidSwiftVersion
+        .string(droppingEmptyPatch: true)
+      result.append(
+        script(
+          heading: installSwiftStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+              andUntarTo: "/"
+            ),
+            "swift \u{2D}\u{2D}version",
+          ]
+        )
+      )
     }
 
     result.append(step(validateStepName, localization: interfaceLocalization))
@@ -644,23 +675,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
-      let version = ContinuousIntegrationJob.workaroundAndroidSwiftVersion
-        .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
-        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
-        commandEntry("repository_directory=$(pwd)"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Swift"),
-        commandEntry("cd .build/SDG/Swift"),
-        commandEntry(
-          "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
-        ),
-        commandEntry("tar \u{2D}\u{2D}extract \u{2D}\u{2D}file Swift.tar.gz"),
-        commandEntry(
-          "sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry("swift \u{2D}\u{2D}version"),
-        "",
         commandEntry("echo \u{27}Fetching Swift cross‐compilation toolchain...\u{27}"),
         commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),

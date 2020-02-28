@@ -219,18 +219,19 @@ jobs:
       with:
         key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz' \
+          --output '/tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp/swift-5
+        mkdir -p /
+        cp -R /tmp/swift-5/* /
+        swift --version
     - name: Validate
       run: |
-        echo 'Fetching Swift...'
-        repository_directory=$(pwd)
-        mkdir -p .build/SDG/Swift
-        cd .build/SDG/Swift
-        curl -o Swift.tar.gz 'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --file Swift.tar.gz
-        sudo cp -R swift-5.1.1-RELEASE-ubuntu18.04/usr/* /usr/
-        cd "${repository_directory}"
-        swift --version
-
         echo 'Fetching Swift cross‐compilation toolchain...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift

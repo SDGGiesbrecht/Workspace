@@ -265,9 +265,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private func appendLanguage(to command: StrictString, configuration: WorkspaceConfiguration)
-    -> StrictString
-  {
+  private func appendLanguage(
+    to command: StrictString,
+    configuration: WorkspaceConfiguration
+  ) -> StrictString {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
@@ -741,8 +742,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       #warning("Debugging...")
       result.append(contentsOf: [
-        commandEntry("printenv")
-        commandEntry("echo \u{27}Fetching package graph...\u{27}"),
+        commandEntry("printenv"),
+        commandEntry("echo \u{27}Fetching package graph...\u{27}")
       ])
       #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
         let graph = try project.cachedWindowsPackageGraph()

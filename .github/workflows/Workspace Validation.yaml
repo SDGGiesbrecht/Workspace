@@ -278,6 +278,7 @@ jobs:
     - name: Validate
       run: |
         echo 'Building Workspace...'
+        find /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \

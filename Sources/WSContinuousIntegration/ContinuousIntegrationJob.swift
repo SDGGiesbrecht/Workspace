@@ -742,7 +742,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       #warning("Debugging...")
       result.append(contentsOf: [
-        prependPath("/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja"),
+        //prependPath("/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja"),
+        commandEntry("export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')"),
         commandEntry("echo \u{27}Fetching package graph...\u{27}")
       ])
       #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)

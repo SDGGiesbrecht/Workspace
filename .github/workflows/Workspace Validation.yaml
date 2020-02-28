@@ -71,27 +71,28 @@ jobs:
         curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' --output "${VCToolsInstallDir}/include/module.modulemap" --location
         curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' --output "${VCToolsInstallDir}/include/visualc.apinotes" --location
         curl 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap" --location
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' --output 'toolchain-windows-x64.zip' --location
+                curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
+                curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
+                7z x toolchain-windows-x64.zip
+                mv toolchain-windows-x64/Library /c/Library
+                7z x sdk-windows-x64.zip
+                mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
+                cd "${repository_directory}"
+                export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+                mkdir -p /c/Library/Swift/Current
+                cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
+                export PATH="/c/Library/Swift/Current/bin:${PATH}"
+                export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+                swift --version
     - name: Validate
       shell: bash
       run: |
         repository_directory=$(pwd)
-        echo 'Fetching Swift...'
-        mkdir -p .build/SDG/Experimental_Swift
-        cd .build/SDG/Experimental_Swift
-        curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
-        curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
-        7z x toolchain-windows-x64.zip
-        mv toolchain-windows-x64/Library /c/Library
-        7z x sdk-windows-x64.zip
-        mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
-        cd "${repository_directory}"
-        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        mkdir -p /c/Library/Swift/Current
-        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
-        export PATH="/c/Library/Swift/Current/bin:${PATH}"
-        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
-        swift --version
-
         echo 'Fetching ICU...'
         mkdir -p .build/SDG/ICU
         cd .build/SDG/ICU

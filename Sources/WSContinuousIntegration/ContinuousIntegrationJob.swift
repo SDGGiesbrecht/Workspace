@@ -383,9 +383,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "      shell: bash",
       "      run: |"
     ]
-    for command in commands.prepending("set \u{2D}x") {
-      result.append("        \(command)")
-    }
+    result.append(
+      contentsOf: commands.prepending("set \u{2D}x")
+        .joinedAsLines().lines.map({ "        \(StrictString($0.line))" })
+    )
     return result.joinedAsLines()
   }
 
@@ -393,7 +394,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
   }
 
-  private func curl(
+  private func cURL(
     from origin: StrictString,
     to destination: StrictString,
     allowVariableSubstitution: Bool = false
@@ -405,6 +406,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       quotedDestination = "\u{27}\(destination)\u{27}"
     }
     return "curl \u{27}\(origin)\u{27} \u{2D}\u{2D}output \(quotedDestination) \u{2D}\u{2D}location"
+  }
+
+  private func cURLAndUnzip(_ url: StrictString) -> StrictString {
+    return ""
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {
@@ -479,26 +484,60 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: fetchWinSDKModuleMaps,
           localization: interfaceLocalization,
           commands: [
-            curl(
+            cURL(
               from: "\(platform)/ucrt.modulemap",
               to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap",
               allowVariableSubstitution: true
             ),
-            curl(
+            cURL(
               from: "\(platform)/visualc.modulemap",
               to: "${VCToolsInstallDir}/include/module.modulemap",
               allowVariableSubstitution: true
             ),
-            curl(
+            cURL(
               from: "\(platform)/visualc.apinotes",
               to: "${VCToolsInstallDir}/include/visualc.apinotes",
               allowVariableSubstitution: true
             ),
-            curl(
+            cURL(
               from: "\(platform)/winsdk.modulemap",
               to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap",
               allowVariableSubstitution: true
             ),
+          ]
+        )
+      )
+      result.append(
+        script(
+          heading: installSwift,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(from: "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip", to: "toolchain\u{2D}windows\u{2D}x64.zip"),
+            commandEntry(
+              "curl \u{2D}L \u{2D}o toolchain\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip\u{27}"
+            ),
+            commandEntry(
+              "curl \u{2D}L \u{2D}o sdk\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}windows\u{2D}x64.zip\u{27}"
+            ),
+            commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
+            commandEntry("mv toolchain\u{2D}windows\u{2D}x64/Library /c/Library"),
+            commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
+            commandEntry(
+              "mv sdk\u{2D}windows\u{2D}x64/Library/Developer/Platforms /c/Library/Developer/Platforms"
+            ),
+            commandEntry("cd \u{22}${repository_directory}\u{22}"),
+            commandEntry(
+              "export PATH=\u{22}/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin:${PATH}\u{22}"
+            ),
+            commandEntry("mkdir \u{2D}p /c/Library/Swift/Current"),
+            commandEntry(
+              "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin"
+            ),
+            commandEntry("export PATH=\u{22}/c/Library/Swift/Current/bin:${PATH}\u{22}"),
+            commandEntry(
+              "export PATH=\u{22}/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin:${PATH}\u{22}"
+            ),
+            commandEntry("swift \u{2D}\u{2D}version"),
           ]
         )
       )
@@ -524,35 +563,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       result.append(contentsOf: [
         commandEntry("repository_directory=$(pwd)"),
-        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
-        commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o toolchain\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o sdk\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}windows\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
-        commandEntry("mv toolchain\u{2D}windows\u{2D}x64/Library /c/Library"),
-        commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
-        commandEntry(
-          "mv sdk\u{2D}windows\u{2D}x64/Library/Developer/Platforms /c/Library/Developer/Platforms"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry(
-          "export PATH=\u{22}/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin:${PATH}\u{22}"
-        ),
-        commandEntry("mkdir \u{2D}p /c/Library/Swift/Current"),
-        commandEntry(
-          "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin"
-        ),
-        commandEntry("export PATH=\u{22}/c/Library/Swift/Current/bin:${PATH}\u{22}"),
-        commandEntry(
-          "export PATH=\u{22}/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin:${PATH}\u{22}"
-        ),
-        commandEntry("swift \u{2D}\u{2D}version"),
-        "",
         commandEntry("echo \u{27}Fetching ICU...\u{27}"),
         commandEntry("mkdir \u{2D}p .build/SDG/ICU"),
         commandEntry("cd .build/SDG/ICU"),
@@ -855,6 +865,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch WinSDK module maps"
       case .deutschDeutschland:
         return "WinSDK‐Modulabbildungen holen"
+      }
+    })
+  }
+
+  private var installSwift: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Swift"
+      case .deutschDeutschland:
+        return "Swift installieren"
       }
     })
   }

@@ -550,7 +550,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: fetchWinSDKModuleMapsStepName,
           localization: interfaceLocalization,
           commands: [
-            commandEntry("ninja --version"),
             cURL(
               from: "\(platform)/ucrt.modulemap",
               to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap",
@@ -743,8 +742,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .windows:
       #warning("Debugging...")
       result.append(contentsOf: [
-        commandEntry("printenv"),
-        commandEntry("ninja --version"),
+        prependPath("/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja"),
         commandEntry("echo \u{27}Fetching package graph...\u{27}")
       ])
       #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)

@@ -435,9 +435,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let temporary: StrictString = "/tmp/\(fileName)"
     var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
     if windows {
-      result.append("cd /tmp")
-      result.append("7z x \(zipFileName) \u{2D}o\(fileName)")
-      result.append("ls")
+      result.append(contentsOf: [
+        "cd /tmp",
+        "7z x \(zipFileName) \u{2D}o.",
+        "ls"
+      ])
     } else {
     }
     result.append(copy(from: temporary, to: destination))

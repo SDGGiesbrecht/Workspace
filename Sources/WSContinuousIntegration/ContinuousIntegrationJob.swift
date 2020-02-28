@@ -418,15 +418,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "mkdir \u{2D}p \(directory)"
   }
   private func copy(from origin: StrictString, to destination: StrictString) -> StrictString {
-    let pathComponents = destination.components(separatedBy: "/")
-      .lazy.map { StrictString($0.contents) }
-    let directory = pathComponents.dropLast().joined(separator: "/")
-    var result: [StrictString] = []
-    if ¬directory.isEmpty {
-      result.append(makeDirectory(directory))
-    }
-    result.append("cp \u{2D}R \(origin) \(destination)")
-    return result.joinedAsLines()
+    return [
+      makeDirectory(destination),
+      "cp \u{2D}R \(origin)/* \(destination)"
+    ].joinedAsLines()
   }
 
   private func cURL(

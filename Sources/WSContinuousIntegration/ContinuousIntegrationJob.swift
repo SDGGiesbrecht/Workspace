@@ -449,6 +449,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "7z x \(zipFileName) \u{2D}o\(output)"
       ])
     } else {
+      result.append(contentsOf: [
+        "unzip \(zipFileName) \u{2D}d /tmp"
+      ])
     }
     result.append(copy(from: temporary, to: destination))
     return result.joinedAsLines()

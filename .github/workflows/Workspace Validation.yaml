@@ -97,6 +97,10 @@ jobs:
         7z x sdk-windows-x64.zip -osdk-windows-x64
         ls
         cp -R /tmp/sdk-windows-x64 /c
+        cd /c
+        ls
+        cd Library
+        ls
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         mkdir -p /c/Library/Swift/Current

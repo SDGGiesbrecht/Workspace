@@ -564,6 +564,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               windows: true
             ),
             cURL("\(downloads)/sdk\u{2D}windows\u{2D}x64.zip", andUnzipTo: "/c", windows: true),
+            "cd /c",
+            "ls",
+            "cd Library",
+            "ls",
             prependPath(
               "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
             ),

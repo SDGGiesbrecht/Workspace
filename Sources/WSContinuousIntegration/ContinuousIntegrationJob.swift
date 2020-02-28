@@ -710,10 +710,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "\(ContinuousIntegrationJob.experimentalDownloads)/icu\u{2D}android\u{2D}x64.zip",
               andUnzipTo: "/"
             ),
-            cURL(
-              "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
-              andUnzipTo: "/Library/icu\u{2D}64/usr/lib"
-            )
+            cURL(from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so", to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so")
           ]
         )
       ])

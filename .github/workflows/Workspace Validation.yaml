@@ -274,10 +274,7 @@ jobs:
         cp -R /tmp/icu-android-x64/* /
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
-          --output '/tmp/libicudt64.so'
-        unzip /tmp/libicudt64.so -d /tmp
-        mkdir -p /Library/icu-64/usr/lib
-        cp -R /tmp/libicudt64/* /Library/icu-64/usr/lib
+          --output '/Library/icu-64/usr/lib/libicudt64.so'
     - name: Validate
       run: |
         echo 'Building Workspace...'

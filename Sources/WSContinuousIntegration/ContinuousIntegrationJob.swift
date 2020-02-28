@@ -584,7 +584,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               windows: true
             ),
             "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
-            prependPath("/c/Library/ICU\u{2D}64.2/bin")
+            prependPath("/c/Library/ICU\u{2D}64.2/bin"),
+            "find /c/Library/ICU\u{2D}64.2/bin"
           ]
         )
       )

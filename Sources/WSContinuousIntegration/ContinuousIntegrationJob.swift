@@ -742,108 +742,110 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      break
-    case .android:
-      break
-    }
-
-    result.append(step(validateStepName, localization: interfaceLocalization))
-
-    switch platform {
-    case .macOS, .linux, .tvOS, .iOS, .android, .watchOS:
-      break
-    case .windows:
-      result.append("      shell: bash")
-    }
-
-    #warning("Continue here.")
-    result.append("      run: |")
-
-    switch platform {
-    case .macOS, .linux, .iOS, .watchOS, .tvOS:
-      break
-    case .windows:
-      result.append(contentsOf: [
-        commandEntry(
-          "export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')"
-        ),
-        commandEntry("echo \u{27}Fetching package graph...\u{27}")
-      ])
+      result.append(
+        script(
+          heading: compressPATHStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')",
+            export("PATH")
+          ]
+        )
+      )
+      var clones: [StrictString] = []
       #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
         let graph = try project.cachedWindowsPackageGraph()
         for package in graph.packages.sorted(by: { $0.name < $1.name }) {
           if let version = package.underlyingPackage.manifest.version {
             let url = package.underlyingPackage.manifest.url
-            result.append(
-              commandEntry(
-                "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
-              )
+            clones.append(
+              "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
             )
           }
         }
       #endif
-      result.append(contentsOf: [
-        "",
-        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
-        commandEntry(
-          "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}"
-        ),
-        commandEntry("cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}"),
-        commandEntry("echo \u{27}Testing \(try project.packageName())...\u{27}"),
-        commandEntry("cd .build/SDG/CMake"),
-        commandEntry("ctest \u{2D}\u{2D}verbose")
-      ])
+      result.append(
+        script(
+          heading: fetchDependenciesStepName,
+          localization: interfaceLocalization,
+          commands: clones
+        )
+      )
+      result.append(
+        script(
+          heading: buildStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
+            "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
+          ]
+        )
+      )
+      result.append(
+        script(
+          heading: testStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "cd .build/SDG/CMake",
+            "ctest \u{2D}\u{2D}verbose"
+          ]
+        )
+      )
     case .android:
+      result.append(
+        script(
+          heading: buildStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "export TARGETING_ANDROID=true",
+            "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}",
+            "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}",
+            "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}",
+            "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
+          ]
+        )
+      )
+      let productsDirectory: StrictString =
+        ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+      result.append(
+        script(
+          heading: copyLibrariesStepName,
+          localization: interfaceLocalization,
+          commands: [
+            copy(
+              from:
+                "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
+              to: productsDirectory
+            ),
+            copy(from: "/Library/icu\u{2D}64/usr/lib", to: productsDirectory),
+            copy(
+              from:
+                "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
+              to: productsDirectory
+            ),
+            copy(
+              from:
+                "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
+              to: productsDirectory
+            )
+          ]
+        )
+      )
       result.append(contentsOf: [
-        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
-        commandEntry("export TARGETING_ANDROID=true"),
-        commandEntry(
-          "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}"
+        step(uploadTestsStepName, localization: interfaceLocalization),
+        uses(
+          "actions/upload\u{2D}artifact@v1",
+          with: [
+            "name": "tests",
+            "path": "\(productsDirectory)"
+          ]
         ),
 
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android"
-        ),
-        "",
-        commandEntry("echo \u{27}Copying libraries...\u{27}"),
-        commandEntry(
-          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64/\u{22}* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/icu\u{2D}64/usr/lib/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        step(uploadTestsStepName, localization: interfaceLocalization),
-        uses("actions/upload\u{2D}artifact@v1"),
-        "      with:",
-        "        name: tests",
-        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
         "  Android_II:",
         "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
         "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
@@ -852,38 +854,42 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         step(checkOutStepName, localization: interfaceLocalization),
         checkOut(),
         step(downloadTestsStepName, localization: interfaceLocalization),
-        uses("actions/download\u{2D}artifact@v1"),
-        "      with:",
-        "        name: tests",
-        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        step(prepareScriptStepName, localization: interfaceLocalization),
-        "      run: |",
-        commandEntry("mkdir \u{2D}p .build/SDG"),
-        commandEntry("echo \u{27}"),
-        commandEntry("set \u{2D}e"),
-        commandEntry("adb \u{2D}e push . /data/local/tmp/Package"),
-        commandEntry(
-          "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        uses(
+          "actions/download\u{2D}artifact@v1",
+          with: [
+            "name": "tests",
+            "path": "\(productsDirectory)"
+          ]
         ),
-        commandEntry("adb \u{2D}e shell \u{5C}"),
-        commandEntry(
-          "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"
+        script(
+          heading: prepareScriptStepName,
+          localization: interfaceLocalization,
+          commands: [
+            makeDirectory(".build/SDG"),
+            "echo \u{27}",
+            "set \u{2D}e",
+            "adb \u{2D}e push . /data/local/tmp/Package",
+            "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
+            "adb \u{2D}e shell \u{5C}",
+            "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}",
+            "  HOME=/data/local/tmp/Home \u{5C}",
+            "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
+            "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
+            "\u{27} > .build/SDG/Emulator.sh",
+            "chmod +x .build/SDG/Emulator.sh"
+          ]
         ),
-        commandEntry("  HOME=/data/local/tmp/Home \u{5C}"),
-        commandEntry("  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}"),
-        commandEntry(
-          "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
-        ),
-        commandEntry("\u{27} > .build/SDG/Emulator.sh"),
-        commandEntry("chmod +x .build/SDG/Emulator.sh"),
         // #workaround(There is no official action for this yet.)
         step(installEmulatorStepName, localization: interfaceLocalization),
         uses("malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5"),
         step(testStepName, localization: interfaceLocalization),
-        uses("malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5"),
-        "      with:",
-        "        abi: x86_64",
-        "        cmd: .build/SDG/Emulator.sh"
+        uses(
+          "malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+          with: [
+            "abi": "x86_64",
+            "cmd": ".build/SDG/Emulator.sh"
+          ]
+        )
       ])
     }
 
@@ -1049,6 +1055,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var compressPATHStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Compress PATH"
+      case .deutschDeutschland:
+        return "PATH komprimieren"
+      }
+    })
+  }
+
+  private var fetchDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch dependencies"
+      case .deutschDeutschland:
+        return "Abhängigkeiten holen"
+      }
+    })
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -1060,13 +1088,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var documentStepName: UserFacing<StrictString, InterfaceLocalization> {
+  private var buildStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Document"
+        return "Build"
       case .deutschDeutschland:
-        return "Dokumentieren"
+        return "Erstellen"
+      }
+    })
+  }
+
+  private var copyLibrariesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Copy libraries"
+      case .deutschDeutschland:
+        return "Bibliotheken kopieren"
       }
     })
   }
@@ -1122,6 +1161,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Test"
       case .deutschDeutschland:
         return "Testen"
+      }
+    })
+  }
+
+  private var documentStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Document"
+      case .deutschDeutschland:
+        return "Dokumentieren"
       }
     })
   }

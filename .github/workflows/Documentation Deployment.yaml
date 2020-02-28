@@ -53,8 +53,6 @@ jobs:
       run: |
         set -x
         './Validate (macOS).command' •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Validate
-      run: |
         chmod -R a+rwx .
     - name: Deploy
       run: |

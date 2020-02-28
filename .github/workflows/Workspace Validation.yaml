@@ -34,10 +34,18 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       run: |
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-2019
     steps:
@@ -165,10 +173,18 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       run: |
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         chmod -R a+rwx .
   tvOS:
     runs-on: macos-10.15
@@ -187,10 +203,18 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       run: |
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   iOS:
     runs-on: macos-10.15
     steps:
@@ -208,10 +232,18 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       run: |
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Android:
     runs-on: ubuntu-18.04
     steps:
@@ -355,8 +387,16 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       run: |
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
         chmod -R a+rwx .

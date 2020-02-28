@@ -720,6 +720,33 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
     }
 
+    switch platform {
+    case .macOS, .linux, .iOS, .watchOS, .tvOS:
+      result.append(
+        script(
+          heading: refreshStepName,
+          localization: interfaceLocalization,
+          commands: [
+            refreshCommand(configuration: configuration)
+          ]
+        )
+      )
+      let mainStepName = self == .deployment ? documentStepName : validateStepName
+      result.append(
+        script(
+          heading: mainStepName,
+          localization: interfaceLocalization,
+          commands: [
+            validateCommand(configuration: configuration)
+          ]
+        )
+      )
+    case .windows:
+      break
+    case .android:
+      break
+    }
+
     result.append(step(validateStepName, localization: interfaceLocalization))
 
     switch platform {
@@ -734,10 +761,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     switch platform {
     case .macOS, .linux, .iOS, .watchOS, .tvOS:
-      result.append(contentsOf: [
-        commandEntry(refreshCommand(configuration: configuration)),
-        commandEntry(validateCommand(configuration: configuration))
-      ])
+      break
     case .windows:
       result.append(contentsOf: [
         commandEntry(
@@ -1014,6 +1038,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var refreshStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Refresh"
+      case .deutschDeutschland:
+        return "Auffrischen"
+      }
+    })
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -1021,6 +1056,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Validate"
       case .deutschDeutschland:
         return "Prüfen"
+      }
+    })
+  }
+
+  private var documentStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Document"
+      case .deutschDeutschland:
+        return "Dokumentieren"
       }
     })
   }

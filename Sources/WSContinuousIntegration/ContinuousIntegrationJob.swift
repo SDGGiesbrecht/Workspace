@@ -456,13 +456,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     andUntarTo destination: StrictString
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = tarFileName.truncated(before: ".")
+    let fileName = tarFileName.truncated(before: ".tar")
     let temporaryTar: StrictString = "/tmp/\(tarFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
       cURL(from: url, to: temporaryTar),
-      makeDirectory(temporary),
-      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory \(temporary)",
+      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp",
       copy(from: temporary, to: destination)
     ].joinedAsLines()
   }

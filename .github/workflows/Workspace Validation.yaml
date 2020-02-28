@@ -229,10 +229,9 @@ jobs:
         curl --location \
           'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz' \
           --output '/tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
-        mkdir -p /tmp/swift-5
-        tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp/swift-5
+        tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         mkdir -p /
-        cp -R /tmp/swift-5/* /
+        cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
         swift --version
     - name: Validate
       run: |

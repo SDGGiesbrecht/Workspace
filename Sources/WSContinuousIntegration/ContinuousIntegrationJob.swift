@@ -461,6 +461,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
       cURL(from: url, to: temporaryTar),
+      makeDirectory(temporary),
       "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory \(temporary)",
       copy(from: temporary, to: destination)
     ].joinedAsLines()
@@ -516,8 +517,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             "export DEVELOPER_DIR=/Applications/Xcode_\(xcodeVersion).app/Contents/Developer",
-            "xcodebuild \u{2D}version",
-            export("DEVELOPER_DIR")
+            export("DEVELOPER_DIR"),
+            "xcodebuild \u{2D}version"
           ]
         )
       )

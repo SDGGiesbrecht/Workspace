@@ -451,6 +451,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         export("UCRTVersion"),
         export("VCToolsInstallDir"),
       ]))
+      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
+        .string(droppingEmptyPatch: true)
+      result.append(script(heading: fetchWinSDKModuleMaps, localization: interfaceLocalization, commands: [
+        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}",
+        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.modulemap\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/module.modulemap\u{22}",
+        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.apinotes\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/visualc.apinotes\u{22}",
+        "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/winsdk.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap\u{22}",
+      ]))
     case .linux, .tvOS, .iOS, .android, .watchOS:
       break
     }
@@ -471,25 +479,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS:
       break
     case .windows:
-      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
-        .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
-        commandEntry("printenv"),
         commandEntry("repository_directory=$(pwd)"),
-        commandEntry("echo \u{27}Fetching Windows platform module maps...\u{27}"),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.modulemap\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/module.modulemap\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.apinotes\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/visualc.apinotes\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/winsdk.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap\u{22}"
-        ),
-        "",
         commandEntry("echo \u{27}Fetching Swift...\u{27}"),
         commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
         commandEntry("cd .build/SDG/Experimental_Swift"),
@@ -810,6 +801,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Set Visual Studio up"
       case .deutschDeutschland:
         return "Visual Studio einrichten"
+      }
+    })
+  }
+
+  private var fetchWinSDKModuleMaps: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch WinSDK module maps"
+      case .deutschDeutschland:
+        return "WinSDK‐Modulabbildungen holen"
       }
     })
   }

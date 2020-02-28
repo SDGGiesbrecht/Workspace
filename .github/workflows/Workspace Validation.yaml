@@ -63,17 +63,18 @@ jobs:
         echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
         echo "::set-env name=UCRTVersion::${UCRTVersion}"
         echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
-    - name: Validate
+    - name: Fetch WinSDK module maps
       shell: bash
       run: |
-        printenv
-        repository_directory=$(pwd)
-        echo 'Fetching Windows platform module maps...'
+        set -x
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
         curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-
+    - name: Validate
+      shell: bash
+      run: |
+        repository_directory=$(pwd)
         echo 'Fetching Swift...'
         mkdir -p .build/SDG/Experimental_Swift
         cd .build/SDG/Experimental_Swift

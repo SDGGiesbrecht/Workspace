@@ -85,20 +85,23 @@ jobs:
         set -x
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' \
-          --output 'toolchain-windows-x64.zip'
-                curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
-                curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
-                7z x toolchain-windows-x64.zip
-                mv toolchain-windows-x64/Library /c/Library
-                7z x sdk-windows-x64.zip
-                mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
-                cd "${repository_directory}"
-                export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-                mkdir -p /c/Library/Swift/Current
-                cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
-                export PATH="/c/Library/Swift/Current/bin:${PATH}"
-                export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
-                swift --version
+          --output '/tmp/toolchain-windows-x64.zip'
+        7z x /tmp/toolchain-windows-x64.zip
+        mkdir -p 
+        cp -R /tmp/toolchain-windows-x64 /c
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip' \
+          --output '/tmp/sdk-windows-x64.zip'
+        7z x /tmp/sdk-windows-x64.zip
+        mkdir -p 
+        cp -R /tmp/sdk-windows-x64 /c
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        mkdir -p /c/Library/Swift/Current
+        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
+        export PATH="/c/Library/Swift/Current/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        swift --version
     - name: Validate
       shell: bash
       run: |

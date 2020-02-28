@@ -40,6 +40,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
   // #workaround(Swift 5.1.3, Debug builds are broken.)
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
+  private static let experimentalDownloads =
+    "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
   public static let currentXcodeVersion = Version(11, 3, 1)
@@ -412,8 +414,41 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
-  private func cURLAndUnzip(_ url: StrictString) -> StrictString {
-    return ""
+  private func makeDirectory(_ directory: StrictString) -> StrictString {
+    return "mkdir \u{2D}p \(directory)"
+  }
+  private func copy(from origin: StrictString, to destination: StrictString) -> StrictString {
+    let pathComponents = destination.components(separatedBy: "/")
+      .lazy.map { StrictString($0.contents) }
+    let directory = pathComponents.dropLast().joined(separator: "/")
+    return [
+      makeDirectory(directory),
+      "cp -R \(origin) \(destination)"
+    ].joinedAsLines()
+  }
+
+  private func cURL(
+    _ url: StrictString,
+    andUnzipTo destination: StrictString,
+    windows: Bool = false
+  ) -> StrictString {
+    let fileName = StrictString(url.components(separatedBy: "/").last!.contents)
+    let temporaryZip: StrictString = "/tmp/\(fileName)"
+    let temporary: StrictString = "/tmp/\(fileName.truncated(before: "."))"
+    var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
+    if windows {
+      result.append("7z x \(temporaryZip)")
+    } else {
+    }
+    result.append(copy(from: temporary, to: destination))
+    return result.joinedAsLines()
+  }
+
+  private func prependPath(_ entry: StrictString) -> StrictString {
+    return [
+      "export PATH=\u{22}\(entry):${PATH}\u{22}",
+      export("PATH")
+    ].joinedAsLines()
   }
 
   private func commandEntry(_ command: StrictString) -> StrictString {
@@ -482,7 +517,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       )
       let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
         .string(droppingEmptyPatch: true)
-      let platform: StrictString = "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
+      let platform: StrictString =
+        "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
       result.append(
         script(
           heading: fetchWinSDKModuleMaps,
@@ -511,37 +547,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+      let downloads = ContinuousIntegrationJob.experimentalDownloads
       result.append(
         script(
           heading: installSwift,
           localization: interfaceLocalization,
           commands: [
-            cURL(from: "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip", to: "toolchain\u{2D}windows\u{2D}x64.zip"),
-            commandEntry(
-              "curl \u{2D}L \u{2D}o toolchain\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip\u{27}"
+            cURL(
+              "\(downloads)/toolchain\u{2D}windows\u{2D}x64.zip",
+              andUnzipTo: "/c",
+              windows: true
             ),
-            commandEntry(
-              "curl \u{2D}L \u{2D}o sdk\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}windows\u{2D}x64.zip\u{27}"
+            cURL("\(downloads)/sdk\u{2D}windows\u{2D}x64.zip", andUnzipTo: "/c", windows: true),
+            prependPath(
+              "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
             ),
-            commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
-            commandEntry("mv toolchain\u{2D}windows\u{2D}x64/Library /c/Library"),
-            commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
-            commandEntry(
-              "mv sdk\u{2D}windows\u{2D}x64/Library/Developer/Platforms /c/Library/Developer/Platforms"
+            copy(
+              from:
+                "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin",
+              to: "/c/Library/Swift/Current/bin"
             ),
-            commandEntry("cd \u{22}${repository_directory}\u{22}"),
-            commandEntry(
-              "export PATH=\u{22}/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin:${PATH}\u{22}"
-            ),
-            commandEntry("mkdir \u{2D}p /c/Library/Swift/Current"),
-            commandEntry(
-              "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin"
-            ),
-            commandEntry("export PATH=\u{22}/c/Library/Swift/Current/bin:${PATH}\u{22}"),
-            commandEntry(
-              "export PATH=\u{22}/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin:${PATH}\u{22}"
-            ),
-            commandEntry("swift \u{2D}\u{2D}version"),
+            prependPath("/c/Library/Swift/Current/bin"),
+            "swift \u{2D}\u{2D}version",
           ]
         )
       )

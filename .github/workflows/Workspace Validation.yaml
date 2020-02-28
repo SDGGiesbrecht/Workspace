@@ -123,8 +123,8 @@ jobs:
     - name: Validate
       shell: bash
       run: |
-export PATH="/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja:${PATH}"
-echo "::set-env name=PATH::${PATH}"
+        export PATH="/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/CommonExtensions/Microsoft/CMake/Ninja:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
         echo 'Fetching package graph...'
         git clone https://github.com/SDGGiesbrecht/swift-cmark .build/SDG/Dependencies/CommonMark --branch 0.0.50100 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGCommandLine .build/SDG/Dependencies/SDGCommandLine --branch 1.3.0 --depth 1 --config advice.detachedHead=false

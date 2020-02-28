@@ -584,8 +584,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               windows: true
             ),
             "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
-            prependPath("/c/Library/ICU\u{2D}64.2/bin"),
-            "find /c/Library/ICU\u{2D}64.2/bin"
+            prependPath("/c/Library/ICU\u{2D}64.2/bin")
           ]
         )
       )
@@ -616,8 +615,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               to: "/c/Library/Swift/Current/bin"
             ),
             prependPath("/c/Library/Swift/Current/bin"),
-            "swift \u{2D}\u{2D}version",
-            "find /c/Library",
+            prependPath("/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin"),
+            "swift \u{2D}\u{2D}version"
           ]
         )
       )

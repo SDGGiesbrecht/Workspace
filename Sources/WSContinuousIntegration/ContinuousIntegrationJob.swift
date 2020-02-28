@@ -475,7 +475,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func grantPermissions(to path: StrictString) -> StrictString {
-    return "chmod \u{2D}R a+rwx \(path)"
+    return "sudo chmod \u{2D}R a+rwx \(path)"
   }
 
   private func export(_ environmentVariable: StrictString) -> StrictString {

@@ -15,11 +15,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job macos •language '🇬🇧EN'
   Linux:
     runs-on: ubuntu-18.04
@@ -32,12 +43,32 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Install SwiftPM dependencies
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job linux •language '🇬🇧EN'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .
   tvOS:
     runs-on: macos-10.15
@@ -49,11 +80,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job tvos •language '🇬🇧EN'
   iOS:
     runs-on: macos-10.15
@@ -65,11 +107,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job ios •language '🇬🇧EN'
   watchOS:
     runs-on: macos-10.15
@@ -81,11 +134,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Set Xcode up
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job watchos •language '🇬🇧EN'
   Miscellaneous:
     runs-on: ubuntu-18.04
@@ -98,10 +162,30 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Install SwiftPM dependencies
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇬🇧EN'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .

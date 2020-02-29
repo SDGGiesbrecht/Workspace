@@ -40,9 +40,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
   // #workaround(Swift 5.1.3, Debug builds are broken.)
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
+  private static let experimentalDownloads =
+    "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
-  public static let currentXcodeVersion = Version(11, 3, 0)
+  public static let currentXcodeVersion = Version(11, 3, 1)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
 
@@ -263,7 +265,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Shared
 
-  private func appendLanguage(to command: String, configuration: WorkspaceConfiguration) -> String {
+  private func appendLanguage(
+    to command: StrictString,
+    configuration: WorkspaceConfiguration
+  ) -> StrictString {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
@@ -275,10 +280,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     return command
   }
-  private func refreshCommand(configuration: WorkspaceConfiguration) -> String {
+  private func refreshCommand(configuration: WorkspaceConfiguration) -> StrictString {
     return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
   }
-  private func validateCommand(configuration: WorkspaceConfiguration) -> String {
+  private func validateCommand(configuration: WorkspaceConfiguration) -> StrictString {
     return appendLanguage(
       to:
         "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))",
@@ -288,7 +293,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - GitHub Actions
 
-  private var gitHubActionMachine: String {
+  private var gitHubActionMachine: StrictString {
     switch platform {
     case .macOS:
       return
@@ -302,7 +307,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  private var dockerImage: String? {
+  private var dockerImage: StrictString? {
     switch platform {
     case .macOS, .windows, .android:
       return nil
@@ -313,6 +318,613 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       unreachable()
     }
   }
+
+  private func runsOn(_ machine: StrictString) -> StrictString {
+    return "    runs\u{2D}on: \(machine)"
+  }
+
+  private func steps() -> StrictString {
+    return "    steps:"
+  }
+
+  private func step(
+    _ name: UserFacing<StrictString, InterfaceLocalization>,
+    localization: InterfaceLocalization
+  ) -> StrictString {
+    return "    \u{2D} name: \(name.resolved(for: localization))"
+  }
+
+  private func uses(
+    _ action: StrictString,
+    with: [StrictString: StrictString] = [:]
+  ) -> StrictString {
+    var result: [StrictString] = ["      uses: \(action)"]
+    if ¬with.isEmpty {
+      result.append("      with:")
+      for (key, value) in with.sorted(by: { $0.0 < $1.0 }) {
+        result.append("        \(key): \(value)")
+      }
+    }
+    return result.joinedAsLines()
+  }
+
+  private func checkOut() -> StrictString {
+    return uses("actions/checkout@v1")
+  }
+
+  private func cache() -> StrictString {
+    let os: StrictString
+    switch platform {
+    case .macOS:
+      os = "macOS"
+    case .windows:
+      os = "Windows"
+    case .linux:
+      os = "Linux"
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
+    case .android:
+      os = "Android"
+    }
+    return uses(
+      "actions/cache@v1",
+      with: [
+        "key":
+          "\(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+        "path": PackageRepository.repositoryWorkspaceCacheDirectory
+      ]
+    )
+  }
+
+  private func script(
+    heading: UserFacing<StrictString, InterfaceLocalization>,
+    localization: InterfaceLocalization,
+    commands: [StrictString]
+  ) -> StrictString {
+    var result: [StrictString] = [
+      step(heading, localization: localization),
+      "      shell: bash",
+      "      run: |"
+    ]
+    result.append(
+      contentsOf: commands.prepending("set \u{2D}x")
+        .joinedAsLines().lines.map({ "        \(StrictString($0.line))" })
+    )
+    return result.joinedAsLines()
+  }
+
+  private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
+    let prefix = sudo ? "sudo " : ""
+    let packages = StrictString(packages.joined(separator: " " as StrictString))
+    return [
+      "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
+      "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)"
+    ].joinedAsLines()
+  }
+
+  private func cURL(
+    from origin: StrictString,
+    to destination: StrictString,
+    allowVariableSubstitution: Bool = false
+  ) -> StrictString {
+    let quotedDestination: StrictString
+    if allowVariableSubstitution {
+      quotedDestination = "\u{22}\(destination)\u{22}"
+    } else {
+      quotedDestination = "\u{27}\(destination)\u{27}"
+    }
+    return [
+      "curl \u{2D}\u{2D}location \u{5C}",
+      "  \u{27}\(origin)\u{27} \u{5C}",
+      "  \u{2D}\u{2D}output \(quotedDestination)"
+    ].joinedAsLines()
+  }
+
+  private func makeDirectory(_ directory: StrictString) -> StrictString {
+    return "mkdir \u{2D}p \(directory)"
+  }
+  private func copy(
+    from origin: StrictString,
+    to destination: StrictString,
+    sudo: Bool = false
+  ) -> StrictString {
+    return [
+      makeDirectory(destination),
+      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)"
+    ].joinedAsLines()
+  }
+
+  private func cURL(
+    _ url: StrictString,
+    andUnzipTo destination: StrictString,
+    windows: Bool = false,
+    doubleWrapped: Bool = false,
+    sudoCopy: Bool = false
+  ) -> StrictString {
+    let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
+    let fileName = zipFileName.truncated(before: ".")
+    let temporaryZip: StrictString = "/tmp/\(zipFileName)"
+    let temporary: StrictString = "/tmp/\(fileName)"
+    var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
+    if windows {
+      let output = doubleWrapped ? "." : fileName
+      result.append(contentsOf: [
+        "cd /tmp",
+        "7z x \(zipFileName) \u{2D}o\(output)"
+      ])
+    } else {
+      result.append(contentsOf: [
+        "unzip \(temporaryZip) \u{2D}d /tmp"
+      ])
+    }
+    result.append(copy(from: temporary, to: destination, sudo: sudoCopy))
+    return result.joinedAsLines()
+  }
+
+  private func cURL(
+    _ url: StrictString,
+    andUntarTo destination: StrictString,
+    sudoCopy: Bool = false
+  ) -> StrictString {
+    let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
+    let fileName = tarFileName.truncated(before: ".tar")
+    let temporaryTar: StrictString = "/tmp/\(tarFileName)"
+    let temporary: StrictString = "/tmp/\(fileName)"
+    return [
+      cURL(from: url, to: temporaryTar),
+      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp",
+      copy(from: temporary, to: destination, sudo: sudoCopy)
+    ].joinedAsLines()
+  }
+
+  private func grantPermissions(to path: StrictString, sudo: Bool = true) -> StrictString {
+    let prefix = sudo ? "sudo " : ""
+    return "\(prefix)chmod \u{2D}R a+rwx \(path)"
+  }
+
+  private func export(_ environmentVariable: StrictString) -> StrictString {
+    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
+  }
+
+  private func prependPath(_ entry: StrictString) -> StrictString {
+    return [
+      "export PATH=\u{22}\(entry):${PATH}\u{22}",
+      export("PATH")
+    ].joinedAsLines()
+  }
+
+  private func compressPATH() -> StrictString {
+    return
+      "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
+  }
+
+  internal func gitHubWorkflowJob(
+    for project: PackageRepository,
+    output: Command.Output
+  ) throws -> [StrictString] {
+    let configuration = try project.configuration(output: output)
+    let interfaceLocalization = configuration.developmentInterfaceLocalization()
+
+    var result: [StrictString] = [
+      "  \(name.resolved(for: interfaceLocalization)):",
+      runsOn(gitHubActionMachine)
+    ]
+    if let container = dockerImage {
+      result += [
+        "    container: \(container)"
+      ]
+    }
+    result += [
+      steps(),
+      step(checkOutStepName, localization: interfaceLocalization),
+      checkOut(),
+      step(cacheWorkspaceStepName, localization: interfaceLocalization),
+      cache()
+    ]
+
+    switch platform {
+    case .macOS:
+      let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        .string(droppingEmptyPatch: true)
+      result.append(
+        script(
+          heading: setXcodeUpStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "export DEVELOPER_DIR=/Applications/Xcode_\(xcodeVersion).app/Contents/Developer",
+            export("DEVELOPER_DIR"),
+            "xcodebuild \u{2D}version"
+          ]
+        )
+      )
+    case .windows:
+      result.append(
+        script(
+          heading: setVisualStudioUpStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
+            "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
+            "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
+            "cmd \u{22}/c export_environment.bat\u{22}",
+            "set +x",
+            "source ./exported_environment.sh",
+            "set \u{2D}x",
+            export("PATH"),
+            export("UniversalCRTSdkDir"),
+            export("UCRTVersion"),
+            export("VCToolsInstallDir"),
+          ]
+        )
+      )
+      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
+        .string(droppingEmptyPatch: true)
+      let platform: StrictString =
+        "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
+      result.append(
+        script(
+          heading: fetchWinSDKModuleMapsStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              from: "\(platform)/ucrt.modulemap",
+              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+            cURL(
+              from: "\(platform)/visualc.modulemap",
+              to: "${VCToolsInstallDir}/include/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+            cURL(
+              from: "\(platform)/visualc.apinotes",
+              to: "${VCToolsInstallDir}/include/visualc.apinotes",
+              allowVariableSubstitution: true
+            ),
+            cURL(
+              from: "\(platform)/winsdk.modulemap",
+              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap",
+              allowVariableSubstitution: true
+            ),
+          ]
+        )
+      )
+      result.append(
+        script(
+          heading: fetchICUStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip",
+              andUnzipTo: "/c/Library/ICU\u{2D}64.2",
+              windows: true
+            ),
+            "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
+            prependPath("/c/Library/ICU\u{2D}64.2/bin")
+          ]
+        )
+      )
+      let downloads = ContinuousIntegrationJob.experimentalDownloads
+      result.append(
+        script(
+          heading: installSwiftStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "\(downloads)/toolchain\u{2D}windows\u{2D}x64.zip",
+              andUnzipTo: "/c",
+              windows: true,
+              doubleWrapped: true
+            ),
+            cURL(
+              "\(downloads)/sdk\u{2D}windows\u{2D}x64.zip",
+              andUnzipTo: "/c",
+              windows: true,
+              doubleWrapped: true
+            ),
+            prependPath(
+              "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
+            ),
+            copy(
+              from:
+                "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin",
+              to: "/c/Library/Swift/Current/bin"
+            ),
+            prependPath("/c/Library/Swift/Current/bin"),
+            prependPath(
+              "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
+            ),
+            "swift \u{2D}\u{2D}version"
+          ]
+        )
+      )
+    case .linux:
+      result.append(contentsOf: [
+        script(
+          heading: installSwiftPMDependenciesStepName,
+          localization: interfaceLocalization,
+          commands: [
+            aptGet(["libsqlite3\u{2D}dev", "libncurses\u{2D}dev"])
+          ]
+        ),
+        script(
+          heading: installCURLStepName,
+          localization: interfaceLocalization,
+          commands: [
+            aptGet(["curl"])
+          ]
+        )
+      ])
+    case .tvOS, .iOS, .watchOS:
+      unreachable()
+    case .android:
+      let version = ContinuousIntegrationJob.workaroundAndroidSwiftVersion
+        .string(droppingEmptyPatch: true)
+      result.append(contentsOf: [
+        script(
+          heading: installSwiftStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+              andUntarTo: "/",
+              sudoCopy: true
+            ),
+            "swift \u{2D}\u{2D}version",
+          ]
+        ),
+        script(
+          heading: fetchCrossCompilationToolchainStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "\(ContinuousIntegrationJob.experimentalDownloads)/toolchain\u{2D}linux\u{2D}x64.zip",
+              andUnzipTo: "/",
+              sudoCopy: true
+            ),
+            grantPermissions(to: "/Library"),
+            "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version"
+          ]
+        ),
+        script(
+          heading: fetchAndroidSDKStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "\(ContinuousIntegrationJob.experimentalDownloads)/sdk\u{2D}android\u{2D}x64.zip",
+              andUnzipTo: "/"
+            ),
+            "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
+            aptGet(["patchelf"], sudo: true),
+            "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so",
+            "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so",
+            copy(
+              from: "${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64",
+              to: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
+            )
+          ]
+        ),
+        script(
+          heading: fetchICUStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "\(ContinuousIntegrationJob.experimentalDownloads)/icu\u{2D}android\u{2D}x64.zip",
+              andUnzipTo: "/"
+            ),
+            cURL(
+              from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
+              to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so"
+            )
+          ]
+        )
+      ])
+    }
+
+    switch platform {
+    case .macOS, .linux, .iOS, .watchOS, .tvOS:
+      result.append(
+        script(
+          heading: refreshStepName,
+          localization: interfaceLocalization,
+          commands: [
+            refreshCommand(configuration: configuration)
+          ]
+        )
+      )
+      let mainStepName = self == .deployment ? documentStepName : validateStepName
+      result.append(
+        script(
+          heading: mainStepName,
+          localization: interfaceLocalization,
+          commands: [
+            validateCommand(configuration: configuration)
+          ]
+        )
+      )
+    case .windows:
+      var clones: [StrictString] = []
+      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+        let graph = try project.cachedWindowsPackageGraph()
+        for package in graph.packages.sorted(by: { $0.name < $1.name }) {
+          if let version = package.underlyingPackage.manifest.version {
+            let url = package.underlyingPackage.manifest.url
+            clones.append(
+              "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
+            )
+          }
+        }
+      #endif
+      result.append(
+        script(
+          heading: fetchDependenciesStepName,
+          localization: interfaceLocalization,
+          commands: clones
+        )
+      )
+      result.append(
+        script(
+          heading: buildStepName,
+          localization: interfaceLocalization,
+          commands: [
+            compressPATH(),
+            "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
+            "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
+          ]
+        )
+      )
+      result.append(
+        script(
+          heading: testStepName,
+          localization: interfaceLocalization,
+          commands: [
+            compressPATH(),
+            "cd .build/SDG/CMake",
+            "ctest \u{2D}\u{2D}verbose"
+          ]
+        )
+      )
+    case .android:
+      result.append(
+        script(
+          heading: buildStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "export TARGETING_ANDROID=true",
+            "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}",
+            "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}",
+            "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}",
+            "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}",
+            "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
+          ]
+        )
+      )
+      let productsDirectory: StrictString =
+        ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+      result.append(
+        script(
+          heading: copyLibrariesStepName,
+          localization: interfaceLocalization,
+          commands: [
+            copy(
+              from:
+                "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
+              to: productsDirectory
+            ),
+            copy(from: "/Library/icu\u{2D}64/usr/lib", to: productsDirectory),
+            copy(
+              from:
+                "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
+              to: productsDirectory
+            ),
+            copy(
+              from:
+                "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
+              to: productsDirectory
+            )
+          ]
+        )
+      )
+      result.append(contentsOf: [
+        step(uploadTestsStepName, localization: interfaceLocalization),
+        uses(
+          "actions/upload\u{2D}artifact@v1",
+          with: [
+            "name": "tests",
+            "path": "\(productsDirectory)"
+          ]
+        ),
+
+        "  Android_II:",
+        "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
+        "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
+        "    needs: Android",
+        steps(),
+        step(checkOutStepName, localization: interfaceLocalization),
+        checkOut(),
+        step(downloadTestsStepName, localization: interfaceLocalization),
+        uses(
+          "actions/download\u{2D}artifact@v1",
+          with: [
+            "name": "tests",
+            "path": "\(productsDirectory)"
+          ]
+        ),
+        script(
+          heading: prepareScriptStepName,
+          localization: interfaceLocalization,
+          commands: [
+            makeDirectory(".build/SDG"),
+            "echo \u{27}",
+            "set \u{2D}e",
+            "adb \u{2D}e push . /data/local/tmp/Package",
+            "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
+            "adb \u{2D}e shell \u{5C}",
+            "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}",
+            "  HOME=/data/local/tmp/Home \u{5C}",
+            "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
+            "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
+            "\u{27} > .build/SDG/Emulator.sh",
+            "chmod +x .build/SDG/Emulator.sh"
+          ]
+        ),
+        // #workaround(There is no official action for this yet.)
+        step(installEmulatorStepName, localization: interfaceLocalization),
+        uses("malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5"),
+        step(testStepName, localization: interfaceLocalization),
+        uses(
+          "malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+          with: [
+            "abi": "x86_64",
+            "cmd": ".build/SDG/Emulator.sh"
+          ]
+        )
+      ])
+    }
+
+    switch platform {
+    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
+      break
+    case .linux:
+      result.append(
+        script(
+          heading: grantCachPermissionsStepName,
+          localization: interfaceLocalization,
+          commands: [
+            grantPermissions(to: ".", sudo: false)
+          ]
+        )
+      )
+    }
+
+    if self == .deployment {
+      result.append(contentsOf: [
+        script(
+          heading: deployStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "cd docs",
+            "git init",
+            "git config user.name \u{22}${GITHUB_ACTOR}\u{22}",
+            "git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
+            "git add .",
+            "git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
+            "git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
+          ]
+        ),
+        "      env:",
+        "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+      ])
+    }
+
+    return result
+  }
+
+  // MARK: - Localized Text
 
   private var checkOutStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
@@ -336,6 +948,129 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var setXcodeUpStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Set Xcode up"
+      case .deutschDeutschland:
+        return "Xcode einrichten"
+      }
+    })
+  }
+
+  private var setVisualStudioUpStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Set Visual Studio up"
+      case .deutschDeutschland:
+        return "Visual Studio einrichten"
+      }
+    })
+  }
+
+  private var fetchWinSDKModuleMapsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch WinSDK module maps"
+      case .deutschDeutschland:
+        return "WinSDK‐Modulabbildungen holen"
+      }
+    })
+  }
+
+  private var fetchICUStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch ICU"
+      case .deutschDeutschland:
+        return "ICU holen"
+      }
+    })
+  }
+
+  private var installSwiftPMDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install SwiftPM dependencies"
+      case .deutschDeutschland:
+        return "SwiftPM‐Abhängigkeiten installieren"
+      }
+    })
+  }
+
+  private var installSwiftStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Swift"
+      case .deutschDeutschland:
+        return "Swift installieren"
+      }
+    })
+  }
+
+  private var fetchCrossCompilationToolchainStepName:
+    UserFacing<StrictString, InterfaceLocalization>
+  {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch cross‐compilation toolchain"
+      case .deutschDeutschland:
+        return "Fremdübersetzungs Werkzeugkette holen"
+      }
+    })
+  }
+
+  private var fetchAndroidSDKStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch Android SDK"
+      case .deutschDeutschland:
+        return "Android‐Entwicklungsausrüstung holen"
+      }
+    })
+  }
+
+  private var installCURLStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install cURL"
+      case .deutschDeutschland:
+        return "cURL installieren"
+      }
+    })
+  }
+
+  private var refreshStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Refresh"
+      case .deutschDeutschland:
+        return "Auffrischen"
+      }
+    })
+  }
+
+  private var fetchDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch dependencies"
+      case .deutschDeutschland:
+        return "Abhängigkeiten holen"
+      }
+    })
+  }
+
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -343,6 +1078,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Validate"
       case .deutschDeutschland:
         return "Prüfen"
+      }
+    })
+  }
+
+  private var buildStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Build"
+      case .deutschDeutschland:
+        return "Erstellen"
+      }
+    })
+  }
+
+  private var copyLibrariesStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Copy libraries"
+      case .deutschDeutschland:
+        return "Bibliotheken kopieren"
       }
     })
   }
@@ -402,6 +1159,28 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var documentStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Document"
+      case .deutschDeutschland:
+        return "Dokumentieren"
+      }
+    })
+  }
+
+  private var grantCachPermissionsStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Grant permission to cache"
+      case .deutschDeutschland:
+        return "Zugriffsrechte zum Zwischenspeichern erteilen"
+      }
+    })
+  }
+
   private var deployStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -422,385 +1201,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Erstellte Dokumentation für ${GITHUB_SHA}."
       }
     })
-  }
-
-  internal func gitHubWorkflowJob(for project: PackageRepository, output: Command.Output) throws
-    -> [String]
-  {
-    let configuration = try project.configuration(output: output)
-    let interfaceLocalization = configuration.developmentInterfaceLocalization()
-
-    var result: [String] = [
-      "  \(name.resolved(for: interfaceLocalization)):",
-      "    runs\u{2D}on: \(gitHubActionMachine)",
-    ]
-    if let container = dockerImage {
-      result += [
-        "    container: \(container)"
-      ]
-    }
-    result += [
-      "    steps:",
-      "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
-      "      uses: actions/checkout@v1",
-      "    \u{2D} name: \(cacheWorkspaceStepName.resolved(for: interfaceLocalization))",
-      "      uses: actions/cache@v1",
-      "      with:",
-    ]
-
-    func cacheEntry(os: String) -> [String] {
-      return [
-        "        key: \(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-        "        path: \(PackageRepository.repositoryWorkspaceCacheDirectory)"
-      ]
-    }
-    switch platform {
-    case .macOS:
-      result.append(contentsOf: cacheEntry(os: "macOS"))
-    case .windows:
-      result.append(contentsOf: cacheEntry(os: "Windows"))
-    case .linux:
-      result.append(contentsOf: cacheEntry(os: "Linux"))
-    case .tvOS, .iOS, .watchOS:
-      unreachable()
-    case .android:
-      result.append(contentsOf: cacheEntry(os: "Android"))
-    }
-
-    func commandEntry(_ command: String) -> String {
-      return "        \(command)"
-    }
-
-    let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion.string(droppingEmptyPatch: true)
-    result.append("    \u{2D} name: \(validateStepName.resolved(for: interfaceLocalization))")
-
-    switch platform {
-    case .macOS, .linux, .tvOS, .iOS, .android, .watchOS:
-      break
-    case .windows:
-      result.append("      shell: bash")
-    }
-
-    result.append("      run: |")
-
-    switch platform {
-    case .macOS:
-      result.append(contentsOf: [
-        commandEntry("xcversion install \(xcodeVersion)"),
-        commandEntry("xcversion select \(xcodeVersion)")
-      ])
-    case .windows:
-      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
-        .string(droppingEmptyPatch: true)
-      result.append(contentsOf: [
-        commandEntry(
-          "echo \u{27}Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)\u{27}"
-        ),
-        commandEntry("repository_directory=$(pwd)"),
-        commandEntry(
-          "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}"
-        ),
-        commandEntry("echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh"),
-        commandEntry(
-          "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat"
-        ),
-        commandEntry("cmd \u{22}/c export_environment.bat\u{22}"),
-        commandEntry("source ./exported_environment.sh"),
-        commandEntry(
-          "if [ \u{2D}z \u{22}$INCLUDE\u{22} ]; then echo \u{27}Failed to set up Visual Studio.\u{27}; exit 1; fi"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
-        commandEntry("echo \u{27}Fetching Windows platform module maps...\u{27}"),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/ucrt.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.modulemap\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/module.modulemap\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/visualc.apinotes\u{27} \u{2D}o \u{22}${VCToolsInstallDir}/include/visualc.apinotes\u{22}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{27}https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform/winsdk.modulemap\u{27} \u{2D}o \u{22}${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap\u{22}"
-        ),
-        "",
-        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
-        commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o toolchain\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}windows\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o sdk\u{2D}windows\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}windows\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry("7z x toolchain\u{2D}windows\u{2D}x64.zip"),
-        commandEntry("mv toolchain\u{2D}windows\u{2D}x64/Library /c/Library"),
-        commandEntry("7z x sdk\u{2D}windows\u{2D}x64.zip"),
-        commandEntry(
-          "mv sdk\u{2D}windows\u{2D}x64/Library/Developer/Platforms /c/Library/Developer/Platforms"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry(
-          "export PATH=\u{22}/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin:${PATH}\u{22}"
-        ),
-        commandEntry("mkdir \u{2D}p /c/Library/Swift/Current"),
-        commandEntry(
-          "cp \u{2D}R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin"
-        ),
-        commandEntry("export PATH=\u{22}/c/Library/Swift/Current/bin:${PATH}\u{22}"),
-        commandEntry(
-          "export PATH=\u{22}/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin:${PATH}\u{22}"
-        ),
-        commandEntry("swift \u{2D}\u{2D}version"),
-        "",
-        commandEntry("echo \u{27}Fetching ICU...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/ICU"),
-        commandEntry("cd .build/SDG/ICU"),
-        commandEntry(
-          "curl \u{2D}L http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip \u{2D}\u{2D}output ICU.zip"
-        ),
-        commandEntry("7z x ICU.zip \u{2D}oICU\u{2D}64.2"),
-        commandEntry("mv ICU\u{2D}64.2 /c/Library/ICU\u{2D}64.2"),
-        commandEntry("mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin"),
-        commandEntry("export PATH=\u{22}/c/Library/ICU\u{2D}64.2/bin:${PATH}\u{22}"),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
-      ])
-    case .linux:
-      result.append(contentsOf: [
-        commandEntry("apt\u{2D}get update"),
-        commandEntry(
-          "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes curl libsqlite3\u{2D}dev libncurses\u{2D}dev"
-        ),
-      ])
-    case .tvOS, .iOS, .watchOS:
-      unreachable()
-    case .android:
-      let version = ContinuousIntegrationJob.workaroundAndroidSwiftVersion
-        .string(droppingEmptyPatch: true)
-      result.append(contentsOf: [
-        commandEntry("echo \u{27}Fetching Swift...\u{27}"),
-        commandEntry("repository_directory=$(pwd)"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Swift"),
-        commandEntry("cd .build/SDG/Swift"),
-        commandEntry(
-          "curl \u{2D}o Swift.tar.gz \u{27}https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz\u{27}"
-        ),
-        commandEntry("tar \u{2D}\u{2D}extract \u{2D}\u{2D}file Swift.tar.gz"),
-        commandEntry(
-          "sudo cp \u{2D}R swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04/usr/* /usr/"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry("swift \u{2D}\u{2D}version"),
-        "",
-        commandEntry("echo \u{27}Fetching Swift cross‐compilation toolchain...\u{27}"),
-        commandEntry("mkdir \u{2D}p .build/SDG/Experimental_Swift"),
-        commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o toolchain\u{2D}linux\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain\u{2D}linux\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry("unzip toolchain\u{2D}linux\u{2D}x64.zip"),
-        commandEntry("sudo mv toolchain\u{2D}linux\u{2D}x64/Library /Library"),
-        commandEntry("chmod \u{2D}R a+rwx /Library"),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        commandEntry(
-          "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version"
-        ),
-        "",
-        commandEntry("echo \u{27}Fetching Swift Android SDK...\u{27}"),
-        commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o sdk\u{2D}android\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk\u{2D}android\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry("unzip sdk\u{2D}android\u{2D}x64.zip"),
-        commandEntry(
-          "mv sdk\u{2D}android\u{2D}x64/Library/Developer/Platforms /Library/Developer/Platforms"
-        ),
-        commandEntry(
-          "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
-        ),
-        commandEntry("sudo apt\u{2D}get update \u{2D}\u{2D}yes"),
-        commandEntry("sudo apt\u{2D}get install \u{2D}\u{2D}yes patchelf"),
-        commandEntry(
-          "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so"
-        ),
-        commandEntry(
-          "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so"
-        ),
-        commandEntry(
-          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64/\u{22}* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk"
-        ),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        "",
-        commandEntry("echo \u{27}Fetching ICU...\u{27}"),
-        commandEntry("cd .build/SDG/Experimental_Swift"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o icu\u{2D}android\u{2D}x64.zip \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu\u{2D}android\u{2D}x64.zip\u{27}"
-        ),
-        commandEntry("unzip icu\u{2D}android\u{2D}x64.zip"),
-        commandEntry("mv icu\u{2D}android\u{2D}x64/Library/icu\u{2D}64 /Library/icu\u{2D}64"),
-        commandEntry(
-          "curl \u{2D}L \u{2D}o libicudt64.so \u{27}https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so\u{27}"
-        ),
-        commandEntry("mv libicudt64.so /Library/icu\u{2D}64/usr/lib/libicudt64.so"),
-        commandEntry("cd \u{22}${repository_directory}\u{22}"),
-        ""
-      ])
-    }
-
-    switch platform {
-    case .macOS, .linux, .iOS, .watchOS, .tvOS:
-      result.append(contentsOf: [
-        commandEntry(refreshCommand(configuration: configuration)),
-        commandEntry(validateCommand(configuration: configuration))
-      ])
-    case .windows:
-      result.append(contentsOf: [
-        commandEntry("echo \u{27}Fetching package graph...\u{27}"),
-      ])
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-        let graph = try project.cachedWindowsPackageGraph()
-        for package in graph.packages.sorted(by: { $0.name < $1.name }) {
-          if let version = package.underlyingPackage.manifest.version {
-            let url = package.underlyingPackage.manifest.url
-            result.append(
-              commandEntry(
-                "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
-              )
-            )
-          }
-        }
-      #endif
-      result.append(contentsOf: [
-        "",
-        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
-        commandEntry(
-          "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}"
-        ),
-        commandEntry("cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}"),
-        commandEntry("echo \u{27}Testing \(try project.packageName())...\u{27}"),
-        commandEntry("cd .build/SDG/CMake"),
-        commandEntry("ctest \u{2D}\u{2D}verbose")
-      ])
-    case .android:
-      result.append(contentsOf: [
-        commandEntry("echo \u{27}Building \(try project.packageName())...\u{27}"),
-        commandEntry("export TARGETING_ANDROID=true"),
-        commandEntry(
-          "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}"
-        ),
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}"
-        ),
-
-        commandEntry(
-          "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android"
-        ),
-        "",
-        commandEntry("echo \u{27}Copying libraries...\u{27}"),
-        commandEntry(
-          "cp \u{2D}R \u{22}${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64/\u{22}* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/icu\u{2D}64/usr/lib/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry(
-          "cp \u{2D}R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/* .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        "    \u{2D} name: \(uploadTestsStepName.resolved(for: interfaceLocalization))",
-        "      uses: actions/upload\u{2D}artifact@v1",
-        "      with:",
-        "        name: tests",
-        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "  Android_II:",
-        "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
-        "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
-        "    needs: Android",
-        "    steps:",
-        "    \u{2D} name: \(checkOutStepName.resolved(for: interfaceLocalization))",
-        "      uses: actions/checkout@v1",
-        "    \u{2D} name: \(downloadTestsStepName.resolved(for: interfaceLocalization))",
-        "      uses: actions/download\u{2D}artifact@v1",
-        "      with:",
-        "        name: tests",
-        "        path: .build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-        "    \u{2D} name: \(prepareScriptStepName.resolved(for: interfaceLocalization))",
-        "      run: |",
-        commandEntry("mkdir \u{2D}p .build/SDG"),
-        commandEntry("echo \u{27}"),
-        commandEntry("set \u{2D}e"),
-        commandEntry("adb \u{2D}e push . /data/local/tmp/Package"),
-        commandEntry(
-          "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-        ),
-        commandEntry("adb \u{2D}e shell \u{5C}"),
-        commandEntry(
-          "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}"
-        ),
-        commandEntry("  HOME=/data/local/tmp/Home \u{5C}"),
-        commandEntry("  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}"),
-        commandEntry(
-          "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest"
-        ),
-        commandEntry("\u{27} > .build/SDG/Emulator.sh"),
-        commandEntry("chmod +x .build/SDG/Emulator.sh"),
-        // #workaround(There is no official action for this yet.)
-        "    \u{2D} name: \(installEmulatorStepName.resolved(for: interfaceLocalization))",
-        "      uses: malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5",
-        "    \u{2D} name: \(testStepName.resolved(for: interfaceLocalization))",
-        "      uses: malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
-        "      with:",
-        "        abi: x86_64",
-        "        cmd: .build/SDG/Emulator.sh"
-      ])
-    }
-
-    switch platform {
-    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
-      break
-    case .linux:
-      result.append(commandEntry("chmod \u{2D}R a+rwx ."))
-    }
-
-    if self == .deployment {
-      result.append(contentsOf: [
-        "    \u{2D} name: \(deployStepName.resolved(for: interfaceLocalization))",
-        "      run: |",
-        "        cd docs",
-        "        git init",
-        "        git config user.name \u{22}${GITHUB_ACTOR}\u{22}",
-        "        git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
-        "        git add .",
-        "        git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
-        "        git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
-        "      env:",
-        "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-      ])
-    }
-
-    return result
   }
 }
 

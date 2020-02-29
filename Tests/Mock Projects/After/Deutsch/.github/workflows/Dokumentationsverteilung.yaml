@@ -19,15 +19,37 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: SwiftPM‐Abhängigkeiten installieren
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: cURL installieren
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Dokumentieren
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job deployment •language '🇩🇪DE'
+    - name: Zugriffsrechte zum Zwischenspeichern erteilen
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .
     - name: Verteilen
+      shell: bash
       run: |
+        set -x
         cd docs
         git init
         git config user.name "${GITHUB_ACTOR}"

@@ -709,8 +709,6 @@ let package = Package(
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
-
-    // #workaround(Until real modules work on Windows.)
     .target(
       name: "WSWindowsLibrary",
       dependencies: [
@@ -732,7 +730,6 @@ let package = Package(
       name: "WSWindowsTests",
       dependencies: ["WSWindowsLibrary"]
     ),
-    // #workaround(Until real tests work on Android)
     .testTarget(
       name: "WSAndroidTests",
       dependencies: [

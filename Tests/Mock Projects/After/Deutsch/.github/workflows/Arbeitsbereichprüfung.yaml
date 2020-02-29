@@ -15,11 +15,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Xcode einrichten
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job macos •language '🇩🇪DE'
   Windows:
     runs-on: windows-2019
@@ -31,58 +42,93 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Visual Studio einrichten
       shell: bash
       run: |
-        echo 'Setting up Visual Studio... (in order to proceed as though in the Native Tools Command Prompt)'
-        repository_directory=$(pwd)
+        set -x
         cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
         echo 'export -p > exported_environment.sh' > nested_bash.sh
         echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
         cmd "/c export_environment.bat"
+        set +x
         source ./exported_environment.sh
-        if [ -z "$INCLUDE" ]; then echo 'Failed to set up Visual Studio.'; exit 1; fi
-        cd "${repository_directory}"
-
-        echo 'Fetching Windows platform module maps...'
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' -o "${VCToolsInstallDir}/include/module.modulemap"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' -o "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl -L 'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' -o "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-
-        echo 'Fetching Swift...'
-        mkdir -p .build/SDG/Experimental_Swift
-        cd .build/SDG/Experimental_Swift
-        curl -L -o toolchain-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip'
-        curl -L -o sdk-windows-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip'
-        7z x toolchain-windows-x64.zip
-        mv toolchain-windows-x64/Library /c/Library
-        7z x sdk-windows-x64.zip
-        mv sdk-windows-x64/Library/Developer/Platforms /c/Library/Developer/Platforms
-        cd "${repository_directory}"
-        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        mkdir -p /c/Library/Swift/Current
-        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin /c/Library/Swift/Current/bin
-        export PATH="/c/Library/Swift/Current/bin:${PATH}"
-        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
-        swift --version
-
-        echo 'Fetching ICU...'
-        mkdir -p .build/SDG/ICU
-        cd .build/SDG/ICU
-        curl -L http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip --output ICU.zip
-        7z x ICU.zip -oICU-64.2
-        mv ICU-64.2 /c/Library/ICU-64.2
+        set -x
+        echo "::set-env name=PATH::${PATH}"
+        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
+        echo "::set-env name=UCRTVersion::${UCRTVersion}"
+        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
+    - name: WinSDK‐Modulabbildungen holen
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' \
+          --output "${VCToolsInstallDir}/include/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' \
+          --output "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+    - name: ICU holen
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip' \
+          --output '/tmp/icu4c-64_2-Win64-MSVC2017.zip'
+        cd /tmp
+        7z x icu4c-64_2-Win64-MSVC2017.zip -oicu4c-64_2-Win64-MSVC2017
+        mkdir -p /c/Library/ICU-64.2
+        cp -R /tmp/icu4c-64_2-Win64-MSVC2017/* /c/Library/ICU-64.2
         mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
-        cd "${repository_directory}"
-
-        echo 'Fetching package graph...'
-
-        echo 'Building Deutsch...'
+        echo "::set-env name=PATH::${PATH}"
+    - name: Swift installieren
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' \
+          --output '/tmp/toolchain-windows-x64.zip'
+        cd /tmp
+        7z x toolchain-windows-x64.zip -o.
+        mkdir -p /c
+        cp -R /tmp/toolchain-windows-x64/* /c
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip' \
+          --output '/tmp/sdk-windows-x64.zip'
+        cd /tmp
+        7z x sdk-windows-x64.zip -o.
+        mkdir -p /c
+        cp -R /tmp/sdk-windows-x64/* /c
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        mkdir -p /c/Library/Swift/Current/bin
+        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin/* /c/Library/Swift/Current/bin
+        export PATH="/c/Library/Swift/Current/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        swift --version
+    - name: Abhängigkeiten holen
+      shell: bash
+      run: |
+        set -x
+    - name: Erstellen
+      shell: bash
+      run: |
+        set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
         cmake --build '.build/SDG/CMake'
-        echo 'Testing Deutsch...'
+    - name: Testen
+      shell: bash
+      run: |
+        set -x
         cd .build/SDG/CMake
         ctest --verbose
   Linux:
@@ -96,12 +142,32 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: SwiftPM‐Abhängigkeiten installieren
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: cURL installieren
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job linux •language '🇩🇪DE'
+    - name: Zugriffsrechte zum Zwischenspeichern erteilen
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .
   tvOS:
     runs-on: macos-10.15
@@ -113,11 +179,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Xcode einrichten
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job tvos •language '🇩🇪DE'
   iOS:
     runs-on: macos-10.15
@@ -129,11 +206,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Xcode einrichten
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job ios •language '🇩🇪DE'
   Android:
     runs-on: ubuntu-18.04
@@ -145,51 +233,63 @@ jobs:
       with:
         key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Swift installieren
+      shell: bash
       run: |
-        echo 'Fetching Swift...'
-        repository_directory=$(pwd)
-        mkdir -p .build/SDG/Swift
-        cd .build/SDG/Swift
-        curl -o Swift.tar.gz 'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --file Swift.tar.gz
-        sudo cp -R swift-5.1.1-RELEASE-ubuntu18.04/usr/* /usr/
-        cd "${repository_directory}"
+        set -x
+        curl --location \
+          'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz' \
+          --output '/tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+        mkdir -p /
+        sudo cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
         swift --version
-
-        echo 'Fetching Swift cross‐compilation toolchain...'
-        mkdir -p .build/SDG/Experimental_Swift
-        cd .build/SDG/Experimental_Swift
-        curl -L -o toolchain-linux-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip'
-        unzip toolchain-linux-x64.zip
-        sudo mv toolchain-linux-x64/Library /Library
-        chmod -R a+rwx /Library
-        cd "${repository_directory}"
+    - name: Fremdübersetzungs Werkzeugkette holen
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip' \
+          --output '/tmp/toolchain-linux-x64.zip'
+        unzip /tmp/toolchain-linux-x64.zip -d /tmp
+        mkdir -p /
+        sudo cp -R /tmp/toolchain-linux-x64/* /
+        sudo chmod -R a+rwx /Library
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
-
-        echo 'Fetching Swift Android SDK...'
-        cd .build/SDG/Experimental_Swift
-        curl -L -o sdk-android-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x64.zip'
-        unzip sdk-android-x64.zip
-        mv sdk-android-x64/Library/Developer/Platforms /Library/Developer/Platforms
+    - name: Android‐Entwicklungsausrüstung holen
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x64.zip' \
+          --output '/tmp/sdk-android-x64.zip'
+        unzip /tmp/sdk-android-x64.zip -d /tmp
+        mkdir -p /
+        cp -R /tmp/sdk-android-x64/* /
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
-        sudo apt-get update --yes
-        sudo apt-get install --yes patchelf
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes patchelf
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
-        cp -R "${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/"* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        cd "${repository_directory}"
-
-        echo 'Fetching ICU...'
-        cd .build/SDG/Experimental_Swift
-        curl -L -o icu-android-x64.zip 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x64.zip'
-        unzip icu-android-x64.zip
-        mv icu-android-x64/Library/icu-64 /Library/icu-64
-        curl -L -o libicudt64.so 'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so'
-        mv libicudt64.so /Library/icu-64/usr/lib/libicudt64.so
-        cd "${repository_directory}"
-
-        echo 'Building Deutsch...'
+        mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        cp -R ${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+    - name: ICU holen
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x64.zip' \
+          --output '/tmp/icu-android-x64.zip'
+        unzip /tmp/icu-android-x64.zip -d /tmp
+        mkdir -p /
+        cp -R /tmp/icu-android-x64/* /
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
+          --output '/Library/icu-64/usr/lib/libicudt64.so'
+    - name: Erstellen
+      shell: bash
+      run: |
+        set -x
         export TARGETING_ANDROID=true
         swift build --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \
@@ -200,11 +300,17 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
-
-        echo 'Copying libraries...'
-        cp -R "${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/"* .build/x86_64-unknown-linux-android/debug
+    - name: Bibliotheken kopieren
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/icu-64/usr/lib/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
     - name: Teste hochladen
       uses: actions/upload-artifact@v1
@@ -224,7 +330,9 @@ jobs:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug
     - name: Skript vorbereiten
+      shell: bash
       run: |
+        set -x
         mkdir -p .build/SDG
         echo '
         set -e
@@ -254,11 +362,22 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: Xcode einrichten
+      shell: bash
       run: |
-        xcversion install 11.3
-        xcversion select 11.3
+        set -x
+        export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
+        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
+        xcodebuild -version
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job watchos •language '🇩🇪DE'
   Sonstiges:
     runs-on: ubuntu-18.04
@@ -271,10 +390,30 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Prüfen
+    - name: SwiftPM‐Abhängigkeiten installieren
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: cURL installieren
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Auffrischen
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇩🇪DE'
+    - name: Prüfen
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job miscellaneous •language '🇩🇪DE'
+    - name: Zugriffsrechte zum Zwischenspeichern erteilen
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .

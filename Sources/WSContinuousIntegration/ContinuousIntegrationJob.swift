@@ -494,7 +494,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func compressPATH() -> StrictString {
-    return "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
+    return
+      "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
   }
 
   internal func gitHubWorkflowJob(

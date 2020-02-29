@@ -143,6 +143,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         cd .build/SDG/CMake
         ctest --verbose
   Linux:

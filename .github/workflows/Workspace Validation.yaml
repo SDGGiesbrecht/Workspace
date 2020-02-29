@@ -126,12 +126,6 @@ jobs:
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
-    - name: Compress PATH
-      shell: bash
-      run: |
-        set -x
-        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        echo "::set-env name=PATH::${PATH}"
     - name: Fetch dependencies
       shell: bash
       run: |
@@ -150,6 +144,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
         cmake --build '.build/SDG/CMake'
     - name: Test

@@ -493,6 +493,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
+  private func compressPATH() -> StrictString {
+    return "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
+  }
+
   internal func gitHubWorkflowJob(
     for project: PackageRepository,
     output: Command.Output
@@ -762,7 +766,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: buildStepName,
           localization: interfaceLocalization,
           commands: [
-            "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})",
+            compressPATH(),
             "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
             "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
           ]
@@ -773,6 +777,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: testStepName,
           localization: interfaceLocalization,
           commands: [
+            compressPATH(),
             "cd .build/SDG/CMake",
             "ctest \u{2D}\u{2D}verbose"
           ]

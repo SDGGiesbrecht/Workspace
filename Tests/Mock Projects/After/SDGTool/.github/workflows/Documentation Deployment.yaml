@@ -32,15 +32,37 @@ jobs:
       with:
         key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Validate
+    - name: Install SwiftPM dependencies
+      shell: bash
       run: |
-        apt-get update
-        apt-get install --assume-yes curl libsqlite3-dev libncurses-dev
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
         './Refresh (macOS).command' •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
+    - name: Document
+      shell: bash
+      run: |
+        set -x
         './Validate (macOS).command' •job deployment •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
         chmod -R a+rwx .
     - name: Deploy
+      shell: bash
       run: |
+        set -x
         cd docs
         git init
         git config user.name "${GITHUB_ACTOR}"

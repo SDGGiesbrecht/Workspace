@@ -728,7 +728,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: installWorkspaceStepName,
           localization: interfaceLocalization,
           commands: try Script.getWorkspace(
-            andExecute: "version",
+            andExecute: appendLanguage(to: "version", configuration: configuration),
             for: project,
             forwardingArguments: false,
             output: output

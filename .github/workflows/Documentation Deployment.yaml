@@ -47,7 +47,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run workspace version
+        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |

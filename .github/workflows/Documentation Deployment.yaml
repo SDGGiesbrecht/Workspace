@@ -43,6 +43,11 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
+    - name: Install Workspace
+      shell: bash
+      run: |
+        set -x
+        swift run workspace version
     - name: Refresh
       shell: bash
       run: |

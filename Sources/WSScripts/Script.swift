@@ -132,9 +132,13 @@ public enum Script: Int, CaseIterable {
   public static func getWorkspace(
     andExecute command: StrictString,
     for project: PackageRepository,
+    forwardingArguments: Bool = true,
     output: Command.Output
   ) throws -> [StrictString] {
-    let command = command.appending(contentsOf: " $1 $2 $3 $4")
+    var command = command
+    if forwardingArguments {
+      command.append(contentsOf: " $1 $2 $3 $4")
+    }
 
     if try project.isWorkspaceProject() {
       return ["swift run workspace " + command]

@@ -731,6 +731,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: try Script.getWorkspace(
               andExecute: appendLanguage(to: "version", configuration: configuration),
               for: project,
+              useSystemCache: false,
               forwardingArguments: false,
               output: output
             )

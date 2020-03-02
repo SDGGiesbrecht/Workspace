@@ -27,22 +27,6 @@ import WSProject
 extension PackageRepository {
 
   public func refreshContinuousIntegration(output: Command.Output) throws {
-
-    if try configuration(output: output).provideWorkflowScripts == false {
-      throw Command.Error(
-        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return
-              "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
-          case .deutschDeutschland:
-            return
-              "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
-          }
-        })
-      )
-    }
-
     try refreshGitHubWorkflows(output: output)
     delete(location.appendingPathComponent(".travis.yml"), output: output)
   }

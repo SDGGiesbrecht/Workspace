@@ -20,7 +20,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-internal enum Script: Int, CaseIterable {
+public enum Script: Int, CaseIterable {
 
   // MARK: - Cases
 
@@ -129,7 +129,7 @@ internal enum Script: Int, CaseIterable {
       + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
   }
 
-  private func getWorkspace(
+  public static func getWorkspace(
     andExecute command: StrictString,
     for project: PackageRepository,
     output: Command.Output
@@ -187,11 +187,11 @@ internal enum Script: Int, CaseIterable {
       lines.append(openTerminal(andExecute: "Validate"))
     case .refreshMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output)
+        contentsOf: try Script.getWorkspace(andExecute: "refresh", for: project, output: output)
       )
     case .validateMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output)
+        contentsOf: try Script.getWorkspace(andExecute: "validate", for: project, output: output)
       )
     }
 

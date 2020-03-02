@@ -724,9 +724,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS, .linux, .iOS, .watchOS, .tvOS:
       result.append(
-        script(heading: installWorkspaceStepName, localization: interfaceLocalization, commands: [
-          #error("Continue here.")
-        ])
+        script(
+          heading: installWorkspaceStepName,
+          localization: interfaceLocalization,
+          commands: try Script.getWorkspace(andExecute: "version", for: project, output: output)
+        )
       )
       result.append(
         script(

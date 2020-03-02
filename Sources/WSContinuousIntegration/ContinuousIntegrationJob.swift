@@ -381,7 +381,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "actions/cache@v1",
       with: [
         "key":
-          "\(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+          "\(os)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
         "path": PackageRepository.repositoryWorkspaceCacheDirectory
       ]
     )

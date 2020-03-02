@@ -25,7 +25,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
       shell: bash
@@ -38,12 +38,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        './Validate (macOS).command' •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     runs-on: windows-2019
     steps:
@@ -52,7 +52,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Windows‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Visual Studio up
       shell: bash
@@ -163,7 +163,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash
@@ -181,12 +181,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        './Validate (macOS).command' •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Grant permission to cache
       shell: bash
       run: |
@@ -200,7 +200,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
       shell: bash
@@ -213,12 +213,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift run test‐tvos‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   iOS:
     runs-on: macos-10.15
     steps:
@@ -227,7 +227,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: macOS‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Set Xcode up
       shell: bash
@@ -240,12 +240,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift run test‐ios‐simulator •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Android:
     runs-on: ubuntu-18.04
     steps:
@@ -254,7 +254,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Android‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install Swift
       shell: bash
@@ -384,7 +384,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('Refresh*') }}‐${{ hashFiles('.github/workflows/**') }}
+        key: Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash
@@ -402,12 +402,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        './Refresh (macOS).command' •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        './Validate (macOS).command' •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Grant permission to cache
       shell: bash
       run: |

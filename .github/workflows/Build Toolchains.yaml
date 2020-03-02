@@ -35,7 +35,7 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-    - name: Fetching source
+    - name: Fetch source
       shell: bash
       run: |
         set -x

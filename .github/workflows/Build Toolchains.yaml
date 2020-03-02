@@ -1,0 +1,37 @@
+
+name: Build Toolchains
+
+on: [push, pull_request]
+
+jobs:
+  Linux:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Install dependencies
+      shell: bash
+      run: |
+        set -x
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes \
+          clang \
+          cmake \
+          git \
+          icu-devtools \
+          libcurl4-openssl-dev \
+          libedit-dev \
+          libicu-dev \
+          libncurses5-dev \
+          libpython-dev \
+          libsqlite3-dev \
+          libxml2-dev \
+          ninja-build \
+          pkg-config \
+          python \
+          python-six \
+          rsync \
+          swig \
+          systemtap-sdt-dev \
+          tzdata \
+          uuid-dev

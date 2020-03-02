@@ -280,6 +280,27 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     return command
   }
+
+  private func workspaceStep(
+    named name: UserFacing<StrictString, InterfaceLocalization>,
+    command: StrictString,
+    localization: InterfaceLocalization,
+    configuration: WorkspaceConfiguration,
+    project: PackageRepository,
+    output: Command.Output
+  ) throws -> StrictString {
+    return script(
+      heading: name,
+      localization: localization,
+      commands: try Script.getWorkspace(
+        andExecute: appendLanguage(to: command, configuration: configuration),
+        for: project,
+        useSystemCache: false,
+        forwardingArguments: false,
+        output: output
+      )
+    )
+  }
   private func refreshCommand(configuration: WorkspaceConfiguration) -> StrictString {
     return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
   }
@@ -725,16 +746,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS, .linux, .iOS, .watchOS, .tvOS:
       if ¬(try project.isWorkspaceProject()) {
         result.append(
-          script(
-            heading: installWorkspaceStepName,
+          try workspaceStep(
+            named: installWorkspaceStepName,
+            command: "version",
             localization: interfaceLocalization,
-            commands: try Script.getWorkspace(
-              andExecute: appendLanguage(to: "version", configuration: configuration),
-              for: project,
-              useSystemCache: false,
-              forwardingArguments: false,
-              output: output
-            )
+            configuration: configuration,
+            project: project,
+            output: output
           )
         )
       }

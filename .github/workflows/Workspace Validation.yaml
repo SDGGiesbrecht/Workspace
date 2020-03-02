@@ -34,11 +34,6 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Install Workspace
-      shell: bash
-      run: |
-        set -x
-        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |
@@ -182,11 +177,6 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
-    - name: Install Workspace
-      shell: bash
-      run: |
-        set -x
-        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |
@@ -219,11 +209,6 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Install Workspace
-      shell: bash
-      run: |
-        set -x
-        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |
@@ -251,11 +236,6 @@ jobs:
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Install Workspace
-      shell: bash
-      run: |
-        set -x
-        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |
@@ -418,11 +398,6 @@ jobs:
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
-    - name: Install Workspace
-      shell: bash
-      run: |
-        set -x
-        swift run workspace version •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Refresh
       shell: bash
       run: |

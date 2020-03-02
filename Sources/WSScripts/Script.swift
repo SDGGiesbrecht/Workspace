@@ -132,6 +132,7 @@ public enum Script: Int, CaseIterable {
   public static func getWorkspace(
     andExecute command: StrictString,
     for project: PackageRepository,
+    useSystemCache: Bool = true,
     forwardingArguments: Bool = true,
     output: Command.Output
   ) throws -> [StrictString] {
@@ -151,16 +152,22 @@ public enum Script: Int, CaseIterable {
       let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
         + version + "/"
 
-      return [
+      var result: [StrictString] = [
         "if workspace version > /dev/null 2>&1 ; then",
         "    echo \u{22}Using system install of Workspace...\u{22}",
-        "    workspace \(arguments)",
-        "elif \(macOSCachePath)workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using system cache of Workspace...\u{22}",
-        "    \(macOSCachePath)workspace \(arguments)",
-        "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using system cache of Workspace...\u{22}",
-        "    \(linuxCachePath)workspace \(arguments)",
+        "    workspace \(arguments)"
+      ]
+      if useSystemCache {
+        result.append(contentsOf: [
+          "elif \(macOSCachePath)workspace version > /dev/null 2>&1 ; then",
+          "    echo \u{22}Using system cache of Workspace...\u{22}",
+          "    \(macOSCachePath)workspace \(arguments)",
+          "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
+          "    echo \u{22}Using system cache of Workspace...\u{22}",
+          "    \(linuxCachePath)workspace \(arguments)"
+        ])
+      }
+      result.append(contentsOf: [
         "elif \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace version > /dev/null 2>&1 ; then",
         "    echo \u{22}Using repository cache of Workspace...\u{22}",
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
@@ -170,7 +177,8 @@ public enum Script: Int, CaseIterable {
         "    curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} \(version) \u{22}\u{22} workspace",
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
         "fi"
-      ]
+      ])
+      return result
     }
   }
 

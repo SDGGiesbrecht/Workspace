@@ -301,16 +301,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       )
     )
   }
-  private func refreshCommand(configuration: WorkspaceConfiguration) -> StrictString {
-    return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
-  }
-  private func validateCommand(configuration: WorkspaceConfiguration) -> StrictString {
-    return appendLanguage(
-      to:
-        "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))",
-      configuration: configuration
-    )
-  }
 
   // MARK: - GitHub Actions
 
@@ -757,22 +747,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       }
       result.append(
-        script(
-          heading: refreshStepName,
+        try workspaceStep(
+          named: refreshStepName,
+          command: "refresh",
           localization: interfaceLocalization,
-          commands: [
-            refreshCommand(configuration: configuration)
-          ]
+          configuration: configuration,
+          project: project,
+          output: output
         )
       )
       let mainStepName = self == .deployment ? documentStepName : validateStepName
       result.append(
-        script(
-          heading: mainStepName,
+        try workspaceStep(
+          named: mainStepName,
+          command: "validate •job \(argumentName.resolved(for: .englishCanada))",
           localization: interfaceLocalization,
-          commands: [
-            validateCommand(configuration: configuration)
-          ]
+          configuration: configuration,
+          project: project,
+          output: output
         )
       )
     case .windows:

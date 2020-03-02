@@ -35,3 +35,9 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+    - name: Build toolchain
+      shell: bash
+      run: |
+        set -x
+        cd swift-source/swift
+        utils/build-script --release

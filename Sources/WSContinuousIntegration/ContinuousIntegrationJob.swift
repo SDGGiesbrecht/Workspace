@@ -724,6 +724,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS, .linux, .iOS, .watchOS, .tvOS:
       result.append(
+        script(heading: installWorkspaceStepName, localization: interfaceLocalization, commands: [
+          #error("Continue here.")
+        ])
+      )
+      result.append(
         script(
           heading: refreshStepName,
           localization: interfaceLocalization,
@@ -1045,6 +1050,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Install cURL"
       case .deutschDeutschland:
         return "cURL installieren"
+      }
+    })
+  }
+
+  private var installWorkspaceStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Workspace"
+      case .deutschDeutschland:
+        return "Arbeitsbereich installieren"
       }
     })
   }

@@ -13,8 +13,8 @@ jobs:
       shell: bash
       run: |
         set -x
-        apt-get update --assume-yes
-        apt-get install --assume-yes \
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes \
           clang \
           cmake \
           git \

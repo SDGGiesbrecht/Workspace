@@ -35,6 +35,14 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+    - name: Fetch source
+      shell: bash
+      run: |
+        set -x
+        mkdir swift-source
+        cd swift-source
+        git clone https://github.com/apple/swift.git
+        ./swift/utils/update-checkout --clone
     - name: Build toolchain
       shell: bash
       run: |

@@ -2,5 +2,4 @@ $ arbeitsbereich refresh continuous‐integration •no‐colour
 
 Konfiguration für fortlaufende Einbindung wird aufgefrischt ...
 
-Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)
-9223372036854775807
+0

@@ -43,3 +43,9 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git
         ./swift/utils/update-checkout --clone
+    - name: Build toolchain
+      shell: bash
+      run: |
+        set -x
+        cd swift-source/swift
+        utils/build-script --release

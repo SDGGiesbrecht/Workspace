@@ -20,7 +20,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-internal enum Script: Int, CaseIterable {
+public enum Script: Int, CaseIterable {
 
   // MARK: - Cases
 
@@ -129,12 +129,58 @@ internal enum Script: Int, CaseIterable {
       + script + "\u{5C} \u{5C}(macOS\u{5C}).command; exec bash\u{5C}\u{22}\u{22}"
   }
 
-  private func getWorkspace(
+  private static let usingSystemInstall = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Using system install of Workspace..."
+      case .deutschDeutschland:
+        return "Systeminstallation von Arbeitsbereich wird verwendet ..."
+      }
+    })
+
+  private static let usingSystemCache = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Using system cache of Workspace..."
+      case .deutschDeutschland:
+        return "Systemzwischenspeicher von Arbeitsbereich wird verwendet ..."
+      }
+    })
+
+  private static let usingRepositoryCache = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Using repository cache of Workspace..."
+      case .deutschDeutschland:
+        return "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
+      }
+    })
+
+  private static let fetching = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "No cached build detected; fetching Workspace..."
+      case .deutschDeutschland:
+        return "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+      }
+    })
+
+  public static func getWorkspace(
     andExecute command: StrictString,
     for project: PackageRepository,
+    useSystemCache: Bool = true,
+    forwardingArguments: Bool = true,
     output: Command.Output
   ) throws -> [StrictString] {
-    let command = command.appending(contentsOf: " $1 $2 $3 $4")
+    var command = command
+    if forwardingArguments {
+      command.append(contentsOf: " $1 $2 $3 $4")
+    }
+    let localization = try project.configuration(output: output).developmentInterfaceLocalization()
 
     if try project.isWorkspaceProject() {
       return ["swift run workspace " + command]
@@ -147,26 +193,33 @@ internal enum Script: Int, CaseIterable {
       let linuxCachePath: StrictString = "~/.cache/ca.solideogloria.Workspace/Versions/"
         + version + "/"
 
-      return [
+      var result: [StrictString] = [
         "if workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using system install of Workspace...\u{22}",
-        "    workspace \(arguments)",
-        "elif \(macOSCachePath)workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using system cache of Workspace...\u{22}",
-        "    \(macOSCachePath)workspace \(arguments)",
-        "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using system cache of Workspace...\u{22}",
-        "    \(linuxCachePath)workspace \(arguments)",
+        "    echo \u{22}\(usingSystemInstall.resolved(for: localization))\u{22}",
+        "    workspace \(arguments)"
+      ]
+      if useSystemCache {
+        result.append(contentsOf: [
+          "elif \(macOSCachePath)workspace version > /dev/null 2>&1 ; then",
+          "    echo \u{22}\(usingSystemCache.resolved(for: localization))\u{22}",
+          "    \(macOSCachePath)workspace \(arguments)",
+          "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
+          "    echo \u{22}\(usingSystemCache.resolved(for: localization))\u{22}",
+          "    \(linuxCachePath)workspace \(arguments)"
+        ])
+      }
+      result.append(contentsOf: [
         "elif \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace version > /dev/null 2>&1 ; then",
-        "    echo \u{22}Using repository cache of Workspace...\u{22}",
+        "    echo \u{22}\(usingRepositoryCache.resolved(for: localization))\u{22}",
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
         "else",
-        "    echo \u{22}No cached build detected, fetching Workspace...\u{22}",
+        "    echo \u{22}\(fetching.resolved(for: localization))\u{22}",
         "    export OVERRIDE_INSTALLATION_DIRECTORY=\(PackageRepository.repositorySDGDirectory)",
         "    curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} \(version) \u{22}\u{22} workspace",
         "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
         "fi"
-      ]
+      ])
+      return result
     }
   }
 
@@ -187,11 +240,11 @@ internal enum Script: Int, CaseIterable {
       lines.append(openTerminal(andExecute: "Validate"))
     case .refreshMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "refresh", for: project, output: output)
+        contentsOf: try Script.getWorkspace(andExecute: "refresh", for: project, output: output)
       )
     case .validateMacOS:
       lines.append(
-        contentsOf: try getWorkspace(andExecute: "validate", for: project, output: output)
+        contentsOf: try Script.getWorkspace(andExecute: "validate", for: project, output: output)
       )
     }
 

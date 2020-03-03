@@ -27,22 +27,6 @@ import WSProject
 extension PackageRepository {
 
   public func refreshContinuousIntegration(output: Command.Output) throws {
-
-    if try configuration(output: output).provideWorkflowScripts == false {
-      throw Command.Error(
-        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return
-              "Continuous integration requires workflow scripts to be present. (provideWorkflowScripts)"
-          case .deutschDeutschland:
-            return
-              "Fortlaufende Einbindung benötigt, dass Arbeitsablaufsskripte vorhanden sind. (arbeitsablaufsskripteBereitstellen)"
-          }
-        })
-      )
-    }
-
     try refreshGitHubWorkflows(output: output)
     delete(location.appendingPathComponent(".travis.yml"), output: output)
   }
@@ -135,13 +119,13 @@ extension PackageRepository {
         var line = line
         line.scalars.replaceMatches(
           for:
-            "\u{27}./Validate (macOS).command\u{27} •job ios"
+            "swift run workspace validate •job ios •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
             .scalars,
           with: "swift run test‐ios‐simulator".scalars
         )
         line.scalars.replaceMatches(
           for:
-            "\u{27}./Validate (macOS).command\u{27} •job tvos"
+            "swift run workspace validate •job tvos •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
             .scalars,
           with: "swift run test‐tvos‐simulator".scalars
         )

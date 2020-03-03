@@ -280,14 +280,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     return command
   }
-  private func refreshCommand(configuration: WorkspaceConfiguration) -> StrictString {
-    return appendLanguage(to: "\u{27}./Refresh (macOS).command\u{27}", configuration: configuration)
-  }
-  private func validateCommand(configuration: WorkspaceConfiguration) -> StrictString {
-    return appendLanguage(
-      to:
-        "\u{27}./Validate (macOS).command\u{27} •job \(argumentName.resolved(for: .englishCanada))",
-      configuration: configuration
+
+  private func workspaceStep(
+    named name: UserFacing<StrictString, InterfaceLocalization>,
+    command: StrictString,
+    localization: InterfaceLocalization,
+    configuration: WorkspaceConfiguration,
+    project: PackageRepository,
+    output: Command.Output
+  ) throws -> StrictString {
+    return script(
+      heading: name,
+      localization: localization,
+      commands: try Script.getWorkspace(
+        andExecute: appendLanguage(to: command, configuration: configuration),
+        for: project,
+        useSystemCache: false,
+        forwardingArguments: false,
+        output: output
+      )
     )
   }
 
@@ -370,7 +381,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "actions/cache@v1",
       with: [
         "key":
-          "\(os)‐${{ hashFiles(\u{27}Refresh*\u{27}) }}‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+          "\(os)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
         "path": PackageRepository.repositoryWorkspaceCacheDirectory
       ]
     )
@@ -723,23 +734,37 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
     switch platform {
     case .macOS, .linux, .iOS, .watchOS, .tvOS:
+      if ¬(try project.isWorkspaceProject()) {
+        result.append(
+          try workspaceStep(
+            named: installWorkspaceStepName,
+            command: "version",
+            localization: interfaceLocalization,
+            configuration: configuration,
+            project: project,
+            output: output
+          )
+        )
+      }
       result.append(
-        script(
-          heading: refreshStepName,
+        try workspaceStep(
+          named: refreshStepName,
+          command: "refresh",
           localization: interfaceLocalization,
-          commands: [
-            refreshCommand(configuration: configuration)
-          ]
+          configuration: configuration,
+          project: project,
+          output: output
         )
       )
       let mainStepName = self == .deployment ? documentStepName : validateStepName
       result.append(
-        script(
-          heading: mainStepName,
+        try workspaceStep(
+          named: mainStepName,
+          command: "validate •job \(argumentName.resolved(for: .englishCanada))",
           localization: interfaceLocalization,
-          commands: [
-            validateCommand(configuration: configuration)
-          ]
+          configuration: configuration,
+          project: project,
+          output: output
         )
       )
     case .windows:
@@ -1045,6 +1070,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Install cURL"
       case .deutschDeutschland:
         return "cURL installieren"
+      }
+    })
+  }
+
+  private var installWorkspaceStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Workspace"
+      case .deutschDeutschland:
+        return "Arbeitsbereich installieren"
       }
     })
   }

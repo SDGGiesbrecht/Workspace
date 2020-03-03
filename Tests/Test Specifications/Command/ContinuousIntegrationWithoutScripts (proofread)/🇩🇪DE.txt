@@ -5,6 +5,9 @@ Deteien werden normalisiert ...
 
 Quelltext Korrektur wird gelesen ...
 
+.github/workflows/Android/SDK.json
+.github/workflows/Windows/WindowsMain.swift
+.github/workflows/Workspace Validation.yaml
 .gitignore
 LICENSE.md
 Package.swift

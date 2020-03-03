@@ -1,6 +1,12 @@
+# Workspace Validation.yaml
+#
+#
+# ©2020
+#
+# Licensed under the MIT Licence.
+# See https://opensource.org/licenses/MIT for licence information.
 
-
-name: Arbeitsbereichprüfung
+name: Workspace Validation
 
 on: [push, pull_request]
 
@@ -8,79 +14,79 @@ jobs:
   macOS:
     runs-on: macos-10.15
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Xcode einrichten
+    - name: Set Xcode up
       shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job macos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job macos •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job macos •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job macos •use‐version 0.30.2
         fi
   Windows:
     runs-on: windows-2019
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Visual Studio einrichten
+    - name: Set Visual Studio up
       shell: bash
       run: |
         set -x
@@ -95,7 +101,7 @@ jobs:
         echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
         echo "::set-env name=UCRTVersion::${UCRTVersion}"
         echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
-    - name: WinSDK‐Modulabbildungen holen
+    - name: Fetch WinSDK module maps
       shell: bash
       run: |
         set -x
@@ -111,7 +117,7 @@ jobs:
         curl --location \
           'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: ICU holen
+    - name: Fetch ICU
       shell: bash
       run: |
         set -x
@@ -125,7 +131,7 @@ jobs:
         mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
-    - name: Swift installieren
+    - name: Install Swift
       shell: bash
       run: |
         set -x
@@ -152,18 +158,18 @@ jobs:
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
-    - name: Abhängigkeiten holen
+    - name: Fetch dependencies
       shell: bash
       run: |
         set -x
-    - name: Erstellen
+    - name: Build
       shell: bash
       run: |
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
         cmake --build '.build/SDG/CMake'
-    - name: Testen
+    - name: Test
       shell: bash
       run: |
         set -x
@@ -174,74 +180,74 @@ jobs:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: SwiftPM‐Abhängigkeiten installieren
+    - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes libsqlite3-dev libncurses-dev
-    - name: cURL installieren
+    - name: Install cURL
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job linux •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job linux •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job linux •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job linux •use‐version 0.30.2
         fi
-    - name: Zugriffsrechte zum Zwischenspeichern erteilen
+    - name: Grant permission to cache
       shell: bash
       run: |
         set -x
@@ -249,144 +255,144 @@ jobs:
   tvOS:
     runs-on: macos-10.15
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Xcode einrichten
+    - name: Set Xcode up
       shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job tvos •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job tvos •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job tvos •use‐version 0.30.2
         fi
   iOS:
     runs-on: macos-10.15
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Xcode einrichten
+    - name: Set Xcode up
       shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job ios •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job ios •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job ios •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job ios •use‐version 0.30.2
         fi
   Android:
     runs-on: ubuntu-18.04
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Swift installieren
+    - name: Install Swift
       shell: bash
       run: |
         set -x
@@ -397,7 +403,7 @@ jobs:
         mkdir -p /
         sudo cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
         swift --version
-    - name: Fremdübersetzungs Werkzeugkette holen
+    - name: Fetch cross‐compilation toolchain
       shell: bash
       run: |
         set -x
@@ -409,7 +415,7 @@ jobs:
         sudo cp -R /tmp/toolchain-linux-x64/* /
         sudo chmod -R a+rwx /Library
         /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
-    - name: Android‐Entwicklungsausrüstung holen
+    - name: Fetch Android SDK
       shell: bash
       run: |
         set -x
@@ -426,7 +432,7 @@ jobs:
         patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
         mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         cp -R ${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-    - name: ICU holen
+    - name: Fetch ICU
       shell: bash
       run: |
         set -x
@@ -439,7 +445,7 @@ jobs:
         curl --location \
           'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
           --output '/Library/icu-64/usr/lib/libicudt64.so'
-    - name: Erstellen
+    - name: Build
       shell: bash
       run: |
         set -x
@@ -453,7 +459,7 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
-    - name: Bibliotheken kopieren
+    - name: Copy libraries
       shell: bash
       run: |
         set -x
@@ -465,7 +471,7 @@ jobs:
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
         mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
-    - name: Teste hochladen
+    - name: Upload tests
       uses: actions/upload-artifact@v1
       with:
         name: tests
@@ -475,14 +481,14 @@ jobs:
     runs-on: macos-10.15
     needs: Android
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Teste herunterladen
+    - name: Download tests
       uses: actions/download-artifact@v1
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug
-    - name: Skript vorbereiten
+    - name: Prepare script
       shell: bash
       run: |
         set -x
@@ -495,12 +501,12 @@ jobs:
           LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
           HOME=/data/local/tmp/Home \
           SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
-          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/DeutschPackageTests.xctest
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/ContinuousIntegrationWithoutScriptsPackageTests.xctest
         ' > .build/SDG/Emulator.sh
         chmod +x .build/SDG/Emulator.sh
-    - name: Emulator installieren
+    - name: Install emulator
       uses: malinskiy/action-android/install-sdk@release/0.0.5
-    - name: Testen
+    - name: Test
       uses: malinskiy/action-android/emulator-run-cmd@release/0.0.5
       with:
         abi: x86_64
@@ -508,140 +514,140 @@ jobs:
   watchOS:
     runs-on: macos-10.15
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Xcode einrichten
+    - name: Set Xcode up
       shell: bash
       run: |
         set -x
         export DEVELOPER_DIR=/Applications/Xcode_11.3.1.app/Contents/Developer
         echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
         xcodebuild -version
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job watchos •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job watchos •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job watchos •use‐version 0.30.2
         fi
-  Sonstiges:
+  Miscellaneous:
     runs-on: ubuntu-18.04
     container: swift:5.1.3-bionic
     steps:
-    - name: Holen
+    - name: Check out
       uses: actions/checkout@v1
-    - name: Arbeitsbereich zwischenspeichern
+    - name: Cache Workspace
       uses: actions/cache@v1
       with:
         key: Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: SwiftPM‐Abhängigkeiten installieren
+    - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes libsqlite3-dev libncurses-dev
-    - name: cURL installieren
+    - name: Install cURL
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
         apt-get install --assume-yes curl
-    - name: Arbeitsbereich installieren
+    - name: Install Workspace
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace version •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace version •use‐version 0.30.2
         fi
-    - name: Auffrischen
+    - name: Refresh
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace refresh •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace refresh •use‐version 0.30.2
         fi
-    - name: Prüfen
+    - name: Validate
       shell: bash
       run: |
         set -x
         if workspace version > /dev/null 2>&1 ; then
-            echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using system install of Workspace..."
+            workspace validate •job miscellaneous •use‐version 0.30.2
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
-            echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.30.2
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job miscellaneous •use‐version 0.30.2
         else
-            echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
+            echo "No cached build detected; fetching Workspace..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
             curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.30.2 "" workspace
-            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.30.2
+            .build/SDG/Workspace/workspace validate •job miscellaneous •use‐version 0.30.2
         fi
-    - name: Zugriffsrechte zum Zwischenspeichern erteilen
+    - name: Grant permission to cache
       shell: bash
       run: |
         set -x

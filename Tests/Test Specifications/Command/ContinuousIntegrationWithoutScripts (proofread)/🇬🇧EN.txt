@@ -2,6 +2,7 @@ $ workspace proofread •no‐colour
 
 Normalising files...
 
+Writing to ‘.github/workflows/Windows/WindowsMain.swift’...
 Writing to ‘Package.swift’...
 Writing to ‘Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.swift’...
 Writing to ‘Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift’...
@@ -9,6 +10,9 @@ Writing to ‘Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swi
 
 Proofreading source code... (§1)
 
+.github/workflows/Android/SDK.json
+.github/workflows/Windows/WindowsMain.swift
+.github/workflows/Workspace Validation.yaml
 .gitignore
 LICENSE.md
 Package.swift

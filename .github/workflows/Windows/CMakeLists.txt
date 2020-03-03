@@ -910,6 +910,7 @@ target_compile_options("WSAndroidTests" PRIVATE -enable-testing)
 target_link_libraries("WSAndroidTests" PRIVATE
   "SDGPersistence"
   "SDGXCTestUtilities"
+  "SDGPersistenceTestUtilities"
 )
 
 add_library("WSLocalizations"

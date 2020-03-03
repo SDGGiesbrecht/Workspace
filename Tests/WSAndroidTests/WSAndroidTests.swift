@@ -34,7 +34,11 @@ final class AndroidTests: TestCase {
   }
 
   func testRepositoryPresence() throws {
-    compare("Android", against: testSpecificationDirectory().appendingPathComponent("Android.txt"), overwriteSpecificationInsteadOfFailing: false)
+    compare(
+      "Android",
+      against: testSpecificationDirectory().appendingPathComponent("Android.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
     let ignored = testSpecificationDirectory()
       .deletingPathExtension().deletingPathExtension()

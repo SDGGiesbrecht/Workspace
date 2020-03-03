@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Install Swift dependencies
       shell: bash
       run: |
         set -x
@@ -35,7 +35,12 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-    - name: Fetch source
+    - name: Fetch ICU source
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/unicode-org/icu --branch release-65-1
+    - name: Fetch Swift source
       shell: bash
       run: |
         set -x
@@ -43,7 +48,7 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git
         ./swift/utils/update-checkout --clone
-    - name: Build toolchain
+    - name: Build Swift toolchain
       shell: bash
       run: |
         set -x

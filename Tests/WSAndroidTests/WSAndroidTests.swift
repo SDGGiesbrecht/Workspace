@@ -45,24 +45,8 @@ final class AndroidTests: TestCase {
   }
 
   func testTemporaryDirectoryPermissions() throws {
-    // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
-    try {
-      var directory: URL
-      if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
-        directory = FileManager.default.temporaryDirectory
-      } else {
-        directory = URL(fileURLWithPath: NSTemporaryDirectory())
-      }
-      directory.appendPathComponent(UUID().uuidString)
-      defer { try? FileManager.default.removeItem(at: directory) }
-
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
-    }()
-
-    #if !os(Android)  // #workaround(SDGCornerstone 4.3.2, Crashes for other reasons.)
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-        try "text".save(to: directory.appendingPathComponent("Text.txt"))
-      }
-    #endif
+    }
   }
 }

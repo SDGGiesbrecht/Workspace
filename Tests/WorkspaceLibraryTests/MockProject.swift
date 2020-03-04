@@ -59,21 +59,35 @@ extension PackageRepository {
     file: StaticString = #file,
     line: UInt = #line
   ) where L: InputLocalization {
+    #warning("Debugging...")
+    print("Starting:", #function)
 
     do {
       try autoreleasepool {
         let developer = URL(fileURLWithPath: "/tmp/Developer")
+        #warning("Debugging...")
+        print("developer:", developer.path)
         try? FileManager.default.removeItem(at: developer)
+        #warning("Debugging...")
+        print("Removed:", developer.path)
         defer { try? FileManager.default.removeItem(at: developer) }
         if withDependency ∨ withCustomTask {
 
           let dependency = developer.appendingPathComponent("Dependency")
+          #warning("Debugging...")
+          print("dependency:", dependency.path)
           try FileManager.default.do(in: dependency) {
+            #warning("Debugging...")
+            print("Inside dependency:", dependency.path)
             var initialize = ["swift", "package", "init"]
             if withCustomTask {
               initialize += ["\u{2D}\u{2D}type", "executable"]
             }
+            #warning("Debugging...")
+            print("Running shell:", initialize)
             _ = try Shell.default.run(command: initialize).get()
+            #warning("Debugging...")
+            print("Done shell:", developer.path)
             if withCustomTask {
               let manifest = dependency.appendingPathComponent("Package.swift")
               var manifestContents = try StrictString(from: manifest)

@@ -19,12 +19,16 @@ import WSGeneralImports
 let repositoryRoot: URL = {
   if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
     // @exempt(from: tests)
+    #warning("Debugging...")
+    prit("Overridden:", overridden)
     return URL(fileURLWithPath: overridden)
   } else {
     var result = URL(fileURLWithPath: #file)
     for _ in 1...3 {
       result.deleteLastPathComponent()
     }
+    #warning("Debugging...")
+    prit("Default:", overridden)
     return result
   }
 }()

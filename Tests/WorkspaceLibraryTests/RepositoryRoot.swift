@@ -20,7 +20,7 @@ let repositoryRoot: URL = {
   if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
     // @exempt(from: tests)
     #warning("Debugging...")
-    prit("Overridden:", overridden)
+    print("Overridden:", overridden)
     return URL(fileURLWithPath: overridden)
   } else {
     var result = URL(fileURLWithPath: #file)
@@ -28,7 +28,7 @@ let repositoryRoot: URL = {
       result.deleteLastPathComponent()
     }
     #warning("Debugging...")
-    prit("Default:", overridden)
+    print("Default:", result)
     return result
   }
 }()

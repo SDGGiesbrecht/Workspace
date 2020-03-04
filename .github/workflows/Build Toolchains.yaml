@@ -35,6 +35,13 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+    - name: Check Android NDK
+      shell: bash
+      run: |
+        set -x
+        export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        which ndk-build
     - name: Fetch ICU source
       shell: bash
       run: |

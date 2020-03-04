@@ -21,6 +21,7 @@ import SDGPersistence
 import XCTest
 
 import SDGXCTestUtilities
+import SDGPersistenceTestUtilities
 
 final class AndroidTests: TestCase {
 
@@ -33,48 +34,23 @@ final class AndroidTests: TestCase {
   }
 
   func testRepositoryPresence() throws {
-    // #workaround(SDGCornerstone 4.3.2, SDGCornerstone test specifications don’t account for the environment.)
-    let thisFile = URL(fileURLWithPath: #file)
-    let compileTimeRepository =
-      thisFile
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-    let relativePath = thisFile.path(relativeTo: compileTimeRepository)
+    compare(
+      "Android",
+      against: testSpecificationDirectory().appendingPathComponent("Android.txt"),
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
-    let runTimeRepository = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"]
-      .map({ URL(fileURLWithPath: $0) })
-      ?? compileTimeRepository
-
-    let runTimeFile = runTimeRepository.appendingPathComponent(relativePath)
-    let contents = try String(from: runTimeFile)
-    XCTAssert(contents.contains("func testRepositoryPresence()"))
-
-    let ignored = runTimeRepository.appendingPathComponent(".build/SDG/Ignored/Text.txt")
+    let ignored = testSpecificationDirectory()
+      .deletingPathExtension().deletingPathExtension()
+      .appendingPathComponent(".build/SDG/Ignored/Text.txt")
     try? FileManager.default.removeItem(at: ignored)
     defer { try? FileManager.default.removeItem(at: ignored) }
     try "text".save(to: ignored)
   }
 
   func testTemporaryDirectoryPermissions() throws {
-    // #workaround(SDGCornerstone 4.3.2, SDGCornerstone method crashes.)
-    try {
-      var directory: URL
-      if #available(macOS 10.12, iOS 10, watchOS 3, tvOS 10, *) {
-        directory = FileManager.default.temporaryDirectory
-      } else {
-        directory = URL(fileURLWithPath: NSTemporaryDirectory())
-      }
-      directory.appendPathComponent(UUID().uuidString)
-      defer { try? FileManager.default.removeItem(at: directory) }
-
+    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
-    }()
-
-    #if !os(Android)  // #workaround(SDGCornerstone 4.3.2, Crashes for other reasons.)
-      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-        try "text".save(to: directory.appendingPathComponent("Text.txt"))
-      }
-    #endif
+    }
   }
 }

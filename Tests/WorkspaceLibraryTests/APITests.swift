@@ -1367,7 +1367,9 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
       try FileManager.default.do(in: repositoryRoot) {
         _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-        _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+        #if !os(Android)  // #workaround(Swift unavailable in emulator.)
+          _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+        #endif
       }
     #endif
   }

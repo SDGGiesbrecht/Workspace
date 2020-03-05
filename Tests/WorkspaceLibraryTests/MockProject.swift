@@ -126,7 +126,10 @@ extension PackageRepository {
         defer { try? FileManager.default.removeItem(at: location) }
 
         try FileManager.default.do(in: location) {
-          Shell.default.run(command: ["git", "init"])
+          #if os(Android)
+            return // #workaround(Git is unavailable in the emulator.)
+          #endif
+          _ = try Shell.default.run(command: ["git", "init"]).get()
           let gitIgnore = location.appendingPathComponent(".gitignore")
           if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
             _ = try? FileManager.default.copy(

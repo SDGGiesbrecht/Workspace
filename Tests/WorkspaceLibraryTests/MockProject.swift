@@ -122,18 +122,7 @@ extension PackageRepository {
         _isDuringSpecificationTest = true
 
         try? FileManager.default.removeItem(at: location)
-        #if os(Linux)
-          _ = try Shell.default.run(command: [
-            "cp", "\u{2D}r", Shell.quote(beforeLocation.path),
-            Shell.quote(location.path)
-          ]).get()
-        #else
-          #warning("Debugging...")
-          print("Copying to location:", location.path)
-          try FileManager.default.copy(beforeLocation, to: location)
-          #warning("Debugging...")
-          print("Copyied to location:", location.path)
-        #endif
+        try FileManager.default.copy(beforeLocation, to: location)
         defer { try? FileManager.default.removeItem(at: location) }
 
         try FileManager.default.do(in: location) {
@@ -422,7 +411,7 @@ extension PackageRepository {
               files.insert(file.path(relativeTo: afterLocation))
             }
 
-            for fileName in files where ¬fileName.hasSuffix(".dsidx") {
+            for fileName in files {
               let result = location.appendingPathComponent(fileName)
               let after = afterLocation.appendingPathComponent(fileName)
               if let resultContents = try? String(from: result) {

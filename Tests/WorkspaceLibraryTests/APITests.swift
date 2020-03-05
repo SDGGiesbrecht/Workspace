@@ -810,84 +810,86 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    testCommand(
-      Workspace.command,
-      with: ["help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["proofread", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace proofread)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
-        }
-      }
-    #else
+    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault)
       testCommand(
         Workspace.command,
-        with: ["refresh", "help"],
+        with: ["help"],
         localizations: InterfaceLocalization.self,
-        uniqueTestName: "Help (workspace refresh)",
+        uniqueTestName: "Help (workspace)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["proofread", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace proofread)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
+        for localization in InterfaceLocalization.allCases {
+          try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
+            _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
+          }
+        }
+      #else
+        testCommand(
+          Workspace.command,
+          with: ["refresh", "help"],
+          localizations: InterfaceLocalization.self,
+          uniqueTestName: "Help (workspace refresh)",
+          overwriteSpecificationInsteadOfFailing: false
+        )
+      #endif
+      testCommand(
+        Workspace.command,
+        with: ["validate", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace validate)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["document", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace document)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "continuous‐integration", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh continuous‐integration)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "examples", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh examples)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "inherited‐documentation", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "resources", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh resources)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "scripts", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh scripts)",
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
-    testCommand(
-      Workspace.command,
-      with: ["validate", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace validate)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["document", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace document)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "continuous‐integration", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh continuous‐integration)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "examples", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh examples)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "inherited‐documentation", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "resources", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh resources)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "scripts", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh scripts)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
   }
 
   func testInvalidResourceDirectory() {

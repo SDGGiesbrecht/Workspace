@@ -42,6 +42,12 @@ jobs:
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         which ndk-build
+    - name: Install ICU dependencies:
+      shell: bash
+      run: |
+        set -x
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes gmake
     - name: Fetch ICU source
       shell: bash
       run: |

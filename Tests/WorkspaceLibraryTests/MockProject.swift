@@ -44,8 +44,14 @@ extension PackageRepository {
   // MARK: - Initialization
 
   init(mock name: String) {
-    // Not using url(in: .temporary) because the dynamic URL causes Xcode’s derived data to grow limitlessly over many test iterations.
-    self.init(at: URL(fileURLWithPath: "/tmp").appendingPathComponent(name))
+    let temporary: URL
+    #if os(macOS)
+      // Not using FileManager.default.temporaryDirectory because the dynamic URL causes Xcode’s derived data to grow limitlessly over many test iterations.
+      temporary = URL(fileURLWithPath: "/tmp")
+    #else
+      temporary = FileManager.default.temporaryDirectory
+    #endif
+    self.init(at: temporary.appendingPathComponent(name))
   }
 
   func test<L>(
@@ -102,13 +108,9 @@ extension PackageRepository {
             _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
           }
         }
-        #warning("Debugging...")
-        print("Skipped dependency.")
         let beforeLocation = PackageRepository.beforeDirectory(
           for: location.lastPathComponent
         )
-        #warning("Debugging...")
-        print("beforeLocation:", beforeLocation.path)
 
         #if !os(Windows)
           // Simulators are not available to all CI jobs and must be tested separately.
@@ -119,8 +121,6 @@ extension PackageRepository {
         #endif
         _isDuringSpecificationTest = true
 
-        #warning("Debugging...")
-        print("Removing location:", location.path)
         try? FileManager.default.removeItem(at: location)
         #if os(Linux)
           _ = try Shell.default.run(command: [
@@ -128,11 +128,11 @@ extension PackageRepository {
             Shell.quote(location.path)
           ]).get()
         #else
-        #warning("Debugging...")
-        print("Copying to location:", location.path)
+          #warning("Debugging...")
+          print("Copying to location:", location.path)
           try FileManager.default.copy(beforeLocation, to: location)
-        #warning("Debugging...")
-        print("Copyied to location:", location.path)
+          #warning("Debugging...")
+          print("Copyied to location:", location.path)
         #endif
         defer { try? FileManager.default.removeItem(at: location) }
 

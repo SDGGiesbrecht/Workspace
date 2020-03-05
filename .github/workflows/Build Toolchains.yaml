@@ -51,7 +51,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        cd icu
+        cd icu/icu4c
         mkdir Linux
         cd Linux
         ../source/runConfigureICU Linux

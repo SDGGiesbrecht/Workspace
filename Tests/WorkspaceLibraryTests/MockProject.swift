@@ -127,7 +127,7 @@ extension PackageRepository {
 
         try FileManager.default.do(in: location) {
           #if os(Android)
-            return // #workaround(Git is unavailable in the emulator.)
+            return  // #workaround(Git is unavailable in the emulator.)
           #endif
           _ = try Shell.default.run(command: ["git", "init"]).get()
           let gitIgnore = location.appendingPathComponent(".gitignore")

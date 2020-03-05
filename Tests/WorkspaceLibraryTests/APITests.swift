@@ -1364,13 +1364,13 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
-      try FileManager.default.do(in: repositoryRoot) {
-        _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-        #if !os(Android)  // #workaround(Swift unavailable in emulator.)
+    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault.)
+      #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+        try FileManager.default.do(in: repositoryRoot) {
+          _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
-        #endif
-      }
+        }
+      #endif
     #endif
   }
 

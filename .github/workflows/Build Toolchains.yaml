@@ -53,7 +53,7 @@ jobs:
         set -x
         mkdir icu4c-build-linux
         cd icu4c-build-linux
-        .. icu/icu4c/source/runConfigureICU Linux
+        ../icu/icu4c/source/runConfigureICU Linux
         gmake
     - name: Fetch Swift source
       shell: bash

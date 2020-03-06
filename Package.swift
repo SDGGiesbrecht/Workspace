@@ -718,9 +718,9 @@ let package = Package(
       path: "Tests/WSCrossPlatform"
     ),
     .target(
-      name: "WSWindowsTool",
+      name: "WSCrossPlatformTool",
       dependencies: ["WSCrossPlatform"],
-      path: "Tests/WSWindowsTool"
+      path: "Tests/WSCrossPlatformTool"
     ),
     .target(
       name: "WSWindows‐Unicode",

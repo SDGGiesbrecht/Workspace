@@ -46,7 +46,15 @@ jobs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/unicode-org/icu --branch release-65-1
+        git clone https://github.com/unicode-org/icu --branch release-65-1 --depth 1
+    - name: Build ICU for Linux
+      shell: bash
+      run: |
+        set -x
+        mkdir icu4c-build-linux
+        cd icu4c-build-linux
+        ../icu/icu4c/source/runConfigureICU Linux
+        make
     - name: Fetch Swift source
       shell: bash
       run: |

@@ -913,6 +913,12 @@ target_link_libraries("WSAndroidTests" PRIVATE
   "SDGPersistenceTestUtilities"
 )
 
+add_library("WSCrossPlatformC"
+  "../../../Tests/WSCrossPlatformC/CrossPlatform.c"
+)
+set_target_properties("WSCrossPlatformC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatformC" PRIVATE -enable-testing)
+
 add_library("WSLocalizations"
   "../../../Sources/WSLocalizations/ContentLocalization.swift"
   "../../../Sources/WSLocalizations/InterfaceLocalization.swift"
@@ -967,6 +973,7 @@ add_library("WSWindowsLibrary"
 set_target_properties("WSWindowsLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSWindowsLibrary" PRIVATE -enable-testing)
 target_link_libraries("WSWindowsLibrary" PRIVATE
+  "WSCrossPlatformC"
   "SwiftFormatConfiguration"
 )
 

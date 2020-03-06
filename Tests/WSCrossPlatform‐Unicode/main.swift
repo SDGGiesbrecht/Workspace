@@ -14,6 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSWindowsLibrary
+import WSCrossPlatform
 
 helloWorld()

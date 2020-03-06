@@ -718,14 +718,14 @@ let package = Package(
       path: "Tests/WSCrossPlatform"
     ),
     .target(
+      name: "WSCrossPlatform‐Unicode",
+      dependencies: ["WSCrossPlatform"],
+      path: "Tests/WSCrossPlatform‐Unicode"
+    ),
+    .target(
       name: "WSCrossPlatformTool",
       dependencies: ["WSCrossPlatform"],
       path: "Tests/WSCrossPlatformTool"
-    ),
-    .target(
-      name: "WSWindows‐Unicode",
-      dependencies: ["WSCrossPlatform"],
-      path: "Tests/WSWindowsUnicode"
     ),
     .testTarget(
       name: "WSWindowsTests",
@@ -767,6 +767,7 @@ let package = Package(
   ]
 )
 
+// #workaround(These cannot build on Windows.)
 func adjustForWindows() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",
@@ -783,6 +784,8 @@ func adjustForWindows() {
     })
   }
   let impossibleTargets: Set<String> = [
+    "WSCrossPlatform‐Unicode",
+    "WSCrossPlatformC",
     "test‐ios‐simulator",
     "test‐tvos‐simulator"
   ]

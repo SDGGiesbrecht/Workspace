@@ -63,11 +63,11 @@ jobs:
         cd icu4c-build-android
         ../icu/icu4c/source/configure \
           --host=x86_64-unknown-linux-android \
-          --with-cross-build=${GITHUB_WORKSPACE}/Workspace/icu4c-build-linux \
-          --prefix=${GITHUB_WORKSPACE}/Workspace/ICU‐Android
+          --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
+          --prefix=${GITHUB_WORKSPACE}/ICU‐Android
         make
         make install
-        find ${GITHUB_WORKSPACE}/Workspace/ICU‐Android
+        find ${GITHUB_WORKSPACE}/ICU‐Android
     - name: Fetch Swift source
       shell: bash
       run: |

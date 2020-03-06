@@ -728,20 +728,17 @@ let package = Package(
       path: "Tests/WSCrossPlatformTool"
     ),
     .testTarget(
-      name: "WSWindowsTests",
-      dependencies: ["WSCrossPlatform"]
-    ),
-    .target(
-      name: "WSCrossPlatformC",
-      path: "Tests/WSCrossPlatformC"
-    ),
-    .testTarget(
-      name: "WSAndroidTests",
+      name: "WSCrossPlatformTests",
       dependencies: [
+        "WSCrossPlatform",
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone")
       ]
+    ),
+    .target(
+      name: "WSCrossPlatformC",
+      path: "Tests/WSCrossPlatformC"
     ),
 
     .target(

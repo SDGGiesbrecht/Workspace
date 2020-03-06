@@ -710,33 +710,35 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
-      name: "WSWindowsLibrary",
+      name: "WSCrossPlatform",
       dependencies: [
+        "WSCrossPlatformC",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ],
-      path: "Tests/WSWindowsLibrary"
+      path: "Tests/WSCrossPlatform"
     ),
     .target(
-      name: "WSWindowsTool",
-      dependencies: ["WSWindowsLibrary"],
-      path: "Tests/WSWindowsTool"
+      name: "WSCrossPlatform‐Unicode",
+      dependencies: ["WSCrossPlatform"],
+      path: "Tests/WSCrossPlatform‐Unicode"
     ),
     .target(
-      name: "WSWindows‐Unicode",
-      dependencies: ["WSWindowsLibrary"],
-      path: "Tests/WSWindowsUnicode"
+      name: "WSCrossPlatformTool",
+      dependencies: ["WSCrossPlatform"],
+      path: "Tests/WSCrossPlatformTool"
     ),
     .testTarget(
-      name: "WSWindowsTests",
-      dependencies: ["WSWindowsLibrary"]
-    ),
-    .testTarget(
-      name: "WSAndroidTests",
+      name: "WSCrossPlatformTests",
       dependencies: [
+        "WSCrossPlatform",
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone")
       ]
+    ),
+    .target(
+      name: "WSCrossPlatformC",
+      path: "Tests/WSCrossPlatformC"
     ),
 
     .target(
@@ -762,25 +764,28 @@ let package = Package(
   ]
 )
 
+// #workaround(These cannot build on Windows.)
 func adjustForWindows() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",
     "SwiftFormat"
   ]
+  let impossibleTargets: Set<String> = [
+    "WSCrossPlatform‐Unicode",
+    "WSCrossPlatformC",
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator"
+  ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       switch dependency {
-      case ._targetItem, ._byNameItem:
-        return false
+      case ._targetItem(let name), ._byNameItem(let name):
+        return impossibleTargets.contains(name)
       case ._productItem(let name, _):
         return impossibleDependencies.contains(name)
       }
     })
   }
-  let impossibleTargets: Set<String> = [
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator"
-  ]
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })

@@ -1,5 +1,5 @@
 /*
- WSAndroidTests.swift
+ CrossPlatformTests.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -14,16 +14,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
-
 import SDGPersistence
+
+@testable import WSCrossPlatform
 
 import XCTest
 
 import SDGXCTestUtilities
 import SDGPersistenceTestUtilities
 
-final class AndroidTests: TestCase {
+final class CrossPlatformTests: TestCase {
 
   func testCachePermissions() throws {
     var directory = FileManager.default.url(in: .cache, at: "Directory")
@@ -52,5 +52,10 @@ final class AndroidTests: TestCase {
     try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }
+  }
+
+  func testTests() {
+    helloWorld()
+    helloTests()
   }
 }

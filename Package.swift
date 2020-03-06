@@ -710,30 +710,30 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
-      name: "WSCrossPlatformC",
-      path: "Tests/WSCrossPlatformC"
-    ),
-    .target(
-      name: "WSWindowsLibrary",
+      name: "WSCrossPlatform",
       dependencies: [
         "WSCrossPlatformC",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ],
-      path: "Tests/WSWindowsLibrary"
+      path: "Tests/WSCrossPlatform"
     ),
     .target(
       name: "WSWindowsTool",
-      dependencies: ["WSWindowsLibrary"],
+      dependencies: ["WSCrossPlatform"],
       path: "Tests/WSWindowsTool"
     ),
     .target(
       name: "WSWindows‐Unicode",
-      dependencies: ["WSWindowsLibrary"],
+      dependencies: ["WSCrossPlatform"],
       path: "Tests/WSWindowsUnicode"
     ),
     .testTarget(
       name: "WSWindowsTests",
-      dependencies: ["WSWindowsLibrary"]
+      dependencies: ["WSCrossPlatform"]
+    ),
+    .target(
+      name: "WSCrossPlatformC",
+      path: "Tests/WSCrossPlatformC"
     ),
     .testTarget(
       name: "WSAndroidTests",

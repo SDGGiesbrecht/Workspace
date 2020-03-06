@@ -28,7 +28,7 @@ import Dispatch
 
 import WSCrossPlatformC
 
-import SwiftFormatConfiguration
+import SwiftFormatConfiguration // External package.
 
 public func helloWorld() {
   print("Hello, world!")
@@ -38,8 +38,8 @@ public func helloWorld() {
   #endif
   print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
-  print(Configuration())
   helloC()
+  print(Configuration())
 }
 
 internal func helloTests() {

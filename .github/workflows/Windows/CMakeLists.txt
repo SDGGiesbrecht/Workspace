@@ -902,23 +902,6 @@ target_link_libraries("SDGWeb" PRIVATE
   "SDGCalendar"
 )
 
-add_library("WSAndroidTests"
-  "../../../Tests/WSAndroidTests/WSAndroidTests.swift"
-)
-set_target_properties("WSAndroidTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSAndroidTests" PRIVATE -enable-testing)
-target_link_libraries("WSAndroidTests" PRIVATE
-  "SDGPersistence"
-  "SDGXCTestUtilities"
-  "SDGPersistenceTestUtilities"
-)
-
-add_library("WSCrossPlatformC"
-  "../../../Tests/WSCrossPlatformC/CrossPlatform.c"
-)
-set_target_properties("WSCrossPlatformC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSCrossPlatformC" PRIVATE -enable-testing)
-
 add_library("WSLocalizations"
   "../../../Sources/WSLocalizations/ContentLocalization.swift"
   "../../../Sources/WSLocalizations/InterfaceLocalization.swift"
@@ -967,37 +950,32 @@ add_library("SwiftFormatConfiguration"
 set_target_properties("SwiftFormatConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SwiftFormatConfiguration" PRIVATE -enable-testing)
 
-add_library("WSWindowsLibrary"
-  "../../../Tests/WSWindowsLibrary/WSWindowsLibrary.swift"
+add_library("WSCrossPlatform"
+  "../../../Tests/WSCrossPlatform/CrossPlatform.swift"
 )
-set_target_properties("WSWindowsLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSWindowsLibrary" PRIVATE -enable-testing)
-target_link_libraries("WSWindowsLibrary" PRIVATE
-  "WSCrossPlatformC"
+set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatform" PRIVATE -enable-testing)
+target_link_libraries("WSCrossPlatform" PRIVATE
   "SwiftFormatConfiguration"
 )
 
-add_library("WSWindowsTests"
-  "../../../Tests/WSWindowsTests/WSWindowsTests.swift"
+add_library("WSCrossPlatformTests"
+  "../../../Tests/WSCrossPlatformTests/CrossPlatformTests.swift"
 )
-set_target_properties("WSWindowsTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSWindowsTests" PRIVATE -enable-testing)
-target_link_libraries("WSWindowsTests" PRIVATE
-  "WSWindowsLibrary"
-)
-
-add_executable("WSWindowsTool"
-  "../../../Tests/WSWindowsTool/main.swift"
-)
-target_link_libraries("WSWindowsTool" PRIVATE
-  "WSWindowsLibrary"
+set_target_properties("WSCrossPlatformTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatformTests" PRIVATE -enable-testing)
+target_link_libraries("WSCrossPlatformTests" PRIVATE
+  "WSCrossPlatform"
+  "SDGPersistence"
+  "SDGXCTestUtilities"
+  "SDGPersistenceTestUtilities"
 )
 
-add_executable("WSWindows_Unicode"
-  "../../../Tests/WSWindowsUnicode/main.swift"
+add_executable("WSCrossPlatformTool"
+  "../../../Tests/WSCrossPlatformTool/main.swift"
 )
-target_link_libraries("WSWindows_Unicode" PRIVATE
-  "WSWindowsLibrary"
+target_link_libraries("WSCrossPlatformTool" PRIVATE
+  "WSCrossPlatform"
 )
 
 add_library("WorkspaceConfiguration"
@@ -1479,8 +1457,7 @@ add_executable(WindowsMain
   WindowsMain.swift
 )
 target_link_libraries(WindowsMain PRIVATE
-  "WSAndroidTests"
-  "WSWindowsTests"
+  "WSCrossPlatformTests"
   "WorkspaceLibraryTests"
 )
 add_test(NAME WindowsMain COMMAND WindowsMain)

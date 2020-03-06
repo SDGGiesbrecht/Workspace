@@ -770,22 +770,22 @@ func adjustForWindows() {
     "SwiftPM\u{2D}auto",
     "SwiftFormat"
   ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem, ._byNameItem:
-        return false
-      case ._productItem(let name, _):
-        return impossibleDependencies.contains(name)
-      }
-    })
-  }
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
     "test‐ios‐simulator",
     "test‐tvos‐simulator"
   ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      switch dependency {
+      case ._targetItem(let name), ._byNameItem(let name):
+        return impossibleTargets.contains(name)
+      case ._productItem(let name, _):
+        return impossibleDependencies.contains(name)
+      }
+    })
+  }
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })

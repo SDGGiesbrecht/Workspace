@@ -1,5 +1,5 @@
 /*
- WSWindowsTests.swift
+ CrossPlatformTests.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -23,7 +23,7 @@ import XCTest
 import SDGXCTestUtilities
 import SDGPersistenceTestUtilities
 
-final class WindowsTests: TestCase {
+final class CrossPlatformTests: TestCase {
 
   func testCachePermissions() throws {
     var directory = FileManager.default.url(in: .cache, at: "Directory")

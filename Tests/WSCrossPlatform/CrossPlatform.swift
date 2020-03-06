@@ -1,5 +1,5 @@
 /*
- WSWindowsLibrary.swift
+ CrossPlatform.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des qeulloffenen Arbeitsbereich‐Projekt.
@@ -26,11 +26,11 @@ import Foundation
 
 import Dispatch
 
-#if !os(Windows) // #workaround(Cannot build C.)
-import WSCrossPlatformC
+#if !os(Windows)  // #workaround(Cannot build C.)
+  import WSCrossPlatformC
 #endif
 
-import SwiftFormatConfiguration // External package.
+import SwiftFormatConfiguration  // External package.
 
 public func helloWorld() {
   print("Hello, world!")
@@ -40,8 +40,8 @@ public func helloWorld() {
   #endif
   print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
-  #if !os(Windows) // #workaround(Cannot build C.)
-  helloC()
+  #if !os(Windows)  // #workaround(Cannot build C.)
+    helloC()
   #endif
   print(Configuration())
 }

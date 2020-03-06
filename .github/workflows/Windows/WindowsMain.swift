@@ -16,8 +16,7 @@
 
 import XCTest
 
-@testable import WSAndroidTests
-@testable import WSWindowsTests
+@testable import WSCrossPlatformTests
 @testable import WorkspaceLibraryTests
 
 #if os(macOS)
@@ -58,19 +57,12 @@ import XCTest
   }
 #endif
 
-extension WSAndroidTests.AndroidTests {
+extension WSCrossPlatformTests.WindowsTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testCachePermissions", testCachePermissions),
       ("testRepositoryPresence", testRepositoryPresence),
       ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
-    ])
-  ]
-}
-
-extension WSWindowsTests.WindowsTests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
       ("testTests", testTests),
     ])
   ]
@@ -141,8 +133,7 @@ extension WorkspaceLibraryTests.InternalTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += WSAndroidTests.AndroidTests.windowsTests
-tests += WSWindowsTests.WindowsTests.windowsTests
+tests += WSCrossPlatformTests.WindowsTests.windowsTests
 tests += WorkspaceLibraryTests.APITests.windowsTests
 tests += WorkspaceLibraryTests.InternalTests.windowsTests
 

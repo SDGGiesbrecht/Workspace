@@ -153,32 +153,30 @@ class APITests: TestCase {
 
   func testCheckedInDocumentation() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
-      #if !os(Android)  // #workaround(Emulator lacks permissions.)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "en"
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-            .appendingPathComponent("Resources/Tool/English.txt")
-        )
-        output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de"
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-            .appendingPathComponent("Resources/Tool/Deutsch.txt")
-        )
-      #endif
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "en"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/English.txt")
+      )
+      output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/Deutsch.txt")
+      )
 
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
@@ -617,20 +615,18 @@ class APITests: TestCase {
 
   func testDeutsch() throws {
     #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
-      #if !os(Android)  // #workaround(Emulator lacks permissions.)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de"
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "Deutsch")
-            .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
-        )
-      #endif
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de"
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "Deutsch")
+          .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+      )
 
       let konfiguration = ArbeitsbereichKonfiguration()
       konfiguration.optimizeForTests()
@@ -814,7 +810,7 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    #if !os(Android)  // #workaround(Emulator lacks permissions.)
+    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault)
       testCommand(
         Workspace.command,
         with: ["help"],
@@ -959,26 +955,24 @@ class APITests: TestCase {
       dictionary["🇬🇧EN"] = false
       XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-      #if !os(Android)  // #workaround(Emulator lacks permissions.)
-        testCustomStringConvertibleConformance(
-          of: LocalizationIdentifier("en"),
-          localizations: FastTestLocalization.self,
-          uniqueTestName: "English",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCustomStringConvertibleConformance(
-          of: LocalizationIdentifier("cmn"),
-          localizations: FastTestLocalization.self,
-          uniqueTestName: "Mandarin",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCustomStringConvertibleConformance(
-          of: LocalizationIdentifier("zxx"),
-          localizations: FastTestLocalization.self,
-          uniqueTestName: "Unknown",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("en"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "English",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("cmn"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "Mandarin",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("zxx"),
+        localizations: FastTestLocalization.self,
+        uniqueTestName: "Unknown",
+        overwriteSpecificationInsteadOfFailing: false
+      )
 
       var identifier = LocalizationIdentifier("zxx")
       identifier.kennzeichen = "de"
@@ -1370,8 +1364,8 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
-      #if !os(Android)  // #workaround(Emulator lacks permissions.)
+    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault.)
+      #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
         try FileManager.default.do(in: repositoryRoot) {
           _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()

@@ -64,10 +64,10 @@ jobs:
         ../icu/icu4c/source/configure \
           --host=x86_64-unknown-linux-android \
           --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
-          --prefix=${GITHUB_WORKSPACE}/ICU‐Android
+          --prefix=${GITHUB_WORKSPACE}/Android/ICU
         make
         make install
-        find ${GITHUB_WORKSPACE}/ICU‐Android
+        find ${GITHUB_WORKSPACE}/Android/ICU
     - name: Fetch Swift source
       shell: bash
       run: |
@@ -86,8 +86,8 @@ jobs:
           --android-ndk ${ANDROID_HOME}/ndk-bundle \
           --android-arch x86_64 \
           --android-api-level 29 \
-          --android-icu-uc ${GITHUB_WORKSPACE}/ICU‐Android/lib/libicuuc.so \
+          --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so \
           --android-icu-uc-include ${GITHUB_WORKSPACE}/icu/icu4c/source/common \
-          --android-icu-i18n ${GITHUB_WORKSPACE}/ICU‐Android/lib/libicui18n.so \
+          --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so \
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/icu/icu4c/source/i18n \
-          --android-icu-data ${GITHUB_WORKSPACE}/ICU‐Android/lib/libicudata.so
+          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so

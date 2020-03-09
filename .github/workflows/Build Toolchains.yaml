@@ -76,6 +76,12 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git
         ./swift/utils/update-checkout --clone
+    - name: Enable Android x86_64
+      shell: bash
+      run: |
+        set -x
+        cd swift-source/swift
+        sed -i -e "s~choices=['armv7', 'aarch64'],~choices=['armv7', 'aarch64', 'x86_64'],~g" utils/build_swift/build_swift/driver_arguments.py
     - name: Build Swift toolchain
       shell: bash
       run: |

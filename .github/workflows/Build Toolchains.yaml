@@ -88,12 +88,21 @@ jobs:
         set -x
         cd swift-source/swift
         utils/build-script --release \
+          # Android details
           --android \
           --android-ndk ${ANDROID_HOME}/ndk-bundle \
           --android-arch x86_64 \
           --android-api-level 29 \
+          # ICU details
           --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so \
           --android-icu-uc-include ${GITHUB_WORKSPACE}/icu/icu4c/source/common \
           --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so \
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/icu/icu4c/source/i18n \
-          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so
+          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so \
+          # Toolchain arrangement
+          --install-prefix=/usr \
+          --install-destdir=${GITHUB_WORKSPACE}/Android/Swift \
+          # Components
+          --install-swift \
+          '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;swift-remote-mirror;sdk-overlay;dev'
+        find ${GITHUB_WORKSPACE}/Android/Swift

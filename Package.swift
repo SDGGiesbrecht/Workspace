@@ -18,17 +18,6 @@
 
 import PackageDescription
 
-let package = Package(
-  name: "Web",
-  targets: [
-    .target(
-      name: "WSWebTool",
-      path: "Tests/WSWebTool"
-    )
-  ]
-)
-
-#if false
 // @localization(🇩🇪DE)
 /// Arbeitsbereich automatisiert die Verwaltung von Swift‐Projekten.
 ///
@@ -842,4 +831,3 @@ import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   adjustForAndroid()
 }
-#endif

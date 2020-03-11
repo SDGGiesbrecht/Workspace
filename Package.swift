@@ -764,7 +764,7 @@ let package = Package(
   ]
 )
 
-// #workaround(These cannot build on Windows.)
+// #workaround(Swift 5.1.4, These cannot build on Windows.)
 func adjustForWindows() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",

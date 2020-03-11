@@ -26,7 +26,7 @@ import Foundation
 
 import Dispatch
 
-#if !os(Windows)  // #workaround(Cannot build C.)
+#if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
   import WSCrossPlatformC
 #endif
 
@@ -40,7 +40,7 @@ public func helloWorld() {
   #endif
   print(XMLElement(name: "Hello, FoundationXML!"))
   print(DispatchQueue(label: "Hello, Dispatch!"))
-  #if !os(Windows)  // #workaround(Cannot build C.)
+  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
     helloC()
   #endif
   print(Configuration())

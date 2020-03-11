@@ -308,7 +308,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
-    case .linux, .android:
+    case .web, .linux, .android:
       return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentLinuxVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
@@ -317,7 +317,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var dockerImage: StrictString? {
     switch platform {
-    case .macOS, .windows, .android:
+    case .macOS, .windows, .web, .android:
       return nil
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
@@ -361,24 +361,26 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func cache() -> StrictString {
-    let os: StrictString
+    let environment: StrictString
     switch platform {
     case .macOS:
-      os = "macOS"
+      environment = "macOS"
     case .windows:
-      os = "Windows"
+      environment = "Windows"
+    case .web:
+      environment = "Web"
     case .linux:
-      os = "Linux"
+      environment = "Linux"
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
-      os = "Android"
+      environment = "Android"
     }
     return uses(
       "actions/cache@v1",
       with: [
         "key":
-          "\(os)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+          "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
         "path": PackageRepository.repositoryWorkspaceCacheDirectory
       ]
     )
@@ -646,6 +648,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+    case .web:
+      break
     case .linux:
       result.append(contentsOf: [
         script(
@@ -806,6 +810,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+    case .web:
+      break
     case .android:
       result.append(
         script(
@@ -909,7 +915,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     switch platform {
-    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
+    case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
       break
     case .linux:
       result.append(

@@ -35,7 +35,6 @@ jobs:
           'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-linux.tar.gz' \
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-linux.tar.gz'
         tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-linux.tar.gz --directory /tmp
-        find /tmp
         mkdir -p /
         sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/* /
         swift --version

@@ -98,7 +98,23 @@ jobs:
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/icu/icu4c/source/i18n \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so \
           --install-prefix=/usr \
-          --install-destdir=${GITHUB_WORKSPACE}/Android/Swift \
+          --install-destdir=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --install-swift \
           '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;swift-remote-mirror;sdk-overlay;dev'
-        find ${GITHUB_WORKSPACE}/Android/Swift
+        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
+    - name: Upload SDK
+      uses: actions/upload-artifact@v1
+      with:
+        name: Android.sdk
+        path: /Android/Swift/Android.sdk
+    - name: Test SDK
+      shell: bash
+      run: |
+        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \
+          -target x86_64-unknown-linux-android \
+          -sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
+          -tools-directory ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xclang-linker --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android

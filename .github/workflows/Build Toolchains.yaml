@@ -118,3 +118,4 @@ jobs:
           -Xclang-linker --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android
+          HelloWorld.swift

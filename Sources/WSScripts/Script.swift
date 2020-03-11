@@ -248,6 +248,6 @@ public enum Script: Int, CaseIterable {
       )
     }
 
-    return StrictString(lines.joined(separator: "\n".scalars))
+    return lines.joined(separator: "\n")
   }
 }

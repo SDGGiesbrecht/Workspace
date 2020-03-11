@@ -272,10 +272,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var command = command
     let languages = configuration.documentation.localisations
     if ¬languages.isEmpty {
-      let argument = StrictString(
-        languages.lazy.map({ $0._iconOrCode })
-          .joined(separator: ";" as StrictString)
-      )
+      let argument = languages.lazy.map({ $0._iconOrCode }).joined(separator: ";")
       command.append(contentsOf: " •language \u{27}\(argument)\u{27}")
     }
     return command
@@ -406,7 +403,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
     let prefix = sudo ? "sudo " : ""
-    let packages = StrictString(packages.joined(separator: " " as StrictString))
+    let packages = packages.joined(separator: " ")
     return [
       "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
       "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)"

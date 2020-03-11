@@ -65,11 +65,10 @@ internal struct WorkaroundReminders: Warning {
         let problemVersion = Version(String(StrictString(parameters.removeLast().contents)))
       {
 
-        var dependency = StrictString(
+        var dependency =
           parameters
             .map({ StrictString($0.contents) })
-            .joined(separator: " " as StrictString)
-        )
+            .joined(separator: " ")
         dependency.trimMarginalWhitespace()
 
         if dependency == "Swift" {

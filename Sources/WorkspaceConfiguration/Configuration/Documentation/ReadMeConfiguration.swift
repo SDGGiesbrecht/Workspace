@@ -80,12 +80,10 @@ public struct ReadMeConfiguration: Codable {
 
       if let provided = localization._reasonableMatch {
         readMe += [
-          StrictString(
-            Platform.allCases
-              .filter({ configuration.supportedPlatforms.contains($0) })
-              .map({ $0._isolatedName(for: provided) })
-              .joined(separator: " • ".scalars)
-          ),
+          Platform.allCases
+            .filter({ configuration.supportedPlatforms.contains($0) })
+            .map({ $0._isolatedName(for: provided) })
+            .joined(separator: " • "),
           ""
         ]
       }

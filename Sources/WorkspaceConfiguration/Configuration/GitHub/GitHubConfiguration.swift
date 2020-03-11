@@ -156,9 +156,7 @@ public struct GitHubConfiguration: Codable {
             separator = ", "
             finalSeparator = " oder "
           }
-          let commas = StrictString(
-            administrators.dropLast().joined(separator: separator)
-          )
+          let commas = administrators.dropLast().joined(separator: separator)
           let or = finalSeparator + administrators.last!
           administratorList = commas + or
         }

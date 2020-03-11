@@ -34,82 +34,74 @@ internal struct PackageInterface {
     }
     let packageURL = StrictString(specified.absoluteString)
 
-    var result = StrictString(
-      [
-        ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
-          .normalizedSource(),
-        ElementSyntax(
-          "span",
-          attributes: ["class": "external identifier"],
-          contents: "package",
-          inline: true
-        ).normalizedSource(),
-        ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
-          .normalizedSource(),
-        ElementSyntax(
-          "span",
-          attributes: ["class": "external identifier"],
-          contents: "url",
-          inline: true
-        )
-          .normalizedSource(),
-        ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
-          .normalizedSource(),
-        " ",
-        ElementSyntax(
-          "span",
-          attributes: ["class": "string"],
-          contents: StrictString(
-            [
+    var result = [
+      ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
+        .normalizedSource(),
+      ElementSyntax(
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "package",
+        inline: true
+      ).normalizedSource(),
+      ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
+        .normalizedSource(),
+      ElementSyntax(
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "url",
+        inline: true
+      )
+        .normalizedSource(),
+      ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
+        .normalizedSource(),
+      " ",
+      ElementSyntax(
+        "span",
+        attributes: ["class": "string"],
+        contents: [
+          ElementSyntax(
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource(),
+          ElementSyntax(
+            "a",
+            attributes: ["href": packageURL],
+            contents: [
               ElementSyntax(
                 "span",
-                attributes: ["class": "punctuation"],
-                contents: "\u{22}",
-                inline: true
-              ).normalizedSource(),
-              ElementSyntax(
-                "a",
-                attributes: ["href": packageURL],
-                contents: StrictString(
-                  [
-                    ElementSyntax(
-                      "span",
-                      attributes: ["class": "text"],
-                      contents: HTML.escapeTextForCharacterData(packageURL),
-                      inline: true
-                    ).normalizedSource()
-                  ].joined()
-                ),
-                inline: true
-              ).normalizedSource(),
-              ElementSyntax(
-                "span",
-                attributes: ["class": "punctuation"],
-                contents: "\u{22}",
+                attributes: ["class": "text"],
+                contents: HTML.escapeTextForCharacterData(packageURL),
                 inline: true
               ).normalizedSource()
-            ].joined()
-          ),
-          inline: true
-        ).normalizedSource()
-      ].joined()
-    )
+            ].joined(),
+            inline: true
+          ).normalizedSource(),
+          ElementSyntax(
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: "\u{22}",
+            inline: true
+          ).normalizedSource()
+        ].joined(),
+        inline: true
+      ).normalizedSource()
+    ].joined()
 
     if let specified = specify(version: version) {
       result.append(
-        contentsOf: StrictString(
-          [
-            ElementSyntax(
-              "span",
-              attributes: ["class": "punctuation"],
-              contents: ",",
-              inline: true
-            )
-              .normalizedSource(),
-            " ",
-            specified
-          ].joined()
-        )
+        contentsOf: [
+          ElementSyntax(
+            "span",
+            attributes: ["class": "punctuation"],
+            contents: ",",
+            inline: true
+          )
+            .normalizedSource(),
+          " ",
+          specified
+        ].joined()
       )
     }
 
@@ -137,81 +129,75 @@ internal struct PackageInterface {
       return nil
     }
 
-    var result = StrictString(
-      [
-        ElementSyntax(
-          "span",
-          attributes: ["class": "external identifier"],
-          contents: "from",
-          inline: true
-        ).normalizedSource(),
-        ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
-          .normalizedSource(),
-        " ",
-        ElementSyntax(
-          "span",
-          attributes: ["class": "string"],
-          contents: StrictString(
-            [
-              ElementSyntax(
-                "span",
-                attributes: ["class": "punctuation"],
-                contents: "\u{22}",
-                inline: true
-              ).normalizedSource(),
-              ElementSyntax(
-                "span",
-                attributes: ["class": "text"],
-                contents: StrictString(specified.string()),
-                inline: true
-              )
-                .normalizedSource(),
-              ElementSyntax(
-                "span",
-                attributes: ["class": "punctuation"],
-                contents: "\u{22}",
-                inline: true
-              ).normalizedSource()
-            ].joined()
-          ),
-          inline: true
-        ).normalizedSource()
-      ].joined()
-    )
-
-    if specified.major == 0 {
-      result = StrictString(
-        [
+    var result = [
+      ElementSyntax(
+        "span",
+        attributes: ["class": "external identifier"],
+        contents: "from",
+        inline: true
+      ).normalizedSource(),
+      ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
+        .normalizedSource(),
+      " ",
+      ElementSyntax(
+        "span",
+        attributes: ["class": "string"],
+        contents: [
           ElementSyntax(
             "span",
             attributes: ["class": "punctuation"],
-            contents: ".",
-            inline: true
-          )
-            .normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "external identifier"],
-            contents: "upToNextMinor",
+            contents: "\u{22}",
             inline: true
           ).normalizedSource(),
           ElementSyntax(
             "span",
-            attributes: ["class": "punctuation"],
-            contents: "(",
+            attributes: ["class": "text"],
+            contents: StrictString(specified.string()),
             inline: true
           )
             .normalizedSource(),
-          result,
           ElementSyntax(
             "span",
             attributes: ["class": "punctuation"],
-            contents: ")",
+            contents: "\u{22}",
             inline: true
-          )
-            .normalizedSource()
-        ].joined()
-      )
+          ).normalizedSource()
+        ].joined(),
+        inline: true
+      ).normalizedSource()
+    ].joined()
+
+    if specified.major == 0 {
+      result = [
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: ".",
+          inline: true
+        )
+          .normalizedSource(),
+        ElementSyntax(
+          "span",
+          attributes: ["class": "external identifier"],
+          contents: "upToNextMinor",
+          inline: true
+        ).normalizedSource(),
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: "(",
+          inline: true
+        )
+          .normalizedSource(),
+        result,
+        ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: ")",
+          inline: true
+        )
+          .normalizedSource()
+      ].joined()
     }
 
     return result
@@ -1273,11 +1259,9 @@ internal struct PackageInterface {
         if ¬specifiedContent.isEmpty {
           documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
           documentationMarkup.append(
-            contentsOf: StrictString(
-              specifiedContent.lines.lazy.map({ line in
-                return "/// \(line.line)" as StrictString
-              }).joined(separator: "\n" as StrictString)
-            )
+            contentsOf: specifiedContent.lines.lazy.map({ line in
+              return "/// \(line.line)" as StrictString
+            }).joined(separator: "\n")
           )
         }
         documentationMarkup.append(contentsOf: "\npublic func function() {}\n")

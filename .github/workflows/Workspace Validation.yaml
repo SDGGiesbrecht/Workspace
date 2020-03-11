@@ -36,11 +36,11 @@ jobs:
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-osx.tar.gz'
         tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-osx.tar.gz --directory /tmp
         mkdir -p /
-        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/* /
-        swift --version
+        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/* .build/SDG/Swift
+        .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash
       run: |
         set -x
         export TARGETING_WEB=true
-        swift build --triple wasm32-unknown-wasi
+        .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi

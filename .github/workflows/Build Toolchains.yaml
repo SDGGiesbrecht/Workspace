@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Android.sdk
-        path: /Android/Swift/Android.sdk
+        path: Android/Swift/Android.sdk
     - name: Test SDK
       shell: bash
       run: |

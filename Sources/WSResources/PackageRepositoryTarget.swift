@@ -213,11 +213,9 @@ extension PackageRepository {
       if result.scalars.last == "\n" {
         result.scalars.removeLast()
       }
-      return StrictString(
-        result.lines.map({ (lineInformation) in
-          return "  " + StrictString(lineInformation.line)
-        }).joined(separator: "\n".scalars) + "\n"
-      )
+      return result.lines.map({ (lineInformation) in
+        return "  " + StrictString(lineInformation.line)
+      }).joined(separator: "\n") + "\n"
     }
 
     private func source(for resource: URL, named name: StrictString) throws -> StrictString {

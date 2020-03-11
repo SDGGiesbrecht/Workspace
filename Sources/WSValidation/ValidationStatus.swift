@@ -70,7 +70,7 @@ public struct ValidationStatus {
   }
 
   public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
-    output.print(StrictString(summary.joined(separator: "\n".scalars)).separated())
+    output.print(summary.joined(separator: "\n").separated())
 
     try output.listWarnings(for: project)
 

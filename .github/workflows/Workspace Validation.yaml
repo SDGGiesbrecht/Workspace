@@ -17,7 +17,7 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
-  WebAssembly:
+  Web:
     runs-on: ubuntu-18.04
     steps:
     - name: Check out
@@ -25,7 +25,7 @@ jobs:
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: WebAssembly‐${{ hashFiles('.github/workflows/**') }}
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install Swift
       shell: bash

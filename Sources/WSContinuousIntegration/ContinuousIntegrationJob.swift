@@ -39,6 +39,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public static let currentSwiftVersion = Version(5, 1, 3)
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
+  private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}08"
   // #workaround(Swift 5.1.3, Debug builds are broken.)
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
   private static let experimentalDownloads =
@@ -496,11 +497,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func cURL(
     _ url: StrictString,
+    named name: StrictString? = nil,
     andUntarTo destination: StrictString,
     sudoCopy: Bool = false
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = tarFileName.truncated(before: ".tar")
+    let fileName = name ?? tarFileName.truncated(before: ".tar")
     let temporaryTar: StrictString = "/tmp/\(tarFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
@@ -672,7 +674,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .web:
-      break
+      let snapshot = ContinuousIntegrationJob.currentExperimentalSwiftWebSnapshot
+      let releaseName: StrictString = "swift\u{2D}wasm\u{2D}DEVELOPMENT\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
+      result.append(script(
+        heading: installSwiftStepName,
+        localization: interfaceLocalization,
+        commands: [
+          cURL(
+          "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}linux.tar.gz",
+            named: releaseName,
+            andUntarTo: "/",
+            sudoCopy: true
+          ),
+          "swift \u{2D}\u{2D}version",
+          ]
+      ))
     case .linux:
       result.append(contentsOf: [
         script(

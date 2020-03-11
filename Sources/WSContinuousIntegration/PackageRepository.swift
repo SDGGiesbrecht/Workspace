@@ -355,7 +355,7 @@ extension PackageRepository {
       }
 
       var windowsMain = try TextFile(possiblyAt: url)
-      windowsMain.body = main.joinedAsLines()
+      windowsMain.body = source
       try windowsMain.writeChanges(for: self, output: output)
     }
   #endif

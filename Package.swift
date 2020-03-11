@@ -764,18 +764,6 @@ let package = Package(
   ]
 )
 
-// #warning(Belongs below.)
-func adjustForWeb() {
-  // #warning(Not all of these are necessary.)
-  package.products.removeAll()
-  package.targets.removeAll()
-}
-//if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  adjustForWeb()
-//}
-
-// #warning(Experiment.)
-#if false
 // #workaround(Swift 5.1.4, These cannot build on Windows.)
 func adjustForWindows() {
   let impossibleDependencies: Set<String> = [
@@ -811,6 +799,15 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
   adjustForWindows()
 }
 
+func adjustForWeb() {
+  // #warning(Not all of these are necessary.)
+  package.products.removeAll()
+  package.targets.removeAll()
+}
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  adjustForWeb()
+}
+
 func adjustForAndroid() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",
@@ -834,4 +831,3 @@ import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   adjustForAndroid()
 }
-#endif

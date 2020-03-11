@@ -61,6 +61,10 @@ extension WSCrossPlatformTests.CrossPlatformTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testCachePermissions", testCachePermissions),
+      (
+        "testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName",
+        testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName
+      ),
       ("testRepositoryPresence", testRepositoryPresence),
       ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
       ("testTests", testTests),

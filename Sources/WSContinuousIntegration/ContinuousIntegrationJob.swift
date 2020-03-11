@@ -28,6 +28,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   case macOS
   case windows
+  case web
   case linux
   case tvOS
   case iOS
@@ -71,6 +72,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "Windows"
+        }
+      })
+    case .web:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Web"
+        case .deutschDeutschland:
+          return "Netz"
         }
       })
     case .linux:
@@ -161,6 +171,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "windows"
         }
       })
+    case .web:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "web"
+        case .deutschDeutschland:
+          return "netz"
+        }
+      })
     case .linux:
       return UserFacing({ (localization) in
         switch localization {
@@ -228,6 +247,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return try .macOS ∈ project.configuration(output: output).supportedPlatforms
     case .windows:
       return try .windows ∈ project.configuration(output: output).supportedPlatforms
+    case .web:
+      return try .web ∈ project.configuration(output: output).supportedPlatforms
     case .linux:
       return try .linux ∈ project.configuration(output: output).supportedPlatforms
     case .tvOS:
@@ -256,6 +277,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .macOS
     case .windows:
       return .windows
+    case .web:
+      return .web
     case .linux, .miscellaneous, .deployment:
       return .linux
     case .android:
@@ -1249,7 +1272,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
+      case .macOS, .windows, .web, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

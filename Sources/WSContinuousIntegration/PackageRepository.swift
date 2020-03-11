@@ -36,8 +36,8 @@ extension PackageRepository {
       return try job.isRequired(by: self, output: output)
       // Simulator is unavailable during normal test.
         ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
-        // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on Windows.
-        ∨ ((job == .windows ∨ job == .android) ∧ isWorkspaceProject())
+        // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on these platforms.
+        ∨ ((job ∈ Set([.windows, .web, .android])) ∧ isWorkspaceProject())
     }
   }
 

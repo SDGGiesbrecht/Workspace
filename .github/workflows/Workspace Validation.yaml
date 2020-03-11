@@ -38,3 +38,8 @@ jobs:
         mkdir -p /
         sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/* /
         swift --version
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift build --triple wasm32-unknown-wasi

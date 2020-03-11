@@ -799,6 +799,15 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
   adjustForWindows()
 }
 
+func adjustForWeb() {
+  // #warning(Not all of these are necessary.)
+  package.products.removeAll()
+  package.targets.removeAll()
+}
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  adjustForWeb()
+}
+
 func adjustForAndroid() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",

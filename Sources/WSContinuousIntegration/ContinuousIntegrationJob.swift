@@ -858,6 +858,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: buildStepName,
           localization: interfaceLocalization,
           commands: [
+            "export TARGETING_WEB=true",
             "swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi"
           ]
         )

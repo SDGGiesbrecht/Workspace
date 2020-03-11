@@ -42,4 +42,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        export TARGETING_WEB=true
         swift build --triple wasm32-unknown-wasi

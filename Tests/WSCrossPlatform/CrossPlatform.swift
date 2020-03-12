@@ -14,24 +14,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#warning("Experiment")
-#if os(WebAssembly)
-#warning("WebAssembly")
-#else
-#warning("Not WebAssembly")
+#if canImport(Foundation)  // #workaround(Swift 5.1.3, Compiler does not recognize WASI.)
+  import Foundation
 #endif
-#if os(WASM)
-#warning("WASM")
-#else
-#warning("Not WASM")
-#endif
-#if os(WASI)
-#warning("WASI")
-#else
-#warning("Not WASI")
-#endif
-
-import Foundation
 #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking

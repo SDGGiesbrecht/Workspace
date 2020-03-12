@@ -32,9 +32,6 @@ extension PackageRepository {
   }
 
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
-    #warning("Debugging...")
-    return [.web]
-
     return try ContinuousIntegrationJob.allCases.filter { job in
       return try job.isRequired(by: self, output: output)
       // Simulator is unavailable during normal test.

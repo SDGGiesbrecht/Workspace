@@ -863,7 +863,7 @@ func adjustForWeb() {
     "WSGitHub",
     "WSInterface",
     "WSLicence",
-    "WSLocalizations"
+    "WSLocalizations",
     "WSNormalization",
     "WSOpenSource",
     "WSParsing",

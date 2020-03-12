@@ -32,8 +32,11 @@
   import Dispatch
 #endif
 
-#if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
-  import WSCrossPlatformC
+// #workaround(Swift 5.1.3, Web cannot import WSCrossPlatformC. Also compiler does not recognize WASI.)
+#if canImport(WSCrossPlatformC)
+  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+    import WSCrossPlatformC
+  #endif
 #endif
 
 // #workaround(Swift 5.1.3, Web cannot build SwiftFormatConfiguration. Also compiler does not recognize WASI.)
@@ -55,8 +58,11 @@ public func helloWorld() {
   #if canImport(Dispatch)
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
-  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
-    helloC()
+  // #workaround(Swift 5.1.3, Web cannot import WSCrossPlatformC. Also compiler does not recognize WASI.)
+  #if canImport(WSCrossPlatformC)
+    #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+      helloC()
+    #endif
   #endif
   // #workaround(Swift 5.1.3, Web cannot build SwiftFormatConfiguration. Also compiler does not recognize WASI.)
   #if canImport(SwiftFormatConfiguration)

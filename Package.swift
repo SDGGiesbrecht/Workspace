@@ -857,6 +857,7 @@ func adjustForWeb() {
     // Workspace
     "WSConfigurationExample",
     "WSContinuousIntegration",
+    "WSCrossPlatformC",
     "WSCustomTask",
     "WSDocumentation",
     "WSExamples",

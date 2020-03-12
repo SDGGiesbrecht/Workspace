@@ -42,7 +42,7 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   case web  // 1991‐08‐06
   // @localization(🇩🇪DE) @crossReference(Platform.web)
   /// Netz (durch WebAssembly).
-  static var netz: Platform {
+  public static var netz: Platform {
     return web
   }
 

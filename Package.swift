@@ -849,7 +849,9 @@ func adjustForWeb() {
     "SDGSwiftConfigurationLoading",
     "SDGSwiftPackageManager",
     "SDGSwiftSource",
-    "SDGXcode"
+    "SDGXcode",
+    // SwiftFormat
+    "SwiftFormatConfiguration"
   ]
   let impossibleTargets: Set<String> = [
     // Workspace

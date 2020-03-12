@@ -76,13 +76,26 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git
         ./swift/utils/update-checkout --clone
+    - name: Build Swift for Linux
+    shell: bash
+    run: |
+      set -x
+      cd swift-source/swift
+      ./utils/build-script --preset=buildbot_linux,no_test \
+        install_destdir=${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
+      find ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
+    - name: Upload Linux toolchain
+      uses: actions/upload-artifact@v1
+      with:
+        name: Linux.xctoolchain
+        path: Linux/Swift/Linux.xctoolchain
     - name: Enable Android x86_64
       shell: bash
       run: |
         set -x
         cd swift-source/swift
         sed -i -e "s~'armv7', 'aarch64'~'armv7', 'aarch64', 'x86_64'~g" utils/build_swift/build_swift/driver_arguments.py
-    - name: Build Swift toolchain
+    - name: Build Android SDK
       shell: bash
       run: |
         set -x
@@ -102,7 +115,7 @@ jobs:
           --install-swift \
           '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;swift-remote-mirror;sdk-overlay;dev'
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
-    - name: Upload SDK
+    - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:
         name: Android.sdk

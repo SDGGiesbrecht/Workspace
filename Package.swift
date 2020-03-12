@@ -778,12 +778,21 @@ func adjustForWindows() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem(let name, _):
-        return impossibleDependencies.contains(name)
-      }
+      #if compiler(<5.2)
+        switch dependency {
+        case ._targetItem(let name), ._byNameItem(let name):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _):
+          return impossibleDependencies.contains(name)
+        }
+      #else
+        switch dependency {
+        case ._targetItem(let name, _), ._byNameItem(let name, _):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _, _):
+          return impossibleDependencies.contains(name)
+        }
+      #endif
     })
   }
   package.targets.removeAll(where: { target in
@@ -815,12 +824,21 @@ func adjustForAndroid() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem, ._byNameItem:
-        return false
-      case ._productItem(let name, _):
-        return impossibleDependencies.contains(name)
-      }
+      #if compiler(<5.2)
+        switch dependency {
+        case ._targetItem, ._byNameItem:
+          return false
+        case ._productItem(let name, _):
+          return impossibleDependencies.contains(name)
+        }
+      #else
+        switch dependency {
+        case ._targetItem, ._byNameItem:
+          return false
+        case ._productItem(let name, _, _):
+          return impossibleDependencies.contains(name)
+        }
+      #endif
     })
   }
 }

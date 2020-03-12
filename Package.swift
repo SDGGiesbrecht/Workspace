@@ -811,6 +811,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 func adjustForWeb() {
   // #warning(Not all of these are necessary.)
   let impossiblePackages = [
+    "SDGCommandLine",
     "SDGSwift"
   ]
   package.dependencies.removeAll(where: { dependency in

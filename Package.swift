@@ -838,6 +838,7 @@ func adjustForWeb() {
     // SDGCornerstone
     "SDGLocalization",
     "SDGPersistence",
+    "SDGXCTestUtilities",
     // SDGCommandLine
     "SDGCommandLine",
     "SDGExportedCommandLineInterface",

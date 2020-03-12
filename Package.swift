@@ -813,7 +813,8 @@ func adjustForWeb() {
   let impossiblePackages = [
     "SDGCommandLine",
     "SDGCornerstone",
-    "SDGSwift"
+    "SDGSwift",
+    "SDGWeb"
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {

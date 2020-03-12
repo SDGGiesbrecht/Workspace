@@ -9,7 +9,7 @@
  See http://unlicense.org/ for more information.
  -->
 
-macOS • Windows • Linux • tvOS • iOS • Android • watchOS
+macOS • Windows • Web • Linux • tvOS • iOS • Android • watchOS
 
 # CustomReadMe
 

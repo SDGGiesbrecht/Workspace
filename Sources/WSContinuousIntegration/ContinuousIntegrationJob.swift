@@ -327,6 +327,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var gitHubActionMachine: StrictString {
     switch platform {
+    // #workaround(Swift 5.1.5, Linux cannot find Foundation in Web toolchain.)
     case .macOS, .web:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"

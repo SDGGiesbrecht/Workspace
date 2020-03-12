@@ -1,6 +1,6 @@
 
 
-macOS • Windows • Linux • tvOS • iOS • Android • watchOS
+macOS • Windows • Web • Linux • tvOS • iOS • Android • watchOS
 
 # PartialReadMe
 

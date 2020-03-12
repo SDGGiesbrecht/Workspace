@@ -815,7 +815,8 @@ func adjustForWeb() {
     "SDGCornerstone",
     "SDGSwift",
     "SDGWeb",
-    "swift\u{2D}format"
+    "swift\u{2D}format",
+    "swift\u{2D}package\u{2D}manager"
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {

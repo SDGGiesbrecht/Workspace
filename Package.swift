@@ -836,6 +836,7 @@ func adjustForWeb() {
   })
   let impossibleDependencies: Set<String> = [
     // SDGCornerstone
+    "SDGLocalization",
     "SDGPersistence",
     // SDGCommandLine
     "SDGCommandLine",
@@ -862,6 +863,7 @@ func adjustForWeb() {
     "WSGitHub",
     "WSInterface",
     "WSLicence",
+    "WSLocalizations"
     "WSNormalization",
     "WSOpenSource",
     "WSParsing",

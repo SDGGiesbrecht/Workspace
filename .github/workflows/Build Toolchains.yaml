@@ -77,13 +77,13 @@ jobs:
         git clone https://github.com/apple/swift.git
         ./swift/utils/update-checkout --clone
     - name: Build Swift for Linux
-    shell: bash
-    run: |
-      set -x
-      cd swift-source/swift
-      ./utils/build-script --preset=buildbot_linux,no_test \
-        install_destdir=${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
-      find ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
+      shell: bash
+      run: |
+        set -x
+        cd swift-source/swift
+        ./utils/build-script --preset=buildbot_linux,no_test \
+          install_destdir=${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
+        find ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
     - name: Upload Linux toolchain
       uses: actions/upload-artifact@v1
       with:

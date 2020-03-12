@@ -327,12 +327,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var gitHubActionMachine: StrictString {
     switch platform {
-    case .macOS:
+    case .macOS, .web:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
-    case .web, .linux, .android:
+    case .linux, .android:
       return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentLinuxVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
@@ -683,12 +683,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             cURL(
-              "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}linux.tar.gz",
+              "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}osx.tar.gz",
               named: releaseName,
-              andUntarTo: "/",
+              andUntarTo: ".build/SDG/Swift",
               sudoCopy: true
             ),
-            "swift \u{2D}\u{2D}version",
+            ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
           ]
         )
       )
@@ -859,7 +859,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             "export TARGETING_WEB=true",
-            "swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi"
+            ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi"
           ]
         )
       )

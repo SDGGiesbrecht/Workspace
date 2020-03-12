@@ -123,7 +123,7 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
-        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \
+        ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain/usr/bin/swiftc \
           -target x86_64-unknown-linux-android \
           -sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \

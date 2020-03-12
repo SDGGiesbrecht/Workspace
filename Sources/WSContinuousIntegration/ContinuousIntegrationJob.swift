@@ -28,6 +28,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   case macOS
   case windows
+  case web
   case linux
   case tvOS
   case iOS
@@ -38,6 +39,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public static let currentSwiftVersion = Version(5, 1, 3)
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
+  private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}08"
   // #workaround(Swift 5.1.3, Debug builds are broken.)
   private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
   private static let experimentalDownloads =
@@ -71,6 +73,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "Windows"
+        }
+      })
+    case .web:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Web"
+        case .deutschDeutschland:
+          return "Netz"
         }
       })
     case .linux:
@@ -161,6 +172,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "windows"
         }
       })
+    case .web:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "web"
+        case .deutschDeutschland:
+          return "netz"
+        }
+      })
     case .linux:
       return UserFacing({ (localization) in
         switch localization {
@@ -228,6 +248,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return try .macOS ∈ project.configuration(output: output).supportedPlatforms
     case .windows:
       return try .windows ∈ project.configuration(output: output).supportedPlatforms
+    case .web:
+      return try .web ∈ project.configuration(output: output).supportedPlatforms
     case .linux:
       return try .linux ∈ project.configuration(output: output).supportedPlatforms
     case .tvOS:
@@ -256,6 +278,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .macOS
     case .windows:
       return .windows
+    case .web:
+      return .web
     case .linux, .miscellaneous, .deployment:
       return .linux
     case .android:
@@ -303,7 +327,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var gitHubActionMachine: StrictString {
     switch platform {
-    case .macOS:
+    // #workaround(Swift 5.1.5, Linux cannot find Foundation in Web toolchain.)
+    case .macOS, .web:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
@@ -317,7 +342,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var dockerImage: StrictString? {
     switch platform {
-    case .macOS, .windows, .android:
+    case .macOS, .windows, .web, .android:
       return nil
     case .linux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
@@ -361,24 +386,26 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func cache() -> StrictString {
-    let os: StrictString
+    let environment: StrictString
     switch platform {
     case .macOS:
-      os = "macOS"
+      environment = "macOS"
     case .windows:
-      os = "Windows"
+      environment = "Windows"
+    case .web:
+      environment = "Web"
     case .linux:
-      os = "Linux"
+      environment = "Linux"
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
-      os = "Android"
+      environment = "Android"
     }
     return uses(
       "actions/cache@v1",
       with: [
         "key":
-          "\(os)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
+          "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
         "path": PackageRepository.repositoryWorkspaceCacheDirectory
       ]
     )
@@ -471,11 +498,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func cURL(
     _ url: StrictString,
+    named name: StrictString? = nil,
     andUntarTo destination: StrictString,
     sudoCopy: Bool = false
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = tarFileName.truncated(before: ".tar")
+    let fileName = name ?? tarFileName.truncated(before: ".tar")
     let temporaryTar: StrictString = "/tmp/\(tarFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
@@ -646,6 +674,25 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+    case .web:
+      let snapshot = ContinuousIntegrationJob.currentExperimentalSwiftWebSnapshot
+      let releaseName: StrictString =
+        "swift\u{2D}wasm\u{2D}DEVELOPMENT\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
+      result.append(
+        script(
+          heading: installSwiftStepName,
+          localization: interfaceLocalization,
+          commands: [
+            cURL(
+              "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}osx.tar.gz",
+              named: releaseName,
+              andUntarTo: ".build/SDG/Swift",
+              sudoCopy: true
+            ),
+            ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
+          ]
+        )
+      )
     case .linux:
       result.append(contentsOf: [
         script(
@@ -806,6 +853,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+    case .web:
+      result.append(
+        script(
+          heading: buildStepName,
+          localization: interfaceLocalization,
+          commands: [
+            "export TARGETING_WEB=true",
+            ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi"
+          ]
+        )
+      )
     case .android:
       result.append(
         script(
@@ -909,7 +967,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
 
     switch platform {
-    case .macOS, .windows, .tvOS, .iOS, .android, .watchOS:
+    case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
       break
     case .linux:
       result.append(
@@ -1243,7 +1301,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
+      case .macOS, .windows, .web, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

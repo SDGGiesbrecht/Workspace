@@ -14,7 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+// #workaround(Swift 5.1.3, Web doesn’t have Foundation. Also compiler does not recognize WASI.)
+#if canImport(Foundation)
+  import Foundation
+#endif
 #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
@@ -24,26 +27,47 @@ import Foundation
   import FoundationXML
 #endif
 
-import Dispatch
-
-#if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
-  import WSCrossPlatformC
+// #workaround(Swift 5.1.3, Web doesn’t have Dispatch. Also compiler does not recognize WASI.)
+#if canImport(Dispatch)
+  import Dispatch
 #endif
 
-import SwiftFormatConfiguration  // External package.
+// #workaround(Swift 5.1.3, Web cannot import WSCrossPlatformC. Also compiler does not recognize WASI.)
+#if canImport(WSCrossPlatformC)
+  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+    import WSCrossPlatformC
+  #endif
+#endif
+
+// #workaround(Swift 5.1.3, Web cannot build SwiftFormatConfiguration. Also compiler does not recognize WASI.)
+#if canImport(SwiftFormatConfiguration)
+  import SwiftFormatConfiguration  // External package.
+#endif
 
 public func helloWorld() {
   print("Hello, world!")
-  print(NSString(string: "Hello, Foundation!"))
-  #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
-    print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+  // #workaround(Swift 5.1.3, Web doesn’t have Foundation. Also compiler does not recognize WASI.)
+  #if canImport(Foundation)
+    print(NSString(string: "Hello, Foundation!"))
+    #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
+      print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+    #endif
+    print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  print(XMLElement(name: "Hello, FoundationXML!"))
-  print(DispatchQueue(label: "Hello, Dispatch!"))
-  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
-    helloC()
+  // #workaround(Swift 5.1.3, Web doesn’t have Dispatch. Also compiler does not recognize WASI.)
+  #if canImport(Dispatch)
+    print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
-  print(Configuration())
+  // #workaround(Swift 5.1.3, Web cannot import WSCrossPlatformC. Also compiler does not recognize WASI.)
+  #if canImport(WSCrossPlatformC)
+    #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+      helloC()
+    #endif
+  #endif
+  // #workaround(Swift 5.1.3, Web cannot build SwiftFormatConfiguration. Also compiler does not recognize WASI.)
+  #if canImport(SwiftFormatConfiguration)
+    print(Configuration())
+  #endif
 }
 
 internal func helloTests() {

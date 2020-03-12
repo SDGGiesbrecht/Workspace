@@ -32,6 +32,7 @@ public let configuration: WorkspaceConfiguration = {
   configuration._applySDGDefaults()
 
   configuration.supportedPlatforms.remove(.windows)
+  configuration.supportedPlatforms.remove(.web)
   configuration.supportedPlatforms.remove(.tvOS)
   configuration.supportedPlatforms.remove(.iOS)
   configuration.supportedPlatforms.remove(.android)

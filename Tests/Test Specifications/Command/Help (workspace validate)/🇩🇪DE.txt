@@ -19,7 +19,7 @@ Optionen
 
 Argumentarte
 
-[Aufgabe] „android“, „ios“, „linux“, „macos“, „sonstiges“, „tvos“, „verteilung“, „watchos“ oder „windows“.
+[Aufgabe] „android“, „ios“, „linux“, „macos“, „netz“, „sonstiges“, „tvos“, „verteilung“, „watchos“ oder „windows“.
 [Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
 [Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
 

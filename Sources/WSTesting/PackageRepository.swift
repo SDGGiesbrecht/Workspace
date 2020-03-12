@@ -61,7 +61,7 @@ extension PackageRepository {
           ).get()
           return ¬SwiftCompiler.warningsOccurred(during: log)
         }
-      case .windows, .android, .miscellaneous, .deployment:
+      case .windows, .web, .android, .miscellaneous, .deployment:
         unreachable()
       case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
         buildCommand = { output in
@@ -166,7 +166,7 @@ extension PackageRepository {
           return false
         }
       }
-    case .windows, .android, .miscellaneous, .deployment:
+    case .windows, .web, .android, .miscellaneous, .deployment:
       unreachable()
     case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       testCommand = { output in
@@ -291,7 +291,7 @@ extension PackageRepository {
             return
           }
           report = fromPackageManager  // @exempt(from: tests)
-        case .windows, .android, .miscellaneous, .deployment:
+        case .windows, .web, .android, .miscellaneous, .deployment:
           unreachable()
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           guard

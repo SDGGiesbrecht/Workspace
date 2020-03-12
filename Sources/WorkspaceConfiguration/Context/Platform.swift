@@ -37,6 +37,15 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   /// Windows.
   case windows  // 1981‐08‐12 (MS‐DOS)
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Platform.web)
+  /// Web (through WebAssembly).
+  case web  // 1991‐08‐06
+  // @localization(🇩🇪DE) @crossReference(Platform.web)
+  /// Netz (durch WebAssembly).
+  public static var netz: Platform {
+    return web
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Linux.
   case linux  // 1991‐09‐17
@@ -72,6 +81,13 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "Windows"
+      }
+    case .web:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Web"
+      case .deutschDeutschland:
+        return "Netz"
       }
     case .linux:
       switch localization {

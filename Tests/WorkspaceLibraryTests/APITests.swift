@@ -415,6 +415,7 @@ class APITests: TestCase {
         configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen,
         [:]
       )
+      XCTAssertEqual(Schicht.netz, Platform.web)
     #endif
   }
 

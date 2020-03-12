@@ -778,12 +778,21 @@ func adjustForWindows() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem(let name), ._byNameItem(let name):
-        return impossibleTargets.contains(name)
-      case ._productItem(let name, _):
-        return impossibleDependencies.contains(name)
-      }
+      #if compiler(<5.2)
+        switch dependency {
+        case ._targetItem(let name), ._byNameItem(let name):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _):
+          return impossibleDependencies.contains(name)
+        }
+      #else
+        switch dependency {
+        case ._targetItem(let name, _), ._byNameItem(let name, _):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _, _):
+          return impossibleDependencies.contains(name)
+        }
+      #endif
     })
   }
   package.targets.removeAll(where: { target in
@@ -799,6 +808,113 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
   adjustForWindows()
 }
 
+func adjustForWeb() {
+  // #workaround(SDGCornerstone 4.5.0, Cannot build for web.)
+  let impossiblePackages = [
+    "SDGCommandLine",
+    "SDGCornerstone",
+    "SDGSwift",
+    "SDGWeb",
+    "swift\u{2D}format",
+    "swift\u{2D}package\u{2D}manager"
+  ]
+  package.dependencies.removeAll(where: { dependency in
+    for impossible in impossiblePackages {
+      if dependency.url.hasSuffix(impossible) {
+        return true
+      }
+    }
+    return false
+  })
+  let impossibleProducts: Set<String> = [
+    "arbeitsbereich",
+    "workspace",
+    "WorkspaceConfiguration"
+  ]
+  package.products.removeAll(where: { product in
+    return impossibleProducts.contains(product.name)
+  })
+  let impossibleDependencies: Set<String> = [
+    // SDGCornerstone
+    "SDGLocalization",
+    "SDGPersistence",
+    "SDGPersistenceTestUtilities",
+    "SDGXCTestUtilities",
+    // SDGCommandLine
+    "SDGCommandLine",
+    "SDGExportedCommandLineInterface",
+    // SDGSwift
+    "SDGSwift",
+    "SDGSwiftConfiguration",
+    "SDGSwiftConfigurationLoading",
+    "SDGSwiftPackageManager",
+    "SDGSwiftSource",
+    "SDGXcode",
+    // SwiftFormat
+    "SwiftFormatConfiguration"
+  ]
+  let impossibleTargets: Set<String> = [
+    // Workspace
+    "WSConfigurationExample",
+    "WSContinuousIntegration",
+    "WSCrossPlatformC",
+    "WSCustomTask",
+    "WSDocumentation",
+    "WSExamples",
+    "WSFileHeaders",
+    "WSGeneralImports",
+    "WSGeneralTestImports",
+    "WSGit",
+    "WSGitHub",
+    "WSInterface",
+    "WSLicence",
+    "WSLocalizations",
+    "WSNormalization",
+    "WSOpenSource",
+    "WSParsing",
+    "WSProject",
+    "WSProofreading",
+    "WSResources",
+    "WSScripts",
+    "WSSwift",
+    "WSTesting",
+    "WSValidation",
+    "WSXcode",
+    "WorkspaceConfiguration",
+    "WorkspaceLibrary",
+    "WorkspaceLibraryTests",
+    "WorkspaceProjectConfiguration",
+    "WorkspaceTool",
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      #if compiler(<5.2)
+        switch dependency {
+        case ._targetItem(let name), ._byNameItem(let name):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _):
+          return impossibleDependencies.contains(name)
+        }
+      #else
+        switch dependency {
+        case ._targetItem(let name, _), ._byNameItem(let name, _):
+          return impossibleTargets.contains(name)
+        case ._productItem(let name, _, _):
+          return impossibleDependencies.contains(name)
+        }
+      #endif
+    })
+  }
+  package.targets.removeAll(where: { target in
+    return impossibleTargets.contains(target.name)
+  })
+}
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+  adjustForWeb()
+}
+
 func adjustForAndroid() {
   let impossibleDependencies: Set<String> = [
     "SwiftPM\u{2D}auto",
@@ -806,12 +922,21 @@ func adjustForAndroid() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      switch dependency {
-      case ._targetItem, ._byNameItem:
-        return false
-      case ._productItem(let name, _):
-        return impossibleDependencies.contains(name)
-      }
+      #if compiler(<5.2)
+        switch dependency {
+        case ._targetItem, ._byNameItem:
+          return false
+        case ._productItem(let name, _):
+          return impossibleDependencies.contains(name)
+        }
+      #else
+        switch dependency {
+        case ._targetItem, ._byNameItem:
+          return false
+        case ._productItem(let name, _, _):
+          return impossibleDependencies.contains(name)
+        }
+      #endif
     })
   }
 }

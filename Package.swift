@@ -835,6 +835,8 @@ func adjustForWeb() {
     return impossibleProducts.contains(product.name)
   })
   let impossibleDependencies: Set<String> = [
+    // SDGCornerstone
+    "SDGPersistence",
     // SDGCommandLine
     "SDGCommandLine",
     "SDGExportedCommandLineInterface",

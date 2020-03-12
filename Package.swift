@@ -809,7 +809,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 }
 
 func adjustForWeb() {
-  // #warning(SDGCornerstone 4.5.0, Cannot build for web.)
+  // #workaround(SDGCornerstone 4.5.0, Cannot build for web.)
   let impossiblePackages = [
     "SDGCommandLine",
     "SDGCornerstone",

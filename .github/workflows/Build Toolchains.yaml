@@ -81,14 +81,7 @@ jobs:
       run: |
         set -x
         cd swift-source/swift
-        ./utils/build-script --preset=buildbot_linux,no_test \
-          install_destdir=${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
-        find ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain
-    - name: Upload Linux toolchain
-      uses: actions/upload-artifact@v1
-      with:
-        name: Linux.xctoolchain
-        path: Linux/Swift/Linux.xctoolchain
+        ./utils/build-script --release
     - name: Enable Android x86_64
       shell: bash
       run: |
@@ -123,7 +116,7 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
-        ${GITHUB_WORKSPACE}/Linux/Swift/Linux.xctoolchain/usr/bin/swiftc \
+        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \
           -target x86_64-unknown-linux-android \
           -sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \

@@ -18,7 +18,7 @@ on: [push, pull_request]
 
 jobs:
   Web:
-    runs-on: macOS-10.15
+    runs-on: ubuntu-18.04
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -28,6 +28,17 @@ jobs:
         key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://swift.org/builds/swift-5.1.1-release/ubuntu1804/swift-5.1.1-RELEASE/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz' \
+          --output '/tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file /tmp/swift-5.1.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+        mkdir -p /
+        sudo cp -R /tmp/swift-5.1.1-RELEASE-ubuntu18.04/* /
+        swift --version
+    - name: Fetch web cross‐compilation toolchain
       shell: bash
       run: |
         set -x

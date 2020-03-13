@@ -82,7 +82,7 @@ jobs:
         set -x
         cd swift-source/swift
         ./utils/build-script --release
-        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc --version
+        ../build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc --version
     - name: Enable Android x86_64
       shell: bash
       run: |

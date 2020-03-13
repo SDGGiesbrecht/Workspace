@@ -82,6 +82,7 @@ jobs:
         set -x
         cd swift-source/swift
         ./utils/build-script --release
+        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc --version
     - name: Enable Android x86_64
       shell: bash
       run: |
@@ -116,7 +117,7 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
-        build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \
+        swift-source/build/Ninja-ReleaseAssert/swift-linux-x86_64/bin/swiftc \
           -target x86_64-unknown-linux-android \
           -sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \

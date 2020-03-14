@@ -901,21 +901,17 @@ func adjustForWeb() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      #if compiler(<5.2)
-        switch dependency {
-        case ._targetItem(let name), ._byNameItem(let name):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _):
-          return impossibleDependencies.contains(name)
-        }
-      #else
-        switch dependency {
-        case ._targetItem(let name, _), ._byNameItem(let name, _):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _, _):
-          return impossibleDependencies.contains(name)
-        }
-      #endif
+      if impossibleTargets.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      }) {
+        return true
+      } else if impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      }) {
+        return true
+      } else {
+        return false
+      }
     })
   }
   package.targets.removeAll(where: { target in

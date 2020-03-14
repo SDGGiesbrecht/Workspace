@@ -712,7 +712,7 @@ let package = Package(
     .target(
       name: "WSCrossPlatform",
       dependencies: [
-        "WSCrossPlatformC",
+        // WSCrossPlatformC (except Windows; see end of file)
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ],
       path: "Tests/WSCrossPlatform"
@@ -790,6 +790,17 @@ import Foundation
   }
 #endif
 
+// #workaround(Swift 5.1.4, These cannot build on Windows.)
+import Foundation
+#if !os(Windows)
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
+
+    for target in package.targets where target.name == "WSCrossPlatform" {
+      target.dependencies.append("WSCrossPlatformC")
+    }
+  }
+#endif
+
 func adjustForWindows() {
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
@@ -797,25 +808,6 @@ func adjustForWindows() {
     "test‐ios‐simulator",
     "test‐tvos‐simulator"
   ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      #if compiler(<5.2)
-        switch dependency {
-        case ._targetItem(let name), ._byNameItem(let name):
-          return impossibleTargets.contains(name)
-        case ._productItem:
-          return false
-        }
-      #else
-        switch dependency {
-        case ._targetItem(let name, _), ._byNameItem(let name, _):
-          return impossibleTargets.contains(name)
-        case ._productItem:
-          return false
-        }
-      #endif
-    })
-  }
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })

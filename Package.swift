@@ -368,9 +368,9 @@ let package = Package(
         "WSScripts",
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format")
+        .product(name: "SDGSwiftSource", package: "SDGSwift")
+        // SwiftPM‐auto (except Windows and Android; see end of file)
+        // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
 
@@ -381,8 +381,8 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSSwift",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format")
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
+        // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
 
@@ -411,8 +411,8 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format")
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
+        // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
 
@@ -437,8 +437,8 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format")
+        .product(name: "SDGSwiftSource", package: "SDGSwift")
+        // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
 
@@ -712,7 +712,7 @@ let package = Package(
     .target(
       name: "WSCrossPlatform",
       dependencies: [
-        "WSCrossPlatformC",
+        // WSCrossPlatformC (except Windows; see end of file)
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ],
       path: "Tests/WSCrossPlatform"
@@ -765,36 +765,49 @@ let package = Package(
 )
 
 // #workaround(Swift 5.1.4, These cannot build on Windows.)
+// #workaround(Swift 5.1.4, These cannot build on Android.)
+import Foundation
+#if !os(Windows) && !os(Android)
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil,
+    ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == nil
+  {
+
+    for target in package.targets where target.name == "WSContinuousIntegration" {
+      target.dependencies.append(
+        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+      )
+    }
+
+    let needSwiftFormat: Set<String> = [
+      "WSContinuousIntegration",
+      "WSResources",
+      "WSNormalization",
+      "WSProofreading"
+    ]
+    for target in package.targets where needSwiftFormat.contains(target.name) {
+      target.dependencies.append(.product(name: "SwiftFormat", package: "swift\u{2D}format"))
+    }
+  }
+#endif
+
+// #workaround(Swift 5.1.4, These cannot build on Windows.)
+import Foundation
+#if !os(Windows)
+  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
+
+    for target in package.targets where target.name == "WSCrossPlatform" {
+      target.dependencies.append("WSCrossPlatformC")
+    }
+  }
+#endif
+
 func adjustForWindows() {
-  let impossibleDependencies: Set<String> = [
-    "SwiftPM\u{2D}auto",
-    "SwiftFormat"
-  ]
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
     "test‐ios‐simulator",
     "test‐tvos‐simulator"
   ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      #if compiler(<5.2)
-        switch dependency {
-        case ._targetItem(let name), ._byNameItem(let name):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _):
-          return impossibleDependencies.contains(name)
-        }
-      #else
-        switch dependency {
-        case ._targetItem(let name, _), ._byNameItem(let name, _):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _, _):
-          return impossibleDependencies.contains(name)
-        }
-      #endif
-    })
-  }
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
@@ -802,7 +815,6 @@ func adjustForWindows() {
 #if os(Windows)
   adjustForWindows()
 #endif
-import Foundation
 // #workaround(Swift 5.1.4, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
@@ -889,21 +901,17 @@ func adjustForWeb() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      #if compiler(<5.2)
-        switch dependency {
-        case ._targetItem(let name), ._byNameItem(let name):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _):
-          return impossibleDependencies.contains(name)
-        }
-      #else
-        switch dependency {
-        case ._targetItem(let name, _), ._byNameItem(let name, _):
-          return impossibleTargets.contains(name)
-        case ._productItem(let name, _, _):
-          return impossibleDependencies.contains(name)
-        }
-      #endif
+      if impossibleTargets.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      }) {
+        return true
+      } else if impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      }) {
+        return true
+      } else {
+        return false
+      }
     })
   }
   package.targets.removeAll(where: { target in
@@ -912,37 +920,4 @@ func adjustForWeb() {
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()
-}
-
-func adjustForAndroid() {
-  let impossibleDependencies: Set<String> = [
-    "SwiftPM\u{2D}auto",
-    "SwiftFormat"
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      #if compiler(<5.2)
-        switch dependency {
-        case ._targetItem, ._byNameItem:
-          return false
-        case ._productItem(let name, _):
-          return impossibleDependencies.contains(name)
-        }
-      #else
-        switch dependency {
-        case ._targetItem, ._byNameItem:
-          return false
-        case ._productItem(let name, _, _):
-          return impossibleDependencies.contains(name)
-        }
-      #endif
-    })
-  }
-}
-#if os(Android)
-  adjustForAndroid()
-#endif
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
 }

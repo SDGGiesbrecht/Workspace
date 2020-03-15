@@ -88,7 +88,7 @@ jobs:
       run: |
         set -x
         cd swift-source/swift
-        sed -i -e "s~'armv7', 'aarch64'~'armv7', 'aarch64', 'x86_64'~g" utils/build_swift/build_swift/driver_arguments.py
+        sed -i -e "s~armv7~x86_64~g" utils/build_swift/build_swift/driver_arguments.py
         sed -i -e 's~armv7~x86_64~g' utils/build-script
         sed -i -e 's~armv7~x86_64~g' utils/swift_build_support/swift_build_support/targets.py
     - name: Build Android SDK

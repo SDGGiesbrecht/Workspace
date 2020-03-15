@@ -109,9 +109,9 @@ jobs:
           --install-prefix=/usr \
           --install-destdir=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --install-swift \
-          '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;swift-remote-mirror;sdk-overlay;dev'
-        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
+          '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;swift-remote-mirror;sdk-overlay;dev' \
           --skip-test-swift
+        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

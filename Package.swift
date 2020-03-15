@@ -529,9 +529,6 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
-      ],
-      swiftSettings: [
-        .define("CACHE_LOG", .when(configuration: .debug))
       ]
     ),
 

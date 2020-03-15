@@ -28,7 +28,7 @@ import SDGSwiftSource
       file: StaticString = #file,
       function: StaticString = #function
     ) {  // @exempt(from: tests)
-      #if UNIDENTIFIED_SYNTAX_WARNINGS
+      #if DEBUG
         let fileName = URL(fileURLWithPath: "\(file)").deletingPathExtension().lastPathComponent
         print("Unidentified syntax node: \(Swift.type(of: self)) (\(fileName).\(function))")
       #endif

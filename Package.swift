@@ -473,9 +473,6 @@ let package = Package(
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb")
-      ],
-      swiftSettings: [
-        .define("UNIDENTIFIED_SYNTAX_WARNINGS", .when(configuration: .debug))
       ]
     ),
 

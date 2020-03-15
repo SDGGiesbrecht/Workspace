@@ -48,7 +48,7 @@ extension PackageRepository {
 
   public func resetFileCache(debugReason: String) {
     PackageRepository.fileCaches[location] = FileCache()
-    #if CACHE_LOG
+    #if DEBUG
       print(
         "(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
       )
@@ -79,7 +79,7 @@ extension PackageRepository {
   public func resetManifestCache(debugReason: String) {
     resetFileCache(debugReason: debugReason)
     PackageRepository.manifestCaches[location] = ManifestCache()
-    #if CACHE_LOG
+    #if DEBUG
       print(
         "(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
       )
@@ -109,7 +109,7 @@ extension PackageRepository {
   public func resetConfigurationCache(debugReason: String) {
     resetManifestCache(debugReason: "testing")
     PackageRepository.configurationCaches[location] = ConfigurationCache()
-    #if CACHE_LOG
+    #if DEBUG
       print(
         "(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
       )

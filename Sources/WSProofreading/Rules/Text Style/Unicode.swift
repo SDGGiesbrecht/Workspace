@@ -148,32 +148,7 @@ internal struct UnicodeRule: SyntaxRule {
       switch kind() {
       case .syntax(let kind):
         switch kind {
-        case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
-          .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword,
-          .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword,
-          .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword,
-          .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword,
-          .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword,
-          .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
-          .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword,
-          .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword,
-          .throwKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword,
-          .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .trueKeyword,
-          .tryKeyword, .throwsKeyword, .__file__Keyword, .__line__Keyword, .__column__Keyword,
-          .__function__Keyword, .__dso_handle__Keyword, .wildcardKeyword, .leftParen,
-          .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket,
-          .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .colon, .semicolon, .equal,
-          .atSign, .pound, .prefixAmpersand, .arrow, .backtick, .backslash, .exclamationMark,
-          .postfixQuestionMark, .infixQuestionMark, .stringQuote, .multilineStringQuote,
-          .poundKeyPathKeyword, .poundLineKeyword, .poundSelectorKeyword, .poundFileKeyword,
-          .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword,
-          .poundAssertKeyword, .poundSourceLocationKeyword, .poundWarningKeyword,
-          .poundErrorKeyword, .poundIfKeyword, .poundElseKeyword, .poundElseifKeyword,
-          .poundAvailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
-          .poundColorLiteralKeyword, .unknown, .identifier, .unspacedBinaryOperator,
-          .spacedBinaryOperator, .postfixOperator, .prefixOperator, .dollarIdentifier,
-          .contextualKeyword, .stringInterpolationAnchor, .yield, .poundEndifKeyword,
-          .ellipsis, .singleQuote, .rawStringDelimiter:
+        case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword, .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword, .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword, .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword, .__dso_handle__Keyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand, .arrow, .backtick, .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark, .stringQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword, .poundSelectorKeyword, .poundFileKeyword, .poundFilePathKeyword, .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword, .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword, .poundElseKeyword, .poundElseifKeyword, .poundAvailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword, .poundColorLiteralKeyword, .unknown, .identifier, .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator, .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield, .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.

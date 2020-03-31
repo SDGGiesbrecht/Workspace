@@ -19,6 +19,7 @@ import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
+import SDGSwift
 import SDGXcode
 import SDGSwiftSource
 import SDGHTML
@@ -140,7 +141,7 @@ extension PackageRepository {
             }
           case .project(let url):
             let package = try PackageRepository.relatedPackage(
-              Package(url: url),
+              SDGSwift.Package(url: url),
               output: output
             )
             let name: StrictString
@@ -377,7 +378,7 @@ extension PackageRepository {
 
       FileManager.default
         .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
-          let package = Package(url: packageURL)
+          let package = SDGSwift.Package(url: packageURL)
           do {
             _ = try Git.clone(package, to: temporary).get()
             _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()

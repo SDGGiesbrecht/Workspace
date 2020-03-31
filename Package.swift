@@ -259,6 +259,7 @@ let package = Package(
       .branch("swift‐5.1")
     ),
     .package(
+      name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       .branch("swift‐5.2")
     ),
@@ -768,7 +769,7 @@ import Foundation
 
     for target in package.targets where target.name == "WSContinuousIntegration" {
       target.dependencies.append(
-        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
       )
     }
 

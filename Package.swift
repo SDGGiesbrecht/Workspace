@@ -476,7 +476,6 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb")
@@ -776,6 +775,12 @@ import Foundation
     for target in package.targets where target.name == "WSContinuousIntegration" {
       target.dependencies.append(
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
+      )
+    }
+
+    for target in package.targets where target.name == "WSDocumentation" {
+      target.dependencies.append(
+        .product(name: "SwiftSyntax", package: "SwiftSyntax")
       )
     }
 

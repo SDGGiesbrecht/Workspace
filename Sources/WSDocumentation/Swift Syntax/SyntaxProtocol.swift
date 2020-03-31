@@ -24,6 +24,10 @@ import SDGSwiftSource
 #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
   extension SyntaxProtocol {
 
+    internal func asSyntax() -> Syntax {
+      return Syntax(self)
+    }
+
     internal func warnUnidentified(
       file: StaticString = #file,
       function: StaticString = #function

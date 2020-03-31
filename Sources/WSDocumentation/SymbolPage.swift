@@ -673,24 +673,24 @@ import WSProject
       let packageName = package.name.text
 
       let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
-        calledExpression: SyntaxFactory.makeMemberAccessExpr(
-          base: SyntaxFactory.makeBlankUnknownExpr(),
+        calledExpression: ExprSyntax(SyntaxFactory.makeMemberAccessExpr(
+          base: ExprSyntax(SyntaxFactory.makeBlankUnknownExpr()),
           dot: SyntaxFactory.makeToken(.period),
           name: SyntaxFactory.makeToken(.identifier("product")),
           declNameArguments: nil
-        ),
+        )),
         leftParen: SyntaxFactory.makeToken(.leftParen),
-        argumentList: SyntaxFactory.makeFunctionCallArgumentList([
-          SyntaxFactory.makeFunctionCallArgument(
+        argumentList: SyntaxFactory.makeTupleExprElementList([
+          SyntaxFactory.makeTupleExprElement(
             label: SyntaxFactory.makeToken(.identifier("name")),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: SyntaxFactory.makeStringLiteralExpr(libraryName),
+            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(libraryName)),
             trailingComma: SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
           ),
-          SyntaxFactory.makeFunctionCallArgument(
+          SyntaxFactory.makeTupleExprElement(
             label: SyntaxFactory.makeToken(.identifier("package")),
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: SyntaxFactory.makeStringLiteralExpr(packageName),
+            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(packageName)),
             trailingComma: nil
           )
         ]),
@@ -866,9 +866,9 @@ import WSProject
         return ""
       }
       if let constraints = symbol.constraints,
-        let constrained = declaration as? Constrained
+        let constrained = declaration.asProtocol(SyntaxProtocol.self) as? Constrained
       {
-        declaration = constrained.withGenericWhereClause(constraints)
+        declaration = constrained.withGenericWhereClause(constraints).asSyntax()
       }
 
       if case .variable(let variable) = symbol,
@@ -1045,7 +1045,7 @@ import WSProject
           let status: DocumentationStatus
           let symbol: APIElement
           let navigationPath: [APIElement]
-          func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
+          override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
             for argument in node.arguments
             where (
               argument.secondName?.text.isEmpty ≠ false
@@ -1065,8 +1065,8 @@ import WSProject
             return .visitChildren
           }
         }
-        var scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
-        declaration.walk(&scanner)
+        let scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
+        scanner.walk(declaration)
       }
 
       let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)

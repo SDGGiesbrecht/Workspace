@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": "swift‐5.1",
-          "revision": "3a644a925671533e8c1a15a4073673af6c475f97",
+          "revision": "5fd3968d7314f3ce24a5ade23ff7e346d91187d6",
           "version": null
         }
       },
@@ -60,17 +60,17 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
         "state": {
           "branch": "swift‐5.2",
-          "revision": "34e2a71dfe1978c76a7dc2a588b4c064eceaac60",
+          "revision": "230ce6641246fec3be3a3bff981dd61294fb273d",
           "version": null
         }
       },
       {
         "package": "llbuild",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
-          "branch": "swift‐5.2",
+          "branch": null,
           "revision": "fb7ebf0b06c0d7c45ca8e18b3371424503a38b5c",
-          "version": null
+          "version": "0.3.0"
         }
       },
       {
@@ -87,7 +87,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": "swift‐5.2",
-          "revision": "42935996bac9055fc787036591d7a8189482ff1b",
+          "revision": "65eaf767847ff70f9c9384f9cff4f705b8f386ff",
           "version": null
         }
       },
@@ -102,11 +102,11 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
         "state": {
-          "branch": "swift‐5.2",
+          "branch": null,
           "revision": "98a5916a811fcaaed770f1ed812e9405be762945",
-          "version": null
+          "version": "0.1.0"
         }
       }
     ]

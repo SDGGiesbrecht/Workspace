@@ -20,11 +20,6 @@ import SwiftFormatConfiguration
 
 extension Configuration {
 
-  private func copy() -> Configuration {
-    let data = try! JSONEncoder().encode(self)
-    return try! JSONDecoder().decode(Configuration.self, from: data)
-  }
-
   internal func reducedToMachineResponsibilities() -> Configuration {
     /*
      Machines should be responsible for:
@@ -33,7 +28,7 @@ extension Configuration {
 
      For other rules, while it is helpful to have a safety net to catch oversights, human beings deserve the opportunity to learn from their mistakes. Automatically cleaning up after them is an insult to humanity and encourages laziness. Writing something right the first time is faster than writing it wrong and then tasking a machine to fix it.
      */
-    let copy = self.copy()
+    var copy = self
     copy.rules = [:]
     return copy
   }

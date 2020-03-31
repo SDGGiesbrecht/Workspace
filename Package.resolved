@@ -60,7 +60,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
         "state": {
           "branch": "swift‐5.2",
-          "revision": "5cdf916a09ee8b581ff348c0e395b221d02d253b",
+          "revision": "34e2a71dfe1978c76a7dc2a588b4c064eceaac60",
           "version": null
         }
       },
@@ -98,6 +98,15 @@
           "branch": null,
           "revision": "0688b9cfc4c3dd234e4f55f1f056b2affc849873",
           "version": "0.50200.0"
+        }
+      },
+      {
+        "package": "swift-tools-support-core",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+        "state": {
+          "branch": "swift‐5.2",
+          "revision": "98a5916a811fcaaed770f1ed812e9405be762945",
+          "version": null
         }
       }
     ]

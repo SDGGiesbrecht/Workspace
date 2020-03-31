@@ -264,6 +264,11 @@ let package = Package(
       .branch("swift‐5.2")
     ),
     .package(
+      name: "SwiftSyntax",
+      url: "https://github.com/apple/swift\u{2D}syntax",
+      .exact(Version(0, 50200, 0))
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       .branch("swift‐5.2")
     ),
@@ -471,6 +476,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb")

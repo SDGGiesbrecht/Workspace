@@ -256,15 +256,15 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 19, 3))
+      .branch("swift‐5.1")
     ),
     .package(
-      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 5, 0))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
+      .branch("swift‐5.2")
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
-      .exact(Version(0, 0, 50100))
+      .branch("swift‐5.2")
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 2))
   ],

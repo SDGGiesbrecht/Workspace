@@ -263,6 +263,10 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
       .branch("swift‐5.2")
     ),
+    .package(  // #workaround(Swift 5.1.4, Until packages work natively on windows.)
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
+      .exact(Version(0, 1, 0))
+    ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
@@ -531,7 +535,8 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
+        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
       ]
     ),
 

@@ -24,6 +24,8 @@ import SDGSwiftConfigurationLoading
 
 import WorkspaceProjectConfiguration
 
+import TSCBasic
+
 extension PackageRepository {
 
   private static let macOSDeploymentVersion = Version(10, 10)
@@ -140,9 +142,9 @@ extension PackageRepository {
   private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
     let variable = "GENERATING_CMAKE_FOR_WINDOWS"
     #if !os(Windows)
-      setenv(variable, "true", 1 /* overwrite */)
+      try? ProcessEnv.setVar(variable, value: "true")
       defer {
-        unsetenv(variable)
+        try? ProcessEnv.unsetVar(variable)
       }
     #endif
     return try closure()

@@ -37,12 +37,12 @@ import Foundation
       for file in sources.paths.sorted() {
         let syntax = try SyntaxParser.parse(file.asURL)
         for statement in syntax.statements {
-          if let classDeclaration = statement.item as? ClassDeclSyntax {
+          if let classDeclaration = statement.item.as(ClassDeclSyntax.self) {
             let name = classDeclaration.identifier.text
             var methods: [String] = []
             if name.hasSuffix("Tests") {
               for member in classDeclaration.members.members {
-                if let method = member.decl as? FunctionDeclSyntax {
+                if let method = member.decl.as(FunctionDeclSyntax.self) {
                   let methodName = method.identifier.text
                   if methodName.hasPrefix("test") {
                     methods.append(methodName)

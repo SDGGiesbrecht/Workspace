@@ -65,8 +65,8 @@
           return "target"  // From “targets: [.target(...)]”
         }
       case .type(let type):
-        switch type.genericDeclaration {
-        case is ClassDeclSyntax:
+        let genericDeclaration = type.genericDeclaration
+        if genericDeclaration.is(ClassDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -77,7 +77,7 @@
           } else {
             return "class"
           }
-        case is StructDeclSyntax:
+        } else if genericDeclaration.is(StructDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -88,7 +88,7 @@
           } else {
             return "struct"
           }
-        case is EnumDeclSyntax:
+        } else if genericDeclaration.is(EnumDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -99,7 +99,7 @@
           } else {
             return "enum"
           }
-        case is TypealiasDeclSyntax:
+        } else if genericDeclaration.is(TypealiasDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -110,7 +110,7 @@
           } else {
             return "typealias"
           }
-        case is AssociatedtypeDeclSyntax:
+        } else if genericDeclaration.is(AssociatedtypeDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -121,7 +121,7 @@
           } else {
             return "associatedtype"
           }
-        default:  // @exempt(from: tests)
+        } else {  // @exempt(from: tests)
           // @exempt(from: tests)
           type.genericDeclaration.warnUnidentified()
           return ""

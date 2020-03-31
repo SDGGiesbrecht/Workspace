@@ -51,7 +51,7 @@ internal struct UnicodeRule: SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      if let token = node as? TokenSyntax {
+      if let token = node.as(TokenSyntax.self) {
 
         func isPrefix() -> Bool {
           if case .prefixOperator = token.tokenKind {
@@ -79,7 +79,7 @@ internal struct UnicodeRule: SyntaxRule {
         }
 
         func isInAvailabilityDeclaration() -> Bool {
-          return node.ancestors().contains(where: { $0 is AvailabilityArgumentSyntax })
+          return node.ancestors().contains(where: { $0.is(AvailabilityArgumentSyntax.self) })
         }
 
         check(

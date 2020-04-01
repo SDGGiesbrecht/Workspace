@@ -45,7 +45,8 @@ extension InterfaceLocalization {
   ) -> DirectivePatternWithArguments {
     let simple = pattern(named: name, startingWith: scalar)
     let parenthesis = simple + "(".scalars
-    let arguments = parenthesis
+    let arguments =
+      parenthesis
       + RepetitionPattern(
         ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
         consumption: .greedy

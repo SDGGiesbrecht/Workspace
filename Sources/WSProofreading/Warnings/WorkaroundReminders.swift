@@ -67,8 +67,8 @@ internal struct WorkaroundReminders: Warning {
 
         var dependency =
           parameters
-            .map({ StrictString($0.contents) })
-            .joined(separator: " ")
+          .map({ StrictString($0.contents) })
+          .joined(separator: " ")
         dependency.trimMarginalWhitespace()
 
         if dependency == "Swift" {

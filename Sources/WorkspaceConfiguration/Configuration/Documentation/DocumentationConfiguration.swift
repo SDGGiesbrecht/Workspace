@@ -428,7 +428,7 @@ public struct DocumentationConfiguration: Codable {
       "",
       "```shell",
       "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
-      "```"
+      "```",
     ].joinedAsLines()
   }
 
@@ -504,43 +504,37 @@ public struct DocumentationConfiguration: Codable {
       }).resolved(for: localization),
       "",
       "```swift",
-      (
-        "let "
-          + UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "package"
-            case .deutschDeutschland:
-              return "paket"
-            }
-          }).resolved(for: localization) + " = Package("
-      ) as StrictString,
-      (
-        "    name: \u{22}"
-          + UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "MyPackage"
-            case .deutschDeutschland:
-              return "MeinePaket"
-            }
-          }).resolved(for: localization) + "\u{22},"
-      ) as StrictString,
+      ("let "
+        + UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "package"
+          case .deutschDeutschland:
+            return "paket"
+          }
+        }).resolved(for: localization) + " = Package(") as StrictString,
+      ("    name: \u{22}"
+        + UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "MyPackage"
+          case .deutschDeutschland:
+            return "MeinePaket"
+          }
+        }).resolved(for: localization) + "\u{22},") as StrictString,
       "    dependencies: [",
       "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
       "    ],",
       "    targets: [",
-      (
-        "        .target(name: \u{22}"
-          + UserFacing<StrictString, ContentLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "MyTarget"
-            case .deutschDeutschland:
-              return "MeinZiel"
-            }
-          }).resolved(for: localization) + "\u{22}, dependencies: ["
-      ) as StrictString
+      ("        .target(name: \u{22}"
+        + UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "MyTarget"
+          case .deutschDeutschland:
+            return "MeinZiel"
+          }
+        }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString,
     ]
 
     for library in libraries {
@@ -578,7 +572,7 @@ public struct DocumentationConfiguration: Codable {
         }
       }).resolved(for: localization),
       "",
-      "```swift"
+      "```swift",
     ]
 
     for module in WorkspaceContext.current.manifest.productModules {

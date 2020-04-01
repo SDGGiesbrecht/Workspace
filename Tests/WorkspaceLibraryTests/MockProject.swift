@@ -103,7 +103,7 @@ extension PackageRepository {
             _ = try Shell.default.run(command: ["git", "init"]).get()
             _ = try Shell.default.run(command: ["git", "add", "."]).get()
             _ = try Shell.default.run(command: [
-              "git", "commit", "\u{2D}m", "Initialized."
+              "git", "commit", "\u{2D}m", "Initialized.",
             ]).get()
             _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
           }
@@ -215,38 +215,24 @@ extension PackageRepository {
                 continue
               }
               // Differing task sets on Linux.
-              if (
-                command == ["refresh"] ∧ location.lastPathComponent
-                  ∈ Set(["AllTasks", "CustomTasks"])
-              )
-                ∨ (
-                  command == ["validate"] ∧ location.lastPathComponent
-                    ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"])
-                )
-                ∨ (
-                  command == ["validate", "test‐coverage"]
-                    ∧ location.lastPathComponent
-                    ∈ Set(["Default", "SDGLibrary", "SDGTool"])
-                )
-                ∨ (
-                  command == ["prüfen", "testabdeckung"]
-                    ∧ location.lastPathComponent ∈ Set(["Deutsch"])
-                )
-                ∨ (
-                  command == ["validate", "•job", "macos"]
-                    ∧ location.lastPathComponent ∈ Set(["Default"])
-                )
+              if (command == ["refresh"] ∧ location.lastPathComponent
+                ∈ Set(["AllTasks", "CustomTasks"]))
+                ∨ (command == ["validate"] ∧ location.lastPathComponent
+                  ∈ Set(["AllDisabled", "CustomTasks", "SDGLibrary"]))
+                ∨ (command == ["validate", "test‐coverage"]
+                  ∧ location.lastPathComponent
+                  ∈ Set(["Default", "SDGLibrary", "SDGTool"]))
+                ∨ (command == ["prüfen", "testabdeckung"]
+                  ∧ location.lastPathComponent ∈ Set(["Deutsch"]))
+                ∨ (command == ["validate", "•job", "macos"]
+                  ∧ location.lastPathComponent ∈ Set(["Default"]))
               {
                 requireSuccess()
                 continue
-              } else if (
-                command == ["validate"] ∧ location.lastPathComponent
-                  ∈ Set(["AllTasks", "Default", "FailingCustomValidation"])
-              )
-                ∨ (
-                  command == ["validate", "test‐coverage"]
-                    ∧ location.lastPathComponent ∈ Set(["FailingTests"])
-                )
+              } else if (command == ["validate"] ∧ location.lastPathComponent
+                ∈ Set(["AllTasks", "Default", "FailingCustomValidation"]))
+                ∨ (command == ["validate", "test‐coverage"]
+                  ∧ location.lastPathComponent ∈ Set(["FailingTests"]))
               {
                 expectFailure()
                 continue
@@ -385,9 +371,7 @@ extension PackageRepository {
           try? FileManager.default.removeItem(
             at: location.appendingPathComponent("Tests/LinuxMain.swift")
           )
-          for manifest in (
-            (try? FileManager.default.deepFileEnumeration(in: location)) ?? []
-          )
+          for manifest in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? [])
           where manifest.lastPathComponent == "XCTestManifests.swift" {
             try? FileManager.default.removeItem(at: manifest)
           }
@@ -395,9 +379,9 @@ extension PackageRepository {
           let afterLocation = PackageRepository.afterDirectory(
             for: location.lastPathComponent
           )
-          if overwriteSpecificationInsteadOfFailing ∨ (
-            try? afterLocation.checkResourceIsReachable()
-          ) ≠ true {
+          if overwriteSpecificationInsteadOfFailing
+            ∨ (try? afterLocation.checkResourceIsReachable()) ≠ true
+          {
             try? FileManager.default.removeItem(at: afterLocation)
             try FileManager.default.move(location, to: afterLocation)
           } else {

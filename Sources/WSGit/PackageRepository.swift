@@ -39,14 +39,14 @@ extension PackageRepository {
     return [
       ".build",
       "Packages",
-      ".swiftpm"
+      ".swiftpm",
     ]
   }
 
   private static var ignoreEntriesForWorkspace: [String] {
     return [
       "Validate\\ (macOS).command",
-      "Validate\\ (Linux).sh"
+      "Validate\\ (Linux).sh",
     ]
   }
 
@@ -55,7 +55,7 @@ extension PackageRepository {
       "*.xcodeproj",
       "IDEWorkspaceChecks.plist",
       "xcuserdata",
-      "*.profraw"
+      "*.profraw",
     ]
   }
 
@@ -69,7 +69,8 @@ extension PackageRepository {
 
   public func refreshGitConfiguration(output: Command.Output) throws {
 
-    let entries = try PackageRepository.ignoreEntries
+    let entries =
+      try PackageRepository.ignoreEntries
       + configuration(output: output).git.additionalGitIgnoreEntries
 
     var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))

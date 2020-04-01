@@ -25,7 +25,7 @@ extension PackageRepository {
   private static let skippedRelativePaths: [String] = [
     "LICENSE.md",
     ".github/ISSUE_TEMPLATE",
-    ".github/PULL_REQUEST_TEMPLATE.md"
+    ".github/PULL_REQUEST_TEMPLATE.md",
   ]
 
   private var skippedFiles: Set<URL> {

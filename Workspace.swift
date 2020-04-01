@@ -139,7 +139,7 @@ public let configuration: WorkspaceConfiguration = {
 
     // SwiftSyntax
     "_CSwiftSyntax",
-    "SwiftSyntax"
+    "SwiftSyntax",
   ]
 
   return configuration

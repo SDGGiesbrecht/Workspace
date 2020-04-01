@@ -34,7 +34,7 @@ extension PackageRepository {
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
     return try ContinuousIntegrationJob.allCases.filter { job in
       return try job.isRequired(by: self, output: output)
-      // Simulator is unavailable during normal test.
+        // Simulator is unavailable during normal test.
         ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
         // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on these platforms.
         ∨ ((job ∈ Set([.windows, .web, .android])) ∧ isWorkspaceProject())
@@ -53,12 +53,12 @@ extension PackageRepository {
 
     var workflow: [StrictString] = [
       "name: \(resolvedName)",
-      ""
+      "",
     ]
     workflow.append(contentsOf: onConditions)
     workflow.append(contentsOf: [
       "",
-      "jobs:"
+      "jobs:",
     ])
 
     for job in try relevantJobs(output: output)
@@ -103,7 +103,7 @@ extension PackageRepository {
           "on:",
           "  push:",
           "    branches:",
-          "      \u{2D} master"
+          "      \u{2D} master",
         ],
         jobFilter: { $0 == .deployment },
         output: output
@@ -168,7 +168,7 @@ extension PackageRepository {
           "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
           "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
           "",
-          "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
+          "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)",
         ]
 
         var testTargets: [ResolvedTarget] = []
@@ -232,7 +232,7 @@ extension PackageRepository {
           "",
           "add_executable(WindowsMain",
           "  WindowsMain.swift",
-          ")"
+          ")",
         ])
         if ¬testTargets.isEmpty {
           cmake.append("target_link_libraries(WindowsMain PRIVATE")
@@ -243,7 +243,7 @@ extension PackageRepository {
         }
         cmake.append(contentsOf: [
           "add_test(NAME WindowsMain COMMAND WindowsMain)",
-          "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
+          "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})",
         ])
 
         var cmakeFile = try TextFile(possiblyAt: url)
@@ -263,7 +263,7 @@ extension PackageRepository {
     ) throws {
       var main: [String] = [
         "import XCTest",
-        ""
+        "",
       ]
       var testClasses: [(name: String, methods: [String])] = []
       for testTarget in testTargets {
@@ -341,7 +341,7 @@ extension PackageRepository {
 
       main.append(contentsOf: [
         "",
-        "XCTMain(tests)"
+        "XCTMain(tests)",
       ])
 
       var source = main.joinedAsLines()

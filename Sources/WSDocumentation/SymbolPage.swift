@@ -412,7 +412,7 @@ import WSProject
           "name": "conformance filter",
           "onchange": "switchConformanceMode(this)",
           "type": "radio",
-          "value": value
+          "value": value,
         ],
         contents: label,
         inline: false
@@ -590,7 +590,7 @@ import WSProject
             "a",
             attributes: [
               "id": "current‐language‐icon",
-              "onmouseenter": "showLanguageSwitch(this)"
+              "onmouseenter": "showLanguageSwitch(this)",
             ],
             contents: [
               ElementSyntax(
@@ -608,7 +608,7 @@ import WSProject
             "div",
             attributes: [
               "id": "language‐switch",
-              "onmouseleave": "hideLanguageSwitch(this)"
+              "onmouseleave": "hideLanguageSwitch(this)",
             ],
             contents: allLocalizations.lazy.filter({ $0.localization ≠ localization })
               .map({ entry in
@@ -673,12 +673,14 @@ import WSProject
       let packageName = package.name.text
 
       let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
-        calledExpression: ExprSyntax(SyntaxFactory.makeMemberAccessExpr(
-          base: ExprSyntax(SyntaxFactory.makeBlankUnknownExpr()),
-          dot: SyntaxFactory.makeToken(.period),
-          name: SyntaxFactory.makeToken(.identifier("product")),
-          declNameArguments: nil
-        )),
+        calledExpression: ExprSyntax(
+          SyntaxFactory.makeMemberAccessExpr(
+            base: ExprSyntax(SyntaxFactory.makeBlankUnknownExpr()),
+            dot: SyntaxFactory.makeToken(.period),
+            name: SyntaxFactory.makeToken(.identifier("product")),
+            declNameArguments: nil
+          )
+        ),
         leftParen: SyntaxFactory.makeToken(.leftParen),
         argumentList: SyntaxFactory.makeTupleExprElementList([
           SyntaxFactory.makeTupleExprElement(
@@ -692,7 +694,7 @@ import WSProject
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
             expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(packageName)),
             trailingComma: nil
-          )
+          ),
         ]),
         rightParen: SyntaxFactory.makeToken(.rightParen),
         trailingClosure: nil
@@ -753,7 +755,7 @@ import WSProject
             package: package,
             localization: localization,
             pathToSiteRoot: pathToSiteRoot
-          )
+          ),
         ].joinedAsLines(),
         inline: false
       ).normalizedSource()
@@ -842,7 +844,7 @@ import WSProject
 
       let sectionContents: [StrictString] = [
         ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
-        declaration
+        declaration,
       ]
 
       return ElementSyntax(
@@ -1001,7 +1003,7 @@ import WSProject
           "dl",
           contents: list.map({ $0.normalizedSource() }).joinedAsLines(),
           inline: true
-        ).normalizedSource()
+        ).normalizedSource(),
       ]
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
         .normalizedSource()
@@ -1017,7 +1019,8 @@ import WSProject
     ) -> StrictString {
 
       let parameters = symbol.parameters()
-      let parameterDocumentation = symbol.localizedDocumentation[localization]?.normalizedParameters
+      let parameterDocumentation =
+        symbol.localizedDocumentation[localization]?.normalizedParameters
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
@@ -1032,7 +1035,7 @@ import WSProject
       }
       let validatedParameters =
         parameterDocumentation
-          .filter { parameters.contains($0.name.text) }
+        .filter { parameters.contains($0.name.text) }
 
       /// Check that closure parameters are labelled.
       if let declaration = symbol.declaration {
@@ -1047,14 +1050,11 @@ import WSProject
           let navigationPath: [APIElement]
           override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
             for argument in node.arguments
-            where (
-              argument.secondName?.text.isEmpty ≠ false
-                ∨ argument.secondName?.tokenKind == .wildcardKeyword
-            )  // @exempt(from: tests)
-              ∧ (
-                argument.firstName?.text.isEmpty ≠ false
-                  ∨ argument.firstName?.tokenKind == .wildcardKeyword
-              )
+            where
+              (argument.secondName?.text.isEmpty ≠ false
+              ∨ argument.secondName?.tokenKind == .wildcardKeyword)  // @exempt(from: tests)
+              ∧ (argument.firstName?.text.isEmpty ≠ false
+                ∨ argument.firstName?.tokenKind == .wildcardKeyword)
             {
               status.reportUnlabelledParameter(
                 node.source(),
@@ -2052,7 +2052,7 @@ import WSProject
             contents: name,
             inline: true
           )
-            .normalizedSource()
+          .normalizedSource()
         case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript,
           .function, .operator, .precedence, .conformance:
           name = highlight(name: name, internal: relativePathOfChild ≠ nil)
@@ -2063,7 +2063,7 @@ import WSProject
           contents: name,
           inline: true
         )
-          .normalizedSource()
+        .normalizedSource()
         if let constraints = child.constraints {
           name += StrictString(
             constraints.syntaxHighlightedHTML(

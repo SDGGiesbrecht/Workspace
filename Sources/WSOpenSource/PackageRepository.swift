@@ -56,8 +56,8 @@ extension PackageRepository {
       if let documentation = try? PackageAPI.documentation(
         for: package().get()
       ).resolved(localizations: allLocalizations).documentation[
-        localization]
-      {
+        localization
+      ] {
 
         if let description = documentation.descriptionSection {
           fromDocumentation.append(contentsOf: description.text.scalars)
@@ -77,7 +77,7 @@ extension PackageRepository {
         with: [
           "```swift",
           StrictString(example),
-          "```"
+          "```",
         ].joinedAsLines()
       )
     }

@@ -85,10 +85,8 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws -> Bool {
       return try job ∈ validJobs
-        ∧ (
-          (try job.isRequired(by: project, output: output))
-            ∧ job.platform == Platform.current
-        )
+        ∧ ((try job.isRequired(by: project, output: output))
+          ∧ job.platform == Platform.current)
     }
 
     static func validate(
@@ -98,14 +96,12 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
       if let specified = job,
-        ¬(
-          try Build.job(
-            specified,
-            isRelevantTo: project,
-            andAvailableJobs: validJobs,
-            output: output
-          )
-        )
+        ¬(try Build.job(
+          specified,
+          isRelevantTo: project,
+          andAvailableJobs: validJobs,
+          output: output
+        ))
       {
         throw Command.Error(
           description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -127,14 +123,14 @@ extension Workspace.Validate {
     ) throws {
 
       for job in ContinuousIntegrationJob.allCases
-      where try options.job.includes(job: job) ∧ (
-        try Build.job(
+      where try options.job.includes(job: job)
+        ∧ (try Build.job(
           job,
           isRelevantTo: options.project,
           andAvailableJobs: ContinuousIntegrationJob.buildJobs,
           output: output
-        )
-      ) {
+        ))
+      {
         try autoreleasepool {
 
           try options.project.build(

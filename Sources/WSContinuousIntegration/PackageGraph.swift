@@ -42,7 +42,8 @@ import SDGCollections
             if let target = dependency.target {
               return sorted.contains(where: { $0.target.name == target.name })
             } else {
-              let inherited = dependency.product?.targets
+              let inherited =
+                dependency.product?.targets
                 ?? []  // @exempt(from: tests) Never nil.
               return inherited.allSatisfy { productTarget in
                 return sorted.contains(where: { $0.target.name == productTarget.name })

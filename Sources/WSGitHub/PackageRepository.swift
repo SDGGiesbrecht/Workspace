@@ -115,7 +115,7 @@ extension PackageRepository {
           "assignees: \u{27}\(template.assignees.joined(separator: ", "))\u{27}",
           "",
           "\u{2D}\u{2D}\u{2D}",
-          ""
+          "",
         ]
         fileContents.append(template.content)
 

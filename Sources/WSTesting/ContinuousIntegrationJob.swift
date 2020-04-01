@@ -28,12 +28,13 @@ extension ContinuousIntegrationJob {
     .macOS,
     .linux,
     .tvOS,
-    .iOS
+    .iOS,
   ]
   public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
-  public static let buildJobs: Set<ContinuousIntegrationJob> = testJobs ∪ [
-    .watchOS
-  ]
+  public static let buildJobs: Set<ContinuousIntegrationJob> =
+    testJobs ∪ [
+      .watchOS
+    ]
 
   // MARK: - Description
 

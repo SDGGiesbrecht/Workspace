@@ -98,18 +98,18 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       contents.append(contentsOf: [
         " Reminder:",
         " Have you searched to see if a related issue exists already?",
-        " If one exists, please add your information there instead."
+        " If one exists, please add your information there instead.",
       ])
     case .deutschDeutschland:
       contents.append(contentsOf: [
         " Erinnerung:",
         " Haben Sie die bereits bestehende Themen nach ähnliches durchsucht?",
-        " Sollte etwas bereits bestehen, bitte melden Sie Eure Informationen dort."
+        " Sollte etwas bereits bestehen, bitte melden Sie Eure Informationen dort.",
       ])
     }
     contents.append(contentsOf: [
       " \u{2D}\u{2D}>",
-      ""
+      "",
     ])
 
     switch self {
@@ -193,7 +193,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         }
         contents.append(contentsOf: [
           "```",
-          ""
+          "",
         ])
       }
       if products.contains(where: { $0.type == .library }) {
@@ -210,7 +210,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         }
         contents.append(contentsOf: [
           "```",
-          ""
+          "",
         ])
       }
       switch localization {
@@ -346,7 +346,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       }
       contents.append(contentsOf: [
         " \u{2D}\u{2D}>",
-        ""
+        "",
       ])
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

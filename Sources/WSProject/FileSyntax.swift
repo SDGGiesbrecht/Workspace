@@ -81,11 +81,12 @@ public struct FileSyntax {
       firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
         body.scalars.removeFirst()
       }
-      body = [
-        "",  // Line at end of header
-        "",
-        ""  // Body starts in this line
-      ].joinedAsLines() + body
+      body =
+        [
+          "",  // Line at end of header
+          "",
+          "",  // Body starts in this line
+        ].joinedAsLines() + body
 
       let contents = first + generated + body
 

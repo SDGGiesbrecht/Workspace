@@ -227,7 +227,7 @@ public struct FileHeaderConfiguration: Codable {
 
     var header: [StrictString] = [
       "#filename",
-      ""
+      "",
     ]
 
     header.append(
@@ -270,7 +270,7 @@ public struct FileHeaderConfiguration: Codable {
     if let licence = configuration.licence.licence {
       header.append(contentsOf: [
         "",
-        licence.notice
+        licence.notice,
       ])
     }
 

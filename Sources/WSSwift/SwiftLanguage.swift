@@ -109,7 +109,8 @@ public enum SwiftLanguage {
     return result
   }()
 
-  private static let casedLetters = CharacterSet.lowercaseLetters
+  private static let casedLetters =
+    CharacterSet.lowercaseLetters
     ∪ CharacterSet.uppercaseLetters  // Includes titlecase.
 
   // MARK: - Generating

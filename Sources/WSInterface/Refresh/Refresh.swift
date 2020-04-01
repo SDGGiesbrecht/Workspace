@@ -52,7 +52,7 @@ extension Workspace {
         Resources.command,
         FileHeaders.command,
         Examples.command,
-        InheritedDocumentation.command
+        InheritedDocumentation.command,
       ]
       #if !os(Linux)
         list.append(Xcode.command)

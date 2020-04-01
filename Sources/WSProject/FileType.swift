@@ -72,7 +72,7 @@ public enum FileType {
               StrictString(
                 Metadata.issuesURL.absoluteString.in(Underline.underlined)
               ),
-              "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”."
+              "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.",
             ].joinedAsLines()
           case .deutschDeutschland:
             return [
@@ -81,7 +81,7 @@ public enum FileType {
               StrictString(
                 Metadata.issuesURL.absoluteString.in(Underline.underlined)
               ),
-              "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren."
+              "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.",
             ].joinedAsLines()
           }
         }).resolved()
@@ -146,7 +146,7 @@ public enum FileType {
 
   private static let specialNames: [String: FileType] = [
     "CMakeLists.txt": .cMake,
-    "Package.swift": .swiftPackageManifest
+    "Package.swift": .swiftPackageManifest,
   ]
 
   private static let fileExtensions: [String: FileType] = [
@@ -177,7 +177,7 @@ public enum FileType {
     "xcscheme": .xml,
     "xml": .xml,
     "yaml": .yaml,
-    "yml": .yaml
+    "yml": .yaml,
   ]
 
   // MARK: - Syntax

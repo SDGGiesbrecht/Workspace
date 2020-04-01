@@ -77,7 +77,8 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
       }
     }
 
-    let description = highlight(violation.message.resolved()) + " ("
+    let description =
+      highlight(violation.message.resolved()) + " ("
       + violation.ruleIdentifier.resolved() + ")"
 
     output.print(
@@ -89,7 +90,7 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
           violation: violation.range,
           replacementSuggestion: violation.replacementSuggestion,
           highlight: highlight
-        )
+        ),
       ].joinedAsLines()
     )
   }
@@ -108,7 +109,7 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
           violation: violation,
           replacementSuggestion: nil,
           highlight: { $0.formattedAsError() }
-        )
+        ),
       ].joinedAsLines()
     )
   }

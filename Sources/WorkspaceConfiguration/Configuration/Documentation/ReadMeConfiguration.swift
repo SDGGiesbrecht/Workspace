@@ -84,14 +84,14 @@ public struct ReadMeConfiguration: Codable {
             .filter({ configuration.supportedPlatforms.contains($0) })
             .map({ $0._isolatedName(for: provided) })
             .joined(separator: " • "),
-          ""
+          "",
         ]
       }
 
       if let api = apiLink(for: configuration, in: localization) {
         readMe += [
           api,
-          ""
+          "",
         ]
       }
 
@@ -99,7 +99,7 @@ public struct ReadMeConfiguration: Codable {
 
       readMe += [
         "",
-        "#packageDocumentation"
+        "#packageDocumentation",
       ]
 
       if let installation = configuration.documentation.installationInstructions.resolve(
@@ -115,7 +115,7 @@ public struct ReadMeConfiguration: Codable {
           "",
           "## " + header,
           "",
-          installation
+          installation,
         ]
       }
       if let importing = configuration.documentation.importingInstructions
@@ -132,7 +132,7 @@ public struct ReadMeConfiguration: Codable {
           "",
           "## " + header,
           "",
-          importing
+          importing,
         ]
       }
 
@@ -148,7 +148,7 @@ public struct ReadMeConfiguration: Codable {
           "",
           "## " + header,
           "",
-          about
+          about,
         ]
       }
 
@@ -230,9 +230,10 @@ public struct ReadMeConfiguration: Codable {
     }
 
     var link: StrictString = "[" + label + "]("
-    link += StrictString(
-      baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
-    )
+    link +=
+      StrictString(
+        baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
+      )
       + ")"
     return link
   }

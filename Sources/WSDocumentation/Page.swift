@@ -91,7 +91,7 @@ internal class Page {
       "span",
       attributes: [
         "lang": StrictString(resolved.code),
-        "dir": StrictString(resolved.textDirection.htmlAttribute)
+        "dir": StrictString(resolved.textDirection.htmlAttribute),
       ],
       contents: generatedUsing + " " + sdg,
       inline: true
@@ -150,7 +150,7 @@ internal class Page {
         contents: specified,
         inline: true
       )
-        .normalizedSource()
+      .normalizedSource()
     } else {
       symbolTypeLabel = ""  // @exempt(from: tests) Unreachable yet.
     }

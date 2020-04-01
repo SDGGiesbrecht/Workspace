@@ -44,6 +44,7 @@ jobs:
         git clone https://github.com/SDGGiesbrecht/SDGSwift
         cd SDGSwift
         git checkout swift‐5.1
+        sed -i -e 's~name: "SwiftPM",~~g' Package.swift
         sed -i -e 's~package: "SwiftPM"~package: "swift\u{2D}package\u{2D}manager"~g' Package.swift
         swift build --verbose
     - name: Validate

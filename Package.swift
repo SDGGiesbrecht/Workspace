@@ -260,8 +260,8 @@ let package = Package(
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .branch("swift‐5.2")
+      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+      .exact(Version(0, 6, 0))
     ),
     .package(  // #workaround(Swift 5.1.4, Until packages work natively on windows.)
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",

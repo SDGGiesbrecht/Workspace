@@ -35,7 +35,9 @@ jobs:
       shell: bash
       run: |
         set -x
+        env | sort
         sudo xcode-select -switch /Applications/Xcode_11.4.app
+        env | sort
         xcodebuild -version
         swift --version
         swift build

@@ -158,9 +158,6 @@ Zeile 4
 Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
 
-Zeile 6
-Replace struct 'Namespace' with an enum when used as a namespace. (swiftFormat[UseEnumForNamespacing])
-
 Sources/BadStyle/Warnings/Warning.swift
 Zeile 3
 This should trigger a warning. (warnungenVonHand)

@@ -57,7 +57,7 @@ import WSLocalizations
 ///   BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: { konfiguration in
 ///     return [
 ///       "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
-///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!)."
+///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
 ///     ]
 ///   })
 ///
@@ -102,7 +102,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 ///       "🇺🇸EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
 ///       "🇨🇦EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
 ///       "fr": "Droit d’auteur #dates \(configuration.documentation.primaryAuthor!).",
-///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!)."
+///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!).",
 ///     ]
 ///   })
 ///

@@ -27,15 +27,6 @@ jobs:
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Set Xcode up
-      shell: bash
-      run: |
-        set -x
-        export DEVELOPER_DIR=/Applications/Xcode_11.4.app/Contents/Developer
-        echo "::set-env name=DEVELOPER_DIR::${DEVELOPER_DIR}"
-        xcodebuild -version
-        cd /Applications
-        ls
     - name: Refresh
       shell: bash
       run: |

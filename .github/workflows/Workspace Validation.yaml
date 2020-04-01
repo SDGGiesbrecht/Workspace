@@ -38,6 +38,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        find /Applications
         sudo xcode-select -switch /Applications/Xcode_11.4.app/Contents/Developer
         xcodebuild -version
         swift --version

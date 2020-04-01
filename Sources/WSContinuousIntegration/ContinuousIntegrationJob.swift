@@ -37,7 +37,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  public static let currentSwiftVersion = Version(5, 1, 3)
+  public static let currentSwiftVersion = Version(5, 2, 0)
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}08"
   // #workaround(Swift 5.1.3, Debug builds are broken.)

@@ -41,5 +41,4 @@ jobs:
         git clone https://github.com/SDGGiesbrecht/SDGSwift
         cd SDGSwift
         git checkout swift‐5.1
-        swift package dump-package
         swift build

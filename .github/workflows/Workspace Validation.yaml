@@ -41,7 +41,10 @@ jobs:
         sudo xcode-select -switch /Applications/Xcode_11.4.app/Contents/Developer
         xcodebuild -version
         swift --version
-        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        git clone https://github.com/SDGGiesbrecht/SDGSwift
+        cd SDGSwift
+        git checkout swift‐5.1
+        swift build
     - name: Validate
       shell: bash
       run: |

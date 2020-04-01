@@ -40,8 +40,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        find /Applications
-        sudo xcode-select -switch /Applications/Xcode_11.4.app/Contents/Developer
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
         swift --version
         git clone https://github.com/SDGGiesbrecht/SDGSwift

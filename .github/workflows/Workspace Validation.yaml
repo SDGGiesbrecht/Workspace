@@ -44,7 +44,7 @@ jobs:
         git clone https://github.com/SDGGiesbrecht/SDGSwift
         cd SDGSwift
         git checkout swift‐5.1
-        swift build
+        swift build --verbose
     - name: Validate
       shell: bash
       run: |

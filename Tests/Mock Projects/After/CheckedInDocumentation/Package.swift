@@ -16,7 +16,7 @@ let package = Package(
     .library(name: "Extensions", targets: ["Extensions"]),
     // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
     /// An executable.
-    .executable(name: "executable", targets: ["Tool"])
+    .executable(name: "executable", targets: ["Tool"]),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.

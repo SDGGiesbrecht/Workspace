@@ -47,6 +47,6 @@ let package = Package(
         .product(name: "Dependency", package: "Dependency")
       ]
     ),
-    .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")])
+    .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")]),
   ]
 )

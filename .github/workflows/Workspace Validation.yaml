@@ -38,7 +38,4 @@ jobs:
         sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
         swift --version
-        git clone https://github.com/SDGGiesbrecht/SDGSwift
-        cd SDGSwift
-        git checkout swift‐5.1
         swift build

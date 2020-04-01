@@ -85,7 +85,7 @@ jobs:
       run: |
         set -x
         export TARGETING_ANDROID=true
-        swift build --verbose --destination .github/workflows/Android/SDK.json \
+        swift build --verbose -Xswiftc -v --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \

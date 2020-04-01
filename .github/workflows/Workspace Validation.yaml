@@ -38,7 +38,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        xcode-select -switch /Applications/Xcode_11.4.app/Contents/Developer
+        sudo xcode-select -switch /Applications/Xcode_11.4.app/Contents/Developer
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash

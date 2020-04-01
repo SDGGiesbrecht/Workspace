@@ -44,6 +44,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        swift --version
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash

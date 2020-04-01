@@ -5,9 +5,9 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": null,
-          "revision": "9721c566a4129839b8fed2444fb2f9aa5cdb1764",
-          "version": "1.3.1"
+          "branch": "swift‐5.2",
+          "revision": "6414332d9276a6b887de605eb2aaf375a7fd0704",
+          "version": null
         }
       },
       {
@@ -23,9 +23,9 @@
         "package": "SDGSwift",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
-          "branch": "master",
-          "revision": "e5b3f0ddab0739ec307267fdd0f9f8c0b483014f",
-          "version": null
+          "branch": null,
+          "revision": "a6d307b80ec4f6e189f25c653cf34c07e73ab088",
+          "version": "0.20.0"
         }
       },
       {
@@ -57,11 +57,11 @@
       },
       {
         "package": "swift-format",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
+        "repositoryURL": "https://github.com/apple/swift-format",
         "state": {
-          "branch": "swift‐5.2",
-          "revision": "230ce6641246fec3be3a3bff981dd61294fb273d",
-          "version": null
+          "branch": null,
+          "revision": "1fda39893d3652a9a3f1673565a227f843d59f3c",
+          "version": "0.50200.0"
         }
       },
       {

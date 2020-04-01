@@ -41,7 +41,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}08"
   // #workaround(Swift 5.1.3, Debug builds are broken.)
-  private static let workaroundAndroidSwiftVersion = Version(5, 1, 1)
+  private static let workaroundAndroidSwiftVersion = Version(5, 2, 0)
   private static let experimentalDownloads =
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 

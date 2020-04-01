@@ -536,7 +536,6 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
-        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
       ]
     ),
 
@@ -780,6 +779,11 @@ import Foundation
     for target in package.targets where target.name == "WSContinuousIntegration" {
       target.dependencies.append(
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
+      )
+    }
+    for target in package.targets where target.name == "WSContinuousIntegration" {
+      target.dependencies.append(
+        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
       )
     }
 

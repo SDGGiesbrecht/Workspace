@@ -565,8 +565,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: setXcodeUpStepName,
           localization: interfaceLocalization,
           commands: [
-            "export DEVELOPER_DIR=/Applications/Xcode_\(xcodeVersion).app/Contents/Developer",
-            export("DEVELOPER_DIR"),
+            "sudo xcode-select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
             "xcodebuild \u{2D}version",
           ]
         )

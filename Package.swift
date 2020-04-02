@@ -256,7 +256,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 20, 0))
+      .upToNextMinor(from: Version(0, 20, 1))
     ),
     .package(
       name: "SwiftPM",

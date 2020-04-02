@@ -27,15 +27,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -43,15 +43,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -59,15 +59,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job macos •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job macos •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job macos •language '🇩🇪DE' •use‐version 0.32.0
         fi
   Windows:
     runs-on: windows-2019
@@ -225,15 +225,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -241,15 +241,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -257,15 +257,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job linux •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job linux •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job linux •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Zugriffsrechte zum Zwischenspeichern erteilen
       shell: bash
@@ -294,15 +294,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -310,15 +310,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -326,15 +326,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job tvos •language '🇩🇪DE' •use‐version 0.32.0
         fi
   iOS:
     runs-on: macos-10.15
@@ -358,15 +358,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -374,15 +374,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -390,15 +390,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job ios •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job ios •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job ios •language '🇩🇪DE' •use‐version 0.32.0
         fi
   Android:
     runs-on: ubuntu-18.04
@@ -549,15 +549,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -565,15 +565,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -581,15 +581,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job watchos •language '🇩🇪DE' •use‐version 0.32.0
         fi
   Sonstiges:
     runs-on: ubuntu-18.04
@@ -620,15 +620,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            workspace version •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace version •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Auffrischen
       shell: bash
@@ -636,15 +636,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Prüfen
       shell: bash
@@ -652,15 +652,15 @@ jobs:
         set -x
         if workspace version > /dev/null 2>&1 ; then
             echo "Systeminstallation von Arbeitsbereich wird verwendet ..."
-            workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.31.0
+            workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.32.0
         elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
             echo "Lagerzwischenspeicher von Arbeitsbereich wird verwendet ..."
-            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.31.0
+            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.32.0
         else
             echo "Keinen Zwischenspeicher gefunden; Arbeitsbereich wird geholt ..."
             export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
-            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.31.0 "" workspace
-            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.31.0
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" 0.32.0 "" workspace
+            .build/SDG/Workspace/workspace validate •job miscellaneous •language '🇩🇪DE' •use‐version 0.32.0
         fi
     - name: Zugriffsrechte zum Zwischenspeichern erteilen
       shell: bash

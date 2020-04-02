@@ -252,7 +252,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      .branch("swift‐5.2")
+      from: Version(1, 3, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",

@@ -316,9 +316,10 @@
 
     internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] {
       get {
-        return
-          (extendedProperties[.localizedDocumentation]
-          as? [LocalizationIdentifier: DocumentationSyntax]) ?? [:]  // @exempt(from: tests) Never nil.
+        let defined =
+          extendedProperties[.localizedDocumentation]
+          as? [LocalizationIdentifier: DocumentationSyntax]
+        return defined ?? [:]  // @exempt(from: tests) Never nil.
       }
       nonmutating set {
         extendedProperties[.localizedDocumentation] = newValue

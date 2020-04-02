@@ -563,7 +563,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: setXcodeUpStepName,
           localization: interfaceLocalization,
           commands: [
-            "sudo xcode-select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
+            "sudo xcode\u{2D}select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
             "xcodebuild \u{2D}version",
           ]
         )

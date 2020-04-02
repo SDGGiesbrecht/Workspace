@@ -58,7 +58,7 @@ jobs:
         curl --location \
           'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: Fetch ICU
+    - name: Install ICU
       shell: bash
       run: |
         set -x

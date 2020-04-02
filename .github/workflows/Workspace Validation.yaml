@@ -63,13 +63,10 @@ jobs:
       run: |
         set -x
         curl --location \
-          'http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip' \
-          --output '/tmp/icu4c-64_2-Win64-MSVC2017.zip'
-        cd /tmp
-        7z x icu4c-64_2-Win64-MSVC2017.zip -oicu4c-64_2-Win64-MSVC2017
-        mkdir -p /c/Library/ICU-64.2
-        cp -R /tmp/icu4c-64_2-Win64-MSVC2017/* /c/Library/ICU-64.2
-        mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/icu.msi' \
+          --output '/tmp/icu.msi'
+        msiexec //i /tmp/icu.msi
+        find /c/Library
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
     - name: Install Swift

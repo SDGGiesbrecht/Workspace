@@ -68,7 +68,7 @@ jobs:
         cd /tmp
         msiexec //i icu.msi
         find /c/Library
-        export PATH="/c/Library/icu-64/bin:${PATH}"
+        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
     - name: Install Swift
       shell: bash

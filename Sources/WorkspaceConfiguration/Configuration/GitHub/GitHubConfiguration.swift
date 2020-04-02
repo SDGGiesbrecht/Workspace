@@ -168,7 +168,7 @@ public struct GitHubConfiguration: Codable {
               "",
               "## \(GitHubConfiguration.developmentNotesHeading(for: localization))",
               "",
-              notes
+              notes,
             ].joinedAsLines()
           )
         }

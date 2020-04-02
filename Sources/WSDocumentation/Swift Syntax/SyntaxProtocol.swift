@@ -1,5 +1,5 @@
 /*
- Syntax.swift
+ SyntaxProtocol.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -22,7 +22,11 @@ import WSGeneralImports
 import SDGSwiftSource
 
 #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-  extension Syntax {
+  extension SyntaxProtocol {
+
+    internal func asSyntax() -> Syntax {
+      return Syntax(self)
+    }
 
     internal func warnUnidentified(
       file: StaticString = #file,

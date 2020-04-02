@@ -88,7 +88,7 @@ public struct TestingConfiguration: Codable {
   /// Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),
   /// Testabdeckungsausnahmszeichen("unerreichbar", geltungsbereich: .vorstehendeZeile),
   /// Testabdeckungsausnahmszeichen("prüfen", geltungsbereich: .selbeZeile),
-  /// Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile)
+  /// Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile),
   /// ```
   ///
   /// Und auch die englische Formen:
@@ -165,7 +165,7 @@ public struct TestingConfiguration: Codable {
     Testabdeckungsausnahmszeichen("stammmethode", geltungsbereich: .vorstehendeZeile),
     Testabdeckungsausnahmszeichen("unerreichbar", geltungsbereich: .vorstehendeZeile),
     Testabdeckungsausnahmszeichen("prüfen", geltungsbereich: .selbeZeile),
-    Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile)
+    Testabdeckungsausnahmszeichen("fehlschlagen", geltungsbereich: .selbeZeile),
     // @beispielBeenden
   ]
 

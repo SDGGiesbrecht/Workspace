@@ -83,14 +83,14 @@ extension Workspace {
     ) throws {
 
       for job in ContinuousIntegrationJob.allCases
-      where try options.job.includes(job: job) ∧ (
-        try Validate.Build.job(
+      where try options.job.includes(job: job)
+        ∧ (try Validate.Build.job(
           job,
           isRelevantTo: options.project,
           andAvailableJobs: ContinuousIntegrationJob.testJobs,
           output: output
-        )
-      ) {
+        ))
+      {
         try autoreleasepool {
 
           if try options.project.configuration(output: output).continuousIntegration

@@ -81,7 +81,7 @@ public enum Workspace {
       Workspace.Test.command,
 
       // Other
-      Workspace.CheckForUpdates.command
+      Workspace.CheckForUpdates.command,
     ]
   )
 }

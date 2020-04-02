@@ -19,6 +19,7 @@ import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
+import SDGSwift
 import SDGXcode
 import SDGSwiftSource
 import SDGHTML
@@ -135,12 +136,12 @@ extension PackageRepository {
             if let text = translations[localization] {
               markdown += [
                 "",
-                "## \(text)"
+                "## \(text)",
               ]
             }
           case .project(let url):
             let package = try PackageRepository.relatedPackage(
-              Package(url: url),
+              SDGSwift.Package(url: url),
               output: output
             )
             let name: StrictString
@@ -156,7 +157,7 @@ extension PackageRepository {
 
             markdown += [
               "",
-              "### [\(name)](\(url.absoluteString))"
+              "### [\(name)](\(url.absoluteString))",
             ]
 
             #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
@@ -170,7 +171,7 @@ extension PackageRepository {
               {
                 markdown += [
                   "",
-                  StrictString(description.text)
+                  StrictString(description.text),
                 ]
               }
             #endif
@@ -377,7 +378,7 @@ extension PackageRepository {
 
       FileManager.default
         .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
-          let package = Package(url: packageURL)
+          let package = SDGSwift.Package(url: packageURL)
           do {
             _ = try Git.clone(package, to: temporary).get()
             _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
@@ -550,15 +551,16 @@ extension PackageRepository {
 
           var searchIndex = file.contents.scalars.startIndex
           while let match = file.contents.scalars[
-            min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex]
-            .firstMatch(for: InterfaceLocalization.documentationDirective)
-          {
+            min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex
+          ]
+          .firstMatch(for: InterfaceLocalization.documentationDirective) {
             searchIndex = match.range.upperBound
 
             let identifier = match.directiveArgument()
             guard
               let replacement = try documentationDefinitions(output: output)[
-                identifier]
+                identifier
+              ]
             else {
               throw Command.Error(
                 description:
@@ -614,12 +616,13 @@ extension PackageRepository {
                 file.contents.scalars[nextLineStart..<location]
               )
 
-              let result = StrictString(
-                lineDocumentationSyntax.comment(
-                  contents: String(replacement),
-                  indent: String(indent)
+              let result =
+                StrictString(
+                  lineDocumentationSyntax.comment(
+                    contents: String(replacement),
+                    indent: String(indent)
+                  )
                 )
-              )
                 + "\n" + indent
 
               file.contents.scalars.insert(contentsOf: result.scalars, at: location)

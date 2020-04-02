@@ -55,8 +55,8 @@ internal struct ClosureSignaturePosition: SyntaxRule {
       output: Command.Output
     ) {
 
-      if let signature = node as? ClosureSignatureSyntax,
-        let closure = signature.parent as? ClosureExprSyntax,
+      if let signature = node.as(ClosureSignatureSyntax.self),
+        let closure = signature.parent?.as(ClosureExprSyntax.self),
         closure.signature?.indexInParent == signature.indexInParent,
         let leadingTrivia = signature.leadingTrivia
       {  // Only nil if the signature does not really exist.

@@ -51,7 +51,7 @@ internal struct PackageInterface {
         contents: "url",
         inline: true
       )
-        .normalizedSource(),
+      .normalizedSource(),
       ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
         .normalizedSource(),
       " ",
@@ -83,10 +83,10 @@ internal struct PackageInterface {
             attributes: ["class": "punctuation"],
             contents: "\u{22}",
             inline: true
-          ).normalizedSource()
+          ).normalizedSource(),
         ].joined(),
         inline: true
-      ).normalizedSource()
+      ).normalizedSource(),
     ].joined()
 
     if let specified = specify(version: version) {
@@ -98,9 +98,9 @@ internal struct PackageInterface {
             contents: ",",
             inline: true
           )
-            .normalizedSource(),
+          .normalizedSource(),
           " ",
-          specified
+          specified,
         ].joined()
       )
     }
@@ -112,7 +112,7 @@ internal struct PackageInterface {
         contents: ")",
         inline: true
       )
-        .normalizedSource()
+      .normalizedSource()
     )
 
     return ElementSyntax(
@@ -121,7 +121,7 @@ internal struct PackageInterface {
       contents: result,
       inline: true
     )
-      .normalizedSource()
+    .normalizedSource()
   }
 
   private static func specify(version: Version?) -> StrictString? {
@@ -155,16 +155,16 @@ internal struct PackageInterface {
             contents: StrictString(specified.string()),
             inline: true
           )
-            .normalizedSource(),
+          .normalizedSource(),
           ElementSyntax(
             "span",
             attributes: ["class": "punctuation"],
             contents: "\u{22}",
             inline: true
-          ).normalizedSource()
+          ).normalizedSource(),
         ].joined(),
         inline: true
-      ).normalizedSource()
+      ).normalizedSource(),
     ].joined()
 
     if specified.major == 0 {
@@ -175,7 +175,7 @@ internal struct PackageInterface {
           contents: ".",
           inline: true
         )
-          .normalizedSource(),
+        .normalizedSource(),
         ElementSyntax(
           "span",
           attributes: ["class": "external identifier"],
@@ -188,7 +188,7 @@ internal struct PackageInterface {
           contents: "(",
           inline: true
         )
-          .normalizedSource(),
+        .normalizedSource(),
         result,
         ElementSyntax(
           "span",
@@ -196,7 +196,7 @@ internal struct PackageInterface {
           contents: ")",
           inline: true
         )
-          .normalizedSource()
+        .normalizedSource(),
       ].joined()
     }
 
@@ -503,13 +503,13 @@ internal struct PackageInterface {
           "a",
           attributes: [
             "class": "heading",
-            "onclick": "toggleIndexSectionVisibility(this)"
+            "onclick": "toggleIndexSectionVisibility(this)",
           ],
           contents: HTML.escapeTextForCharacterData(name),
           inline: true
         )
-          .normalizedSource(),
-        contents
+        .normalizedSource(),
+        contents,
       ].joinedAsLines(),
       inline: false
     ).normalizedSource()
@@ -524,12 +524,12 @@ internal struct PackageInterface {
         "a",
         attributes: [
           "class": "heading",
-          "href": "[*site root*]\(HTML.percentEncodeURLPath(target))"
+          "href": "[*site root*]\(HTML.percentEncodeURLPath(target))",
         ],
         contents: HTML.escapeTextForCharacterData(name),
         inline: true
       )
-        .normalizedSource(),
+      .normalizedSource(),
       inline: false
     ).normalizedSource()
   }
@@ -986,7 +986,7 @@ internal struct PackageInterface {
           packageAPI.functions.map({ APIElement.function($0) }),
           packageAPI.globalVariables.map({ APIElement.variable($0) }),
           packageAPI.operators.map({ APIElement.operator($0) }),
-          packageAPI.precedenceGroups.map({ APIElement.precedence($0) })
+          packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
         ].joined()
         where symbol.exists(in: localization) {
           try autoreleasepool {
@@ -1296,7 +1296,7 @@ internal struct PackageInterface {
                   label: StrictString(api.name.source()),
                   path: api.relativePagePath[localization]!
                 ),
-                (label: pageTitle, path: pagePath)
+                (label: pageTitle, path: pagePath),
               ]
             ),
             packageImport: packageImport,

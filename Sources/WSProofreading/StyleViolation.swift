@@ -72,9 +72,10 @@ public struct StyleViolation {
     self.range = clusterRange
     if let scalarReplacement = replacementSuggestion {
       let modifiedScalarRange = clusterRange.scalars(in: file.contents.scalars)
-      let clusterReplacement = StrictString(
-        file.contents.scalars[modifiedScalarRange.lowerBound..<location.lowerBound]
-      )
+      let clusterReplacement =
+        StrictString(
+          file.contents.scalars[modifiedScalarRange.lowerBound..<location.lowerBound]
+        )
         + scalarReplacement
         + StrictString(
           file.contents.scalars[location.upperBound..<modifiedScalarRange.upperBound]

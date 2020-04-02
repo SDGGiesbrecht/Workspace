@@ -26,8 +26,7 @@ import SDGSwiftSource
   extension TypeSyntax {
 
     internal func parameterNames() -> [String] {
-      switch self {
-      case let simple as SimpleTypeIdentifierSyntax:
+      if let simple = self.as(SimpleTypeIdentifierSyntax.self) {
         var result: [String] = []
         if let genericArgumentClause = simple.genericArgumentClause {
           for argument in genericArgumentClause.arguments {
@@ -35,39 +34,39 @@ import SDGSwiftSource
           }
         }
         return result
-      case let metatype as MetatypeTypeSyntax:
+      } else if let metatype = self.as(MetatypeTypeSyntax.self) {
         return metatype.baseType.parameterNames()
-      case let member as MemberTypeIdentifierSyntax:
+      } else if let member = self.as(MemberTypeIdentifierSyntax.self) {
         return member.baseType.parameterNames()
-      case let optional as OptionalTypeSyntax:
+      } else if let optional = self.as(OptionalTypeSyntax.self) {
         return optional.wrappedType.parameterNames()
-      case let implicitlyUnwrapped as ImplicitlyUnwrappedOptionalTypeSyntax:
+      } else if let implicitlyUnwrapped = self.as(ImplicitlyUnwrappedOptionalTypeSyntax.self) {
         return implicitlyUnwrapped.wrappedType.parameterNames()
-      case let tuple as TupleTypeSyntax:
+      } else if let tuple = self.as(TupleTypeSyntax.self) {
         var result: [String] = []
         for element in tuple.elements {
           result.append(contentsOf: element.parameterNames())
         }
         return result
-      case let composition as CompositionTypeSyntax:
+      } else if let composition = self.as(CompositionTypeSyntax.self) {
         var result: [String] = []
         for element in composition.elements {
           result.append(contentsOf: element.type.parameterNames())
         }
         return result
-      case let array as ArrayTypeSyntax:
+      } else if let array = self.as(ArrayTypeSyntax.self) {
         return array.elementType.parameterNames()
-      case let dictionary as DictionaryTypeSyntax:
+      } else if let dictionary = self.as(DictionaryTypeSyntax.self) {
         return dictionary.keyType.parameterNames() + dictionary.valueType.parameterNames()
-      case let function as FunctionTypeSyntax:
+      } else if let function = self.as(FunctionTypeSyntax.self) {
         var result: [String] = []
         for element in function.arguments {
           result.append(contentsOf: element.parameterNames())
         }
         return result
-      case let attributed as AttributedTypeSyntax:
+      } else if let attributed = self.as(AttributedTypeSyntax.self) {
         return attributed.baseType.parameterNames()
-      default:  // @exempt(from: tests)
+      } else {  // @exempt(from: tests)
         // @exempt(from: tests)
         warnUnidentified()
         return []

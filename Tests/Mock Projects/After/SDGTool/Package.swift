@@ -35,7 +35,7 @@ let package = Package(
     /// A library.
     .library(name: "Library", targets: ["Library"]),
     .executable(name: "tool", targets: ["tool"]),
-    .executable(name: "werkzeug", targets: ["tool"])
+    .executable(name: "werkzeug", targets: ["tool"]),
   ],
   dependencies: [
     .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))
@@ -51,6 +51,6 @@ let package = Package(
     ),
     .target(name: "tool", dependencies: [.target(name: "Library")]),
     .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")]),
-    .target(name: "test‐tool", path: "Tests/test‐tool")
+    .target(name: "test‐tool", path: "Tests/test‐tool"),
   ]
 )

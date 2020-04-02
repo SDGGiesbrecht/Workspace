@@ -26,7 +26,8 @@ extension Options {
   }
 
   var project: PackageRepository {
-    let url = value(for: Workspace.projectOption)
+    let url =
+      value(for: Workspace.projectOption)
       ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
     return PackageRepository(at: url)
   }

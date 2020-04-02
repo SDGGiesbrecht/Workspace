@@ -8,12 +8,12 @@ let package = Package(
   products: [
     /// ...
     .library(name: "Deutsch", targets: ["Deutsch"]),
-    .executable(name: "werkzeug", targets: ["werkzeug"])
+    .executable(name: "werkzeug", targets: ["werkzeug"]),
   ],
   targets: [
     /// ...
     .target(name: "Deutsch"),
     .target(name: "werkzeug"),
-    .testTarget(name: "DeutschTests", dependencies: ["Deutsch"])
+    .testTarget(name: "DeutschTests", dependencies: ["Deutsch"]),
   ]
 )

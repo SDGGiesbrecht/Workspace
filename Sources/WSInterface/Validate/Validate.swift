@@ -45,7 +45,7 @@ extension Workspace {
         All.command,
         Build.command,
         TestCoverage.command,
-        DocumentationCoverage.command
+        DocumentationCoverage.command,
       ],
       defaultSubcommand: All.command
     )

@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.2
 
 /*
  Package.swift
@@ -189,7 +189,7 @@ let package = Package(
     ///   BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: { konfiguration in
     ///     return [
     ///       "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
-    ///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!)."
+    ///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
     ///     ]
     ///   })
     ///
@@ -232,7 +232,7 @@ let package = Package(
     ///       "🇺🇸EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
     ///       "🇨🇦EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
     ///       "fr": "Droit d’auteur #dates \(configuration.documentation.primaryAuthor!).",
-    ///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!)."
+    ///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!).",
     ///     ]
     ///   })
     ///
@@ -243,7 +243,7 @@ let package = Package(
     /// Workspace.
     .executable(name: "workspace", targets: ["WorkspaceTool"]),
     /// Arbeitsbereich.
-    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"])
+    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
   ],
   dependencies: [
     .package(
@@ -252,21 +252,31 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 3, 1)
+      from: Version(1, 3, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 19, 3))
+      .upToNextMinor(from: Version(0, 20, 1))
     ),
     .package(
+      name: "SwiftPM",
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 5, 0))
+      .exact(Version(0, 6, 0))
+    ),
+    .package(  // #workaround(Swift 5.1.4, Until packages work natively on windows.)
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
+      .exact(Version(0, 1, 0))
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
-      .exact(Version(0, 0, 50100))
+      name: "SwiftSyntax",
+      url: "https://github.com/apple/swift\u{2D}syntax",
+      .exact(Version(0, 50200, 0))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 2))
+    .package(
+      url: "https://github.com/apple/swift\u{2D}format",
+      .exact(Version(0, 50200, 0))
+    ),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 2)),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -277,7 +287,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WorkspaceProjectConfiguration",
-        "WSInterface"
+        "WSInterface",
       ]
     ),
 
@@ -305,7 +315,7 @@ let package = Package(
         "WSProofreading",
         "WSTesting",
         "WSDocumentation",
-        .product(name: "SDGVersioning", package: "SDGCornerstone")
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
       ]
     ),
 
@@ -314,7 +324,7 @@ let package = Package(
       name: "WSScripts",
       dependencies: [
         "WSGeneralImports",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -323,7 +333,7 @@ let package = Package(
       name: "WSGit",
       dependencies: [
         "WSGeneralImports",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -335,7 +345,7 @@ let package = Package(
         "WSProject",
         "WSExamples",
         "WSDocumentation",
-        .product(name: "SDGSwiftSource", package: "SDGSwift")
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
       ]
     ),
 
@@ -345,7 +355,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WorkspaceConfiguration",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -355,7 +365,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
-        "WorkspaceProjectConfiguration"
+        "WorkspaceProjectConfiguration",
       ]
     ),
 
@@ -368,7 +378,7 @@ let package = Package(
         "WSScripts",
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift")
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
         // SwiftPM‐auto (except Windows and Android; see end of file)
         // SwiftFormat (except Windows and Android; see end of file)
       ]
@@ -381,7 +391,7 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSSwift",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift")
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
@@ -391,7 +401,7 @@ let package = Package(
       name: "WSFileHeaders",
       dependencies: [
         "WSGeneralImports",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -401,7 +411,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
-        "WSParsing"
+        "WSParsing",
       ]
     ),
 
@@ -411,7 +421,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
@@ -423,7 +433,7 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WorkspaceProjectConfiguration",
-        .product(name: "SDGXcode", package: "SDGSwift")
+        .product(name: "SDGXcode", package: "SDGSwift"),
       ]
     ),
 
@@ -437,7 +447,7 @@ let package = Package(
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift")
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
         // SwiftFormat (except Windows and Android; see end of file)
       ]
     ),
@@ -453,7 +463,7 @@ let package = Package(
         "WSProofreading",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGXcode", package: "SDGSwift")
+        .product(name: "SDGXcode", package: "SDGSwift"),
       ]
     ),
 
@@ -472,7 +482,7 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
-        .product(name: "SDGCSS", package: "SDGWeb")
+        .product(name: "SDGCSS", package: "SDGWeb"),
       ]
     ),
 
@@ -483,7 +493,7 @@ let package = Package(
         "WSGeneralImports",
         "WorkspaceConfiguration",
         .product(name: "SDGSwift", package: "SDGSwift"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ]
     ),
 
@@ -492,7 +502,7 @@ let package = Package(
       name: "WSValidation",
       dependencies: [
         "WSGeneralImports",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -510,7 +520,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSLocalizations",
-        "WSProject"
+        "WSProject",
       ]
     ),
 
@@ -525,7 +535,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift")
+        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
       ]
     ),
 
@@ -565,7 +575,7 @@ let package = Package(
     ///   BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: { konfiguration in
     ///     return [
     ///       "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
-    ///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!)."
+    ///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
     ///     ]
     ///   })
     ///
@@ -608,7 +618,7 @@ let package = Package(
     ///       "🇺🇸EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
     ///       "🇨🇦EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
     ///       "fr": "Droit d’auteur #dates \(configuration.documentation.primaryAuthor!).",
-    ///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!)."
+    ///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!).",
     ///     ]
     ///   })
     ///
@@ -627,7 +637,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -656,7 +666,7 @@ let package = Package(
 
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
 
-        .product(name: "SDGSwift", package: "SDGSwift")
+        .product(name: "SDGSwift", package: "SDGSwift"),
       ]
     ),
 
@@ -671,7 +681,7 @@ let package = Package(
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine")
+        .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine"),
       ]
     ),
     .testTarget(
@@ -682,7 +692,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
-        .product(name: "SDGWeb", package: "SDGWeb")
+        .product(name: "SDGWeb", package: "SDGWeb"),
       ]
     ),
     .target(
@@ -690,7 +700,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSInterface",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
       path: "Tests/test‐ios‐simulator"
     ),
@@ -699,7 +709,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSInterface",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone")
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
       path: "Tests/test‐tvos‐simulator"
     ),
@@ -727,7 +737,7 @@ let package = Package(
         "WSCrossPlatform",
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone")
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .target(
@@ -739,7 +749,7 @@ let package = Package(
       name: "WSConfigurationExample",
       dependencies: [
         "WorkspaceConfiguration",
-        .product(name: "SDGControlFlow", package: "SDGCornerstone")
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
       ],
       path: "Tests/WSConfigurationExample"
     ),
@@ -754,7 +764,7 @@ let package = Package(
       ],
       path: "",
       sources: ["Workspace.swift"]
-    )
+    ),
   ]
 )
 
@@ -768,7 +778,21 @@ import Foundation
 
     for target in package.targets where target.name == "WSContinuousIntegration" {
       target.dependencies.append(
-        .product(name: "SwiftPM\u{2D}auto", package: "swift\u{2D}package\u{2D}manager")
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
+      )
+    }
+    for target in package.targets where target.name == "WSContinuousIntegration" {
+      target.dependencies.append(
+        .product(
+          name: "SwiftToolsSupport\u{2D}auto",
+          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
+        )
+      )
+    }
+
+    for target in package.targets where target.name == "WSDocumentation" {
+      target.dependencies.append(
+        .product(name: "SwiftSyntax", package: "SwiftSyntax")
       )
     }
 
@@ -776,7 +800,7 @@ import Foundation
       "WSContinuousIntegration",
       "WSResources",
       "WSNormalization",
-      "WSProofreading"
+      "WSProofreading",
     ]
     for target in package.targets where needSwiftFormat.contains(target.name) {
       target.dependencies.append(.product(name: "SwiftFormat", package: "swift\u{2D}format"))
@@ -800,11 +824,19 @@ func adjustForWindows() {
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
     "test‐ios‐simulator",
-    "test‐tvos‐simulator"
+    "test‐tvos‐simulator",
   ]
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
+  // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without this.)
+  package.dependencies.append(
+    .package(
+      name: "CommonMark",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
+      .exact(Version(0, 0, 50100))
+    )
+  )
 }
 #if os(Windows)
   adjustForWindows()
@@ -822,7 +854,9 @@ func adjustForWeb() {
     "SDGSwift",
     "SDGWeb",
     "swift\u{2D}format",
-    "swift\u{2D}package\u{2D}manager"
+    "swift\u{2D}package\u{2D}manager",
+    "swift\u{2D}syntax",
+    "swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {
@@ -835,7 +869,7 @@ func adjustForWeb() {
   let impossibleProducts: Set<String> = [
     "arbeitsbereich",
     "workspace",
-    "WorkspaceConfiguration"
+    "WorkspaceConfiguration",
   ]
   package.products.removeAll(where: { product in
     return impossibleProducts.contains(product.name)
@@ -857,7 +891,7 @@ func adjustForWeb() {
     "SDGSwiftSource",
     "SDGXcode",
     // SwiftFormat
-    "SwiftFormatConfiguration"
+    "SwiftFormatConfiguration",
   ]
   let impossibleTargets: Set<String> = [
     // Workspace
@@ -891,7 +925,7 @@ func adjustForWeb() {
     "WorkspaceProjectConfiguration",
     "WorkspaceTool",
     "test‐ios‐simulator",
-    "test‐tvos‐simulator"
+    "test‐tvos‐simulator",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

@@ -51,7 +51,7 @@ internal struct UnicodeRule: SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      if let token = node as? TokenSyntax {
+      if let token = node.as(TokenSyntax.self) {
 
         func isPrefix() -> Bool {
           if case .prefixOperator = token.tokenKind {
@@ -79,7 +79,7 @@ internal struct UnicodeRule: SyntaxRule {
         }
 
         func isInAvailabilityDeclaration() -> Bool {
-          return node.ancestors().contains(where: { $0 is AvailabilityArgumentSyntax })
+          return node.ancestors().contains(where: { $0.is(AvailabilityArgumentSyntax.self) })
         }
 
         check(
@@ -149,31 +149,29 @@ internal struct UnicodeRule: SyntaxRule {
       case .syntax(let kind):
         switch kind {
         case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
-          .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword,
-          .letKeyword, .operatorKeyword, .precedencegroupKeyword, .protocolKeyword,
-          .structKeyword, .subscriptKeyword, .typealiasKeyword, .varKeyword,
-          .fileprivateKeyword, .internalKeyword, .privateKeyword, .publicKeyword,
-          .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword, .doKeyword,
-          .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
-          .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword,
-          .switchKeyword, .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword,
-          .throwKeyword, .asKeyword, .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword,
-          .rethrowsKeyword, .superKeyword, .selfKeyword, .capitalSelfKeyword, .trueKeyword,
-          .tryKeyword, .throwsKeyword, .__file__Keyword, .__line__Keyword, .__column__Keyword,
-          .__function__Keyword, .__dso_handle__Keyword, .wildcardKeyword, .leftParen,
-          .rightParen, .leftBrace, .rightBrace, .leftSquareBracket, .rightSquareBracket,
-          .leftAngle, .rightAngle, .period, .prefixPeriod, .comma, .colon, .semicolon, .equal,
-          .atSign, .pound, .prefixAmpersand, .arrow, .backtick, .backslash, .exclamationMark,
-          .postfixQuestionMark, .infixQuestionMark, .stringQuote, .multilineStringQuote,
-          .poundKeyPathKeyword, .poundLineKeyword, .poundSelectorKeyword, .poundFileKeyword,
-          .poundColumnKeyword, .poundFunctionKeyword, .poundDsohandleKeyword,
-          .poundAssertKeyword, .poundSourceLocationKeyword, .poundWarningKeyword,
-          .poundErrorKeyword, .poundIfKeyword, .poundElseKeyword, .poundElseifKeyword,
-          .poundAvailableKeyword, .poundFileLiteralKeyword, .poundImageLiteralKeyword,
-          .poundColorLiteralKeyword, .unknown, .identifier, .unspacedBinaryOperator,
-          .spacedBinaryOperator, .postfixOperator, .prefixOperator, .dollarIdentifier,
-          .contextualKeyword, .stringInterpolationAnchor, .yield, .poundEndifKeyword,
-          .ellipsis, .singleQuote, .rawStringDelimiter:
+          .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword, .letKeyword,
+          .operatorKeyword, .precedencegroupKeyword, .protocolKeyword, .structKeyword,
+          .subscriptKeyword, .typealiasKeyword, .varKeyword, .fileprivateKeyword, .internalKeyword,
+          .privateKeyword, .publicKeyword, .staticKeyword, .deferKeyword, .ifKeyword, .guardKeyword,
+          .doKeyword, .repeatKeyword, .elseKeyword, .forKeyword, .inKeyword, .whileKeyword,
+          .returnKeyword, .breakKeyword, .continueKeyword, .fallthroughKeyword, .switchKeyword,
+          .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
+          .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
+          .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
+          .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword,
+          .__dso_handle__Keyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace,
+          .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period,
+          .prefixPeriod, .comma, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand,
+          .arrow, .backtick, .backslash, .exclamationMark, .postfixQuestionMark, .infixQuestionMark,
+          .stringQuote, .multilineStringQuote, .poundKeyPathKeyword, .poundLineKeyword,
+          .poundSelectorKeyword, .poundFileKeyword, .poundFilePathKeyword, .poundColumnKeyword,
+          .poundFunctionKeyword, .poundDsohandleKeyword, .poundAssertKeyword,
+          .poundSourceLocationKeyword, .poundWarningKeyword, .poundErrorKeyword, .poundIfKeyword,
+          .poundElseKeyword, .poundElseifKeyword, .poundAvailableKeyword, .poundFileLiteralKeyword,
+          .poundImageLiteralKeyword, .poundColorLiteralKeyword, .unknown, .identifier,
+          .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator,
+          .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield,
+          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.
@@ -216,7 +214,8 @@ internal struct UnicodeRule: SyntaxRule {
       }
       let configuredScope = try? project.configuration(output: output).proofreading
         .unicodeRuleScope
-      let applicableScope = configuredScope
+      let applicableScope =
+        configuredScope
         ?? Set(UnicodeRuleScope.allCases)  // @exempt(from: tests)
       // Exemption because reaching here required that the configuration has already been successfully loaded and cached.
 
@@ -324,7 +323,8 @@ internal struct UnicodeRule: SyntaxRule {
                   }
                 })
 
-                var result = obsoleteMessage.resolved(for: localization) + " "
+                var result =
+                  obsoleteMessage.resolved(for: localization) + " "
                   + message.resolved(for: localization)
                 if textFreedom == .aliasable {
                   result += " " + aliasMessage.resolved(for: localization)

@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "9721c566a4129839b8fed2444fb2f9aa5cdb1764",
-          "version": "1.3.1"
+          "revision": "5eaac0b68fb0b904dd6ecb0a2f7447f4870e4f36",
+          "version": "1.3.2"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "376dda72df0b8661683882d09dc60e6ff4342210",
-          "version": "0.19.3"
+          "revision": "57d52ac1c935bbdeb549560c2166c54c484dcbdd",
+          "version": "0.20.1"
         }
       },
       {
@@ -35,6 +35,15 @@
           "branch": null,
           "revision": "8c334bfcd426443fe8b7aabd17d53e38a32694fb",
           "version": "5.1.2"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "8d31a0905c346a45c87773ad50862b5b3df8dff6",
+          "version": "0.0.4"
         }
       },
       {
@@ -48,11 +57,11 @@
       },
       {
         "package": "swift-format",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
+        "repositoryURL": "https://github.com/apple/swift-format",
         "state": {
           "branch": null,
-          "revision": "ffcc668d5a3d654aa17bd84f6ca3b73de5ab46be",
-          "version": "0.0.50100"
+          "revision": "1fda39893d3652a9a3f1673565a227f843d59f3c",
+          "version": "0.50200.0"
         }
       },
       {
@@ -60,8 +69,8 @@
         "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
           "branch": null,
-          "revision": "f73b84bc1525998e5e267f9d830c1411487ac65e",
-          "version": "0.2.0"
+          "revision": "fb7ebf0b06c0d7c45ca8e18b3371424503a38b5c",
+          "version": "0.3.0"
         }
       },
       {
@@ -78,8 +87,8 @@
         "repositoryURL": "https://github.com/apple/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "9abcc2260438177cecd7cf5185b144d13e74122b",
-          "version": "0.5.0"
+          "revision": "f5ea3972d7d6c574e8bb16a19b2a7bca98ea131b",
+          "version": "0.6.0"
         }
       },
       {
@@ -87,8 +96,17 @@
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "3e3eb191fcdbecc6031522660c4ed6ce25282c25",
-          "version": "0.50100.0"
+          "revision": "0688b9cfc4c3dd234e4f55f1f056b2affc849873",
+          "version": "0.50200.0"
+        }
+      },
+      {
+        "package": "swift-tools-support-core",
+        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
+        "state": {
+          "branch": null,
+          "revision": "98a5916a811fcaaed770f1ed812e9405be762945",
+          "version": "0.1.0"
         }
       }
     ]

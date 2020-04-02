@@ -65,8 +65,8 @@
           return "target"  // From “targets: [.target(...)]”
         }
       case .type(let type):
-        switch type.genericDeclaration {
-        case is ClassDeclSyntax:
+        let genericDeclaration = type.genericDeclaration
+        if genericDeclaration.is(ClassDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -77,7 +77,7 @@
           } else {
             return "class"
           }
-        case is StructDeclSyntax:
+        } else if genericDeclaration.is(StructDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -88,7 +88,7 @@
           } else {
             return "struct"
           }
-        case is EnumDeclSyntax:
+        } else if genericDeclaration.is(EnumDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -99,7 +99,7 @@
           } else {
             return "enum"
           }
-        case is TypealiasDeclSyntax:
+        } else if genericDeclaration.is(TypealiasDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -110,7 +110,7 @@
           } else {
             return "typealias"
           }
-        case is AssociatedtypeDeclSyntax:
+        } else if genericDeclaration.is(AssociatedtypeDeclSyntax.self) {
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -121,7 +121,7 @@
           } else {
             return "associatedtype"
           }
-        default:  // @exempt(from: tests)
+        } else {  // @exempt(from: tests)
           // @exempt(from: tests)
           type.genericDeclaration.warnUnidentified()
           return ""
@@ -316,10 +316,10 @@
 
     internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] {
       get {
-        return (
+        let defined =
           extendedProperties[.localizedDocumentation]
-            as? [LocalizationIdentifier: DocumentationSyntax]
-        ) ?? [:]  // @exempt(from: tests) Never nil.
+          as? [LocalizationIdentifier: DocumentationSyntax]
+        return defined ?? [:]  // @exempt(from: tests) Never nil.
       }
       nonmutating set {
         extendedProperties[.localizedDocumentation] = newValue
@@ -337,10 +337,9 @@
 
     internal var skippedLocalizations: Set<LocalizationIdentifier> {
       get {
-        return (
-          extendedProperties[.skippedLocalizations]
-            as? Set<LocalizationIdentifier>
-        ) ?? []  // @exempt(from: tests) Never nil.
+        return
+          (extendedProperties[.skippedLocalizations]
+          as? Set<LocalizationIdentifier>) ?? []  // @exempt(from: tests) Never nil.
       }
       nonmutating set {
         extendedProperties[.skippedLocalizations] = newValue
@@ -349,10 +348,9 @@
 
     private var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] {
       get {
-        return (
-          extendedProperties[.localizedEquivalentFileNames]
-            as? [LocalizationIdentifier: StrictString]
-        ) ?? [:]
+        return
+          (extendedProperties[.localizedEquivalentFileNames]
+          as? [LocalizationIdentifier: StrictString]) ?? [:]
       }
       nonmutating set {
         extendedProperties[.localizedEquivalentFileNames] = newValue
@@ -361,10 +359,9 @@
 
     private var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] {
       get {
-        return (
-          extendedProperties[.localizedEquivalentDirectoryNames]
-            as? [LocalizationIdentifier: StrictString]
-        ) ?? [:]
+        return
+          (extendedProperties[.localizedEquivalentDirectoryNames]
+          as? [LocalizationIdentifier: StrictString]) ?? [:]
       }
       nonmutating set {
         extendedProperties[.localizedEquivalentDirectoryNames] = newValue
@@ -373,10 +370,9 @@
 
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] {
       get {
-        return (
-          extendedProperties[.localizedEquivalentPaths]
-            as? [LocalizationIdentifier: StrictString]
-        ) ?? [:]
+        return
+          (extendedProperties[.localizedEquivalentPaths]
+          as? [LocalizationIdentifier: StrictString]) ?? [:]
       }
       nonmutating set {
         extendedProperties[.localizedEquivalentPaths] = newValue
@@ -398,9 +394,8 @@
 
     internal var relativePagePath: [LocalizationIdentifier: StrictString] {
       get {
-        return (
-          extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString]
-        ) ?? [:]
+        return (extendedProperties[.relativePagePath] as? [LocalizationIdentifier: StrictString])
+          ?? [:]
       }
       nonmutating set {
         extendedProperties[.relativePagePath] = newValue
@@ -452,7 +447,8 @@
       var groups: [StrictString: [APIElement]] = [:]
       for child in children {
         child.determine(localizations: localizations, customReplacements: customReplacements)
-        let crossReference = child.crossReference
+        let crossReference =
+          child.crossReference
           ?? {
             unique += 1
             return "\u{7F}\(String(describing: unique))"
@@ -797,7 +793,7 @@
               for: localization,
               customReplacements: customReplacements
             )
-              .mergedByOverwriting(from: links)
+            .mergedByOverwriting(from: links)
           }
         case .library(let library):
           path += localizedDirectoryName(for: localization) + "/"
@@ -806,7 +802,7 @@
               for: localization,
               customReplacements: customReplacements
             )
-              .mergedByOverwriting(from: links)
+            .mergedByOverwriting(from: links)
           }
         case .module(let module):
           path += localizedDirectoryName(for: localization) + "/"
@@ -828,19 +824,21 @@
               customReplacements: customReplacements,
               namespace: newNamespace
             )
-              .mergedByOverwriting(from: links)
+            .mergedByOverwriting(from: links)
           }
         case .case, .initializer, .subscript, .operator, .precedence:
           path += namespace + localizedDirectoryName(for: localization) + "/"
         case .variable(let variable):
-          path += namespace
+          path +=
+            namespace
             + localizedDirectoryName(
               for: localization,
               globalScope: namespace.isEmpty,
               typeMember: variable.declaration.isTypeMember()
             ) + "/"
         case .function(let function):
-          path += namespace
+          path +=
+            namespace
             + localizedDirectoryName(
               for: localization,
               globalScope: namespace.isEmpty,
@@ -850,7 +848,8 @@
           unreachable()
         }
 
-        path += localizedFileName(for: localization, customReplacements: customReplacements)
+        path +=
+          localizedFileName(for: localization, customReplacements: customReplacements)
           + ".html"
         relativePagePath[localization] = path
         if case .type = self {

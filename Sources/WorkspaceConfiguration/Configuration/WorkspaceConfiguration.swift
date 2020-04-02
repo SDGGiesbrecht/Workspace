@@ -57,7 +57,7 @@ import WSLocalizations
 ///   BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: { konfiguration in
 ///     return [
 ///       "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
-///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!)."
+///       "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
 ///     ]
 ///   })
 ///
@@ -102,7 +102,7 @@ public typealias ArbeitsbereichKonfiguration = WorkspaceConfiguration
 ///       "🇺🇸EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
 ///       "🇨🇦EN": "Copyright #dates \(configuration.documentation.primaryAuthor!).",
 ///       "fr": "Droit d’auteur #dates \(configuration.documentation.primaryAuthor!).",
-///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!)."
+///       "es": "Derecho de autor #dates \(configuration.documentation.primaryAuthor!).",
 ///     ]
 ///   })
 ///
@@ -415,7 +415,8 @@ public final class WorkspaceConfiguration: Configuration {
 
   public func _applySDGOverrides() {
     let project = WorkspaceContext.current.manifest.packageName
-    let repositoryURL = documentation.repositoryURL?.absoluteString
+    let repositoryURL =
+      documentation.repositoryURL?.absoluteString
       ?? ""  // @exempt(from: tests)
     let about = [
       "The \(project) project is maintained by Jeremy David Giesbrecht.",
@@ -428,7 +429,7 @@ public final class WorkspaceConfiguration: Configuration {
       ">",
       "> [For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
       ">",
-      "> ―‎ישוע/Yeshuʼa"
+      "> ―‎ישוע/Yeshuʼa",
     ].joinedAsLines()
     for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
       documentation.about[localization] = Markdown(about)

@@ -21,7 +21,8 @@ import WSProject
 extension PackageRepository {
 
   public static let repositorySDGDirectory: StrictString = ".build/SDG"
-  public static let repositoryWorkspaceCacheDirectory: StrictString = repositorySDGDirectory
+  public static let repositoryWorkspaceCacheDirectory: StrictString =
+    repositorySDGDirectory
     + "/Workspace"
 
   public func refreshScripts(output: Command.Output) throws {

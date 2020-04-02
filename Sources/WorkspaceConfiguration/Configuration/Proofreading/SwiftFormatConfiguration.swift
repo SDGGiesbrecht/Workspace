@@ -21,7 +21,7 @@ public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configurati
 extension SwiftFormatConfiguration.Configuration {
 
   internal static var `default`: SwiftFormatConfiguration.Configuration {
-    let configuration = SwiftFormatConfiguration.Configuration()
+    var configuration = SwiftFormatConfiguration.Configuration()
 
     // Illogical style choices.
     configuration.rules["IdentifiersMustBeASCII"] = false

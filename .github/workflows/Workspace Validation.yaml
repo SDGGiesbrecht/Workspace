@@ -27,15 +27,6 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Install Swift
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2/installer.exe' \
-          --output "/tmp/installer.exe"
-        /tmp/installer.exe
-        swift --version
     - name: Set Visual Studio up
       shell: bash
       run: |
@@ -56,17 +47,26 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.modulemap' \
           --output "${VCToolsInstallDir}/include/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.apinotes' \
           --output "${VCToolsInstallDir}/include/visualc.apinotes"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/installer.exe' \
+          --output "/tmp/installer.exe"
+        /tmp/installer.exe
+        swift --version
     - name: Fetch ICU
       shell: bash
       run: |

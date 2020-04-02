@@ -65,8 +65,7 @@ jobs:
         curl --location \
           'https://github.com/compnerd/swift-build/releases/download/v5.2/icu.msi' \
           --output '/tmp/icu.msi'
-        find /tmp
-        msiexec //i /tmp/icu.msi
+        msiexec //i /c/tmp/icu.msi
         find /c/Library
         export PATH="/c/Library/ICU-64.2/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"

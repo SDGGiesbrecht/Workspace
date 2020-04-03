@@ -638,7 +638,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             cURLAndInstallMSI("\(experimentalRelease)/icu.msi"),
-            prependPath("/c/Library/icu-64/usr/bin"),
+            prependPath("/c/Library/icu\u{2D}64/usr/bin"),
           ]
         )
       )

@@ -478,7 +478,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     _ url: StrictString,
     andUnzipTo destination: StrictString,
-    windows: Bool = false,
     doubleWrapped: Bool = false,
     sudoCopy: Bool = false
   ) -> StrictString {
@@ -486,20 +485,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let fileName = zipFileName.truncated(before: ".")
     let temporaryZip: StrictString = "/tmp/\(zipFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
-    var result: [StrictString] = [cURL(from: url, to: temporaryZip)]
-    if windows {
-      let output = doubleWrapped ? "." : fileName
-      result.append(contentsOf: [
-        "cd /tmp",
-        "7z x \(zipFileName) \u{2D}o\(output)",
-      ])
-    } else {
-      result.append(contentsOf: [
-        "unzip \(temporaryZip) \u{2D}d /tmp"
-      ])
-    }
-    result.append(copy(from: temporary, to: destination, sudo: sudoCopy))
-    return result.joinedAsLines()
+    return [
+      cURL(from: url, to: temporaryZip),
+      "unzip \(temporaryZip) \u{2D}d /tmp",
+      copy(from: temporary, to: destination, sudo: sudoCopy)
+    ].joinedAsLines()
   }
 
   private func cURL(

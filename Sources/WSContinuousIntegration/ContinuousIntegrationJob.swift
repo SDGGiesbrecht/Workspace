@@ -465,6 +465,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
+  private func cURLAndInstallMSI(_ url: StrictString) -> StrictString {
+    let msi = StrictString(url.components(separatedBy: "/").last!.contents)
+    let temporaryMSI: StrictString = "/tmp/\(msi)"
+    return [
+      cURL(from: url, to: temporaryMSI),
+      "cd /tmp",
+      "msiexec //i \(msi)",
+    ].joinedAsLines()
+  }
+
   private func cURL(
     _ url: StrictString,
     andUnzipTo destination: StrictString,
@@ -588,10 +598,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-      let version = ContinuousIntegrationJob.currentExperimentalSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       let platform: StrictString =
-        "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}branch/stdlib/public/Platform"
+        "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}RELEASE/stdlib/public/Platform"
       result.append(
         script(
           heading: fetchWinSDKModuleMapsStepName,
@@ -620,48 +630,30 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
+      let experimentalRelease: StrictString =
+        "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)"
       result.append(
         script(
-          heading: fetchICUStepName,
+          heading: installICUStepName,
           localization: interfaceLocalization,
           commands: [
-            cURL(
-              "http://download.icu\u{2D}project.org/files/icu4c/64.2/icu4c\u{2D}64_2\u{2D}Win64\u{2D}MSVC2017.zip",
-              andUnzipTo: "/c/Library/ICU\u{2D}64.2",
-              windows: true
-            ),
-            "mv /c/Library/ICU\u{2D}64.2/bin64 /c/Library/ICU\u{2D}64.2/bin",
-            prependPath("/c/Library/ICU\u{2D}64.2/bin"),
+            cURLAndInstallMSI("\(experimentalRelease)/icu.msi"),
+            prependPath("/c/Library/icu-64/usr/bin"),
           ]
         )
       )
-      let downloads = ContinuousIntegrationJob.experimentalDownloads
       result.append(
         script(
           heading: installSwiftStepName,
           localization: interfaceLocalization,
           commands: [
-            cURL(
-              "\(downloads)/toolchain\u{2D}windows\u{2D}x64.zip",
-              andUnzipTo: "/c",
-              windows: true,
-              doubleWrapped: true
-            ),
-            cURL(
-              "\(downloads)/sdk\u{2D}windows\u{2D}x64.zip",
-              andUnzipTo: "/c",
-              windows: true,
-              doubleWrapped: true
-            ),
+            cURLAndInstallMSI("\(experimentalRelease)/toolchain.msi"),
+            cURLAndInstallMSI("\(experimentalRelease)/sdk.msi"),
+            cURLAndInstallMSI("\(experimentalRelease)/runtime.msi"),
             prependPath(
               "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
             ),
-            copy(
-              from:
-                "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin",
-              to: "/c/Library/Swift/Current/bin"
-            ),
-            prependPath("/c/Library/Swift/Current/bin"),
+            prependPath("/c/Library/Swift\u{2D}development/bin"),
             prependPath(
               "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
             ),
@@ -828,7 +820,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           localization: interfaceLocalization,
           commands: [
             compressPATH(),
-            "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}resource\u{2D}dir C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
+            "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}sdk C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
             "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
           ]
         )
@@ -1059,6 +1051,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch ICU"
       case .deutschDeutschland:
         return "ICU holen"
+      }
+    })
+  }
+
+  private var installICUStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install ICU"
+      case .deutschDeutschland:
+        return "ICU installieren"
       }
     })
   }

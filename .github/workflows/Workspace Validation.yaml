@@ -92,6 +92,7 @@ jobs:
         find /c/Library
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         export PATH="/c/Library/Swift-development/bin:${PATH}"
+        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
     - name: Fetch dependencies

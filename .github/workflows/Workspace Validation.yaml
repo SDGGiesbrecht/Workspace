@@ -91,7 +91,7 @@ jobs:
         msiexec //i runtime.msi
         find /c/Library
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        export PATH="/c/Library/Swift/Current/bin:${PATH}"
+        export PATH="/c/Library/Swift-development/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
     - name: Fetch dependencies

@@ -488,7 +488,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       cURL(from: url, to: temporaryZip),
       "unzip \(temporaryZip) \u{2D}d /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy)
+      copy(from: temporary, to: destination, sudo: sudoCopy),
     ].joinedAsLines()
   }
 

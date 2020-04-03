@@ -89,7 +89,9 @@ jobs:
           --output '/tmp/runtime.msi'
         cd /tmp
         msiexec //i runtime.msi
-        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+        find /c/Library
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        export PATH="/c/Library/Swift/Current/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
     - name: Fetch dependencies

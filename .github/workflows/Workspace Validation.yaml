@@ -73,54 +73,50 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/ucrt.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.modulemap' \
           --output "${VCToolsInstallDir}/include/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/visualc.apinotes' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.apinotes' \
           --output "${VCToolsInstallDir}/include/visualc.apinotes"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-branch/stdlib/public/Platform/winsdk.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: Fetch ICU
+    - name: Install ICU
       shell: bash
       run: |
         set -x
         curl --location \
-          'http://download.icu-project.org/files/icu4c/64.2/icu4c-64_2-Win64-MSVC2017.zip' \
-          --output '/tmp/icu4c-64_2-Win64-MSVC2017.zip'
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/icu.msi' \
+          --output '/tmp/icu.msi'
         cd /tmp
-        7z x icu4c-64_2-Win64-MSVC2017.zip -oicu4c-64_2-Win64-MSVC2017
-        mkdir -p /c/Library/ICU-64.2
-        cp -R /tmp/icu4c-64_2-Win64-MSVC2017/* /c/Library/ICU-64.2
-        mv /c/Library/ICU-64.2/bin64 /c/Library/ICU-64.2/bin
-        export PATH="/c/Library/ICU-64.2/bin:${PATH}"
+        msiexec //i icu.msi
+        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
     - name: Install Swift
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-windows-x64.zip' \
-          --output '/tmp/toolchain-windows-x64.zip'
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/toolchain.msi' \
+          --output '/tmp/toolchain.msi'
         cd /tmp
-        7z x toolchain-windows-x64.zip -o.
-        mkdir -p /c
-        cp -R /tmp/toolchain-windows-x64/* /c
+        msiexec //i toolchain.msi
         curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-windows-x64.zip' \
-          --output '/tmp/sdk-windows-x64.zip'
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/sdk.msi' \
+          --output '/tmp/sdk.msi'
         cd /tmp
-        7z x sdk-windows-x64.zip -o.
-        mkdir -p /c
-        cp -R /tmp/sdk-windows-x64/* /c
+        msiexec //i sdk.msi
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/runtime.msi' \
+          --output '/tmp/runtime.msi'
+        cd /tmp
+        msiexec //i runtime.msi
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
-        mkdir -p /c/Library/Swift/Current/bin
-        cp -R /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/bin/* /c/Library/Swift/Current/bin
-        export PATH="/c/Library/Swift/Current/bin:${PATH}"
+        export PATH="/c/Library/Swift-development/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
@@ -146,7 +142,7 @@ jobs:
       run: |
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-resource-dir C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
+        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-sdk C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
         cmake --build '.build/SDG/CMake'
     - name: Test
       shell: bash

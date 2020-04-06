@@ -16,6 +16,8 @@
 
 import Foundation
 
+import SDGLogic
+
 #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
   import PackageModel
   import SwiftSyntax
@@ -50,7 +52,9 @@ import Foundation
                 }
               }
             }
-            found.append((name: "\(self.name).\(name)", methods: methods))
+            if ¬methods.isEmpty {
+              found.append((name: "\(self.name).\(name)", methods: methods))
+            }
           }
         }
       }

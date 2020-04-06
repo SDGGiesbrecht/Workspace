@@ -186,11 +186,11 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-osx.tar.gz' \
-          --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-osx.tar.gz'
-        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a-osx.tar.gz --directory /tmp
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
+          --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
+        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-08-a/* .build/SDG/Swift
+        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash

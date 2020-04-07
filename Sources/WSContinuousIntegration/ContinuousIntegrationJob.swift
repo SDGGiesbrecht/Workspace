@@ -425,12 +425,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
-    let prefix = sudo ? "sudo " : ""
+  private func aptGet(_ packages: [StrictString]) -> StrictString {
     let packages = packages.joined(separator: " ")
     return [
-      "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
+      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
+      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
     ].joinedAsLines()
   }
 

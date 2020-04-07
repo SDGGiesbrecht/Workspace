@@ -183,8 +183,8 @@ jobs:
           'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
         tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
-        sudo mkdir -p .build/SDG/Swift
-        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
+        mkdir -p .build/SDG/Swift
+        cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Erstellen
       shell: bash

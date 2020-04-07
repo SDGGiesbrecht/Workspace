@@ -197,7 +197,7 @@ jobs:
           'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
         tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
-        mkdir -p .build/SDG/Swift
+        sudo mkdir -p .build/SDG/Swift
         sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
@@ -425,39 +425,24 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://swift.org/builds/swift-5.2-release/ubuntu1804/swift-5.2-RELEASE/swift-5.2-RELEASE-ubuntu18.04.tar.gz' \
-          --output '/tmp/swift-5.2-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --file /tmp/swift-5.2-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-        mkdir -p /
-        sudo cp -R /tmp/swift-5.2-RELEASE-ubuntu18.04/* /
+          'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
+          --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+        sudo mkdir -p /
+        sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
         swift --version
-    - name: Fetch cross‐compilation toolchain
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/toolchain-linux-x64.zip' \
-          --output '/tmp/toolchain-linux-x64.zip'
-        unzip /tmp/toolchain-linux-x64.zip -d /tmp
-        mkdir -p /
-        sudo cp -R /tmp/toolchain-linux-x64/* /
-        sudo chmod -R a+rwx /Library
-        /Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin/swift --version
     - name: Fetch Android SDK
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/sdk-android-x64.zip' \
-          --output '/tmp/sdk-android-x64.zip'
-        unzip /tmp/sdk-android-x64.zip -d /tmp
-        mkdir -p /
-        cp -R /tmp/sdk-android-x64/* /
+          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk-android-x86_64.zip' \
+          --output '/tmp/sdk-android-x86_64.zip'
+        unzip /tmp/sdk-android-x86_64.zip -d /tmp
+        sudo mkdir -p /Library
+        sudo cp -R /tmp/Library/* /Library
+        sudo chmod -R a+rwx /Library
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
-        sudo apt-get update --assume-yes
-        sudo apt-get install --assume-yes patchelf
-        patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so
-        patchelf --replace-needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so
     - name: Fetch ICU
       shell: bash
       run: |

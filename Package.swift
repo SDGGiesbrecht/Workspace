@@ -379,8 +379,12 @@ let package = Package(
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        // SwiftPM‐auto (except Windows and Android; see end of file)
-        // SwiftFormat (except Windows and Android; see end of file)
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(
+          name: "SwiftToolsSupport\u{2D}auto",
+          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
+        ),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -392,7 +396,7 @@ let package = Package(
         "WSProject",
         "WSSwift",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        // SwiftFormat (except Windows and Android; see end of file)
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -422,7 +426,7 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        // SwiftFormat (except Windows and Android; see end of file)
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -448,7 +452,7 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        // SwiftFormat (except Windows and Android; see end of file)
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -483,6 +487,7 @@ let package = Package(
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
       ]
     ),
 
@@ -716,7 +721,7 @@ let package = Package(
     .target(
       name: "WSCrossPlatform",
       dependencies: [
-        // WSCrossPlatformC (except Windows; see end of file)
+        "WSCrossPlatformC",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
       ],
       path: "Tests/WSCrossPlatform"
@@ -768,58 +773,14 @@ let package = Package(
   ]
 )
 
-// #workaround(Swift 5.1.4, These cannot build on Windows.)
-// #workaround(Swift 5.1.4, These cannot build on Android.)
-import Foundation
-#if !os(Windows) && !os(Android)
-  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil,
-    ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == nil
-  {
-
-    for target in package.targets where target.name == "WSContinuousIntegration" {
-      target.dependencies.append(
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM")
-      )
-    }
-    for target in package.targets where target.name == "WSContinuousIntegration" {
-      target.dependencies.append(
-        .product(
-          name: "SwiftToolsSupport\u{2D}auto",
-          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
-        )
-      )
-    }
-
-    for target in package.targets where target.name == "WSDocumentation" {
-      target.dependencies.append(
-        .product(name: "SwiftSyntax", package: "SwiftSyntax")
-      )
-    }
-
-    let needSwiftFormat: Set<String> = [
-      "WSContinuousIntegration",
-      "WSResources",
-      "WSNormalization",
-      "WSProofreading",
-    ]
-    for target in package.targets where needSwiftFormat.contains(target.name) {
-      target.dependencies.append(.product(name: "SwiftFormat", package: "swift\u{2D}format"))
-    }
-  }
-#endif
-
-// #workaround(Swift 5.1.4, These cannot build on Windows.)
-import Foundation
-#if !os(Windows)
-  if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == nil {
-
-    for target in package.targets where target.name == "WSCrossPlatform" {
-      target.dependencies.append("WSCrossPlatformC")
-    }
-  }
-#endif
-
 func adjustForWindows() {
+  // #workaround(Swift 5.1.4, These cannot build on Windows.)
+  let impossibleDependencies = [
+    "SwiftPM",
+    "SwiftToolsSupport",
+    "SwiftSyntax",
+    "SwiftFormat"
+  ]
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
@@ -829,6 +790,15 @@ func adjustForWindows() {
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      var mergedImpossible = impossibleDependencies
+      mergedImpossible.append(contentsOf: impossibleTargets)
+      return mergedImpossible.contains(where: { impossible in
+        "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without this.)
   package.dependencies.append(
     .package(
@@ -842,8 +812,32 @@ func adjustForWindows() {
   adjustForWindows()
 #endif
 // #workaround(Swift 5.2, Until packages work natively on windows.)
+import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
+}
+
+func adjustForAndroid() {
+  // #workaround(Swift 5.1.4, These cannot build on Android.)
+  let impossibleDependencies = [
+    "SwiftPM",
+    "SwiftToolsSupport",
+    "SwiftSyntax",
+    "SwiftFormat"
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        "\(dependency)".contains(impossible)
+      })
+    })
+  }
+}
+#if os(Android)
+  adjustForAndroid()
+#endif
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  adjustForAndroid()
 }
 
 func adjustForWeb() {

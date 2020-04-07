@@ -36,7 +36,7 @@ jobs:
           --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         mkdir -p /
-        sudo cp -R /tmp/swift-5.2-RELEASE-ubuntu18.04/* /
+        sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
         swift --version
     - name: Fetch Android SDK
       shell: bash

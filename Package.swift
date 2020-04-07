@@ -263,7 +263,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       .exact(Version(0, 6, 0))
     ),
-    .package(  // #workaround(Swift 5.1.4, Until packages work natively on windows.)
+    .package(  // #workaround(Swift 5.2, Until packages work natively on windows.)
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 1, 0))
     ),
@@ -841,7 +841,7 @@ func adjustForWindows() {
 #if os(Windows)
   adjustForWindows()
 #endif
-// #workaround(Swift 5.1.4, Until packages work natively on windows.)
+// #workaround(Swift 5.2, Until packages work natively on windows.)
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }

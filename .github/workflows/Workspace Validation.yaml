@@ -46,8 +46,8 @@ jobs:
           'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk-android-x86_64.zip' \
           --output '/tmp/sdk-android-x86_64.zip'
         unzip /tmp/sdk-android-x86_64.zip -d /tmp
-        mkdir -p /
-        cp -R /tmp/sdk-android-x86_64/* /
+        mkdir -p /Library
+        cp -R /tmp/Library/* /Library
         sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes patchelf

@@ -663,8 +663,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             cURL(
               "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}osx.tar.gz",
               named: releaseName,
-              andUntarTo: ".build/SDG/Swift",
-              sudoCopy: true
+              andUntarTo: ".build/SDG/Swift"
             ),
             ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
           ]

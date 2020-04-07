@@ -722,7 +722,7 @@ let package = Package(
       name: "WSCrossPlatform",
       dependencies: [
         "WSCrossPlatformC",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format")
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
       path: "Tests/WSCrossPlatform"
     ),
@@ -779,7 +779,7 @@ func adjustForWindows() {
     "SwiftPM",
     "SwiftToolsSupport",
     "SwiftSyntax",
-    "SwiftFormat"
+    "SwiftFormat\u{22}",
   ]
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
@@ -823,7 +823,7 @@ func adjustForAndroid() {
     "SwiftPM",
     "SwiftToolsSupport",
     "SwiftSyntax",
-    "SwiftFormat"
+    "SwiftFormat\u{22}",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

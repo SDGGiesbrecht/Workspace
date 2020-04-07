@@ -17,6 +17,257 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  Windows:
+    runs-on: windows-2019
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Windows‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Visual Studio up
+      shell: bash
+      run: |
+        set -x
+        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
+        echo 'export -p > exported_environment.sh' > nested_bash.sh
+        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
+        cmd "/c export_environment.bat"
+        set +x
+        source ./exported_environment.sh
+        set -x
+        echo "::set-env name=PATH::${PATH}"
+        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
+        echo "::set-env name=UCRTVersion::${UCRTVersion}"
+        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
+    - name: Fetch WinSDK module maps
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.modulemap' \
+          --output "${VCToolsInstallDir}/include/module.modulemap"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.apinotes' \
+          --output "${VCToolsInstallDir}/include/visualc.apinotes"
+        curl --location \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
+          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+    - name: Install ICU
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/icu.msi' \
+          --output '/tmp/icu.msi'
+        cd /tmp
+        msiexec //i icu.msi
+        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/toolchain.msi' \
+          --output '/tmp/toolchain.msi'
+        cd /tmp
+        msiexec //i toolchain.msi
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/sdk.msi' \
+          --output '/tmp/sdk.msi'
+        cd /tmp
+        msiexec //i sdk.msi
+        curl --location \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2/runtime.msi' \
+          --output '/tmp/runtime.msi'
+        cd /tmp
+        msiexec //i runtime.msi
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        export PATH="/c/Library/Swift-development/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        swift --version
+    - name: Fetch dependencies
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/SDGGiesbrecht/swift-cmark .build/SDG/Dependencies/CommonMark --branch 0.0.50100 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGCommandLine .build/SDG/Dependencies/SDGCommandLine --branch 1.3.2 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 4.5.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGSwift .build/SDG/Dependencies/SDGSwift --branch 0.20.1 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGWeb .build/SDG/Dependencies/SDGWeb --branch 5.1.2 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.6.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.3.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-argument-parser.git .build/SDG/Dependencies/swift-argument-parser --branch 0.0.4 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.5 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
+        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-sdk C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
+        cmake --build '.build/SDG/CMake'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
+        cd .build/SDG/CMake
+        ctest --verbose
+  Web:
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
+          --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
+        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
+        sudo mkdir -p .build/SDG/Swift
+        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
+        .build/SDG/Swift/usr/bin/swift --version
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
+  Linux:
+    runs-on: ubuntu-18.04
+    container: swift:5.2-bionic
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  tvOS:
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐tvos‐simulator
+  iOS:
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
+        xcodebuild -version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐ios‐simulator
   Android:
     runs-on: ubuntu-18.04
     steps:
@@ -35,7 +286,7 @@ jobs:
           'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
           --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-        mkdir -p /
+        sudo mkdir -p /
         sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
         swift --version
     - name: Fetch Android SDK
@@ -129,3 +380,41 @@ jobs:
       with:
         abi: x86_64
         cmd: .build/SDG/Emulator.sh
+  Miscellaneous:
+    runs-on: ubuntu-18.04
+    container: swift:5.2-bionic
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        apt-get install --assume-yes curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

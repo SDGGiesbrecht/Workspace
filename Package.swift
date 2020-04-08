@@ -694,6 +694,7 @@ let package = Package(
       dependencies: [
         "WSGeneralTestImports",
         "WSCustomTask",
+        "WorkspaceProjectConfiguration",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),

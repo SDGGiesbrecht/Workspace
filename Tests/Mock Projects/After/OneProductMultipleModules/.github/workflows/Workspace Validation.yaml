@@ -88,7 +88,7 @@ jobs:
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
         tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        sudo cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
+        cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash

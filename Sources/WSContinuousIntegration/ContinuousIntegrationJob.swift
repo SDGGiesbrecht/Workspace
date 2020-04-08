@@ -39,6 +39,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public static let currentSwiftVersion = Version(5, 2, 0)
   private static let currentExperimentalSwiftVersion = Version(5, 2, 0)
+  private static let currentExperimentalSwiftAndroidVersion = Version(5, 2, 1)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}31"
   private static let experimentalDownloads =
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
@@ -424,12 +425,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString], sudo: Bool = false) -> StrictString {
-    let prefix = sudo ? "sudo " : ""
+  private func aptGet(_ packages: [StrictString]) -> StrictString {
     let packages = packages.joined(separator: " ")
     return [
-      "\(prefix)apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "\(prefix)apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
+      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
+      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
     ].joinedAsLines()
   }
 
@@ -451,8 +451,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
-  private func makeDirectory(_ directory: StrictString) -> StrictString {
-    return "mkdir \u{2D}p \(directory)"
+  private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
+    return "\(sudo ? "sudo " : "")mkdir \u{2D}p \(directory)"
   }
   private func copy(
     from origin: StrictString,
@@ -460,7 +460,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     sudo: Bool = false
   ) -> StrictString {
     return [
-      makeDirectory(destination),
+      makeDirectory(destination, sudo: sudo),
       "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)",
     ].joinedAsLines()
   }
@@ -478,11 +478,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     _ url: StrictString,
     andUnzipTo destination: StrictString,
-    doubleWrapped: Bool = false,
+    containerName: StrictString? = nil,
     sudoCopy: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = zipFileName.truncated(before: ".")
+    let fileName = containerName ?? zipFileName.truncated(before: ".")
     let temporaryZip: StrictString = "/tmp/\(zipFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
     return [
@@ -663,8 +663,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             cURL(
               "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}osx.tar.gz",
               named: releaseName,
-              andUntarTo: ".build/SDG/Swift",
-              sudoCopy: true
+              andUntarTo: ".build/SDG/Swift"
             ),
             ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
           ]
@@ -690,7 +689,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .android:
-      let version = ContinuousIntegrationJob.currentSwiftVersion
+      let version = ContinuousIntegrationJob.currentExperimentalSwiftAndroidVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         script(
@@ -706,32 +705,20 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         ),
         script(
-          heading: fetchCrossCompilationToolchainStepName,
-          localization: interfaceLocalization,
-          commands: [
-            cURL(
-              "\(ContinuousIntegrationJob.experimentalDownloads)/toolchain\u{2D}linux\u{2D}x64.zip",
-              andUnzipTo: "/",
-              sudoCopy: true
-            ),
-            grantPermissions(to: "/Library"),
-            "/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin/swift \u{2D}\u{2D}version",
-          ]
-        ),
-        script(
           heading: fetchAndroidSDKStepName,
           localization: interfaceLocalization,
           commands: [
             cURL(
-              "\(ContinuousIntegrationJob.experimentalDownloads)/sdk\u{2D}android\u{2D}x64.zip",
-              andUnzipTo: "/"
+              "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)/sdk\u{2D}android\u{2D}x86_64.zip",
+              andUnzipTo: "/Library",
+              containerName: "Library",
+              sudoCopy: true
             ),
+            grantPermissions(to: "/Library"),
             "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
-            aptGet(["patchelf"], sudo: true),
-            "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftSwiftOnoneSupport.so",
-            "patchelf \u{2D}\u{2D}replace\u{2D}needed lib/swift/android/x86_64/libswiftCore.so libswiftCore.so /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/libswiftGlibc.so",
           ]
         ),
+        // #workaround(Should be a single download.)
         script(
           heading: fetchICUStepName,
           localization: interfaceLocalization,
@@ -1074,19 +1061,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Install Swift"
       case .deutschDeutschland:
         return "Swift installieren"
-      }
-    })
-  }
-
-  private var fetchCrossCompilationToolchainStepName:
-    UserFacing<StrictString, InterfaceLocalization>
-  {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch cross‐compilation toolchain"
-      case .deutschDeutschland:
-        return "Fremdübersetzungs Werkzeugkette holen"
       }
     })
   }

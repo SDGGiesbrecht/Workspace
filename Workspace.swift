@@ -20,7 +20,7 @@ public enum Metadata {
 
   public static let latestStableVersion = Version(0, 32, 1)
   // Set this to latestStableWorkspaceVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = latestStableVersion
+  public static let thisVersion: Version? = nil
 
   public static let packageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
   public static let issuesURL = packageURL.appendingPathComponent("issues")

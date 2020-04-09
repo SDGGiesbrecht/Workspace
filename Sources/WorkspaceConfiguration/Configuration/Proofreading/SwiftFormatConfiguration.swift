@@ -48,6 +48,9 @@ extension SwiftFormatConfiguration.Configuration {
     configuration.rules["ValidateDocumentationComments"] = false
 
     configuration.lineBreakBeforeEachArgument = true
+    configuration.lineBreakBeforeEachGenericRequirement = true
+    // #workaround(Swift 5.2.1, Leads to crash.)
+    // configuration.prioritizeKeepingFunctionOutputTogether = true
     return configuration
   }
 }

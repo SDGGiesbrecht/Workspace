@@ -56,7 +56,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
         diagnostic.highlights.count == 1
       {
         range = highlight.scalars(in: file.contents)
-      } else {
+      } else {  // @exempt(from: tests) Trigger unknown.
         guard let location = diagnostic.location else {
           return  // @exempt(from: tests) Trigger unknown.
         }

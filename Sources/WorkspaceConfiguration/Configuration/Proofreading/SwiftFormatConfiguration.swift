@@ -29,6 +29,7 @@ extension SwiftFormatConfiguration.Configuration {
     configuration.rules["NoBlockComments"] = false
 
     // Generally good advice, but rules are noisy due to many valid exceptions.
+    configuration.rules["AmbiguousTrailingClosureOverload"] = false
     configuration.rules["DontRepeatTypeInStaticProperties"] = false
     configuration.rules["NeverUseForceTry"] = false
     configuration.rules["NeverForceUnwrap"] = false

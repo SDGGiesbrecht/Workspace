@@ -151,10 +151,6 @@ let x = ¬y  // This should trigger; it is a prefix operator.
 
 Sources/BadStyle/SwiftFormat.swift
 Zeile 1
-Rename 'triggerSwiftFormatWithOverload(_:)' so it is no longer ambiguous with a trailing closure. (swiftFormat[AmbiguousTrailingClosureOverload])
-func triggerSwiftFormatWithOverload(_ closure: (Bool) -> Bool) {}
-
-Zeile 4
 Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
 

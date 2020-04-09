@@ -23,6 +23,7 @@
       return source.utf8.index(source.utf8.startIndex, offsetBy: offset)
     }
     internal func scalar(in source: String) -> String.ScalarView.Index {
+      // @exempt(from: tests) Trigger unknown.
       return utf8(in: source).scalar(in: source.scalars)
     }
   }

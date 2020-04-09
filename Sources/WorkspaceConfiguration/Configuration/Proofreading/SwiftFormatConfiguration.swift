@@ -29,6 +29,7 @@ extension SwiftFormatConfiguration.Configuration {
     configuration.rules["NoBlockComments"] = false
 
     // Generally good advice, but rules are noisy due to many valid exceptions.
+    configuration.rules["AmbiguousTrailingClosureOverload"] = false
     configuration.rules["DontRepeatTypeInStaticProperties"] = false
     configuration.rules["NeverUseForceTry"] = false
     configuration.rules["NeverForceUnwrap"] = false
@@ -43,12 +44,13 @@ extension SwiftFormatConfiguration.Configuration {
     // Bugs currently result in false positives.
     // #workaround(Swift 5.1.3, Can these be restored?)
     configuration.rules["AlwaysUseLowerCamelCase"] = false
-    configuration.rules["BlankLineBetweenMembers"] = false
-    configuration.rules["CaseIndentLevelEqualsSwitch"] = false
     configuration.rules["UseLetInEveryBoundCaseVariable"] = false
     configuration.rules["ValidateDocumentationComments"] = false
 
     configuration.lineBreakBeforeEachArgument = true
+    configuration.lineBreakBeforeEachGenericRequirement = true
+    // #workaround(Swift 5.2.1, Leads to crash.)
+    // configuration.prioritizeKeepingFunctionOutputTogether = true
     return configuration
   }
 }

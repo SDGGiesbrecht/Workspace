@@ -24,6 +24,7 @@ import SDGHTML
 import SDGWeb
 
 import WSProject
+import WorkspaceProjectConfiguration
 
 extension PackageRepository {
 
@@ -374,6 +375,15 @@ extension PackageRepository {
           for manifest in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? [])
           where manifest.lastPathComponent == "XCTestManifests.swift" {
             try? FileManager.default.removeItem(at: manifest)
+          }
+          for file in ((try? FileManager.default.deepFileEnumeration(in: location)) ?? []) {
+            if var text = try? String(from: file) {
+              text.scalars.replaceMatches(
+                for: Metadata.latestStableVersion.string().scalars,
+                with: "[Current Version]".scalars
+              )
+              try text.save(to: file)
+            }
           }
 
           let afterLocation = PackageRepository.afterDirectory(

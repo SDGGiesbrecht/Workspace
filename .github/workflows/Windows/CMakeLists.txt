@@ -1438,6 +1438,7 @@ target_compile_options("WorkspaceLibraryTests" PRIVATE -enable-testing)
 target_link_libraries("WorkspaceLibraryTests" PRIVATE
   "WSGeneralTestImports"
   "WSCustomTask"
+  "WorkspaceProjectConfiguration"
   "SDGExternalProcess"
   "SDGCommandLine"
   "SDGHTML"

@@ -44,8 +44,6 @@ extension SwiftFormatConfiguration.Configuration {
     // Bugs currently result in false positives.
     // #workaround(Swift 5.1.3, Can these be restored?)
     configuration.rules["AlwaysUseLowerCamelCase"] = false
-    configuration.rules["BlankLineBetweenMembers"] = false
-    configuration.rules["CaseIndentLevelEqualsSwitch"] = false
     configuration.rules["UseLetInEveryBoundCaseVariable"] = false
     configuration.rules["ValidateDocumentationComments"] = false
 

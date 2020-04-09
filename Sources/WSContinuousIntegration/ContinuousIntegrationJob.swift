@@ -913,14 +913,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         ),
         // #workaround(There is no official action for this yet.)
-        step(installEmulatorStepName, localization: interfaceLocalization),
-        uses("malinskiy/action\u{2D}android/install\u{2D}sdk@release/0.0.5"),
         step(testStepName, localization: interfaceLocalization),
         uses(
-          "malinskiy/action\u{2D}android/emulator\u{2D}run\u{2D}cmd@release/0.0.5",
+          "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",
           with: [
-            "abi": "x86_64",
-            "cmd": ".build/SDG/Emulator.sh",
+            "api\u{2D}level": "29",
+            "arch": "x86_64",
+            "script": ".build/SDG/Emulator.sh",
           ]
         ),
       ])
@@ -1182,17 +1181,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Prepare script"
       case .deutschDeutschland:
         return "Skript vorbereiten"
-      }
-    })
-  }
-
-  private var installEmulatorStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install emulator"
-      case .deutschDeutschland:
-        return "Emulator installieren"
       }
     })
   }

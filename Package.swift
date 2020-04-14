@@ -807,7 +807,7 @@ func adjustForWindows() {
       name: "CommonMark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50100))
-    )
+    ),
   ])
 }
 #if os(Windows)

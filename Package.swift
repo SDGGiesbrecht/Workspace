@@ -812,7 +812,7 @@ func adjustForWindows() {
 #if os(Windows)
   adjustForWindows()
 #endif
-// #workaround(Swift 5.2, Until packages work natively on windows.)
+// #workaround(Swift 5.2.1, Until packages work natively on windows.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()

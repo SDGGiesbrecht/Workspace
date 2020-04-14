@@ -248,11 +248,11 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 5, 0)
+      from: Version(4, 6, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 3, 2)
+      from: Version(1, 4, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
@@ -276,7 +276,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}format",
       .exact(Version(0, 50200, 0))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 1, 2)),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 0)),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)

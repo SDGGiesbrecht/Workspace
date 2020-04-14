@@ -800,14 +800,15 @@ func adjustForWindows() {
       })
     })
   }
-  // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without this.)
-  package.dependencies.append(
+  // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without these.)
+  package.dependencies.append(contentsOf: [
+    .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 5))),
     .package(
       name: "CommonMark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
       .exact(Version(0, 0, 50100))
     )
-  )
+  ])
 }
 #if os(Windows)
   adjustForWindows()

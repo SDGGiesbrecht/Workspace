@@ -775,7 +775,7 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  // #workaround(Swift 5.1.4, These cannot build on Windows.)
+  // #workaround(Swift 5.2.1, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",

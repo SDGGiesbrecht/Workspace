@@ -819,7 +819,7 @@ if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true"
 }
 
 func adjustForAndroid() {
-  // #workaround(Swift 5.1.4, These cannot build on Android.)
+  // #workaround(Swift 5.2.1, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",

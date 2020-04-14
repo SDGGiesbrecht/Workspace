@@ -800,7 +800,7 @@ func adjustForWindows() {
       })
     })
   }
-  // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without this.)
+  // #workaround(Swift 5.2.1, Triggers assertion failure when generating CMake without this.)
   package.dependencies.append(
     .package(
       name: "CommonMark",

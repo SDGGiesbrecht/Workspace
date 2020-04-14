@@ -842,16 +842,12 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 func adjustForWeb() {
-  // #workaround(SDGCornerstone 4.5.0, Cannot build for web.)
+  // #warning(Swift 5.2.1, Cannot build for web.)
   let impossiblePackages = [
-    "SDGCommandLine",
-    "SDGCornerstone",
-    "SDGSwift",
-    "SDGWeb",
-    "swift\u{2D}format",
-    "swift\u{2D}package\u{2D}manager",
-    "swift\u{2D}syntax",
-    "swift\u{2D}tools\u{2D}support\u{2D}core.git",
+    //"swift\u{2D}format",
+    //"swift\u{2D}package\u{2D}manager",
+    //"swift\u{2D}syntax",
+    //"swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {
@@ -861,85 +857,17 @@ func adjustForWeb() {
     }
     return false
   })
-  let impossibleProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration",
-  ]
-  package.products.removeAll(where: { product in
-    return impossibleProducts.contains(product.name)
-  })
   let impossibleDependencies: Set<String> = [
-    // SDGCornerstone
-    "SDGLocalization",
-    "SDGPersistence",
-    "SDGPersistenceTestUtilities",
-    "SDGXCTestUtilities",
-    // SDGCommandLine
-    "SDGCommandLine",
-    "SDGExportedCommandLineInterface",
-    // SDGSwift
-    "SDGSwift",
-    "SDGSwiftConfiguration",
-    "SDGSwiftConfigurationLoading",
-    "SDGSwiftPackageManager",
-    "SDGSwiftSource",
-    "SDGXcode",
     // SwiftFormat
-    "SwiftFormatConfiguration",
-  ]
-  let impossibleTargets: Set<String> = [
-    // Workspace
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSGit",
-    "WSGitHub",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode",
-    "WorkspaceConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceTool",
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
+    //"SwiftFormatConfiguration",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      if impossibleTargets.contains(where: { impossible in
+      return impossibleDependencies.contains(where: { impossible in
         return "\(dependency)".contains(impossible)
-      }) {
-        return true
-      } else if impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      }) {
-        return true
-      } else {
-        return false
-      }
+      })
     })
   }
-  package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
-  })
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()

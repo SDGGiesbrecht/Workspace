@@ -843,7 +843,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 func adjustForWeb() {
-  // #warning(Swift 5.2.1, Web won’t resolve manifests with dynamic libraries.)
+  // #warning(Swift 5.2.2, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
     //"swift\u{2D}format",
     "swift\u{2D}package\u{2D}manager",
@@ -858,7 +858,7 @@ func adjustForWeb() {
     }
     return false
   })
-  // #warning(Swift 5.2.1, Cannot build for web.)
+  // #warning(Swift 5.2.2, Cannot build for web.)
   let impossibleDependencies: Set<String> = [
     // SwiftFormat
     //"SwiftFormatConfiguration",

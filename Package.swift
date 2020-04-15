@@ -862,6 +862,10 @@ func adjustForWeb() {
   let impossibleDependencies: Set<String> = [
     // SwiftFormat
     //"SwiftFormatConfiguration",
+    // SwiftPM
+    "SwiftPM",
+    // SwiftToolsSupport
+    "swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

@@ -71,6 +71,11 @@ jobs:
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU
+    - name: Upload ICU
+      uses: actions/upload-artifact@v1
+      with:
+        name: ICU
+        path: Android/ICU
     - name: Fetch Swift source
       # Based on https://github.com/apple/swift#getting-sources-for-swift-and-related-projects
       shell: bash

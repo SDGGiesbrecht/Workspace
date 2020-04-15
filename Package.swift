@@ -846,9 +846,9 @@ func adjustForWeb() {
   // #warning(Swift 5.2.1, Cannot build for web.)
   let impossiblePackages: [String] = [
     //"swift\u{2D}format",
-    //"swift\u{2D}package\u{2D}manager",
+    "swift\u{2D}package\u{2D}manager",
     //"swift\u{2D}syntax",
-    //"swift\u{2D}tools\u{2D}support\u{2D}core.git",
+    "swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {

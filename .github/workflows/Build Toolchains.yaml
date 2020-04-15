@@ -68,6 +68,11 @@ jobs:
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU
+    - name: Upload ICU
+      uses: actions/upload-artifact@v1
+      with:
+        name: ICU
+        path: Android/ICU
     - name: Fetch Swift source
       shell: bash
       run: |

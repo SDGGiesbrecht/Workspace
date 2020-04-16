@@ -45,7 +45,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
-  public static let currentXcodeVersion = Version(11, 4, 0)
+  public static let currentXcodeVersion = Version(11, 4, 1)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
 

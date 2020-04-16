@@ -31,7 +31,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.4.1.app
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
     - name: Refresh
       shell: bash
@@ -230,7 +230,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.4.1.app
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
     - name: Refresh
       shell: bash
@@ -256,7 +256,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.4.1.app
+        sudo xcode-select -switch /Applications/Xcode_11.4.app
         xcodebuild -version
     - name: Refresh
       shell: bash

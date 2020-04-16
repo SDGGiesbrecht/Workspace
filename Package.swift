@@ -252,13 +252,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 4, 0)
+      from: Version(1, 4, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch dependency.)
-      .branch("master")
-      //.upToNextMinor(from: Version(0, 20, 1))
+      from: Version(1, 0, 0)
     ),
     .package(
       name: "SwiftPM",

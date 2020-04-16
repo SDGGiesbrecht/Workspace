@@ -449,12 +449,17 @@ target_link_libraries("SDGSwiftLocalizations" PRIVATE
 
 add_library("SDGSwift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/Build.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/CoverageRegion.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/FileTestCoverage.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/Git.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/PackageRepository.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/PackageStructure.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/PackageStructureBuildError.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/PackageStructureExecutionError.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/String.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/SwiftCompiler.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/SwiftCompilerCoverageReportingError.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/TestCoverageReport.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/VersionedExternalProcess.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/VersionedExternalProcessExecutionError.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/VersionedExternalProcessLocationError.swift"
@@ -564,26 +569,18 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
 )
 
 add_library("SDGSwiftPackageManager"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/CoverageRegion.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/FileTestCoverage.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/Git.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/PackageRepository.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/String.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/SwiftCompiler.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/SwiftCompilerCoverageReportingError.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/SwiftCompilerManifestLoadingError.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/TestCoverageReport.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/SwiftCompilerPackageLoadingError.swift"
 )
 set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)
 target_link_libraries("SDGSwiftPackageManager" PRIVATE
   "SDGSwift"
   "SDGSwiftLocalizations"
-  "SDGControlFlow"
   "SDGLogic"
-  "SDGMathematics"
-  "SDGCollections"
   "SDGText"
   "SDGLocalization"
   "SDGVersioning"
@@ -601,7 +598,6 @@ set_target_properties("SDGXcode" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAK
 target_compile_options("SDGXcode" PRIVATE -enable-testing)
 target_link_libraries("SDGXcode" PRIVATE
   "SDGSwift"
-  "SDGSwiftPackageManager"
   "SDGSwiftLocalizations"
   "SDGControlFlow"
   "SDGLogic"

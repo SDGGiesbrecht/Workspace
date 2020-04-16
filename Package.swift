@@ -252,11 +252,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 4, 0)
+      from: Version(1, 4, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 20, 1))
+      from: Version(1, 0, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -775,7 +775,7 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  // #workaround(Swift 5.1.4, These cannot build on Windows.)
+  // #workaround(Swift 5.2.1, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -800,27 +800,27 @@ func adjustForWindows() {
       })
     })
   }
-  // #workaround(Swift 5.2, Triggers assertion failure when generating CMake without these.)
+  // #workaround(Swift 5.2.1, Triggers assertion failure when generating CMake without this.)
   package.dependencies.append(contentsOf: [
     .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 5))),
     .package(
-      name: "CommonMark",
+      name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      .exact(Version(0, 0, 50100))
+      .exact(Version(0, 0, 50200))
     ),
   ])
 }
 #if os(Windows)
   adjustForWindows()
 #endif
-// #workaround(Swift 5.2, Until packages work natively on windows.)
+// #workaround(Swift 5.2.1, Until packages work natively on windows.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
 func adjustForAndroid() {
-  // #workaround(Swift 5.1.4, These cannot build on Android.)
+  // #workaround(Swift 5.2.1, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -843,15 +843,9 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 func adjustForWeb() {
-  // #workaround(SDGCornerstone 4.5.0, Cannot build for web.)
-  let impossiblePackages = [
-    "SDGCommandLine",
-    "SDGCornerstone",
-    "SDGSwift",
-    "SDGWeb",
-    "swift\u{2D}format",
+  // #workaround(Swift 5.2.2, Web won’t resolve manifests with dynamic libraries.)
+  let impossiblePackages: [String] = [
     "swift\u{2D}package\u{2D}manager",
-    "swift\u{2D}syntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -862,35 +856,20 @@ func adjustForWeb() {
     }
     return false
   })
-  let impossibleProducts: Set<String> = [
-    "arbeitsbereich",
-    "workspace",
-    "WorkspaceConfiguration",
-  ]
-  package.products.removeAll(where: { product in
-    return impossibleProducts.contains(product.name)
-  })
+  // #workaround(Swift 5.2.2, Cannot build for web.)
   let impossibleDependencies: Set<String> = [
-    // SDGCornerstone
-    "SDGLocalization",
-    "SDGPersistence",
-    "SDGPersistenceTestUtilities",
-    "SDGXCTestUtilities",
-    // SDGCommandLine
-    "SDGCommandLine",
-    "SDGExportedCommandLineInterface",
-    // SDGSwift
-    "SDGSwift",
-    "SDGSwiftConfiguration",
-    "SDGSwiftConfigurationLoading",
-    "SDGSwiftPackageManager",
-    "SDGSwiftSource",
-    "SDGXcode",
     // SwiftFormat
+    "SwiftFormat\u{22}",
     "SwiftFormatConfiguration",
-  ]
-  let impossibleTargets: Set<String> = [
-    // Workspace
+    // SwiftPM
+    "SwiftPM",
+    // SwiftSyntax
+    "SwiftSyntax",
+    // SwiftToolsSupport
+    "swift\u{2D}tools\u{2D}support\u{2D}core",
+
+    // #workaround(Temporary.)
+    "arbeitsbereich",
     "WSConfigurationExample",
     "WSContinuousIntegration",
     "WSCustomTask",
@@ -915,6 +894,7 @@ func adjustForWeb() {
     "WSTesting",
     "WSValidation",
     "WSXcode",
+    "workspace",
     "WorkspaceConfiguration",
     "WorkspaceLibrary",
     "WorkspaceLibraryTests",
@@ -925,21 +905,17 @@ func adjustForWeb() {
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      if impossibleTargets.contains(where: { impossible in
+      return impossibleDependencies.contains(where: { impossible in
         return "\(dependency)".contains(impossible)
-      }) {
-        return true
-      } else if impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      }) {
-        return true
-      } else {
-        return false
-      }
+      })
     })
   }
+  // #workaround(Temporary.)
+  package.products.removeAll(where: { product in
+    return impossibleDependencies.contains(product.name)
+  })
   package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
+    return impossibleDependencies.contains(target.name)
   })
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {

@@ -181,7 +181,6 @@ internal struct UnicodeRule: SyntaxRule {
       case .extended(let kind):
         switch kind {
         case .quotationMark,  // @exempt(from: tests) Probably unreachable.
-          .escape,
           .lineCommentDelimiter,
           .openingBlockCommentDelimiter,
           .closingBlockCommentDelimiter,

@@ -871,6 +871,7 @@ func adjustForWeb() {
     "swift\u{2D}tools\u{2D}support\u{2D}core",
 
     // #workaround(Temporary.)
+    "arbeitsbereich",
     "WSConfigurationExample",
     "WSContinuousIntegration",
     "WSCustomTask",
@@ -895,6 +896,7 @@ func adjustForWeb() {
     "WSTesting",
     "WSValidation",
     "WSXcode",
+    "workspace",
     "WorkspaceConfiguration",
     "WorkspaceLibrary",
     "WorkspaceLibraryTests",
@@ -911,6 +913,9 @@ func adjustForWeb() {
     })
   }
   // #workaround(Temporary.)
+  package.products.removeAll(where: { product in
+    return impossibleDependencies.contains(product.name)
+  })
   package.targets.removeAll(where: { target in
     return impossibleDependencies.contains(target.name)
   })

@@ -804,9 +804,9 @@ func adjustForWindows() {
   package.dependencies.append(contentsOf: [
     .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 5))),
     .package(
-      name: "CommonMark",
+      name: "cmark",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      .exact(Version(0, 0, 50100))
+      .exact(Version(0, 0, 50200))
     ),
   ])
 }

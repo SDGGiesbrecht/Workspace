@@ -863,6 +863,7 @@ func adjustForWeb() {
   // #warning(Swift 5.2.2, Cannot build for web.)
   let impossibleDependencies: Set<String> = [
     // SwiftFormat
+    "SwiftFormat\u{22}",
     "SwiftFormatConfiguration",
     // SwiftPM
     "SwiftPM",

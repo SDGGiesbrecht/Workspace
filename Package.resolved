@@ -23,9 +23,9 @@
         "package": "SDGSwift",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
-          "branch": null,
-          "revision": "57d52ac1c935bbdeb549560c2166c54c484dcbdd",
-          "version": "0.20.1"
+          "branch": "master",
+          "revision": "3f8aac52df366312d6ae2e607df6576c82cd543d",
+          "version": null
         }
       },
       {
@@ -47,12 +47,12 @@
         }
       },
       {
-        "package": "CommonMark",
+        "package": "cmark",
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
         "state": {
           "branch": null,
-          "revision": "e672f7226962eb17803c7cce153d9dc0f935a88e",
-          "version": "0.0.50100"
+          "revision": "bfa95d55b535fa178f75484b5e8f82ae3d8517af",
+          "version": "0.0.50200"
         }
       },
       {

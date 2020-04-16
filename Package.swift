@@ -256,7 +256,9 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .upToNextMinor(from: Version(0, 20, 1))
+      // #warning(Branch dependency.)
+      .branch("master")
+      //.upToNextMinor(from: Version(0, 20, 1))
     ),
     .package(
       name: "SwiftPM",
@@ -849,8 +851,6 @@ func adjustForWeb() {
     "swift\u{2D}package\u{2D}manager",
     //"swift\u{2D}syntax",
     "swift\u{2D}tools\u{2D}support\u{2D}core.git",
-
-    "SDGSwift", // #workaround(SDGSwift 0.20.1, Subdependency manifests cannot load.)
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {
@@ -862,10 +862,8 @@ func adjustForWeb() {
   })
   // #warning(Swift 5.2.2, Cannot build for web.)
   let impossibleDependencies: Set<String> = [
-    // SDGSwift
-    "SDGSwift",  // #workaround(SDGSwift 0.20.1, Subdependency manifests cannot load.)
     // SwiftFormat
-    //"SwiftFormatConfiguration",
+    "SwiftFormatConfiguration",
     // SwiftPM
     "SwiftPM",
     // SwiftToolsSupport

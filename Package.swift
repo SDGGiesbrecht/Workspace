@@ -869,6 +869,39 @@ func adjustForWeb() {
     "SwiftSyntax",
     // SwiftToolsSupport
     "swift\u{2D}tools\u{2D}support\u{2D}core",
+
+    // #workaround(Temporary.)
+    "WSConfigurationExample",
+    "WSContinuousIntegration",
+    "WSCustomTask",
+    "WSDocumentation",
+    "WSExamples",
+    "WSFileHeaders",
+    "WSGeneralImports",
+    "WSGeneralTestImports",
+    "WSGit",
+    "WSGitHub",
+    "WSInterface",
+    "WSLicence",
+    "WSLocalizations",
+    "WSNormalization",
+    "WSOpenSource",
+    "WSParsing",
+    "WSProject",
+    "WSProofreading",
+    "WSResources",
+    "WSScripts",
+    "WSSwift",
+    "WSTesting",
+    "WSValidation",
+    "WSXcode",
+    "WorkspaceConfiguration",
+    "WorkspaceLibrary",
+    "WorkspaceLibraryTests",
+    "WorkspaceProjectConfiguration",
+    "WorkspaceTool",
+    "test‐ios‐simulator",
+    "test‐tvos‐simulator",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -877,6 +910,10 @@ func adjustForWeb() {
       })
     })
   }
+  // #workaround(Temporary.)
+  package.targets.removeAll(where: { target in
+    return impossibleDependencies.contains(target.name)
+  })
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()

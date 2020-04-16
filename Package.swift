@@ -865,6 +865,8 @@ func adjustForWeb() {
     "SwiftFormatConfiguration",
     // SwiftPM
     "SwiftPM",
+    // SwiftSyntax
+    "SwiftSyntax",
     // SwiftToolsSupport
     "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]

@@ -73,23 +73,23 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.modulemap' \
           --output "${VCToolsInstallDir}/include/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/visualc.apinotes' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.apinotes' \
           --output "${VCToolsInstallDir}/include/visualc.apinotes"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
     - name: Install ICU
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2/icu.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/icu.msi' \
           --output '/tmp/icu.msi'
         cd /tmp
         msiexec //i icu.msi
@@ -100,17 +100,17 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2/toolchain.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/toolchain.msi' \
           --output '/tmp/toolchain.msi'
         cd /tmp
         msiexec //i toolchain.msi
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2/sdk.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk.msi' \
           --output '/tmp/sdk.msi'
         cd /tmp
         msiexec //i sdk.msi
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2/runtime.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/runtime.msi' \
           --output '/tmp/runtime.msi'
         cd /tmp
         msiexec //i runtime.msi
@@ -180,7 +180,7 @@ jobs:
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
   Linux:
     runs-on: ubuntu-18.04
-    container: swift:5.2-bionic
+    container: swift:5.2.1-bionic
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -381,7 +381,7 @@ jobs:
         script: .build/SDG/Emulator.sh
   Miscellaneous:
     runs-on: ubuntu-18.04
-    container: swift:5.2-bionic
+    container: swift:5.2.1-bionic
     steps:
     - name: Check out
       uses: actions/checkout@v1

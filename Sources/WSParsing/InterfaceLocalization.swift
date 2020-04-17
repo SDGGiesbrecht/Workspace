@@ -116,9 +116,13 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  public static let exampleDirective: DirectivePatternWithArguments = directivePatternWithArguments(
-    exampleDirectiveName
-  )
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public static let exampleDirective: DirectivePatternWithArguments =
+      directivePatternWithArguments(
+        exampleDirectiveName
+      )
+  #endif
 
   // MARK: - Documentation Inheritance
 

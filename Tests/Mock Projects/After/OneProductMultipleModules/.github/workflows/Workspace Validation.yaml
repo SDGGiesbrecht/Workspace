@@ -98,7 +98,7 @@ jobs:
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
   Linux:
     runs-on: ubuntu-18.04
-    container: swift:5.2-bionic
+    container: swift:5.2.1-bionic
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -366,7 +366,7 @@ jobs:
         fi
   Miscellaneous:
     runs-on: ubuntu-18.04
-    container: swift:5.2-bionic
+    container: swift:5.2.1-bionic
     steps:
     - name: Check out
       uses: actions/checkout@v1

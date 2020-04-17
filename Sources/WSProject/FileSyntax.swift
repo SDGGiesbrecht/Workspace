@@ -48,22 +48,22 @@ public struct FileSyntax {
 
   // MARK: - Output
 
-  private func comment(contents: String) -> String? {
-    if let blockSyntax = blockCommentSyntax {
-      return blockSyntax.comment(contents: contents)
-    } else if let lineSyntax = lineCommentSyntax {
-      return lineSyntax.comment(contents: contents)
-    } else {  // @exempt(from: tests) Not currently reachable.
-      return nil  // @exempt(from: tests)
-    }
-  }
-
-  private func generateHeader(contents: String) -> String? {
-    return comment(contents: contents)
-  }
-
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
+    private func comment(contents: String) -> String? {
+      if let blockSyntax = blockCommentSyntax {
+        return blockSyntax.comment(contents: contents)
+      } else if let lineSyntax = lineCommentSyntax {
+        return lineSyntax.comment(contents: contents)
+      } else {  // @exempt(from: tests) Not currently reachable.
+        return nil  // @exempt(from: tests)
+      }
+    }
+
+    private func generateHeader(contents: String) -> String? {
+      return comment(contents: contents)
+    }
+
     internal func insert(header: String, into file: inout TextFile) {
       if let generated = generateHeader(contents: header) {
 
@@ -95,50 +95,48 @@ public struct FileSyntax {
         file.contents = contents
       }
     }
-  #endif
 
-  // MARK: - Parsing
+    // MARK: - Parsing
 
-  public func rangeOfFirstComment(
-    in range: Range<String.ScalarView.Index>,
-    of file: TextFile
-  ) -> Range<String.ScalarView.Index>? {
-    let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?
-      .container.range
-    let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
+    public func rangeOfFirstComment(
+      in range: Range<String.ScalarView.Index>,
+      of file: TextFile
+    ) -> Range<String.ScalarView.Index>? {
+      let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?
+        .container.range
+      let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
-    if let block = possibleBlock {
-      if let line = possibleLine {
-        if block.lowerBound < line.lowerBound {
-          return block
+      if let block = possibleBlock {
+        if let line = possibleLine {
+          if block.lowerBound < line.lowerBound {
+            return block
+          } else {
+            return line
+          }
         } else {
-          return line
+          return block
         }
       } else {
+        if let line = possibleLine {
+          return line
+        } else {
+          return nil
+        }
+      }
+    }
+
+    public func contentsOfFirstComment(
+      in range: Range<String.ScalarView.Index>,
+      of file: TextFile
+    ) -> String? {
+      if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
         return block
-      }
-    } else {
-      if let line = possibleLine {
+      } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
         return line
-      } else {
-        return nil
       }
+      return nil  // @exempt(from: tests) Unreachable.
     }
-  }
 
-  public func contentsOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile)
-    -> String?
-  {
-    if let block = blockCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
-      return block
-    } else if let line = lineCommentSyntax?.contentsOfFirstComment(in: range, of: file.contents) {
-      return line
-    }
-    return nil  // @exempt(from: tests) Unreachable.
-  }
-
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
-  #if !os(WASI)
     private static func advance(
       _ index: inout String.ScalarView.Index,
       pastLayoutSpacingIn string: String
@@ -156,10 +154,7 @@ public struct FileSyntax {
         over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
       )
     }
-  #endif
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
-  #if !os(WASI)
     internal func headerStart(file: TextFile) -> String.ScalarView.Index {
 
       var index = file.contents.scalars.startIndex
@@ -176,59 +171,59 @@ public struct FileSyntax {
       }
       return index
     }
+
+    private func headerEndWithoutSpacing(file: TextFile) -> String.ScalarView.Index {
+
+      let start = file.headerStart
+
+      if let blockSyntax = blockCommentSyntax,
+        blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
+        let block = blockSyntax.firstComment(
+          in: start..<file.contents.scalars.endIndex,
+          of: file.contents
+        )?.container.range
+          .upperBound
+      {
+        return block
+      }
+
+      if let lineSyntax = lineCommentSyntax,
+        lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
+        let line = lineSyntax.rangeOfFirstComment(
+          in: start..<file.contents.endIndex,
+          of: file.contents
+        )?.upperBound
+      {
+        return line
+      }
+
+      return start
+    }
+
+    internal func headerEnd(file: TextFile) -> String.ScalarView.Index {
+      var result = headerEndWithoutSpacing(file: file)
+      FileSyntax.advance(&result, pastLayoutSpacingIn: file.contents)
+      return result
+    }
+
+    internal func header(file: TextFile) -> String {
+      let markup = String(file.contents[file.headerStart..<file.headerEnd])
+
+      if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
+        return markup
+      }
+
+      if let blockSyntax = blockCommentSyntax {
+        if let result = blockSyntax.contentsOfFirstComment(in: markup) {
+          return result
+        }
+      }
+      if let lineSyntax = lineCommentSyntax {
+        if let result = lineSyntax.contentsOfFirstComment(in: markup) {
+          return result
+        }
+      }
+      unreachable()
+    }
   #endif
-
-  private func headerEndWithoutSpacing(file: TextFile) -> String.ScalarView.Index {
-
-    let start = file.headerStart
-
-    if let blockSyntax = blockCommentSyntax,
-      blockSyntax.startOfNonDocumentationCommentExists(at: start, in: file.contents),
-      let block = blockSyntax.firstComment(
-        in: start..<file.contents.scalars.endIndex,
-        of: file.contents
-      )?.container.range
-        .upperBound
-    {
-      return block
-    }
-
-    if let lineSyntax = lineCommentSyntax,
-      lineSyntax.nonDocumentationCommentExists(at: start, in: file.contents),
-      let line = lineSyntax.rangeOfFirstComment(
-        in: start..<file.contents.endIndex,
-        of: file.contents
-      )?.upperBound
-    {
-      return line
-    }
-
-    return start
-  }
-
-  internal func headerEnd(file: TextFile) -> String.ScalarView.Index {
-    var result = headerEndWithoutSpacing(file: file)
-    FileSyntax.advance(&result, pastLayoutSpacingIn: file.contents)
-    return result
-  }
-
-  internal func header(file: TextFile) -> String {
-    let markup = String(file.contents[file.headerStart..<file.headerEnd])
-
-    if markup.lines.map({ String($0.line) }).filter({ ¬$0.isWhitespace }).isEmpty {
-      return markup
-    }
-
-    if let blockSyntax = blockCommentSyntax {
-      if let result = blockSyntax.contentsOfFirstComment(in: markup) {
-        return result
-      }
-    }
-    if let lineSyntax = lineCommentSyntax {
-      if let result = lineSyntax.contentsOfFirstComment(in: markup) {
-        return result
-      }
-    }
-    unreachable()
-  }
 }

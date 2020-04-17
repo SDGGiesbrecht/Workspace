@@ -390,50 +390,56 @@ public final class WorkspaceConfiguration: Configuration {
       licence.licence = .apache2_0
     }
 
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
-    )
-    documentation.relatedProjects.append(
-      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-    )
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
+      )
+      documentation.relatedProjects.append(
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+      )
+    #endif
   }
 
   public func _applySDGOverrides() {
     let project = WorkspaceContext.current.manifest.packageName
-    let repositoryURL =
-      documentation.repositoryURL?.absoluteString
-      ?? ""  // @exempt(from: tests)
-    let about = [
-      "The \(project) project is maintained by Jeremy David Giesbrecht.",
-      "",
-      "If \(project) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
-      "",
-      "If \(project) saves you time, consider devoting some of it to [contributing](\(repositoryURL)) back to the project.",
-      "",
-      "> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
-      ">",
-      "> [For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
-      ">",
-      "> ―‎ישוע/Yeshuʼa",
-    ].joinedAsLines()
-    for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
-      documentation.about[localization] = Markdown(about)
-    }
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      let repositoryURL =
+        documentation.repositoryURL?.absoluteString
+        ?? ""  // @exempt(from: tests)
+      let about = [
+        "The \(project) project is maintained by Jeremy David Giesbrecht.",
+        "",
+        "If \(project) saves you money, consider giving some of it as a [donation](https://paypal.me/JeremyGiesbrecht).",
+        "",
+        "If \(project) saves you time, consider devoting some of it to [contributing](\(repositoryURL)) back to the project.",
+        "",
+        "> [Ἄξιος γὰρ ὁ ἐργάτης τοῦ μισθοῦ αὐτοῦ ἐστι.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
+        ">",
+        "> [For the worker is worthy of his wages.](https://www.biblegateway.com/passage/?search=Luke+10&version=SBLGNT;NIV)",
+        ">",
+        "> ―‎ישוע/Yeshuʼa",
+      ].joinedAsLines()
+      for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
+        documentation.about[localization] = Markdown(about)
+      }
+    #endif
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
@@ -443,11 +449,20 @@ public final class WorkspaceConfiguration: Configuration {
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
     if openSource {
-      assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+      #endif
       if needsAPIDocumentation {
-        assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
+        #endif
       }
-      assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
+      #endif
 
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")

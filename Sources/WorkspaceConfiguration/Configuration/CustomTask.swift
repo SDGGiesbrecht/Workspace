@@ -27,59 +27,65 @@ public struct CustomTask: Decodable, Encodable {
 
   // MARK: - Initialization
 
-  // @localization(🇩🇪DE) @crossReference(CustomTask.init(url:version:executable:arguments:))
-  /// Erstellt eine Sonderaufgabe.
-  ///
-  /// - Parameters:
-  ///     - ressourcenzeiger: Der Ressourcenzeiger des Swift‐Pakets, das die Aufgabe bestimmt.
-  ///     - ausgabe: Die Version des Swift‐Pakets, das die Aufgabe bestimmt.
-  ///     - ausführbareDatei: Der Name der ausführbaren Datei.
-  ///     - argumente: Argumente für die ausführbare Datei.
-  public init(
-    ressourcenzeiger: EinheitlicherRessourcenzeiger,
-    version ausgabe: Version,
-    ausführbareDatei: StrengeZeichenkette,
-    argumente: [Zeichenkette] = []
-  ) {
-    self.init(
-      url: ressourcenzeiger,
-      version: ausgabe,
-      executable: ausführbareDatei,
-      arguments: argumente
-    )
-  }
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(CustomTask.init(url:version:executable:arguments:))
-  /// Creates a custom task.
-  ///
-  /// - Parameters:
-  ///     - url: The URL of the Swift package defining the task.
-  ///     - release: The version of the Swift package defining the task.
-  ///     - executable: The name of the executable for the task.
-  ///     - arguments: Any arguments for the executable.
-  public init(
-    url: URL,
-    version release: Version,
-    executable: StrictString,
-    arguments: [String] = []
-  ) {
-    self.url = url
-    self.version = release
-    self.executable = executable
-    self.arguments = arguments
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇩🇪DE) @crossReference(CustomTask.init(url:version:executable:arguments:))
+    /// Erstellt eine Sonderaufgabe.
+    ///
+    /// - Parameters:
+    ///     - ressourcenzeiger: Der Ressourcenzeiger des Swift‐Pakets, das die Aufgabe bestimmt.
+    ///     - ausgabe: Die Version des Swift‐Pakets, das die Aufgabe bestimmt.
+    ///     - ausführbareDatei: Der Name der ausführbaren Datei.
+    ///     - argumente: Argumente für die ausführbare Datei.
+    public init(
+      ressourcenzeiger: EinheitlicherRessourcenzeiger,
+      version ausgabe: Version,
+      ausführbareDatei: StrengeZeichenkette,
+      argumente: [Zeichenkette] = []
+    ) {
+      self.init(
+        url: ressourcenzeiger,
+        version: ausgabe,
+        executable: ausführbareDatei,
+        arguments: argumente
+      )
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(CustomTask.init(url:version:executable:arguments:))
+    /// Creates a custom task.
+    ///
+    /// - Parameters:
+    ///     - url: The URL of the Swift package defining the task.
+    ///     - release: The version of the Swift package defining the task.
+    ///     - executable: The name of the executable for the task.
+    ///     - arguments: Any arguments for the executable.
+    public init(
+      url: URL,
+      version release: Version,
+      executable: StrictString,
+      arguments: [String] = []
+    ) {
+      self.url = url
+      self.version = release
+      self.executable = executable
+      self.arguments = arguments
+    }
+  #endif
 
   // MARK: - Properties
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(CustomTask.url)
-  /// The URL of the Swift package defining the task.
-  public var url: URL
-  // @localization(🇩🇪DE) @crossReference(CustomTask.url)
-  /// Der Ressourcenzeiger des Swift‐Pakets, das die Aufgabe bestimmt.
-  public var ressourcenzeiger: EinheitlicherRessourcenzeiger {
-    get { return url }
-    set { url = newValue }
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(CustomTask.url)
+    /// The URL of the Swift package defining the task.
+    public var url: URL
+    // @localization(🇩🇪DE) @crossReference(CustomTask.url)
+    /// Der Ressourcenzeiger des Swift‐Pakets, das die Aufgabe bestimmt.
+    public var ressourcenzeiger: EinheitlicherRessourcenzeiger {
+      get { return url }
+      set { url = newValue }
+    }
+  #endif
 
   // @localization(🇩🇪DE)
   // Die Version des Swift‐Pakets, das die Aufgabe bestimmt.

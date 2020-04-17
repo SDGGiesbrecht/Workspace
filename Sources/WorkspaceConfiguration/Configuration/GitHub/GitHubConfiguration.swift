@@ -124,15 +124,20 @@ public struct GitHubConfiguration: Codable {
           with: WorkspaceContext.current.manifest.packageName.scalars
         )
 
-        if let url = configuration.documentation.repositoryURL {
-          template.replaceMatches(
-            for: "#cloneScript".scalars,
-            with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
-              .scalars
-          )
-        } else {
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if os(WASI)
           template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
-        }
+        #else
+          if let url = configuration.documentation.repositoryURL {
+            template.replaceMatches(
+              for: "#cloneScript".scalars,
+              with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
+                .scalars
+            )
+          } else {
+            template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
+          }
+        #endif
 
         let administrators = configuration.gitHub.administrators
         var administratorList: StrictString

@@ -188,38 +188,41 @@ public struct DocumentationConfiguration: Codable {
     set { currentVersion = newValue }
   }
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(DocumentationConfiguration.projectWebsite)
-  /// The URL of the project website.
-  public var projectWebsite: URL?
-  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.projectWebsite)
-  /// Der einheitliche Ressourcenzeiger der Internetseite des Projekts.
-  public var projektSeite: EinheitlicherRessourcenzeiger? {
-    get { return projectWebsite }
-    set { projectWebsite = newValue }
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.projectWebsite)
+    /// The URL of the project website.
+    public var projectWebsite: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.projectWebsite)
+    /// Der einheitliche Ressourcenzeiger der Internetseite des Projekts.
+    public var projektSeite: EinheitlicherRessourcenzeiger? {
+      get { return projectWebsite }
+      set { projectWebsite = newValue }
+    }
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(DocumentationConfiguration.documentationURL)
-  /// The root URL where Workspace‐generated API documentation is hosted.
-  public var documentationURL: URL?
-  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.documentationURL)
-  /// Der einheitliche Ressourcenzeiger der Wurzel der Seite wo die erstellte Dokumentation veröffentlicht wird.
-  public var dokumentationsRessourcenzeiger: EinheitlicherRessourcenzeiger? {
-    get { return documentationURL }
-    set { documentationURL = newValue }
-  }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.documentationURL)
+    /// The root URL where Workspace‐generated API documentation is hosted.
+    public var documentationURL: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.documentationURL)
+    /// Der einheitliche Ressourcenzeiger der Wurzel der Seite wo die erstellte Dokumentation veröffentlicht wird.
+    public var dokumentationsRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+      get { return documentationURL }
+      set { documentationURL = newValue }
+    }
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(DocumentationConfiguration.repositoryURL)
-  /// The URL of the project repository.
-  public var repositoryURL: URL?
-  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.repositoryURL)
-  /// Der einheitliche Ressourcenzeiger des Projektlagers.
-  public var lagerRessourcenzeiger: EinheitlicherRessourcenzeiger? {
-    get { return repositoryURL }
-    set { repositoryURL = newValue }
-  }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.repositoryURL)
+    /// The URL of the project repository.
+    public var repositoryURL: URL?
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.repositoryURL)
+    /// Der einheitliche Ressourcenzeiger des Projektlagers.
+    public var lagerRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+      get { return repositoryURL }
+      set { repositoryURL = newValue }
+    }
+  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.primaryAuthor)
@@ -249,23 +252,28 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    guard let packageURL = configuration.documentation.repositoryURL,
-      let version = configuration.documentation.currentVersion
-    else {
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
       return [:]
-    }
-
-    var result: [LocalizationIdentifier: StrictString] = [:]
-    for localization in configuration.documentation.localizations {
-      if let provided = localization._reasonableMatch {
-        result[localization] = localizedToolInstallationInstructions(
-          packageURL: packageURL,
-          version: version,
-          localization: provided
-        )
+    #else
+      guard let packageURL = configuration.documentation.repositoryURL,
+        let version = configuration.documentation.currentVersion
+      else {
+        return [:]
       }
-    }
-    return result
+
+      var result: [LocalizationIdentifier: StrictString] = [:]
+      for localization in configuration.documentation.localizations {
+        if let provided = localization._reasonableMatch {
+          result[localization] = localizedToolInstallationInstructions(
+            packageURL: packageURL,
+            version: version,
+            localization: provided
+          )
+        }
+      }
+      return result
+    #endif
   })
 
   // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.importingInstructions)
@@ -285,23 +293,28 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    guard let packageURL = configuration.documentation.repositoryURL,
-      let version = configuration.documentation.currentVersion
-    else {
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
       return [:]
-    }
-
-    var result: [LocalizationIdentifier: StrictString] = [:]
-    for localization in configuration.documentation.localizations {
-      if let provided = localization._reasonableMatch {
-        result[localization] = localizedLibraryImportingInstructions(
-          packageURL: packageURL,
-          version: version,
-          localization: provided
-        )
+    #else
+      guard let packageURL = configuration.documentation.repositoryURL,
+        let version = configuration.documentation.currentVersion
+      else {
+        return [:]
       }
-    }
-    return result
+
+      var result: [LocalizationIdentifier: StrictString] = [:]
+      for localization in configuration.documentation.localizations {
+        if let provided = localization._reasonableMatch {
+          result[localization] = localizedLibraryImportingInstructions(
+            packageURL: packageURL,
+            version: version,
+            localization: provided
+          )
+        }
+      }
+      return result
+    #endif
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -350,239 +363,243 @@ public struct DocumentationConfiguration: Codable {
 
   // MARK: - Installation Instructions
 
-  private static func localizedToolInstallationInstructions(
-    packageURL: URL,
-    version: Version,
-    localization: ContentLocalization
-  ) -> StrictString? {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static func localizedToolInstallationInstructions(
+      packageURL: URL,
+      version: Version,
+      localization: ContentLocalization
+    ) -> StrictString? {
 
-    let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
+      let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
 
-    guard ¬tools.isEmpty else {
-      return nil
-    }
+      guard ¬tools.isEmpty else {
+        return nil
+      }
 
-    let projectName = WorkspaceContext.current.manifest.packageName
-    let toolNames = tools.map { $0.name }
+      let projectName = WorkspaceContext.current.manifest.packageName
+      let toolNames = tools.map { $0.name }
 
-    return [
-      UserFacing<StrictString, ContentLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString = "\(projectName) provides "
-          if tools.count == 1 {
-            result += "a command line tool"
-          } else {
-            result += "command line tools"
+      return [
+        UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            var result: StrictString = "\(projectName) provides "
+            if tools.count == 1 {
+              result += "a command line tool"
+            } else {
+              result += "command line tools"
+            }
+            result += "."
+            return result
+          case .deutschDeutschland:
+            var result: StrictString = "\(projectName) stellt "
+            if tools.count == 1 {
+              result += "ein Befehlszeilenprogramm"
+            } else {
+              result += "Befehlszeilenprogramme"
+            }
+            result += " bereit."
+            return result
           }
-          result += "."
-          return result
-        case .deutschDeutschland:
-          var result: StrictString = "\(projectName) stellt "
-          if tools.count == 1 {
-            result += "ein Befehlszeilenprogramm"
-          } else {
-            result += "Befehlszeilenprogramme"
-          }
-          result += " bereit."
-          return result
-        }
-      }).resolved(for: localization),
-      "",
-      UserFacing<StrictString, ContentLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString = ""
-          if tools.count == 1 {
-            result += "It"
-          } else {
-            result += "They"
-          }
-          result +=
-            " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
-          if tools.count == 1 {
-            result += "it"
-          } else {
-            result += "them"
-          }
-          result += ":"
-          return result
-        case .deutschDeutschland:
-          var result: StrictString = ""
-          if tools.count == 1 {
-            result += "Es kann"
-          } else {
-            result += "Sie können"
-          }
-          result +=
-            " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
-          if tools.count == 1 {
-            result += "wird es"
-          } else {
-            result += "werden sie"
-          }
-          result += " entweder installiert oder aktualisiert:"
-          return result
-        }
-      }).resolved(for: localization),
-      "",
-      "```shell",
-      "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
-      "```",
-    ].joinedAsLines()
-  }
-
-  private static func localizedLibraryImportingInstructions(
-    packageURL: URL,
-    version: Version,
-    localization: ContentLocalization
-  ) -> StrictString? {
-
-    let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }
-
-    guard ¬libraries.isEmpty else {
-      return nil
-    }
-
-    let projectName = WorkspaceContext.current.manifest.packageName
-
-    var versionSpecification: StrictString
-    if version.major == 0 {
-      versionSpecification =
-        ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
-    } else {
-      versionSpecification =
-        "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
-    }
-
-    var result = [
-      UserFacing<StrictString, ContentLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString = "\(projectName) provides "
-          if libraries.count == 1 {
-            result += "a library"
-          } else {
-            result += "libraries"
-          }
-          result +=
-            " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
-          return result
-        case .deutschDeutschland:
-          var result: StrictString = "\(projectName) stellt "
-          if libraries.count == 1 {
-            result += "eine Bibliotek"
-          } else {
-            result += "Biblioteken"
-          }
-          result +=
-            " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
-          return result
-        }
-      }).resolved(for: localization),
-      "",
-      UserFacing<StrictString, ContentLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString = "Simply add \(projectName) as a dependency in `Package.swift`"
-          if libraries.count == 1 {
+        }).resolved(for: localization),
+        "",
+        UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            var result: StrictString = ""
+            if tools.count == 1 {
+              result += "It"
+            } else {
+              result += "They"
+            }
+            result +=
+              " can be installed any way Swift packages can be installed. The most direct method is pasting the following into a terminal, which will either install or update "
+            if tools.count == 1 {
+              result += "it"
+            } else {
+              result += "them"
+            }
             result += ":"
-          } else {
-            result += " and specify which of the libraries to use:"
-          }
-          return result
-        case .deutschDeutschland:
-          var result: StrictString =
-            "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
-          if libraries.count == 1 {
-            result += ":"
-          } else {
-            result += " und die gewünschte Biblioteken angeben:"
-          }
-          return result
-        }
-      }).resolved(for: localization),
-      "",
-      "```swift",
-      ("let "
-        + UserFacing<StrictString, ContentLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "package"
+            return result
           case .deutschDeutschland:
-            return "paket"
+            var result: StrictString = ""
+            if tools.count == 1 {
+              result += "Es kann"
+            } else {
+              result += "Sie können"
+            }
+            result +=
+              " installiert werden nach allen Methoden, die Swift‐Pakete unterstützen. Die direkteste ist, folgendes im Terminal einzugeben. Somit "
+            if tools.count == 1 {
+              result += "wird es"
+            } else {
+              result += "werden sie"
+            }
+            result += " entweder installiert oder aktualisiert:"
+            return result
           }
-        }).resolved(for: localization) + " = Package(") as StrictString,
-      ("    name: \u{22}"
-        + UserFacing<StrictString, ContentLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "MyPackage"
-          case .deutschDeutschland:
-            return "MeinePaket"
-          }
-        }).resolved(for: localization) + "\u{22},") as StrictString,
-      "    dependencies: [",
-      "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
-      "    ],",
-      "    targets: [",
-      ("        .target(name: \u{22}"
-        + UserFacing<StrictString, ContentLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "MyTarget"
-          case .deutschDeutschland:
-            return "MeinZiel"
-          }
-        }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString,
-    ]
+        }).resolved(for: localization),
+        "",
+        "```shell",
+        "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
+        "```",
+      ].joinedAsLines()
+    }
 
-    for library in libraries {
-      result += [
-        "            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+    private static func localizedLibraryImportingInstructions(
+      packageURL: URL,
+      version: Version,
+      localization: ContentLocalization
+    ) -> StrictString? {
+
+      let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }
+
+      guard ¬libraries.isEmpty else {
+        return nil
+      }
+
+      let projectName = WorkspaceContext.current.manifest.packageName
+
+      var versionSpecification: StrictString
+      if version.major == 0 {
+        versionSpecification =
+          ".upToNextMinor(from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits())))"
+      } else {
+        versionSpecification =
+          "from: Version(\(version.major.inDigits()), \(version.minor.inDigits()), \(version.patch.inDigits()))"
+      }
+
+      var result = [
+        UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            var result: StrictString = "\(projectName) provides "
+            if libraries.count == 1 {
+              result += "a library"
+            } else {
+              result += "libraries"
+            }
+            result +=
+              " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
+            return result
+          case .deutschDeutschland:
+            var result: StrictString = "\(projectName) stellt "
+            if libraries.count == 1 {
+              result += "eine Bibliotek"
+            } else {
+              result += "Biblioteken"
+            }
+            result +=
+              " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
+            return result
+          }
+        }).resolved(for: localization),
+        "",
+        UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            var result: StrictString =
+              "Simply add \(projectName) as a dependency in `Package.swift`"
+            if libraries.count == 1 {
+              result += ":"
+            } else {
+              result += " and specify which of the libraries to use:"
+            }
+            return result
+          case .deutschDeutschland:
+            var result: StrictString =
+              "\(projectName) einfach als Abhängigkeit (*dependency*) in `Package.swift` hinzufügen"
+            if libraries.count == 1 {
+              result += ":"
+            } else {
+              result += " und die gewünschte Biblioteken angeben:"
+            }
+            return result
+          }
+        }).resolved(for: localization),
+        "",
+        "```swift",
+        ("let "
+          + UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "package"
+            case .deutschDeutschland:
+              return "paket"
+            }
+          }).resolved(for: localization) + " = Package(") as StrictString,
+        ("    name: \u{22}"
+          + UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "MyPackage"
+            case .deutschDeutschland:
+              return "MeinePaket"
+            }
+          }).resolved(for: localization) + "\u{22},") as StrictString,
+        "    dependencies: [",
+        "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
+        "    ],",
+        "    targets: [",
+        ("        .target(name: \u{22}"
+          + UserFacing<StrictString, ContentLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "MyTarget"
+            case .deutschDeutschland:
+              return "MeinZiel"
+            }
+          }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString,
       ]
-    }
 
-    result += [
-      "        ])",
-      "    ]",
-      ")",
-      "```",
-      "",
-      UserFacing<StrictString, ContentLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          var result: StrictString = "The "
-          if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
-            result += "module"
-          } else {
-            result += "modules"
+      for library in libraries {
+        result += [
+          "            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+        ]
+      }
+
+      result += [
+        "        ])",
+        "    ]",
+        ")",
+        "```",
+        "",
+        UserFacing<StrictString, ContentLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            var result: StrictString = "The "
+            if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
+              result += "module"
+            } else {
+              result += "modules"
+            }
+            result += " can then be imported in source files:"
+            return result
+          case .deutschDeutschland:
+            var result: StrictString = ""
+            if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
+              result += "Das Modul"
+            } else {
+              result += "Die Module"
+            }
+            result += " können dann in Quelldateien eingeführt (*imported*) werden:"
+            return result
           }
-          result += " can then be imported in source files:"
-          return result
-        case .deutschDeutschland:
-          var result: StrictString = ""
-          if libraries.count == 1 ∧ libraries.first!.modules.count == 1 {
-            result += "Das Modul"
-          } else {
-            result += "Die Module"
-          }
-          result += " können dann in Quelldateien eingeführt (*imported*) werden:"
-          return result
-        }
-      }).resolved(for: localization),
-      "",
-      "```swift",
-    ]
+        }).resolved(for: localization),
+        "",
+        "```swift",
+      ]
 
-    for module in WorkspaceContext.current.manifest.productModules {
-      result += ["import \(module)"]
+      for module in WorkspaceContext.current.manifest.productModules {
+        result += ["import \(module)"]
+      }
+
+      result += [
+        "```"
+      ]
+
+      return result.joinedAsLines()
     }
-
-    result += [
-      "```"
-    ]
-
-    return result.joinedAsLines()
-  }
+  #endif
 }

@@ -43,19 +43,19 @@ public struct ReportSection {
     return UserFacing({ localization in
       switch localization {
       case .englishUnitedKingdom:
-        #if os(macOS)
+        #if os(macOS) || os(WASI)
           return " (See ⌘F ‘" + identifier + "’)"
         #elseif os(Windows) || os(Linux) || os(Android)
           return " (See Ctrl + F ‘" + identifier + "’)"
         #endif
       case .englishUnitedStates, .englishCanada:
-        #if os(macOS)
+        #if os(macOS) || os(WASI)
           return " (See ⌘F “" + identifier + "”)"
         #elseif os(Windows) || os(Linux) || os(Android)
           return " (See Ctrl + F “" + identifier + "”)"
         #endif
       case .deutschDeutschland:
-        #if os(macOS)
+        #if os(macOS) || os(WASI)
           return " (Siehe ⌘F „" + identifier + "“)"
         #elseif os(Windows) || os(Linux) || os(Android)
           return " (Siehe Strg + F „" + identifier + "“)"

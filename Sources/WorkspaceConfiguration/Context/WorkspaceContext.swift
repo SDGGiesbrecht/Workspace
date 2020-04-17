@@ -25,23 +25,26 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Static Properties
 
-  // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
-  /// Der Zusammenhang des aktuellen Projekts.
-  public static var aktueller: Arbeitsbereichszusammenhang {
-    get { return current }
-    set { current = newValue }
-  }
-  private static var _current: WorkspaceContext?
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.current)
-  /// The context of the current project.
-  public static var current: WorkspaceContext {
-    get {
-      return _current ?? accept()!  // @exempt(from: tests)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
+    /// Der Zusammenhang des aktuellen Projekts.
+    public static var aktueller: Arbeitsbereichszusammenhang {
+      get { return current }
+      set { current = newValue }
     }
-    set {
-      _current = newValue
+    private static var _current: WorkspaceContext?
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.current)
+    /// The context of the current project.
+    public static var current: WorkspaceContext {
+      get {
+        return _current ?? accept()!  // @exempt(from: tests)
+      }
+      set {
+        _current = newValue
+      }
     }
-  }
+  #endif
 
   // MARK: - Initialization
 

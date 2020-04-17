@@ -48,19 +48,22 @@ public struct ProofreadingConfiguration: Codable {
     set { rules = newValue }
   }
 
-  // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
-  /// Die SwiftFormat‐Konfiguration.
-  ///
-  /// Wenn `nil`, werden keine SwiftFormat‐Aufgaben ausgeführt.
-  public var swiftFormatKonfiguration: SwiftFormatKonfiguration? {
-    get { return swiftFormatConfiguration }
-    set { swiftFormatConfiguration = newValue }
-  }
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(swiftFormatConfiguration)
-  /// The SwiftFormat configuration.
-  ///
-  /// When `nil`, no SwiftFormat tasks will be carried out.
-  public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration? = .default
+  // #workaround(swift-format 0.50200.0, Cannot build.)
+  #if !os(WASI)
+    // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
+    /// Die SwiftFormat‐Konfiguration.
+    ///
+    /// Wenn `nil`, werden keine SwiftFormat‐Aufgaben ausgeführt.
+    public var swiftFormatKonfiguration: SwiftFormatKonfiguration? {
+      get { return swiftFormatConfiguration }
+      set { swiftFormatConfiguration = newValue }
+    }
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(swiftFormatConfiguration)
+    /// The SwiftFormat configuration.
+    ///
+    /// When `nil`, no SwiftFormat tasks will be carried out.
+    public var swiftFormatConfiguration: SwiftFormatConfiguration.Configuration? = .default
+  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(unicodeRuleScope)
   /// The scope in which to apply the `unicode` rule.

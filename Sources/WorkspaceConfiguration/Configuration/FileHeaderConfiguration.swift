@@ -241,9 +241,12 @@ public struct FileHeaderConfiguration: Codable {
         }
       })
     )
-    if let site = configuration.documentation.projectWebsite {
-      header.append(StrictString(site.absoluteString))
-    }
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      if let site = configuration.documentation.projectWebsite {
+        header.append(StrictString(site.absoluteString))
+      }
+    #endif
 
     header.append("")
 

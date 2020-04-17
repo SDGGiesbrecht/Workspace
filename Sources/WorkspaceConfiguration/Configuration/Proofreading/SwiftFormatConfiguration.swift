@@ -14,43 +14,46 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// @localization(🇩🇪DE) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
-/// Eine SwiftFormat‐Konfiguration.
-public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configuration
+// #workaround(swift-format 0.50200.0, Cannot build.)
+#if !os(WASI)
+  // @localization(🇩🇪DE) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
+  /// Eine SwiftFormat‐Konfiguration.
+  public typealias SwiftFormatKonfiguration = SwiftFormatConfiguration.Configuration
 
-extension SwiftFormatConfiguration.Configuration {
+  extension SwiftFormatConfiguration.Configuration {
 
-  internal static var `default`: SwiftFormatConfiguration.Configuration {
-    var configuration = SwiftFormatConfiguration.Configuration()
+    internal static var `default`: SwiftFormatConfiguration.Configuration {
+      var configuration = SwiftFormatConfiguration.Configuration()
 
-    // Illogical style choices.
-    configuration.rules["IdentifiersMustBeASCII"] = false
-    configuration.rules["MultiLineTrailingCommas"] = false
-    configuration.rules["NoBlockComments"] = false
+      // Illogical style choices.
+      configuration.rules["IdentifiersMustBeASCII"] = false
+      configuration.rules["MultiLineTrailingCommas"] = false
+      configuration.rules["NoBlockComments"] = false
 
-    // Generally good advice, but rules are noisy due to many valid exceptions.
-    configuration.rules["AmbiguousTrailingClosureOverload"] = false
-    configuration.rules["DontRepeatTypeInStaticProperties"] = false
-    configuration.rules["NeverUseForceTry"] = false
-    configuration.rules["NeverForceUnwrap"] = false
-    configuration.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
-    configuration.rules["NoLeadingUnderscores"] = false
-    configuration.rules["OrderedImports"] = false
-    configuration.rules["UseSynthesizedInitializer"] = false
+      // Generally good advice, but rules are noisy due to many valid exceptions.
+      configuration.rules["AmbiguousTrailingClosureOverload"] = false
+      configuration.rules["DontRepeatTypeInStaticProperties"] = false
+      configuration.rules["NeverUseForceTry"] = false
+      configuration.rules["NeverForceUnwrap"] = false
+      configuration.rules["NeverUseImplicitlyUnwrappedOptionals"] = false
+      configuration.rules["NoLeadingUnderscores"] = false
+      configuration.rules["OrderedImports"] = false
+      configuration.rules["UseSynthesizedInitializer"] = false
 
-    // Handled better during documentation coverage check.
-    configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
+      // Handled better during documentation coverage check.
+      configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
-    // Bugs currently result in false positives.
-    // #workaround(Swift 5.1.3, Can these be restored?)
-    configuration.rules["AlwaysUseLowerCamelCase"] = false
-    configuration.rules["UseLetInEveryBoundCaseVariable"] = false
-    configuration.rules["ValidateDocumentationComments"] = false
+      // Bugs currently result in false positives.
+      // #workaround(Swift 5.1.3, Can these be restored?)
+      configuration.rules["AlwaysUseLowerCamelCase"] = false
+      configuration.rules["UseLetInEveryBoundCaseVariable"] = false
+      configuration.rules["ValidateDocumentationComments"] = false
 
-    configuration.lineBreakBeforeEachArgument = true
-    configuration.lineBreakBeforeEachGenericRequirement = true
-    // #workaround(Swift 5.2.1, Leads to crash.)
-    // configuration.prioritizeKeepingFunctionOutputTogether = true
-    return configuration
+      configuration.lineBreakBeforeEachArgument = true
+      configuration.lineBreakBeforeEachGenericRequirement = true
+      // #workaround(Swift 5.2.1, Leads to crash.)
+      // configuration.prioritizeKeepingFunctionOutputTogether = true
+      return configuration
+    }
   }
-}
+#endif

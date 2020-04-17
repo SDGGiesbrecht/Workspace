@@ -328,16 +328,19 @@ public struct DocumentationConfiguration: Codable {
     set { about = newValue }
   }
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(DocumentationConfiguration.relatedProjects)
-  /// A list of related projects.
-  public var relatedProjects: [RelatedProjectEntry] = []
-  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
-  /// Eine Liste verwandter Projekte.
-  public var verwandteProjekte: [EintragZuVerwantdenProjekten] {
-    get { return relatedProjects }
-    set { relatedProjects = newValue }
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(DocumentationConfiguration.relatedProjects)
+    /// A list of related projects.
+    public var relatedProjects: [RelatedProjectEntry] = []
+    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
+    /// Eine Liste verwandter Projekte.
+    public var verwandteProjekte: [EintragZuVerwantdenProjekten] {
+      get { return relatedProjects }
+      set { relatedProjects = newValue }
+    }
+  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.readMe)

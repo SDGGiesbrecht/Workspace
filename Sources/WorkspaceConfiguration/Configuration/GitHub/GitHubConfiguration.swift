@@ -65,23 +65,28 @@ public struct GitHubConfiguration: Codable {
     set { developmentNotes = newValue }
   }
 
-  private static func contributingTemplate(for localization: LocalizationIdentifier)
-    -> StrictString?
-  {
+  private static func contributingTemplate(
+    for localization: LocalizationIdentifier
+  ) -> StrictString? {
     guard let match = localization._reasonableMatch else {
       return nil
     }
-    switch match {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return StrictString(Resources.contributingTemplate)
-    case .deutschDeutschland:
-      return StrictString(Resources.mitwirkenVorlage)
-    }
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
+      return nil
+    #else
+      switch match {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return StrictString(Resources.contributingTemplate)
+      case .deutschDeutschland:
+        return StrictString(Resources.mitwirkenVorlage)
+      }
+    #endif
   }
 
-  private static func developmentNotesHeading(for localization: LocalizationIdentifier)
-    -> StrictString
-  {
+  private static func developmentNotesHeading(
+    for localization: LocalizationIdentifier
+  ) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "Development Notes"
@@ -225,22 +230,25 @@ public struct GitHubConfiguration: Codable {
     return result
   })
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(GitHubConfiguration.pullRequestTemplate)
-  /// The pull request template.
-  ///
-  /// This defaults to a generic template.
-  ///
-  /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
-  public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
-  // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
-  /// Eine Abziehungsanforderungsvorlage.
-  ///
-  /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
-  ///
-  /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
-  public var abziehungsanforderungsvorlage: Markdown {
-    get { return pullRequestTemplate }
-    set { pullRequestTemplate = newValue }
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+    // @crossReference(GitHubConfiguration.pullRequestTemplate)
+    /// The pull request template.
+    ///
+    /// This defaults to a generic template.
+    ///
+    /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
+    public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
+    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
+    /// Eine Abziehungsanforderungsvorlage.
+    ///
+    /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
+    ///
+    /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
+    public var abziehungsanforderungsvorlage: Markdown {
+      get { return pullRequestTemplate }
+      set { pullRequestTemplate = newValue }
+    }
+  #endif
 }

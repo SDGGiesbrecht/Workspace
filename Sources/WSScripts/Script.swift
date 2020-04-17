@@ -68,7 +68,7 @@ public enum Script: Int, CaseIterable {
   }()
 
   internal var isRelevantOnCurrentDevice: Bool {
-    #if os(Windows) || os(Android)
+    #if os(Windows) || os(WASI) || os(Android)
       // #workaround(Swift 5.1.4, Until Workspace works on these platforms.)
       return false
     #else

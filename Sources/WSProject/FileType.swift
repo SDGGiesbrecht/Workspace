@@ -25,12 +25,9 @@ public enum FileType {
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-  #endif
-  public static func resetUnsupportedFileTypes() {
-    unsupportedFileTypesEncountered = [:]
-  }
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
-  #if !os(WASI)
+    public static func resetUnsupportedFileTypes() {
+      unsupportedFileTypesEncountered = [:]
+    }
     public static func unsupportedTypesWarning(
       for project: PackageRepository,
       output: Command.Output

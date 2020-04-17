@@ -31,31 +31,31 @@ public struct LineCommentSyntax {
 
   // MARK: - Output
 
-  public func comment(contents: String, indent: String = "") -> String {
-
-    var first = true
-    var result: [String] = []
-    for line in contents.lines.map({ String($0.line) }) {
-      var modified = start
-      if ¬line.isWhitespace {
-        modified += " " + line
-      }
-
-      if first {
-        first = false
-        result.append(modified)
-      } else {
-        result.append(indent + modified)
-      }
-    }
-
-    return result.joinedAsLines()
-  }
-
-  // MARK: - Parsing
-
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
+    public func comment(contents: String, indent: String = "") -> String {
+
+      var first = true
+      var result: [String] = []
+      for line in contents.lines.map({ String($0.line) }) {
+        var modified = start
+        if ¬line.isWhitespace {
+          modified += " " + line
+        }
+
+        if first {
+          first = false
+          result.append(modified)
+        } else {
+          result.append(indent + modified)
+        }
+      }
+
+      return result.joinedAsLines()
+    }
+
+    // MARK: - Parsing
+
     internal func nonDocumentationCommentExists(
       at location: String.ScalarView.Index,
       in string: String

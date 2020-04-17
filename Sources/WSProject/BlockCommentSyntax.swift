@@ -33,30 +33,30 @@ internal struct BlockCommentSyntax {
 
   // MARK: - Output
 
-  internal func comment(contents: String) -> String {
-
-    let withEndToken = [contents, end].joinedAsLines()
-
-    var lines = withEndToken.lines.map({ String($0.line) })
-
-    lines = lines.map { (line: String) -> String in
-
-      if line.isWhitespace {
-        return line
-      } else {
-        return " " + line
-      }
-    }
-
-    lines = [start, lines.joinedAsLines()]
-
-    return lines.joinedAsLines()
-  }
-
-  // MARK: - Parsing
-
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
+    internal func comment(contents: String) -> String {
+
+      let withEndToken = [contents, end].joinedAsLines()
+
+      var lines = withEndToken.lines.map({ String($0.line) })
+
+      lines = lines.map { (line: String) -> String in
+
+        if line.isWhitespace {
+          return line
+        } else {
+          return " " + line
+        }
+      }
+
+      lines = [start, lines.joinedAsLines()]
+
+      return lines.joinedAsLines()
+    }
+
+    // MARK: - Parsing
+
     internal func startOfNonDocumentationCommentExists(
       at location: String.ScalarView.Index,
       in string: String
@@ -135,12 +135,12 @@ internal struct BlockCommentSyntax {
 
       return strings.joinedAsLines()
     }
-  #endif
 
-  internal func contentsOfFirstComment(in string: String) -> String? {
-    return contentsOfFirstComment(
-      in: string.scalars.startIndex..<string.scalars.endIndex,
-      of: string
-    )
-  }
+    internal func contentsOfFirstComment(in string: String) -> String? {
+      return contentsOfFirstComment(
+        in: string.scalars.startIndex..<string.scalars.endIndex,
+        of: string
+      )
+    }
+  #endif
 }

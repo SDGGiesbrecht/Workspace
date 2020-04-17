@@ -139,55 +139,55 @@ public struct TextFile {
 
   // MARK: - File Headers
 
-  public var headerStart: String.ScalarView.Index {
-    return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
-      return fileType.syntax.headerStart(file: self)
-    }
-  }
-
-  internal var headerEnd: String.ScalarView.Index {
-    return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
-      return fileType.syntax.headerEnd(file: self)
-    }
-  }
-
-  public var header: String {
-    get {
-      return fileType.syntax.header(file: self)
-    }
-    set {
-      fileType.syntax.insert(header: newValue, into: &self)
-    }
-  }
-
-  public var body: String {
-    get {
-      return String(contents[headerEnd...])
-    }
-    set {
-      var new = newValue
-      // Remove unnecessary initial spacing
-      while new.hasPrefix("\n") {
-        new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
-      }
-
-      let headerSource = String(contents[headerStart..<headerEnd])
-      if ¬headerSource.hasSuffix("\n") {
-        new = "\n" + new
-      }
-      if ¬headerSource.hasSuffix("\n\n") {
-        new = "\n" + new
-      }
-
-      contents.replaceSubrange(headerEnd..<contents.endIndex, with: new)
-    }
-
-  }
-
-  // MARK: - Writing
-
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
+    public var headerStart: String.ScalarView.Index {
+      return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
+        return fileType.syntax.headerStart(file: self)
+      }
+    }
+
+    internal var headerEnd: String.ScalarView.Index {
+      return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
+        return fileType.syntax.headerEnd(file: self)
+      }
+    }
+
+    public var header: String {
+      get {
+        return fileType.syntax.header(file: self)
+      }
+      set {
+        fileType.syntax.insert(header: newValue, into: &self)
+      }
+    }
+
+    public var body: String {
+      get {
+        return String(contents[headerEnd...])
+      }
+      set {
+        var new = newValue
+        // Remove unnecessary initial spacing
+        while new.hasPrefix("\n") {
+          new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
+        }
+
+        let headerSource = String(contents[headerStart..<headerEnd])
+        if ¬headerSource.hasSuffix("\n") {
+          new = "\n" + new
+        }
+        if ¬headerSource.hasSuffix("\n\n") {
+          new = "\n" + new
+        }
+
+        contents.replaceSubrange(headerEnd..<contents.endIndex, with: new)
+      }
+
+    }
+
+    // MARK: - Writing
+
     public static func reportWriteOperation(
       to location: URL,
       in repository: PackageRepository,

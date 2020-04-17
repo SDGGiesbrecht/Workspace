@@ -25,12 +25,15 @@ extension Options {
     return value(for: ContinuousIntegrationJob.option)
   }
 
-  var project: PackageRepository {
-    let url =
-      value(for: Workspace.projectOption)
-      ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    return PackageRepository(at: url)
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    var project: PackageRepository {
+      let url =
+        value(for: Workspace.projectOption)
+        ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+      return PackageRepository(at: url)
+    }
+  #endif
 
   // MARK: - Proofreading
 

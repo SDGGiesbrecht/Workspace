@@ -69,39 +69,42 @@ public struct ValidationStatus {
     return ¬summary.isEmpty
   }
 
-  public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
-    output.print(summary.joined(separator: "\n").separated())
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
+      output.print(summary.joined(separator: "\n").separated())
 
-    try output.listWarnings(for: project)
+      try output.listWarnings(for: project)
 
-    let projectName: StrictString = try project.localizedIsolatedProjectName(output: output)
-    if passing {
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "‘" + projectName + "’ passes validation."
-          case .englishUnitedStates, .englishCanada:
-            return "“" + projectName + "” passes validation."
-          case .deutschDeutschland:
-            return "„" + projectName + "“ besteht die Überprüfung."
-          }
-        }).resolved().formattedAsSuccess().separated()
-      )
-    } else {
-      throw Command.Error(
-        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "‘" + projectName + "’ fails validation."
-          case .englishUnitedStates, .englishCanada:
-            return "“" + projectName + "” fails validation."
-          case .deutschDeutschland:
-            return "„" + projectName + "“ besteht die Überprüfung nicht."
-          }
-        }),
-        exitCode: 2
-      )
+      let projectName: StrictString = try project.localizedIsolatedProjectName(output: output)
+      if passing {
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "‘" + projectName + "’ passes validation."
+            case .englishUnitedStates, .englishCanada:
+              return "“" + projectName + "” passes validation."
+            case .deutschDeutschland:
+              return "„" + projectName + "“ besteht die Überprüfung."
+            }
+          }).resolved().formattedAsSuccess().separated()
+        )
+      } else {
+        throw Command.Error(
+          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "‘" + projectName + "’ fails validation."
+            case .englishUnitedStates, .englishCanada:
+              return "“" + projectName + "” fails validation."
+            case .deutschDeutschland:
+              return "„" + projectName + "“ besteht die Überprüfung nicht."
+            }
+          }),
+          exitCode: 2
+        )
+      }
     }
-  }
+  #endif
 }

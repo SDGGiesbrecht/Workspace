@@ -17,13 +17,15 @@
 import SDGLogic
 import WSGeneralImports
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
 
 internal protocol Parameter {
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     var firstName: TokenSyntax? { get }
     var secondName: TokenSyntax? { get }
     var optionalType: TypeSyntax? { get }

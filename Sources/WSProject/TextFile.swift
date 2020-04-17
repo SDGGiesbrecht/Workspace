@@ -179,42 +179,45 @@ public struct TextFile {
 
   // MARK: - Writing
 
-  public static func reportWriteOperation(
-    to location: URL,
-    in repository: PackageRepository,
-    output: Command.Output
-  ) {
-    output.print(
-      UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
-        switch localization {
-        case .englishUnitedKingdom:
-          return "Writing to ‘\(path)’..."
-        case .englishUnitedStates, .englishCanada:
-          return "Writing to “\(path)”..."
-        case .deutschDeutschland:
-          return "Zu „\(path)“ wird geschrieben ..."
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public static func reportWriteOperation(
+      to location: URL,
+      in repository: PackageRepository,
+      output: Command.Output
+    ) {
+      output.print(
+        UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
+          switch localization {
+          case .englishUnitedKingdom:
+            return "Writing to ‘\(path)’..."
+          case .englishUnitedStates, .englishCanada:
+            return "Writing to “\(path)”..."
+          case .deutschDeutschland:
+            return "Zu „\(path)“ wird geschrieben ..."
+          }
+        }).resolved(using: location.path(relativeTo: repository.location))
+      )
+    }
+
+    public func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
+      if hasChanged {
+        TextFile.reportWriteOperation(to: location, in: repository, output: output)
+
+        try contents.save(to: location)
+        if isExecutable {
+          try FileManager.default.setAttributes(
+            [.posixPermissions: NSNumber(value: 0o777)],
+            ofItemAtPath: location.path
+          )
         }
-      }).resolved(using: location.path(relativeTo: repository.location))
-    )
-  }
 
-  public func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
-    if hasChanged {
-      TextFile.reportWriteOperation(to: location, in: repository, output: output)
-
-      try contents.save(to: location)
-      if isExecutable {
-        try FileManager.default.setAttributes(
-          [.posixPermissions: NSNumber(value: 0o777)],
-          ofItemAtPath: location.path
-        )
-      }
-
-      if location.pathExtension == "swift" {
-        repository.resetManifestCache(debugReason: location.lastPathComponent)
-      } else {
-        repository.resetFileCache(debugReason: location.lastPathComponent)
+        if location.pathExtension == "swift" {
+          repository.resetManifestCache(debugReason: location.lastPathComponent)
+        } else {
+          repository.resetFileCache(debugReason: location.lastPathComponent)
+        }
       }
     }
-  }
+  #endif
 }

@@ -40,14 +40,17 @@ internal struct DeprecatedTestManifests: TextRule {
     }
   })
 
-  internal static func check(
-    file: TextFile,
-    in project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
-    if file.location.lastPathComponent == "XCTestManifests.swift" {
-      reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal static func check(
+      file: TextFile,
+      in project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
+      if file.location.lastPathComponent == "XCTestManifests.swift" {
+        reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
+      }
     }
-  }
+  #endif
 }

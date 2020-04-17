@@ -14,11 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)
 import Foundation
+#endif
 
 import SDGLogic
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
   import PackageModel
   import SwiftSyntax
 

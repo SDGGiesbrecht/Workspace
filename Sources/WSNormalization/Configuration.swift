@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(swift-format 0.50200.0, Cannot build.)
+#if !os(WASI)
 import Foundation
 
 import SwiftFormatConfiguration
@@ -33,3 +35,4 @@ extension Configuration {
     return copy
   }
 }
+#endif

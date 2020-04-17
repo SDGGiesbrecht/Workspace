@@ -875,6 +875,10 @@ func adjustForWeb() {
       })
     })
   }
+  for target in package.targets {
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    target.exclude.append("Resources.swift")
+  }
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()

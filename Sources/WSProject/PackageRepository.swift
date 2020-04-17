@@ -25,7 +25,7 @@ import SDGSwiftConfigurationLoading
 import WorkspaceProjectConfiguration
 
 // #workaround(Swift 5.1.4, Cannot build.)
-#if !(os(Windows) || os(Android))
+#if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
 #endif
 
@@ -146,7 +146,7 @@ extension PackageRepository {
     let variable = "GENERATING_CMAKE_FOR_WINDOWS"
     #if !os(Windows)
       // #workaround(Swift 5.1.4, Cannot build.)
-      #if !(os(Windows) || os(Android))
+      #if !(os(Windows) || os(WASI) || os(Android))
         try? ProcessEnv.setVar(variable, value: "true")
         defer {
           try? ProcessEnv.unsetVar(variable)

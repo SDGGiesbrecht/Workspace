@@ -21,22 +21,25 @@ extension Licence {
 
   // MARK: - Properties
 
-  internal var text: StrictString {
-    var source: String
-    switch self {
-    case .apache2_0:
-      source = Resources.Licences.apache2_0
-    case .mit:
-      source = Resources.Licences.mit
-    case .gnuGeneralPublic3_0:
-      source = Resources.Licences.gnuGeneralPublic3_0
-    case .unlicense:
-      source = Resources.Licences.unlicense
-    case .copyright:
-      source = Resources.Licences.copyright
-    }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal var text: StrictString {
+      var source: String
+      switch self {
+      case .apache2_0:
+        source = Resources.Licences.apache2_0
+      case .mit:
+        source = Resources.Licences.mit
+      case .gnuGeneralPublic3_0:
+        source = Resources.Licences.gnuGeneralPublic3_0
+      case .unlicense:
+        source = Resources.Licences.unlicense
+      case .copyright:
+        source = Resources.Licences.copyright
+      }
 
-    let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
-    return StrictString(file.body)
-  }
+      let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
+      return StrictString(file.body)
+    }
+  #endif
 }

@@ -28,16 +28,19 @@ extension LocalizationIdentifier {
     return supported.textDirection
   }
 
-  internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
-    let localizationDirectory = String(
-      file.path(relativeTo: outputDirectory)
-        .prefix(upTo: "/")?.contents ?? ""
-    )
-    let identifier = LocalizationIdentifier(localizationDirectory)
-    if identifier.icon ≠ nil {
-      return AnyLocalization(code: identifier.code)
-    } else {
-      return AnyLocalization(code: "und")
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
+      let localizationDirectory = String(
+        file.path(relativeTo: outputDirectory)
+          .prefix(upTo: "/")?.contents ?? ""
+      )
+      let identifier = LocalizationIdentifier(localizationDirectory)
+      if identifier.icon ≠ nil {
+        return AnyLocalization(code: identifier.code)
+      } else {
+        return AnyLocalization(code: "und")
+      }
     }
-  }
+  #endif
 }

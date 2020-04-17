@@ -31,7 +31,10 @@ import WSCustomTask
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
-import SwiftFormatConfiguration
+// #workaround(swift-format 0.50200.0, Cannot build.)
+#if !os(WASI)
+  import SwiftFormatConfiguration
+#endif
 
 // #workaround(Swift 5.2.2, Web lacks Foundation.)
 #if !os(WASI)

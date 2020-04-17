@@ -31,10 +31,13 @@ internal struct CommandInterfaceInformation {
   internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
   internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-  internal func pageURL(
-    in outputDirectory: URL,
-    for localization: LocalizationIdentifier
-  ) -> URL {
-    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func pageURL(
+      in outputDirectory: URL,
+      for localization: LocalizationIdentifier
+    ) -> URL {
+      return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+    }
+  #endif
 }

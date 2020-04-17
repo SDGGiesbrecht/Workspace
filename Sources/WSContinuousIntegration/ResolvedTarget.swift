@@ -16,7 +16,7 @@
 
 // #workaround(Swift 5.2.2, Web lacks Foundation.)
 #if !os(WASI)
-import Foundation
+  import Foundation
 #endif
 
 import SDGLogic

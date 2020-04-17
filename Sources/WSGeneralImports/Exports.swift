@@ -16,7 +16,7 @@
 
 // #workaround(Swift 5.2.2, Web lacks Foundation.)
 #if !os(WASI)
-@_exported import Foundation
+  @_exported import Foundation
 #endif
 
 @_exported import SDGControlFlow

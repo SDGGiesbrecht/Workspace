@@ -228,24 +228,30 @@ public struct FileHeaderConfiguration: Codable {
   public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
     let localizations = configuration.documentation.localizations
-    let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+    #endif
 
     var header: [StrictString] = [
       "#filename",
       "",
     ]
 
-    header.append(
-      contentsOf: configuration.sequentialLocalizations({ localization in
-        let projectName = configuration.projectName[localization] ?? packageName
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "This source file is part of the \(projectName) open source project."
-        case .deutschDeutschland:
-          return "Diese Quelldatei ist Teil des quelloffenen \(projectName)‐Projekt."
-        }
-      })
-    )
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      header.append(
+        contentsOf: configuration.sequentialLocalizations({ localization in
+          let projectName = configuration.projectName[localization] ?? packageName
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "This source file is part of the \(projectName) open source project."
+          case .deutschDeutschland:
+            return "Diese Quelldatei ist Teil des quelloffenen \(projectName)‐Projekt."
+          }
+        })
+      )
+    #endif
     // #workaround(Swift 5.2.2, Web lacks Foundation.)
     #if !os(WASI)
       if let site = configuration.documentation.projectWebsite {

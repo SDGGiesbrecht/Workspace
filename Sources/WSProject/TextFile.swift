@@ -21,65 +21,69 @@ public struct TextFile {
 
   // MARK: - Initialization
 
-  public init(alreadyAt location: URL) throws {
-    guard let fileType = FileType(url: location) else {
-      unreachable()
-    }
-
-    let contents = try String(from: location)
-    let executable = FileManager.default.isExecutableFile(atPath: location.path)
-    self.init(
-      location: location,
-      fileType: fileType,
-      executable: executable,
-      contents: contents,
-      isNew: false
-    )
-  }
-
-  public init(possiblyAt location: URL, executable: Bool = false) throws {
-    do {
-      self = try TextFile(alreadyAt: location)
-      if isExecutable ≠ executable {
-        // @exempt(from: tests) Unreachable except with corrupt files.
-        isExecutable = executable
-        hasChanged = true
-      }
-    } catch {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public init(alreadyAt location: URL) throws {
       guard let fileType = FileType(url: location) else {
         unreachable()
       }
-      self = TextFile(
+
+      let contents = try String(from: location)
+      let executable = FileManager.default.isExecutableFile(atPath: location.path)
+      self.init(
         location: location,
         fileType: fileType,
         executable: executable,
-        contents: "",
+        contents: contents,
+        isNew: false
+      )
+    }
+
+    public init(possiblyAt location: URL, executable: Bool = false) throws {
+      do {
+        self = try TextFile(alreadyAt: location)
+        if isExecutable ≠ executable {
+          // @exempt(from: tests) Unreachable except with corrupt files.
+          isExecutable = executable
+          hasChanged = true
+        }
+      } catch {
+        guard let fileType = FileType(url: location) else {
+          unreachable()
+        }
+        self = TextFile(
+          location: location,
+          fileType: fileType,
+          executable: executable,
+          contents: "",
+          isNew: true
+        )
+      }
+    }
+
+    public init(mockFileWithContents contents: String, fileType: FileType) {
+      var url: URL?
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
+        url = temporary
+      }
+      self.init(
+        location: url!,
+        fileType: fileType,
+        executable: false,
+        contents: contents,
         isNew: true
       )
     }
-  }
 
-  public init(mockFileWithContents contents: String, fileType: FileType) {
-    var url: URL?
-    FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
-      url = temporary
+    private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool)
+    {
+      self.location = location
+      self.isExecutable = executable
+      self._contents = contents
+      self.hasChanged = isNew
+      self.fileType = fileType
     }
-    self.init(
-      location: url!,
-      fileType: fileType,
-      executable: false,
-      contents: contents,
-      isNew: true
-    )
-  }
-
-  private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool) {
-    self.location = location
-    self.isExecutable = executable
-    self._contents = contents
-    self.hasChanged = isNew
-    self.fileType = fileType
-  }
+  #endif
 
   // MARK: - Properties
 
@@ -90,7 +94,10 @@ public struct TextFile {
   private var cache = Cache()
 
   private var hasChanged: Bool
-  public let location: URL
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public let location: URL
+  #endif
 
   private var isExecutable: Bool {
     willSet {  // @exempt(from: tests) Unreachable except with corrupt files.

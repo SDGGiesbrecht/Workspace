@@ -55,26 +55,29 @@ internal struct BlockCommentSyntax {
 
   // MARK: - Parsing
 
-  internal func startOfNonDocumentationCommentExists(
-    at location: String.ScalarView.Index,
-    in string: String
-  ) -> Bool {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func startOfNonDocumentationCommentExists(
+      at location: String.ScalarView.Index,
+      in string: String
+    ) -> Bool {
 
-    var index = location
-    if ¬string.scalars.advance(&index, over: start.scalars) {
-      return false
-    } else {
+      var index = location
+      if ¬string.scalars.advance(&index, over: start.scalars) {
+        return false
+      } else {
 
-      // Make sure this isn’t documentation.
-      if let nextCharacter = string.scalars[index...].first {
+        // Make sure this isn’t documentation.
+        if let nextCharacter = string.scalars[index...].first {
 
-        if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
-          return true
+          if nextCharacter ∈ CharacterSet.whitespacesAndNewlines {
+            return true
+          }
         }
+        return false
       }
-      return false
     }
-  }
+  #endif
 
   internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String)
     -> NestingLevel<String.ScalarView>?
@@ -85,51 +88,54 @@ internal struct BlockCommentSyntax {
     )
   }
 
-  internal func contentsOfFirstComment(
-    in range: Range<String.ScalarView.Index>,
-    of string: String
-  ) -> String? {
-    guard let range = firstComment(in: range, of: string)?.contents.range else {
-      return nil
-    }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func contentsOfFirstComment(
+      in range: Range<String.ScalarView.Index>,
+      of string: String
+    ) -> String? {
+      guard let range = firstComment(in: range, of: string)?.contents.range else {
+        return nil
+      }
 
-    var lines = String(string[range]).lines.map({ String($0.line) })
-    while let line = lines.first, line.isWhitespace {
+      var lines = String(string[range]).lines.map({ String($0.line) })
+      while let line = lines.first, line.isWhitespace {
+        lines.removeFirst()
+      }
+
+      guard let first = lines.first else {
+        return ""
+      }
       lines.removeFirst()
-    }
 
-    guard let first = lines.first else {
-      return ""
-    }
-    lines.removeFirst()
-
-    var index = first.scalars.startIndex
-    first.scalars.advance(
-      &index,
-      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-    )
-    let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
-
-    var result = [first.scalars.suffix(from: index)]
-    for line in lines {
-      var indentIndex = line.scalars.startIndex
-      line.scalars.advance(
-        &indentIndex,
-        over: RepetitionPattern(
-          ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
-          count: 0...indent
-        )
+      var index = first.scalars.startIndex
+      first.scalars.advance(
+        &index,
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
       )
-      result.append(line.scalars.suffix(from: indentIndex))
-    }
+      let indent = first.scalars.distance(from: first.scalars.startIndex, to: index)
 
-    var strings = result.map({ String($0) })
-    while let last = strings.last, last.isWhitespace {
-      strings.removeLast()
-    }
+      var result = [first.scalars.suffix(from: index)]
+      for line in lines {
+        var indentIndex = line.scalars.startIndex
+        line.scalars.advance(
+          &indentIndex,
+          over: RepetitionPattern(
+            ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }),
+            count: 0...indent
+          )
+        )
+        result.append(line.scalars.suffix(from: indentIndex))
+      }
 
-    return strings.joinedAsLines()
-  }
+      var strings = result.map({ String($0) })
+      while let last = strings.last, last.isWhitespace {
+        strings.removeLast()
+      }
+
+      return strings.joinedAsLines()
+    }
+  #endif
 
   internal func contentsOfFirstComment(in string: String) -> String? {
     return contentsOfFirstComment(

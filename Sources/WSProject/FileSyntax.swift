@@ -62,43 +62,47 @@ public struct FileSyntax {
     return comment(contents: contents)
   }
 
-  internal func insert(header: String, into file: inout TextFile) {
-    if let generated = generateHeader(contents: header) {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func insert(header: String, into file: inout TextFile) {
+      if let generated = generateHeader(contents: header) {
 
-      var first = String(file.contents[..<file.headerStart])
-      if ¬first.isEmpty {
-        var firstLines = first.lines.map({ String($0.line) })
-        while let last = firstLines.last, last.isWhitespace {
-          firstLines.removeLast()
+        var first = String(file.contents[..<file.headerStart])
+        if ¬first.isEmpty {
+          var firstLines = first.lines.map({ String($0.line) })
+          while let last = firstLines.last, last.isWhitespace {
+            firstLines.removeLast()
+          }
+          firstLines.append("")
+          firstLines.append("")  // Header starts in this line.
+          first = firstLines.joinedAsLines()
         }
-        firstLines.append("")
-        firstLines.append("")  // Header starts in this line.
-        first = firstLines.joinedAsLines()
+
+        var body = String(file.contents.scalars[file.headerEnd...])
+        while let firstCharacter = body.scalars.first,
+        firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
+          body.scalars.removeFirst()
+        }
+        body =
+          [
+            "",  // Line at end of header
+            "",
+            "",  // Body starts in this line
+          ].joinedAsLines() + body
+
+        let contents = first + generated + body
+
+        file.contents = contents
       }
-
-      var body = String(file.contents.scalars[file.headerEnd...])
-      while let firstCharacter = body.scalars.first,
-      firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
-        body.scalars.removeFirst()
-      }
-      body =
-        [
-          "",  // Line at end of header
-          "",
-          "",  // Body starts in this line
-        ].joinedAsLines() + body
-
-      let contents = first + generated + body
-
-      file.contents = contents
     }
-  }
+  #endif
 
   // MARK: - Parsing
 
-  public func rangeOfFirstComment(in range: Range<String.ScalarView.Index>, of file: TextFile)
-    -> Range<String.ScalarView.Index>?
-  {
+  public func rangeOfFirstComment(
+    in range: Range<String.ScalarView.Index>,
+    of file: TextFile
+  ) -> Range<String.ScalarView.Index>? {
     let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?
       .container.range
     let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
@@ -133,40 +137,46 @@ public struct FileSyntax {
     return nil  // @exempt(from: tests) Unreachable.
   }
 
-  private static func advance(
-    _ index: inout String.ScalarView.Index,
-    pastLayoutSpacingIn string: String
-  ) {
-    string.scalars.advance(
-      &index,
-      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
-    )
-    string.scalars.advance(
-      &index,
-      over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-    )
-    string.scalars.advance(
-      &index,
-      over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
-    )
-  }
-
-  internal func headerStart(file: TextFile) -> String.ScalarView.Index {
-
-    var index = file.contents.scalars.startIndex
-
-    if let required = requiredFirstLineToken {
-
-      if file.contents.scalars.hasPrefix(required.scalars),
-        let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern)?
-          .range
-      {
-        index = endOfLine.lowerBound
-      }
-      FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static func advance(
+      _ index: inout String.ScalarView.Index,
+      pastLayoutSpacingIn string: String
+    ) {
+      string.scalars.advance(
+        &index,
+        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
+      )
+      string.scalars.advance(
+        &index,
+        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+      )
+      string.scalars.advance(
+        &index,
+        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
+      )
     }
-    return index
-  }
+  #endif
+
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func headerStart(file: TextFile) -> String.ScalarView.Index {
+
+      var index = file.contents.scalars.startIndex
+
+      if let required = requiredFirstLineToken {
+
+        if file.contents.scalars.hasPrefix(required.scalars),
+          let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern)?
+            .range
+        {
+          index = endOfLine.lowerBound
+        }
+        FileSyntax.advance(&index, pastLayoutSpacingIn: file.contents)
+      }
+      return index
+    }
+  #endif
 
   private func headerEndWithoutSpacing(file: TextFile) -> String.ScalarView.Index {
 

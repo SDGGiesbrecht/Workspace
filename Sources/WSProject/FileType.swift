@@ -22,7 +22,10 @@ public enum FileType {
 
   // MARK: - Static Properties
 
-  private static var unsupportedFileTypesEncountered: [String: URL] = [:]
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static var unsupportedFileTypesEncountered: [String: URL] = [:]
+  #endif
   public static func resetUnsupportedFileTypes() {
     unsupportedFileTypesEncountered = [:]
   }
@@ -96,33 +99,36 @@ public enum FileType {
 
   // MARK: - Initialization
 
-  public init?(url: URL) {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public init?(url: URL) {
 
-    if let special = FileType.specialNames[url.lastPathComponent] {
-      self = special
-      return
-    }
-
-    var pathExtension = url.pathExtension
-    if pathExtension.isEmpty {
-      let components = url.lastPathComponent.components(separatedBy: ".") as [String]
-      if components.count > 1 {
-        pathExtension = components.last!
-      } else {
-        return nil  // File with no extension information.
+      if let special = FileType.specialNames[url.lastPathComponent] {
+        self = special
+        return
       }
-    }
 
-    if let supported = FileType.fileExtensions[pathExtension] {
-      self = supported
-      return
-    }
+      var pathExtension = url.pathExtension
+      if pathExtension.isEmpty {
+        let components = url.lastPathComponent.components(separatedBy: ".") as [String]
+        if components.count > 1 {
+          pathExtension = components.last!
+        } else {
+          return nil  // File with no extension information.
+        }
+      }
 
-    if FileType.unsupportedFileTypesEncountered[pathExtension] == nil {
-      FileType.unsupportedFileTypesEncountered[pathExtension] = url
+      if let supported = FileType.fileExtensions[pathExtension] {
+        self = supported
+        return
+      }
+
+      if FileType.unsupportedFileTypesEncountered[pathExtension] == nil {
+        FileType.unsupportedFileTypesEncountered[pathExtension] = url
+      }
+      return nil
     }
-    return nil
-  }
+  #endif
 
   // MARK: - Cases
 

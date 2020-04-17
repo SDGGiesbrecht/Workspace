@@ -22,7 +22,8 @@ import SDGSwiftPackageManager
 import WSProject
 import WSSwift
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
   import SwiftFormat
 #endif
@@ -33,7 +34,8 @@ extension PackageRepository {
 
     // MARK: - Initialization
 
-    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    // #workaround(SwiftPM 0.6.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       internal init(description: TargetDescription, package: PackageRepository) {
         self.description = description
         self.package = package
@@ -42,7 +44,8 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    // #workaround(SwiftPM 0.6.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       private let description: TargetDescription
     #endif
     private let package: PackageRepository
@@ -84,7 +87,8 @@ extension PackageRepository {
 
       var source = String(try generateSource(for: resources, of: package))
 
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
         if let formatConfiguration = try package.configuration(output: output)
           .proofreading.swiftFormatConfiguration
         {

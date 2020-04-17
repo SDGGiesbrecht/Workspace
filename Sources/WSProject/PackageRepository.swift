@@ -24,7 +24,7 @@ import SDGSwiftConfigurationLoading
 
 import WorkspaceProjectConfiguration
 
-// #workaround(Swift 5.1.4, Cannot build.)
+// #workaround(swift-tools-support-core 0.1.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
 #endif
@@ -64,7 +64,8 @@ extension PackageRepository {
   // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
   // Changes to support files do not require a reset (read‐me, etc.).
   private class ManifestCache {
-    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    // #workaround(SwiftPM 0.6.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       fileprivate var manifest: PackageModel.Manifest?
       fileprivate var package: PackageModel.Package?
       fileprivate var windowsPackage: PackageModel.Package?
@@ -145,7 +146,7 @@ extension PackageRepository {
   private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
     let variable = "GENERATING_CMAKE_FOR_WINDOWS"
     #if !os(Windows)
-      // #workaround(Swift 5.1.4, Cannot build.)
+      // #workaround(swift-tools-support-core 0.1.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         try? ProcessEnv.setVar(variable, value: "true")
         defer {
@@ -199,7 +200,8 @@ extension PackageRepository {
     return try projectName(in: identifier, output: output)
   }
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  // #workaround(SwiftPM 0.6.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     public func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
         var products: [PackageModel.Product] = []

@@ -19,13 +19,15 @@ import SDGVersioning
 
 import SDGSwiftPackageManager
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
 #endif
 
 extension SDGVersioning.Version {
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+  // #workaround(SwiftPM 0.6.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     public init(_ version: PackageModel.Version) {
       self.init(version.major, version.minor, version.patch)
     }

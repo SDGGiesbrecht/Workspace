@@ -19,7 +19,8 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
 
@@ -27,7 +28,8 @@ extension PackageRepository {
 
   public func normalize(output: Command.Output) throws {
 
-    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+    // #workaround(SwiftPM 0.6.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
       var formatter: SwiftFormatter?
       if let formatConfiguration = try configuration(output: output).proofreading
         .swiftFormatConfiguration?.reducedToMachineResponsibilities()
@@ -42,7 +44,8 @@ extension PackageRepository {
         if let syntax = FileType(url: url)?.syntax {
           var file = try TextFile(alreadyAt: url)
 
-          #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+          // #workaround(SwiftPM 0.6.0, Cannot build.)
+          #if !(os(Windows) || os(WASI) || os(Android))
             if let formatter = formatter,
               file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
             {

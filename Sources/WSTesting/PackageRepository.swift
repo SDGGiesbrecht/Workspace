@@ -266,7 +266,8 @@ extension PackageRepository {
     }
 
     do {
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
         let report: TestCoverageReport
         switch job {
         case .macOS, .linux:

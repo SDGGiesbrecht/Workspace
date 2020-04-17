@@ -263,7 +263,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       .exact(Version(0, 6, 0))
     ),
-    .package(  // #workaround(Swift 5.2, Until packages work natively on windows.)
+    .package(  // #workaround(Swift 5.2.2, Until packages work natively on windows.)
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 1, 0))
     ),
@@ -775,7 +775,7 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  // #workaround(Swift 5.2.1, These cannot build on Windows.)
+  // #workaround(Swift 5.2.2, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -800,7 +800,7 @@ func adjustForWindows() {
       })
     })
   }
-  // #workaround(Swift 5.2.1, Triggers assertion failure when generating CMake without this.)
+  // #workaround(Swift 5.2.2, Triggers assertion failure when generating CMake without this.)
   package.dependencies.append(contentsOf: [
     .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 5))),
     .package(
@@ -813,14 +813,14 @@ func adjustForWindows() {
 #if os(Windows)
   adjustForWindows()
 #endif
-// #workaround(Swift 5.2.1, Until packages work natively on windows.)
+// #workaround(Swift 5.2.2, Until packages work natively on windows.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
 func adjustForAndroid() {
-  // #workaround(Swift 5.2.1, These cannot build on Android.)
+  // #workaround(Swift 5.2.2, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -867,41 +867,6 @@ func adjustForWeb() {
     "SwiftSyntax",
     // SwiftToolsSupport
     "swift\u{2D}tools\u{2D}support\u{2D}core",
-
-    // #workaround(Temporary.)
-    "arbeitsbereich",
-    "WSConfigurationExample",
-    "WSContinuousIntegration",
-    "WSCustomTask",
-    "WSDocumentation",
-    "WSExamples",
-    "WSFileHeaders",
-    "WSGeneralImports",
-    "WSGeneralTestImports",
-    "WSGit",
-    "WSGitHub",
-    "WSInterface",
-    "WSLicence",
-    "WSLocalizations",
-    "WSNormalization",
-    "WSOpenSource",
-    "WSParsing",
-    "WSProject",
-    "WSProofreading",
-    "WSResources",
-    "WSScripts",
-    "WSSwift",
-    "WSTesting",
-    "WSValidation",
-    "WSXcode",
-    "workspace",
-    "WorkspaceConfiguration",
-    "WorkspaceLibrary",
-    "WorkspaceLibraryTests",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceTool",
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
@@ -910,13 +875,6 @@ func adjustForWeb() {
       })
     })
   }
-  // #workaround(Temporary.)
-  package.products.removeAll(where: { product in
-    return impossibleDependencies.contains(product.name)
-  })
-  package.targets.removeAll(where: { target in
-    return impossibleDependencies.contains(target.name)
-  })
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()

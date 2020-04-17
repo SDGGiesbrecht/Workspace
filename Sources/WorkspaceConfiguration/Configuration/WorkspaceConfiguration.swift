@@ -417,9 +417,9 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _applySDGOverrides() {
-    let project = WorkspaceContext.current.manifest.packageName
     // #workaround(Swift 5.2.2, Web lacks Foundation.)
     #if !os(WASI)
+      let project = WorkspaceContext.current.manifest.packageName
       let repositoryURL =
         documentation.repositoryURL?.absoluteString
         ?? ""  // @exempt(from: tests)
@@ -443,7 +443,10 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
+    #endif
 
     assert(documentation.currentVersion ≠ nil, "No version specified.")
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
@@ -452,15 +455,9 @@ public final class WorkspaceConfiguration: Configuration {
       // #workaround(Swift 5.2.2, Web lacks Foundation.)
       #if !os(WASI)
         assert(documentation.projectWebsite ≠ nil, "No project website specified.")
-      #endif
-      if needsAPIDocumentation {
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
-        #if !os(WASI)
+        if needsAPIDocumentation {
           assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
-        #endif
-      }
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
-      #if !os(WASI)
+        }
         assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
       #endif
 

@@ -124,10 +124,13 @@ public struct GitHubConfiguration: Codable {
     for localization in localizations {
       if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        template.replaceMatches(
-          for: "#packageName".scalars,
-          with: WorkspaceContext.current.manifest.packageName.scalars
-        )
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          template.replaceMatches(
+            for: "#packageName".scalars,
+            with: WorkspaceContext.current.manifest.packageName.scalars
+          )
+        #endif
 
         // #workaround(Swift 5.2.2, Web lacks Foundation.)
         #if os(WASI)

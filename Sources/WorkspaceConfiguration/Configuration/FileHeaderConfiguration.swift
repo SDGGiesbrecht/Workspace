@@ -182,26 +182,31 @@ public struct FileHeaderConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
-    let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
-    return configuration.localizationDictionary { localization in
-      let projectName = configuration.projectName[localization] ?? packageName
-      if let author = configuration.documentation.primaryAuthor {
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Copyright #dates \(author) and the \(projectName) project contributors."
-        case .deutschDeutschland:
-          return
-            "Urheberrecht #dates \(author) und die Mitwirkenden des \(projectName)‐Projekts."
-        }
-      } else {
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Copyright #dates the \(projectName) project contributors."
-        case .deutschDeutschland:
-          return "Urheberrecht #dates die Mitwirkenden des \(projectName)‐Projekts."
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
+      return [:]
+    #else
+      let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+      return configuration.localizationDictionary { localization in
+        let projectName = configuration.projectName[localization] ?? packageName
+        if let author = configuration.documentation.primaryAuthor {
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Copyright #dates \(author) and the \(projectName) project contributors."
+          case .deutschDeutschland:
+            return
+              "Urheberrecht #dates \(author) und die Mitwirkenden des \(projectName)‐Projekts."
+          }
+        } else {
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Copyright #dates the \(projectName) project contributors."
+          case .deutschDeutschland:
+            return "Urheberrecht #dates die Mitwirkenden des \(projectName)‐Projekts."
+          }
         }
       }
-    }
+    #endif
   })
 
   // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)

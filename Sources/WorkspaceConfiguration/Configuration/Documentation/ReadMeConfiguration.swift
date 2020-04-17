@@ -95,7 +95,10 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
 
-      readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
+      #endif
 
       readMe += [
         "",

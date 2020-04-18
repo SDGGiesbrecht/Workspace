@@ -74,7 +74,10 @@ extension Workspace {
         )
 
         if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
-          try validationStatus.reportOutcome(project: options.project, output: output)
+          // #workaround(Swift 5.2.2, Web lacks Foundation.)
+          #if !os(WASI)
+            try validationStatus.reportOutcome(project: options.project, output: output)
+          #endif
         }
       }
     )
@@ -86,9 +89,12 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      if try options.project.configuration(output: output).normalize {
-        try Workspace.Normalize.executeAsStep(options: options, output: output)
-      }
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        if try options.project.configuration(output: output).normalize {
+          try Workspace.Normalize.executeAsStep(options: options, output: output)
+        }
+      #endif
 
       let section = validationStatus.newSection()
 
@@ -112,31 +118,34 @@ extension Workspace {
         reporter = CommandLineProofreadingReporter.default
       }
 
-      if try options.project.proofread(reporter: reporter, output: output) {
-        validationStatus.passStep(
-          message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Source code passes proofreading."
-            case .deutschDeutschland:
-              return "Quelltext besteht das Korrekturlesen."
-            }
-          })
-        )
-      } else {
-        validationStatus.failStep(
-          message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Source code fails proofreading."
-                + section.crossReference.resolved(for: localization)
-            case .deutschDeutschland:
-              return "Der Quelltext besteht das Korrekturlesen nicht."
-                + section.crossReference.resolved(for: localization)
-            }
-          })
-        )
-      }
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        if try options.project.proofread(reporter: reporter, output: output) {
+          validationStatus.passStep(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Source code passes proofreading."
+              case .deutschDeutschland:
+                return "Quelltext besteht das Korrekturlesen."
+              }
+            })
+          )
+        } else {
+          validationStatus.failStep(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Source code fails proofreading."
+                  + section.crossReference.resolved(for: localization)
+              case .deutschDeutschland:
+                return "Der Quelltext besteht das Korrekturlesen nicht."
+                  + section.crossReference.resolved(for: localization)
+              }
+            })
+          )
+        }
+      #endif
     }
   }
 }

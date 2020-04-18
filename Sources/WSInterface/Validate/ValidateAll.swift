@@ -90,19 +90,22 @@ extension Workspace.Validate {
         )
       }
 
-      let projectName = try options.project.localizedIsolatedProjectName(output: output)
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "Validating ‘\(projectName)’..."
-          case .englishUnitedStates, .englishCanada:
-            return "Validating “\(projectName)”..."
-          case .deutschDeutschland:
-            return "„\(projectName)“ wird geprüft ..."
-          }
-        }).resolved().formattedAsSectionHeader()
-      )
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        let projectName = try options.project.localizedIsolatedProjectName(output: output)
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "Validating ‘\(projectName)’..."
+            case .englishUnitedStates, .englishCanada:
+              return "Validating “\(projectName)”..."
+            case .deutschDeutschland:
+              return "„\(projectName)“ wird geprüft ..."
+            }
+          }).resolved().formattedAsSectionHeader()
+        )
+      #endif
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {
@@ -114,58 +117,78 @@ extension Workspace.Validate {
         )
       }
 
-      // Build
-      if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
-        try Workspace.Validate.Build.executeAsStep(
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
-
-      // Test
-      if try options.project.configuration(output: output).testing.enforceCoverage {
-        if let job = options.job,
-          job ∉ ContinuousIntegrationJob.coverageJobs
-        {
-          // Coverage impossible to check.
-          try Workspace.Test.executeAsStep(
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
-        } else {
-          // Check coverage.
-          try Workspace.Validate.TestCoverage.executeAsStep(
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        // Build
+        if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
+          try Workspace.Validate.Build.executeAsStep(
             options: options,
             validationStatus: &validationStatus,
             output: output
           )
         }
-      } else {
-        // Coverage irrelevant.
-        try Workspace.Test.executeAsStep(
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
 
-      // Document
-      if options.job.includes(job: .miscellaneous) {
-        if try ¬options.project.configuration(output: output).documentation.api.generate
-          ∨ options.project.configuration(output: output).documentation.api
-          .serveFromGitHubPagesBranch,
-          try options.project.configuration(output: output).documentation.api
-            .enforceCoverage
-        {
-          try Workspace.Validate.DocumentationCoverage.executeAsStep(
+        // Test
+        if try options.project.configuration(output: output).testing.enforceCoverage {
+          if let job = options.job,
+            job ∉ ContinuousIntegrationJob.coverageJobs
+          {
+            // Coverage impossible to check.
+            try Workspace.Test.executeAsStep(
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          } else {
+            // Check coverage.
+            try Workspace.Validate.TestCoverage.executeAsStep(
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          }
+        } else {
+          // Coverage irrelevant.
+          try Workspace.Test.executeAsStep(
             options: options,
             validationStatus: &validationStatus,
             output: output
           )
-        } else if try options.project.configuration(output: output).documentation.api
-          .generate
+        }
+      #endif
+
+      // Document
+      if options.job.includes(job: .miscellaneous) {
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          if try ¬options.project.configuration(output: output).documentation.api.generate
+            ∨ options.project.configuration(output: output).documentation.api
+            .serveFromGitHubPagesBranch,
+            try options.project.configuration(output: output).documentation.api
+              .enforceCoverage
+          {
+            try Workspace.Validate.DocumentationCoverage.executeAsStep(
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          } else if try options.project.configuration(output: output).documentation.api
+            .generate
+          {
+            try Workspace.Document.executeAsStep(
+              outputDirectory: options.project.defaultDocumentationDirectory,
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          }
+        #endif
+      }
+
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        if options.job.includes(job: .deployment),
+          try options.project.configuration(output: output).documentation.api.generate
         {
           try Workspace.Document.executeAsStep(
             outputDirectory: options.project.defaultDocumentationDirectory,
@@ -174,18 +197,7 @@ extension Workspace.Validate {
             output: output
           )
         }
-      }
-
-      if options.job.includes(job: .deployment),
-        try options.project.configuration(output: output).documentation.api.generate
-      {
-        try Workspace.Document.executeAsStep(
-          outputDirectory: options.project.defaultDocumentationDirectory,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
+      #endif
 
       // Custom
       for task in try options.project.configuration(output: output).customValidationTasks {

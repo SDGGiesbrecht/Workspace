@@ -57,39 +57,43 @@ extension Workspace.Refresh {
           try executeAsStep(withArguments: arguments, options: options, output: output)
         }
 
-        let projectName = try options.project.localizedIsolatedProjectName(output: output)
-        var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "‘\(projectName)’ is refreshed and ready."
-          case .englishUnitedStates, .englishCanada:
-            return "“\(projectName)” is refreshed and ready."
-          case .deutschDeutschland:
-            return "„\(projectName)“ ist aufgefrischt und bereit."
-          }
-        }).resolved()
-
-        if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
-          // @exempt(from: tests) Unreachable on Linux.
-          let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          let projectName = try options.project.localizedIsolatedProjectName(output: output)
+          var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom:
-              return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
+              return "‘\(projectName)’ is refreshed and ready."
             case .englishUnitedStates, .englishCanada:
-              return "Open “\(StrictString(xcodeProject))” to work on the project."
+              return "“\(projectName)” is refreshed and ready."
             case .deutschDeutschland:
-              return
-                "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
+              return "„\(projectName)“ ist aufgefrischt und bereit."
             }
           }).resolved()
 
-          success = [
-            success,
-            xcodeInstructions,
-          ].joinedAsLines()
-        }
+          if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
+            // @exempt(from: tests) Unreachable on Linux.
+            let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>({
+              localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
+              case .englishUnitedStates, .englishCanada:
+                return "Open “\(StrictString(xcodeProject))” to work on the project."
+              case .deutschDeutschland:
+                return
+                  "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
+              }
+            }).resolved()
 
-        try output.succeed(message: success, project: options.project)
+            success = [
+              success,
+              xcodeInstructions,
+            ].joinedAsLines()
+          }
+
+          try output.succeed(message: success, project: options.project)
+        #endif
       }
     )
 
@@ -99,89 +103,92 @@ extension Workspace.Refresh {
       output: Command.Output
     ) throws {
 
-      let projectName = try options.project.localizedIsolatedProjectName(output: output)
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "Refreshing ‘\(projectName)’..."
-          case .englishUnitedStates, .englishCanada:
-            return "Refreshing “\(projectName)”..."
-          case .deutschDeutschland:
-            return "„\(projectName)“ wird aufgefrischt ..."
-          }
-        }).resolved().formattedAsSectionHeader()
-      )
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        let projectName = try options.project.localizedIsolatedProjectName(output: output)
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "Refreshing ‘\(projectName)’..."
+            case .englishUnitedStates, .englishCanada:
+              return "Refreshing “\(projectName)”..."
+            case .deutschDeutschland:
+              return "„\(projectName)“ wird aufgefrischt ..."
+            }
+          }).resolved().formattedAsSectionHeader()
+        )
 
-      // Scripts
-      if try options.project.configuration(output: output).provideWorkflowScripts {
-        try Workspace.Refresh.Scripts.command.execute(
+        // Scripts
+        if try options.project.configuration(output: output).provideWorkflowScripts {
+          try Workspace.Refresh.Scripts.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // Git
+        if try options.project.configuration(output: output).git.manage {
+          try Workspace.Refresh.Git.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // Read‐Me
+        if try options.project.configuration(output: output).documentation.readMe.manage {
+          try Workspace.Refresh.ReadMe.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // Licence
+        if try options.project.configuration(output: output).licence.manage {
+          try Workspace.Refresh.Licence.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // GitHub
+        if try options.project.configuration(output: output).gitHub.manage {
+          try Workspace.Refresh.GitHub.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // Continuous Integration
+        if try options.project.configuration(output: output).continuousIntegration.manage {
+          try Workspace.Refresh.ContinuousIntegration.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
+        // Resources
+        try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
           options: options,
           output: output
         )
-      }
 
-      // Git
-      if try options.project.configuration(output: output).git.manage {
-        try Workspace.Refresh.Git.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
-      // Read‐Me
-      if try options.project.configuration(output: output).documentation.readMe.manage {
-        try Workspace.Refresh.ReadMe.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
-      // Licence
-      if try options.project.configuration(output: output).licence.manage {
-        try Workspace.Refresh.Licence.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
-      // GitHub
-      if try options.project.configuration(output: output).gitHub.manage {
-        try Workspace.Refresh.GitHub.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
-      // Continuous Integration
-      if try options.project.configuration(output: output).continuousIntegration.manage {
-        try Workspace.Refresh.ContinuousIntegration.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
-      // Resources
-      try Workspace.Refresh.Resources.command.execute(
-        withArguments: arguments,
-        options: options,
-        output: output
-      )
-
-      // File Headers
-      if try options.project.configuration(output: output).fileHeaders.manage {
-        try Workspace.Refresh.FileHeaders.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
+        // File Headers
+        if try options.project.configuration(output: output).fileHeaders.manage {
+          try Workspace.Refresh.FileHeaders.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+      #endif
 
       // Examples
       try Workspace.Refresh.Examples.command.execute(
@@ -197,38 +204,41 @@ extension Workspace.Refresh {
         output: output
       )
 
-      // Normalization
-      if try options.project.configuration(output: output).normalize {
-        try Workspace.Normalize.executeAsStep(options: options, output: output)
-      }
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        // Normalization
+        if try options.project.configuration(output: output).normalize {
+          try Workspace.Normalize.executeAsStep(options: options, output: output)
+        }
 
-      // Xcode
-      #if !os(Linux)
-        if try options.project.configuration(output: output).xcode.manage {
-          try Workspace.Refresh.Xcode.command.execute(
-            withArguments: arguments,
-            options: options,
-            output: output
+        // Xcode
+        #if !os(Linux)
+          if try options.project.configuration(output: output).xcode.manage {
+            try Workspace.Refresh.Xcode.command.execute(
+              withArguments: arguments,
+              options: options,
+              output: output
+            )
+          }
+        #endif
+
+        // Custom
+        for task in try options.project.configuration(output: output).customRefreshmentTasks {
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Executing custom task: ‘\(task.executable)’..."
+              case .englishUnitedStates, .englishCanada:
+                return "Executing custom task: “\(task.executable)”..."
+              case .deutschDeutschland:
+                return "Sonderaufgabe wird ausgeführt: „\(task.executable)“ ..."
+              }
+            }).resolved().formattedAsSectionHeader()
           )
+          try task.execute(output: output)
         }
       #endif
-
-      // Custom
-      for task in try options.project.configuration(output: output).customRefreshmentTasks {
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return "Executing custom task: ‘\(task.executable)’..."
-            case .englishUnitedStates, .englishCanada:
-              return "Executing custom task: “\(task.executable)”..."
-            case .deutschDeutschland:
-              return "Sonderaufgabe wird ausgeführt: „\(task.executable)“ ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-        try task.execute(output: output)
-      }
     }
   }
 }

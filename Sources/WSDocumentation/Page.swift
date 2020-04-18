@@ -121,7 +121,12 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    var mutable = Page.template
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
+      var mutable: StrictString = ""
+    #else
+      var mutable = Page.template
+    #endif
     mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
     mutable.replaceMatches(
       for: "[*text direction*]".scalars,

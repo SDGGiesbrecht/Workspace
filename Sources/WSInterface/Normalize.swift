@@ -74,7 +74,10 @@ extension Workspace {
         )
       }
 
-      try options.project.normalize(output: output)
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        try options.project.normalize(output: output)
+      #endif
     }
   }
 }

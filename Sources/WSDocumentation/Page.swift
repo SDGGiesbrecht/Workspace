@@ -35,11 +35,14 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  private static let template: StrictString = {
-    var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
-    result.header = ""
-    return StrictString(result.contents)
-  }()
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static let template: StrictString = {
+      var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
+      result.header = ""
+      return StrictString(result.contents)
+    }()
+  #endif
 
   private static func watermark(localization: LocalizationIdentifier) -> StrictString {
     let resolved = localization._bestMatch

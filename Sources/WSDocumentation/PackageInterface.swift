@@ -283,12 +283,15 @@ internal struct PackageInterface {
       )
 
       if hasInstallation {
-        result.append(
-          generateLoneIndexEntry(
-            named: installation(localization: localization),
-            target: installationLocation(localization: localization)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          result.append(
+            generateLoneIndexEntry(
+              named: installation(localization: localization),
+              target: installationLocation(localization: localization)
+            )
           )
-        )
+        #endif
       }
       if hasImporting {
         result.append(
@@ -475,19 +478,21 @@ internal struct PackageInterface {
     var entries: [StrictString] = []
     for (_, entry) in tools.commands {
       if let interface = entry.interfaces[localization] {
-        entries.append(
-          ElementSyntax(
-            "a",
-            attributes: [
-              "href":
-                "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-            ],
-            contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
-            inline: false
-          ).normalizedSource()
-        )
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          entries.append(
+            ElementSyntax(
+              "a",
+              attributes: [
+                "href":
+                  "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+              ],
+              contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
+              inline: false
+            ).normalizedSource()
+          )
+        #endif
       }
-
     }
     return generateIndexSection(
       named: name,
@@ -521,24 +526,28 @@ internal struct PackageInterface {
     ).normalizedSource()
   }
 
-  private static func generateLoneIndexEntry(named name: StrictString, target: StrictString)
-    -> StrictString
-  {
-    return ElementSyntax(
-      "div",
-      contents: ElementSyntax(
-        "a",
-        attributes: [
-          "class": "heading",
-          "href": "[*site root*]\(HTML.percentEncodeURLPath(target))",
-        ],
-        contents: HTML.escapeTextForCharacterData(name),
-        inline: true
-      )
-      .normalizedSource(),
-      inline: false
-    ).normalizedSource()
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static func generateLoneIndexEntry(
+      named name: StrictString,
+      target: StrictString
+    ) -> StrictString {
+      return ElementSyntax(
+        "div",
+        contents: ElementSyntax(
+          "a",
+          attributes: [
+            "class": "heading",
+            "href": "[*site root*]\(HTML.percentEncodeURLPath(target))",
+          ],
+          contents: HTML.escapeTextForCharacterData(name),
+          inline: true
+        )
+        .normalizedSource(),
+        inline: false
+      ).normalizedSource()
+    }
+  #endif
 
   private static func installation(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {

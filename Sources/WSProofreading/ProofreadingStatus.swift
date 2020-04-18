@@ -18,7 +18,7 @@ import SDGLogic
 import WSGeneralImports
 import WSProject
 
-#if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+#if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   internal protocol DiagnosticConsumer {}
 #else
   import SwiftSyntax

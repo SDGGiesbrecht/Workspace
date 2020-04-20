@@ -103,7 +103,10 @@ extension Workspace {
               })
           )
         }
-        try validationStatus.reportOutcome(project: options.project, output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 

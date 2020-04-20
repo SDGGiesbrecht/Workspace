@@ -72,7 +72,10 @@ extension Workspace.Validate {
           )
         }
 
-        try validationStatus.reportOutcome(project: options.project, output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 
@@ -81,10 +84,13 @@ extension Workspace.Validate {
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
-      try options.project.validateDocumentationCoverage(
-        validationStatus: &validationStatus,
-        output: output
-      )
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        try options.project.validateDocumentationCoverage(
+          validationStatus: &validationStatus,
+          output: output
+        )
+      #endif
     }
   }
 }

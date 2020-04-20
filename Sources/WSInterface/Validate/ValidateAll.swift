@@ -81,17 +81,17 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      if ¬ProcessInfo.isInContinuousIntegration {
-        // @exempt(from: tests)
-        try Workspace.Refresh.All.executeAsStep(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
-      }
-
       // #workaround(Swift 5.2.2, Web lacks Foundation.)
       #if !os(WASI)
+        if ¬ProcessInfo.isInContinuousIntegration {
+          // @exempt(from: tests)
+          try Workspace.Refresh.All.executeAsStep(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
+
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -197,112 +197,112 @@ extension Workspace.Validate {
             output: output
           )
         }
+
+        // Custom
+        for task in try options.project.configuration(output: output).customValidationTasks {
+          let state = validationStatus.newSection()
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Executing custom validation: ‘\(task.executable)’..."
+                  + state.anchor
+              case .englishUnitedStates, .englishCanada:
+                return "Executing custom validation: “\(task.executable)”..."
+                  + state.anchor
+              case .deutschDeutschland:
+                return "Sonderprüfung wird ausgeführt: „\(task.executable)“ ..."
+                  + state.anchor
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
+          do {
+            try task.execute(output: output)
+            validationStatus.passStep(
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom:
+                  return "Custom validation passes: ‘\(task.executable)’"
+                case .englishUnitedStates, .englishCanada:
+                  return "Custom validation passes: “\(task.executable)”"
+                case .deutschDeutschland:
+                  return "Sonderprüfung wurde bestanden: “\(task.executable)”"
+                }
+              })
+            )
+          } catch {
+            validationStatus.failStep(
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom:
+                  return "Custom validation fails: ‘\(task.executable)’"
+                    + state.crossReference.resolved(for: localization)
+                case .englishUnitedStates, .englishCanada:
+                  return "Custom validation fails: “\(task.executable)”"
+                    + state.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                  return "Sonderprüfung wurde nicht bestanden: “\(task.executable)”"
+                    + state.crossReference.resolved(for: localization)
+                }
+              })
+            )
+          }
+        }
+
+        // State
+        if ProcessInfo.isInContinuousIntegration
+          ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
+          ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
+        {
+          // @exempt(from: tests) Only reachable during pull request.
+
+          let state = validationStatus.newSection()
+
+          output.print(
+            UserFacing<
+              StrictString,
+              InterfaceLocalization
+            >({ localization in  // @exempt(from: tests)
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Validating project state..." + state.anchor
+              case .deutschDeutschland:
+                return "Projektstand wird geprüft ..." + state.anchor
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
+
+          let difference = try options.project.uncommittedChanges().get()
+          if ¬difference.isEmpty {
+            output.print(difference.separated())
+
+            validationStatus.failStep(
+              message: UserFacing({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return
+                    "The project is out of date. Please validate before committing."
+                    + state.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                  return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
+                    + state.crossReference.resolved(for: localization)
+                }
+              })
+            )
+          } else {
+            validationStatus.passStep(
+              message: UserFacing({ localization in  // @exempt(from: tests)
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "The project is up to date."
+                case .deutschDeutschland:
+                  return "Das Projekt ist auf dem neuesten Stand."
+                }
+              })
+            )
+          }
+        }
       #endif
-
-      // Custom
-      for task in try options.project.configuration(output: output).customValidationTasks {
-        let state = validationStatus.newSection()
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return "Executing custom validation: ‘\(task.executable)’..."
-                + state.anchor
-            case .englishUnitedStates, .englishCanada:
-              return "Executing custom validation: “\(task.executable)”..."
-                + state.anchor
-            case .deutschDeutschland:
-              return "Sonderprüfung wird ausgeführt: „\(task.executable)“ ..."
-                + state.anchor
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-        do {
-          try task.execute(output: output)
-          validationStatus.passStep(
-            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom:
-                return "Custom validation passes: ‘\(task.executable)’"
-              case .englishUnitedStates, .englishCanada:
-                return "Custom validation passes: “\(task.executable)”"
-              case .deutschDeutschland:
-                return "Sonderprüfung wurde bestanden: “\(task.executable)”"
-              }
-            })
-          )
-        } catch {
-          validationStatus.failStep(
-            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom:
-                return "Custom validation fails: ‘\(task.executable)’"
-                  + state.crossReference.resolved(for: localization)
-              case .englishUnitedStates, .englishCanada:
-                return "Custom validation fails: “\(task.executable)”"
-                  + state.crossReference.resolved(for: localization)
-              case .deutschDeutschland:
-                return "Sonderprüfung wurde nicht bestanden: “\(task.executable)”"
-                  + state.crossReference.resolved(for: localization)
-              }
-            })
-          )
-        }
-      }
-
-      // State
-      if ProcessInfo.isInContinuousIntegration
-        ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
-        ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
-      {
-        // @exempt(from: tests) Only reachable during pull request.
-
-        let state = validationStatus.newSection()
-
-        output.print(
-          UserFacing<
-            StrictString,
-            InterfaceLocalization
-          >({ localization in  // @exempt(from: tests)
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Validating project state..." + state.anchor
-            case .deutschDeutschland:
-              return "Projektstand wird geprüft ..." + state.anchor
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-
-        let difference = try options.project.uncommittedChanges().get()
-        if ¬difference.isEmpty {
-          output.print(difference.separated())
-
-          validationStatus.failStep(
-            message: UserFacing({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return
-                  "The project is out of date. Please validate before committing."
-                  + state.crossReference.resolved(for: localization)
-              case .deutschDeutschland:
-                return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
-                  + state.crossReference.resolved(for: localization)
-              }
-            })
-          )
-        } else {
-          validationStatus.passStep(
-            message: UserFacing({ localization in  // @exempt(from: tests)
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "The project is up to date."
-              case .deutschDeutschland:
-                return "Das Projekt ist auf dem neuesten Stand."
-              }
-            })
-          )
-        }
-      }
 
       output.print("Summary".formattedAsSectionHeader())
 
@@ -332,7 +332,10 @@ extension Workspace.Validate {
         )
       }
 
-      try validationStatus.reportOutcome(project: options.project, output: output)
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        try validationStatus.reportOutcome(project: options.project, output: output)
+      #endif
     }
   }
 }

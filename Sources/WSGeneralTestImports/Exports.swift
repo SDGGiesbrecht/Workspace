@@ -18,7 +18,10 @@
 @_exported import WorkspaceConfiguration
 @_exported import WSInterface
 
-@_exported import XCTest
+// #workaround(Swift 5.2.2, Web lacks XCTest.)
+#if !os(WASI)
+  @_exported import XCTest
+#endif
 
 @_exported import SDGPersistenceTestUtilities
 @_exported import SDGLocalizationTestUtilities

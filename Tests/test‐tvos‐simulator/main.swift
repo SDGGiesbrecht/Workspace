@@ -43,6 +43,6 @@ do {
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
     print(error.localizedDescription)
+    exit(1)
   #endif
-  exit(1)
 }

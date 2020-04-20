@@ -76,6 +76,11 @@ jobs:
       with:
         name: ICU
         path: Android/ICU
+    - name: Clean ICU source up
+      shell: bash
+      run: |
+        set -x
+        rm -rf icu
     - name: Fetch Swift source
       # Based on https://github.com/apple/swift#getting-sources-for-swift-and-related-projects
       shell: bash

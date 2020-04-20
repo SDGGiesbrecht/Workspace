@@ -94,7 +94,9 @@ extension Workspace {
 
     static func checkForUpdates(output: Command.Output) throws -> Version? {
       // #workaround(Swift 5.2.2, Web lacks Foundation.)
-      #if !os(WASI)
+      #if os(WASI)
+        return nil
+      #else
         let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
         if latestRemote ≠ Metadata.latestStableVersion {
           // @exempt(from: tests) Execution path is determined externally.

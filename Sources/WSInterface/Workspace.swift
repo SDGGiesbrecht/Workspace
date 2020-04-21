@@ -37,13 +37,21 @@ public enum Workspace {
           "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
       }
     })
-  internal static let projectOption = Option(
-    name: projectName,
-    description: projectDescription,
-    type: ArgumentType.path
-  )
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal static let projectOption = Option(
+      name: projectName,
+      description: projectDescription,
+      type: ArgumentType.path
+    )
+  #endif
 
-  internal static let standardOptions: [AnyOption] = [projectOption]
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if os(WASI)
+    internal static let standardOptions: [AnyOption] = []
+  #else
+    internal static let standardOptions: [AnyOption] = [projectOption]
+  #endif
 
   private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {

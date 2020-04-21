@@ -18,7 +18,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
@@ -28,101 +29,104 @@ import WorkspaceConfiguration
 
 internal struct PackageInterface {
 
-  private static func specify(package: URL?, version: Version?) -> StrictString? {
-    guard let specified = package else {
-      return nil
-    }
-    let packageURL = StrictString(specified.absoluteString)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static func specify(package: URL?, version: Version?) -> StrictString? {
+      guard let specified = package else {
+        return nil
+      }
+      let packageURL = StrictString(specified.absoluteString)
 
-    var result = [
-      ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
-        .normalizedSource(),
-      ElementSyntax(
-        "span",
-        attributes: ["class": "external identifier"],
-        contents: "package",
-        inline: true
-      ).normalizedSource(),
-      ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
-        .normalizedSource(),
-      ElementSyntax(
-        "span",
-        attributes: ["class": "external identifier"],
-        contents: "url",
-        inline: true
-      )
-      .normalizedSource(),
-      ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
-        .normalizedSource(),
-      " ",
-      ElementSyntax(
-        "span",
-        attributes: ["class": "string"],
-        contents: [
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: "\u{22}",
-            inline: true
-          ).normalizedSource(),
-          ElementSyntax(
-            "a",
-            attributes: ["href": packageURL],
-            contents: [
-              ElementSyntax(
-                "span",
-                attributes: ["class": "text"],
-                contents: HTML.escapeTextForCharacterData(packageURL),
-                inline: true
-              ).normalizedSource()
-            ].joined(),
-            inline: true
-          ).normalizedSource(),
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: "\u{22}",
-            inline: true
-          ).normalizedSource(),
-        ].joined(),
-        inline: true
-      ).normalizedSource(),
-    ].joined()
-
-    if let specified = specify(version: version) {
-      result.append(
-        contentsOf: [
-          ElementSyntax(
-            "span",
-            attributes: ["class": "punctuation"],
-            contents: ",",
-            inline: true
-          )
+      var result = [
+        ElementSyntax("span", attributes: ["class": "punctuation"], contents: ".", inline: true)
           .normalizedSource(),
-          " ",
-          specified,
-        ].joined()
-      )
-    }
+        ElementSyntax(
+          "span",
+          attributes: ["class": "external identifier"],
+          contents: "package",
+          inline: true
+        ).normalizedSource(),
+        ElementSyntax("span", attributes: ["class": "punctuation"], contents: "(", inline: true)
+          .normalizedSource(),
+        ElementSyntax(
+          "span",
+          attributes: ["class": "external identifier"],
+          contents: "url",
+          inline: true
+        )
+        .normalizedSource(),
+        ElementSyntax("span", attributes: ["class": "punctuation"], contents: ":", inline: true)
+          .normalizedSource(),
+        " ",
+        ElementSyntax(
+          "span",
+          attributes: ["class": "string"],
+          contents: [
+            ElementSyntax(
+              "span",
+              attributes: ["class": "punctuation"],
+              contents: "\u{22}",
+              inline: true
+            ).normalizedSource(),
+            ElementSyntax(
+              "a",
+              attributes: ["href": packageURL],
+              contents: [
+                ElementSyntax(
+                  "span",
+                  attributes: ["class": "text"],
+                  contents: HTML.escapeTextForCharacterData(packageURL),
+                  inline: true
+                ).normalizedSource()
+              ].joined(),
+              inline: true
+            ).normalizedSource(),
+            ElementSyntax(
+              "span",
+              attributes: ["class": "punctuation"],
+              contents: "\u{22}",
+              inline: true
+            ).normalizedSource(),
+          ].joined(),
+          inline: true
+        ).normalizedSource(),
+      ].joined()
 
-    result.append(
-      contentsOf: ElementSyntax(
+      if let specified = specify(version: version) {
+        result.append(
+          contentsOf: [
+            ElementSyntax(
+              "span",
+              attributes: ["class": "punctuation"],
+              contents: ",",
+              inline: true
+            )
+            .normalizedSource(),
+            " ",
+            specified,
+          ].joined()
+        )
+      }
+
+      result.append(
+        contentsOf: ElementSyntax(
+          "span",
+          attributes: ["class": "punctuation"],
+          contents: ")",
+          inline: true
+        )
+        .normalizedSource()
+      )
+
+      return ElementSyntax(
         "span",
-        attributes: ["class": "punctuation"],
-        contents: ")",
+        attributes: ["class": "swift blockquote"],
+        contents: result,
         inline: true
       )
       .normalizedSource()
-    )
-
-    return ElementSyntax(
-      "span",
-      attributes: ["class": "swift blockquote"],
-      contents: result,
-      inline: true
-    )
-    .normalizedSource()
-  }
+    }
+  #endif
 
   private static func specify(version: Version?) -> StrictString? {
     guard let specified = version else {
@@ -203,7 +207,8 @@ internal struct PackageInterface {
     return result
   }
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     private static func generateIndices(
       for package: PackageAPI,
       tools: PackageCLI,
@@ -244,7 +249,8 @@ internal struct PackageInterface {
     }
   }
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     private static func generateIndex(
       for package: PackageAPI,
       tools: PackageCLI,
@@ -277,12 +283,15 @@ internal struct PackageInterface {
       )
 
       if hasInstallation {
-        result.append(
-          generateLoneIndexEntry(
-            named: installation(localization: localization),
-            target: installationLocation(localization: localization)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          result.append(
+            generateLoneIndexEntry(
+              named: installation(localization: localization),
+              target: installationLocation(localization: localization)
+            )
           )
-        )
+        #endif
       }
       if hasImporting {
         result.append(
@@ -469,19 +478,21 @@ internal struct PackageInterface {
     var entries: [StrictString] = []
     for (_, entry) in tools.commands {
       if let interface = entry.interfaces[localization] {
-        entries.append(
-          ElementSyntax(
-            "a",
-            attributes: [
-              "href":
-                "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-            ],
-            contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
-            inline: false
-          ).normalizedSource()
-        )
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          entries.append(
+            ElementSyntax(
+              "a",
+              attributes: [
+                "href":
+                  "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+              ],
+              contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
+              inline: false
+            ).normalizedSource()
+          )
+        #endif
       }
-
     }
     return generateIndexSection(
       named: name,
@@ -515,24 +526,28 @@ internal struct PackageInterface {
     ).normalizedSource()
   }
 
-  private static func generateLoneIndexEntry(named name: StrictString, target: StrictString)
-    -> StrictString
-  {
-    return ElementSyntax(
-      "div",
-      contents: ElementSyntax(
-        "a",
-        attributes: [
-          "class": "heading",
-          "href": "[*site root*]\(HTML.percentEncodeURLPath(target))",
-        ],
-        contents: HTML.escapeTextForCharacterData(name),
-        inline: true
-      )
-      .normalizedSource(),
-      inline: false
-    ).normalizedSource()
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static func generateLoneIndexEntry(
+      named name: StrictString,
+      target: StrictString
+    ) -> StrictString {
+      return ElementSyntax(
+        "div",
+        contents: ElementSyntax(
+          "a",
+          attributes: [
+            "class": "heading",
+            "href": "[*site root*]\(HTML.percentEncodeURLPath(target))",
+          ],
+          contents: HTML.escapeTextForCharacterData(name),
+          inline: true
+        )
+        .normalizedSource(),
+        inline: false
+      ).normalizedSource()
+    }
+  #endif
 
   private static func installation(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
@@ -600,7 +615,8 @@ internal struct PackageInterface {
 
   // MARK: - Initialization
 
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     init(
       localizations: [LocalizationIdentifier],
       developmentLocalization: LocalizationIdentifier,
@@ -680,7 +696,8 @@ internal struct PackageInterface {
 
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
     private let packageAPI: PackageAPI
     private let api: APIElement
   #endif
@@ -710,318 +727,433 @@ internal struct PackageInterface {
 
   // MARK: - Output
 
-  internal func outputHTML(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    output.print(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Generating HTML..."
-        case .deutschDeutschland:
-          return "Auszeichnung wird erstellt ..."
-        }
-      }).resolved()
-    )
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal func outputHTML(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Generating HTML..."
+          case .deutschDeutschland:
+            return "Auszeichnung wird erstellt ..."
+          }
+        }).resolved()
+      )
 
-    try outputPackagePages(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: status,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
-    try outputToolPages(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: status,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
-    try outputLibraryPages(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: status,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
-    try outputModulePages(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: status,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
-    try outputTopLevelSymbols(
-      to: outputDirectory,
-      customReplacements: customReplacements,
-      status: status,
-      output: output,
-      coverageCheckOnly: coverageCheckOnly
-    )
+      try outputPackagePages(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: status,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
+      try outputToolPages(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: status,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
+      try outputLibraryPages(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: status,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
+      try outputModulePages(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: status,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
+      try outputTopLevelSymbols(
+        to: outputDirectory,
+        customReplacements: customReplacements,
+        status: status,
+        output: output,
+        coverageCheckOnly: coverageCheckOnly
+      )
 
-    if coverageCheckOnly {
-      return
+      if coverageCheckOnly {
+        return
+      }
+
+      try outputGeneralPage(
+        to: outputDirectory,
+        location: PackageInterface.installationLocation,
+        title: PackageInterface.installation,
+        content: installation,
+        status: status,
+        output: output
+      )
+      try outputGeneralPage(
+        to: outputDirectory,
+        location: PackageInterface.importingLocation,
+        title: PackageInterface.importing,
+        content: importing,
+        status: status,
+        output: output
+      )
+      try outputGeneralPage(
+        to: outputDirectory,
+        location: PackageInterface.relatedProjectsLocation,
+        title: PackageInterface.relatedProjects,
+        content: relatedProjects,
+        status: status,
+        output: output
+      )
+      try outputGeneralPage(
+        to: outputDirectory,
+        location: PackageInterface.aboutLocation,
+        title: PackageInterface.about,
+        content: about,
+        status: status,
+        output: output
+      )
+
+      try outputRedirects(to: outputDirectory, customReplacements: customReplacements)
     }
 
-    try outputGeneralPage(
-      to: outputDirectory,
-      location: PackageInterface.installationLocation,
-      title: PackageInterface.installation,
-      content: installation,
-      status: status,
-      output: output
-    )
-    try outputGeneralPage(
-      to: outputDirectory,
-      location: PackageInterface.importingLocation,
-      title: PackageInterface.importing,
-      content: importing,
-      status: status,
-      output: output
-    )
-    try outputGeneralPage(
-      to: outputDirectory,
-      location: PackageInterface.relatedProjectsLocation,
-      title: PackageInterface.relatedProjects,
-      content: relatedProjects,
-      status: status,
-      output: output
-    )
-    try outputGeneralPage(
-      to: outputDirectory,
-      location: PackageInterface.aboutLocation,
-      title: PackageInterface.about,
-      content: about,
-      status: status,
-      output: output
-    )
+    private func outputPackagePages(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      for localization in localizations {
+        try autoreleasepool {
+          // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+          #if !(os(Windows) || os(WASI) || os(Android))
+            let pageURL = api.pageURL(
+              in: outputDirectory,
+              for: localization,
+              customReplacements: customReplacements
+            )
+            try SymbolPage(
+              localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: "../",
+              navigationPath: [api],
+              packageImport: packageImport,
+              index: indices[localization]!,
+              sectionIdentifier: .package,
+              platforms: platforms[localization]!,
+              symbol: api,
+              package: packageAPI,
+              tools: cli,
+              copyright: copyright(for: localization, status: status),
+              packageIdentifiers: packageIdentifiers,
+              symbolLinks: symbolLinks[localization]!,
+              status: status,
+              output: output,
+              coverageCheckOnly: coverageCheckOnly
+            )?.contents.save(to: pageURL)
+          #endif
+        }
+      }
+    }
 
-    try outputRedirects(to: outputDirectory, customReplacements: customReplacements)
-  }
+    private func outputToolPages(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      if coverageCheckOnly {
+        return
+      }
+      for localization in localizations {
+        for tool in cli.commands.values {
+          try autoreleasepool {
+            let location = tool.pageURL(in: outputDirectory, for: localization)
+            // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+            #if !(os(Windows) || os(WASI) || os(Android))
+              try CommandPage(
+                localization: localization,
+                allLocalizations: localizations,
+                pathToSiteRoot: "../../",
+                package: api,
+                navigationPath: [tool],
+                packageImport: packageImport,
+                index: indices[localization]!,
+                platforms: platforms[localization]!,
+                command: tool,
+                copyright: copyright(for: localization, status: status),
+                customReplacements: customReplacements,
+                output: output
+              ).contents.save(to: location)
+            #endif
 
-  private func outputPackagePages(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    for localization in localizations {
-      try autoreleasepool {
-        #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-          let pageURL = api.pageURL(
-            in: outputDirectory,
-            for: localization,
-            customReplacements: customReplacements
-          )
-          try SymbolPage(
-            localization: localization,
-            allLocalizations: localizations,
-            pathToSiteRoot: "../",
-            navigationPath: [api],
-            packageImport: packageImport,
-            index: indices[localization]!,
-            sectionIdentifier: .package,
-            platforms: platforms[localization]!,
-            symbol: api,
-            package: packageAPI,
-            tools: cli,
-            copyright: copyright(for: localization, status: status),
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks[localization]!,
-            status: status,
-            output: output,
-            coverageCheckOnly: coverageCheckOnly
-          )?.contents.save(to: pageURL)
+            try outputNestedCommands(
+              of: tool,
+              namespace: [tool],
+              to: outputDirectory,
+              localization: localization,
+              customReplacements: customReplacements,
+              status: status,
+              output: output
+            )
+          }
+        }
+      }
+    }
+
+    private func outputLibraryPages(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      for localization in localizations {
+        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
+          for library in api.libraries.lazy.map({ APIElement.library($0) })
+          where library.exists(in: localization) {
+            try autoreleasepool {
+              let location = library.pageURL(
+                in: outputDirectory,
+                for: localization,
+                customReplacements: customReplacements
+              )
+              try SymbolPage(
+                localization: localization,
+                allLocalizations: localizations,
+                pathToSiteRoot: "../../",
+                navigationPath: [api, library],
+                packageImport: packageImport,
+                index: indices[localization]!,
+                sectionIdentifier: .libraries,
+                platforms: platforms[localization]!,
+                symbol: library,
+                package: packageAPI,
+                copyright: copyright(for: localization, status: status),
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks[localization]!,
+                status: status,
+                output: output,
+                coverageCheckOnly: coverageCheckOnly
+              )?.contents.save(to: location)
+            }
+          }
         #endif
       }
     }
-  }
 
-  private func outputToolPages(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    if coverageCheckOnly {
-      return
-    }
-    for localization in localizations {
-      for tool in cli.commands.values {
-        try autoreleasepool {
-          let location = tool.pageURL(in: outputDirectory, for: localization)
-          #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-            try CommandPage(
-              localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: "../../",
-              package: api,
-              navigationPath: [tool],
-              packageImport: packageImport,
-              index: indices[localization]!,
-              platforms: platforms[localization]!,
-              command: tool,
-              copyright: copyright(for: localization, status: status),
-              customReplacements: customReplacements,
-              output: output
-            ).contents.save(to: location)
-          #endif
-
-          try outputNestedCommands(
-            of: tool,
-            namespace: [tool],
-            to: outputDirectory,
-            localization: localization,
-            customReplacements: customReplacements,
-            status: status,
-            output: output
-          )
-        }
+    private func outputModulePages(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      for localization in localizations {
+        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
+          for module in api.modules.lazy.map({ APIElement.module($0) })
+          where module.exists(in: localization) {
+            try autoreleasepool {
+              let location = module.pageURL(
+                in: outputDirectory,
+                for: localization,
+                customReplacements: customReplacements
+              )
+              try SymbolPage(
+                localization: localization,
+                allLocalizations: localizations,
+                pathToSiteRoot: "../../",
+                navigationPath: [api, module],
+                packageImport: packageImport,
+                index: indices[localization]!,
+                sectionIdentifier: .modules,
+                platforms: platforms[localization]!,
+                symbol: module,
+                package: packageAPI,
+                copyright: copyright(for: localization, status: status),
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks[localization]!,
+                status: status,
+                output: output,
+                coverageCheckOnly: coverageCheckOnly
+              )?.contents.save(to: location)
+            }
+          }
+        #endif
       }
     }
-  }
 
-  private func outputLibraryPages(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    for localization in localizations {
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-        for library in api.libraries.lazy.map({ APIElement.library($0) })
-        where library.exists(in: localization) {
-          try autoreleasepool {
-            let location = library.pageURL(
-              in: outputDirectory,
-              for: localization,
-              customReplacements: customReplacements
-            )
-            try SymbolPage(
+    private func outputTopLevelSymbols(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+      for localization in localizations {
+        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
+          for symbol in [
+            packageAPI.types.map({ APIElement.type($0) }),
+            packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
+            packageAPI.protocols.map({ APIElement.protocol($0) }),
+            packageAPI.functions.map({ APIElement.function($0) }),
+            packageAPI.globalVariables.map({ APIElement.variable($0) }),
+            packageAPI.operators.map({ APIElement.operator($0) }),
+            packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
+          ].joined()
+          where symbol.exists(in: localization) {
+            try autoreleasepool {
+              let location = symbol.pageURL(
+                in: outputDirectory,
+                for: localization,
+                customReplacements: customReplacements
+              )
+              let section: IndexSectionIdentifier
+              switch symbol {
+              case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+                unreachable()
+              case .type:
+                section = .types
+              case .extension:
+                section = .extensions
+              case .protocol:
+                section = .protocols
+              case .function:
+                section = .functions
+              case .variable:
+                section = .variables
+              case .operator:
+                section = .operators
+              case .precedence:
+                section = .precedenceGroups
+              }
+              try SymbolPage(
+                localization: localization,
+                allLocalizations: localizations,
+                pathToSiteRoot: "../../",
+                navigationPath: [api, symbol],
+                packageImport: packageImport,
+                index: indices[localization]!,
+                sectionIdentifier: section,
+                platforms: platforms[localization]!,
+                symbol: symbol,
+                package: packageAPI,
+                copyright: copyright(for: localization, status: status),
+                packageIdentifiers: packageIdentifiers,
+                symbolLinks: symbolLinks[localization]!,
+                status: status,
+                output: output,
+                coverageCheckOnly: coverageCheckOnly
+              )?.contents.save(to: location)
+
+              switch symbol {
+              case .package, .library, .module, .case, .initializer, .variable, .subscript,
+                .function, .operator, .precedence, .conformance:
+                break
+              case .extension:
+                break  // Iterated separately below.
+              case .type, .protocol:
+                try outputNestedSymbols(
+                  of: symbol,
+                  namespace: [symbol],
+                  sectionIdentifier: section,
+                  to: outputDirectory,
+                  localization: localization,
+                  customReplacements: customReplacements,
+                  status: status,
+                  output: output,
+                  coverageCheckOnly: coverageCheckOnly
+                )
+              }
+            }
+          }
+
+          for `extension` in packageAPI.allExtensions {
+            let apiElement = APIElement.extension(`extension`)
+
+            var namespace = apiElement
+            var section: IndexSectionIdentifier = .extensions
+            for type in packageAPI.types where `extension`.isExtension(of: type) {
+              namespace = APIElement.type(type)
+              section = .types
+              break
+            }
+            if namespace == apiElement /* Still not resolved. */ {
+              for `protocol` in packageAPI.protocols
+              where `extension`.isExtension(of: `protocol`) {
+                namespace = APIElement.protocol(`protocol`)
+                section = .protocols
+                break
+              }
+            }
+
+            try outputNestedSymbols(
+              of: apiElement,
+              namespace: [namespace],
+              sectionIdentifier: section,
+              to: outputDirectory,
               localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: "../../",
-              navigationPath: [api, library],
-              packageImport: packageImport,
-              index: indices[localization]!,
-              sectionIdentifier: .libraries,
-              platforms: platforms[localization]!,
-              symbol: library,
-              package: packageAPI,
-              copyright: copyright(for: localization, status: status),
-              packageIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks[localization]!,
+              customReplacements: customReplacements,
               status: status,
               output: output,
               coverageCheckOnly: coverageCheckOnly
-            )?.contents.save(to: location)
-          }
-        }
-      #endif
-    }
-  }
-
-  private func outputModulePages(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    for localization in localizations {
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-        for module in api.modules.lazy.map({ APIElement.module($0) })
-        where module.exists(in: localization) {
-          try autoreleasepool {
-            let location = module.pageURL(
-              in: outputDirectory,
-              for: localization,
-              customReplacements: customReplacements
             )
-            try SymbolPage(
-              localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: "../../",
-              navigationPath: [api, module],
-              packageImport: packageImport,
-              index: indices[localization]!,
-              sectionIdentifier: .modules,
-              platforms: platforms[localization]!,
-              symbol: module,
-              package: packageAPI,
-              copyright: copyright(for: localization, status: status),
-              packageIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks[localization]!,
-              status: status,
-              output: output,
-              coverageCheckOnly: coverageCheckOnly
-            )?.contents.save(to: location)
           }
-        }
-      #endif
+        #endif
+      }
     }
-  }
 
-  private func outputTopLevelSymbols(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
-    for localization in localizations {
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-        for symbol in [
-          packageAPI.types.map({ APIElement.type($0) }),
-          packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
-          packageAPI.protocols.map({ APIElement.protocol($0) }),
-          packageAPI.functions.map({ APIElement.function($0) }),
-          packageAPI.globalVariables.map({ APIElement.variable($0) }),
-          packageAPI.operators.map({ APIElement.operator($0) }),
-          packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
-        ].joined()
-        where symbol.exists(in: localization) {
+    // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
+      private func outputNestedSymbols(
+        of parent: APIElement,
+        namespace: [APIElement],
+        sectionIdentifier: IndexSectionIdentifier,
+        to outputDirectory: URL,
+        localization: LocalizationIdentifier,
+        customReplacements: [(StrictString, StrictString)],
+        status: DocumentationStatus,
+        output: Command.Output,
+        coverageCheckOnly: Bool
+      ) throws {
+
+        for symbol in [parent.children, parent.localizedChildren].joined()
+        where symbol.receivesPage ∧ symbol.exists(in: localization) {
           try autoreleasepool {
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
               customReplacements: customReplacements
             )
-            let section: IndexSectionIdentifier
-            switch symbol {
-            case .package, .library, .module, .case, .initializer, .subscript, .conformance:
-              unreachable()
-            case .type:
-              section = .types
-            case .extension:
-              section = .extensions
-            case .protocol:
-              section = .protocols
-            case .function:
-              section = .functions
-            case .variable:
-              section = .variables
-            case .operator:
-              section = .operators
-            case .precedence:
-              section = .precedenceGroups
+
+            var modifiedRoot: StrictString = "../../"
+            for _ in namespace.indices {
+              modifiedRoot += "../../".scalars
             }
+
+            var navigation: [APIElement] = [api]
+            navigation += namespace as [APIElement]
+            navigation += [symbol]
+
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
-              pathToSiteRoot: "../../",
-              navigationPath: [api, symbol],
+              pathToSiteRoot: modifiedRoot,
+              navigationPath: navigation,
               packageImport: packageImport,
               index: indices[localization]!,
-              sectionIdentifier: section,
+              sectionIdentifier: sectionIdentifier,
               platforms: platforms[localization]!,
               symbol: symbol,
               package: packageAPI,
@@ -1037,13 +1169,11 @@ internal struct PackageInterface {
             case .package, .library, .module, .case, .initializer, .variable, .subscript,
               .function, .operator, .precedence, .conformance:
               break
-            case .extension:
-              break  // Iterated separately below.
-            case .type, .protocol:
+            case .type, .protocol, .extension:
               try outputNestedSymbols(
                 of: symbol,
-                namespace: [symbol],
-                sectionIdentifier: section,
+                namespace: namespace + [symbol],
+                sectionIdentifier: sectionIdentifier,
                 to: outputDirectory,
                 localization: localization,
                 customReplacements: customReplacements,
@@ -1054,323 +1184,223 @@ internal struct PackageInterface {
             }
           }
         }
+      }
+    #endif
 
-        for `extension` in packageAPI.allExtensions {
-          let apiElement = APIElement.extension(`extension`)
-
-          var namespace = apiElement
-          var section: IndexSectionIdentifier = .extensions
-          for type in packageAPI.types where `extension`.isExtension(of: type) {
-            namespace = APIElement.type(type)
-            section = .types
-            break
-          }
-          if namespace == apiElement /* Still not resolved. */ {
-            for `protocol` in packageAPI.protocols
-            where `extension`.isExtension(of: `protocol`) {
-              namespace = APIElement.protocol(`protocol`)
-              section = .protocols
-              break
-            }
-          }
-
-          try outputNestedSymbols(
-            of: apiElement,
-            namespace: [namespace],
-            sectionIdentifier: section,
-            to: outputDirectory,
-            localization: localization,
-            customReplacements: customReplacements,
-            status: status,
-            output: output,
-            coverageCheckOnly: coverageCheckOnly
-          )
-        }
-      #endif
-    }
-  }
-
-  #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-    private func outputNestedSymbols(
-      of parent: APIElement,
-      namespace: [APIElement],
-      sectionIdentifier: IndexSectionIdentifier,
+    private func outputNestedCommands(
+      of parent: CommandInterfaceInformation,
+      namespace: [CommandInterfaceInformation],
       to outputDirectory: URL,
       localization: LocalizationIdentifier,
       customReplacements: [(StrictString, StrictString)],
       status: DocumentationStatus,
-      output: Command.Output,
-      coverageCheckOnly: Bool
+      output: Command.Output
     ) throws {
 
-      for symbol in [parent.children, parent.localizedChildren].joined()
-      where symbol.receivesPage ∧ symbol.exists(in: localization) {
+      for subcommand in parent.interfaces[localization]!.subcommands {
         try autoreleasepool {
-          let location = symbol.pageURL(
-            in: outputDirectory,
-            for: localization,
-            customReplacements: customReplacements
-          )
+          var information = CommandInterfaceInformation()
+          information.interfaces[localization] = subcommand
+
+          for otherLocalization in localizations {
+            let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: {
+              $0.identifier == subcommand.identifier
+            })!
+            if otherLocalization ≠ localization {
+              information.interfaces[otherLocalization] = localized
+            }
+
+            var nestedPagePath = parent.relativePagePath[otherLocalization]!
+            nestedPagePath.removeLast(5)  // .html
+            nestedPagePath += "/"
+            // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+            #if !(os(Windows) || os(WASI) || os(Android))
+              nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
+            #endif
+            nestedPagePath += "/"
+            nestedPagePath += Page.sanitize(
+              fileName: localized.name,
+              customReplacements: customReplacements
+            )
+            nestedPagePath += ".html"
+            information.relativePagePath[otherLocalization] = nestedPagePath
+          }
+
+          let location = information.pageURL(in: outputDirectory, for: localization)
 
           var modifiedRoot: StrictString = "../../"
           for _ in namespace.indices {
             modifiedRoot += "../../".scalars
           }
 
-          var navigation: [APIElement] = [api]
-          navigation += namespace as [APIElement]
-          navigation += [symbol]
+          var navigation = namespace
+          navigation.append(information)
 
-          try SymbolPage(
-            localization: localization,
-            allLocalizations: localizations,
-            pathToSiteRoot: modifiedRoot,
-            navigationPath: navigation,
-            packageImport: packageImport,
-            index: indices[localization]!,
-            sectionIdentifier: sectionIdentifier,
-            platforms: platforms[localization]!,
-            symbol: symbol,
-            package: packageAPI,
-            copyright: copyright(for: localization, status: status),
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks[localization]!,
-            status: status,
-            output: output,
-            coverageCheckOnly: coverageCheckOnly
-          )?.contents.save(to: location)
-
-          switch symbol {
-          case .package, .library, .module, .case, .initializer, .variable, .subscript,
-            .function, .operator, .precedence, .conformance:
-            break
-          case .type, .protocol, .extension:
-            try outputNestedSymbols(
-              of: symbol,
-              namespace: namespace + [symbol],
-              sectionIdentifier: sectionIdentifier,
-              to: outputDirectory,
+          // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+          #if !(os(Windows) || os(WASI) || os(Android))
+            try CommandPage(
               localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: modifiedRoot,
+              package: api,
+              navigationPath: navigation,
+              packageImport: packageImport,
+              index: indices[localization]!,
+              platforms: platforms[localization]!,
+              command: information,
+              copyright: copyright(for: localization, status: status),
               customReplacements: customReplacements,
-              status: status,
-              output: output,
-              coverageCheckOnly: coverageCheckOnly
+              output: output
+            ).contents.save(to: location)
+          #endif
+
+          try outputNestedCommands(
+            of: information,
+            namespace: navigation,
+            to: outputDirectory,
+            localization: localization,
+            customReplacements: customReplacements,
+            status: status,
+            output: output
+          )
+        }
+      }
+    }
+
+    private func outputGeneralPage(
+      to outputDirectory: URL,
+      location: (LocalizationIdentifier) -> StrictString,
+      title: (LocalizationIdentifier) -> StrictString,
+      content: [LocalizationIdentifier: Markdown],
+      status: DocumentationStatus,
+      output: Command.Output
+    ) throws {
+      for localization in localizations {
+        if let specifiedContent = content[localization] {
+          let pathToSiteRoot: StrictString = "../"
+          let pageTitle = title(localization)
+          let pagePath = location(localization)
+
+          // Parse via proxy Swift file.
+          var documentationMarkup: StrictString = ""
+          if ¬specifiedContent.isEmpty {
+            documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
+            documentationMarkup.append(
+              contentsOf: specifiedContent.lines.lazy.map({ line in
+                return "/// \(line.line)" as StrictString
+              }).joined(separator: "\n")
             )
           }
+          documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
+          // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+          #if !(os(Windows) || os(WASI) || os(Android))
+            let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
+            let documentation = parsed.api().first!.documentation.last?.documentationComment
+
+            var pageContent = ""
+            for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
+              pageContent.append("\n")
+              pageContent.append(
+                contentsOf: paragraph.renderedHTML(
+                  localization: localization.code,
+                  symbolLinks: symbolLinks[localization]!
+                    .mapValues({ String(pathToSiteRoot) + $0 })
+                )
+              )
+            }
+
+            let page = Page(
+              localization: localization,
+              pathToSiteRoot: pathToSiteRoot,
+              navigationPath: SymbolPage.generateNavigationPath(
+                localization: localization,
+                pathToSiteRoot: pathToSiteRoot,
+                allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
+                  .map({ localization in
+                    return (localization: localization, path: location(localization))
+                  }),
+                navigationPath: [
+                  (
+                    label: StrictString(api.name.source()),
+                    path: api.relativePagePath[localization]!
+                  ),
+                  (label: pageTitle, path: pagePath),
+                ]
+              ),
+              packageImport: packageImport,
+              index: indices[localization]!,
+              sectionIdentifier: nil,
+              platforms: platforms[localization]!,
+              symbolImports: "",
+              symbolType: nil,
+              compilationConditions: nil,
+              constraints: nil,
+              title: HTML.escapeTextForCharacterData(pageTitle),
+              content: StrictString(pageContent),
+              extensions: "",
+              copyright: copyright(for: localization, status: status)
+            )
+            let url = outputDirectory.appendingPathComponent(String(location(localization)))
+            try page.contents.save(to: url)
+          #endif
         }
+      }
+    }
+
+    private func outputRedirects(
+      to outputDirectory: URL,
+      customReplacements: [(StrictString, StrictString)]
+    ) throws {
+      // Out of directories.
+      var handled = Set<URL>()
+      for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+        try autoreleasepool {
+          var directory = url.deletingLastPathComponent()
+          while directory ∉ handled,
+          directory.is(in: outputDirectory) {
+            defer {
+              handled.insert(directory)
+              directory = directory.deletingLastPathComponent()
+            }
+
+            let redirect = directory.appendingPathComponent("index.html")
+            if (try? redirect.checkResourceIsReachable()) ≠ true {
+              // Do not overwrite if there is a file name clash.
+              try DocumentSyntax.redirect(
+                language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
+                target: URL(fileURLWithPath: "../index.html")
+              ).source().save(to: redirect)
+            }
+          }
+        }
+      }
+
+      // To home page.
+      let root = outputDirectory.appendingPathComponent("index.html")
+      try DocumentSyntax.redirect(
+        language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
+        target: URL(fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html")
+      ).source().save(to: root)
+      for localization in localizations {
+        let localizationDirectory = outputDirectory.appendingPathComponent(
+          String(localization._directoryName)
+        )
+        let redirectURL = localizationDirectory.appendingPathComponent("index.html")
+        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
+          let pageURL = api.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
+          if redirectURL ≠ pageURL {
+            try DocumentSyntax.redirect(
+              language: AnyLocalization(code: localization.code),
+              target: URL(fileURLWithPath: pageURL.lastPathComponent)
+            ).source().save(to: redirectURL)
+          }
+        #endif
       }
     }
   #endif
-
-  private func outputNestedCommands(
-    of parent: CommandInterfaceInformation,
-    namespace: [CommandInterfaceInformation],
-    to outputDirectory: URL,
-    localization: LocalizationIdentifier,
-    customReplacements: [(StrictString, StrictString)],
-    status: DocumentationStatus,
-    output: Command.Output
-  ) throws {
-
-    for subcommand in parent.interfaces[localization]!.subcommands {
-      try autoreleasepool {
-        var information = CommandInterfaceInformation()
-        information.interfaces[localization] = subcommand
-
-        for otherLocalization in localizations {
-          let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: {
-            $0.identifier == subcommand.identifier
-          })!
-          if otherLocalization ≠ localization {
-            information.interfaces[otherLocalization] = localized
-          }
-
-          var nestedPagePath = parent.relativePagePath[otherLocalization]!
-          nestedPagePath.removeLast(5)  // .html
-          nestedPagePath += "/"
-          #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-            nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
-          #endif
-          nestedPagePath += "/"
-          nestedPagePath += Page.sanitize(
-            fileName: localized.name,
-            customReplacements: customReplacements
-          )
-          nestedPagePath += ".html"
-          information.relativePagePath[otherLocalization] = nestedPagePath
-        }
-
-        let location = information.pageURL(in: outputDirectory, for: localization)
-
-        var modifiedRoot: StrictString = "../../"
-        for _ in namespace.indices {
-          modifiedRoot += "../../".scalars
-        }
-
-        var navigation = namespace
-        navigation.append(information)
-
-        #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-          try CommandPage(
-            localization: localization,
-            allLocalizations: localizations,
-            pathToSiteRoot: modifiedRoot,
-            package: api,
-            navigationPath: navigation,
-            packageImport: packageImport,
-            index: indices[localization]!,
-            platforms: platforms[localization]!,
-            command: information,
-            copyright: copyright(for: localization, status: status),
-            customReplacements: customReplacements,
-            output: output
-          ).contents.save(to: location)
-        #endif
-
-        try outputNestedCommands(
-          of: information,
-          namespace: navigation,
-          to: outputDirectory,
-          localization: localization,
-          customReplacements: customReplacements,
-          status: status,
-          output: output
-        )
-      }
-    }
-  }
-
-  private func outputGeneralPage(
-    to outputDirectory: URL,
-    location: (LocalizationIdentifier) -> StrictString,
-    title: (LocalizationIdentifier) -> StrictString,
-    content: [LocalizationIdentifier: Markdown],
-    status: DocumentationStatus,
-    output: Command.Output
-  ) throws {
-    for localization in localizations {
-      if let specifiedContent = content[localization] {
-        let pathToSiteRoot: StrictString = "../"
-        let pageTitle = title(localization)
-        let pagePath = location(localization)
-
-        // Parse via proxy Swift file.
-        var documentationMarkup: StrictString = ""
-        if ¬specifiedContent.isEmpty {
-          documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
-          documentationMarkup.append(
-            contentsOf: specifiedContent.lines.lazy.map({ line in
-              return "/// \(line.line)" as StrictString
-            }).joined(separator: "\n")
-          )
-        }
-        documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-        #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-          let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
-          let documentation = parsed.api().first!.documentation.last?.documentationComment
-
-          var pageContent = ""
-          for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
-            pageContent.append("\n")
-            pageContent.append(
-              contentsOf: paragraph.renderedHTML(
-                localization: localization.code,
-                symbolLinks: symbolLinks[localization]!
-                  .mapValues({ String(pathToSiteRoot) + $0 })
-              )
-            )
-          }
-
-          let page = Page(
-            localization: localization,
-            pathToSiteRoot: pathToSiteRoot,
-            navigationPath: SymbolPage.generateNavigationPath(
-              localization: localization,
-              pathToSiteRoot: pathToSiteRoot,
-              allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
-                .map({ localization in
-                  return (localization: localization, path: location(localization))
-                }),
-              navigationPath: [
-                (
-                  label: StrictString(api.name.source()),
-                  path: api.relativePagePath[localization]!
-                ),
-                (label: pageTitle, path: pagePath),
-              ]
-            ),
-            packageImport: packageImport,
-            index: indices[localization]!,
-            sectionIdentifier: nil,
-            platforms: platforms[localization]!,
-            symbolImports: "",
-            symbolType: nil,
-            compilationConditions: nil,
-            constraints: nil,
-            title: HTML.escapeTextForCharacterData(pageTitle),
-            content: StrictString(pageContent),
-            extensions: "",
-            copyright: copyright(for: localization, status: status)
-          )
-          let url = outputDirectory.appendingPathComponent(String(location(localization)))
-          try page.contents.save(to: url)
-        #endif
-      }
-    }
-  }
-
-  private func outputRedirects(
-    to outputDirectory: URL,
-    customReplacements: [(StrictString, StrictString)]
-  ) throws {
-    // Out of directories.
-    var handled = Set<URL>()
-    for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-      try autoreleasepool {
-        var directory = url.deletingLastPathComponent()
-        while directory ∉ handled,
-        directory.is(in: outputDirectory) {
-          defer {
-            handled.insert(directory)
-            directory = directory.deletingLastPathComponent()
-          }
-
-          let redirect = directory.appendingPathComponent("index.html")
-          if (try? redirect.checkResourceIsReachable()) ≠ true {
-            // Do not overwrite if there is a file name clash.
-            try DocumentSyntax.redirect(
-              language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
-              target: URL(fileURLWithPath: "../index.html")
-            ).source().save(to: redirect)
-          }
-        }
-      }
-    }
-
-    // To home page.
-    let root = outputDirectory.appendingPathComponent("index.html")
-    try DocumentSyntax.redirect(
-      language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
-      target: URL(fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html")
-    ).source().save(to: root)
-    for localization in localizations {
-      let localizationDirectory = outputDirectory.appendingPathComponent(
-        String(localization._directoryName)
-      )
-      let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-      #if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
-        let pageURL = api.pageURL(
-          in: outputDirectory,
-          for: localization,
-          customReplacements: customReplacements
-        )
-        if redirectURL ≠ pageURL {
-          try DocumentSyntax.redirect(
-            language: AnyLocalization(code: localization.code),
-            target: URL(fileURLWithPath: pageURL.lastPathComponent)
-          ).source().save(to: redirectURL)
-        }
-      #endif
-    }
-  }
 }

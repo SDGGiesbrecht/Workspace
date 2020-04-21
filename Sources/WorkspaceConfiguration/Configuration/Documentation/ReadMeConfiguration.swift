@@ -95,7 +95,10 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
 
-      readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
+      #endif
 
       readMe += [
         "",
@@ -160,32 +163,36 @@ public struct ReadMeConfiguration: Codable {
   // MARK: - Useful components.
 
   private static let documentationDirectoryName = "Documentation"
-  public static func _documentationDirectory(for project: URL) -> URL {
-    return project.appendingPathComponent(documentationDirectoryName)
-  }
-
-  private static func _locationOfDocumentationFile(
-    named name: StrictString,
-    for localization: LocalizationIdentifier,
-    in project: URL
-  ) -> URL {
-    let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
-    let fileName: StrictString = icon + " " + name + ".md"
-    return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
-  }
-
-  public static func _readMeLocation(for project: URL, localization: LocalizationIdentifier)
-    -> URL
-  {
-    let name: StrictString
-    switch localization._bestMatch {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      name = "Read Me"
-    case .deutschDeutschland:
-      name = "Lies mich"
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public static func _documentationDirectory(for project: URL) -> URL {
+      return project.appendingPathComponent(documentationDirectoryName)
     }
-    return _locationOfDocumentationFile(named: name, for: localization, in: project)
-  }
+
+    private static func _locationOfDocumentationFile(
+      named name: StrictString,
+      for localization: LocalizationIdentifier,
+      in project: URL
+    ) -> URL {
+      let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
+      let fileName: StrictString = icon + " " + name + ".md"
+      return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
+    }
+
+    public static func _readMeLocation(
+      for project: URL,
+      localization: LocalizationIdentifier
+    ) -> URL {
+      let name: StrictString
+      switch localization._bestMatch {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        name = "Read Me"
+      case .deutschDeutschland:
+        name = "Lies mich"
+      }
+      return _locationOfDocumentationFile(named: name, for: localization, in: project)
+    }
+  #endif
 
   // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.apiLink(for:in:))
   /// Baut Verweise zur Programmierschnittstellendokumentation auf, die von der Konfiguration hergeleitet sind.
@@ -215,42 +222,50 @@ public struct ReadMeConfiguration: Codable {
     in localization: LocalizationIdentifier
   ) -> StrictString? {
 
-    guard let baseURL = configuration.documentation.documentationURL,
-      let provided = localization._reasonableMatch
-    else {
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
       return nil
-    }
+    #else
+      guard let baseURL = configuration.documentation.documentationURL,
+        let provided = localization._reasonableMatch
+      else {
+        return nil
+      }
 
-    let label: StrictString
-    switch provided {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      label = "Documentation"
-    case .deutschDeutschland:
-      label = "Dokumentation"
-    }
+      let label: StrictString
+      switch provided {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        label = "Documentation"
+      case .deutschDeutschland:
+        label = "Dokumentation"
+      }
 
-    var link: StrictString = "[" + label + "]("
-    link +=
-      StrictString(
-        baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
-      )
-      + ")"
-    return link
+      var link: StrictString = "[" + label + "]("
+      link +=
+        StrictString(
+          baseURL.appendingPathComponent(String(localization._directoryName)).absoluteString
+        )
+        + ")"
+      return link
+    #endif
   }
 
   // MARK: - Related Projects
 
-  public static func _relatedProjectsLocation(
-    for project: URL,
-    localization: LocalizationIdentifier
-  ) -> URL {
-    let name: StrictString
-    switch localization._bestMatch {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      name = "Related Projects"
-    case .deutschDeutschland:
-      name = "Verwandte Projekte"
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public static func _relatedProjectsLocation(
+      for project: URL,
+      localization: LocalizationIdentifier
+    ) -> URL {
+      let name: StrictString
+      switch localization._bestMatch {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        name = "Related Projects"
+      case .deutschDeutschland:
+        name = "Verwandte Projekte"
+      }
+      return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
-    return _locationOfDocumentationFile(named: name, for: localization, in: project)
-  }
+  #endif
 }

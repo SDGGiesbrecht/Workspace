@@ -51,18 +51,21 @@ extension Workspace {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        #if !os(Linux)
-          if try options.project.configuration(output: output).xcode.manage {
-            try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-          }
-        #endif
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          #if !os(Linux)
+            if try options.project.configuration(output: output).xcode.manage {
+              try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
+          #endif
 
-        try Validate.Build.validate(
-          job: options.job,
-          against: ContinuousIntegrationJob.testJobs,
-          for: options.project,
-          output: output
-        )
+          try Validate.Build.validate(
+            job: options.job,
+            against: ContinuousIntegrationJob.testJobs,
+            for: options.project,
+            output: output
+          )
+        #endif
 
         var validationStatus = ValidationStatus()
 
@@ -72,7 +75,10 @@ extension Workspace {
           output: output
         )
 
-        try validationStatus.reportOutcome(project: options.project, output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 
@@ -82,42 +88,45 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      for job in ContinuousIntegrationJob.allCases
-      where try options.job.includes(job: job)
-        ∧ (try Validate.Build.job(
-          job,
-          isRelevantTo: options.project,
-          andAvailableJobs: ContinuousIntegrationJob.testJobs,
-          output: output
-        ))
-      {
-        try autoreleasepool {
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        for job in ContinuousIntegrationJob.allCases
+        where try options.job.includes(job: job)
+          ∧ (try Validate.Build.job(
+            job,
+            isRelevantTo: options.project,
+            andAvailableJobs: ContinuousIntegrationJob.testJobs,
+            output: output
+          ))
+        {
+          try autoreleasepool {
 
-          if try options.project.configuration(output: output).continuousIntegration
-            .skipSimulatorOutsideContinuousIntegration,
-            options.job == nil,  // Not in continuous integration.
-            job ∈ ContinuousIntegrationJob.simulatorJobs
-          {
-            // @exempt(from: tests) Tested separately.
-            return  // and continue loop.
-          }
-
-          #if DEBUG
-            if job ∈ ContinuousIntegrationJob.simulatorJobs,
-              ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                ≠ nil
-            {  // Simulators are not available to all CI jobs and must be tested separately.
+            if try options.project.configuration(output: output).continuousIntegration
+              .skipSimulatorOutsideContinuousIntegration,
+              options.job == nil,  // Not in continuous integration.
+              job ∈ ContinuousIntegrationJob.simulatorJobs
+            {
+              // @exempt(from: tests) Tested separately.
               return  // and continue loop.
             }
-          #endif
 
-          try options.project.test(
-            on: job,
-            validationStatus: &validationStatus,
-            output: output
-          )
+            #if DEBUG
+              if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                  ≠ nil
+              {  // Simulators are not available to all CI jobs and must be tested separately.
+                return  // and continue loop.
+              }
+            #endif
+
+            try options.project.test(
+              on: job,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          }
         }
-      }
+      #endif
     }
   }
 }

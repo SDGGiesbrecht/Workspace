@@ -18,7 +18,8 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
@@ -26,7 +27,8 @@ import SDGHTML
 
 import WSProject
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   internal class SymbolPage: Page {
 
     // MARK: - Initialization

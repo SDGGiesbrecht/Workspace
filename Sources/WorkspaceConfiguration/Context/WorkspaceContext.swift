@@ -25,41 +25,50 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Static Properties
 
-  // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
-  /// Der Zusammenhang des aktuellen Projekts.
-  public static var aktueller: Arbeitsbereichszusammenhang {
-    get { return current }
-    set { current = newValue }
-  }
-  private static var _current: WorkspaceContext?
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.current)
-  /// The context of the current project.
-  public static var current: WorkspaceContext {
-    get {
-      return _current ?? accept()!  // @exempt(from: tests)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
+    /// Der Zusammenhang des aktuellen Projekts.
+    public static var aktueller: Arbeitsbereichszusammenhang {
+      get { return current }
+      set { current = newValue }
     }
-    set {
-      _current = newValue
+    private static var _current: WorkspaceContext?
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.current)
+    /// The context of the current project.
+    public static var current: WorkspaceContext {
+      get {
+        return _current ?? accept()!  // @exempt(from: tests)
+      }
+      set {
+        _current = newValue
+      }
     }
-  }
+  #endif
 
   // MARK: - Initialization
 
-  public init(_location: URL, manifest: PackageManifest) {
-    self.location = _location
-    self.manifest = manifest
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public init(_location: URL, manifest: PackageManifest) {
+      self.location = _location
+      self.manifest = manifest
+    }
+  #endif
 
   // MARK: - Properties
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
-  /// The location of the configured repository.
-  public let location: URL
-  // @localization(🇩🇪DE) @crossReference(WorkspaceContext.location)
-  /// Der Standort des konfigurierten Lagers.
-  public var standort: EinheitlicherRessourcenzeiger {
-    return location
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
+    /// The location of the configured repository.
+    public let location: URL
+    // @localization(🇩🇪DE) @crossReference(WorkspaceContext.location)
+    /// Der Standort des konfigurierten Lagers.
+    public var standort: EinheitlicherRessourcenzeiger {
+      return location
+    }
+  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.manifest)
   /// Information from the package manifest.

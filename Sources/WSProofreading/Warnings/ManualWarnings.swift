@@ -37,11 +37,14 @@ internal struct ManualWarnings: Warning {
     }
   })
 
-  internal static func message(
-    for details: StrictString,
-    in project: PackageRepository,
-    output: Command.Output
-  ) -> UserFacing<StrictString, InterfaceLocalization>? {
-    return UserFacing({ _ in details })
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal static func message(
+      for details: StrictString,
+      in project: PackageRepository,
+      output: Command.Output
+    ) -> UserFacing<StrictString, InterfaceLocalization>? {
+      return UserFacing({ _ in details })
+    }
+  #endif
 }

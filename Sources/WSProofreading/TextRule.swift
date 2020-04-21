@@ -21,10 +21,13 @@ import SDGSwiftSource
 import WSProject
 
 internal protocol TextRule: RuleProtocol {
-  static func check(
-    file: TextFile,
-    in project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) throws
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    static func check(
+      file: TextFile,
+      in project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) throws
+  #endif
 }

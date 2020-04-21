@@ -22,104 +22,110 @@ public enum FileType {
 
   // MARK: - Static Properties
 
-  private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-  public static func resetUnsupportedFileTypes() {
-    unsupportedFileTypesEncountered = [:]
-  }
-  public static func unsupportedTypesWarning(
-    for project: PackageRepository,
-    output: Command.Output
-  ) throws -> StrictString? {
-
-    let expected = try project.configuration(output: output).repository.ignoredFileTypes
-    let unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
-      return key ∉ expected
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static var unsupportedFileTypesEncountered: [String: URL] = [:]
+    public static func resetUnsupportedFileTypes() {
+      unsupportedFileTypesEncountered = [:]
     }
+    public static func unsupportedTypesWarning(
+      for project: PackageRepository,
+      output: Command.Output
+    ) throws -> StrictString? {
 
-    if unexpectedTypes.isEmpty {
-      return nil
-    } else {
-      defer { unsupportedFileTypesEncountered = [:] }  // Reset between tests.
-
-      var warning: [StrictString] = [
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Workspace encountered unsupported file types:"
-          case .deutschDeutschland:
-            return "Arbeitsbereich traf auf unbekannten Dateiformate:"
-          }
-        }).resolved()
-      ]
-
-      warning.append("")
-
-      let types = unexpectedTypes.keys.sorted().map { key in
-        return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))"
-          as StrictString
+      let expected = try project.configuration(output: output).repository.ignoredFileTypes
+      let unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
+        return key ∉ expected
       }
-      warning.append(contentsOf: types)
 
-      warning.append("")
+      if unexpectedTypes.isEmpty {
+        return nil
+      } else {
+        defer { unsupportedFileTypesEncountered = [:] }  // Reset between tests.
 
-      warning.append(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return [
-              "All such files were skipped.",
-              "If these are standard file types, please report them at",
-              StrictString(
-                Metadata.issuesURL.absoluteString.in(Underline.underlined)
-              ),
-              "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.",
-            ].joinedAsLines()
-          case .deutschDeutschland:
-            return [
-              "Solche Dateien wurden übersprungen.",
-              "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
-              StrictString(
-                Metadata.issuesURL.absoluteString.in(Underline.underlined)
-              ),
-              "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.",
-            ].joinedAsLines()
-          }
-        }).resolved()
-      )
+        var warning: [StrictString] = [
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Workspace encountered unsupported file types:"
+            case .deutschDeutschland:
+              return "Arbeitsbereich traf auf unbekannten Dateiformate:"
+            }
+          }).resolved()
+        ]
 
-      return warning.joinedAsLines()
+        warning.append("")
+
+        let types = unexpectedTypes.keys.sorted().map { key in
+          return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))"
+            as StrictString
+        }
+        warning.append(contentsOf: types)
+
+        warning.append("")
+
+        warning.append(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return [
+                "All such files were skipped.",
+                "If these are standard file types, please report them at",
+                StrictString(
+                  Metadata.issuesURL.absoluteString.in(Underline.underlined)
+                ),
+                "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.",
+              ].joinedAsLines()
+            case .deutschDeutschland:
+              return [
+                "Solche Dateien wurden übersprungen.",
+                "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
+                StrictString(
+                  Metadata.issuesURL.absoluteString.in(Underline.underlined)
+                ),
+                "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.",
+              ].joinedAsLines()
+            }
+          }).resolved()
+        )
+
+        return warning.joinedAsLines()
+      }
     }
-  }
+  #endif
 
   // MARK: - Initialization
 
-  public init?(url: URL) {
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public init?(url: URL) {
 
-    if let special = FileType.specialNames[url.lastPathComponent] {
-      self = special
-      return
-    }
-
-    var pathExtension = url.pathExtension
-    if pathExtension.isEmpty {
-      let components = url.lastPathComponent.components(separatedBy: ".") as [String]
-      if components.count > 1 {
-        pathExtension = components.last!
-      } else {
-        return nil  // File with no extension information.
+      if let special = FileType.specialNames[url.lastPathComponent] {
+        self = special
+        return
       }
-    }
 
-    if let supported = FileType.fileExtensions[pathExtension] {
-      self = supported
-      return
-    }
+      var pathExtension = url.pathExtension
+      if pathExtension.isEmpty {
+        let components = url.lastPathComponent.components(separatedBy: ".") as [String]
+        if components.count > 1 {
+          pathExtension = components.last!
+        } else {
+          return nil  // File with no extension information.
+        }
+      }
 
-    if FileType.unsupportedFileTypesEncountered[pathExtension] == nil {
-      FileType.unsupportedFileTypesEncountered[pathExtension] = url
+      if let supported = FileType.fileExtensions[pathExtension] {
+        self = supported
+        return
+      }
+
+      if FileType.unsupportedFileTypesEncountered[pathExtension] == nil {
+        FileType.unsupportedFileTypesEncountered[pathExtension] = url
+      }
+      return nil
     }
-    return nil
-  }
+  #endif
 
   // MARK: - Cases
 

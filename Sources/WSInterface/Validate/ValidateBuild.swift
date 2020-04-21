@@ -53,17 +53,20 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        try validate(
-          job: options.job,
-          against: ContinuousIntegrationJob.buildJobs,
-          for: options.project,
-          output: output
-        )
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validate(
+            job: options.job,
+            against: ContinuousIntegrationJob.buildJobs,
+            for: options.project,
+            output: output
+          )
 
-        #if !os(Linux)
-          if try options.project.configuration(output: output).xcode.manage {
-            try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-          }
+          #if !os(Linux)
+            if try options.project.configuration(output: output).xcode.manage {
+              try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
+            }
+          #endif
         #endif
 
         var validationStatus = ValidationStatus()
@@ -74,47 +77,53 @@ extension Workspace.Validate {
           output: output
         )
 
-        try validationStatus.reportOutcome(project: options.project, output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 
-    static func job(
-      _ job: ContinuousIntegrationJob,
-      isRelevantTo project: PackageRepository,
-      andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
-      output: Command.Output
-    ) throws -> Bool {
-      return try job ∈ validJobs
-        ∧ ((try job.isRequired(by: project, output: output))
-          ∧ job.platform == Platform.current)
-    }
-
-    static func validate(
-      job: ContinuousIntegrationJob?,
-      against validJobs: Set<ContinuousIntegrationJob>,
-      for project: PackageRepository,
-      output: Command.Output
-    ) throws {
-      if let specified = job,
-        ¬(try Build.job(
-          specified,
-          isRelevantTo: project,
-          andAvailableJobs: validJobs,
-          output: output
-        ))
-      {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Invalid job."
-            case .deutschDeutschland:
-              return "Ungültige Aufgabe."
-            }
-          })
-        )
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      static func job(
+        _ job: ContinuousIntegrationJob,
+        isRelevantTo project: PackageRepository,
+        andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
+        output: Command.Output
+      ) throws -> Bool {
+        return try job ∈ validJobs
+          ∧ ((try job.isRequired(by: project, output: output))
+            ∧ job.platform == Platform.current)
       }
-    }
+
+      static func validate(
+        job: ContinuousIntegrationJob?,
+        against validJobs: Set<ContinuousIntegrationJob>,
+        for project: PackageRepository,
+        output: Command.Output
+      ) throws {
+        if let specified = job,
+          ¬(try Build.job(
+            specified,
+            isRelevantTo: project,
+            andAvailableJobs: validJobs,
+            output: output
+          ))
+        {
+          throw Command.Error(
+            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Invalid job."
+              case .deutschDeutschland:
+                return "Ungültige Aufgabe."
+              }
+            })
+          )
+        }
+      }
+    #endif
 
     static func executeAsStep(
       options: Options,
@@ -122,24 +131,27 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      for job in ContinuousIntegrationJob.allCases
-      where try options.job.includes(job: job)
-        ∧ (try Build.job(
-          job,
-          isRelevantTo: options.project,
-          andAvailableJobs: ContinuousIntegrationJob.buildJobs,
-          output: output
-        ))
-      {
-        try autoreleasepool {
-
-          try options.project.build(
-            for: job,
-            validationStatus: &validationStatus,
+      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      #if !os(WASI)
+        for job in ContinuousIntegrationJob.allCases
+        where try options.job.includes(job: job)
+          ∧ (try Build.job(
+            job,
+            isRelevantTo: options.project,
+            andAvailableJobs: ContinuousIntegrationJob.buildJobs,
             output: output
-          )
+          ))
+        {
+          try autoreleasepool {
+
+            try options.project.build(
+              for: job,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          }
         }
-      }
+      #endif
     }
   }
 }

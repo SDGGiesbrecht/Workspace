@@ -35,11 +35,14 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  private static let template: StrictString = {
-    var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
-    result.header = ""
-    return StrictString(result.contents)
-  }()
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    private static let template: StrictString = {
+      var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
+      result.header = ""
+      return StrictString(result.contents)
+    }()
+  #endif
 
   private static func watermark(localization: LocalizationIdentifier) -> StrictString {
     let resolved = localization._bestMatch
@@ -118,7 +121,12 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    var mutable = Page.template
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(WASI)
+      var mutable: StrictString = ""
+    #else
+      var mutable = Page.template
+    #endif
     mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
     mutable.replaceMatches(
       for: "[*text direction*]".scalars,

@@ -27,6 +27,8 @@ extension Platform {
       return .macOS
     #elseif os(Windows)
       return .windows
+    #elseif os(WASI)
+      return .web
     #elseif os(Linux)
       return .linux
     #elseif os(Android)

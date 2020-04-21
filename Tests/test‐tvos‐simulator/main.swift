@@ -21,22 +21,28 @@ import SDGExternalProcess
 import WSInterface
 
 do {
-  ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
-  let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent()
-    .deletingLastPathComponent().deletingLastPathComponent()
+    let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent()
+      .deletingLastPathComponent().deletingLastPathComponent()
 
-  let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
-  try FileManager.default.do(in: mockProject) {
-    _ = try Shell.default.run(command: [
-      "swift", "package", "generate\u{2D}xcodeproj",
-      "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
-    ]).get()
-    _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "tvos"]).get()
-  }
+    let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
+    try FileManager.default.do(in: mockProject) {
+      _ = try Shell.default.run(command: [
+        "swift", "package", "generate\u{2D}xcodeproj",
+        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
+      ]).get()
+      _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "tvos"]).get()
+    }
+  #endif
 
 } catch {
   print(error)
-  print(error.localizedDescription)
-  exit(1)
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    print(error.localizedDescription)
+    exit(1)
+  #endif
 }

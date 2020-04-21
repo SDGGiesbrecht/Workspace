@@ -112,7 +112,10 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
-        try options.project.refreshResources(output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try options.project.refreshResources(output: output)
+        #endif
       }
     )
   }

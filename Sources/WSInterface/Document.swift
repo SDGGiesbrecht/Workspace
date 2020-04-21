@@ -73,13 +73,16 @@ extension Workspace {
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
-        let outputDirectory = options.project.defaultDocumentationDirectory
-        try executeAsStep(
-          outputDirectory: outputDirectory,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          let outputDirectory = options.project.defaultDocumentationDirectory
+          try executeAsStep(
+            outputDirectory: outputDirectory,
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
+        #endif
 
         guard validationStatus.validatedSomething else {
           throw Command.Error(
@@ -100,21 +103,27 @@ extension Workspace {
               })
           )
         }
-        try validationStatus.reportOutcome(project: options.project, output: output)
+        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        #if !os(WASI)
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 
-    static func executeAsStep(
-      outputDirectory: URL,
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
-      try options.project.document(
-        outputDirectory: outputDirectory,
-        validationStatus: &validationStatus,
-        output: output
-      )
-    }
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      static func executeAsStep(
+        outputDirectory: URL,
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
+        try options.project.document(
+          outputDirectory: outputDirectory,
+          validationStatus: &validationStatus,
+          output: output
+        )
+      }
+    #endif
   }
 }

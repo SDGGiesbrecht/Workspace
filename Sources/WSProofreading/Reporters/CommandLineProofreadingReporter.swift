@@ -32,9 +32,10 @@ public class CommandLineProofreadingReporter: ProofreadingReporter {
     output.print(file.in(FontWeight.bold))
   }
 
-  private func lineMessage(source: String, violation: Range<String.ScalarView.Index>)
-    -> StrictString
-  {
+  private func lineMessage(
+    source: String,
+    violation: Range<String.ScalarView.Index>
+  ) -> StrictString {
     let lines = source.lines
     let lineRange = violation.lines(in: lines)
     let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1

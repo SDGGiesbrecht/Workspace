@@ -19,68 +19,74 @@ import SDGCollections
 import WSGeneralImports
 import WSProject
 
-#if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
 
-extension PackageRepository {
+// #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)
+  extension PackageRepository {
 
-  public func normalize(output: Command.Output) throws {
+    public func normalize(output: Command.Output) throws {
 
-    #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
-      var formatter: SwiftFormatter?
-      if let formatConfiguration = try configuration(output: output).proofreading
-        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-      {
-        formatter = SwiftFormatter(configuration: formatConfiguration)
-      }
-    #endif
+      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
+        var formatter: SwiftFormatter?
+        if let formatConfiguration = try configuration(output: output).proofreading
+          .swiftFormatConfiguration?.reducedToMachineResponsibilities()
+        {
+          formatter = SwiftFormatter(configuration: formatConfiguration)
+        }
+      #endif
 
-    for url in try sourceFiles(output: output) {
-      try autoreleasepool {
+      for url in try sourceFiles(output: output) {
+        try autoreleasepool {
 
-        if let syntax = FileType(url: url)?.syntax {
-          var file = try TextFile(alreadyAt: url)
+          if let syntax = FileType(url: url)?.syntax {
+            var file = try TextFile(alreadyAt: url)
 
-          #if !(os(Windows) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
-            if let formatter = formatter,
-              file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
-            {
-              let source = file.contents
-              var result: String = ""
-              try formatter.format(
-                source: source,
-                assumingFileURL: file.location,
-                to: &result
-              )
-              file.contents = result
-            }
-          #endif
-
-          let lines = file.contents.lines.map({ String($0.line) })
-          let normalizedLines = lines.map { (line: String) -> String in
-
-            var normalized = line.decomposedStringWithCanonicalMapping
-
-            var semanticWhitespace = ""
-            for whitespace in syntax.semanticLineTerminalWhitespace {
-              if normalized.hasSuffix(whitespace) {
-                semanticWhitespace = whitespace
+            // #workaround(SwiftPM 0.6.0, Cannot build.)
+            #if !(os(Windows) || os(WASI) || os(Android))
+              if let formatter = formatter,
+                file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
+              {
+                let source = file.contents
+                var result: String = ""
+                try formatter.format(
+                  source: source,
+                  assumingFileURL: file.location,
+                  to: &result
+                )
+                file.contents = result
               }
+            #endif
+
+            let lines = file.contents.lines.map({ String($0.line) })
+            let normalizedLines = lines.map { (line: String) -> String in
+
+              var normalized = line.decomposedStringWithCanonicalMapping
+
+              var semanticWhitespace = ""
+              for whitespace in syntax.semanticLineTerminalWhitespace {
+                if normalized.hasSuffix(whitespace) {
+                  semanticWhitespace = whitespace
+                }
+              }
+
+              while let last = normalized.unicodeScalars.last,
+              last ∈ CharacterSet.whitespaces {
+                normalized.unicodeScalars.removeLast()
+              }
+
+              return normalized + semanticWhitespace
             }
 
-            while let last = normalized.unicodeScalars.last,
-            last ∈ CharacterSet.whitespaces {
-              normalized.unicodeScalars.removeLast()
-            }
-
-            return normalized + semanticWhitespace
+            file.contents = normalizedLines.joinedAsLines()
+            try file.writeChanges(for: self, output: output)
           }
-
-          file.contents = normalizedLines.joinedAsLines()
-          try file.writeChanges(for: self, output: output)
         }
       }
     }
   }
-}
+#endif

@@ -14,15 +14,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension ProcessInfo {
+// #workaround(Swift 5.2.2, Web lacks Foundation.)
+#if !os(WASI)
+  extension ProcessInfo {
 
-  public static let isInContinuousIntegration =
-    ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
-    ∨ isInGitHubAction  // @exempt(from: tests)
+    public static let isInContinuousIntegration =
+      ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
+      ∨ isInGitHubAction  // @exempt(from: tests)
 
-  public static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+    public static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
 
-  public static let isPullRequest =
-    ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
-    ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
-}
+    public static let isPullRequest =
+      ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
+      ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
+  }
+#endif

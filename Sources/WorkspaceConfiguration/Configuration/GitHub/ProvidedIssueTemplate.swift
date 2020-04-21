@@ -165,65 +165,68 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       }
     }
 
-    if self == .bugReport {
-      let products = WorkspaceContext.current.manifest.products
-      contents.append("")
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        contents.append(contentsOf: [
-          "### Demonstration",
-        ])
-      case .deutschDeutschland:
-        contents.append(contentsOf: [
-          "### Nachweis"
-        ])
-      }
-      contents.append("")
-      if products.contains(where: { $0.type == .executable }) {
-        contents.append("```shell")
+    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if !os(WASI)
+      if self == .bugReport {
+        let products = WorkspaceContext.current.manifest.products
+        contents.append("")
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
           contents.append(contentsOf: [
-            "$ this command •triggers \u{22}the bug\u{22}"
+            "### Demonstration",
           ])
         case .deutschDeutschland:
           contents.append(contentsOf: [
-            "$ dieser behehl •löst \u{22}den Fehler aus\u{22}"
+            "### Nachweis"
           ])
         }
-        contents.append(contentsOf: [
-          "```",
-          "",
-        ])
-      }
-      if products.contains(where: { $0.type == .library }) {
-        contents.append("```swift")
+        contents.append("")
+        if products.contains(where: { $0.type == .executable }) {
+          contents.append("```shell")
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            contents.append(contentsOf: [
+              "$ this command •triggers \u{22}the bug\u{22}"
+            ])
+          case .deutschDeutschland:
+            contents.append(contentsOf: [
+              "$ dieser behehl •löst \u{22}den Fehler aus\u{22}"
+            ])
+          }
+          contents.append(contentsOf: [
+            "```",
+            "",
+          ])
+        }
+        if products.contains(where: { $0.type == .library }) {
+          contents.append("```swift")
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            contents.append(contentsOf: [
+              "let thisCode = trigger(theBug)"
+            ])
+          case .deutschDeutschland:
+            contents.append(contentsOf: [
+              "diese.quelltext = löst[denFehler].aus()"
+            ])
+          }
+          contents.append(contentsOf: [
+            "```",
+            "",
+          ])
+        }
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          contents.append(contentsOf: [
-            "let thisCode = trigger(theBug)"
-          ])
+          contents.append(
+            "<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>"
+          )
         case .deutschDeutschland:
-          contents.append(contentsOf: [
-            "diese.quelltext = löst[denFehler].aus()"
-          ])
+          contents.append(
+            "<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>"
+          )
         }
-        contents.append(contentsOf: [
-          "```",
-          "",
-        ])
       }
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        contents.append(
-          "<!\u{2D}\u{2D} Or provide a link to a demonstration elsewhere. \u{2D}\u{2D}>"
-        )
-      case .deutschDeutschland:
-        contents.append(
-          "<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>"
-        )
-      }
-    }
+    #endif
 
     switch self {
     case .bugReport, .featureRequest, .documentationCorrection:

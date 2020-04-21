@@ -26,17 +26,23 @@ extension CustomTask {
 
   // MARK: - Static Properties
 
-  internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
+  #endif
 
   // MARK: - Execution
 
-  public func execute(output: Command.Output) throws {
-    _ = try Package(url: url).execute(
-      .version(version),
-      of: [executable],
-      with: arguments,
-      cacheDirectory: CustomTask.cache,
-      reportProgress: { output.print($0) }
-    ).get()
-  }
+  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  #if !os(WASI)
+    public func execute(output: Command.Output) throws {
+      _ = try Package(url: url).execute(
+        .version(version),
+        of: [executable],
+        with: arguments,
+        cacheDirectory: CustomTask.cache,
+        reportProgress: { output.print($0) }
+      ).get()
+    }
+  #endif
 }

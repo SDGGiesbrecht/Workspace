@@ -250,7 +250,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 6, 1)
+      from: Version(4, 6, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",

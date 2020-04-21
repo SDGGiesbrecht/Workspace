@@ -91,12 +91,15 @@ jobs:
         git clone https://github.com/apple/swift.git --depth 1
         ./swift/utils/update-checkout --clone --skip-history
     - name: Build Swift for Linux
+      # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
+      # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini
       shell: bash
       run: |
         set -x
         cd swift-source/swift
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift
+          --install-swift
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows

@@ -105,7 +105,7 @@ extension Workspace {
           // @exempt(from: tests)
           return nil  // Up to date.
         }
-      #endif
+      #endif  // @exempt(from: tests)
     }
   }
 }

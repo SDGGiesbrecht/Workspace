@@ -77,13 +77,14 @@
 
   konfiguration.dokumentation.lokalisationen = ["🇩🇪DE", "fr"]
   konfiguration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk =
-    BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(auswerten: {
-      konfiguration in
-      return [
-        "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
-        "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
-      ]
-    })
+    BequemeEinstellung<[Lokalisationskennzeichen: StrengeZeichenkette]>(
+      auswerten: { konfiguration in
+        return [
+          "🇩🇪DE": "Urheberrecht #daten \(konfiguration.dokumentation.hauptautor!).",
+          "fr": "Droit d’auteur #daten \(konfiguration.dokumentation.hauptautor!).",
+        ]
+      }
+    )
 
   konfiguration.dokumentation.hauptautor = "Max Mustermann"
 // @beispielBeenden

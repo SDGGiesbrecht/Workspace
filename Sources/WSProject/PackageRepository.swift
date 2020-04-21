@@ -24,7 +24,7 @@ import SDGSwiftConfigurationLoading
 
 import WorkspaceProjectConfiguration
 
-// #workaround(swift-tools-support-core 0.1.0, Cannot build.)
+// #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import TSCBasic
 #endif
@@ -148,7 +148,7 @@ import WorkspaceProjectConfiguration
     private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
       let variable = "GENERATING_CMAKE_FOR_WINDOWS"
       #if !os(Windows)
-        // #workaround(swift-tools-support-core 0.1.0, Cannot build.)
+        // #workaround(SwiftPM 0.6.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
           try? ProcessEnv.setVar(variable, value: "true")
           defer {

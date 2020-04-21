@@ -36,7 +36,7 @@
   import WSCrossPlatformC
 #endif
 
-// #workaround(swift-format 0.50200.0, Cannot build.)
+// #workaround(Swift 5.2.2, SwiftFormat cannot build.)
 #if !os(WASI)
   import SwiftFormatConfiguration  // External package.
 #endif
@@ -58,7 +58,7 @@ public func helloWorld() {
   #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
     helloC()
   #endif
-  // #workaround(swift-format 0.50200.0, Cannot build.)
+  // #workaround(Swift 5.2.2, SwiftFormat cannot build.)
   #if !os(WASI)
     print(Configuration())
   #endif

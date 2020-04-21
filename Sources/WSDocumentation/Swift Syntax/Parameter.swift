@@ -35,7 +35,8 @@ internal protocol Parameter {
 extension Parameter {
 
   internal func parameterNames() -> [String] {
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+    // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+    #if os(Windows) || os(WASI) || os(Android)
       return []
     #else
       var result: [String] = []

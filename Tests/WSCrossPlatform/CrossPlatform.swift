@@ -18,7 +18,7 @@
 #if !os(WASI)
   import Foundation
 #endif
-#if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
+#if !os(Android)  // #workaround(Swift 5.2.2, Linkage broken in SDK.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
   #endif
@@ -32,7 +32,7 @@
   import Dispatch
 #endif
 
-#if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+#if !os(Windows)  // #workaround(Swift 5.2.2, Cannot build C.)
   import WSCrossPlatformC
 #endif
 
@@ -46,7 +46,7 @@ public func helloWorld() {
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)
     print(NSString(string: "Hello, Foundation!"))
-    #if !os(Android)  // #workaround(Swift 5.1.3, Linkage broken in SDK.)
+    #if !os(Android)  // #workaround(Swift 5.2.2, Linkage broken in SDK.)
       print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
     #endif
     print(XMLElement(name: "Hello, FoundationXML!"))
@@ -55,7 +55,7 @@ public func helloWorld() {
   #if !os(WASI)
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
-  #if !os(Windows)  // #workaround(Swift 5.1.4, Cannot build C.)
+  #if !os(Windows)  // #workaround(Swift 5.2.2, Cannot build C.)
     helloC()
   #endif
   // #workaround(Swift 5.2.2, SwiftFormat cannot build.)

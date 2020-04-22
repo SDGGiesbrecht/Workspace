@@ -132,7 +132,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Manifest
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
       public func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
@@ -158,7 +158,7 @@ import WorkspaceProjectConfiguration
       #endif
       return try closure()
     }
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
       public func cachedWindowsPackage() throws -> PackageModel.Package {
         return try cached(in: &manifestCache.windowsPackage) {
           return try PackageRepository.withWindowsEnvironment {

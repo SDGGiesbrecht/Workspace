@@ -922,7 +922,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "chmod +x .build/SDG/Emulator.sh",
             ]
           ),
-          // #workaround(There is no official action for this yet.)
+          // #workaround(Swift 5.2.2, There is no official action for this yet.)
           step(testStepName, localization: interfaceLocalization),
           uses(
             "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",

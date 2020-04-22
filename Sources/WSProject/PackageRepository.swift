@@ -182,7 +182,7 @@ import WorkspaceProjectConfiguration
     #endif
 
     public func packageName() throws -> StrictString {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
         return "[???]"
       #else
         return StrictString(try cachedManifest().name)
@@ -249,7 +249,7 @@ import WorkspaceProjectConfiguration
     public func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
 
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           let products: [PackageManifest.Product] = []
         #else
           let products = try self.products()

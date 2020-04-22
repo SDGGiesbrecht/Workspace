@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !(os(Windows) || os(WASI) || os(Android))  // #workaround(SwiftPM 0.5.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))  // #workaround(SwiftPM 0.6.0, Cannot build.)
   @_exported import class PackageModel.Manifest
   @_exported import class PackageModel.Package
   @_exported import struct PackageGraph.PackageGraph

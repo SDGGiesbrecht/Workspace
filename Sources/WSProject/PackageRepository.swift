@@ -132,7 +132,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Manifest
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
       public func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
@@ -158,7 +158,7 @@ import WorkspaceProjectConfiguration
       #endif
       return try closure()
     }
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.1.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.2, SwiftPM won’t compile.)
       public func cachedWindowsPackage() throws -> PackageModel.Package {
         return try cached(in: &manifestCache.windowsPackage) {
           return try PackageRepository.withWindowsEnvironment {
@@ -182,7 +182,7 @@ import WorkspaceProjectConfiguration
     #endif
 
     public func packageName() throws -> StrictString {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
         return "[???]"
       #else
         return StrictString(try cachedManifest().name)
@@ -249,7 +249,7 @@ import WorkspaceProjectConfiguration
     public func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
 
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           let products: [PackageManifest.Product] = []
         #else
           let products = try self.products()

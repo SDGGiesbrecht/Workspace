@@ -44,14 +44,14 @@
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(Swift 5.1.3, Can these be restored?)
+      // #workaround(Swift 5.2.2, Can these be restored?)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
       configuration.rules["UseLetInEveryBoundCaseVariable"] = false
       configuration.rules["ValidateDocumentationComments"] = false
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(Swift 5.2.1, Leads to crash.)
+      // #workaround(Swift 5.2.2, Leads to crash.)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

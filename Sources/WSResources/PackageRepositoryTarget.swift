@@ -53,7 +53,7 @@ import WSSwift
       private let package: PackageRepository
 
       internal var name: String {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           return ""
         #else
           return description.name
@@ -61,7 +61,7 @@ import WSSwift
       }
 
       private var sourceDirectory: URL {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.5.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           return package.location
         #else
           if let path = description.path {

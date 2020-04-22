@@ -43,7 +43,7 @@ import WSCustomTask
     public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
-      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
         var linter: Bool?
       #else
         var linter: SwiftLinter?
@@ -89,7 +89,7 @@ import WSCustomTask
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                // #workaround(SwiftSyntax 0.50100.0, Cannot build.)
+                // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
                 #if !(os(Windows) || os(Android))
                   let syntax = try SyntaxParser.parseAndRetry(url)
                   try RuleSyntaxScanner(

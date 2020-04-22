@@ -50,7 +50,7 @@ class APITests: TestCase {
   }
 
   func testAllDisabled() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.provideWorkflowScripts = false
@@ -72,7 +72,7 @@ class APITests: TestCase {
   }
 
   func testAllTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.optIntoAllTasks()
@@ -103,7 +103,7 @@ class APITests: TestCase {
   }
 
   func testBadStyle() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
@@ -128,7 +128,7 @@ class APITests: TestCase {
   }
 
   func testBrokenExample() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "BrokenExample").test(
         commands: [
           ["refresh", "examples"]
@@ -140,7 +140,7 @@ class APITests: TestCase {
   }
 
   func testBrokenTests() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "BrokenTests").test(
         commands: [
           ["test"]
@@ -152,7 +152,7 @@ class APITests: TestCase {
   }
 
   func testCheckedInDocumentation() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "en",
       ]).get()
@@ -226,7 +226,7 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, GithHub host lacks Git.)
+    #if !os(Windows)  // #workaround(GithHub host lacks Git.)
       #if !os(Android)  // #workaround(Emulator lacks Git.)
         _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
       #endif
@@ -234,7 +234,7 @@ class APITests: TestCase {
   }
 
   func testConfiguration() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults(openSource: false)
       XCTAssertFalse(configuration.documentation.readMe.manage)
@@ -440,7 +440,7 @@ class APITests: TestCase {
   }
 
   func testContinuousIntegrationWithoutScripts() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.provideWorkflowScripts = false
       configuration.normalize = true
@@ -467,7 +467,7 @@ class APITests: TestCase {
   }
 
   func testCustomProofread() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.rules.remove(.calloutCasing)
@@ -501,7 +501,7 @@ class APITests: TestCase {
   }
 
   func testCustomReadMe() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.currentVersion = Version(1, 2, 3)
       configuration.documentation.repositoryURL = URL(
@@ -536,7 +536,7 @@ class APITests: TestCase {
   }
 
   func testCustomTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       let passing = CustomTask(
@@ -585,7 +585,7 @@ class APITests: TestCase {
   }
 
   func testDefaults() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let commands: [[StrictString]] = [
         ["refresh", "scripts"],
         ["refresh", "resources"],
@@ -615,7 +615,7 @@ class APITests: TestCase {
   }
 
   func testDeutsch() throws {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
       ]).get()
@@ -662,7 +662,7 @@ class APITests: TestCase {
   }
 
   func testExecutable() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.supportedPlatforms.remove(.iOS)
@@ -684,7 +684,7 @@ class APITests: TestCase {
   }
 
   func testFailingCustomTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       let failing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,
@@ -711,7 +711,7 @@ class APITests: TestCase {
   }
 
   func testFailingCustomValidation() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       let failing = CustomTask(
@@ -740,7 +740,7 @@ class APITests: TestCase {
   }
 
   func testFailingDocumentationCoverage() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.documentation.localizations = ["zxx"]
@@ -760,7 +760,7 @@ class APITests: TestCase {
   }
 
   func testFailingTests() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.xcode.manage = true
       configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
@@ -794,7 +794,7 @@ class APITests: TestCase {
   }
 
   func testHeaders() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
       PackageRepository(mock: "Headers").test(
@@ -811,7 +811,7 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault)
+    #if !os(Android)  // #workaround(Swift 5.2.2, Segmentation fault)
       testCommand(
         Workspace.command,
         with: ["help"],
@@ -894,7 +894,7 @@ class APITests: TestCase {
   }
 
   func testInvalidResourceDirectory() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "InvalidResourceDirectory").test(
         commands: [
           ["refresh", "resources"]
@@ -906,7 +906,7 @@ class APITests: TestCase {
   }
 
   func testInvalidTarget() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "InvalidTarget").test(
         commands: [
           ["refresh", "resources"]
@@ -918,7 +918,7 @@ class APITests: TestCase {
   }
 
   func testIssueTemplate() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       var vorlage = Themavorlage(
         name: "",
         beschreibung: "",
@@ -949,7 +949,7 @@ class APITests: TestCase {
   }
 
   func testLocalizationIdentifier() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       var dictionary: [LocalizationIdentifier: Bool] = [:]
       dictionary[ContentLocalization.englishCanada] = true
       XCTAssertEqual(dictionary["🇨🇦EN"], true)
@@ -983,7 +983,7 @@ class APITests: TestCase {
   }
 
   func testMissingDocumentation() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "MissingDocumentation").test(
         commands: [
           ["refresh", "inherited‐documentation"]
@@ -995,7 +995,7 @@ class APITests: TestCase {
   }
 
   func testMissingExample() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "MissingExample").test(
         commands: [
           ["refresh", "examples"]
@@ -1007,7 +1007,7 @@ class APITests: TestCase {
   }
 
   func testMissingReadMeLocalization() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.readMe.contents.resolve = { _ in [:] }
@@ -1023,7 +1023,7 @@ class APITests: TestCase {
   }
 
   func testMultipleProducts() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1040,7 +1040,7 @@ class APITests: TestCase {
   }
 
   func testNoLibraries() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1057,7 +1057,7 @@ class APITests: TestCase {
   }
 
   func testNoLocalizations() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       PackageRepository(mock: "NoLocalizations").test(
         commands: [
           ["refresh", "read‐me"],
@@ -1070,7 +1070,7 @@ class APITests: TestCase {
   }
 
   func testNurDeutsch() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
       PackageRepository(mock: "NurDeutsch").test(
@@ -1089,7 +1089,7 @@ class APITests: TestCase {
   }
 
   func testOneLocalization() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       PackageRepository(mock: "OneLocalization").test(
@@ -1104,7 +1104,7 @@ class APITests: TestCase {
   }
 
   func testOneProductMultipleModules() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1124,7 +1124,7 @@ class APITests: TestCase {
   }
 
   func testOnlyBritish() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
       PackageRepository(mock: "OnlyBritish").test(
@@ -1140,7 +1140,7 @@ class APITests: TestCase {
   }
 
   func testPartialReadMe() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.xcode.manage = true
@@ -1202,7 +1202,7 @@ class APITests: TestCase {
   }
 
   func testSDGLibrary() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
       configuration.optimizeForTests()
@@ -1283,7 +1283,7 @@ class APITests: TestCase {
   }
 
   func testSDGTool() {
-    #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
       configuration.optimizeForTests()
@@ -1365,8 +1365,8 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Android)  // #workaround(Swift 5.1.4, Segmentation fault.)
-      #if !os(Windows)  // #workaround(Swift 5.1.4, SegFault)
+    #if !os(Android)  // #workaround(Swift 5.2.2, Segmentation fault.)
+      #if !os(Windows)  // #workaround(Swift 5.2.2, SegFault)
         try FileManager.default.do(in: repositoryRoot) {
           _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()

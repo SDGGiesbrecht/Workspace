@@ -70,15 +70,21 @@ Simply add Workspace as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/SDGGiesbrecht/Workspace", .upToNextMinor(from: Version(0, 32, 2))),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "WorkspaceConfiguration", package: "Workspace"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      url: "https://github.com/SDGGiesbrecht/Workspace",
+      .upToNextMinor(from: Version(0, 32, 2))
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .productItem(name: "WorkspaceConfiguration", package: "Workspace"),
+      ]
+    )
+  ]
 )
 ```
 

@@ -532,7 +532,7 @@ public struct DocumentationConfiguration: Codable {
               return "paket"
             }
           }).resolved(for: localization) + " = Package(") as StrictString,
-        ("    name: \u{22}"
+        ("  name: \u{22}"
           + UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -541,11 +541,15 @@ public struct DocumentationConfiguration: Codable {
               return "MeinePaket"
             }
           }).resolved(for: localization) + "\u{22},") as StrictString,
-        "    dependencies: [",
-        "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
-        "    ],",
-        "    targets: [",
-        ("        .target(name: \u{22}"
+        "  dependencies: [",
+        "    .package(",
+        "      url: \u{22}\(packageURL.absoluteString)\u{22},",
+        "      \(versionSpecification)",
+        "    ),",
+        "  ],",
+        "  targets: [",
+        "    .target(",
+        ("      name: \u{22}"
           + UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -553,18 +557,20 @@ public struct DocumentationConfiguration: Codable {
             case .deutschDeutschland:
               return "MeinZiel"
             }
-          }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString,
+          }).resolved(for: localization) + "\u{22},") as StrictString,
+        "      dependencies: [",
       ]
 
       for library in libraries {
         result += [
-          "            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+          "        .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
         ]
       }
 
       result += [
-        "        ])",
-        "    ]",
+        "      ]",
+        "    )",
+        "  ]",
         ")",
         "```",
         "",

@@ -964,6 +964,9 @@ target_compile_options("WSCrossPlatformTests" PRIVATE -enable-testing)
 target_link_libraries("WSCrossPlatformTests" PRIVATE
   "WSCrossPlatform"
   "SDGPersistence"
+  "SDGExternalProcess"
+  "SDGVersioning"
+  "SDGSwift"
   "SDGXCTestUtilities"
   "SDGPersistenceTestUtilities"
 )

@@ -15,6 +15,9 @@
  */
 
 import SDGPersistence
+import SDGExternalProcess
+import SDGVersioning
+import SDGSwift
 
 @testable import WSCrossPlatform
 
@@ -31,6 +34,22 @@ final class CrossPlatformTests: TestCase {
     defer { try? FileManager.default.removeItem(at: directory) }
 
     try "text".save(to: directory.appendingPathComponent("Text.txt"))
+  }
+
+  func testGit() throws {
+    #if os(Windows)  // #workaround(SDGSwift 1.0.0, Git cannot find itself.)
+      let locations = try Shell.default.run(command: ["where", "git"]).get()
+      let path = String(locations.lines.first!.line)
+      let process = ExternalProcess(at: URL(fileURLWithPath: path))
+      try process.run(["\u{2D}\u{2D}version"]).get()
+    #elseif os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #elseif os(Android)  // #workaround(Swift 5.2.2, Process doesn’t work.)
+    #else
+      try Git.runCustomSubcommand(
+        ["\u{2D}\u{2D}version"],
+        versionConstraints: Version(0)..<Version(Int.max)
+      ).get()
+    #endif
   }
 
   func

@@ -160,6 +160,5 @@ jobs:
           -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
           -tools-directory ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xclang-linker --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
+          -Xclang-linker --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
           HelloWorld.swift

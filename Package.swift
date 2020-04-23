@@ -746,6 +746,9 @@ let package = Package(
       dependencies: [
         "WSCrossPlatform",
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+        .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
       ]

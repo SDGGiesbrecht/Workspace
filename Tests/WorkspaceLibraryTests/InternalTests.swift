@@ -45,7 +45,7 @@ class InternalTests: TestCase {
       ".github",
     ]
 
-    #if !os(Windows)  // #workaround(Git not found during GitHub action.)
+    #if !os(Windows)  // #workaround(SDGCornerstone 4.6.2, Git not found during GitHub action.)
       #if !os(Android)  // #workaround(Emulator lacks Git.)
         _ = try Command(
           name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),

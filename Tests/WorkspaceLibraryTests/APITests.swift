@@ -227,7 +227,8 @@ class APITests: TestCase {
 
   func testCheckForUpdates() throws {
     #if !os(Windows)  // #workaround(SDGSwift 1.0.0, Git cannot find itself.)
-      #if !os(Android)  // #workaround(Emulator lacks Git.)
+      // #workaround(SDGSwift 1.0.0, Emulator lacks Git, but processes don’t work anyway.)
+      #if !os(Android)
         _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
       #endif
     #endif

@@ -563,7 +563,7 @@ public struct DocumentationConfiguration: Codable {
 
       for library in libraries {
         result += [
-          "        .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
         ]
       }
 

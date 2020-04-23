@@ -81,7 +81,7 @@ let package = Package(
     .target(
       name: "MyTarget",
       dependencies: [
-        .productItem(name: "WorkspaceConfiguration", package: "Workspace"),
+        .product(name: "WorkspaceConfiguration", package: "Workspace"),
       ]
     )
   ]

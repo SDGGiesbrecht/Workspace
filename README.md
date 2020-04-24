@@ -73,6 +73,7 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
+      name: "Workspace",
       url: "https://github.com/SDGGiesbrecht/Workspace",
       .upToNextMinor(from: Version(0, 32, 2))
     ),

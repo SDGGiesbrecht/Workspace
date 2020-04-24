@@ -462,7 +462,8 @@ public struct DocumentationConfiguration: Codable {
         return nil
       }
 
-      let projectName = WorkspaceContext.current.manifest.packageName
+      let packageName = WorkspaceContext.current.manifest.packageName
+      let projectName = packageName
 
       var versionSpecification: StrictString
       if version.major == 0 {
@@ -543,6 +544,7 @@ public struct DocumentationConfiguration: Codable {
           }).resolved(for: localization) + "\u{22},") as StrictString,
         "  dependencies: [",
         "    .package(",
+        "      name: \u{22}\(packageName)\u{22},",
         "      url: \u{22}\(packageURL.absoluteString)\u{22},",
         "      \(versionSpecification)",
         "    ),",
@@ -563,7 +565,7 @@ public struct DocumentationConfiguration: Codable {
 
       for library in libraries {
         result += [
-          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(packageName)\u{22}),"
         ]
       }
 

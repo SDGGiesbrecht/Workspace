@@ -99,7 +99,7 @@ jobs:
         cd swift-source/swift
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
-          --install-swift
+          --install-swift \
           --install-swiftpm
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
     - name: Prepare LLVM for Android

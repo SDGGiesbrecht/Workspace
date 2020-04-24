@@ -14,15 +14,22 @@ Simply add PartialReadMe as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "http://example.com", .upToNextMinor(from: Version(0, 1, 0))),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "PartialReadMe", package: "PartialReadMe"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "PartialReadMe",
+      url: "http://example.com",
+      .upToNextMinor(from: Version(0, 1, 0))
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "PartialReadMe", package: "PartialReadMe"),
+      ]
+    )
+  ]
 )
 ```
 

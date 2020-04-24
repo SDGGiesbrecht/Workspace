@@ -24,16 +24,23 @@ Simply add MultipleProducts as a dependency in `Package.swift` and specify which
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://somewhere.tld/repository", from: Version(1, 0, 0)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "LibraryA", package: "MultipleProducts"),
-            .productItem(name: "LibraryB", package: "MultipleProducts"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "MultipleProducts",
+      url: "https://somewhere.tld/repository",
+      from: Version(1, 0, 0)
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "LibraryA", package: "MultipleProducts"),
+        .product(name: "LibraryB", package: "MultipleProducts"),
+      ]
+    )
+  ]
 )
 ```
 

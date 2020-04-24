@@ -462,7 +462,8 @@ public struct DocumentationConfiguration: Codable {
         return nil
       }
 
-      let projectName = WorkspaceContext.current.manifest.packageName
+      let packageName = WorkspaceContext.current.manifest.packageName
+      let projectName = packageName
 
       var versionSpecification: StrictString
       if version.major == 0 {
@@ -532,7 +533,7 @@ public struct DocumentationConfiguration: Codable {
               return "paket"
             }
           }).resolved(for: localization) + " = Package(") as StrictString,
-        ("    name: \u{22}"
+        ("  name: \u{22}"
           + UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -541,11 +542,16 @@ public struct DocumentationConfiguration: Codable {
               return "MeinePaket"
             }
           }).resolved(for: localization) + "\u{22},") as StrictString,
-        "    dependencies: [",
-        "        .package(url: \u{22}\(packageURL.absoluteString)\u{22}, \(versionSpecification)),",
-        "    ],",
-        "    targets: [",
-        ("        .target(name: \u{22}"
+        "  dependencies: [",
+        "    .package(",
+        "      name: \u{22}\(packageName)\u{22},",
+        "      url: \u{22}\(packageURL.absoluteString)\u{22},",
+        "      \(versionSpecification)",
+        "    ),",
+        "  ],",
+        "  targets: [",
+        "    .target(",
+        ("      name: \u{22}"
           + UserFacing<StrictString, ContentLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -553,18 +559,20 @@ public struct DocumentationConfiguration: Codable {
             case .deutschDeutschland:
               return "MeinZiel"
             }
-          }).resolved(for: localization) + "\u{22}, dependencies: [") as StrictString,
+          }).resolved(for: localization) + "\u{22},") as StrictString,
+        "      dependencies: [",
       ]
 
       for library in libraries {
         result += [
-          "            .productItem(name: \u{22}\(library.name)\u{22}, package: \u{22}\(projectName)\u{22}),"
+          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(packageName)\u{22}),"
         ]
       }
 
       result += [
-        "        ])",
-        "    ]",
+        "      ]",
+        "    )",
+        "  ]",
         ")",
         "```",
         "",

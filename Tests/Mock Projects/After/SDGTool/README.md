@@ -47,15 +47,22 @@ Simply add SDG as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://github.com/JohnDoe/SDG", from: Version(1, 0, 0)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "Library", package: "SDG"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "SDG",
+      url: "https://github.com/JohnDoe/SDG",
+      from: Version(1, 0, 0)
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "Library", package: "SDG"),
+      ]
+    )
+  ]
 )
 ```
 

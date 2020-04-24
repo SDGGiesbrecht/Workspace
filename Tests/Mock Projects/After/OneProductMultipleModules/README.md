@@ -14,15 +14,22 @@ Simply add OneProductMultipleModules as a dependency in `Package.swift`:
 
 ```swift
 let package = Package(
-    name: "MyPackage",
-    dependencies: [
-        .package(url: "https://somewhere.tld/repository", from: Version(1, 0, 0)),
-    ],
-    targets: [
-        .target(name: "MyTarget", dependencies: [
-            .productItem(name: "OneProductMultipleModules", package: "OneProductMultipleModules"),
-        ])
-    ]
+  name: "MyPackage",
+  dependencies: [
+    .package(
+      name: "OneProductMultipleModules",
+      url: "https://somewhere.tld/repository",
+      from: Version(1, 0, 0)
+    ),
+  ],
+  targets: [
+    .target(
+      name: "MyTarget",
+      dependencies: [
+        .product(name: "OneProductMultipleModules", package: "OneProductMultipleModules"),
+      ]
+    )
+  ]
 )
 ```
 

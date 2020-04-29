@@ -155,11 +155,16 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
-          -target x86_64-unknown-linux-android \
-          -sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-          -resource-dir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
-          -tools-directory ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xclang-linker --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
-          -Xclang-linker --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
-          HelloWorld.swift
+        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift \
+          --package-path HelloWorld \
+          --build-tests --enable-test-discovery \
+          --triple x86_64-unknown-linux-android \
+          --sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          -Xswiftc -resource-dir -Xswiftc ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android

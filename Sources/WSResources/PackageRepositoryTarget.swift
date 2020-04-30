@@ -201,7 +201,7 @@ import WSSwift
       private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
         var result: StrictString = ""
         for name in namespaceTree.keys.sorted() {
-          try autoreleasepool {
+          try purgingAutoreleased {
             let value = namespaceTree[name]
 
             if let resource = value as? URL {

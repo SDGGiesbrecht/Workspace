@@ -102,7 +102,7 @@ import SDGSwiftSource
       // Deprecated file locations.
       delete(location.appendingPathComponent("Documentation/Related Projects.md"), output: output)
       for localization in try configuration(output: output).documentation.localizations {
-        autoreleasepool {
+        purgingAutoreleased {
           delete(
             ReadMeConfiguration._readMeLocation(for: location, localization: localization),
             output: output

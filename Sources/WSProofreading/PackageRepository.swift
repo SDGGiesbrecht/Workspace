@@ -74,7 +74,7 @@ import WSCustomTask
         where FileType(url: url) ≠ nil
           ∧ FileType(url: url) ≠ .xcodeProject
         {
-          try autoreleasepool {
+          try purgingAutoreleased {
 
             let file = try TextFile(alreadyAt: url)
             reporter.reportParsing(

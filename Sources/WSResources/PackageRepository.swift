@@ -125,7 +125,7 @@ import SDGSwiftPackageManager
         .map({ ($0, targets[$0]!) })
       {  // So that output order is consistent.
 
-        try autoreleasepool {
+        try purgingAutoreleased {
           try target.refresh(resources: resources, from: self, output: output)
         }
       }

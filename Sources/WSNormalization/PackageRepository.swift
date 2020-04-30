@@ -41,7 +41,7 @@ import WSProject
       #endif
 
       for url in try sourceFiles(output: output) {
-        try autoreleasepool {
+        try purgingAutoreleased {
 
           if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)

@@ -43,7 +43,7 @@ import WSProject
       let skippedFiles = self.skippedFiles
       for url in try sourceFiles(output: output)
       where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
-        try autoreleasepool {
+        try purgingAutoreleased {
           if let type = FileType(url: url),
             type.syntax.hasComments
           {

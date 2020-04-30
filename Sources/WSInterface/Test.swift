@@ -99,7 +99,7 @@ extension Workspace {
             output: output
           ))
         {
-          try autoreleasepool {
+          try purgingAutoreleased {
 
             if try options.project.configuration(output: output).continuousIntegration
               .skipSimulatorOutsideContinuousIntegration,

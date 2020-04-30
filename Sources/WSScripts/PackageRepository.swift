@@ -34,7 +34,7 @@ import WSProject
       }
 
       for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
-        try autoreleasepool {
+        try purgingAutoreleased {
 
           var file = try TextFile(
             possiblyAt: location.appendingPathComponent(String(script.fileName)),

@@ -68,7 +68,7 @@ extension PackageRepository {
   ) where L: InputLocalization {
 
     do {
-      try autoreleasepool {
+      try purgingAutoreleased {
         let developer = URL(fileURLWithPath: "/tmp/Developer")
         try? FileManager.default.removeItem(at: developer)
         defer { try? FileManager.default.removeItem(at: developer) }

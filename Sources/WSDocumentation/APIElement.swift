@@ -782,7 +782,7 @@
       customReplacements: [(StrictString, StrictString)],
       namespace: StrictString = ""
     ) -> [String: String] {
-      return autoreleasepool {
+      return purgingAutoreleased {
 
         var links: [String: String] = [:]
         var path = localization._directoryName + "/"

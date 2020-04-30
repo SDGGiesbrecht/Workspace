@@ -155,7 +155,7 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift \
+        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift build \
           --package-path HelloWorld \
           --build-tests --enable-test-discovery \
           --triple x86_64-unknown-linux-android \

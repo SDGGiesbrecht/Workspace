@@ -41,11 +41,11 @@ final class CrossPlatformTests: TestCase {
       let locations = try Shell.default.run(command: ["where", "git"]).get()
       let path = String(locations.lines.first!.line)
       let process = ExternalProcess(at: URL(fileURLWithPath: path))
-      try process.run(["\u{2D}\u{2D}version"]).get()
+      _ = try process.run(["\u{2D}\u{2D}version"]).get()
     #elseif os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.2, Process doesn’t work.)
     #else
-      try Git.runCustomSubcommand(
+      _ = try Git.runCustomSubcommand(
         ["\u{2D}\u{2D}version"],
         versionConstraints: Version(0)..<Version(Int.max)
       ).get()

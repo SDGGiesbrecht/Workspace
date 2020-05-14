@@ -364,7 +364,7 @@ import WSProofreading
               file: file.file.path(relativeTo: location),
               to: output
             )
-            try autoreleasepool {
+            try purgingAutoreleased {
               let sourceFile = try String(from: file.file)
               regionLoop: for region in file.regions {
                 let startLineIndex = region.region.lowerBound.line(in: sourceFile.lines)

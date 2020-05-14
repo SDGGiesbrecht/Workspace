@@ -132,7 +132,7 @@ import WSXcode
       for localization in localizations {
         var markdown: [Markdown] = []
         for entry in relatedProjects {
-          try autoreleasepool {
+          try purgingAutoreleased {
             switch entry {
             case .heading(text: let translations):
               if let text = translations[localization] {
@@ -399,7 +399,7 @@ import WSXcode
     private func redirectExistingURLs(outputDirectory: URL) throws {
       if (try? outputDirectory.checkResourceIsReachable()) == true {
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-          try autoreleasepool {
+          try purgingAutoreleased {
             if file.pathExtension == "html" {
               if file.lastPathComponent == "index.html" {
                 try DocumentSyntax.redirect(
@@ -511,7 +511,7 @@ import WSXcode
         var list: [StrictString: StrictString] = [:]
 
         for url in try sourceFiles(output: output) {
-          try autoreleasepool {
+          try purgingAutoreleased {
 
             if let type = FileType(url: url),
               type ∈ Set([.swift, .swiftPackageManifest])
@@ -545,7 +545,7 @@ import WSXcode
     public func refreshInheritedDocumentation(output: Command.Output) throws {
 
       for url in try sourceFiles(output: output) {
-        try autoreleasepool {
+        try purgingAutoreleased {
 
           if let type = FileType(url: url),
             type ∈ Set([.swift, .swiftPackageManifest])

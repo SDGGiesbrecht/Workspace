@@ -250,15 +250,15 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(4, 6, 2)
+      from: Version(5, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 4, 1)
+      from: Version(1, 4, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(1, 0, 0)
+      from: Version(1, 0, 1)
     ),
     .package(
       name: "SwiftPM",
@@ -278,7 +278,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}format",
       .exact(Version(0, 50200, 0))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 0)),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -889,4 +889,5 @@ func adjustForWeb() {
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()
+
 }

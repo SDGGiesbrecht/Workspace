@@ -45,7 +45,7 @@ import WSParsing
         var list: [StrictString: StrictString] = [:]
 
         for url in try sourceFiles(output: output) {
-          autoreleasepool {
+          purgingAutoreleased {
 
             if FileType(url: url) ≠ nil,
               let file = try? TextFile(alreadyAt: url)
@@ -105,7 +105,7 @@ import WSParsing
       files: for url in try sourceFiles(output: output)
       where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
 
-        try autoreleasepool {
+        try purgingAutoreleased {
 
           if let type = FileType(url: url),
             type ∈ Set([.swift, .swiftPackageManifest])

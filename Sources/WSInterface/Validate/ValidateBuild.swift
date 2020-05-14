@@ -142,7 +142,7 @@ extension Workspace.Validate {
             output: output
           ))
         {
-          try autoreleasepool {
+          try purgingAutoreleased {
 
             try options.project.build(
               for: job,

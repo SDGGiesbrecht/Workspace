@@ -220,7 +220,7 @@ internal struct PackageInterface {
     ) -> [LocalizationIdentifier: StrictString] {
       var result: [LocalizationIdentifier: StrictString] = [:]
       for localization in localizations {
-        autoreleasepool {
+        purgingAutoreleased {
           result[localization] = generateIndex(
             for: package,
             tools: tools,
@@ -831,7 +831,7 @@ internal struct PackageInterface {
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        try autoreleasepool {
+        try purgingAutoreleased {
           // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
           #if !(os(Windows) || os(WASI) || os(Android))
             let pageURL = api.pageURL(
@@ -875,7 +875,7 @@ internal struct PackageInterface {
       }
       for localization in localizations {
         for tool in cli.commands.values {
-          try autoreleasepool {
+          try purgingAutoreleased {
             let location = tool.pageURL(in: outputDirectory, for: localization)
             // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
             #if !(os(Windows) || os(WASI) || os(Android))
@@ -921,7 +921,7 @@ internal struct PackageInterface {
         #if !(os(Windows) || os(WASI) || os(Android))
           for library in api.libraries.lazy.map({ APIElement.library($0) })
           where library.exists(in: localization) {
-            try autoreleasepool {
+            try purgingAutoreleased {
               let location = library.pageURL(
                 in: outputDirectory,
                 for: localization,
@@ -963,7 +963,7 @@ internal struct PackageInterface {
         #if !(os(Windows) || os(WASI) || os(Android))
           for module in api.modules.lazy.map({ APIElement.module($0) })
           where module.exists(in: localization) {
-            try autoreleasepool {
+            try purgingAutoreleased {
               let location = module.pageURL(
                 in: outputDirectory,
                 for: localization,
@@ -1013,7 +1013,7 @@ internal struct PackageInterface {
             packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
           ].joined()
           where symbol.exists(in: localization) {
-            try autoreleasepool {
+            try purgingAutoreleased {
               let location = symbol.pageURL(
                 in: outputDirectory,
                 for: localization,
@@ -1130,7 +1130,7 @@ internal struct PackageInterface {
 
         for symbol in [parent.children, parent.localizedChildren].joined()
         where symbol.receivesPage ∧ symbol.exists(in: localization) {
-          try autoreleasepool {
+          try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
@@ -1198,7 +1198,7 @@ internal struct PackageInterface {
     ) throws {
 
       for subcommand in parent.interfaces[localization]!.subcommands {
-        try autoreleasepool {
+        try purgingAutoreleased {
           var information = CommandInterfaceInformation()
           information.interfaces[localization] = subcommand
 
@@ -1354,7 +1354,7 @@ internal struct PackageInterface {
       // Out of directories.
       var handled = Set<URL>()
       for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-        try autoreleasepool {
+        try purgingAutoreleased {
           var directory = url.deletingLastPathComponent()
           while directory ∉ handled,
           directory.is(in: outputDirectory) {

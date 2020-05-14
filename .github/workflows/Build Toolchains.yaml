@@ -99,9 +99,18 @@ jobs:
         cd swift-source/swift
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
+          --install-libcxx \
+          --install-libicu \
           --install-swift \
+          --install-lldb \
+          --install-llbuild \
+          --install-foundation \
+          --install-libdispatch \
+          --install-xctest \
           --install-swiftpm
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
+        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
+        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
       # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml

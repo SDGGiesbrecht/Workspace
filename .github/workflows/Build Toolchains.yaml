@@ -99,15 +99,17 @@ jobs:
         cd swift-source/swift
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
-          --install-libcxx \
-          --install-libicu \
           --install-swift \
           --install-lldb \
           --install-llbuild \
+          --install-swiftpm \
+          --install-xctest \
+          --install-libicu \
+          --install-libcxx \
           --install-foundation \
           --install-libdispatch \
-          --install-xctest \
-          --install-swiftpm
+          --build-swift-static-stdlib \
+          --build-swift-static-sdk-overlay
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version

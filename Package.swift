@@ -276,7 +276,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
-      .exact(Version(0, 50200, 0))
+      .exact(Version(0, 50200, 1))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
   ],

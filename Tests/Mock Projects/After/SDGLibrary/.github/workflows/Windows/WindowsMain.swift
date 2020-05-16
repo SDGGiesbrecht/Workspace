@@ -22,7 +22,7 @@ import XCTest
 extension SDGTests.SDGTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testExample", testExample),
+      ("testExample", testExample)
     ])
   ]
 }

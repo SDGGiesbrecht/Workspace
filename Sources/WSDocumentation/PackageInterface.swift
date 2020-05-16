@@ -1357,7 +1357,8 @@ internal struct PackageInterface {
         try purgingAutoreleased {
           var directory = url.deletingLastPathComponent()
           while directory ∉ handled,
-          directory.is(in: outputDirectory) {
+            directory.is(in: outputDirectory)
+          {
             defer {
               handled.insert(directory)
               directory = directory.deletingLastPathComponent()

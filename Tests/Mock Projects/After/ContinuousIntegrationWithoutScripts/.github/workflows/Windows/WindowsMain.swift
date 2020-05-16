@@ -15,7 +15,7 @@ import XCTest
 extension ContinuousIntegrationWithoutScriptsTests.ContinuousIntegrationWithoutScriptsTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testExample", testExample),
+      ("testExample", testExample)
     ])
   ]
 }

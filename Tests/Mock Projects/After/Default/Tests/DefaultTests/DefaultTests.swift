@@ -10,6 +10,6 @@ final class DefaultTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testExample", testExample),
+    ("testExample", testExample)
   ]
 }

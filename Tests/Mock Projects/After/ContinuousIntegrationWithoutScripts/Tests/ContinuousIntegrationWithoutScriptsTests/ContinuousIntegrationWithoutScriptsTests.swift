@@ -20,6 +20,6 @@ final class ContinuousIntegrationWithoutScriptsTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testExample", testExample),
+    ("testExample", testExample)
   ]
 }

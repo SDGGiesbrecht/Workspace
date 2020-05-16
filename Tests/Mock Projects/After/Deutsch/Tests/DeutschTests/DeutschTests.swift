@@ -10,6 +10,6 @@ final class DeutschTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testExample", testExample),
+    ("testExample", testExample)
   ]
 }

@@ -599,7 +599,7 @@ import WSProject
                 "span",
                 contents: HTML.escapeTextForCharacterData(localization._iconOrCode),
                 inline: true
-              ),
+              )
             ].lazy.map({ $0.normalizedSource() }).joinedAsLines(),
             inline: true
           )
@@ -821,7 +821,8 @@ import WSProject
           )
         )
       }
-      if case .extension = symbol {} else {
+      if case .extension = symbol {
+      } else {
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,

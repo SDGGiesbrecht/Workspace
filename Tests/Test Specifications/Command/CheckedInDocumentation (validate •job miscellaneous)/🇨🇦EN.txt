@@ -50,7 +50,7 @@ import XCTest
 #if !os(macOS)
   public func allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(CheckedInDocumentationTests.allTests),
+      testCase(CheckedInDocumentationTests.allTests)
     ]
   }
 #endif

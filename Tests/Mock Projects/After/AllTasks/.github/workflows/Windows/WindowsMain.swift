@@ -15,7 +15,7 @@ import XCTest
 extension AllTasksTests.AllTasksTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testExample", testExample),
+      ("testExample", testExample)
     ])
   ]
 }

@@ -192,13 +192,13 @@ Testlisten werden nicht mehr benötigt. (überholteTestlisten)
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__BadStyleTests = [
-      ("testExample", testExample),
+      ("testExample", testExample)
     ]
   }
 
   public func __allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(BadStyleTests.__allTests__BadStyleTests),
+      testCase(BadStyleTests.__allTests__BadStyleTests)
     ]
   }
 #endif

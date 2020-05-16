@@ -133,8 +133,8 @@ jobs:
         git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/swift-cmark .build/SDG/Dependencies/cmark --branch 0.0.50200 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.3.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-argument-parser.git .build/SDG/Dependencies/swift-argument-parser --branch 0.0.5 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-argument-parser.git .build/SDG/Dependencies/swift-argument-parser --branch 0.0.6 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.5 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
     - name: Build

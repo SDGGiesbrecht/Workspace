@@ -322,7 +322,7 @@ class APITests: TestCase {
         [:]
       )
       configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:]
-        })
+      })
       XCTAssertEqual(
         configuration.dokumentation.einführungsanleitungen.auswerten(configuration),
         [:]

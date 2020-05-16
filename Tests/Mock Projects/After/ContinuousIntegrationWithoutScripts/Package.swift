@@ -19,7 +19,7 @@ let package = Package(
     .library(
       name: "ContinuousIntegrationWithoutScripts",
       targets: ["ContinuousIntegrationWithoutScripts"]
-    ),
+    )
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.

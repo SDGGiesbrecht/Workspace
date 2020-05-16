@@ -10,6 +10,6 @@ final class OnlyBritishTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testExample", testExample),
+    ("testExample", testExample)
   ]
 }

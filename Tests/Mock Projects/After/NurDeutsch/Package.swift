@@ -10,7 +10,7 @@ let package = Package(
     .library(
       name: "NurDeutsch",
       targets: ["NurDeutsch"]
-    ),
+    )
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.

@@ -17,7 +17,7 @@ let package = Package(
   name: "AllTasks",
   products: [
     /// A library.
-    .library(name: "AllTasks", targets: ["AllTasks"]),
+    .library(name: "AllTasks", targets: ["AllTasks"])
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.

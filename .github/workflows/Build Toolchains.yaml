@@ -100,16 +100,14 @@ jobs:
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
           --install-swift \
-          --install-lldb \
-          --install-llbuild \
-          --install-swiftpm \
-          --install-xctest \
-          --install-libicu \
-          --install-libcxx \
-          --install-foundation \
-          --install-libdispatch \
-          --build-swift-static-stdlib \
-          --build-swift-static-sdk-overlay
+          --install-lldb --lldb \
+          --install-llbuild --llbuild \
+          --install-swiftpm --swiftpm \
+          --install-xctest --xctest \
+          --install-libicu --libicu \
+          --install-libcxx --libcxx \
+          --install-foundation --foundation \
+          --install-libdispatch --libdispatch
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version

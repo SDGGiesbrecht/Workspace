@@ -173,7 +173,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
           contents.append(contentsOf: [
-            "### Demonstration",
+            "### Demonstration"
           ])
         case .deutschDeutschland:
           contents.append(contentsOf: [
@@ -354,11 +354,11 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         contents.append(contentsOf: [
-          "I expected to find the answer under such‐and‐such.",
+          "I expected to find the answer under such‐and‐such."
         ])
       case .deutschDeutschland:
         contents.append(contentsOf: [
-          "Ich erwartete, die Antwort unter soundso zu finden.",
+          "Ich erwartete, die Antwort unter soundso zu finden."
         ])
       }
     }

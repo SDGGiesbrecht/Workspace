@@ -185,10 +185,11 @@ import WSParsing
                   ].firstMatch(
                     for: "```".scalars
                   )?.range,
-                  let endRange = commentValue.scalars[
-                    startRange.upperBound..<commentValue.scalars.endIndex
-                  ]
-                  .firstMatch(for: "```".scalars)?.range {
+                    let endRange = commentValue.scalars[
+                      startRange.upperBound..<commentValue.scalars.endIndex
+                    ]
+                    .firstMatch(for: "```".scalars)?.range
+                  {
 
                     let exampleRange = startRange.lowerBound..<endRange.upperBound
 

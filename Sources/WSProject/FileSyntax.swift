@@ -80,7 +80,8 @@ public struct FileSyntax {
 
         var body = String(file.contents.scalars[file.headerEnd...])
         while let firstCharacter = body.scalars.first,
-        firstCharacter ∈ CharacterSet.whitespacesAndNewlines {
+          firstCharacter ∈ CharacterSet.whitespacesAndNewlines
+        {
           body.scalars.removeFirst()
         }
         body =

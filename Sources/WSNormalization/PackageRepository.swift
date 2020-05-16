@@ -75,7 +75,8 @@ import WSProject
               }
 
               while let last = normalized.unicodeScalars.last,
-              last ∈ CharacterSet.whitespaces {
+                last ∈ CharacterSet.whitespaces
+              {
                 normalized.unicodeScalars.removeLast()
               }
 

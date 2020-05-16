@@ -5,7 +5,7 @@ import XCTest
 extension DeutschTests.DeutschTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
-      ("testExample", testExample),
+      ("testExample", testExample)
     ])
   ]
 }

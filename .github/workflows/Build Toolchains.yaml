@@ -151,10 +151,10 @@ jobs:
           -D LLVM_DIR=${GITHUB_WORKSPACE}/swift-build/LLVM/lib/cmake/llvm \
           -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-          -D SWIFT_ANDROID_x86_64_ICU_UC_INCLUDE=${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
-          -D SWIFT_ANDROID_x86_64_ICU_UC=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
-          -D SWIFT_ANDROID_x86_64_ICU_I18N_INCLUDE=${GITHUB_WORKSPACE}/Android/ICU/include \
-          -D SWIFT_ANDROID_x86_64_ICU_I18N=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1
+          -D ICU_UC_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
+          -D ICU_UC_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
+          -D ICU_I18N_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include \
+          -D ICU_I18N_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1
         cmake --build Standard_Library --target install
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1

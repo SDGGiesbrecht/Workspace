@@ -37,7 +37,12 @@ final class CrossPlatformTests: TestCase {
   }
 
   func testGit() throws {
-    #if os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    #if os(Windows)  // #workaround(SDGSwift 1.0.0, Git cannot find itself.)
+      let locations = try Shell.default.run(command: ["where", "git"]).get()
+      let path = String(locations.lines.first!.line)
+      let process = ExternalProcess(at: URL(fileURLWithPath: path))
+      _ = try process.run(["\u{2D}\u{2D}version"]).get()
+    #elseif os(WASI)  // #workaround(Swift 5.2.2, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.2, Process doesn’t work.)
     #else
       _ = try Git.runCustomSubcommand(

@@ -37,7 +37,7 @@ final class CrossPlatformTests: TestCase {
   }
 
   func testGit() throws {
-    #if os(Windows)  // #workaround(SDGSwift 1.0.0, Git cannot find itself.)
+    #if os(Windows)  // #workaround(Swift 5.2.3, SegFault with the standard method.)
       let locations = try Shell.default.run(command: ["where", "git"]).get()
       let path = String(locations.lines.first!.line)
       let process = ExternalProcess(at: URL(fileURLWithPath: path))

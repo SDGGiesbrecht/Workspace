@@ -127,7 +127,7 @@ jobs:
         set -x
         git clone https://github.com/SDGGiesbrecht/SDGCommandLine .build/SDG/Dependencies/SDGCommandLine --branch 1.4.2 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 5.0.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/SDGSwift .build/SDG/Dependencies/SDGSwift --branch 1.0.1 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGSwift .build/SDG/Dependencies/SDGSwift --branch 1.0.3 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGWeb .build/SDG/Dependencies/SDGWeb --branch 5.3.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.6.0 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50200.0 --depth 1 --config advice.detachedHead=false

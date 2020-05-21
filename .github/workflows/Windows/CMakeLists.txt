@@ -558,6 +558,7 @@ target_link_libraries("SDGExportedCommandLineInterface" PRIVATE
 add_library("SDGSwiftConfigurationLoading"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/Configuration.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/ConfigurationError.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/LegacyMode.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/Resources.swift"
 )
 set_target_properties("SDGSwiftConfigurationLoading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -567,6 +568,7 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGSwiftConfiguration"
   "SDGSwift"
   "SDGLogic"
+  "SDGCollections"
   "SDGText"
   "SDGLocalization"
   "SDGVersioning"

@@ -20,7 +20,7 @@ public enum Metadata {
 
   public static let latestStableVersion = Version(0, 32, 4)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = latestStableVersion
+  public static let thisVersion: Version? = nil
 
   // #workaround(Swift 5.2.2, Web lacks Foundation.)
   #if !os(WASI)

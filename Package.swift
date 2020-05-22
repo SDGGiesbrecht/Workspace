@@ -889,5 +889,4 @@ func adjustForWeb() {
 }
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()
-
 }

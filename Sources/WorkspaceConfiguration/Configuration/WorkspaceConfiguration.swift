@@ -392,7 +392,7 @@ public final class WorkspaceConfiguration: Configuration {
       licence.licence = .apache2_0
     }
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       documentation.relatedProjects.append(
         .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
@@ -419,7 +419,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _applySDGOverrides() {
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       let project = WorkspaceContext.current.manifest.packageName
       let repositoryURL =
@@ -445,7 +445,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
     #endif
@@ -454,7 +454,7 @@ public final class WorkspaceConfiguration: Configuration {
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
     if openSource {
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         assert(documentation.projectWebsite ≠ nil, "No project website specified.")
         if needsAPIDocumentation {

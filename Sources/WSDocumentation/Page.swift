@@ -35,7 +35,7 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static let template: StrictString = {
       var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
@@ -121,7 +121,7 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if os(WASI)
       var mutable: StrictString = ""
     #else

@@ -21,7 +21,7 @@ import SDGExternalProcess
 import WSInterface
 
 do {
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
@@ -40,7 +40,7 @@ do {
 
 } catch {
   print(error)
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     print(error.localizedDescription)
     exit(1)

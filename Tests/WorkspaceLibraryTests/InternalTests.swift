@@ -46,7 +46,7 @@ class InternalTests: TestCase {
     ]
 
     #if !os(Windows)  // #workaround(SDGCornerstone 4.6.2, Git not found during GitHub action.)
-      // #workaround(SDGSwift 1.0.0, Emulator lacks Git, but processes don’t work anyway.)
+      // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
       #if !os(Android)
         _ = try Command(
           name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),

@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-// #workaround(Swift 5.2.2, Web lacks Dispatch.)
+// #workaround(Swift 5.2.4, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
 #endif
@@ -26,7 +26,7 @@ import WSInterface
 
 public func run() {  // @exempt(from: tests)
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     DispatchQueue.global(qos: .utility).sync {
 

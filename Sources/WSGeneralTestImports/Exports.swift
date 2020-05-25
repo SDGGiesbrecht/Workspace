@@ -18,7 +18,7 @@
 @_exported import WorkspaceConfiguration
 @_exported import WSInterface
 
-// #workaround(Swift 5.2.2, Web lacks XCTest.)
+// #workaround(Swift 5.2.4, Web lacks XCTest.)
 #if !os(WASI)
   @_exported import XCTest
 #endif
@@ -29,6 +29,6 @@
 
 @_exported import SDGCommandLineTestUtilities
 
-#if os(Windows)  // #workaround(Swift 5.2.2, CMake needs at least one symbol.)
+#if os(Windows)  // #workaround(Swift 5.2.4, CMake needs at least one symbol.)
   public func _cmakeProduceLibrary() {}
 #endif

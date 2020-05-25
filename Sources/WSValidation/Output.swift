@@ -19,7 +19,7 @@ import WSProject
 
 extension Command.Output {
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)

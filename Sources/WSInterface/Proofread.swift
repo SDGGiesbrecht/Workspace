@@ -74,7 +74,7 @@ extension Workspace {
         )
 
         if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
-          // #workaround(Swift 5.2.2, Web lacks Foundation.)
+          // #workaround(Swift 5.2.4, Web lacks Foundation.)
           #if !os(WASI)
             try validationStatus.reportOutcome(project: options.project, output: output)
           #endif
@@ -89,7 +89,7 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
@@ -118,7 +118,7 @@ extension Workspace {
         reporter = CommandLineProofreadingReporter.default
       }
 
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         if try options.project.proofread(reporter: reporter, output: output) {
           validationStatus.passStep(

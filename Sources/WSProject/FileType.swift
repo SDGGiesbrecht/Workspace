@@ -22,7 +22,7 @@ public enum FileType {
 
   // MARK: - Static Properties
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
     public static func resetUnsupportedFileTypes() {
@@ -96,7 +96,7 @@ public enum FileType {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public init?(url: URL) {
 

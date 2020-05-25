@@ -37,7 +37,7 @@ public class XcodeProofreadingReporter: ProofreadingReporter {
     let file = violation.file.contents
     let lines = file.lines
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       let path = violation.file.location.path
 

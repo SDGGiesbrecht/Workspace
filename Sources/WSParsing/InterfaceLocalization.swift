@@ -39,7 +39,7 @@ extension InterfaceLocalization {
     >,
     String.ScalarView
   >
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static func patternWithArguments(
       named name: UserFacing<StrictString, InterfaceLocalization>,
@@ -62,7 +62,7 @@ extension InterfaceLocalization {
   ) -> DirectivePattern {
     return pattern(named: name, startingWith: "@")
   }
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static func declarationPatternWithArguments(
       _ name: UserFacing<StrictString, InterfaceLocalization>
@@ -88,7 +88,7 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let exampleDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(exampleDeclarationName)
@@ -116,7 +116,7 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let exampleDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(
@@ -135,7 +135,7 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let documentationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(documentationDeclarationName)
@@ -150,7 +150,7 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let documentationDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(documentationDirectiveName)
@@ -169,7 +169,7 @@ extension InterfaceLocalization {
         return "lokalisation"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let localizationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(localizationDeclarationName)
@@ -186,7 +186,7 @@ extension InterfaceLocalization {
         return "querverweis"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let crossReferenceDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(crossReferenceDeclarationName)
@@ -203,7 +203,7 @@ extension InterfaceLocalization {
         return "nichtLokalisiert"
       }
     })
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static let notLocalizedDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(notLocalizedDeclarationName)

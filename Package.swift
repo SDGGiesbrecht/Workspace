@@ -265,7 +265,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       .exact(Version(0, 6, 0))
     ),
-    .package(  // #workaround(Swift 5.2.2, Until packages work natively on windows.)
+    .package(  // #workaround(Swift 5.2.4, Until packages work natively on windows.)
       url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 1, 0))
     ),
@@ -782,7 +782,7 @@ let package = Package(
 )
 
 func adjustForWindows() {
-  // #workaround(Swift 5.2.2, These cannot build on Windows.)
+  // #workaround(Swift 5.2.4, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -807,7 +807,7 @@ func adjustForWindows() {
       })
     })
   }
-  // #workaround(Swift 5.2.2, Triggers assertion failure when generating CMake without this.)
+  // #workaround(Swift 5.2.4, Triggers assertion failure when generating CMake without this.)
   package.dependencies.append(contentsOf: [
     .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 5))),
     .package(
@@ -820,14 +820,14 @@ func adjustForWindows() {
 #if os(Windows)
   adjustForWindows()
 #endif
-// #workaround(Swift 5.2.2, Until packages work natively on windows.)
+// #workaround(Swift 5.2.4, Until packages work natively on windows.)
 import Foundation
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }
 
 func adjustForAndroid() {
-  // #workaround(Swift 5.2.2, These cannot build on Android.)
+  // #workaround(Swift 5.2.4, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
@@ -850,7 +850,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 func adjustForWeb() {
-  // #workaround(Swift 5.2.2, Web won’t resolve manifests with dynamic libraries.)
+  // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
     "swift\u{2D}package\u{2D}manager",
     "swift\u{2D}tools\u{2D}support\u{2D}core.git",
@@ -863,7 +863,7 @@ func adjustForWeb() {
     }
     return false
   })
-  // #workaround(Swift 5.2.2, Cannot build for web.)
+  // #workaround(Swift 5.2.4, Cannot build for web.)
   let impossibleDependencies: Set<String> = [
     // SwiftFormat
     "SwiftFormat\u{22}",
@@ -883,7 +883,7 @@ func adjustForWeb() {
     })
   }
   for target in package.targets {
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     target.exclude.append("Resources.swift")
   }
 }

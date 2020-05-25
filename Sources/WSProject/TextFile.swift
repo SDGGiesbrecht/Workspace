@@ -21,7 +21,7 @@ public struct TextFile {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public init(alreadyAt location: URL) throws {
       guard let fileType = FileType(url: location) else {
@@ -94,7 +94,7 @@ public struct TextFile {
   private var cache = Cache()
 
   private var hasChanged: Bool
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public let location: URL
   #endif
@@ -139,7 +139,7 @@ public struct TextFile {
 
   // MARK: - File Headers
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public var headerStart: String.ScalarView.Index {
       return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in

@@ -239,7 +239,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
       switch self {
@@ -300,7 +300,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return command
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private func workspaceStep(
       named name: UserFacing<StrictString, InterfaceLocalization>,
@@ -328,7 +328,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var gitHubActionMachine: StrictString {
     switch platform {
-    // #workaround(Swift 5.2.2, Linux cannot find Dispatch in Web toolchain.)
+    // #workaround(Swift 5.2.4, Linux cannot find Dispatch in Web toolchain.)
     case .macOS, .web:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
@@ -386,7 +386,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return uses("actions/checkout@v1")
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private func cache() -> StrictString {
       let environment: StrictString
@@ -537,7 +537,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     internal func gitHubWorkflowJob(
       for project: PackageRepository,
@@ -922,7 +922,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "chmod +x .build/SDG/Emulator.sh",
             ]
           ),
-          // #workaround(Swift 5.2.2, There is no official action for this yet.)
+          // #workaround(Swift 5.2.4, There is no official action for this yet.)
           step(testStepName, localization: interfaceLocalization),
           uses(
             "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",

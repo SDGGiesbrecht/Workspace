@@ -51,7 +51,7 @@ extension Workspace {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           #if !os(Linux)
             if try options.project.configuration(output: output).xcode.manage {
@@ -75,7 +75,7 @@ extension Workspace {
           output: output
         )
 
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
@@ -88,7 +88,7 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)

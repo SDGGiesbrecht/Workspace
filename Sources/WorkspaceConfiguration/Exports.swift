@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.2, Web lacks Foundation.)
+// #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
   @_exported import struct Foundation.URL
 #endif
@@ -30,7 +30,7 @@
 
 @_exported import SDGSwiftConfiguration
 
-// #workaround(Swift 5.2.2, SwiftFormat cannot build.)
+// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
 #if !os(WASI)
   @_exported import SwiftFormatConfiguration
 #endif

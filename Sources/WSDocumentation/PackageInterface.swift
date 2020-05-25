@@ -29,7 +29,7 @@ import WorkspaceConfiguration
 
 internal struct PackageInterface {
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static func specify(package: URL?, version: Version?) -> StrictString? {
       guard let specified = package else {
@@ -283,7 +283,7 @@ internal struct PackageInterface {
       )
 
       if hasInstallation {
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           result.append(
             generateLoneIndexEntry(
@@ -478,7 +478,7 @@ internal struct PackageInterface {
     var entries: [StrictString] = []
     for (_, entry) in tools.commands {
       if let interface = entry.interfaces[localization] {
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           entries.append(
             ElementSyntax(
@@ -526,7 +526,7 @@ internal struct PackageInterface {
     ).normalizedSource()
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static func generateLoneIndexEntry(
       named name: StrictString,
@@ -727,7 +727,7 @@ internal struct PackageInterface {
 
   // MARK: - Output
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     internal func outputHTML(
       to outputDirectory: URL,

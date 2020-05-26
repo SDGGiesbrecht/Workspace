@@ -73,7 +73,7 @@ extension Workspace {
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
@@ -103,14 +103,14 @@ extension Workspace {
               })
           )
         }
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
       }
     )
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       static func executeAsStep(
         outputDirectory: URL,

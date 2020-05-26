@@ -165,7 +165,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       }
     }
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       if self == .bugReport {
         let products = WorkspaceContext.current.manifest.products

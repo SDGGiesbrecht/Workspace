@@ -188,7 +188,7 @@ public struct DocumentationConfiguration: Codable {
     set { currentVersion = newValue }
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(DocumentationConfiguration.projectWebsite)
@@ -252,7 +252,7 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if os(WASI)
       return [:]
     #else
@@ -293,7 +293,7 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if os(WASI)
       return [:]
     #else
@@ -328,7 +328,7 @@ public struct DocumentationConfiguration: Codable {
     set { about = newValue }
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(DocumentationConfiguration.relatedProjects)
@@ -366,7 +366,7 @@ public struct DocumentationConfiguration: Codable {
 
   // MARK: - Installation Instructions
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static func localizedToolInstallationInstructions(
       packageURL: URL,

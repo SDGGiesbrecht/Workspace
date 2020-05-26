@@ -21,7 +21,7 @@ import WSProject
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     static func message(
       for details: StrictString,
@@ -33,7 +33,7 @@ internal protocol Warning: TextRule {
 
 extension Warning {
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     internal static func check(
       file: TextFile,

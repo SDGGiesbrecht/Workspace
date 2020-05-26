@@ -50,7 +50,7 @@ extension Workspace {
       execution: { (_, _, output: Command.Output) throws in
         if let update = try checkForUpdates(output: output) {
           // @exempt(from: tests) Execution path is determined externally.
-          // #workaround(Swift 5.2.2, Web lacks Foundation.)
+          // #workaround(Swift 5.2.4, Web lacks Foundation.)
           #if !os(WASI)
             output.print(
               UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -93,7 +93,7 @@ extension Workspace {
     )
 
     static func checkForUpdates(output: Command.Output) throws -> Version? {
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if os(WASI)
         return nil
       #else

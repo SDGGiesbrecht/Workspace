@@ -69,7 +69,7 @@ public struct ValidationStatus {
     return ¬summary.isEmpty
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
       output.print(summary.joined(separator: "\n").separated())

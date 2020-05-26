@@ -182,7 +182,7 @@ public struct FileHeaderConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if os(WASI)
       return [:]
     #else
@@ -228,7 +228,7 @@ public struct FileHeaderConfiguration: Codable {
   public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
     let localizations = configuration.documentation.localizations
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
     #endif
@@ -238,7 +238,7 @@ public struct FileHeaderConfiguration: Codable {
       "",
     ]
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       header.append(
         contentsOf: configuration.sequentialLocalizations({ localization in
@@ -252,7 +252,7 @@ public struct FileHeaderConfiguration: Codable {
         })
       )
     #endif
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
       if let site = configuration.documentation.projectWebsite {
         header.append(StrictString(site.absoluteString))

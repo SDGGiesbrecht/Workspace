@@ -65,7 +65,7 @@
           }).resolved().formattedAsSectionHeader()
         )
 
-        // #workaround(Swift 5.2.2, Web lacks Foundation.)
+        // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
           try options.project.refreshXcodeProject(output: output)
         #endif

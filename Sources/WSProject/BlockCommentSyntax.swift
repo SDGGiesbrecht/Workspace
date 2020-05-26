@@ -33,7 +33,7 @@ internal struct BlockCommentSyntax {
 
   // MARK: - Output
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     internal func comment(contents: String) -> String {
 
@@ -88,7 +88,7 @@ internal struct BlockCommentSyntax {
     )
   }
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     internal func contentsOfFirstComment(
       in range: Range<String.ScalarView.Index>,

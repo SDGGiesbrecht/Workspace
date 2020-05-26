@@ -95,7 +95,7 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
 
-      // #workaround(Swift 5.2.2, Web lacks Foundation.)
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
       #endif
@@ -163,7 +163,7 @@ public struct ReadMeConfiguration: Codable {
   // MARK: - Useful components.
 
   private static let documentationDirectoryName = "Documentation"
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static func _documentationDirectory(for project: URL) -> URL {
       return project.appendingPathComponent(documentationDirectoryName)
@@ -222,7 +222,7 @@ public struct ReadMeConfiguration: Codable {
     in localization: LocalizationIdentifier
   ) -> StrictString? {
 
-    // #workaround(Swift 5.2.2, Web lacks Foundation.)
+    // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if os(WASI)
       return nil
     #else
@@ -252,7 +252,7 @@ public struct ReadMeConfiguration: Codable {
 
   // MARK: - Related Projects
 
-  // #workaround(Swift 5.2.2, Web lacks Foundation.)
+  // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public static func _relatedProjectsLocation(
       for project: URL,

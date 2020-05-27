@@ -44,7 +44,7 @@
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(Swift 5.2.2, Can these be restored?)
+      // #workaround(swift-format 0.50200.1, Can these be restored?)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
       configuration.rules["ValidateDocumentationComments"] = false
 

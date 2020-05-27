@@ -46,7 +46,6 @@
       // Bugs currently result in false positives.
       // #workaround(Swift 5.2.2, Can these be restored?)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
-      configuration.rules["UseLetInEveryBoundCaseVariable"] = false
       configuration.rules["ValidateDocumentationComments"] = false
 
       configuration.lineBreakBeforeEachArgument = true

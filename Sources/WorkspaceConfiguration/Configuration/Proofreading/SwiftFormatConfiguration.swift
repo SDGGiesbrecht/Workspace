@@ -39,19 +39,18 @@
       configuration.rules["NoLeadingUnderscores"] = false
       configuration.rules["OrderedImports"] = false
       configuration.rules["UseSynthesizedInitializer"] = false
+      configuration.rules["ValidateDocumentationComments"] = false
 
       // Handled better during documentation coverage check.
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(Swift 5.2.2, Can these be restored?)
+      // #workaround(swift-format 0.50200.1, Can these be restored?) @exempt(from: unicode)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
-      configuration.rules["UseLetInEveryBoundCaseVariable"] = false
-      configuration.rules["ValidateDocumentationComments"] = false
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(Swift 5.2.2, Leads to crash.)
+      // #workaround(swift-format 0.50200.1, Leads to crash.) @exempt(from: unicode)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

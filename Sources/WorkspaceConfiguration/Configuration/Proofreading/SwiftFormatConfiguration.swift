@@ -50,7 +50,7 @@
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(Swift 5.2.2, Leads to crash.)
+      // #workaround(swift-format 0.50200.1, Leads to crash.)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

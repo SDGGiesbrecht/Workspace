@@ -45,12 +45,12 @@
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(swift-format 0.50200.1, Can these be restored?)
+      // #workaround(swift-format 0.50200.1, Can these be restored?) @exempt(from: unicode)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(swift-format 0.50200.1, Leads to crash.)
+      // #workaround(swift-format 0.50200.1, Leads to crash.) @exempt(from: unicode)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

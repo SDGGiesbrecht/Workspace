@@ -39,6 +39,7 @@
       configuration.rules["NoLeadingUnderscores"] = false
       configuration.rules["OrderedImports"] = false
       configuration.rules["UseSynthesizedInitializer"] = false
+      configuration.rules["ValidateDocumentationComments"] = false
 
       // Handled better during documentation coverage check.
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
@@ -46,7 +47,6 @@
       // Bugs currently result in false positives.
       // #workaround(swift-format 0.50200.1, Can these be restored?)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
-      configuration.rules["ValidateDocumentationComments"] = false
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true

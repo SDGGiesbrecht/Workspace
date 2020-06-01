@@ -48,7 +48,7 @@ import PackageDescription
 ///     - [Lizenzhinweise](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/Lizenzeinstellungen.html)
 ///     - [Mitwirkungsanweisungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/GitHubConfiguration.html)
 /// - Für Verwendung neben dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.
-/// - Verwaltet Projekte für macOS, Windows, Linux, tvOS, iOS, Android und watchOS.
+/// - Verwaltet Projekte für macOS, Windows, Netz, Linux, tvOS, iOS, Android und watchOS.
 /// - [Konfigurierbar](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Biblioteken/WorkspaceConfiguration.html)
 // @localization(🇺🇸EN)
 /// Workspace automates management of Swift projects.
@@ -80,7 +80,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/LicenseConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
@@ -112,7 +112,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇬🇧EN)
 /// Workspace automates management of Swift projects.
@@ -144,7 +144,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 let package = Package(
   name: "Workspace",
@@ -166,9 +166,10 @@ let package = Package(
     ///
     /// /*
     ///  Externe Pakete sind mit dieser Syntax einführbar:
-    ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+    ///  import [Modul] // [Paket], [Ressourcenzeiger], [Version], [Produkt]
     ///  */
-    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
@@ -210,9 +211,10 @@ let package = Package(
     ///
     /// /*
     ///  Exernal packages can be imported with this syntax:
-    ///  import [module] // [url], [version], [product]
+    ///  import [module] // [package], [url], [version], [product]
     ///  */
-    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()
@@ -559,9 +561,10 @@ let package = Package(
     ///
     /// /*
     ///  Externe Pakete sind mit dieser Syntax einführbar:
-    ///  import [Modul] // [Ressourcenzeiger], [Version], [Produkt]
+    ///  import [Modul] // [Paket], [Ressourcenzeiger], [Version], [Produkt]
     ///  */
-    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
@@ -603,9 +606,10 @@ let package = Package(
     ///
     /// /*
     ///  Exernal packages can be imported with this syntax:
-    ///  import [module] // [url], [version], [product]
+    ///  import [module] // [package], [url], [version], [product]
     ///  */
-    /// import SDGControlFlow  // https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
+    /// import SDGControlFlow
+    /// // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
     ///
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()

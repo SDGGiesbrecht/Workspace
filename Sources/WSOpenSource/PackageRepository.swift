@@ -80,7 +80,7 @@ import SDGSwiftSource
           with: [
             "```swift",
             StrictString(example),
-            "```"
+            "```",
           ].joinedAsLines()
         )
       }

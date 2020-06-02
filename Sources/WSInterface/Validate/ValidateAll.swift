@@ -320,12 +320,12 @@ extension Workspace.Validate {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
               return [
                 "This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date.",
-                "\(update.string()) is available."
+                "\(update.string()) is available.",
               ].joinedAsLines()
             case .deutschDeutschland:
               return [
                 "Diese Prüfung hat Abreitsbereich \(Metadata.latestStableVersion.string()) verwendet, das nicht auf dem neuesten Stand ist.",
-                "\(update.string()) ist erhältlich."
+                "\(update.string()) ist erhältlich.",
               ].joinedAsLines()
             }
           }).resolved().formattedAsWarning().separated()

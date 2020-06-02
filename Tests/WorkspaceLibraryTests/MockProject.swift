@@ -104,7 +104,7 @@ extension PackageRepository {
             _ = try Shell.default.run(command: ["git", "init"]).get()
             _ = try Shell.default.run(command: ["git", "add", "."]).get()
             _ = try Shell.default.run(command: [
-              "git", "commit", "\u{2D}m", "Initialized."
+              "git", "commit", "\u{2D}m", "Initialized.",
             ]).get()
             _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
           }

@@ -68,7 +68,7 @@ extension WSCrossPlatformTests.CrossPlatformTests {
       ),
       ("testRepositoryPresence", testRepositoryPresence),
       ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
-      ("testTests", testTests)
+      ("testTests", testTests),
     ])
   ]
 }
@@ -122,7 +122,7 @@ extension WorkspaceLibraryTests.APITests {
       ("testSDGTool", testSDGTool),
       ("testSelfSpecificScripts", testSelfSpecificScripts),
       ("testTestCoverageExemptionToken", testTestCoverageExemptionToken),
-      ("testUnicodeRuleScope", testUnicodeRuleScope)
+      ("testUnicodeRuleScope", testUnicodeRuleScope),
     ])
   ]
 }
@@ -132,7 +132,7 @@ extension WorkspaceLibraryTests.InternalTests {
     testCase([
       ("testGitIgnoreCoverage", testGitIgnoreCoverage),
       ("testPlatform", testPlatform),
-      ("testXcodeProjectFormat", testXcodeProjectFormat)
+      ("testXcodeProjectFormat", testXcodeProjectFormat),
     ])
   ]
 }

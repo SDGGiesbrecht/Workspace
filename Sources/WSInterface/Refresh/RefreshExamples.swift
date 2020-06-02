@@ -90,7 +90,7 @@ extension Workspace.Refresh {
             "/// ```",
             "func == (lhs: Thing, rhs: Thing) \u{2D}> Bool {",
             "    return lhs.rawValue == rhs.rawValue",
-            "}"
+            "}",
           ].joinedAsLines()
         case .englishUnitedStates, .englishCanada:
           return [
@@ -136,7 +136,7 @@ extension Workspace.Refresh {
             "/// ```",
             "func == (lhs: Thing, rhs: Thing) \u{2D}> Bool {",
             "    return lhs.rawValue == rhs.rawValue",
-            "}"
+            "}",
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
@@ -182,7 +182,7 @@ extension Workspace.Refresh {
             "/// ```",
             "func == (links: Thing, rechts: Thing) \u{2D}> Bool {",
             "    return links.rawValue == rechts.rawValue",
-            "}"
+            "}",
           ].joinedAsLines()
         }
       })

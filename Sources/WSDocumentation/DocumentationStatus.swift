@@ -71,7 +71,7 @@ internal class DocumentationStatus {
         problem: UserFacing({ localization in
           var result: [StrictString] = [
             problem.resolved(for: localization),
-            symbolName
+            symbolName,
           ]
           if let theHint = hint {
             result.append(theHint.resolved(for: localization))
@@ -213,13 +213,13 @@ internal class DocumentationStatus {
           return
             ([
               "No original copyright date is specified.",
-              "(Configure it under “documentation.api.yearFirstPublished”.)"
+              "(Configure it under “documentation.api.yearFirstPublished”.)",
             ] as [StrictString]).joinedAsLines()
         case .deutschDeutschland:
           return
             ([
               "Kein ursprüngliche Urheberrechtsdatum wurde angegeben.",
-              "(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)"
+              "(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)",
             ] as [StrictString]).joinedAsLines()
         }
       })
@@ -236,19 +236,19 @@ internal class DocumentationStatus {
             return
               ([
                 "A localisation has no copyright specified: \(arbitraryDescriptionOf: localization)",
-                "(Configure it under “documentation.api.copyrightNotice”.)"
+                "(Configure it under “documentation.api.copyrightNotice”.)",
               ] as [StrictString]).joinedAsLines()
           case .englishUnitedStates, .englishCanada:
             return
               ([
                 "A localization has no copyright specified: \(arbitraryDescriptionOf: localization)",
-                "(Configure it under “documentation.api.copyrightNotice”.)"
+                "(Configure it under “documentation.api.copyrightNotice”.)",
               ] as [StrictString]).joinedAsLines()
           case .deutschDeutschland:
             return
               ([
                 "Einer Lokalization fehlt die Urheberrechtsschutzvermerk: \(arbitraryDescriptionOf: localization)",
-                "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)"
+                "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)",
               ] as [StrictString]).joinedAsLines()
           }
         })

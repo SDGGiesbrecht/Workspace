@@ -98,18 +98,18 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       contents.append(contentsOf: [
         " Reminder:",
         " Have you searched to see if a related issue exists already?",
-        " If one exists, please add your information there instead."
+        " If one exists, please add your information there instead.",
       ])
     case .deutschDeutschland:
       contents.append(contentsOf: [
         " Erinnerung:",
         " Haben Sie die bereits bestehende Themen nach ähnliches durchsucht?",
-        " Sollte etwas bereits bestehen, bitte melden Sie Eure Informationen dort."
+        " Sollte etwas bereits bestehen, bitte melden Sie Eure Informationen dort.",
       ])
     }
     contents.append(contentsOf: [
       " \u{2D}\u{2D}>",
-      ""
+      "",
     ])
 
     switch self {
@@ -195,7 +195,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
           }
           contents.append(contentsOf: [
             "```",
-            ""
+            "",
           ])
         }
         if products.contains(where: { $0.type == .library }) {
@@ -212,7 +212,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
           }
           contents.append(contentsOf: [
             "```",
-            ""
+            "",
           ])
         }
         switch localization {
@@ -246,7 +246,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
           "<!\u{2D}\u{2D} Keep only one of the following lines. \u{2D}\u{2D}>",
           "I **would like to help** \(task) it, and I think **I know my way around**.",
           "I **would like to help** \(task) it, but **I would need some guidance**.",
-          "I **would not like to help** \(task) it."
+          "I **would not like to help** \(task) it.",
         ])
       case .deutschDeutschland:
         let task: StrictString
@@ -263,7 +263,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
           "<!\u{2D}\u{2D} Nur eine der folgenden Zeilen behalten. \u{2D}\u{2D}>",
           "Ich **möchte helfen**, es \(task), und ich glaube, **ich kenne mich aus**.",
           "Ich **möchte helfen**, es \(task), aber **ich braüchte etwas Anleitung**.",
-          "Ich **möchte nicht helfen**, es \(task)."
+          "Ich **möchte nicht helfen**, es \(task).",
         ])
       }
     case .question:
@@ -333,23 +333,23 @@ internal enum ProvidedIssueTemplate: CaseIterable {
     case .question:
       contents.append(contentsOf: [
         "",
-        "<!\u{2D}\u{2D}"
+        "<!\u{2D}\u{2D}",
       ])
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         contents.append(contentsOf: [
           " Where did you look for the answer?",
-          " (Answering this may help us organize the documentation more intuitively.)"
+          " (Answering this may help us organize the documentation more intuitively.)",
         ])
       case .deutschDeutschland:
         contents.append(contentsOf: [
           " Wo haben Sie die Antwort gesucht?",
-          " (Die Antwort auf dieser frage könnte uns helfen, die Dokumentation besser zu ordnen.)"
+          " (Die Antwort auf dieser frage könnte uns helfen, die Dokumentation besser zu ordnen.)",
         ])
       }
       contents.append(contentsOf: [
         " \u{2D}\u{2D}>",
-        ""
+        "",
       ])
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

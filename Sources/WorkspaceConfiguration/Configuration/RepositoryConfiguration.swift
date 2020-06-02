@@ -70,7 +70,7 @@ public struct RepositoryConfiguration: Codable {
     "TXT",
     "xcconfig",
     "xcsettings",
-    "xcworkspacedata"
+    "xcworkspacedata",
   ]
 
   public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
@@ -96,6 +96,6 @@ public struct RepositoryConfiguration: Codable {
   public var ignoredPaths: Set<String> = [
     "docs",
     String(RepositoryConfiguration._refreshScriptMacOSFileName),
-    String(RepositoryConfiguration._refreshScriptLinuxFileName)
+    String(RepositoryConfiguration._refreshScriptLinuxFileName),
   ]
 }

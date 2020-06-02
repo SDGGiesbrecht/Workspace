@@ -235,7 +235,7 @@ public struct FileHeaderConfiguration: Codable {
 
     var header: [StrictString] = [
       "#filename",
-      ""
+      "",
     ]
 
     // #workaround(Swift 5.2.4, Web lacks Foundation.)
@@ -284,7 +284,7 @@ public struct FileHeaderConfiguration: Codable {
     if let licence = configuration.licence.licence {
       header.append(contentsOf: [
         "",
-        licence.notice
+        licence.notice,
       ])
     }
 

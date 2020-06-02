@@ -138,7 +138,7 @@ import WSXcode
               if let text = translations[localization] {
                 markdown += [
                   "",
-                  "## \(text)"
+                  "## \(text)",
                 ]
               }
             case .project(let url):
@@ -159,7 +159,7 @@ import WSXcode
 
               markdown += [
                 "",
-                "### [\(name)](\(url.absoluteString))"
+                "### [\(name)](\(url.absoluteString))",
               ]
 
               // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
@@ -174,7 +174,7 @@ import WSXcode
                 {
                   markdown += [
                     "",
-                    StrictString(description.text)
+                    StrictString(description.text),
                   ]
                 }
               #endif

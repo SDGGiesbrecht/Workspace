@@ -43,12 +43,12 @@ import WorkspaceProjectConfiguration
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return [
               "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
-              "See " + StrictString(Metadata.packageURL.absoluteString)
+              "See " + StrictString(Metadata.packageURL.absoluteString),
             ].joinedAsLines()
           case .deutschDeutschland:
             return [
               "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
-              "Siehe " + StrictString(Metadata.packageURL.absoluteString)
+              "Siehe " + StrictString(Metadata.packageURL.absoluteString),
             ].joinedAsLines()
           }
         })
@@ -65,7 +65,7 @@ import WorkspaceProjectConfiguration
           "            );",
           "            name = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
           "            productName = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-          "        };"
+          "        };",
         ].joinedAsLines()
       }
 
@@ -86,7 +86,7 @@ import WorkspaceProjectConfiguration
           "            isa = PBXShellScriptBuildPhase;",
           "            shellPath = /bin/sh;",
           "            shellScript = \u{22}\(try script())\u{22};",
-          "        };"
+          "        };",
         ].joinedAsLines()
       }
 
@@ -107,7 +107,7 @@ import WorkspaceProjectConfiguration
               with: [
                 objectsLine,
                 aggregateTarget,
-                try scriptObject()
+                try scriptObject(),
               ].joinedAsLines().scalars
             )
           }
@@ -118,7 +118,7 @@ import WorkspaceProjectConfiguration
               range,
               with: [
                 targetsLine,
-                PackageRepository.proofreadTargetIdentifier + ","
+                PackageRepository.proofreadTargetIdentifier + ",",
               ].joinedAsLines().scalars
             )
           }

@@ -58,12 +58,12 @@ import WSSwift
 
       var workflow: [StrictString] = [
         "name: \(resolvedName)",
-        ""
+        "",
       ]
       workflow.append(contentsOf: onConditions)
       workflow.append(contentsOf: [
         "",
-        "jobs:"
+        "jobs:",
       ])
 
       for job in try relevantJobs(output: output)
@@ -108,7 +108,7 @@ import WSSwift
             "on:",
             "  push:",
             "    branches:",
-            "      \u{2D} master"
+            "      \u{2D} master",
           ],
           jobFilter: { $0 == .deployment },
           output: output
@@ -174,7 +174,7 @@ import WSSwift
             "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
             "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
             "",
-            "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)"
+            "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)",
           ]
 
           var testTargets: [ResolvedTarget] = []
@@ -238,7 +238,7 @@ import WSSwift
             "",
             "add_executable(WindowsMain",
             "  WindowsMain.swift",
-            ")"
+            ")",
           ])
           if ¬testTargets.isEmpty {
             cmake.append("target_link_libraries(WindowsMain PRIVATE")
@@ -249,7 +249,7 @@ import WSSwift
           }
           cmake.append(contentsOf: [
             "add_test(NAME WindowsMain COMMAND WindowsMain)",
-            "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})"
+            "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})",
           ])
 
           var cmakeFile = try TextFile(possiblyAt: url)
@@ -270,7 +270,7 @@ import WSSwift
       ) throws {
         var main: [String] = [
           "import XCTest",
-          ""
+          "",
         ]
         var testClasses: [(name: String, methods: [String])] = []
         for testTarget in testTargets {
@@ -318,7 +318,7 @@ import WSSwift
             "    exit(EXIT_SUCCESS)",
             "  }",
             "#endif",
-            ""
+            "",
           ])
         }
 
@@ -326,7 +326,7 @@ import WSSwift
           main.append(contentsOf: [
             "extension \(testClass.name) {",
             "  static let windowsTests: [XCTestCaseEntry] = [",
-            "    testCase(["
+            "    testCase([",
           ])
           for methodIndex in testClass.methods.indices {
             let method = testClass.methods[methodIndex]
@@ -337,7 +337,7 @@ import WSSwift
             "    ])",
             "  ]",
             "}",
-            ""
+            "",
           ])
         }
 
@@ -350,7 +350,7 @@ import WSSwift
 
         main.append(contentsOf: [
           "",
-          "XCTMain(tests)"
+          "XCTMain(tests)",
         ])
 
         var source = main.joinedAsLines()
@@ -381,7 +381,7 @@ import WSSwift
           "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
           "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
           "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
-          "}"
+          "}",
         ]
         var sdkFile = try TextFile(possiblyAt: url)
         sdkFile.contents = sdk.joinedAsLines()

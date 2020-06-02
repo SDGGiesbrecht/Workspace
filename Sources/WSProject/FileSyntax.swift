@@ -88,7 +88,7 @@ public struct FileSyntax {
           [
             "",  // Line at end of header
             "",
-            ""// Body starts in this line
+            "",  // Body starts in this line
           ].joinedAsLines() + body
 
         let contents = first + generated + body

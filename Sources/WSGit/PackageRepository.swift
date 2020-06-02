@@ -41,14 +41,14 @@ import WSProject
       return [
         ".build",
         "Packages",
-        ".swiftpm"
+        ".swiftpm",
       ]
     }
 
     private static var ignoreEntriesForWorkspace: [String] {
       return [
         "Validate\\ (macOS).command",
-        "Validate\\ (Linux).sh"
+        "Validate\\ (Linux).sh",
       ]
     }
 
@@ -57,7 +57,7 @@ import WSProject
         "*.xcodeproj",
         "IDEWorkspaceChecks.plist",
         "xcuserdata",
-        "*.profraw"
+        "*.profraw",
       ]
     }
 

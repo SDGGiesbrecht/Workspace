@@ -215,7 +215,7 @@ import WSParsing
                       var exampleLines = [
                         "```swift",
                         example,
-                        "```"
+                        "```",
                       ].joinedAsLines().lines.map({ StrictString($0.line) })
 
                       for index in exampleLines.startIndex..<exampleLines.endIndex

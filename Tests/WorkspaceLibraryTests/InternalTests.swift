@@ -42,7 +42,7 @@ class InternalTests: TestCase {
       // GitHub
       "README.md",
       "LICENSE.md",
-      ".github"
+      ".github",
     ]
 
     #if !os(Windows)  // #workaround(SDGCornerstone 4.6.2, Git not found during GitHub action.)
@@ -72,7 +72,7 @@ class InternalTests: TestCase {
               unexpected.isEmpty,
               [
                 "Unexpected files are being tracked by Git:",
-                unexpected.joinedAsLines()
+                unexpected.joinedAsLines(),
               ].joinedAsLines()
             )
 

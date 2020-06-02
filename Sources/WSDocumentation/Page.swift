@@ -94,7 +94,7 @@ internal class Page {
       "span",
       attributes: [
         "lang": StrictString(resolved.code),
-        "dir": StrictString(resolved.textDirection.htmlAttribute)
+        "dir": StrictString(resolved.textDirection.htmlAttribute),
       ],
       contents: generatedUsing + " " + sdg,
       inline: true

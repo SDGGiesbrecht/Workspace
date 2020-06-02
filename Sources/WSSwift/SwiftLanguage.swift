@@ -21,6 +21,8 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
+import SwiftSyntax
+import SDGSwiftSource
 import SwiftFormat
 
 public enum SwiftLanguage {
@@ -215,8 +217,40 @@ public enum SwiftLanguage {
         var result: String = ""
         try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
         code = result
+        try undoErroneousFormatting(in: &code, accordingTo: configuration)
       }
       #endif
+    }
+
+    public static func undoErroneousFormatting(
+      in source: inout String,
+      accordingTo configuration: WorkspaceConfiguration
+    ) throws {
+
+      // #workaround(swift-format 0.50200.1, SwiftFormat disregards its configuration.) @exempt(from: unicode)
+      if configuration.proofreading.swiftFormatConfiguration ≠ nil,
+        configuration.proofreading.rules.contains(.listSeparation) {
+        let syntax = try SyntaxParser.parse(source: source)
+        class Rewriter: SyntaxRewriter {
+          private func visitListElement<Node>(_ node: Node) -> Syntax
+            where Node: WithTrailingCommaSyntax {
+            if node.trailingComma ≠ nil,
+              node.indexInParent == node.parent?.children.last?.indexInParent {
+              return Syntax(node.withTrailingComma(nil))
+            } else {
+              return Syntax(node)
+            }
+          }
+          override func visit(_ node: ArrayElementSyntax) -> Syntax {
+            return visitListElement(node)
+          }
+          override func visit(_ node: DictionaryElementSyntax) -> Syntax {
+            return visitListElement(node)
+          }
+        }
+        let fixed = Rewriter().visit(syntax)
+        source = fixed.source()
+      }
     }
   #endif
 }

@@ -523,6 +523,8 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WorkspaceConfiguration",
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),

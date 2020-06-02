@@ -18,6 +18,11 @@ Zeile 2
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+Zeile 29
+Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
+    ),
+    )
+
 README.md
 Sources/BadStyle/BadStyle.swift
 Sources/BadStyle/Normalization/Decomposition.swift
@@ -56,6 +61,12 @@ Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Zeile 6
 Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
   parameter in  // Wrong position; should trigger.
+
+Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift
+Zeile 4
+Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
+  3,  // Should trigger.
+  3  // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Zeile 5

@@ -935,16 +935,6 @@ target_link_libraries("WSGeneralImports" PRIVATE
   "SDGSwift"
 )
 
-add_library("WSSwift"
-  "../../../Sources/WSSwift/SwiftLanguage.Casing.swift"
-  "../../../Sources/WSSwift/SwiftLanguage.swift"
-)
-set_target_properties("WSSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSSwift" PRIVATE -enable-testing)
-target_link_libraries("WSSwift" PRIVATE
-  "WSGeneralImports"
-)
-
 add_library("SwiftFormatConfiguration"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
@@ -1056,6 +1046,18 @@ target_link_libraries("WSCustomTask" PRIVATE
   "WorkspaceConfiguration"
   "SDGSwift"
   "SDGExternalProcess"
+)
+
+add_library("WSSwift"
+  "../../../Sources/WSSwift/SwiftLanguage.Casing.swift"
+  "../../../Sources/WSSwift/SwiftLanguage.swift"
+)
+set_target_properties("WSSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSSwift" PRIVATE -enable-testing)
+target_link_libraries("WSSwift" PRIVATE
+  "WSGeneralImports"
+  "WorkspaceConfiguration"
+  "SDGSwiftSource"
 )
 
 add_library("WorkspaceProjectConfiguration"
@@ -1316,6 +1318,7 @@ target_compile_options("WSContinuousIntegration" PRIVATE -enable-testing)
 target_link_libraries("WSContinuousIntegration" PRIVATE
   "WSGeneralImports"
   "WSProject"
+  "WSSwift"
   "WSScripts"
   "WSDocumentation"
   "SDGSwiftPackageManager"

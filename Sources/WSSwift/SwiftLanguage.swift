@@ -217,47 +217,8 @@ public enum SwiftLanguage {
           var result: String = ""
           try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
           code = result
-          try undoErroneousFormatting(in: &code, accordingTo: configuration)
         }
       #endif
-    }
-
-    public static func undoErroneousFormatting(
-      in source: inout String,
-      accordingTo configuration: WorkspaceConfiguration
-    ) throws {
-
-      // #workaround(swift-format 0.50200.1, SwiftFormat disregards its configuration.) @exempt(from: unicode)
-      if configuration.proofreading.swiftFormatConfiguration ≠ nil,
-        configuration.proofreading.rules.contains(.listSeparation)
-      {
-        let syntax = try SyntaxParser.parse(source: source)
-        class Rewriter: SyntaxRewriter {
-          private func visitListElement<Node>(_ node: Node) -> Node
-          where Node: WithTrailingCommaSyntax {
-            if node.trailingComma ≠ nil,
-              node.indexInParent == node.parent?.children.last?.indexInParent
-            {
-              return node.withTrailingComma(nil)
-            } else {
-              return node
-            }
-          }
-          override func visit(_ node: ArrayElementSyntax) -> Syntax {
-            let visited = visitListElement(node)
-            let expression = ExprSyntax(visit(Syntax(visited.expression)))
-            return Syntax(visited.withExpression(expression))
-          }
-          override func visit(_ node: DictionaryElementSyntax) -> Syntax {
-            let visited = visitListElement(node)
-            let key = ExprSyntax(visit(Syntax(visited.keyExpression)))
-            let value = ExprSyntax(visit(Syntax(visited.valueExpression)))
-            return Syntax(visited.withKeyExpression(key).withValueExpression(value))
-          }
-        }
-        let fixed = Rewriter().visit(syntax)
-        source = fixed.source()
-      }
     }
   #endif
 }

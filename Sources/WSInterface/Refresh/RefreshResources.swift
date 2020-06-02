@@ -58,7 +58,7 @@ extension Workspace.Refresh {
             "let template: String = Resoures.Templates.basicTemplate",
             "print(template)",
             "",
-            "By default, files are embedded as ‘Data’, but some file extensions will be recognized and given a more specific Swift type (such as ‘.txt’ embedded as ‘String’).",
+            "By default, files are embedded as ‘Data’, but some file extensions will be recognized and given a more specific Swift type (such as ‘.txt’ embedded as ‘String’)."
           ].joinedAsLines()
         case .englishUnitedStates, .englishCanada:
           return [
@@ -73,7 +73,7 @@ extension Workspace.Refresh {
             "let template: String = Resoures.Templates.basicTemplate",
             "print(template)",
             "",
-            "By default, files are embedded as “Data”, but some file extensions will be recognized and given a more specific Swift type (such as “.txt” embedded as “String”).",
+            "By default, files are embedded as “Data”, but some file extensions will be recognized and given a more specific Swift type (such as “.txt” embedded as “String”)."
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
@@ -88,7 +88,7 @@ extension Workspace.Refresh {
             "let vorlage: String = Ressouren.Vorlagen.einfacheVorlage",
             "print(vorlage)",
             "",
-            "Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“).",
+            "Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“)."
           ].joinedAsLines()
         }
       })

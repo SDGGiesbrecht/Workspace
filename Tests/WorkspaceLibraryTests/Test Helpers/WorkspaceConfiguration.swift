@@ -22,7 +22,7 @@ extension WorkspaceConfiguration {
       "Swift",
       "Foundation",
       "Dispatch",
-      "XCTest",
+      "XCTest"
     ]
   }
 }

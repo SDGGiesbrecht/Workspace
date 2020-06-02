@@ -29,7 +29,7 @@ class APITests: TestCase {
       #if os(Linux)
         _ = try? Git.runCustomSubcommand(
           [
-            "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com",
+            "config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"
           ],
           versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
         ).get()
@@ -62,7 +62,7 @@ class APITests: TestCase {
       PackageRepository(mock: "AllDisabled").test(
         commands: [
           ["refresh"],
-          ["validate"],
+          ["validate"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -89,7 +89,7 @@ class APITests: TestCase {
       PackageRepository(mock: "AllTasks").test(
         commands: [
           ["refresh"],
-          ["validate"],
+          ["validate"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -117,7 +117,7 @@ class APITests: TestCase {
       PackageRepository(mock: "BadStyle").test(
         commands: [
           ["proofread"],
-          ["proofread", "•xcode"],
+          ["proofread", "•xcode"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -154,7 +154,7 @@ class APITests: TestCase {
   func testCheckedInDocumentation() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
-        "export‐interface", "•language", "en",
+        "export‐interface", "•language", "en"
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
@@ -166,7 +166,7 @@ class APITests: TestCase {
           .appendingPathComponent("Resources/Tool/English.txt")
       )
       output = try mockCommand.withRootBehaviour().execute(with: [
-        "export‐interface", "•language", "de",
+        "export‐interface", "•language", "de"
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
@@ -200,9 +200,9 @@ class APITests: TestCase {
           "🇺🇸EN": "Heading",
           "🇨🇦EN": "Heading",
           "🇩🇪DE": "Überschrift",
-          "zxx": "...",
+          "zxx": "..."
         ]),
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
       ]
       let builtIn = configuration.fileHeaders.copyrightNotice
       configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
@@ -216,7 +216,7 @@ class APITests: TestCase {
         commands: [
           ["refresh"],
           ["validate", "•job", "miscellaneous"],
-          ["validate", "•job", "deployment"],
+          ["validate", "•job", "deployment"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -458,7 +458,7 @@ class APITests: TestCase {
           ["refresh", "continuous‐integration"],
           ["refresh", "licence"],
           ["refresh", "file‐headers"],
-          ["proofread"],
+          ["proofread"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -491,7 +491,7 @@ class APITests: TestCase {
           ["proofread"],
           ["proofread", "•xcode"],
           ["refresh", "licence"],
-          ["refresh", "file‐headers"],
+          ["refresh", "file‐headers"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -515,7 +515,7 @@ class APITests: TestCase {
             [
               "## Installation",
               "",
-              "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`.",
+              "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`."
             ].joinedAsLines()
           )
         ]
@@ -527,7 +527,7 @@ class APITests: TestCase {
         commands: [
           ["refresh", "read‐me"],
           ["refresh", "licence"],
-          ["refresh", "file‐headers"],
+          ["refresh", "file‐headers"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -558,7 +558,7 @@ class APITests: TestCase {
       PackageRepository(mock: "CustomTasks").test(
         commands: [
           ["refresh"],
-          ["validate"],
+          ["validate"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -605,7 +605,7 @@ class APITests: TestCase {
 
         ["refresh"],
         ["validate"],
-        ["validate", "•job", "macos"],
+        ["validate", "•job", "macos"]
       ]
       PackageRepository(mock: "Default").test(
         commands: commands,
@@ -618,7 +618,7 @@ class APITests: TestCase {
   func testDeutsch() throws {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
-        "export‐interface", "•language", "de",
+        "export‐interface", "•language", "de"
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
@@ -648,7 +648,7 @@ class APITests: TestCase {
         ["prüfen", "erstellung"],
         ["prüfen", "testabdeckung"],
         ["prüfen", "dokumentationsabdeckung"],
-        ["dokumentieren"],
+        ["dokumentieren"]
       ]
       #if !os(Linux)
         commands.append(["auffrischen", "xcode"])
@@ -675,7 +675,7 @@ class APITests: TestCase {
           ["refresh", "licence"],
           ["refresh", "read‐me"],
           ["document"],
-          ["validate", "documentation‐coverage"],
+          ["validate", "documentation‐coverage"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -751,7 +751,7 @@ class APITests: TestCase {
       PackageRepository(mock: "FailingDocumentationCoverage").test(
         commands: [
           ["validate", "documentation‐coverage"],
-          ["document"],
+          ["document"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -785,7 +785,7 @@ class APITests: TestCase {
         commands: [
           ["validate", "build"],
           ["validate", "test‐coverage"],
-          ["validate", "build", "•job", "miscellaneous"],
+          ["validate", "build", "•job", "miscellaneous"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
@@ -802,7 +802,7 @@ class APITests: TestCase {
         commands: [
           ["refresh", "file‐headers"],
           ["refresh", "examples"],
-          ["refresh", "inherited‐documentation"],
+          ["refresh", "inherited‐documentation"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -1062,7 +1062,7 @@ class APITests: TestCase {
       PackageRepository(mock: "NoLocalizations").test(
         commands: [
           ["refresh", "read‐me"],
-          ["validate", "documentation‐coverage"],
+          ["validate", "documentation‐coverage"]
         ],
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
@@ -1080,7 +1080,7 @@ class APITests: TestCase {
           ["normalisieren"],
           ["korrekturlesen"],
           ["prüfen", "erstellung"],
-          ["testen"],
+          ["testen"]
         ],
         configuration: configuration,
         localizations: NurDeutsch.self,
@@ -1115,7 +1115,7 @@ class APITests: TestCase {
       PackageRepository(mock: "OneProductMultipleModules").test(
         commands: [
           ["refresh", "read‐me"],
-          ["refresh", "continuous‐integration"],
+          ["refresh", "continuous‐integration"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -1131,7 +1131,7 @@ class APITests: TestCase {
       PackageRepository(mock: "OnlyBritish").test(
         commands: [
           ["refresh", "github"],
-          ["normalize"],
+          ["normalize"]
         ],
         configuration: configuration,
         localizations: OnlyBritish.self,
@@ -1148,7 +1148,7 @@ class APITests: TestCase {
       configuration.documentation.currentVersion = Version(0, 1, 0)
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.localizations = [
-        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
       ]
       configuration.documentation.api.yearFirstPublished = 2018
       configuration.gitHub.developmentNotes = "..."
@@ -1166,7 +1166,7 @@ class APITests: TestCase {
         commands: [
           ["refresh", "read‐me"],
           ["refresh", "github"],
-          ["document"],
+          ["document"]
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
@@ -1219,7 +1219,7 @@ class APITests: TestCase {
       configuration.documentation.api.serveFromGitHubPagesBranch = true
       configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
       configuration.documentation.localizations = [
-        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
       ]
       for localization in configuration.documentation.localizations {
         configuration.documentation.about[localization] = "..."
@@ -1227,7 +1227,7 @@ class APITests: TestCase {
       configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
       configuration.documentation.relatedProjects = [
         .heading(text: ["🇨🇦EN": "Heading"]),
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
       ]
       configuration.testing.exemptionTokens.insert(
         TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
@@ -1257,7 +1257,7 @@ class APITests: TestCase {
         ["refresh", "file‐headers"],
         ["refresh", "examples"],
         ["refresh", "inherited‐documentation"],
-        ["normalize"],
+        ["normalize"]
       ]
       #if !os(Linux)
         commands.append(["refresh", "xcode"])
@@ -1270,7 +1270,7 @@ class APITests: TestCase {
         ["validate", "documentation‐coverage"],
 
         ["proofread", "•xcode"],
-        ["validate"],
+        ["validate"]
       ])
       PackageRepository(mock: "SDGLibrary").test(
         commands: commands,
@@ -1303,7 +1303,7 @@ class APITests: TestCase {
       configuration.documentation.api.serveFromGitHubPagesBranch = true
       configuration.gitHub.administrators = ["John Doe"]
       configuration.documentation.localizations = [
-        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx"
       ]
       for localization in configuration.documentation.localizations {
         configuration.documentation.about[localization] = "..."
@@ -1340,7 +1340,7 @@ class APITests: TestCase {
         ["refresh", "file‐headers"],
         ["refresh", "examples"],
         ["refresh", "inherited‐documentation"],
-        ["normalize"],
+        ["normalize"]
       ]
       #if !os(Linux)
         commands.append(["refresh", "xcode"])
@@ -1352,7 +1352,7 @@ class APITests: TestCase {
         ["validate", "test‐coverage"],
         ["validate", "documentation‐coverage"],
 
-        ["proofread", "•xcode"],
+        ["proofread", "•xcode"]
       ])
       PackageRepository(mock: "SDGTool").test(
         commands: commands,

@@ -49,7 +49,7 @@ extension Workspace.Refresh {
             "",
             "Special Thanks:",
             "",
-            "• GitHub (https://github.com)",
+            "• GitHub (https://github.com)"
           ].joinedAsLines()
         case .englishUnitedStates, .englishCanada:
           return [
@@ -57,7 +57,7 @@ extension Workspace.Refresh {
             "",
             "Special Thanks:",
             "",
-            "• GitHub (https://github.com)",
+            "• GitHub (https://github.com)"
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
@@ -65,7 +65,7 @@ extension Workspace.Refresh {
             "",
             "Besonderer Dank:",
             "",
-            "• GitHub (https://github.com)",
+            "• GitHub (https://github.com)"
           ].joinedAsLines()
         }
       })

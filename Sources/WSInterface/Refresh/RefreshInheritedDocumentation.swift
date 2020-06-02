@@ -82,7 +82,7 @@ extension Workspace.Refresh {
             "            print(\u{22}, blah\u{22})",
             "        }",
             "    }",
-            "}",
+            "}"
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
@@ -111,7 +111,7 @@ extension Workspace.Refresh {
             "            drucken(\u{22}bla\u{22})",
             "        }",
             "    }",
-            "}",
+            "}"
           ].joinedAsLines()
         }
       })

@@ -49,7 +49,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
-    .tvOS,
+    .tvOS
   ]
 
   // MARK: - Properties
@@ -409,7 +409,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         with: [
           "key":
             "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
-          "path": PackageRepository.repositoryWorkspaceCacheDirectory,
+          "path": PackageRepository.repositoryWorkspaceCacheDirectory
         ]
       )
     }
@@ -423,7 +423,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     var result: [StrictString] = [
       step(heading, localization: localization),
       "      shell: bash",
-      "      run: |",
+      "      run: |"
     ]
     result.append(
       contentsOf: commands.prepending("set \u{2D}x")
@@ -436,7 +436,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     let packages = packages.joined(separator: " ")
     return [
       "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
+      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)"
     ].joinedAsLines()
   }
 
@@ -454,7 +454,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       "curl \u{2D}\u{2D}location \u{5C}",
       "  \u{27}\(origin)\u{27} \u{5C}",
-      "  \u{2D}\u{2D}output \(quotedDestination)",
+      "  \u{2D}\u{2D}output \(quotedDestination)"
     ].joinedAsLines()
   }
 
@@ -468,7 +468,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   ) -> StrictString {
     return [
       makeDirectory(destination, sudo: sudo),
-      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)",
+      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)"
     ].joinedAsLines()
   }
 
@@ -478,7 +478,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       cURL(from: url, to: temporaryMSI),
       "cd /tmp",
-      "msiexec //i \(msi)",
+      "msiexec //i \(msi)"
     ].joinedAsLines()
   }
 
@@ -495,7 +495,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       cURL(from: url, to: temporaryZip),
       "unzip \(temporaryZip) \u{2D}d /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy),
+      copy(from: temporary, to: destination, sudo: sudoCopy)
     ].joinedAsLines()
   }
 
@@ -512,7 +512,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return [
       cURL(from: url, to: temporaryTar),
       "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy),
+      copy(from: temporary, to: destination, sudo: sudoCopy)
     ].joinedAsLines()
   }
 
@@ -528,7 +528,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func prependPath(_ entry: StrictString) -> StrictString {
     return [
       "export PATH=\u{22}\(entry):${PATH}\u{22}",
-      export("PATH"),
+      export("PATH")
     ].joinedAsLines()
   }
 
@@ -548,7 +548,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
       var result: [StrictString] = [
         "  \(name.resolved(for: interfaceLocalization)):",
-        runsOn(gitHubActionMachine),
+        runsOn(gitHubActionMachine)
       ]
       if let container = dockerImage {
         result += [
@@ -560,7 +560,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         step(checkOutStepName, localization: interfaceLocalization),
         checkOut(),
         step(cacheWorkspaceStepName, localization: interfaceLocalization),
-        cache(),
+        cache()
       ]
 
       switch platform {
@@ -573,7 +573,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               "sudo xcode\u{2D}select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
-              "xcodebuild \u{2D}version",
+              "xcodebuild \u{2D}version"
             ]
           )
         )
@@ -593,7 +593,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               export("PATH"),
               export("UniversalCRTSdkDir"),
               export("UCRTVersion"),
-              export("VCToolsInstallDir"),
+              export("VCToolsInstallDir")
             ]
           )
         )
@@ -625,7 +625,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 from: "\(platform)/winsdk.modulemap",
                 to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap",
                 allowVariableSubstitution: true
-              ),
+              )
             ]
           )
         )
@@ -637,7 +637,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURLAndInstallMSI("\(experimentalRelease)/icu.msi"),
-              prependPath("/c/Library/icu\u{2D}64/usr/bin"),
+              prependPath("/c/Library/icu\u{2D}64/usr/bin")
             ]
           )
         )
@@ -656,7 +656,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               prependPath(
                 "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
               ),
-              "swift \u{2D}\u{2D}version",
+              "swift \u{2D}\u{2D}version"
             ]
           )
         )
@@ -674,7 +674,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 named: releaseName,
                 andUntarTo: ".build/SDG/Swift"
               ),
-              ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
+              ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version"
             ]
           )
         )
@@ -693,7 +693,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: [
               aptGet(["curl"])
             ]
-          ),
+          )
         ])
       case .tvOS, .iOS, .watchOS:
         unreachable()
@@ -710,7 +710,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 andUntarTo: "/",
                 sudoCopy: true
               ),
-              "swift \u{2D}\u{2D}version",
+              "swift \u{2D}\u{2D}version"
             ]
           ),
           script(
@@ -724,7 +724,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 sudoCopy: true
               ),
               grantPermissions(to: "/Library"),
-              "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
+              "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
             ]
           ),
           // #workaround(Should be a single download.)
@@ -739,9 +739,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               cURL(
                 from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
                 to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so"
-              ),
+              )
             ]
-          ),
+          )
         ])
       }
 
@@ -808,7 +808,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: [
               compressPATH(),
               "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}sdk C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
-              "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
+              "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}"
             ]
           )
         )
@@ -819,7 +819,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: [
               compressPATH(),
               "cd .build/SDG/CMake",
-              "ctest \u{2D}\u{2D}verbose",
+              "ctest \u{2D}\u{2D}verbose"
             ]
           )
         )
@@ -830,7 +830,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               "export TARGETING_WEB=true",
-              ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi",
+              ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi"
             ]
           )
         )
@@ -849,7 +849,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}",
               "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}sysroot=${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64 \u{5C}",
               "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
+              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android"
             ]
           )
         )
@@ -875,7 +875,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
                 to: productsDirectory
-              ),
+              )
             ]
           )
         )
@@ -885,7 +885,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             "actions/upload\u{2D}artifact@v1",
             with: [
               "name": "tests",
-              "path": "\(productsDirectory)",
+              "path": "\(productsDirectory)"
             ]
           ),
 
@@ -901,7 +901,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             "actions/download\u{2D}artifact@v1",
             with: [
               "name": "tests",
-              "path": "\(productsDirectory)",
+              "path": "\(productsDirectory)"
             ]
           ),
           script(
@@ -919,7 +919,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
               "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
               "\u{27} > .build/SDG/Emulator.sh",
-              "chmod +x .build/SDG/Emulator.sh",
+              "chmod +x .build/SDG/Emulator.sh"
             ]
           ),
           // #workaround(Swift 5.2.4, There is no official action for this yet.)
@@ -929,9 +929,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             with: [
               "api\u{2D}level": "29",
               "arch": "x86_64",
-              "script": ".build/SDG/Emulator.sh",
+              "script": ".build/SDG/Emulator.sh"
             ]
-          ),
+          )
         ])
       }
 
@@ -962,11 +962,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
               "git add .",
               "git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
-              "git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
+              "git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages"
             ]
           ),
           "      env:",
-          "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+          "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
         ])
       }
 

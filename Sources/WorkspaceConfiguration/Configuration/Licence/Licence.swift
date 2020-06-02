@@ -77,27 +77,27 @@ public enum Licence: String, Codable {
     case .apache2_0:
       result = [
         "Licensed under the Apache Licence, Version 2.0.",
-        "See http://www.apache.org/licenses/LICENSE\u{2D}2.0 for licence information.",
+        "See http://www.apache.org/licenses/LICENSE\u{2D}2.0 for licence information."
       ]
     case .mit:
       result = [
         "Licensed under the MIT Licence.",
-        "See https://opensource.org/licenses/MIT for licence information.",
+        "See https://opensource.org/licenses/MIT for licence information."
       ]
     case .gnuGeneralPublic3_0:
       result = [
         "Licensed under the GNU General Public Licence, Version 3.0.",
-        "See http://www.gnu.org/licenses/ for licence information.",
+        "See http://www.gnu.org/licenses/ for licence information."
       ]
     case .unlicense:
       result = [
         "Dedicated to the public domain.",
-        "See http://unlicense.org/ for more information.",
+        "See http://unlicense.org/ for more information."
       ]
     case .copyright:
       result = [
         "This software is subject to copyright law.",
-        "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).",
+        "It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s)."
       ]
     }
     return result.joinedAsLines()

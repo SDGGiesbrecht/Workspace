@@ -201,7 +201,7 @@ public enum Script: Int, CaseIterable {
         var result: [StrictString] = [
           "if workspace version > /dev/null 2>&1 ; then",
           "    echo \u{22}\(usingSystemInstall.resolved(for: localization))\u{22}",
-          "    workspace \(arguments)",
+          "    workspace \(arguments)"
         ]
         if useSystemCache {
           result.append(contentsOf: [
@@ -210,7 +210,7 @@ public enum Script: Int, CaseIterable {
             "    \(macOSCachePath)workspace \(arguments)",
             "elif \(linuxCachePath)workspace version > /dev/null 2>&1 ; then",
             "    echo \u{22}\(usingSystemCache.resolved(for: localization))\u{22}",
-            "    \(linuxCachePath)workspace \(arguments)",
+            "    \(linuxCachePath)workspace \(arguments)"
           ])
         }
         result.append(contentsOf: [
@@ -222,7 +222,7 @@ public enum Script: Int, CaseIterable {
           "    export OVERRIDE_INSTALLATION_DIRECTORY=\(PackageRepository.repositorySDGDirectory)",
           "    curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s Workspace \u{22}https://github.com/SDGGiesbrecht/Workspace\u{22} \(version) \u{22}\u{22} workspace",
           "    \(PackageRepository.repositoryWorkspaceCacheDirectory)/workspace \(arguments)",
-          "fi",
+          "fi"
         ])
         return result
       }
@@ -235,7 +235,7 @@ public enum Script: Int, CaseIterable {
       var lines: [StrictString] = [
         stopOnFailure(),
         findRepository(),
-        enterRepository(),
+        enterRepository()
       ]
 
       switch self {

@@ -32,7 +32,7 @@ do {
     try FileManager.default.do(in: mockProject) {
       _ = try Shell.default.run(command: [
         "swift", "package", "generate\u{2D}xcodeproj",
-        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
+        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage"
       ]).get()
       _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "tvos"]).get()
     }

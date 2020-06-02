@@ -414,7 +414,7 @@ import WSProject
           "name": "conformance filter",
           "onchange": "switchConformanceMode(this)",
           "type": "radio",
-          "value": value,
+          "value": value
         ],
         contents: label,
         inline: false
@@ -592,7 +592,7 @@ import WSProject
             "a",
             attributes: [
               "id": "current‐language‐icon",
-              "onmouseenter": "showLanguageSwitch(this)",
+              "onmouseenter": "showLanguageSwitch(this)"
             ],
             contents: [
               ElementSyntax(
@@ -610,7 +610,7 @@ import WSProject
             "div",
             attributes: [
               "id": "language‐switch",
-              "onmouseleave": "hideLanguageSwitch(this)",
+              "onmouseleave": "hideLanguageSwitch(this)"
             ],
             contents: allLocalizations.lazy.filter({ $0.localization ≠ localization })
               .map({ entry in
@@ -696,7 +696,7 @@ import WSProject
             colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
             expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(packageName)),
             trailingComma: nil
-          ),
+          )
         ]),
         rightParen: SyntaxFactory.makeToken(.rightParen),
         trailingClosure: nil
@@ -757,7 +757,7 @@ import WSProject
             package: package,
             localization: localization,
             pathToSiteRoot: pathToSiteRoot
-          ),
+          )
         ].joinedAsLines(),
         inline: false
       ).normalizedSource()
@@ -847,7 +847,7 @@ import WSProject
 
       let sectionContents: [StrictString] = [
         ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
-        declaration,
+        declaration
       ]
 
       return ElementSyntax(
@@ -1006,7 +1006,7 @@ import WSProject
           "dl",
           contents: list.map({ $0.normalizedSource() }).joinedAsLines(),
           inline: true
-        ).normalizedSource(),
+        ).normalizedSource()
       ]
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
         .normalizedSource()

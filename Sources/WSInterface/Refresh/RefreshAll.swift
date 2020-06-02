@@ -89,7 +89,7 @@ extension Workspace.Refresh {
 
             success = [
               success,
-              xcodeInstructions,
+              xcodeInstructions
             ].joinedAsLines()
           }
 

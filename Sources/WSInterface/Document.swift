@@ -92,12 +92,12 @@ extension Workspace {
                 case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                   return [
                     "Nothing to document.",
-                    "The package manifest does not define any products.",
+                    "The package manifest does not define any products."
                   ].joinedAsLines()
                 case .deutschDeutschland:
                   return [
                     "Nichts zu dokumentieren.",
-                    "Die Paketenladeliste bestimmt keine Produkte.",
+                    "Die Paketenladeliste bestimmt keine Produkte."
                   ].joinedAsLines()
                 }
               })

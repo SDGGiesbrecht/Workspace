@@ -167,7 +167,7 @@ public struct APIDocumentationConfiguration: Codable {
       [
         // macOS and Linux file name constraints.
         "\u{0}",
-        "/",
+        "/"
       ],
       in: &result
     )
@@ -199,7 +199,7 @@ public struct APIDocumentationConfiguration: Codable {
         "\u{5C}",
         "|",
         "?",
-        "*",
+        "*"
       ],
       in: &fileNameReplacements
     )

@@ -60,7 +60,11 @@ import WSSwift
                   assumingFileURL: file.location,
                   to: &result
                 )
-                try SwiftLanguage.format(generatedCode: &result, accordingTo: try configuration(output: output), for: url)
+                try SwiftLanguage.format(
+                  generatedCode: &result,
+                  accordingTo: try configuration(output: output),
+                  for: url
+                )
                 file.contents = result
               }
             #endif

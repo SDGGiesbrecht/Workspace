@@ -212,13 +212,13 @@ public enum SwiftLanguage {
     ) throws {
       // #workaround(swift-format 0.50200.1, Cannot build.) @exempt(from: unicode)
       #if !(os(Windows) || os(Android))
-      if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
-        let formatter = SwiftFormatter(configuration: formatConfiguration)
-        var result: String = ""
-        try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
-        code = result
-        try undoErroneousFormatting(in: &code, accordingTo: configuration)
-      }
+        if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
+          let formatter = SwiftFormatter(configuration: formatConfiguration)
+          var result: String = ""
+          try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
+          code = result
+          try undoErroneousFormatting(in: &code, accordingTo: configuration)
+        }
       #endif
     }
 
@@ -229,13 +229,15 @@ public enum SwiftLanguage {
 
       // #workaround(swift-format 0.50200.1, SwiftFormat disregards its configuration.) @exempt(from: unicode)
       if configuration.proofreading.swiftFormatConfiguration ≠ nil,
-        configuration.proofreading.rules.contains(.listSeparation) {
+        configuration.proofreading.rules.contains(.listSeparation)
+      {
         let syntax = try SyntaxParser.parse(source: source)
         class Rewriter: SyntaxRewriter {
           private func visitListElement<Node>(_ node: Node) -> Syntax
-            where Node: WithTrailingCommaSyntax {
+          where Node: WithTrailingCommaSyntax {
             if node.trailingComma ≠ nil,
-              node.indexInParent == node.parent?.children.last?.indexInParent {
+              node.indexInParent == node.parent?.children.last?.indexInParent
+            {
               return Syntax(node.withTrailingComma(nil))
             } else {
               return Syntax(node)

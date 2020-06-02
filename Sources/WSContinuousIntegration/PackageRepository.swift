@@ -354,7 +354,11 @@ import WSSwift
         ])
 
         var source = main.joinedAsLines()
-        try SwiftLanguage.format(generatedCode: &source, accordingTo: try configuration(output: output), for: url)
+        try SwiftLanguage.format(
+          generatedCode: &source,
+          accordingTo: try configuration(output: output),
+          for: url
+        )
 
         var windowsMain = try TextFile(possiblyAt: url)
         windowsMain.body = source

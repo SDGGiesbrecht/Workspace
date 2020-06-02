@@ -203,22 +203,19 @@ public enum SwiftLanguage {
       return identifier
     }
 
-    public func format(
-      generatedCode code: String,
+    public static func format(
+      generatedCode code: inout String,
       accordingTo configuration: WorkspaceConfiguration,
       for fileURL: URL
-    ) throws -> String {
+    ) throws {
       // #workaround(swift-format 0.50200.1, Cannot build.) @exempt(from: unicode)
-      #if os(Windows) || os(Android)
-        return code
-      #else
-        guard let formatConfiguration = configuration.proofreading.swiftFormatConfiguration else {
-          return code
-        }
+      #if !(os(Windows) || os(Android))
+      if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
         let formatter = SwiftFormatter(configuration: formatConfiguration)
         var result: String = ""
         try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
-        return result
+        code = result
+      }
       #endif
     }
   #endif

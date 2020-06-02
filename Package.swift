@@ -520,7 +520,9 @@ let package = Package(
     .target(
       name: "WSSwift",
       dependencies: [
-        "WSGeneralImports"
+        "WSGeneralImports",
+        "WorkspaceConfiguration",
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 

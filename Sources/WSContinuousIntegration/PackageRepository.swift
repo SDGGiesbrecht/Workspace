@@ -17,7 +17,9 @@
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
+
 import WSProject
+import WSSwift
 
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
@@ -352,14 +354,7 @@ import WSProject
         ])
 
         var source = main.joinedAsLines()
-        if let formatConfiguration = try configuration(output: output)
-          .proofreading.swiftFormatConfiguration
-        {
-          let formatter = SwiftFormatter(configuration: formatConfiguration)
-          var result: String = ""
-          try formatter.format(source: source, assumingFileURL: url, to: &result)
-          source = result
-        }
+        try SwiftLanguage.format(generatedCode: &source, accordingTo: try configuration(output: output), for: url)
 
         var windowsMain = try TextFile(possiblyAt: url)
         windowsMain.body = source

@@ -379,6 +379,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
+        "WSSwift",
         "WSScripts",
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),

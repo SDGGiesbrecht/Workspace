@@ -233,21 +233,26 @@ public enum SwiftLanguage {
       {
         let syntax = try SyntaxParser.parse(source: source)
         class Rewriter: SyntaxRewriter {
-          private func visitListElement<Node>(_ node: Node) -> Syntax
+          private func visitListElement<Node>(_ node: Node) -> Node
           where Node: WithTrailingCommaSyntax {
             if node.trailingComma ≠ nil,
               node.indexInParent == node.parent?.children.last?.indexInParent
             {
-              return Syntax(node.withTrailingComma(nil))
+              return node.withTrailingComma(nil)
             } else {
-              return Syntax(node)
+              return node
             }
           }
           override func visit(_ node: ArrayElementSyntax) -> Syntax {
-            return visitListElement(node)
+            let visited = visitListElement(node)
+            let expression = ExprSyntax(visit(Syntax(visited.expression)))
+            return Syntax(visited.withExpression(expression))
           }
           override func visit(_ node: DictionaryElementSyntax) -> Syntax {
-            return visitListElement(node)
+            let visited = visitListElement(node)
+            let key = ExprSyntax(visit(Syntax(visited.keyExpression)))
+            let value = ExprSyntax(visit(Syntax(visited.valueExpression)))
+            return Syntax(visited.withKeyExpression(key).withValueExpression(value))
           }
         }
         let fixed = Rewriter().visit(syntax)

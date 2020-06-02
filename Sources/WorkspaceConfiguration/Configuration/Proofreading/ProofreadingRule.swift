@@ -325,6 +325,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .closureSignaturePosition
   }
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.listSeparation)
+  /// Requires that list separators such as commas only appear between list elements and never dangling at the end.
+  case listSeparation
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.listSeparation)
+  /// Erzwingt, dass Listentrennzeichen wie Kommata nur zwischen Listenelementen stehen und nie nachhängend.
+  public static var listentrennung: Korrekturregel {
+    return .listSeparation
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.parameterGrouping)
   /// Requires documented parameters to be grouped.
@@ -364,7 +373,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode:
       return .textStyle
 
-    case .calloutCasing, .closureSignaturePosition,
+    case .calloutCasing, .closureSignaturePosition, .listSeparation,
       .parameterGrouping:
       return .sourceCodeStyle
     }

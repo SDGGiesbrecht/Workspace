@@ -430,6 +430,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
+        "WSSwift",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]

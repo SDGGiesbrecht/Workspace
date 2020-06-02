@@ -1209,6 +1209,7 @@ target_link_libraries("WSProofreading" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSCustomTask"
+  "SDGLogic"
   "SDGCollections"
   "SDGExternalProcess"
   "SDGVersioning"

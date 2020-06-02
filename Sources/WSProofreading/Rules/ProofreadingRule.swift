@@ -43,6 +43,8 @@ extension ProofreadingRule: Comparable {
       return .syntax(CalloutCasing.self)
     case .closureSignaturePosition:
       return .syntax(ClosureSignaturePosition.self)
+    case .listSeparation:
+      return .syntax(ListSeparation.self)
     case .parameterGrouping:
       return .syntax(ParameterGrouping.self)
     }

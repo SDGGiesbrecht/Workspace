@@ -452,6 +452,7 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSCustomTask",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),

@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 // #workaround(SwiftPM 0.6.0, Cannot build.)
@@ -55,6 +56,19 @@ internal struct ListSeparation: SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {
+
+      if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
+        let comma = entry.trailingComma,
+        entry.indexInParent == entry.parent?.children.last?.indexInParent {
+
+        reportViolation(
+          in: file,
+          at: comma.syntaxRange(in: context),
+          replacementSuggestion: "",
+          message: message,
+          status: status
+        )
+      }
     }
   #endif
 }

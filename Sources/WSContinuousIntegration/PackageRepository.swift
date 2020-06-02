@@ -326,8 +326,10 @@ import WSProject
             "  static let windowsTests: [XCTestCaseEntry] = [",
             "    testCase([",
           ])
-          for method in testClass.methods {
-            main.append("      (\u{22}\(method)\u{22}, \(method)),")
+          for methodIndex in testClass.methods.indices {
+            let method = testClass.methods[methodIndex]
+            let comma = methodIndex == testClass.methods.indices.last ? "" : ","
+            main.append("      (\u{22}\(method)\u{22}, \(method))\(comma)")
           }
           main.append(contentsOf: [
             "    ])",

@@ -1,12 +1,12 @@
 /*
- ParameterGrouping.swift
+ Bullets.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2017–2020 Jeremy David Giesbrecht and the Workspace project contributors.
- Urheberrecht ©2017–2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+ Copyright ©2020 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 
  Soli Deo gloria.
 
@@ -14,30 +14,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
 import WSGeneralImports
 
 import WSProject
 
 import SDGSwiftSource
 
-internal struct ParameterGrouping: SyntaxRule {
+internal struct Bullets: SyntaxRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
     { localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "parameterGrouping"
+        return "bullets"
       case .deutschDeutschland:
-        return "übergabewertenzusammenstellung"
+        return "aufzählungszeichen"
       }
     })
 
   private static let message = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Parameters should be grouped under a single callout."
+      return "Markdown lists should use ASCII bullets."
     case .deutschDeutschland:
-      return "Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein."
+      return "Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden."
     }
   })
 
@@ -53,13 +54,14 @@ internal struct ParameterGrouping: SyntaxRule {
     ) {
 
       if let token = node as? ExtendedTokenSyntax,
-        token.kind == .callout,
-        token.text.lowercased() == "parameter"
+        token.kind == .bullet,
+        token.text ≠ "\u{2D}"
       {
 
         reportViolation(
           in: file,
           at: token.range(in: context),
+          replacementSuggestion: "\u{2D}",
           message: message,
           status: status
         )

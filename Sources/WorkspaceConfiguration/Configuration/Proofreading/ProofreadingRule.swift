@@ -300,27 +300,32 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// - “∨” instead of “&#x7C;|”.
   case unicode
 
-  // ••••••• Source Code Style •••••••
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.listBullets)
+  /// Requires Markdown lists to use ASCII bullets and not asterisks or plus signs.
+  case bullets
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.listBullets)
+  /// Erfordert für Markdown‐Listen die Verwendung von ASCII‐Aufzählungszeichen und keinen Sternchen oder Pluszeichen.
+  public static var aufzählungszeichen: Korrekturregel {
+    return .bullets
+  }
 
-  // Tokens
+  // ••••••• Source Code Style •••••••
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
   /// Requires documentation callouts to be capitalized.
   case calloutCasing
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.calloutCasing)
-  /// Erzwingt die Großschreibung von Dokumentationshervorhebungen.
+  /// Erfordert die Großschreibung von Dokumentationshervorhebungen.
   public static var hervorhebungsGroßschreibung: Korrekturregel {
     return .calloutCasing
   }
-
-  // Complex nodes
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.closureSignaturePosition)
   /// Requires closure signatures to be on the same line as the closure’s opening brace.
   case closureSignaturePosition
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.closureSignaturePosition)
-  /// Erzwingt die Platzierung von Abschlusssignaturen auf der selben Zeile wie den öffnenden geschweiften Klammer.
+  /// Erfordert die Platzierung von Abschlusssignaturen auf der selben Zeile wie den öffnenden geschweiften Klammer.
   public static var abschlusssignaturplatzierung: Korrekturregel {
     return .closureSignaturePosition
   }
@@ -329,7 +334,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// Requires that list separators such as commas only appear between list elements and never dangling at the end.
   case listSeparation
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.listSeparation)
-  /// Erzwingt, dass Listentrennzeichen wie Kommata nur zwischen Listenelementen stehen und nie nachhängend.
+  /// Erfordert, dass Listentrennzeichen wie Kommata nur zwischen Listenelementen stehen und nie nachhängend.
   public static var listentrennung: Korrekturregel {
     return .listSeparation
   }
@@ -339,7 +344,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// Requires documented parameters to be grouped.
   case parameterGrouping
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.parameterGrouping)
-  /// Erzwingt die Zusammenstellung dokumentierter Übergabewerten.
+  /// Erfordert die Zusammenstellung dokumentierter Übergabewerten.
   public static var übergabewertenzusammenstellung: Korrekturregel {
     return .parameterGrouping
   }
@@ -370,7 +375,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .syntaxColouring:
       return .documentation
 
-    case .unicode:
+    case .unicode, .bullets:
       return .textStyle
 
     case .calloutCasing, .closureSignaturePosition, .listSeparation,

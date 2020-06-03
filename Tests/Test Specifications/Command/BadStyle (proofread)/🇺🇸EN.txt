@@ -73,6 +73,17 @@ Line 5
 Parameters should be grouped under a single callout. (parameterGrouping)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
+Sources/BadStyle/Rules/Text Style/Bullets.swift
+Line 7
+Markdown lists should use ASCII bullets. (bullets)
+/// * Should trigger; asterisks aren’t bullets.
+/// - Should trigger; asterisks aren’t bullets.
+
+Line 9
+Markdown lists should use ASCII bullets. (bullets)
+/// + Should trigger; plus signs aren’t bullets.
+/// - Should trigger; plus signs aren’t bullets.
+
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Line 5
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)

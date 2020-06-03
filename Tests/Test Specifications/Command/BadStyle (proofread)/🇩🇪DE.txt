@@ -73,6 +73,17 @@ Zeile 5
 Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein. (übergabewertenzusammenstellung)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
+Sources/BadStyle/Rules/Text Style/Bullets.swift
+Zeile 7
+Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
+/// * Should trigger; asterisks aren’t bullets.
+/// - Should trigger; asterisks aren’t bullets.
+
+Zeile 9
+Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
+/// + Should trigger; plus signs aren’t bullets.
+/// - Should trigger; plus signs aren’t bullets.
+
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Zeile 5
 Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)

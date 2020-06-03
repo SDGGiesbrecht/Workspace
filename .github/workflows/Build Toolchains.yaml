@@ -131,7 +131,7 @@ jobs:
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D LLVM_HOST_TRIPLE=x86_64-unknown-linux-android \
-          || cat CMakeError.log
+          || cat LLVM/CMakeFiles/CMakeError.log
     - name: Build standard library for Android
       shell: bash
       run: |
@@ -156,7 +156,7 @@ jobs:
           -D ICU_UC_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
           -D ICU_I18N_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include \
           -D ICU_I18N_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
-          || cat CMakeError.log
+          || cat Standard_Library/CMakeFiles/CMakeError.log
         cmake --build Standard_Library --target install
     - name: Build Dispatch for Android
       shell: bash
@@ -182,7 +182,7 @@ jobs:
           -D BUILD_TESTING=NO \
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
-          || cat CMakeError.log
+          || cat Dispatch/CMakeFiles/CMakeError.log
         cmake --build Dispatch --target install
     - name: Build Foundation for Android
       shell: bash
@@ -218,8 +218,8 @@ jobs:
           -D dispatch_DIR=Dispatch/cmake/modules \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
           -D CMAKE_HAVE_LIBC_PTHREAD=YES \
-          || cat CMakeError.log
-        cmake --build Dispatch --target install
+          || cat Foundation/CMakeFiles/CMakeError.log
+        cmake --build Foundation --target install
     - name: Build XCTest for Android
       shell: bash
       run: |
@@ -244,8 +244,8 @@ jobs:
           -D Foundation_DIR=Foundation/cmake/modules \
           -D dispatch_DIR=Dispatch/cmake/modules \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
-          || cat CMakeError.log
-        cmake --build Dispatch --target install
+          || cat XCTest/CMakeFiles/CMakeError.log
+        cmake --build XCTest --target install
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

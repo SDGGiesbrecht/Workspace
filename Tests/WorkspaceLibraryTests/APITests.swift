@@ -418,6 +418,7 @@ class APITests: TestCase {
         [:]
       )
       XCTAssertEqual(Schicht.netz, Platform.web)
+      XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
     #endif
   }
 

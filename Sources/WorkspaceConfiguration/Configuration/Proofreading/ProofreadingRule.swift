@@ -300,8 +300,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// - “∨” instead of “&#x7C;|”.
   case unicode
 
-  // ••••••• Source Code Style •••••••
-
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.listBullets)
   /// Requires Markdown lists to use ASCII bullets and not asterisks or plus signs.
   case bullets
@@ -310,6 +308,8 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   public static var aufzählungszeichen: Korrekturregel {
     return .bullets
   }
+
+  // ••••••• Source Code Style •••••••
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
   /// Requires documentation callouts to be capitalized.
@@ -375,7 +375,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .syntaxColouring:
       return .documentation
 
-    case .unicode:
+    case .unicode, .bullets:
       return .textStyle
 
     case .calloutCasing, .closureSignaturePosition, .listSeparation,

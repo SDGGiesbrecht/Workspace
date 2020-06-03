@@ -1150,6 +1150,7 @@ target_compile_options("WSNormalization" PRIVATE -enable-testing)
 target_link_libraries("WSNormalization" PRIVATE
   "WSGeneralImports"
   "WSProject"
+  "WSSwift"
   "SwiftFormatConfiguration"
 )
 

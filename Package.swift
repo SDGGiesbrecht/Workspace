@@ -379,6 +379,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
+        "WSSwift",
         "WSScripts",
         "WSDocumentation",
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
@@ -429,6 +430,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WSProject",
+        "WSSwift",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
@@ -452,6 +454,7 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WSCustomTask",
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
@@ -519,7 +522,11 @@ let package = Package(
     .target(
       name: "WSSwift",
       dependencies: [
-        "WSGeneralImports"
+        "WSGeneralImports",
+        "WorkspaceConfiguration",
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 

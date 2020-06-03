@@ -19,6 +19,18 @@ import SDGMathematics
 import SDGCollections
 import WSGeneralImports
 
+import WorkspaceConfiguration
+
+// #workaround(swift-syntax 0.50200.0, Cannot build.) @exempt(from: unicode)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import SwiftSyntax
+#endif
+import SDGSwiftSource
+// #workaround(swift-format 0.50200.1, Cannot build.) @exempt(from: unicode)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import SwiftFormat
+#endif
+
 public enum SwiftLanguage {
 
   // MARK: - Static Properties
@@ -197,6 +209,22 @@ public enum SwiftLanguage {
       }
 
       return identifier
+    }
+
+    public static func format(
+      generatedCode code: inout String,
+      accordingTo configuration: WorkspaceConfiguration,
+      for fileURL: URL
+    ) throws {
+      // #workaround(swift-format 0.50200.1, Cannot build.) @exempt(from: unicode)
+      #if !(os(Windows) || os(Android))
+        if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
+          let formatter = SwiftFormatter(configuration: formatConfiguration)
+          var result: String = ""
+          try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
+          code = result
+        }
+      #endif
     }
   #endif
 }

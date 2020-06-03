@@ -18,6 +18,11 @@ Line 2
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
+Line 29
+List separators should only occur between list elements. (listSeparation)
+    ),
+    )
+
 README.md
 Sources/BadStyle/BadStyle.swift
 Sources/BadStyle/Normalization/Decomposition.swift
@@ -56,6 +61,12 @@ Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Line 6
 A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
   parameter in  // Wrong position; should trigger.
+
+Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift
+Line 4
+List separators should only occur between list elements. (listSeparation)
+  3,  // Should trigger.
+  3  // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5

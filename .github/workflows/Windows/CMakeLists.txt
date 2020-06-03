@@ -935,16 +935,6 @@ target_link_libraries("WSGeneralImports" PRIVATE
   "SDGSwift"
 )
 
-add_library("WSSwift"
-  "../../../Sources/WSSwift/SwiftLanguage.Casing.swift"
-  "../../../Sources/WSSwift/SwiftLanguage.swift"
-)
-set_target_properties("WSSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSSwift" PRIVATE -enable-testing)
-target_link_libraries("WSSwift" PRIVATE
-  "WSGeneralImports"
-)
-
 add_library("SwiftFormatConfiguration"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
@@ -1058,6 +1048,18 @@ target_link_libraries("WSCustomTask" PRIVATE
   "SDGExternalProcess"
 )
 
+add_library("WSSwift"
+  "../../../Sources/WSSwift/SwiftLanguage.Casing.swift"
+  "../../../Sources/WSSwift/SwiftLanguage.swift"
+)
+set_target_properties("WSSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSSwift" PRIVATE -enable-testing)
+target_link_libraries("WSSwift" PRIVATE
+  "WSGeneralImports"
+  "WorkspaceConfiguration"
+  "SDGSwiftSource"
+)
+
 add_library("WorkspaceProjectConfiguration"
   "../../../Workspace.swift"
 )
@@ -1148,6 +1150,7 @@ target_compile_options("WSNormalization" PRIVATE -enable-testing)
 target_link_libraries("WSNormalization" PRIVATE
   "WSGeneralImports"
   "WSProject"
+  "WSSwift"
   "SwiftFormatConfiguration"
 )
 
@@ -1190,6 +1193,7 @@ add_library("WSProofreading"
   "../../../Sources/WSProofreading/Rules/ProofreadingRule.swift"
   "../../../Sources/WSProofreading/Rules/Source Code Style/CalloutCasing.swift"
   "../../../Sources/WSProofreading/Rules/Source Code Style/ClosureSignaturePosition.swift"
+  "../../../Sources/WSProofreading/Rules/Source Code Style/ListSeparation.swift"
   "../../../Sources/WSProofreading/Rules/Source Code Style/ParameterGrouping.swift"
   "../../../Sources/WSProofreading/Rules/Text Style/Unicode.swift"
   "../../../Sources/WSProofreading/SourceLocation.swift"
@@ -1208,6 +1212,7 @@ target_link_libraries("WSProofreading" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSCustomTask"
+  "SDGLogic"
   "SDGCollections"
   "SDGExternalProcess"
   "SDGVersioning"
@@ -1314,6 +1319,7 @@ target_compile_options("WSContinuousIntegration" PRIVATE -enable-testing)
 target_link_libraries("WSContinuousIntegration" PRIVATE
   "WSGeneralImports"
   "WSProject"
+  "WSSwift"
   "WSScripts"
   "WSDocumentation"
   "SDGSwiftPackageManager"

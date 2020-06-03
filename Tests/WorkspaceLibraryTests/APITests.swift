@@ -106,6 +106,7 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
+      configuration.proofreading.rules.insert(.listSeparation)
       configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
       let failing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,

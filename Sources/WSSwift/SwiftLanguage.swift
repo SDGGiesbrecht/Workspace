@@ -21,7 +21,10 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
-import SwiftSyntax
+// #workaround(swift-syntax 0.50200.0, Cannot build.) @exempt(from: unicode)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 import SwiftFormat
 

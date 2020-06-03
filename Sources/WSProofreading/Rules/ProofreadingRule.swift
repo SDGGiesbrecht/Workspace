@@ -39,6 +39,8 @@ extension ProofreadingRule: Comparable {
       return .syntax(SyntaxColouring.self)
     case .unicode:
       return .syntax(UnicodeRule.self)
+    case .bullets:
+      return .syntax(Bullets.self)
     case .calloutCasing:
       return .syntax(CalloutCasing.self)
     case .closureSignaturePosition:

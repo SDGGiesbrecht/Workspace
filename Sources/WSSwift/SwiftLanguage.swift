@@ -26,7 +26,10 @@ import WorkspaceConfiguration
   import SwiftSyntax
 #endif
 import SDGSwiftSource
-import SwiftFormat
+// #workaround(swift-format 0.50200.1, Cannot build.) @exempt(from: unicode)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import SwiftFormat
+#endif
 
 public enum SwiftLanguage {
 

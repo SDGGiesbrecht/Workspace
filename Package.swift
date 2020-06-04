@@ -256,11 +256,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 4, 2)
+      from: Version(1, 4, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(1, 0, 3)
+      from: Version(2, 0, 1)
     ),
     .package(
       name: "SwiftPM",

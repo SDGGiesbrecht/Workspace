@@ -340,6 +340,16 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(ProofreadingRule.markdownHeadings)
+  /// Requires Markdown headings to use number signs.
+  case markdownHeadings
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.markdownHeadings)
+  /// Erfordert, dass Markdown‐Überschrifte Doppelkreuze verwenden.
+  public static var markdownÜberschrifte: Korrekturregel {
+    return .markdownHeadings
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.parameterGrouping)
   /// Requires documented parameters to be grouped.
   case parameterGrouping

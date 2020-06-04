@@ -388,7 +388,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode, .bullets:
       return .textStyle
 
-    case .calloutCasing, .closureSignaturePosition, .listSeparation,
+    case .calloutCasing, .closureSignaturePosition, .listSeparation, .markdownHeadings,
       .parameterGrouping:
       return .sourceCodeStyle
     }

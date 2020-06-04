@@ -47,6 +47,8 @@ extension ProofreadingRule: Comparable {
       return .syntax(ClosureSignaturePosition.self)
     case .listSeparation:
       return .syntax(ListSeparation.self)
+    case .markdownHeadings:
+      return .syntax(MarkdownHeadings.self)
     case .parameterGrouping:
       return .syntax(ParameterGrouping.self)
     }

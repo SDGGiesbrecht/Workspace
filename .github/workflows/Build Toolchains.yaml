@@ -182,7 +182,6 @@ jobs:
           -D BUILD_TESTING=NO \
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
-          -D CMAKE_HAVE_LIBC_PTHREAD=YES \
           || cat Dispatch/CMakeFiles/CMakeError.log
         cmake --build Dispatch --target install
     - name: Build Foundation for Android

@@ -420,6 +420,7 @@ class APITests: TestCase {
       XCTAssertEqual(Schicht.netz, Platform.web)
       XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
       XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
+      XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
     #endif
   }
 

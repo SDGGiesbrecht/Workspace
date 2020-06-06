@@ -51,6 +51,15 @@ Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)
   notImplementedYet()  // This should trigger a warning.
 
+Sources/BadStyle/Rules/Source Code Style/Bullets.swift
+Zeile 8
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// -----------------------------------------
+
+Zeile 11
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// =========================================
+
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Zeile 5
 Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)

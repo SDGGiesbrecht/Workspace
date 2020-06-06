@@ -62,6 +62,15 @@ Line 4
 Missing implementation. (missingImplementation)
   notImplementedYet()  // This should trigger a warning.
 
+Sources/BadStyle/Rules/Source Code Style/Bullets.swift
+Line 8
+Markdown headings should use number signs. (markdownHeadings)
+/// -----------------------------------------
+
+Line 11
+Markdown headings should use number signs. (markdownHeadings)
+/// =========================================
+
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
 Callouts should be capitalised. (calloutCasing)

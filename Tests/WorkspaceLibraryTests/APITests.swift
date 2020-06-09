@@ -421,6 +421,7 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
       XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
       XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
+      XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
     #endif
   }
 

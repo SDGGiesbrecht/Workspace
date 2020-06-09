@@ -51,6 +51,17 @@ Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)
   notImplementedYet()  // This should trigger a warning.
 
+Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
+Zeile 9
+Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
+/// ---
+/// ***
+
+Zeile 13
+Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
+/// ___
+/// ***
+
 Sources/BadStyle/Rules/Source Code Style/Bullets.swift
 Zeile 8
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)

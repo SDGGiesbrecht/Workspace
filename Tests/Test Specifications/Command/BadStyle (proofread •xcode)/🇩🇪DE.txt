@@ -6,6 +6,8 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/Mark.swift:3:1: warning: Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:4:3: warning: Fehlende Implementierung. (fehlendeImplementierung)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:9:5: warning: Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:13:5: warning: Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Bullets.swift:8:5: warning: Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Bullets.swift:11:5: warning: Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:5:7: warning: Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)

@@ -5,7 +5,7 @@ import WSProject
 
 import SDGSwiftSource
 
-internal struct Bullets: SyntaxRule {
+internal struct Asterisms: SyntaxRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
     { localization in

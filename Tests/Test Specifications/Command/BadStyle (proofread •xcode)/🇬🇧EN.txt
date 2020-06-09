@@ -6,6 +6,8 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/Mark.swift:3:1: warning: Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:4:3: warning: Missing implementation. (missingImplementation)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:9:5: warning: Markdown asterisms should be composed of asterisks. (asterisms)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:13:5: warning: Markdown asterisms should be composed of asterisks. (asterisms)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Bullets.swift:8:5: warning: Markdown headings should use number signs. (markdownHeadings)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Bullets.swift:11:5: warning: Markdown headings should use number signs. (markdownHeadings)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:5:7: warning: Callouts should be capitalised. (calloutCasing)

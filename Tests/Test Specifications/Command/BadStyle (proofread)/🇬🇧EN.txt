@@ -62,6 +62,17 @@ Line 4
 Missing implementation. (missingImplementation)
   notImplementedYet()  // This should trigger a warning.
 
+Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
+Line 9
+Markdown asterisms should be composed of asterisks. (asterisms)
+/// ---
+/// ***
+
+Line 13
+Markdown asterisms should be composed of asterisks. (asterisms)
+/// ___
+/// ***
+
 Sources/BadStyle/Rules/Source Code Style/Bullets.swift
 Line 8
 Markdown headings should use number signs. (markdownHeadings)

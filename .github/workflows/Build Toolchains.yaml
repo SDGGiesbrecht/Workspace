@@ -161,7 +161,6 @@ jobs:
       run: |
         set -x
         cd swift-build
-        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
         export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
         export ANDROID_TARGET_ARCHITECTURE=x86_64
         export ANDROID_TARGET_ABI="29"
@@ -169,7 +168,7 @@ jobs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-libdispatch \
           -B Dispatch \
-          -C CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
@@ -186,7 +185,6 @@ jobs:
 #      run: |
 #        set -x
 #        cd swift-build
-#        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
 #        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
 #        export ANDROID_TARGET_ARCHITECTURE=x86_64
 #        export ANDROID_TARGET_ABI="29"
@@ -221,7 +219,6 @@ jobs:
 #      run: |
 #        set -x
 #        cd swift-build
-#        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
 #        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
 #        export ANDROID_TARGET_ARCHITECTURE=x86_64
 #        export ANDROID_TARGET_ABI="29"

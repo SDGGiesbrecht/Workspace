@@ -398,11 +398,11 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
       return .textStyle
 
     case .asterisms,
-         .calloutCasing,
-         .closureSignaturePosition,
-         .listSeparation,
-         .markdownHeadings,
-         .parameterGrouping:
+      .calloutCasing,
+      .closureSignaturePosition,
+      .listSeparation,
+      .markdownHeadings,
+      .parameterGrouping:
       return .sourceCodeStyle
     }
   }

@@ -184,68 +184,68 @@ jobs:
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
           || cat Dispatch/CMakeFiles/CMakeError.log
         cmake --build Dispatch --target install
-    - name: Build Foundation for Android
-      shell: bash
-      run: |
-        set -x
-        cd swift-build
-        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-foundation \
-          -B Foundation \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
-          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
-          -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-          -D ZLIB_LIBRARY=$(zlib.directory)/usr/lib/libz.a \
-          -D ZLIB_INCLUDE_DIR=$(zlib.directory)/usr/include \
-          -D CURL_LIBRARY=$(curl.directory)/usr/lib/libcurl.a \
-          -D CURL_INCLUDE_DIR=$(curl.directory)/usr/include \
-          -D ICU_INCLUDE_DIR=${GITHUB_WORKSPACE}/Android/ICU/include \
-          -D ICU_UC_LIBRARY=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
-          -D ICU_UC_LIBRARY_RELEASE=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
-          -D ICU_I18N_LIBRARY=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
-          -D ICU_I18N_LIBRARY_RELEASE=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
-          -D LIBXML2_LIBRARY=$(xml2.directory)/usr/lib/libxml2.a \
-          -D LIBXML2_INCLUDE_DIR=$(xml2.directory)/usr/include/libxml2 \
-          -D dispatch_DIR=Dispatch/cmake/modules \
-          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
-          -D CMAKE_HAVE_LIBC_PTHREAD=YES \
-          || cat Foundation/CMakeFiles/CMakeError.log
-        cmake --build Foundation --target install
-    - name: Build XCTest for Android
-      shell: bash
-      run: |
-        set -x
-        cd swift-build
-        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
-          -B XCTest \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
-          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
-          -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-          -D ENABLE_TESTING=NO \
-          -D Foundation_DIR=Foundation/cmake/modules \
-          -D dispatch_DIR=Dispatch/cmake/modules \
-          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
-          || cat XCTest/CMakeFiles/CMakeError.log
-        cmake --build XCTest --target install
+#    - name: Build Foundation for Android
+#      shell: bash
+#      run: |
+#        set -x
+#        cd swift-build
+#        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
+#        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+#        export ANDROID_TARGET_ARCHITECTURE=x86_64
+#        export ANDROID_TARGET_ABI="29"
+#        cmake \
+#          -G Ninja \
+#          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-foundation \
+#          -B Foundation \
+#          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+#          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+#          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
+#          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+#          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
+#          -D CMAKE_BUILD_TYPE=Release \
+#          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+#          -D ZLIB_LIBRARY=$(zlib.directory)/usr/lib/libz.a \
+#          -D ZLIB_INCLUDE_DIR=$(zlib.directory)/usr/include \
+#          -D CURL_LIBRARY=$(curl.directory)/usr/lib/libcurl.a \
+#          -D CURL_INCLUDE_DIR=$(curl.directory)/usr/include \
+#          -D ICU_INCLUDE_DIR=${GITHUB_WORKSPACE}/Android/ICU/include \
+#          -D ICU_UC_LIBRARY=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
+#          -D ICU_UC_LIBRARY_RELEASE=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65.1 \
+#          -D ICU_I18N_LIBRARY=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
+#          -D ICU_I18N_LIBRARY_RELEASE=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
+#          -D LIBXML2_LIBRARY=$(xml2.directory)/usr/lib/libxml2.a \
+#          -D LIBXML2_INCLUDE_DIR=$(xml2.directory)/usr/include/libxml2 \
+#          -D dispatch_DIR=Dispatch/cmake/modules \
+#          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
+#          -D CMAKE_HAVE_LIBC_PTHREAD=YES \
+#          || cat Foundation/CMakeFiles/CMakeError.log
+#        cmake --build Foundation --target install
+#    - name: Build XCTest for Android
+#      shell: bash
+#      run: |
+#        set -x
+#        cd swift-build
+#        export SWIFTC=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc
+#        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+#        export ANDROID_TARGET_ARCHITECTURE=x86_64
+#        export ANDROID_TARGET_ABI="29"
+#        cmake \
+#          -G Ninja \
+#          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
+#          -B XCTest \
+#          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+#          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+#          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
+#          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+#          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
+#          -D CMAKE_BUILD_TYPE=Release \
+#          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+#          -D ENABLE_TESTING=NO \
+#          -D Foundation_DIR=Foundation/cmake/modules \
+#          -D dispatch_DIR=Dispatch/cmake/modules \
+#          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
+#          || cat XCTest/CMakeFiles/CMakeError.log
+#        cmake --build XCTest --target install
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

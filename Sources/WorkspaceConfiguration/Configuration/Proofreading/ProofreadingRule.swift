@@ -312,6 +312,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   // ••••••• Source Code Style •••••••
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
+  /// Requires Markdown asterisms to be composed of asterisks and not bullets or underlines.
+  case asterisms
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.calloutCasing)
+  /// Erfordert, dass Markdown‐Sterngruppen aus Sternchen und keinen Aufzählungszeichen oder Unterstrichen bestehen.
+  public static var sterngruppen: Korrekturregel {
+    return .asterisms
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
   /// Requires documentation callouts to be capitalized.
   case calloutCasing
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.calloutCasing)
@@ -388,8 +397,12 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode, .bullets:
       return .textStyle
 
-    case .calloutCasing, .closureSignaturePosition, .listSeparation, .markdownHeadings,
-      .parameterGrouping:
+    case .asterisms,
+         .calloutCasing,
+         .closureSignaturePosition,
+         .listSeparation,
+         .markdownHeadings,
+         .parameterGrouping:
       return .sourceCodeStyle
     }
   }

@@ -45,16 +45,6 @@ internal struct AccessControl: SyntaxRule {
     }
   })
 
-  private static let extensionMessage = UserFacing<StrictString, InterfaceLocalization>({
-    localization in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Access control belongs on individual symbols, not extensions."
-    case .deutschDeutschland:
-      return "Zugriffskontrolle gehört bei einzelne Sombole, nicht bei Erweiterungen."
-    }
-  })
-
   private static let otherMessage = UserFacing<StrictString, InterfaceLocalization>({
     localization in
     switch localization {

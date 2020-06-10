@@ -117,7 +117,8 @@ internal struct AccessControl: SyntaxRule {
             ∨ ancestor.is(InitializerDeclSyntax.self)
             ∨ ancestor.is(VariableDeclSyntax.self)
             ∨ ancestor.is(SubscriptDeclSyntax.self)
-        }){
+        })
+      {
         reportViolation(
           in: file,
           at: anchor.syntaxRange(in: context),
@@ -146,29 +147,6 @@ internal struct AccessControl: SyntaxRule {
       }
     }
 
-    private static func checkExtension(
-      _ node: Syntax,
-      context: SyntaxContext,
-      file: TextFile,
-      status: ProofreadingStatus
-    ) {
-      if let `extension` = node.as(ExtensionDeclSyntax.self),
-        let modifiers = `extension`.modifiers
-      {
-        for modifier in modifiers {
-          if modifier.name.text ∈ allLevels {
-            reportViolation(
-              in: file,
-              at: modifier.name.syntaxRange(in: context),
-              replacementSuggestion: "",
-              message: extensionMessage,
-              status: status
-            )
-          }
-        }
-      }
-    }
-
     // MARK: - SyntaxRule
 
     internal static func check(
@@ -189,8 +167,6 @@ internal struct AccessControl: SyntaxRule {
       case .unknown:
         break
       }
-
-      checkExtension(node, context: context, file: file, status: status)
     }
   #endif
 }

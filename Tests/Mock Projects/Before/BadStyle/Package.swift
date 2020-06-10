@@ -21,6 +21,7 @@ let package = Package(
         .target(
             name: "BadStyle",
             dependencies: ["Dependency"]),
+        .target(name: "executable"),
         .testTarget(
             name: "BadStyleTests",
             dependencies: ["BadStyle"])

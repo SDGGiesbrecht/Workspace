@@ -15,6 +15,7 @@
  */
 
 import SDGLogic
+import SDGCollections
 import WSGeneralImports
 
 import WSProject
@@ -64,8 +65,80 @@ internal struct AccessControl: SyntaxRule {
     }
   })
 
+  private static let highLevels: Set<String> = ["open", "public", "internal"]
+  private static let lowLevels: Set<String> = ["fileprivate", "private"]
+  private static let allLevels = highLevels ∪ lowLevels
+
   // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
+
+    private static func checkLibrary(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      status: ProofreadingStatus
+    ) {
+      let modifiers: ModifierListSyntax?
+      let anchor: TokenSyntax
+      if let structure = node.as(StructDeclSyntax.self) {
+        modifiers = structure.modifiers
+        anchor = structure.identifier
+      } else {
+        return
+      }
+      if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false) {
+        reportViolation(
+          in: file,
+          at: anchor.syntaxRange(in: context),
+          message: libraryMessage,
+          status: status
+        )
+      }
+    }
+
+    private static func checkOther(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      status: ProofreadingStatus
+    ) {
+      if let modifier = node.as(DeclModifierSyntax.self){
+        if modifier.name.text ∈ highLevels {
+          reportViolation(
+            in: file,
+            at: modifier.name.syntaxRange(in: context),
+            replacementSuggestion: "",
+            message: otherMessage,
+            status: status
+          )
+        }
+      }
+    }
+
+    private static func checkExtension(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      status: ProofreadingStatus
+    ) {
+      if let `extension` = node.as(ExtensionDeclSyntax.self),
+        let modifiers = `extension`.modifiers {
+        for modifier in modifiers {
+          if modifier.name.text ∈ allLevels {
+            reportViolation(
+              in: file,
+              at: modifier.name.syntaxRange(in: context),
+              replacementSuggestion: "",
+              message: extensionMessage,
+              status: status
+            )
+          }
+        }
+      }
+    }
+
+    // MARK: - SyntaxRule
+
     internal static func check(
       _ node: Syntax,
       context: SyntaxContext,
@@ -75,12 +148,17 @@ internal struct AccessControl: SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      reportViolation(
-        in: file,
-        at: node.syntaxRange(in: context),
-        message: libraryMessage,
-        status: status
-      )
+
+      switch setting {
+      case .library:
+        checkLibrary(node, context: context, file: file, status: status)
+      case .topLevel:
+        checkOther(node, context: context, file: file, status: status)
+      case .unknown:
+        break
+      }
+
+      checkExtension(node, context: context, file: file, status: status)
     }
   #endif
 }

@@ -76,8 +76,9 @@ import WSCustomTask
           location.appendingPathComponent("Package.swift"): .topLevel
         ]
         for name in InterfaceLocalization.allCases
-          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) }) {
-            settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
+        {
+          settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
         }
         for target in try cachedPackage().targets {
           let setting: Setting?

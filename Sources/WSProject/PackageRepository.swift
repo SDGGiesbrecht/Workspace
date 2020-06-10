@@ -280,14 +280,15 @@ import WorkspaceProjectConfiguration
       }
     }
 
-    public static let workspaceConfigurationNames = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Workspace"
-      case .deutschDeutschland:
-        return "Arbeitsbereich"
-      }
-    })
+    public static let workspaceConfigurationNames = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Workspace"
+        case .deutschDeutschland:
+          return "Arbeitsbereich"
+        }
+      })
 
     public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
       return try cached(in: &configurationCache.configuration) {

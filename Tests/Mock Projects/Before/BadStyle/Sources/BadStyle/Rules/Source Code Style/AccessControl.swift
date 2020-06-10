@@ -1,5 +1,3 @@
-// Header
-
 struct Structure {} // Should warn; no access control.
 
 class Class {} // Should warn; no access control.

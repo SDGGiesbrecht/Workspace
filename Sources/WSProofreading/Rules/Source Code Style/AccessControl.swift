@@ -79,10 +79,34 @@ internal struct AccessControl: SyntaxRule {
       status: ProofreadingStatus
     ) {
       let modifiers: ModifierListSyntax?
-      let anchor: TokenSyntax
+      let anchor: Syntax
       if let structure = node.as(StructDeclSyntax.self) {
         modifiers = structure.modifiers
-        anchor = structure.identifier
+        anchor = Syntax(structure.identifier)
+      } else if let `class` = node.as(ClassDeclSyntax.self) {
+        modifiers = `class`.modifiers
+        anchor = Syntax(`class`.identifier)
+      } else if let enumeration = node.as(EnumDeclSyntax.self) {
+        modifiers = enumeration.modifiers
+        anchor = Syntax(enumeration.identifier)
+      } else if let alias = node.as(TypealiasDeclSyntax.self) {
+        modifiers = alias.modifiers
+        anchor = Syntax(alias.identifier)
+      } else if let `protocol` = node.as(ProtocolDeclSyntax.self) {
+        modifiers = `protocol`.modifiers
+        anchor = Syntax(`protocol`.identifier)
+      } else if let function = node.as(FunctionDeclSyntax.self) {
+        modifiers = function.modifiers
+        anchor = Syntax(function.identifier)
+      } else if let initializer = node.as(InitializerDeclSyntax.self) {
+        modifiers = initializer.modifiers
+        anchor = Syntax(initializer.initKeyword)
+      } else if let variable = node.as(VariableDeclSyntax.self) {
+        modifiers = variable.modifiers
+        anchor = Syntax(variable.bindings)
+      } else if let `subscript` = node.as(SubscriptDeclSyntax.self) {
+        modifiers = `subscript`.modifiers
+        anchor = Syntax(`subscript`.subscriptKeyword)
       } else {
         return
       }

@@ -52,6 +52,7 @@ internal struct ClosureSignaturePosition: SyntaxRule {
       _ node: Syntax,
       context: SyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output

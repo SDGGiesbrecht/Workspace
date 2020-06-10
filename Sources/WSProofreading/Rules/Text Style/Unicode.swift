@@ -49,6 +49,7 @@ internal struct UnicodeRule: SyntaxRule {
       _ node: Syntax,
       context: SyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -105,6 +106,7 @@ internal struct UnicodeRule: SyntaxRule {
       _ node: ExtendedSyntax,
       context: ExtendedSyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output

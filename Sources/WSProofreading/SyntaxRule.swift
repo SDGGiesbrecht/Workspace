@@ -31,6 +31,7 @@ internal protocol SyntaxRule: RuleProtocol {
       _ node: Syntax,
       context: SyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -39,6 +40,7 @@ internal protocol SyntaxRule: RuleProtocol {
       _ node: ExtendedSyntax,
       context: ExtendedSyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -47,6 +49,7 @@ internal protocol SyntaxRule: RuleProtocol {
       _ node: Trivia,
       context: TriviaContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -55,6 +58,7 @@ internal protocol SyntaxRule: RuleProtocol {
       _ node: TriviaPiece,
       context: TriviaPieceContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -69,6 +73,7 @@ extension SyntaxRule {
       _ node: Syntax,
       context: SyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -77,6 +82,7 @@ extension SyntaxRule {
       _ node: ExtendedSyntax,
       context: ExtendedSyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -85,6 +91,7 @@ extension SyntaxRule {
       _ node: Trivia,
       context: TriviaContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -93,6 +100,7 @@ extension SyntaxRule {
       _ node: TriviaPiece,
       context: TriviaPieceContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output

@@ -18,15 +18,31 @@ Zeile 2
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-Zeile 29
+Zeile 30
 Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
     ),
     )
 
 README.md
 Sources/BadStyle/BadStyle.swift
+Zeile 1
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+struct BadStyle {
+
+Zeile 2
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+  var text = "Hello, World!"
+
 Sources/BadStyle/Normalization/Decomposition.swift
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let é = "ñ"  // These should be decomposed.
+
 Sources/BadStyle/Normalization/EmptyIndents.swift
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func indents() {
+
 Sources/BadStyle/Normalization/MarkdownLineBreaks.md
 Sources/BadStyle/Normalization/ShellExecutability.sh
 Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift
@@ -34,10 +50,18 @@ Zeile 7
 Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
 /// ```
 
+Zeile 8
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+/// let x = 1
+
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Zeile 3
 U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
 let compatibility = "2"
+let compatibility = "2"
+
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 let compatibility = "2"
 
 Sources/BadStyle/Rules/Functionality/Mark.swift
@@ -51,7 +75,59 @@ Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)
   notImplementedYet()  // This should trigger a warning.
 
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func unfinished() {
+
+Sources/BadStyle/Rules/Source Code Style/AccessControl.swift
+Zeile 1
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+struct Structure {}  // Should warn; no access control.
+
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+class Class {}  // Should warn; no access control.
+
+Zeile 5
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+enum Enumeration {}  // Should warn; no access control.
+
+Zeile 7
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+typealias TypeAlias = Structure  // Should warn; no access control.
+
+Zeile 9
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+protocol Protocol {}  // Should warn; no access control.
+
+Zeile 11
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func function() {}  // Should warn; no access control.
+
+Zeile 15
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+  init() {}  // Should warn; no access control.
+
+Zeile 17
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+  var variable: Int  // Should warn; no access control.
+
+Zeile 19
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+  subscript(_ index: Bool) -> Bool {  // Should warn; no access control.
+
+Zeile 27
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func localScope() {
+
+Zeile 25
+Specify public access level for each member inside the extension. (swiftFormat[NoAccessLevelOnExtensionDeclaration])
+
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
+Zeile 16
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func testAsterisms() {}
+
 Zeile 9
 Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 /// ---
@@ -63,6 +139,10 @@ Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 /// ***
 
 Sources/BadStyle/Rules/Source Code Style/Bullets.swift
+Zeile 12
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func testHeadings() {}
+
 Zeile 8
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 /// -----------------------------------------
@@ -72,6 +152,10 @@ Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte
 /// =========================================
 
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
+Zeile 6
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func callout() {}
+
 Zeile 5
 Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)
 /// - warning: This should trigger. It should have been capitalized.
@@ -83,17 +167,33 @@ Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende
   parameter in  // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift
+Zeile 1
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let array = [
+  1,
+  2,
+  3,  // Should trigger.
+]
+
 Zeile 4
 Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
   3,  // Should trigger.
   3  // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
+Zeile 6
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func parameters(one: Bool, two: Bool) {}
+
 Zeile 5
 Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein. (übergabewertenzusammenstellung)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
 Sources/BadStyle/Rules/Text Style/Bullets.swift
+Zeile 10
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func testBullets() {}
+
 Zeile 7
 Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
 /// * Should trigger; asterisks aren’t bullets.
@@ -105,6 +205,10 @@ Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungsz
 /// - Should trigger; plus signs aren’t bullets.
 
 Sources/BadStyle/Rules/Text Style/Unicode.swift
+Zeile 20
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func − (lhs: Int, rhs: Int) -> Int {
+
 Zeile 5
 Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
 // "These quotation marks are generic and should trigger."
@@ -128,6 +232,22 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 Zeile 19
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 /// - RecommendedOver: -
+
+Zeile 24
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func useNumeric() -> Int {
+
+Zeile 28
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let ln2: Float80 = 0x1.62E42FEFA39EF358p-1  // Generic stroke must be allowed in float literals.
+
+Zeile 35
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func shellSource() {
+
+Zeile 56
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = a * b  // Trigger, because this is not a multiplication sign.
 
 Zeile 41
 Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
@@ -167,6 +287,10 @@ Das Schriftzeichen “*” ist überholt. Ein Malzeichen (⋅) verwenden. (Wenn
 let x = a * b  // Trigger, because this is not a multiplication sign.
 let x = a × b  // Trigger, because this is not a multiplication sign.
 
+Zeile 58
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = a / b  // Trigger, because this is not a division sign.
+
 Zeile 57
 Die Schriftzeichenfolge “*=” ist überholt. Ein Malzeichen (⋅) verwenden. (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
@@ -176,6 +300,10 @@ Zeile 58
 Das Schriftzeichen “/” ist überholt. Ein Geteiltzeichen (∶) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
 let x = a / b  // Trigger, because this is not a division sign.
 let x = a ÷ b  // Trigger, because this is not a division sign.
+
+Zeile 63
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = y - z  // This should trigger and mention aliasing.
 
 Zeile 59
 Die Schriftzeichenfolge “/=” ist überholt. Ein Geteiltzeichen (∶) verwenden. (unicode)
@@ -187,11 +315,27 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 let x = y - z  // This should trigger and mention aliasing.
 
 Zeile 65
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = !y  // This should trigger; it is a prefix operator.
+
+Zeile 65
 Das Schriftzeichen “!” ist überholt. Ein Negationszeichen (¬) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
 let x = !y  // This should trigger; it is a prefix operator.
 let x = ¬y  // This should trigger; it is a prefix operator.
 
+Zeile 72
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func useAvailability() {
+
 Sources/BadStyle/SwiftFormat.swift
+Zeile 1
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let TriggerSwiftFormatWithBadCasing = true
+
+Zeile 2
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let DontTrigger = false  // @exempt(from: swiftFormat[AlwaysUseLowerCamelCase])
+
 Zeile 1
 Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
@@ -222,6 +366,13 @@ Zeile 13
 Notlösung: This malformed version check should trigger. (notlösungsErinnerungen)
 // #workaround(echo oops 1.0.0, This malformed version check should trigger.)
 
+Sources/executable/AccessControl.swift
+Zeile 1
+Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
+internal struct ShouldNot {}  // Should warn; should not have access control.
+ struct ShouldNot {}  // Should warn; should not have access control.
+
+Sources/executable/main.swift
 Tests/BadStyleTests/BadStyleTests.swift
 Tests/BadStyleTests/XCTestManifests.swift
 Zeile 1
@@ -256,6 +407,11 @@ Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen 
 Zeile 6
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
     //   `swift test --generate-linuxmain`
+
+Zeile 13
+Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
+  public func __allTests() -> [XCTestCaseEntry] {
+   func __allTests() -> [XCTestCaseEntry] {
 
 Zeile 8
 Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])

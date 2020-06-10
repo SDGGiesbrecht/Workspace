@@ -313,9 +313,13 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.accessControl)
   /// Requires access control on every symbol in libraries and prohibits it in executables and tests.
+  ///
+  /// Access levels below `internal` are still permitted everywhere.
   case accessControl
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.accessControl)
   /// Erfordert Zugriffskontrolle für jeden Symbol in Biblioteken und verbietet es in ausführbaren Dateien und Testen.
+  ///
+  /// Zugriff unter `internal` wird überall zugelassen.
   public static var zugriffskontrolle: Korrekturregel {
     return .accessControl
   }

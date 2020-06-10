@@ -311,6 +311,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // ••••••• Source Code Style •••••••
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.accessControl)
+  /// Requires access control on every symbol in libraries and prohibits it in executables and tests.
+  case accessControl
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.accessControl)
+  /// Erfordert Zugriffskontrolle für jeden Symbol in Biblioteken und verbietet es in ausführbaren Dateien und Testen.
+  public static var zugriffskontrolle: Korrekturregel {
+    return .accessControl
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
   /// Requires Markdown asterisms to be composed of asterisks and not bullets or underlines.
   case asterisms
@@ -397,7 +406,8 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode, .bullets:
       return .textStyle
 
-    case .asterisms,
+    case .accessControl,
+      .asterisms,
       .calloutCasing,
       .closureSignaturePosition,
       .listSeparation,

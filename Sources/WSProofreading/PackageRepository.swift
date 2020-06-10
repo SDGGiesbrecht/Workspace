@@ -70,7 +70,33 @@ import WSCustomTask
           }
         }
 
-        for url in try sourceFiles(output: output)
+        let sourceURLs = try sourceFiles(output: output)
+
+        var settings: [URL: Setting] = [
+          location.appendingPathComponent("Package.swift"): .topLevel
+        ]
+        for name in InterfaceLocalization.allCases
+          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) }) {
+            settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+        }
+        for target in try cachedPackage().targets {
+          let setting: Setting?
+          switch target.type {
+          case .library:
+            setting = .library
+          case .executable, .test:
+            setting = .topLevel
+          case .systemModule:
+            setting = nil
+          }
+          if let determined = setting {
+            for source in target.sources.paths {
+              settings[source.asURL] = determined
+            }
+          }
+        }
+
+        for url in sourceURLs
         where FileType(url: url) ≠ nil
           ∧ FileType(url: url) ≠ .xcodeProject
         {
@@ -95,6 +121,7 @@ import WSCustomTask
                   try RuleSyntaxScanner(
                     rules: syntaxRules,
                     file: file,
+                    setting: settings[url] ?? .unknown,
                     project: self,
                     status: status,
                     output: output

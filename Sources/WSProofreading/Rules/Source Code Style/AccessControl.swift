@@ -110,7 +110,14 @@ internal struct AccessControl: SyntaxRule {
       } else {
         return
       }
-      if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false) {
+      if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false),
+        // Check if it is local...
+        ¬node.ancestors().contains(where: { ancestor in
+          ancestor.is(FunctionDeclSyntax.self)
+            ∨ ancestor.is(InitializerDeclSyntax.self)
+            ∨ ancestor.is(VariableDeclSyntax.self)
+            ∨ ancestor.is(SubscriptDeclSyntax.self)
+        }){
         reportViolation(
           in: file,
           at: anchor.syntaxRange(in: context),

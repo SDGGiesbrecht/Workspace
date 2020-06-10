@@ -126,7 +126,7 @@ internal struct AccessControl: SyntaxRule {
       file: TextFile,
       status: ProofreadingStatus
     ) {
-      if let modifier = node.as(DeclModifierSyntax.self){
+      if let modifier = node.as(DeclModifierSyntax.self) {
         if modifier.name.text ∈ highLevels {
           reportViolation(
             in: file,
@@ -146,7 +146,8 @@ internal struct AccessControl: SyntaxRule {
       status: ProofreadingStatus
     ) {
       if let `extension` = node.as(ExtensionDeclSyntax.self),
-        let modifiers = `extension`.modifiers {
+        let modifiers = `extension`.modifiers
+      {
         for modifier in modifiers {
           if modifier.name.text ∈ allLevels {
             reportViolation(

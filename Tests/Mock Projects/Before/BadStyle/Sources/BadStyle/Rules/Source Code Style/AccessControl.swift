@@ -23,3 +23,7 @@ public struct Context {
 }
 
 public extension Context {}  // Should warn; should not have access control.
+
+func localScope() {
+  let local = 0 // Should not warn; local scope.
+}

@@ -200,7 +200,7 @@ import WSSwift
             if let resource = value as? URL {
               try result.append(contentsOf: source(for: resource, named: name) + "\n")
             } else if let namespace = value as? [StrictString: Any] {
-              result.append(contentsOf: "enum " + name + " {\n")
+              result.append(contentsOf: "internal enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace))
               result.append(contentsOf: "}\n")
             } else {
@@ -229,7 +229,7 @@ import WSSwift
 
         let data = try Data(from: resource)
         let string = data.base64EncodedString()
-        var declaration: StrictString = "static let "
+        var declaration: StrictString = "internal static let "
         declaration += name
         declaration += " = "
         declaration += initializer.0

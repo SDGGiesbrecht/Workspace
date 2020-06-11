@@ -19,7 +19,7 @@ import WSGeneralImports
 import WSNormalization
 
 extension Workspace {
-  enum Normalize {
+  internal enum Normalize {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -47,7 +47,7 @@ extension Workspace {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],
@@ -57,7 +57,7 @@ extension Workspace {
       }
     )
 
-    static func executeAsStep(options: Options, output: Command.Output) throws {
+    internal static func executeAsStep(options: Options, output: Command.Output) throws {
 
       if ¬options.runAsXcodeBuildPhase {
         output.print(

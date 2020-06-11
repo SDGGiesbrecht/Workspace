@@ -17,7 +17,7 @@
 import WSGeneralImports
 
 extension Workspace {
-  enum Validate {
+  internal enum Validate {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -38,7 +38,7 @@ extension Workspace {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       subcommands: [

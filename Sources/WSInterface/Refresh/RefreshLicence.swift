@@ -45,7 +45,7 @@ extension Workspace.Refresh {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],

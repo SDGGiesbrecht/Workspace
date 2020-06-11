@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum FastTestLocalization: String, InputLocalization, Localization {
+enum FastTestLocalization: String, InputLocalization, Localization {
 
   // MARK: - Cases
 
@@ -24,5 +24,5 @@ public enum FastTestLocalization: String, InputLocalization, Localization {
 
   // MARK: - Localization
 
-  public static let fallbackLocalization = FastTestLocalization.englishCanada
+  static let fallbackLocalization = FastTestLocalization.englishCanada
 }

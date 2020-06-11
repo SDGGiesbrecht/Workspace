@@ -26,10 +26,10 @@ import SDGSwiftSource
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   extension TupleTypeElementSyntax: Parameter {
-    var firstName: TokenSyntax? {
+    internal var firstName: TokenSyntax? {
       return name
     }
-    var optionalType: TypeSyntax? {
+    internal var optionalType: TypeSyntax? {
       return type
     }
   }

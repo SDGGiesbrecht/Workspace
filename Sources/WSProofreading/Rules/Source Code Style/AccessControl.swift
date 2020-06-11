@@ -35,25 +35,25 @@ internal struct AccessControl: SyntaxRule {
       }
     })
 
-  private static let libraryMessage = UserFacing<StrictString, InterfaceLocalization>({
-    localization in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Every symbol in a library should have access control."
-    case .deutschDeutschland:
-      return "Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben."
-    }
-  })
+  private static let libraryMessage = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Every symbol in a library should have access control."
+      case .deutschDeutschland:
+        return "Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben."
+      }
+    })
 
-  private static let otherMessage = UserFacing<StrictString, InterfaceLocalization>({
-    localization in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Executables and tests should not contain access control."
-    case .deutschDeutschland:
-      return "Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten."
-    }
-  })
+  private static let otherMessage = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Executables and tests should not contain access control."
+      case .deutschDeutschland:
+        return "Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten."
+      }
+    })
 
   private static let highLevels: Set<String> = ["open", "public", "internal"]
   private static let lowLevels: Set<String> = ["fileprivate", "private"]

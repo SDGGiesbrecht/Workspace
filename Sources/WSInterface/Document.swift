@@ -20,7 +20,7 @@ import WSValidation
 import WSDocumentation
 
 extension Workspace {
-  enum Document {
+  internal enum Document {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -64,7 +64,7 @@ extension Workspace {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       discussion: discussion,
@@ -112,7 +112,7 @@ extension Workspace {
 
     // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
-      static func executeAsStep(
+      internal static func executeAsStep(
         outputDirectory: URL,
         options: Options,
         validationStatus: inout ValidationStatus,

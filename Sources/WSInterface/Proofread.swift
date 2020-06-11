@@ -19,7 +19,7 @@ import WSValidation
 import WSProofreading
 
 extension Workspace {
-  enum Proofread {
+  internal enum Proofread {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -40,7 +40,7 @@ extension Workspace {
         }
       })
 
-    static let runAsXcodeBuildPhase = SDGCommandLine.Option(
+    internal static let runAsXcodeBuildPhase = SDGCommandLine.Option(
       name: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
@@ -59,7 +59,7 @@ extension Workspace {
       type: ArgumentType.boolean
     )
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],
@@ -82,7 +82,7 @@ extension Workspace {
       }
     )
 
-    static func executeAsStep(
+    internal static func executeAsStep(
       normalizingFirst: Bool,
       options: Options,
       validationStatus: inout ValidationStatus,

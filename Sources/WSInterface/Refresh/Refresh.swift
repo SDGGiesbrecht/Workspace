@@ -17,7 +17,7 @@
 import WSGeneralImports
 
 extension Workspace {
-  enum Refresh {
+  internal enum Refresh {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -60,7 +60,7 @@ extension Workspace {
       return list
     }
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       subcommands: subcommands,

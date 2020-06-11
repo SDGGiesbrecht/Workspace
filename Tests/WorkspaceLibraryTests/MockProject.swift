@@ -31,7 +31,7 @@ extension PackageRepository {
   private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
     "Tests/Mock Projects"
   )
-  internal static func beforeDirectory(for mockProject: String) -> URL {
+  static func beforeDirectory(for mockProject: String) -> URL {
     return mockProjectsDirectory.appendingPathComponent("Before").appendingPathComponent(
       mockProject
     )

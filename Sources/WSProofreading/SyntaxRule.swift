@@ -69,7 +69,7 @@ internal protocol SyntaxRule: RuleProtocol {
 extension SyntaxRule {
   // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    static func check(
+    internal static func check(
       _ node: Syntax,
       context: SyntaxContext,
       file: TextFile,
@@ -78,7 +78,7 @@ extension SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {}
-    static func check(
+    internal static func check(
       _ node: ExtendedSyntax,
       context: ExtendedSyntaxContext,
       file: TextFile,
@@ -87,7 +87,7 @@ extension SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {}
-    static func check(
+    internal static func check(
       _ node: Trivia,
       context: TriviaContext,
       file: TextFile,
@@ -96,7 +96,7 @@ extension SyntaxRule {
       status: ProofreadingStatus,
       output: Command.Output
     ) {}
-    static func check(
+    internal static func check(
       _ node: TriviaPiece,
       context: TriviaPieceContext,
       file: TextFile,

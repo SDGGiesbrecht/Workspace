@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum OnlyBritish: String, InputLocalization, Localization {
+enum OnlyBritish: String, InputLocalization, Localization {
 
   // MARK: - Cases
 
@@ -24,5 +24,5 @@ public enum OnlyBritish: String, InputLocalization, Localization {
 
   // MARK: - Localization
 
-  public static let fallbackLocalization = OnlyBritish.englishUnitedKingdom
+  static let fallbackLocalization = OnlyBritish.englishUnitedKingdom
 }

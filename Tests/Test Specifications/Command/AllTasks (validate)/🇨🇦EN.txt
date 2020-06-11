@@ -27,6 +27,14 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
 
 README.md
 Sources/AllTasks/AllTasks.swift
+Line 11
+Every symbol in a library should have access control. (accessControl)
+struct AllTasks {
+
+Line 12
+Every symbol in a library should have access control. (accessControl)
+  var text = "Hello, World!"
+
 Tests/AllTasksTests/AllTasksTests.swift
 Tests/AllTasksTests/XCTestManifests.swift
 Line 1
@@ -50,6 +58,11 @@ import XCTest
     ]
   }
 #endif
+
+Line 14
+Executables and tests should not contain access control. (accessControl)
+  public func allTests() -> [XCTestCaseEntry] {
+   func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

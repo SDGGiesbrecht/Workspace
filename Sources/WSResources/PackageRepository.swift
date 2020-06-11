@@ -31,7 +31,7 @@ import SDGSwiftPackageManager
         return []
       #else
         return try cachedPackage().targets.lazy.map { loaded in
-          return Target(description: description, loadedTarget: loaded, package: self)
+          return Target(loadedTarget: loaded, package: self)
         }
       #endif
     }

@@ -39,11 +39,9 @@ import WSSwift
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         internal init(
-          description: TargetDescription,
           loadedTarget: PackageModel.Target,
           package: PackageRepository
         ) {
-          self.description = description
           self.loadedTarget = loadedTarget
           self.package = package
         }
@@ -53,7 +51,6 @@ import WSSwift
 
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
-        private let description: TargetDescription
         private let loadedTarget: PackageModel.Target
       #endif
       private let package: PackageRepository
@@ -62,7 +59,7 @@ import WSSwift
         #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           return ""
         #else
-          return description.name
+          return loadedTarget.name
         #endif
       }
 
@@ -70,17 +67,7 @@ import WSSwift
         #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
           return package.location
         #else
-          if let path = description.path {
-            return URL(fileURLWithPath: path)
-          } else {
-            let base: URL
-            if description.isTest {
-              base = package.location.appendingPathComponent("Tests")
-            } else {
-              base = package.location.appendingPathComponent("Sources")
-            }
-            return base.appendingPathComponent(name)
-          }
+          return loadedTarget.sources.root.asURL
         #endif  // @exempt(from: tests)
       }
 

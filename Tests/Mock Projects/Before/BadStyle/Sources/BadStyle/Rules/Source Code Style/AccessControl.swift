@@ -27,3 +27,7 @@ public extension Context {}  // Should warn; should not have access control.
 func localScope() {
   let local = 0 // Should not warn; local scope.
 }
+
+protocol ProtocolScope {
+  let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
+}

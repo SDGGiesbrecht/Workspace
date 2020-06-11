@@ -38,8 +38,13 @@ import WSSwift
 
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
-        internal init(description: TargetDescription, package: PackageRepository) {
+        internal init(
+          description: TargetDescription,
+          loadedTarget: PackageModel.Target,
+          package: PackageRepository
+        ) {
           self.description = description
+          self.loadedTarget = loadedTarget
           self.package = package
         }
       #endif
@@ -49,6 +54,7 @@ import WSSwift
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         private let description: TargetDescription
+        private let loadedTarget: PackageModel.Target
       #endif
       private let package: PackageRepository
 
@@ -104,19 +110,27 @@ import WSSwift
         for resources: [URL],
         of package: PackageRepository
       ) throws -> StrictString {
+        let accessControl: String
+        switch loadedTarget.type {
+        case .library, .systemModule:
+          accessControl = "internal "
+        case .executable, .test:
+          accessControl = ""
+        }
+
         var source: StrictString = "import Foundation\n\n"
 
         let enumName = PackageRepository.Target.resourceNamespace.resolved(
           for: InterfaceLocalization.fallbackLocalization
         )
-        source += "internal enum " + enumName + " {}\n"
+        source += "\(accessControl)enum " + enumName + " {}\n"
 
         var registeredAliases: Set<StrictString> = [enumName]
         for alias in InterfaceLocalization.allCases.map({
           PackageRepository.Target.resourceNamespace.resolved(for: $0)
         }) where alias ∉ registeredAliases {
           registeredAliases.insert(alias)
-          source += "internal typealias "
+          source += "\(accessControl)typealias "
           source += alias
           source += " = "
           source += enumName
@@ -127,7 +141,7 @@ import WSSwift
 
         source.append(contentsOf: "extension Resources {\n".scalars)
 
-        source.append(contentsOf: (try namespaceTreeSource(for: resources, of: package)) + "\n")
+        source.append(contentsOf: (try namespaceTreeSource(for: resources, of: package, accessControl: accessControl)) + "\n")
 
         source.append(contentsOf: "}\n".scalars)
         return source
@@ -145,9 +159,10 @@ import WSSwift
 
       private func namespaceTreeSource(
         for resources: [URL],
-        of package: PackageRepository
+        of package: PackageRepository,
+        accessControl: String
       ) throws -> StrictString {
-        return try source(for: namespaceTree(for: resources, of: package))
+        return try source(for: namespaceTree(for: resources, of: package), accessControl: accessControl)
       }
 
       private func namespaceTree(
@@ -191,17 +206,20 @@ import WSSwift
         return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
       }
 
-      private func source(for namespaceTree: [StrictString: Any]) throws -> StrictString {
+      private func source(
+        for namespaceTree: [StrictString: Any],
+        accessControl: String
+      ) throws -> StrictString {
         var result: StrictString = ""
         for name in namespaceTree.keys.sorted() {
           try purgingAutoreleased {
             let value = namespaceTree[name]
 
             if let resource = value as? URL {
-              try result.append(contentsOf: source(for: resource, named: name) + "\n")
+              try result.append(contentsOf: source(for: resource, named: name, accessControl: accessControl) + "\n")
             } else if let namespace = value as? [StrictString: Any] {
-              result.append(contentsOf: "internal enum " + name + " {\n")
-              result.append(contentsOf: try source(for: namespace))
+              result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
+              result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
               result.append(contentsOf: "}\n")
             } else {
               unreachable()
@@ -217,7 +235,11 @@ import WSSwift
         }).joined(separator: "\n") + "\n"
       }
 
-      private func source(for resource: URL, named name: StrictString) throws -> StrictString {
+      private func source(
+        for resource: URL,
+        named name: StrictString,
+        accessControl: String
+      ) throws -> StrictString {
         let fileExtension = resource.pathExtension
         let initializer: (StrictString, StrictString)
         switch fileExtension {
@@ -229,7 +251,7 @@ import WSSwift
 
         let data = try Data(from: resource)
         let string = data.base64EncodedString()
-        var declaration: StrictString = "internal static let "
+        var declaration: StrictString = "\(accessControl)static let "
         declaration += name
         declaration += " = "
         declaration += initializer.0
@@ -242,17 +264,19 @@ import WSSwift
 
       // MARK: - Comparable
 
-      internal static func < (lhs: PackageRepository.Target, rhs: PackageRepository.Target)
-        -> Bool
-      {
+      internal static func < (
+        lhs: PackageRepository.Target,
+        rhs: PackageRepository.Target
+      ) -> Bool {
         return (lhs.name, lhs.sourceDirectory) < (rhs.name, rhs.sourceDirectory)
       }
 
       // MARK: - Equatable
 
-      internal static func == (lhs: PackageRepository.Target, rhs: PackageRepository.Target)
-        -> Bool
-      {
+      internal static func == (
+        lhs: PackageRepository.Target,
+        rhs: PackageRepository.Target
+      ) -> Bool {
         return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
       }
 

@@ -30,8 +30,8 @@ import SDGSwiftPackageManager
       #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
         return []
       #else
-        return try cachedPackage().manifest.targets.lazy.map { description in
-          return Target(description: description, package: self)
+        return try cachedPackage().targets.lazy.map { loaded in
+          return Target(description: description, loadedTarget: loaded, package: self)
         }
       #endif
     }

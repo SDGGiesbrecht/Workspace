@@ -20,7 +20,7 @@ import WSDocumentation
 
 extension Workspace.Refresh {
 
-  enum InheritedDocumentation {
+  internal enum InheritedDocumentation {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

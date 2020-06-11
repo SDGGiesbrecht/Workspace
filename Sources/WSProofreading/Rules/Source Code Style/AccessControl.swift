@@ -101,12 +101,14 @@ internal struct AccessControl: SyntaxRule {
         return
       }
       if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false),
-        // Check if it is local...
         ¬node.ancestors().contains(where: { ancestor in
+          // Local variables don’t need access control.
           ancestor.is(FunctionDeclSyntax.self)
             ∨ ancestor.is(InitializerDeclSyntax.self)
             ∨ ancestor.is(VariableDeclSyntax.self)
             ∨ ancestor.is(SubscriptDeclSyntax.self)
+            // Protocol members cannot have access control.
+            ∨ ancestor.is(ProtocolDeclSyntax.self)
         })
       {
         reportViolation(

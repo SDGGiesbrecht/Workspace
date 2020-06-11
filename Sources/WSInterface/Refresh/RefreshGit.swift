@@ -20,7 +20,7 @@ import WSGit
 
 extension Workspace.Refresh {
 
-  enum Git {
+  internal enum Git {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

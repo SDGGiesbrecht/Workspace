@@ -864,7 +864,7 @@
 
     // MARK: - Parameters
 
-    func parameters() -> [String] {
+    internal func parameters() -> [String] {
       let parameterList: FunctionParameterListSyntax
       switch self {
       case .package, .library, .module, .type, .protocol, .extension, .case, .operator,

@@ -120,8 +120,16 @@ Zeile 27
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 func localScope() {
 
+Zeile 31
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+protocol ProtocolScope {
+
 Zeile 25
 Specify public access level for each member inside the extension. (swiftFormat[NoAccessLevelOnExtensionDeclaration])
+
+Zeile 32
+Move end-of-line comment that exceeds the line length. (swiftFormat)
+  let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
 
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
 Zeile 16

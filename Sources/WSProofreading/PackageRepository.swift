@@ -87,7 +87,7 @@ import WSCustomTask
             setting = .library
           case .executable, .test:
             setting = .topLevel
-          case .systemModule:
+          case .systemModule:  // @exempt(from: tests)
             setting = nil
           }
           if let determined = setting {

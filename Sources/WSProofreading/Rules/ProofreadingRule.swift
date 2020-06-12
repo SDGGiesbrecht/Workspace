@@ -31,6 +31,10 @@ extension ProofreadingRule: Comparable {
       return .text(MissingImplementation.self)
     case .workaroundReminders:
       return .text(WorkaroundReminders.self)
+    case .accessControl:
+      return .syntax(AccessControl.self)
+    case .classFinality:
+      return .syntax(ClassFinality.self)
     case .compatibilityCharacters:
       return .text(CompatibilityCharacters.self)
     case .marks:
@@ -41,8 +45,6 @@ extension ProofreadingRule: Comparable {
       return .syntax(UnicodeRule.self)
     case .bullets:
       return .syntax(Bullets.self)
-    case .accessControl:
-      return .syntax(AccessControl.self)
     case .asterisms:
       return .syntax(Asterisms.self)
     case .calloutCasing:

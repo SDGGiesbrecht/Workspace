@@ -139,6 +139,19 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // ••••••• Functionality •••••••
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.accessControl)
+  /// Requires access control on every symbol in libraries and prohibits it in executables and tests.
+  ///
+  /// Access levels below `internal` are still permitted everywhere.
+  case accessControl
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.accessControl)
+  /// Erfordert Zugriffskontrolle für jeden Symbol in Biblioteken und verbietet es in ausführbaren Dateien und Testen.
+  ///
+  /// Zugriff unter `internal` wird überall zugelassen.
+  public static var zugriffskontrolle: Korrekturregel {
+    return .accessControl
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.compatibilityCharacters)
   /// Prohibits compatiblity characters.
@@ -311,19 +324,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // ••••••• Source Code Style •••••••
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.accessControl)
-  /// Requires access control on every symbol in libraries and prohibits it in executables and tests.
-  ///
-  /// Access levels below `internal` are still permitted everywhere.
-  case accessControl
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.accessControl)
-  /// Erfordert Zugriffskontrolle für jeden Symbol in Biblioteken und verbietet es in ausführbaren Dateien und Testen.
-  ///
-  /// Zugriff unter `internal` wird überall zugelassen.
-  public static var zugriffskontrolle: Korrekturregel {
-    return .accessControl
-  }
-
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.calloutCasing)
   /// Requires Markdown asterisms to be composed of asterisks and not bullets or underlines.
   case asterisms
@@ -400,7 +400,8 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
       .workaroundReminders:
       return .intentional
 
-    case .compatibilityCharacters,
+    case .accessControl,
+      .compatibilityCharacters,
       .marks:
       return .functionality
 
@@ -410,8 +411,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .unicode, .bullets:
       return .textStyle
 
-    case .accessControl,
-      .asterisms,
+    case .asterisms,
       .calloutCasing,
       .closureSignaturePosition,
       .listSeparation,

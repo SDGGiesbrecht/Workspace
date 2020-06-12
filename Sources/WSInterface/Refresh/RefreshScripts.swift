@@ -20,7 +20,7 @@ import WSScripts
 
 extension Workspace.Refresh {
 
-  enum Scripts {
+  internal enum Scripts {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

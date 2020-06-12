@@ -20,7 +20,7 @@ import WSOpenSource
 
 extension Workspace.Refresh {
 
-  enum ReadMe {
+  internal enum ReadMe {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

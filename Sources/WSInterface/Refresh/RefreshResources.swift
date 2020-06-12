@@ -20,7 +20,7 @@ import WSResources
 
 extension Workspace.Refresh {
 
-  enum Resources {
+  internal enum Resources {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

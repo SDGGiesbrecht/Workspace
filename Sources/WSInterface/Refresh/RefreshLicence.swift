@@ -20,7 +20,7 @@ import WSLicence
 
 extension Workspace.Refresh {
 
-  enum Licence {
+  internal enum Licence {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {

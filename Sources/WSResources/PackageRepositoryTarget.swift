@@ -98,12 +98,17 @@ import WSSwift
         of package: PackageRepository
       ) throws -> StrictString {
         let accessControl: String
-        switch loadedTarget.type {
-        case .library, .systemModule:
-          accessControl = "internal "
-        case .executable, .test:
+        // #workaround(SwiftPM 0.6.0, Cannot build.)
+        #if os(Windows) || os(WASI) || os(Android)
           accessControl = ""
-        }
+        #else
+          switch loadedTarget.type {
+          case .library, .systemModule:
+            accessControl = "internal "
+          case .executable, .test:
+            accessControl = ""
+          }
+        #endif
 
         var source: StrictString = "import Foundation\n\n"
 
@@ -128,7 +133,13 @@ import WSSwift
 
         source.append(contentsOf: "extension Resources {\n".scalars)
 
-        source.append(contentsOf: (try namespaceTreeSource(for: resources, of: package, accessControl: accessControl)) + "\n")
+        source.append(
+          contentsOf: (try namespaceTreeSource(
+            for: resources,
+            of: package,
+            accessControl: accessControl
+          )) + "\n"
+        )
 
         source.append(contentsOf: "}\n".scalars)
         return source
@@ -149,7 +160,10 @@ import WSSwift
         of package: PackageRepository,
         accessControl: String
       ) throws -> StrictString {
-        return try source(for: namespaceTree(for: resources, of: package), accessControl: accessControl)
+        return try source(
+          for: namespaceTree(for: resources, of: package),
+          accessControl: accessControl
+        )
       }
 
       private func namespaceTree(
@@ -203,7 +217,9 @@ import WSSwift
             let value = namespaceTree[name]
 
             if let resource = value as? URL {
-              try result.append(contentsOf: source(for: resource, named: name, accessControl: accessControl) + "\n")
+              try result.append(
+                contentsOf: source(for: resource, named: name, accessControl: accessControl) + "\n"
+              )
             } else if let namespace = value as? [StrictString: Any] {
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))

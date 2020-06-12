@@ -80,22 +80,25 @@ import WSCustomTask
         {
           settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
         }
-        for target in try cachedPackage().targets {
-          let setting: Setting?
-          switch target.type {
-          case .library:
-            setting = .library
-          case .executable, .test:
-            setting = .topLevel
-          case .systemModule:  // @exempt(from: tests)
-            setting = nil
-          }
-          if let determined = setting {
-            for source in target.sources.paths {
-              settings[source.asURL] = determined
+        // #workaround(SwiftPM 0.6.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
+          for target in try cachedPackage().targets {
+            let setting: Setting?
+            switch target.type {
+            case .library:
+              setting = .library
+            case .executable, .test:
+              setting = .topLevel
+            case .systemModule:  // @exempt(from: tests)
+              setting = nil
+            }
+            if let determined = setting {
+              for source in target.sources.paths {
+                settings[source.asURL] = determined
+              }
             }
           }
-        }
+        #endif
 
         for url in sourceURLs
         where FileType(url: url) ≠ nil

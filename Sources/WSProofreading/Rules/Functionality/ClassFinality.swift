@@ -32,115 +32,25 @@ internal struct ClassFinality: SyntaxRule {
     { localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "accessControl"
+        return "classFinality"
       case .deutschDeutschland:
-        return "zugriffskontrolle"
+        return "klassenentgültigkeit"
       }
     })
 
-  private static let libraryMessage = UserFacing<StrictString, InterfaceLocalization>(
+  private static let message = UserFacing<StrictString, InterfaceLocalization>(
     { localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Every symbol in a library should have access control."
+        return "Public classes should be open, final or explicitly exempt."
       case .deutschDeutschland:
-        return "Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben."
+        return
+          "Öffentliche (public) Klassen sollen als offen (open), entgültig (final), oder ausdrückliche Ausnahme markiert."
       }
     })
-
-  private static let otherMessage = UserFacing<StrictString, InterfaceLocalization>(
-    { localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Executables and tests should not contain access control."
-      case .deutschDeutschland:
-        return "Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten."
-      }
-    })
-
-  private static let highLevels: Set<String> = ["open", "public", "internal"]
-  private static let lowLevels: Set<String> = ["fileprivate", "private"]
-  private static let allLevels = highLevels ∪ lowLevels
 
   // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
-
-    private static func checkLibrary(
-      _ node: Syntax,
-      context: SyntaxContext,
-      file: TextFile,
-      status: ProofreadingStatus
-    ) {
-      let modifiers: ModifierListSyntax?
-      let anchor: Syntax
-      if let structure = node.as(StructDeclSyntax.self) {
-        modifiers = structure.modifiers
-        anchor = Syntax(structure.identifier)
-      } else if let `class` = node.as(ClassDeclSyntax.self) {
-        modifiers = `class`.modifiers
-        anchor = Syntax(`class`.identifier)
-      } else if let enumeration = node.as(EnumDeclSyntax.self) {
-        modifiers = enumeration.modifiers
-        anchor = Syntax(enumeration.identifier)
-      } else if let alias = node.as(TypealiasDeclSyntax.self) {
-        modifiers = alias.modifiers
-        anchor = Syntax(alias.identifier)
-      } else if let `protocol` = node.as(ProtocolDeclSyntax.self) {
-        modifiers = `protocol`.modifiers
-        anchor = Syntax(`protocol`.identifier)
-      } else if let function = node.as(FunctionDeclSyntax.self) {
-        modifiers = function.modifiers
-        anchor = Syntax(function.identifier)
-      } else if let initializer = node.as(InitializerDeclSyntax.self) {
-        modifiers = initializer.modifiers
-        anchor = Syntax(initializer.initKeyword)
-      } else if let variable = node.as(VariableDeclSyntax.self) {
-        modifiers = variable.modifiers
-        anchor = Syntax(variable.bindings)
-      } else if let `subscript` = node.as(SubscriptDeclSyntax.self) {
-        modifiers = `subscript`.modifiers
-        anchor = Syntax(`subscript`.subscriptKeyword)
-      } else {
-        return
-      }
-      if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false),
-        ¬node.ancestors().contains(where: { ancestor in
-          // Local variables don’t need access control.
-          ancestor.is(FunctionDeclSyntax.self)
-            ∨ ancestor.is(InitializerDeclSyntax.self)
-            ∨ ancestor.is(VariableDeclSyntax.self)
-            ∨ ancestor.is(SubscriptDeclSyntax.self)
-            // Protocol members cannot have access control.
-            ∨ ancestor.is(ProtocolDeclSyntax.self)
-        })
-      {
-        reportViolation(
-          in: file,
-          at: anchor.syntaxRange(in: context),
-          message: libraryMessage,
-          status: status
-        )
-      }
-    }
-
-    private static func checkOther(
-      _ node: Syntax,
-      context: SyntaxContext,
-      file: TextFile,
-      status: ProofreadingStatus
-    ) {
-      if let modifier = node.as(DeclModifierSyntax.self) {
-        if modifier.name.text ∈ highLevels {
-          reportViolation(
-            in: file,
-            at: modifier.name.syntaxRange(in: context),
-            replacementSuggestion: "",
-            message: otherMessage,
-            status: status
-          )
-        }
-      }
-    }
 
     // MARK: - SyntaxRule
 
@@ -156,10 +66,19 @@ internal struct ClassFinality: SyntaxRule {
 
       switch setting {
       case .library:
-        checkLibrary(node, context: context, file: file, status: status)
-      case .topLevel:
-        checkOther(node, context: context, file: file, status: status)
-      case .unknown:
+        if let `class` = node.as(ClassDeclSyntax.self) {
+          if let `public` = `class`.modifiers?.first(where: { $0.name.text == "public" }),
+            ¬(`class`.modifiers?.contains(where: { $0.name.text == "final" }) ?? false)
+          {
+            reportViolation(
+              in: file,
+              at: `public`.syntaxRange(in: context),
+              message: message,
+              status: status
+            )
+          }
+        }
+      case .topLevel, .unknown:
         break
       }
     }

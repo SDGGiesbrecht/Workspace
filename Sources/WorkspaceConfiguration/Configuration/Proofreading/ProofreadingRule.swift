@@ -153,12 +153,12 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.classFinality)
-  /// Requires classes to be open, final or explicitly exempt.
+  /// Requires public classes to be open, final or explicitly exempt.
   ///
   /// This rule only applies to library modules.
   case classFinality
   // @localization(🇩🇪DE) @crossReference(ProofreadingRule.classFinality)
-  /// Erfordert die Markierung von Klassen als offen (`open`), entgültig (`final`) oder ausdrückliche Ausnahme.
+  /// Erfordert die Markierung von öffetlichen (`public`) Klassen als offen (`open`), entgültig (`final`) oder ausdrückliche Ausnahme.
   ///
   /// Diese Regel gilt nur für Bibliotekenmodule.
   public static var klassenentgültigkeit: Korrekturregel {

@@ -66,17 +66,16 @@ internal struct ClassFinality: SyntaxRule {
 
       switch setting {
       case .library:
-        if let `class` = node.as(ClassDeclSyntax.self) {
-          if let `public` = `class`.modifiers?.first(where: { $0.name.text == "public" }),
-            ¬(`class`.modifiers?.contains(where: { $0.name.text == "final" }) ?? false)
-          {
-            reportViolation(
-              in: file,
-              at: `public`.syntaxRange(in: context),
-              message: message,
-              status: status
-            )
-          }
+        if let classModifiers = node.as(ClassDeclSyntax.self)?.modifiers,
+          let `public` = classModifiers.first(where: { $0.name.text == "public" }),
+          ¬classModifiers.contains(where: { $0.name.text == "final" })
+        {
+          reportViolation(
+            in: file,
+            at: `public`.syntaxRange(in: context),
+            message: message,
+            status: status
+          )
         }
       case .topLevel, .unknown:
         break

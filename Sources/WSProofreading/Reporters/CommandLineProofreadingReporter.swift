@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-public class CommandLineProofreadingReporter: ProofreadingReporter {
+public final class CommandLineProofreadingReporter: ProofreadingReporter {
 
   // MARK: - Static Properties
 

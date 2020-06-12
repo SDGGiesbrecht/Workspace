@@ -28,7 +28,7 @@ import SDGLogic
 
   extension ResolvedTarget {
 
-    var dependencyTargets: [ResolvedTarget] {
+    internal var dependencyTargets: [ResolvedTarget] {
       return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
         if let product = dependency.product {
           return product.targets
@@ -38,7 +38,7 @@ import SDGLogic
       }
     }
 
-    func testClasses() throws -> [(name: String, methods: [String])] {
+    internal func testClasses() throws -> [(name: String, methods: [String])] {
       var found: [(name: String, methods: [String])] = []
       for file in sources.paths.sorted() {
         let syntax = try SyntaxParser.parse(file.asURL)

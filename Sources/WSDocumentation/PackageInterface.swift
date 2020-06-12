@@ -617,7 +617,7 @@ internal struct PackageInterface {
 
   // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    init(
+    internal init(
       localizations: [LocalizationIdentifier],
       developmentLocalization: LocalizationIdentifier,
       api: PackageAPI,

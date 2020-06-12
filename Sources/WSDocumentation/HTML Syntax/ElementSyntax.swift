@@ -67,7 +67,7 @@ extension ElementSyntax {
     )
   }
 
-  func normalizedSource() -> StrictString {
+  internal func normalizedSource() -> StrictString {
     return StrictString(source())
   }
 }

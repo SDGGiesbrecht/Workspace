@@ -23,7 +23,7 @@ import SDGSwiftSource
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   extension FunctionParameterSyntax: Parameter {
-    var optionalType: TypeSyntax? {
+    internal var optionalType: TypeSyntax? {
       return type
     }
   }

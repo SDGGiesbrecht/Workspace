@@ -23,6 +23,7 @@ let package = Package(
       name: "BadStyle",
       dependencies: ["Dependency"]
     ),
+    .target(name: "executable"),
     .testTarget(
       name: "BadStyleTests",
       dependencies: ["BadStyle"]

@@ -33,6 +33,7 @@ import WSProject
     internal init(
       rules: [SyntaxRule.Type],
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
@@ -40,6 +41,7 @@ import WSProject
 
       self.rules = rules
       self.file = file
+      self.setting = setting
       self.project = project
       self.status = status
       self.output = output
@@ -49,6 +51,7 @@ import WSProject
 
     private let rules: [SyntaxRule.Type]
     private let file: TextFile
+    private let setting: Setting
     private let project: PackageRepository
     private let status: ProofreadingStatus
     private let output: Command.Output
@@ -61,6 +64,7 @@ import WSProject
           node,
           context: context,
           file: file,
+          setting: setting,
           project: project,
           status: status,
           output: output
@@ -75,6 +79,7 @@ import WSProject
           node,
           context: context,
           file: file,
+          setting: setting,
           project: project,
           status: status,
           output: output
@@ -89,6 +94,7 @@ import WSProject
           node,
           context: context,
           file: file,
+          setting: setting,
           project: project,
           status: status,
           output: output
@@ -103,6 +109,7 @@ import WSProject
           node,
           context: context,
           file: file,
+          setting: setting,
           project: project,
           status: status,
           output: output

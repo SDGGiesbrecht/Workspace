@@ -16,7 +16,7 @@
 
 import WSGeneralTestImports
 
-public enum NurDeutsch: String, InputLocalization, Localization {
+enum NurDeutsch: String, InputLocalization, Localization {
 
   // MARK: - Cases
 
@@ -24,5 +24,5 @@ public enum NurDeutsch: String, InputLocalization, Localization {
 
   // MARK: - Localization
 
-  public static let fallbackLocalization = NurDeutsch.deutschDeutschland
+  static let fallbackLocalization = NurDeutsch.deutschDeutschland
 }

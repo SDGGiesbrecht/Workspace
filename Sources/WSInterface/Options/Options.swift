@@ -27,7 +27,7 @@ extension Options {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    var project: PackageRepository {
+    internal var project: PackageRepository {
       let url =
         value(for: Workspace.projectOption)
         ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
@@ -37,7 +37,7 @@ extension Options {
 
   // MARK: - Proofreading
 
-  var runAsXcodeBuildPhase: Bool {
+  internal var runAsXcodeBuildPhase: Bool {
     return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
   }
 }

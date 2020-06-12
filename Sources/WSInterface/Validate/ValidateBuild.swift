@@ -25,7 +25,7 @@ import WSContinuousIntegration
 
 extension Workspace.Validate {
 
-  enum Build {
+  internal enum Build {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -46,7 +46,7 @@ extension Workspace.Validate {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],
@@ -86,7 +86,7 @@ extension Workspace.Validate {
 
     // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #if !os(WASI)
-      static func job(
+      internal static func job(
         _ job: ContinuousIntegrationJob,
         isRelevantTo project: PackageRepository,
         andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
@@ -97,7 +97,7 @@ extension Workspace.Validate {
             ∧ job.platform == Platform.current)
       }
 
-      static func validate(
+      internal static func validate(
         job: ContinuousIntegrationJob?,
         against validJobs: Set<ContinuousIntegrationJob>,
         for project: PackageRepository,
@@ -125,7 +125,7 @@ extension Workspace.Validate {
       }
     #endif
 
-    static func executeAsStep(
+    internal static func executeAsStep(
       options: Options,
       validationStatus: inout ValidationStatus,
       output: Command.Output

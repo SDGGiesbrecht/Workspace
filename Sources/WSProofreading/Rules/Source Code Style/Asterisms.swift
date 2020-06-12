@@ -48,6 +48,7 @@ internal struct Asterisms: SyntaxRule {
       _ node: ExtendedSyntax,
       context: ExtendedSyntaxContext,
       file: TextFile,
+      setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output

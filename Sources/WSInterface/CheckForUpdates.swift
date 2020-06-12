@@ -21,7 +21,7 @@ import SDGVersioning
 import WorkspaceProjectConfiguration
 
 extension Workspace {
-  enum CheckForUpdates {
+  internal enum CheckForUpdates {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -42,7 +42,7 @@ extension Workspace {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],
@@ -92,7 +92,7 @@ extension Workspace {
       }
     )
 
-    static func checkForUpdates(output: Command.Output) throws -> Version? {
+    internal static func checkForUpdates(output: Command.Output) throws -> Version? {
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if os(WASI)
         return nil

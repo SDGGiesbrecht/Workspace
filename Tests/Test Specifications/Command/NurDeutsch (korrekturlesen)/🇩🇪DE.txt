@@ -31,6 +31,14 @@ Zeile 4
 "Warn." (warnungenVonHand)
 #warning("Warn.")
 
+Zeile 1
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+struct NurDeutsch {
+
+Zeile 2
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+  var text = "Hello, World!"
+
 Tests/LinuxMain.swift
 Tests/NurDeutschTests/NurDeutschTests.swift
 Tests/NurDeutschTests/XCTestManifests.swift
@@ -45,6 +53,11 @@ import XCTest
     ]
   }
 #endif
+
+Zeile 4
+Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
+  public func allTests() -> [XCTestCaseEntry] {
+   func allTests() -> [XCTestCaseEntry] {
 
 
 ✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)

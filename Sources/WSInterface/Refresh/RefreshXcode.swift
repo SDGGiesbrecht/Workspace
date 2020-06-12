@@ -22,7 +22,7 @@
 
   extension Workspace.Refresh {
 
-    enum Xcode {
+    internal enum Xcode {
 
       private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
@@ -42,7 +42,7 @@
           }
         })
 
-      static let command = Command(
+      internal static let command = Command(
         name: name,
         description: description,
         directArguments: [],
@@ -52,7 +52,7 @@
         }
       )
 
-      static func executeAsStep(options: Options, output: Command.Output) throws {
+      internal static func executeAsStep(options: Options, output: Command.Output) throws {
 
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in

@@ -24,7 +24,7 @@ import SDGCollections
 
   extension PackageGraph {
 
-    func sortedReachableTargets() -> [(package: ResolvedPackage, target: ResolvedTarget)] {
+    internal func sortedReachableTargets() -> [(package: ResolvedPackage, target: ResolvedTarget)] {
       var discovered: [(package: ResolvedPackage, target: ResolvedTarget)] = []
       for package in packages {
         for target in package.targets {

@@ -81,5 +81,5 @@ internal struct PackageCLI {
 
   // MARK: - Properties
 
-  let commands: [StrictString: CommandInterfaceInformation]
+  internal let commands: [StrictString: CommandInterfaceInformation]
 }

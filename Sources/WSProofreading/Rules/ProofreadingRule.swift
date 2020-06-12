@@ -41,6 +41,8 @@ extension ProofreadingRule: Comparable {
       return .syntax(UnicodeRule.self)
     case .bullets:
       return .syntax(Bullets.self)
+    case .accessControl:
+      return .syntax(AccessControl.self)
     case .asterisms:
       return .syntax(Asterisms.self)
     case .calloutCasing:

@@ -227,7 +227,7 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    #if !os(Windows)  // #workaround(SDGSwift 1.0.0, Git cannot find itself.)
+    #if !os(Windows)  // #workaround(SDGSwift 2.0.1, Git cannot find itself.)
       // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
       #if !os(Android)
         _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
@@ -422,6 +422,7 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
       XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
       XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
+      XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
     #endif
   }
 

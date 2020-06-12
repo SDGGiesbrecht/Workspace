@@ -23,7 +23,7 @@ import WSContinuousIntegration
 
 extension Workspace {
 
-  enum Test {
+  internal enum Test {
 
     private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
@@ -44,7 +44,7 @@ extension Workspace {
         }
       })
 
-    static let command = Command(
+    internal static let command = Command(
       name: name,
       description: description,
       directArguments: [],
@@ -82,7 +82,7 @@ extension Workspace {
       }
     )
 
-    static func executeAsStep(
+    internal static func executeAsStep(
       options: Options,
       validationStatus: inout ValidationStatus,
       output: Command.Output

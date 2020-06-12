@@ -21,7 +21,7 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
-// #workaround(swift-syntax 0.50200.0, Cannot build.) @exempt(from: unicode)
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.) @exempt(from: unicode)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif

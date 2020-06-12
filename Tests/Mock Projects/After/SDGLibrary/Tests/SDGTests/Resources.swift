@@ -17,8 +17,8 @@
 
 import Foundation
 
-internal enum Resources {}
-internal typealias Ressourcen = Resources
+enum Resources {}
+typealias Ressourcen = Resources
 
 extension Resources {
   static let textResource = String(

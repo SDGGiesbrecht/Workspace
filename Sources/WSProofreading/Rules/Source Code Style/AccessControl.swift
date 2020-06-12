@@ -20,7 +20,10 @@ import WSGeneralImports
 
 import WSProject
 
-import SwiftSyntax
+// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import SwiftSyntax
+#endif
 import SDGSwiftSource
 
 internal struct AccessControl: SyntaxRule {

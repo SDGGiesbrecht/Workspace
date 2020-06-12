@@ -29,6 +29,14 @@ The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime
 
 README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
+Line 3
+Every symbol in a library should have access control. (accessControl)
+struct CheckedInDocumentation {
+
+Line 4
+Every symbol in a library should have access control. (accessControl)
+  var text = "Hello, World!"
+
 Line 66
 Parameters should be grouped under a single callout. (parameterGrouping)
   /// - Parameter parameterOne: The first parameter.
@@ -54,6 +62,11 @@ import XCTest
     ]
   }
 #endif
+
+Line 4
+Executables and tests should not contain access control. (accessControl)
+  public func allTests() -> [XCTestCaseEntry] {
+   func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 

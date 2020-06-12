@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-public class XcodeProofreadingReporter: ProofreadingReporter {
+public final class XcodeProofreadingReporter: ProofreadingReporter {
 
   // MARK: - Static Properties
 

@@ -19,7 +19,7 @@ import WSGeneralImports
 import WSProject
 
 internal struct DeprecatedTestManifests: TextRule {
-  // Deprecated in 0.25.0 (????‐??‐??)
+  // Deprecated in 0.25.0 (2019‐11‐03)
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
     { localization in

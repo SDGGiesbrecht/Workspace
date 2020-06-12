@@ -54,32 +54,7 @@ Zeile 8
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 /// let x = 1
 
-Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
-Zeile 3
-U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
-let compatibility = "2"
-let compatibility = "2"
-
-Zeile 3
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-let compatibility = "2"
-
-Sources/BadStyle/Rules/Functionality/Mark.swift
-Zeile 3
-Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
-/// MARK: This heading is malformed and should trigger.
-// MARK: - This heading is malformed and should trigger.
-
-Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
-Zeile 4
-Fehlende Implementierung. (fehlendeImplementierung)
-  notImplementedYet()  // This should trigger a warning.
-
-Zeile 3
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func unfinished() {
-
-Sources/BadStyle/Rules/Source Code Style/AccessControl.swift
+Sources/BadStyle/Rules/Functionality/AccessControl.swift
 Zeile 1
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 struct Structure {}  // Should warn; no access control.
@@ -130,6 +105,40 @@ Specify public access level for each member inside the extension. (swiftFormat[N
 Zeile 32
 Move end-of-line comment that exceeds the line length. (swiftFormat)
   let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
+
+Sources/BadStyle/Rules/Functionality/ClassFinality.swift
+Zeile 1
+Öffentliche (public) Klassen sollen als offen (open), entgültig (final), oder ausdrückliche Ausnahme markiert. (klassenentgültigkeit)
+public class Class {}  // Should warn; neither open nor final.
+
+Zeile 8
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+class ImplicitInternal {}  // Should not warn; compiler can infer finality.
+
+Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
+Zeile 3
+U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
+let compatibility = "2"
+let compatibility = "2"
+
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let compatibility = "2"
+
+Sources/BadStyle/Rules/Functionality/Mark.swift
+Zeile 3
+Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
+/// MARK: This heading is malformed and should trigger.
+// MARK: - This heading is malformed and should trigger.
+
+Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
+Zeile 4
+Fehlende Implementierung. (fehlendeImplementierung)
+  notImplementedYet()  // This should trigger a warning.
+
+Zeile 3
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func unfinished() {
 
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
 Zeile 16

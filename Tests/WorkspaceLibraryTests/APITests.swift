@@ -123,7 +123,7 @@ class APITests: TestCase {
         configuration: configuration,
         localizations: InterfaceLocalization.self,
         withCustomTask: true,
-        overwriteSpecificationInsteadOfFailing: false
+        overwriteSpecificationInsteadOfFailing: true
       )
     #endif
   }
@@ -423,6 +423,7 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
       XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
       XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
+      XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
     #endif
   }
 

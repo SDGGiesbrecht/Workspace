@@ -6,8 +6,9 @@ Writing to ‘Package.swift’...
 Writing to ‘Sources/BadStyle/BadStyle.swift’...
 Writing to ‘Sources/BadStyle/Normalization/Decomposition.swift’...
 Writing to ‘Sources/BadStyle/Normalization/EmptyIndents.swift’...
+Writing to ‘Sources/BadStyle/Rules/Functionality/AccessControl.swift’...
+Writing to ‘Sources/BadStyle/Rules/Functionality/ClassFinality.swift’...
 Writing to ‘Sources/BadStyle/Rules/Intentional/MissingImplementation.swift’...
-Writing to ‘Sources/BadStyle/Rules/Source Code Style/AccessControl.swift’...
 Writing to ‘Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift’...
 Writing to ‘Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift’...
 Writing to ‘Sources/BadStyle/Rules/Text Style/Unicode.swift’...
@@ -67,32 +68,7 @@ Line 8
 Every symbol in a library should have access control. (accessControl)
 /// let x = 1
 
-Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
-Line 3
-U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)
-let compatibility = "2"
-let compatibility = "2"
-
-Line 3
-Every symbol in a library should have access control. (accessControl)
-let compatibility = "2"
-
-Sources/BadStyle/Rules/Functionality/Mark.swift
-Line 3
-Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
-/// MARK: This heading is malformed and should trigger.
-// MARK: - This heading is malformed and should trigger.
-
-Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
-Line 4
-Missing implementation. (missingImplementation)
-  notImplementedYet()  // This should trigger a warning.
-
-Line 3
-Every symbol in a library should have access control. (accessControl)
-func unfinished() {
-
-Sources/BadStyle/Rules/Source Code Style/AccessControl.swift
+Sources/BadStyle/Rules/Functionality/AccessControl.swift
 Line 1
 Every symbol in a library should have access control. (accessControl)
 struct Structure {}  // Should warn; no access control.
@@ -143,6 +119,40 @@ Specify public access level for each member inside the extension. (swiftFormat[N
 Line 32
 Move end-of-line comment that exceeds the line length. (swiftFormat)
   let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
+
+Sources/BadStyle/Rules/Functionality/ClassFinality.swift
+Line 1
+Public classes should be open, final or explicitly exempt. (classFinality)
+public class Class {}  // Should warn; neither open nor final.
+
+Line 8
+Every symbol in a library should have access control. (accessControl)
+class ImplicitInternal {}  // Should not warn; compiler can infer finality.
+
+Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
+Line 3
+U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)
+let compatibility = "2"
+let compatibility = "2"
+
+Line 3
+Every symbol in a library should have access control. (accessControl)
+let compatibility = "2"
+
+Sources/BadStyle/Rules/Functionality/Mark.swift
+Line 3
+Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
+/// MARK: This heading is malformed and should trigger.
+// MARK: - This heading is malformed and should trigger.
+
+Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
+Line 4
+Missing implementation. (missingImplementation)
+  notImplementedYet()  // This should trigger a warning.
+
+Line 3
+Every symbol in a library should have access control. (accessControl)
+func unfinished() {
 
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
 Line 16

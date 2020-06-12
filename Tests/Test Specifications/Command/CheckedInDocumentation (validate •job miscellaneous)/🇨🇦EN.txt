@@ -37,6 +37,10 @@ Line 4
 Every symbol in a library should have access control. (accessControl)
   var text = "Hello, World!"
 
+Line 49
+Public classes should be open, final or explicitly exempt. (classFinality)
+public class Class: AmericanEnglishProtocol, BritishEnglishProtocol, CanadianEnglishProtocol {}
+
 Line 66
 Parameters should be grouped under a single callout. (parameterGrouping)
   /// - Parameter parameterOne: The first parameter.
@@ -44,6 +48,14 @@ Parameters should be grouped under a single callout. (parameterGrouping)
 Line 67
 Parameters should be grouped under a single callout. (parameterGrouping)
   /// - Parameter parameterTwo: The second parameter.
+
+Line 295
+Public classes should be open, final or explicitly exempt. (classFinality)
+public class BaseClass {
+
+Line 303
+Public classes should be open, final or explicitly exempt. (classFinality)
+public class Subclass: BaseClass {
 
 Sources/EnableBuild/EnableBuild.swift
 Sources/Extensions/Extensions.swift

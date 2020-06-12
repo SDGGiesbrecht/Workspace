@@ -423,6 +423,7 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
       XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
       XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
+      XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
     #endif
   }
 

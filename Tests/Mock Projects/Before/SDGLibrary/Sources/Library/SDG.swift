@@ -1,7 +1,7 @@
 /* Header */
 
-struct SDG {
-    func text(_ bool: Bool) -> String {
+internal struct SDG {
+    internal func text(_ bool: Bool) -> String {
         if bool {
             return "Hello, World!"
         } else {
@@ -10,23 +10,23 @@ struct SDG {
         }
     }
     
-    func untestable() {
+    internal func untestable() {
         preconditionFailure()
     }
     
-    func exempt() { // @exempt(from: tests)
+    internal func exempt() { // @exempt(from: tests)
         
     }
     
-    func alsoExempt() {
+    internal func alsoExempt() {
         // customPreviousLineToken
     }
     
-    func anotherExemption() { // customSameLineToken
+    internal func anotherExemption() { // customSameLineToken
         
     }
 
-    func defineExample() { // @exempt(from: tests)
+    internal func defineExample() { // @exempt(from: tests)
         // @example(anExample)
         // This is source code.
 
@@ -46,18 +46,18 @@ struct SDG {
     ///
     /// ```
     /// ```
-    func useExample() {} // @exempt(from: tests)
+    internal func useExample() {} // @exempt(from: tests)
 
     // @documentation(someDocumentation)
     /// This is documentation.
     ///
     /// It contains interesting information.
-    var defineDocumentation: Bool?
+    internal var defineDocumentation: Bool?
 
     // #documentation(someDocumentation)
-    var instertDocumentation: Bool?
+    internal var instertDocumentation: Bool?
 
     // #documentation(someDocumentation)
     /// This is outdated documentation.
-    var replaceDocumentation: Bool?
+    internal var replaceDocumentation: Bool?
 }

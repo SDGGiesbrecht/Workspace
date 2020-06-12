@@ -15,8 +15,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-struct SDG {
-  func text() -> String {
+internal struct SDG {
+  internal func text() -> String {
     return "Hello, World!"
   }
 }

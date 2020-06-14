@@ -1,0 +1,1 @@
+void helloC(void);

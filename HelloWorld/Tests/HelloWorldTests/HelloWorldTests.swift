@@ -3,7 +3,8 @@ import XCTest
 
 final class HelloWorldTests: XCTestCase {
 
-  func testExample() {
-    XCTAssertEqual(HelloWorld().text, "Hello, World!")
+  func testTests() {
+    helloWorld()
+    helloTests()
   }
 }

@@ -186,7 +186,6 @@ jobs:
       run: |
         set -x
         git clone https://github.com/madler/zlib --branch v1.2.11 --depth 1
-        cd zlib
         cmake \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -G Ninja \

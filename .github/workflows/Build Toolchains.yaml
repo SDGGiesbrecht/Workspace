@@ -186,6 +186,9 @@ jobs:
       run: |
         set -x
         git clone https://github.com/madler/zlib --branch v1.2.11 --depth 1
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
         cmake \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -G Ninja \

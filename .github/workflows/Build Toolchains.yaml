@@ -180,9 +180,29 @@ jobs:
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
         cmake --build Dispatch --target install
-#    - name: Build Foundation for Android
-#      shell: bash
-#      run: |
+    - name: Build zlib for Android
+      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/madler/zlib zlib-source --branch v1.2.11 --depth 1
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
+        cmake \
+          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+          -G Ninja \
+          -S zlib-source \
+          -B zlib \
+          -D CMAKE_BUILD_TYPE=MinSizeRel \
+          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D BUILD_SHARED_LIBS=NO \
+          -D BUILD_TESTING=NO \
+          -D CMAKE_POSITION_INDEPENDENT_CODE=YES
+        cmake --build zlib --target install
+    - name: Build Foundation for Android
+      shell: bash
+      run: |
 #        set -x
 #        cd swift-build
 #        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle

@@ -123,7 +123,7 @@ class APITests: TestCase {
         configuration: configuration,
         localizations: InterfaceLocalization.self,
         withCustomTask: true,
-        overwriteSpecificationInsteadOfFailing: true
+        overwriteSpecificationInsteadOfFailing: false
       )
     #endif
   }

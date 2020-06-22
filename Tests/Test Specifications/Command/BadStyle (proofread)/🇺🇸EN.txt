@@ -155,19 +155,6 @@ Markdown asterisms should be composed of asterisks. (asterisms)
 /// ___
 /// ***
 
-Sources/BadStyle/Rules/Source Code Style/Bullets.swift
-Line 12
-Every symbol in a library should have access control. (accessControl)
-func testHeadings() {}
-
-Line 8
-Markdown headings should use number signs. (markdownHeadings)
-/// -----------------------------------------
-
-Line 11
-Markdown headings should use number signs. (markdownHeadings)
-/// =========================================
-
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 6
 Every symbol in a library should have access control. (accessControl)
@@ -197,6 +184,19 @@ List separators should only occur between list elements. (listSeparation)
   3,  // Should trigger.
   3  // Should trigger.
 
+Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
+Line 12
+Every symbol in a library should have access control. (accessControl)
+func testHeadings() {}
+
+Line 8
+Markdown headings should use number signs. (markdownHeadings)
+/// -----------------------------------------
+
+Line 11
+Markdown headings should use number signs. (markdownHeadings)
+/// =========================================
+
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 6
 Every symbol in a library should have access control. (accessControl)
@@ -207,7 +207,7 @@ Parameters should be grouped under a single callout. (parameterGrouping)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
 Sources/BadStyle/Rules/Text Style/Bullets.swift
-Line 10
+Line 12
 Every symbol in a library should have access control. (accessControl)
 func testBullets() {}
 
@@ -220,6 +220,11 @@ Line 9
 Markdown lists should use ASCII bullets. (bullets)
 /// + Should trigger; plus signs aren’t bullets.
 /// - Should trigger; plus signs aren’t bullets.
+
+Line 11
+Markdown lists should use ASCII bullets. (bullets)
+/// 1. Should not trigger; ordered lists are okay.
+/// - Should not trigger; ordered lists are okay.
 
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Line 20

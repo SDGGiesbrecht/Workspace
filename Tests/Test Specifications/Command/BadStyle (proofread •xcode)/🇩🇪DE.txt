@@ -44,7 +44,6 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:12:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:7:5: warning: Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:9:5: warning: Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:11:5: warning: Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:20:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:58: warning: Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)

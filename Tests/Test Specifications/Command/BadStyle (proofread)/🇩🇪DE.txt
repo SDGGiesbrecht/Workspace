@@ -221,11 +221,6 @@ Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungsz
 /// + Should trigger; plus signs aren’t bullets.
 /// - Should trigger; plus signs aren’t bullets.
 
-Zeile 11
-Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
-/// 1. Should not trigger; ordered lists are okay.
-/// - Should not trigger; ordered lists are okay.
-
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Zeile 20
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)

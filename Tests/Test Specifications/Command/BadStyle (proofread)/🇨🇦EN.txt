@@ -221,11 +221,6 @@ Markdown lists should use ASCII bullets. (bullets)
 /// + Should trigger; plus signs aren’t bullets.
 /// - Should trigger; plus signs aren’t bullets.
 
-Line 11
-Markdown lists should use ASCII bullets. (bullets)
-/// 1. Should not trigger; ordered lists are okay.
-/// - Should not trigger; ordered lists are okay.
-
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Line 20
 Every symbol in a library should have access control. (accessControl)

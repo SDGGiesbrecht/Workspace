@@ -44,7 +44,6 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:12:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:7:5: warning: Markdown lists should use ASCII bullets. (bullets)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:9:5: warning: Markdown lists should use ASCII bullets. (bullets)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Bullets.swift:11:5: warning: Markdown lists should use ASCII bullets. (bullets)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:20:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:4: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:5:58: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)

@@ -205,7 +205,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/curl/curl curl-source --branch curl-7_70_0 --depth 1
+        git clone https://github.com/curl/curl cURL-source --branch curl-7_70_0 --depth 1
         export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
         export ANDROID_TARGET_ARCHITECTURE=x86_64
         export ANDROID_TARGET_ABI="29"

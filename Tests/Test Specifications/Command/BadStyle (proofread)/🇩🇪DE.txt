@@ -155,19 +155,6 @@ Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 /// ___
 /// ***
 
-Sources/BadStyle/Rules/Source Code Style/Bullets.swift
-Zeile 12
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func testHeadings() {}
-
-Zeile 8
-Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
-/// -----------------------------------------
-
-Zeile 11
-Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
-/// =========================================
-
 Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Zeile 6
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
@@ -197,6 +184,19 @@ Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
   3,  // Should trigger.
   3  // Should trigger.
 
+Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
+Zeile 12
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func testHeadings() {}
+
+Zeile 8
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// -----------------------------------------
+
+Zeile 11
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// =========================================
+
 Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Zeile 6
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
@@ -207,7 +207,7 @@ Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein. (überg
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
 Sources/BadStyle/Rules/Text Style/Bullets.swift
-Zeile 10
+Zeile 12
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 func testBullets() {}
 

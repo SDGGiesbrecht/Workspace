@@ -56,7 +56,8 @@ internal struct Bullets: SyntaxRule {
 
       if let token = node as? ExtendedTokenSyntax,
         token.kind == .bullet,
-        token.text ≠ "\u{2D}"
+        token.text ≠ "\u{2D}",
+        ¬token.text.contains(".")
       {
 
         reportViolation(

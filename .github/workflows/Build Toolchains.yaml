@@ -200,6 +200,27 @@ jobs:
           -D BUILD_TESTING=NO \
           -D CMAKE_POSITION_INDEPENDENT_CODE=YES
         cmake --build zlib --target install
+    - name: Build cURL for Android
+      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/curl.yml
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/curl/curl cURL-source --branch curl-7_70_0 --depth 1
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
+        cmake \
+          -G Ninja \
+          -S cURL-source \
+          -B cURL \
+          -C ${GITHUB_WORKSPACE}/CMake/cURL.cmake \
+          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+          -D CMAKE_BUILD_TYPE=MinSizeRel \
+          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D ZLIB_ROOT=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D BUILD_SHARED_LIBS=NO \
+          -D BUILD_TESTING=NO
+        cmake --build cURL --target install
     - name: Build Foundation for Android
       shell: bash
       run: |

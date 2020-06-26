@@ -50,10 +50,6 @@ Zeile 7
 Das Sprachkennzeichen fehlt. Eine Sprache für Syntaxhervorhebung angeben. (syntaxhervorhebung)
 /// ```
 
-Zeile 8
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-/// let x = 1
-
 Sources/BadStyle/Rules/Functionality/AccessControl.swift
 Zeile 1
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)

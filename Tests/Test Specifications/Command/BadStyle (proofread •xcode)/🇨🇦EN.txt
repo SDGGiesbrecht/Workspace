@@ -7,7 +7,6 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Normalization/Decomposition.swift:3:5: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Normalization/EmptyIndents.swift:3:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:7:5: warning: Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Documentation/SyntaxColouring.swift:8:9: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:1:8: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:3:7: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:5:6: warning: Every symbol in a library should have access control. (accessControl)

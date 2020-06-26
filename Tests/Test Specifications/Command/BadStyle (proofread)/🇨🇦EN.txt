@@ -50,10 +50,6 @@ Line 7
 Language specifier missing. Specify a language for syntax colouring. (syntaxColouring)
 /// ```
 
-Line 8
-Every symbol in a library should have access control. (accessControl)
-/// let x = 1
-
 Sources/BadStyle/Rules/Functionality/AccessControl.swift
 Line 1
 Every symbol in a library should have access control. (accessControl)

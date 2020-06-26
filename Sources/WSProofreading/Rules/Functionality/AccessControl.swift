@@ -72,7 +72,7 @@ internal struct AccessControl: SyntaxRule {
       status: ProofreadingStatus
     ) {
       guard ¬context.isFragmented() else {
-        return // Documentation example
+        return  // Documentation example
       }
 
       let modifiers: ModifierListSyntax?

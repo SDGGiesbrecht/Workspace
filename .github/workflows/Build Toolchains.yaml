@@ -272,7 +272,7 @@ jobs:
           -D ICU_I18N_LIBRARY_RELEASE=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65.1 \
           -D LIBXML2_LIBRARY=${GITHUB_WORKSPACE}/Android/XML_2/usr/lib/libxml2.a \
           -D LIBXML2_INCLUDE_DIR=${GITHUB_WORKSPACE}/Android/XML_2/usr/include/libxml2 \
-          -D dispatch_DIR=Dispatch/cmake/modules \
+          -D dispatch_DIR=${GITHUB_WORKSPACE}/Dispatch/cmake/modules \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
           -D CMAKE_HAVE_LIBC_PTHREAD=YES
         cmake --build Foundation --target install

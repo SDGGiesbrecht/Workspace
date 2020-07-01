@@ -71,6 +71,10 @@ internal struct AccessControl: SyntaxRule {
       file: TextFile,
       status: ProofreadingStatus
     ) {
+      guard ¬context.isFragmented() else {
+        return  // Documentation example
+      }
+
       let modifiers: ModifierListSyntax?
       let anchor: Syntax
       if let structure = node.as(StructDeclSyntax.self) {

@@ -31,3 +31,10 @@ func localScope() {
 protocol ProtocolScope {
   let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
 }
+
+/// Blah blah blah.
+///
+/// ```swift
+/// let x = 0 // Should not warn; just documentation.
+/// ```
+internal struct Struct {}

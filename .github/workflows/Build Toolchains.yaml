@@ -249,10 +249,6 @@ jobs:
         export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
         export ANDROID_TARGET_ARCHITECTURE=x86_64
         export ANDROID_TARGET_ABI="29"
-
-        # Causes duplicate modules if still around.
-        rm -rf ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-libdispatch
-
         cmake \
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-foundation \

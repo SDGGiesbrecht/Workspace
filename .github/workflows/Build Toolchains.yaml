@@ -179,7 +179,7 @@ jobs:
           -D BUILD_TESTING=NO \
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
-        cmake --build Dispatch --target install
+        cmake --build Dispatch
     - name: Build zlib for Android
       # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
       shell: bash
@@ -299,7 +299,13 @@ jobs:
 #          -D Foundation_DIR=${GITHUB_WORKSPACE}/swift-build/Foundation/cmake/modules \
 #          -D dispatch_DIR=${GITHUB_WORKSPACE}/swift-build/Dispatch/cmake/modules \
 #          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
-#        cmake --build XCTest --target install
+#        cmake --build XCTest
+    - name: Install Dispatch for Android
+      shell: bash
+      run: |
+        set -x
+        cd swift-build
+        cmake --build Dispatch --target install
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

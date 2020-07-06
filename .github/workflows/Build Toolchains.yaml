@@ -288,6 +288,7 @@ jobs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
           -B XCTest \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \

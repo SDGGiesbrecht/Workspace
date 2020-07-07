@@ -276,30 +276,31 @@ jobs:
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
           -D CMAKE_HAVE_LIBC_PTHREAD=YES
         cmake --build Foundation --target install
-#    - name: Build XCTest for Android
-#      shell: bash
-#      run: |
-#        set -x
-#        cd swift-build
-#        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-#        export ANDROID_TARGET_ARCHITECTURE=x86_64
-#        export ANDROID_TARGET_ABI="29"
-#        cmake \
-#          -G Ninja \
-#          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
-#          -B XCTest \
-#          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-#          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-#          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-#          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
-#          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
-#          -D CMAKE_BUILD_TYPE=Release \
-#          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-#          -D ENABLE_TESTING=NO \
-#          -D Foundation_DIR=${GITHUB_WORKSPACE}/swift-build/Foundation/cmake/modules \
-#          -D dispatch_DIR=${GITHUB_WORKSPACE}/swift-build/Dispatch/cmake/modules \
-#          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
-#        cmake --build XCTest
+    - name: Build XCTest for Android
+      shell: bash
+      run: |
+        set -x
+        cd swift-build
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
+        cmake \
+          -G Ninja \
+          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
+          -B XCTest \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
+          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
+          -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D ENABLE_TESTING=NO \
+          -D Foundation_DIR=${GITHUB_WORKSPACE}/swift-build/Foundation/cmake/modules \
+          -D dispatch_DIR=${GITHUB_WORKSPACE}/swift-build/Dispatch/cmake/modules \
+          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
+        cmake --build XCTest --target install
     - name: Install Dispatch for Android
       shell: bash
       run: |

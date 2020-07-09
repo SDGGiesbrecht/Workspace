@@ -99,8 +99,6 @@ jobs:
         cd swift-source/swift
         ./utils/build-script --release \
           --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
-          --swift-install-components 'compiler;clang-resource-dir-symlink;stdlib;sdk-overlay;parser-lib;toolchain-tools;license;sourcekit-xpc-service;swift-remote-mirror;swift-remote-mirror-headers' \
-          --llvm-install-components 'llvm-cov;llvm-profdata;IndexStore;clang;clang-resource-headers;compiler-rt;clangd;dsymutil' \
           --install-swift \
           --install-lldb --lldb \
           --install-llbuild --llbuild \

@@ -102,6 +102,8 @@ jobs:
           --install-swift \
           --install-lldb --lldb \
           --install-llbuild --llbuild \
+          --install-llvm --llvm-install-components 'IndexStore' \
+          --indexstore-db \
           --install-swiftpm --swiftpm \
           --install-xctest --xctest \
           --install-libicu --libicu \

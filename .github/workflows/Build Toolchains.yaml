@@ -335,13 +335,13 @@ jobs:
       run: |
         set -x
         cd HelloWorld
-        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
-        cp -R ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* HellowWorld/.build/x86_64-unknown-linux-android/debug
+        cp -R ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/android/* HellowWorld/.build/x86_64-unknown-linux-android/debug
     - name: Upload tests
       uses: actions/upload-artifact@v1
       with:
         name: tests
-        path: .build/x86_64-unknown-linux-android/debug
+        path: HellowWorld/.build/x86_64-unknown-linux-android/debug
   Android:
     runs-on: macos-10.15
     needs: Linux
@@ -352,7 +352,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: tests
-        path: HelloWorld/.build/x86_64-unknown-linux-android/debug
+        path: .build/x86_64-unknown-linux-android/debug
     - name: Prepare script
       shell: bash
       run: |

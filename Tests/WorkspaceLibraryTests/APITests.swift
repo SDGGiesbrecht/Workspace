@@ -26,14 +26,16 @@ class APITests: TestCase {
 
   static let configureGit: Void = {
     if ProcessInfo.isInGitHubAction {
-      _ = try? Git.runCustomSubcommand(
-        ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-        versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-      ).get()
-      _ = try? Git.runCustomSubcommand(
-        ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-        versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-      ).get()
+      #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
+        _ = try? Git.runCustomSubcommand(
+          ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        ).get()
+        _ = try? Git.runCustomSubcommand(
+          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        ).get()
+      #endif
     }
   }()
   override func setUp() {

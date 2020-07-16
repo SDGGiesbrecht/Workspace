@@ -127,7 +127,7 @@ jobs:
       run: |
         set -x
         git clone https://github.com/SDGGiesbrecht/SDGCommandLine .build/SDG/Dependencies/SDGCommandLine --branch 1.4.3 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 5.2.0 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 5.3.2 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGSwift .build/SDG/Dependencies/SDGSwift --branch 2.0.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/SDGGiesbrecht/SDGWeb .build/SDG/Dependencies/SDGWeb --branch 5.3.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.6.0 --depth 1 --config advice.detachedHead=false
@@ -136,7 +136,7 @@ jobs:
         git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.3.0 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-argument-parser.git .build/SDG/Dependencies/swift-argument-parser --branch 0.0.6 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.1 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.5 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.6 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
     - name: Build
       shell: bash

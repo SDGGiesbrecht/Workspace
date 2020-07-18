@@ -19,7 +19,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.5.app
+        sudo xcode-select -switch /Applications/Xcode_11.6.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -283,7 +283,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.5.app
+        sudo xcode-select -switch /Applications/Xcode_11.6.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -348,7 +348,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.5.app
+        sudo xcode-select -switch /Applications/Xcode_11.6.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -524,7 +524,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.5.app
+        sudo xcode-select -switch /Applications/Xcode_11.6.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren

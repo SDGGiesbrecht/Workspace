@@ -18,9 +18,9 @@ import WorkspaceConfiguration
 
 public enum Metadata {
 
-  public static let latestStableVersion = Version(0, 33, 2)
+  public static let latestStableVersion = Version(0, 33, 3)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = nil
+  public static let thisVersion: Version? = latestStableVersion
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)

@@ -31,7 +31,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        wsl --list
+        wsl -l
 # - name: Set Visual Studio up
 #   shell: bash
 #   run: |

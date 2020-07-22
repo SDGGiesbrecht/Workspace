@@ -31,7 +31,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        wsl -l
+        wsl --distribution Ubuntu-18.04
 # - name: Set Visual Studio up
 #   shell: bash
 #   run: |

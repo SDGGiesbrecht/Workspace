@@ -39,6 +39,13 @@ jobs:
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804.exe install --root
+    - name: Install SwiftPM dependencies on Linux
+      shell: bash
+      run: |
+        ubuntu1804 run \
+          apt-get update --assume-yes
+        ubuntu1804 run \
+          apt-get update --assume-yes libatomic1
     - name: Install SwiftPM on Linux
       shell: bash
       run: |

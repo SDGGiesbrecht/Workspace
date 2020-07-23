@@ -43,9 +43,9 @@ jobs:
       shell: bash
       run: |
         ubuntu1804 run \
-          apt-get update
+          apt-get update --assume-yes
         ubuntu1804 run \
-          apt-get update --assume-yes libatomic1
+          apt-get install --assume-yes libatomic1
     - name: Install SwiftPM on Linux
       shell: bash
       run: |

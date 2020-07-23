@@ -113,7 +113,7 @@ jobs:
         ubuntu1804 run \
           apt-get update --assume-yes
         ubuntu1804 run \
-          apt-get install --assume-yes libatomic1 libc6-dev
+          apt-get install --assume-yes binutils libatomic1 libc6-dev
     - name: Install SwiftPM on Linux
       shell: bash
       run: |

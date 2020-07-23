@@ -27,13 +27,16 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Install Linux
+      shell: powershell
+      run: |
+        Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile .build/SDG/Ubuntu.appx -UseBasicParsing
+        Add-AppxPackage .build/SDG/Ubuntu.appx
     - name: Check for WSL
       shell: bash
       run: |
         set -x
         wsl --help
-        Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile .build/SDG/Ubuntu.appx -UseBasicParsing
-        Add-AppxPackage .build/SDG/Ubuntu.appx
         wslconfig //list //all
 # - name: Set Visual Studio up
 #   shell: bash

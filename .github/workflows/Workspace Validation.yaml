@@ -116,7 +116,8 @@ jobs:
           apt-get install --assume-yes \
             binutils \
             git \
-            libc6-dev
+            libc6-dev \
+            libcurl4
 #    - name: Install SwiftPM on Linux
 #      shell: bash
 #      run: |

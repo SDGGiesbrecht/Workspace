@@ -52,6 +52,8 @@ jobs:
         ubuntu1804 run \
           tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift
         ubuntu1804 run \
+          find .build/SDG/Linux/Swift
+        ubuntu1804 run \
           .build/SDG/Linux/Swift/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
 # - name: Set Visual Studio up
 #   shell: bash

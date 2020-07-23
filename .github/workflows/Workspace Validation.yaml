@@ -39,27 +39,6 @@ jobs:
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804.exe install --root
-    - name: Install SwiftPM dependencies
-      shell: bash
-      run: |
-        set -x
-        ubuntu1804 run \
-          apt-get update --assume-yes
-        #ubuntu1804 run \
-        #  apt-get install --assume-yes \
-        #    binutils \
-        #    git \
-        #    libc6-dev \
-        #    libcurl4 \
-        #    libedit2 \
-        #    libgcc-5-dev \
-        #    libpython2.7
-        #    libsqlite3-0 \
-        #    libstdc++-5-dev \
-        #    libxml2 \
-        #    pkg-config \
-        #    tzdata \
-        #    zlib1g-dev
     - name: Install SwiftPM
       shell: bash
       run: |
@@ -69,7 +48,7 @@ jobs:
           --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
           tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-          find .build/SDG/Linux/Ubuntu/usr
+          find .build/SDG/Linux/Ubuntu/usr/bin
         sudo mkdir -p /
         sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* .build/SDG/Linux/Ubuntu/rootfs
         ubuntu1804 run \

@@ -45,7 +45,7 @@ jobs:
       run: |
         set -x
         pwd
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe
         echo $PATH
         apt-get update --assume-yes
         apt-get install --assume-yes \

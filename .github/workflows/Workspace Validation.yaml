@@ -45,15 +45,15 @@ jobs:
         set -x
         ubuntu1804 run \
           apt-get update --assume-yes
-        ubuntu1804 run \
-          apt-get install --assume-yes \
-            binutils \
-            git \
-            libc6-dev \
-            libcurl4 \
-            libedit2 \
-            libgcc-5-dev \
-            libpython2.7
+        #ubuntu1804 run \
+        #  apt-get install --assume-yes \
+        #    binutils \
+        #    git \
+        #    libc6-dev \
+        #    libcurl4 \
+        #    libedit2 \
+        #    libgcc-5-dev \
+        #    libpython2.7
         #    libsqlite3-0 \
         #    libstdc++-5-dev \
         #    libxml2 \

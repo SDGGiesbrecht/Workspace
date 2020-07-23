@@ -39,7 +39,7 @@ jobs:
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804.exe install --root
-    - name: Install SwiftPM
+    - name: Install SwiftPM on Linux
       shell: bash
       run: |
         set -x

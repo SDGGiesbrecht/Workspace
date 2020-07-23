@@ -110,6 +110,7 @@ jobs:
     - name: Install SwiftPM dependencies on Linux
       shell: bash
       run: |
+        set -x
         ubuntu1804 run \
           apt-get update --assume-yes
         ubuntu1804 run \

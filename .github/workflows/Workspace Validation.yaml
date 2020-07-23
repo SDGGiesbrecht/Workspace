@@ -37,13 +37,15 @@ jobs:
           --output '.build/SDG/Linux/ubuntu-1804.zip'
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
         .build/SDG/Linux/Ubuntu/ubuntu1804.exe install --root
+        export PATH="${GITHUB_WORKSPACE}/.build/SDG/Linux/Ubuntu:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
     - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
         .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
-        apt update --assume-yes
-        apt install --assume-yes \
+        apt-get update --assume-yes
+        apt-get install --assume-yes \
           binutils \
           git \
           libc6-dev \

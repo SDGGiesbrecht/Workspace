@@ -149,6 +149,7 @@ jobs:
       run: |
         set -x
         ubuntu1804 run \
+          GENERATING_CMAKE_FOR_WINDOWS='true' \
           .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build
             --destination .github/workflows/Windows/SDK.json \
             --build-tests --enable-test-discovery \

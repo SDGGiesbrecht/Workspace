@@ -37,17 +37,14 @@ jobs:
           --output '.build/SDG/Linux/ubuntu-1804.zip'
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
         .build/SDG/Linux/Ubuntu/ubuntu1804.exe install --root
-        find .build/SDG/Linux/Ubuntu
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu/rootfs/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
     - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
-        pwd
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe
-        echo $PATH
-        apt-get update --assume-yes
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run \
+          apt-get update --assume-yes
         apt-get install --assume-yes \
           binutils \
           git \
@@ -62,7 +59,6 @@ jobs:
           pkg-config \
           tzdata \
           zlib1g-dev
-        exit
     - name: Install SwiftPM
       shell: bash
       run: |

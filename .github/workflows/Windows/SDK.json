@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "sdk": "/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk",
+  "target": "x86_64-unknown-windows-msvc"
+}

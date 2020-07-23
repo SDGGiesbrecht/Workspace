@@ -36,6 +36,7 @@ jobs:
           'https://aka.ms/wsl-ubuntu-1804' \
           --output '.build/SDG/Linux/ubuntu-1804.appx'
         find .build/SDG/Linux/ubuntu-1804.appx
+        Add-AppxPackage -Path .build/SDG/Linux/ubuntu-1804.appx
         wsl --help
         wslconfig //list //all
 # - name: Set Visual Studio up

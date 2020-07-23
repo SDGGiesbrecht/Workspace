@@ -41,7 +41,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
         apt update --assume-yes
         apt install --assume-yes \
           binutils \

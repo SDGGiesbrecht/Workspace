@@ -36,9 +36,9 @@ jobs:
           'https://aka.ms/wsl-ubuntu-1804' \
           --output '.build/SDG/Linux/ubuntu-1804.zip'
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe install --root
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
         echo "::set-env name=PATH::${PATH}"
+        ubuntu1804.exe install --root
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

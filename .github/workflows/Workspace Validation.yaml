@@ -115,18 +115,7 @@ jobs:
         ubuntu1804 run \
           apt-get install --assume-yes \
             binutils \
-            git \
-            libc6-dev \
-            libcurl4 \
-            libedit2 \
-            libgcc-5-dev \
-            libpython2.7 \
-            libsqlite3-0 \
-            libstdc++-5-dev \
-            libxml2 \
-            pkg-config \
-            tzdata \
-            zlib1g-dev
+            libc6-dev
 #    - name: Install SwiftPM on Linux
 #      shell: bash
 #      run: |

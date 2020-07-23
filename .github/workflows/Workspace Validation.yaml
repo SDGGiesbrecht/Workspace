@@ -44,8 +44,6 @@ jobs:
       run: |
         set -x
         ubuntu1804 run \
-          mkdir -p /tmp
-        ubuntu1804 run \
           curl --location \
             'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
             --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'

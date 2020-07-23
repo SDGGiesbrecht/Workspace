@@ -106,7 +106,7 @@ jobs:
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
         echo "::set-env name=PATH::${PATH}"
-        ubuntu1804.exe install --root
+        ubuntu1804 install --root
     - name: Install SwiftPM dependencies on Linux
       shell: bash
       run: |

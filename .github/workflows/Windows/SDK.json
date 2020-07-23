@@ -1,5 +1,10 @@
 {
   "version": 1,
   "sdk": "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk",
-  "target": "x86_64-unknown-windows-msvc"
+  "toolchain-bin-dir": ".build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift",
+  "target": "x86_64-unknown-windows-msvc",
+  "dynamic-library-extension": "dll",
+  "extra-cc-flags": [],
+  "extra-swiftc-flags": [],
+  "extra-cpp-flags": []
 }

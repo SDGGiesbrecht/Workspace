@@ -31,8 +31,12 @@ jobs:
       shell: bash
       run: |
         set -x
+        mkdir -p .build/SDG/Linux
+        curl --location \
+          'https://aka.ms/wsl-ubuntu-1804' \
+          --output '.build/SDG/Linux/ubuntu-1804.appx'
+        find .build/SDG/Linux/ubuntu-1804.appx
         wsl --help
-        wsl --import
         wslconfig //list //all
 # - name: Set Visual Studio up
 #   shell: bash

@@ -43,14 +43,16 @@ jobs:
       shell: bash
       run: |
         set -x
-        curl --location \
-          'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-          --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+        ubuntu1804 run \
+          curl --location \
+            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
+            --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
           tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-          find .build/SDG/Linux/Ubuntu/usr/bin
-        sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* .build/SDG/Linux/Ubuntu/rootfs
+        ubuntu1804 run \
+          sudo mkdir -p /
+        ubuntu1804 run \
+          sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
         ubuntu1804 run \
           swift --version
 # - name: Set Visual Studio up

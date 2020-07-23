@@ -30,8 +30,9 @@ jobs:
     - name: Install Linux
       shell: powershell
       run: |
-        Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.appx -UseBasicParsing
-        Add-AppxPackage Ubuntu.appx
+        Invoke-WebRequest -Uri https://aka.ms/wsl-ubuntu-1804 -OutFile Ubuntu.zip -UseBasicParsing
+        expand-archive -path Ubuntu.zip -destinationpath Ubuntu.exe
+        Ubuntu.exe
         echo $env:path
     - name: Check for WSL
       shell: bash

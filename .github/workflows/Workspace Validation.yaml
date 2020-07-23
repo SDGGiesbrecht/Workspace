@@ -44,15 +44,15 @@ jobs:
       run: |
         set -x
         ubuntu1804 run \
-          mkdir -p .build/SDG/Linux/Swift/Swift
+          mkdir -p .build/SDG/Linux/Swift
         ubuntu1804 run \
           curl --location \
             'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
             --output '.build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
-          tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift/Swift
+          tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift
         ubuntu1804 run \
-          .build/SDG/Linux/Swift/Swift/usr/bin/swift --version
+          .build/SDG/Linux/Swift/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
 # - name: Set Visual Studio up
 #   shell: bash
 #   run: |

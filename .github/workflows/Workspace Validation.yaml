@@ -135,22 +135,22 @@ jobs:
       run: |
         set -x
         ubuntu1804 run \
-          mkdir -p .build/SDG/Linux/Swift
+          mkdir -p /c/Library/Linux/Swift
         ubuntu1804 run \
           curl --location \
             'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-            --output '.build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+            --output '/c/Library/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
-          tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift
+          tar --extract --force-local --file /c/Library/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /c/Library/Linux/Swift
         ubuntu1804 run \
-          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
+          /c/Library/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
     - name: Build
       shell: bash
       run: |
         set -x
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
-          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build \
+          /c/Library/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build \
             --destination .github/workflows/Windows/SDK.json \
             --build-tests --enable-test-discovery
         # cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS=' -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'

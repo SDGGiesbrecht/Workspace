@@ -143,7 +143,7 @@ jobs:
         ubuntu1804 run \
           tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         ubuntu1804 run \
-          mkdir -p /
+          mkdir -p /usr
         ubuntu1804 run \
           find /tmp/swift-5.2.1-RELEASE-ubuntu18.04
         ubuntu1804 run \

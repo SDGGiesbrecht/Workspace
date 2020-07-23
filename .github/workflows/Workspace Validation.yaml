@@ -40,6 +40,7 @@ jobs:
         find .build/SDG/Linux/Ubuntu
         export PATH="${GITHUB_WORKSPACE}/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "::set-env name=PATH::${PATH}"
+        pwd
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

@@ -37,6 +37,27 @@ jobs:
           --output '.build/SDG/Linux/ubuntu-1804.zip'
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
         .build/SDG/Linux/Ubuntu/ubuntu1804.exe install --root
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
+        apt-get update --assume-yes
+        apt-get install --assume-yes \
+          binutils \
+          git \
+          libc6-dev \
+          libcurl4 \
+          libedit2 \
+          libgcc-5-dev \
+          libpython2.7 \
+          libsqlite3-0 \
+          libstdc++-5-dev \
+          libxml2 \
+          pkg-config \
+          tzdata \
+          zlib1g-dev
+        exit
     - name: Install SwiftPM
       shell: bash
       run: |

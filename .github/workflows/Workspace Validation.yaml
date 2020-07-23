@@ -135,7 +135,7 @@ jobs:
         ubuntu1804 run \
           .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build
             --destination .github/workflows/Windows/SDK.json \
-            --build-tests --enable-test-discovery
+            --build-tests --enable-test-discovery \
         # cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS=' -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
     - name: Test
       shell: bash

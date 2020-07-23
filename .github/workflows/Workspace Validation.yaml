@@ -41,9 +41,9 @@ jobs:
       shell: bash
       run: |
         set -x
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
-        sudo apt-get update --assume-yes
-        sudo apt-get install --assume-yes \
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe
+        apt-get update --assume-yes
+        apt-get install --assume-yes \
           binutils \
           git \
           libc6-dev \

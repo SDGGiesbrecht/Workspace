@@ -41,7 +41,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        .build/SDG/Linux/Ubuntu/ubuntu1804.exe
+        .build/SDG/Linux/Ubuntu/ubuntu1804.exe run
         curl --location \
           'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
           --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'

@@ -38,7 +38,7 @@ jobs:
         7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
         .build/SDG/Linux/Ubuntu/ubuntu1804.exe install --root
         find .build/SDG/Linux/Ubuntu
-        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu/rootfs/bin:${PATH}"
+        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu/rootfs/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
     - name: Install SwiftPM dependencies
       shell: bash

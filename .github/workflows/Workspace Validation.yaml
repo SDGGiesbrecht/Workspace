@@ -27,74 +27,74 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
-    - name: Set Visual Studio up
-      shell: bash
-      run: |
-        set -x
-        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
-        echo 'export -p > exported_environment.sh' > nested_bash.sh
-        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
-        cmd "/c export_environment.bat"
-        set +x
-        source ./exported_environment.sh
-        set -x
-        echo "::set-env name=PATH::${PATH}"
-        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
-        echo "::set-env name=UCRTVersion::${UCRTVersion}"
-        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
-    - name: Fetch WinSDK module maps
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.modulemap' \
-          --output "${VCToolsInstallDir}/include/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.apinotes' \
-          --output "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: Install ICU
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/icu.msi' \
-          --output '/tmp/icu.msi'
-        cd /tmp
-        msiexec //i icu.msi
-        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
-    - name: Install Swift
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/toolchain.msi' \
-          --output '/tmp/toolchain.msi'
-        cd /tmp
-        msiexec //i toolchain.msi
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk.msi' \
-          --output '/tmp/sdk.msi'
-        cd /tmp
-        msiexec //i sdk.msi
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/runtime.msi' \
-          --output '/tmp/runtime.msi'
-        cd /tmp
-        msiexec //i runtime.msi
-        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
-        export PATH="/c/Library/Swift-development/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
-        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
-        swift --version
+#    - name: Set Visual Studio up
+#      shell: bash
+#      run: |
+#        set -x
+#        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
+#        echo 'export -p > exported_environment.sh' > nested_bash.sh
+#        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
+#        cmd "/c export_environment.bat"
+#        set +x
+#        source ./exported_environment.sh
+#        set -x
+#        echo "::set-env name=PATH::${PATH}"
+#        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
+#        echo "::set-env name=UCRTVersion::${UCRTVersion}"
+#        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
+#    - name: Fetch WinSDK module maps
+#      shell: bash
+#      run: |
+#        set -x
+#        curl --location \
+#          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
+#          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+#        curl --location \
+#          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.modulemap' \
+#          --output "${VCToolsInstallDir}/include/module.modulemap"
+#        curl --location \
+#          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.apinotes' \
+#          --output "${VCToolsInstallDir}/include/visualc.apinotes"
+#        curl --location \
+#          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
+#          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+#    - name: Install ICU
+#      shell: bash
+#      run: |
+#        set -x
+#        curl --location \
+#          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/icu.msi' \
+#          --output '/tmp/icu.msi'
+#        cd /tmp
+#        msiexec //i icu.msi
+#        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
+#        echo "::set-env name=PATH::${PATH}"
+#    - name: Install Swift
+#      shell: bash
+#      run: |
+#        set -x
+#        curl --location \
+#          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/toolchain.msi' \
+#          --output '/tmp/toolchain.msi'
+#        cd /tmp
+#        msiexec //i toolchain.msi
+#        curl --location \
+#          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk.msi' \
+#          --output '/tmp/sdk.msi'
+#        cd /tmp
+#        msiexec //i sdk.msi
+#        curl --location \
+#          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/runtime.msi' \
+#          --output '/tmp/runtime.msi'
+#        cd /tmp
+#        msiexec //i runtime.msi
+#        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+#        echo "::set-env name=PATH::${PATH}"
+#        export PATH="/c/Library/Swift-development/bin:${PATH}"
+#        echo "::set-env name=PATH::${PATH}"
+#        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+#        echo "::set-env name=PATH::${PATH}"
+#        swift --version
     - name: Install Linux
       shell: bash
       run: |
@@ -113,32 +113,45 @@ jobs:
         ubuntu1804 run \
           apt-get update --assume-yes
         ubuntu1804 run \
-          apt-get install --assume-yes binutils libatomic1 libc6-dev
-    - name: Install SwiftPM on Linux
-      shell: bash
-      run: |
-        set -x
-        ubuntu1804 run \
-          mkdir -p .build/SDG/Linux/Swift
-        ubuntu1804 run \
-          curl --location \
-            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-            --output '.build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
-        ubuntu1804 run \
-          tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift
-        ubuntu1804 run \
-          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
-    - name: Build
-      shell: bash
-      run: |
-        set -x
-        ubuntu1804 run \
-          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build
-            --destination .github/workflows/Windows/SDK.json \
-            --build-tests --enable-test-discovery \
-        # cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS=' -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
-    - name: Test
-      shell: bash
-      run: |
-        set -x
-        .build/x86_64-unknown-linux-android/debug/SDGCornerstonePackageTests.xctest
+          apt-get install --assume-yes \
+            binutils \
+            git \
+            libc6-dev \
+            libcurl4 \
+            libedit2 \
+            libgcc-5-dev \
+            libpython2.7 \
+            libsqlite3-0 \
+            libstdc++-5-dev \
+            libxml2 \
+            pkg-config \
+            tzdata \
+            zlib1g-dev
+#    - name: Install SwiftPM on Linux
+#      shell: bash
+#      run: |
+#        set -x
+#        ubuntu1804 run \
+#          mkdir -p .build/SDG/Linux/Swift
+#        ubuntu1804 run \
+#          curl --location \
+#            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
+#            --output '.build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+#        ubuntu1804 run \
+#          tar --extract --force-local --file .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory .build/SDG/Linux/Swift
+#        ubuntu1804 run \
+#          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift --version
+#    - name: Build
+#      shell: bash
+#      run: |
+#        set -x
+#        ubuntu1804 run \
+#          .build/SDG/Linux/Swift/swift-5.2.1-RELEASE-ubuntu18.04/usr/bin/swift build
+#            --destination .github/workflows/Windows/SDK.json \
+#            --build-tests --enable-test-discovery \
+#        # cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS=' -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
+#    - name: Test
+#      shell: bash
+#      run: |
+#        set -x
+#        .build/x86_64-unknown-linux-android/debug/SDGCornerstonePackageTests.xctest

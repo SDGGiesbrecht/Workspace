@@ -50,7 +50,7 @@ jobs:
             'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
             --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
-          tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+          tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         ubuntu1804 run \
           sudo mkdir -p /
         ubuntu1804 run \

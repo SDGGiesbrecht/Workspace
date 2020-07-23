@@ -32,7 +32,7 @@ jobs:
       run: |
         set -x
         wsl --help
-        wslconfig '/list' '/all'
+        wslconfig //list //all
 # - name: Set Visual Studio up
 #   shell: bash
 #   run: |

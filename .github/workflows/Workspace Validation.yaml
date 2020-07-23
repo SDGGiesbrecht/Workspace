@@ -52,11 +52,9 @@ jobs:
         ubuntu1804 run \
           tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         ubuntu1804 run \
-          find /tmp
-        ubuntu1804 run \
           sudo mkdir -p /
         ubuntu1804 run \
-          sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
+          sudo sh -c 'cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /'
         ubuntu1804 run \
           swift --version
 # - name: Set Visual Studio up

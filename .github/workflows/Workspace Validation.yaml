@@ -117,7 +117,6 @@ jobs:
             binutils \
             git \
             libc6-dev \
-            libcurl4 \
             libedit2 \
             libgcc-5-dev
 #    - name: Install SwiftPM on Linux

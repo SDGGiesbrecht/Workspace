@@ -149,6 +149,8 @@ jobs:
         ubuntu1804 run \
           cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr /
         ubuntu1804 run \
+          find /usr
+        ubuntu1804 run \
           swift --version
     - name: Build
       shell: bash

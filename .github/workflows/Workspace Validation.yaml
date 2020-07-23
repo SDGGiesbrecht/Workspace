@@ -158,4 +158,4 @@ jobs:
       shell: bash
       run: |
         set -x
-        .build/x86_64-unknown-linux-android/debug/SDGCornerstonePackageTests.xctest
+        .build/x86_64-unknown-windows-msvc/debug/WorkspacePackageTests.xctest.exe

@@ -153,7 +153,7 @@ jobs:
       run: |
         set -x
         ubuntu1804 run \
-          find /mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
+          find //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \

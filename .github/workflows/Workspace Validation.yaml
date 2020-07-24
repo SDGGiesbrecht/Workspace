@@ -145,7 +145,7 @@ jobs:
         ubuntu1804 run \
           mkdir -p /
         ubuntu1804 run \
-          cp -vR /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
+          cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
         ubuntu1804 run \
           swift --version
     - name: Build

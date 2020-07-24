@@ -152,9 +152,8 @@ jobs:
       shell: bash
       run: |
         set -x
+        # C:\Program Files (x86)\Windows Kits\10\
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
-        ubuntu1804 run \
-          echo "${UniversalCRTSdkDir}"
         ubuntu1804 run \
           echo "${UCRTVersion}"
         ubuntu1804 run \

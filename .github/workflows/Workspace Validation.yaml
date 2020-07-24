@@ -147,7 +147,7 @@ jobs:
         ubuntu1804 run \
           find /tmp/swift-5.2.1-RELEASE-ubuntu18.04
         ubuntu1804 run \
-          sh -c 'cp -vR /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /'
+          cp -vR /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* //
         ubuntu1804 run \
           find /usr
         ubuntu1804 run \

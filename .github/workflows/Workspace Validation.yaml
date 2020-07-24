@@ -152,13 +152,13 @@ jobs:
       shell: bash
       run: |
         set -x
-        export WSLENV=UniversalCRTSdkDir/UCRTVersion/VCToolsInstallDir
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
         ubuntu1804 run \
-          echo $UniversalCRTSdkDir
+          echo "${UniversalCRTSdkDir}"
         ubuntu1804 run \
-          echo $UCRTVersion
+          echo "${UCRTVersion}"
         ubuntu1804 run \
-          echo $UCRTVersion
+          echo "${VCToolsInstallDir}"
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \

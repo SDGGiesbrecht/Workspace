@@ -155,8 +155,6 @@ jobs:
         # C:\Program Files (x86)\Windows Kits\10\
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
         ubuntu1804 run \
-          echo "${UCRTVersion}"
-        ubuntu1804 run \
           echo "${VCToolsInstallDir}"
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \

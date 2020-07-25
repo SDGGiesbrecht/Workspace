@@ -157,13 +157,14 @@ jobs:
         # UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
         # UCRTVersion: 10.0.19041.0
         # VCToolsInstallDir: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.26.28801\
+        # VCToolsVersion: 14.26.28801
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             --build-tests --enable-test-discovery \
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
-            -Xswiftc -I -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/include'\' \
-            -Xswiftc -I -Xswiftc
+            -Xswiftc -I -Xswiftc \''//mnt/c/Program Files (x86)/Windows Kits/10/Include/10.0.19041.0/ucrt'\' \
+            -Xswiftc -I -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/include'\'
         # cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS=' -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
     - name: Test
       shell: bash

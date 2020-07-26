@@ -37,7 +37,7 @@
 #endif
 
 // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
-#if !os(WASI)
+#if !os(WASI) && !(os(Windows) && SWIFT_PACKAGE)
   import SwiftFormatConfiguration  // External package.
 #endif
 

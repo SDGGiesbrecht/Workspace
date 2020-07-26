@@ -59,7 +59,7 @@ public func helloWorld() {
     helloC()
   #endif
   // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
-  #if !os(WASI)
+  #if !os(WASI) && !(os(Windows) && SWIFT_PACKAGE)
     print(Configuration())
   #endif
 }

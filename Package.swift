@@ -794,7 +794,7 @@ let package = Package(
 
 func adjustForWindows() {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
-  let impossibleDependencies = [
+  var impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
     "SwiftSyntax",
@@ -806,6 +806,12 @@ func adjustForWindows() {
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
   ]
+
+  // #warning(Haven’t figured out SwiftPM.)
+  impossibleDependencies.append(contentsOf: [
+    "SwiftFormatConfiguration"
+  ])
+
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })

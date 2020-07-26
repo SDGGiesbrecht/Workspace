@@ -128,7 +128,7 @@ jobs:
               libsqlite3-0 \
               libstdc++-5-dev \
               libxml2 \
-              lld=6.0 \
+              lld-6.0 \
               pkg-config \
               tzdata \
               zlib1g-dev

@@ -808,6 +808,7 @@ func adjustForWindows() {
   ]
 
   // #warning(Haven’t figured out SwiftPM.)
+  // (See also !(os(Windows) && SWIFT_PACKAGE))
   impossibleDependencies.append(contentsOf: [
     "SwiftFormatConfiguration"
   ])

@@ -133,7 +133,7 @@ jobs:
               tzdata \
               zlib1g-dev
         ubuntu1804 run \
-          ln -s /usr/bin/lld-link-6.0 /usr/bin/lld-link
+          ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
     - name: Install SwiftPM on Linux
       shell: bash
       run: |

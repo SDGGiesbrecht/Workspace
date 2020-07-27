@@ -164,7 +164,6 @@ jobs:
         find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/ucrt'
         find '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801'
         find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/um'
-        find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/shared'
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \

@@ -330,6 +330,10 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
+        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift build \
+          --package-path HelloWorld \
+          --triple x86_64-unknown-linux-android \
+          --show-bin-path
     - name: Copy libraries
       shell: bash
       run: |

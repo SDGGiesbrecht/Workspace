@@ -341,7 +341,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: tests
-        path: HellowWorld/.build/x86_64-unknown-linux-android/debug
+        path: HelloWorld/.build/x86_64-unknown-linux-android/debug
   Android:
     runs-on: macos-10.15
     needs: Linux

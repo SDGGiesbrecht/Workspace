@@ -6,11 +6,7 @@ extension CrossPlatformTests {
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__CrossPlatformTests = [
-        ("testCachePermissions", testCachePermissions),
-        ("testGit", testGit),
         ("testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName", testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName),
-        ("testRepositoryPresence", testRepositoryPresence),
-        ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
         ("testTests", testTests),
     ]
 }

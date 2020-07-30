@@ -82,7 +82,7 @@ add_library("SDGMathematics"
 )
 set_target_properties("SDGMathematics" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGMathematics" PRIVATE -enable-testing)
-target_link_libraries("SDGMathematics" PUBLIC
+target_link_libraries("SDGMathematics" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
 )
@@ -137,7 +137,7 @@ add_library("SDGCollections"
 )
 set_target_properties("SDGCollections" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCollections" PRIVATE -enable-testing)
-target_link_libraries("SDGCollections" PUBLIC
+target_link_libraries("SDGCollections" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -177,7 +177,7 @@ add_library("SDGText"
 )
 set_target_properties("SDGText" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGText" PRIVATE -enable-testing)
-target_link_libraries("SDGText" PUBLIC
+target_link_libraries("SDGText" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -197,7 +197,7 @@ add_library("SDGPersistence"
 )
 set_target_properties("SDGPersistence" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGPersistence" PRIVATE -enable-testing)
-target_link_libraries("SDGPersistence" PUBLIC
+target_link_libraries("SDGPersistence" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -252,7 +252,7 @@ add_library("SDGLocalization"
 )
 set_target_properties("SDGLocalization" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGLocalization" PRIVATE -enable-testing)
-target_link_libraries("SDGLocalization" PUBLIC
+target_link_libraries("SDGLocalization" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -269,7 +269,7 @@ add_library("SDGCommandLineLocalizations"
 )
 set_target_properties("SDGCommandLineLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCommandLineLocalizations" PRIVATE -enable-testing)
-target_link_libraries("SDGCommandLineLocalizations" PUBLIC
+target_link_libraries("SDGCommandLineLocalizations" PRIVATE
   "SDGLocalization"
 )
 
@@ -280,7 +280,7 @@ add_library("SDGCornerstoneLocalizations"
 )
 set_target_properties("SDGCornerstoneLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCornerstoneLocalizations" PRIVATE -enable-testing)
-target_link_libraries("SDGCornerstoneLocalizations" PUBLIC
+target_link_libraries("SDGCornerstoneLocalizations" PRIVATE
   "SDGControlFlow"
   "SDGLocalization"
 )
@@ -333,7 +333,7 @@ add_library("SDGCalendar"
 )
 set_target_properties("SDGCalendar" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCalendar" PRIVATE -enable-testing)
-target_link_libraries("SDGCalendar" PUBLIC
+target_link_libraries("SDGCalendar" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -351,7 +351,7 @@ add_library("SDGExternalProcess"
 )
 set_target_properties("SDGExternalProcess" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGExternalProcess" PRIVATE -enable-testing)
-target_link_libraries("SDGExternalProcess" PUBLIC
+target_link_libraries("SDGExternalProcess" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGText"
@@ -365,7 +365,7 @@ add_library("SDGTesting"
 )
 set_target_properties("SDGTesting" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGTesting" PRIVATE -enable-testing)
-target_link_libraries("SDGTesting" PUBLIC
+target_link_libraries("SDGTesting" PRIVATE
   "SDGControlFlow"
   "SDGMathematics"
   "SDGText"
@@ -380,7 +380,7 @@ add_library("SDGPersistenceTestUtilities"
 )
 set_target_properties("SDGPersistenceTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGPersistenceTestUtilities" PRIVATE -enable-testing)
-target_link_libraries("SDGPersistenceTestUtilities" PUBLIC
+target_link_libraries("SDGPersistenceTestUtilities" PRIVATE
   "SDGPersistence"
   "SDGTesting"
   "SDGControlFlow"
@@ -398,7 +398,7 @@ add_library("SDGLocalizationTestUtilities"
 )
 set_target_properties("SDGLocalizationTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGLocalizationTestUtilities" PRIVATE -enable-testing)
-target_link_libraries("SDGLocalizationTestUtilities" PUBLIC
+target_link_libraries("SDGLocalizationTestUtilities" PRIVATE
   "SDGLocalization"
   "SDGTesting"
   "SDGText"
@@ -411,7 +411,7 @@ add_library("SDGVersioning"
 )
 set_target_properties("SDGVersioning" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGVersioning" PRIVATE -enable-testing)
-target_link_libraries("SDGVersioning" PUBLIC
+target_link_libraries("SDGVersioning" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
   "SDGMathematics"
@@ -427,7 +427,7 @@ add_library("SDGXCTestUtilities"
 )
 set_target_properties("SDGXCTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGXCTestUtilities" PRIVATE -enable-testing)
-target_link_libraries("SDGXCTestUtilities" PUBLIC
+target_link_libraries("SDGXCTestUtilities" PRIVATE
   "SDGTesting"
   "SDGLogic"
   "SDGMathematics"
@@ -449,7 +449,7 @@ add_library("SDGSwiftLocalizations"
 )
 set_target_properties("SDGSwiftLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftLocalizations" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftLocalizations" PUBLIC
+target_link_libraries("SDGSwiftLocalizations" PRIVATE
   "SDGLocalization"
 )
 
@@ -472,7 +472,7 @@ add_library("SDGSwift"
 )
 set_target_properties("SDGSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwift" PRIVATE -enable-testing)
-target_link_libraries("SDGSwift" PUBLIC
+target_link_libraries("SDGSwift" PRIVATE
   "SDGSwiftLocalizations"
   "SDGControlFlow"
   "SDGLogic"
@@ -514,7 +514,7 @@ add_library("SDGCommandLine"
 )
 set_target_properties("SDGCommandLine" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCommandLine" PRIVATE -enable-testing)
-target_link_libraries("SDGCommandLine" PUBLIC
+target_link_libraries("SDGCommandLine" PRIVATE
   "SDGCommandLineLocalizations"
   "SDGControlFlow"
   "SDGLogic"
@@ -532,7 +532,7 @@ add_library("SDGCommandLineTestUtilities"
 )
 set_target_properties("SDGCommandLineTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCommandLineTestUtilities" PRIVATE -enable-testing)
-target_link_libraries("SDGCommandLineTestUtilities" PUBLIC
+target_link_libraries("SDGCommandLineTestUtilities" PRIVATE
   "SDGCommandLine"
   "SDGCommandLineLocalizations"
   "SDGControlFlow"
@@ -550,7 +550,7 @@ add_library("SDGExportedCommandLineInterface"
 )
 set_target_properties("SDGExportedCommandLineInterface" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGExportedCommandLineInterface" PRIVATE -enable-testing)
-target_link_libraries("SDGExportedCommandLineInterface" PUBLIC
+target_link_libraries("SDGExportedCommandLineInterface" PRIVATE
   "SDGCommandLine"
   "SDGText"
   "SDGPersistence"
@@ -565,7 +565,7 @@ add_library("SDGSwiftConfigurationLoading"
 )
 set_target_properties("SDGSwiftConfigurationLoading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftConfigurationLoading" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftConfigurationLoading" PUBLIC
+target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGSwiftLocalizations"
   "SDGSwiftConfiguration"
   "SDGSwift"
@@ -585,7 +585,7 @@ add_library("SDGSwiftPackageManager"
 )
 set_target_properties("SDGSwiftPackageManager" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftPackageManager" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftPackageManager" PUBLIC
+target_link_libraries("SDGSwiftPackageManager" PRIVATE
   "SDGSwift"
   "SDGSwiftLocalizations"
   "SDGLogic"
@@ -604,7 +604,7 @@ add_library("SDGXcode"
 )
 set_target_properties("SDGXcode" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGXcode" PRIVATE -enable-testing)
-target_link_libraries("SDGXcode" PUBLIC
+target_link_libraries("SDGXcode" PRIVATE
   "SDGSwift"
   "SDGSwiftLocalizations"
   "SDGControlFlow"
@@ -623,7 +623,7 @@ add_library("SDGCSS"
 )
 set_target_properties("SDGCSS" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGCSS" PRIVATE -enable-testing)
-target_link_libraries("SDGCSS" PUBLIC
+target_link_libraries("SDGCSS" PRIVATE
   "SDGCollections"
   "SDGText"
 )
@@ -633,7 +633,7 @@ add_library("SDGWebLocalizations"
 )
 set_target_properties("SDGWebLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGWebLocalizations" PRIVATE -enable-testing)
-target_link_libraries("SDGWebLocalizations" PUBLIC
+target_link_libraries("SDGWebLocalizations" PRIVATE
   "SDGLocalization"
 )
 
@@ -678,7 +678,7 @@ add_library("SDGHTML"
 )
 set_target_properties("SDGHTML" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGHTML" PRIVATE -enable-testing)
-target_link_libraries("SDGHTML" PUBLIC
+target_link_libraries("SDGHTML" PRIVATE
   "SDGWebLocalizations"
   "SDGControlFlow"
   "SDGLogic"
@@ -865,7 +865,7 @@ add_library("SDGSwiftSource"
 )
 set_target_properties("SDGSwiftSource" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftSource" PRIVATE -enable-testing)
-target_link_libraries("SDGSwiftSource" PUBLIC
+target_link_libraries("SDGSwiftSource" PRIVATE
   "SDGSwift"
   "SDGSwiftPackageManager"
   "SDGSwiftLocalizations"
@@ -894,7 +894,7 @@ add_library("SDGWeb"
 )
 set_target_properties("SDGWeb" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGWeb" PRIVATE -enable-testing)
-target_link_libraries("SDGWeb" PUBLIC
+target_link_libraries("SDGWeb" PRIVATE
   "SDGWebLocalizations"
   "SDGHTML"
   "SDGCSS"
@@ -918,7 +918,7 @@ add_library("WSLocalizations"
 )
 set_target_properties("WSLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSLocalizations" PRIVATE -enable-testing)
-target_link_libraries("WSLocalizations" PUBLIC
+target_link_libraries("WSLocalizations" PRIVATE
   "SDGLocalization"
 )
 
@@ -928,7 +928,7 @@ add_library("WSGeneralImports"
 )
 set_target_properties("WSGeneralImports" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSGeneralImports" PRIVATE -enable-testing)
-target_link_libraries("WSGeneralImports" PUBLIC
+target_link_libraries("WSGeneralImports" PRIVATE
   "WSLocalizations"
   "SDGControlFlow"
   "SDGLogic"
@@ -955,7 +955,7 @@ add_library("WSCrossPlatform"
 )
 set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSCrossPlatform" PRIVATE -enable-testing)
-target_link_libraries("WSCrossPlatform" PUBLIC
+target_link_libraries("WSCrossPlatform" PRIVATE
   "WSCrossPlatformC"
   "SwiftFormatConfiguration"
 )
@@ -965,7 +965,7 @@ add_library("WSCrossPlatformTests"
 )
 set_target_properties("WSCrossPlatformTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSCrossPlatformTests" PRIVATE -enable-testing)
-target_link_libraries("WSCrossPlatformTests" PUBLIC
+target_link_libraries("WSCrossPlatformTests" PRIVATE
   "WSCrossPlatform"
   "SDGPersistence"
   "SDGExternalProcess"
@@ -978,7 +978,7 @@ target_link_libraries("WSCrossPlatformTests" PUBLIC
 add_executable("WSCrossPlatformTool"
   "../../../Tests/WSCrossPlatformTool/main.swift"
 )
-target_link_libraries("WSCrossPlatformTool" PUBLIC
+target_link_libraries("WSCrossPlatformTool" PRIVATE
   "WSCrossPlatform"
 )
 
@@ -1022,7 +1022,7 @@ add_library("WorkspaceConfiguration"
 )
 set_target_properties("WorkspaceConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WorkspaceConfiguration" PRIVATE -enable-testing)
-target_link_libraries("WorkspaceConfiguration" PUBLIC
+target_link_libraries("WorkspaceConfiguration" PRIVATE
   "WSLocalizations"
   "SDGControlFlow"
   "SDGLogic"
@@ -1039,7 +1039,7 @@ target_link_libraries("WorkspaceConfiguration" PUBLIC
 add_executable("WSConfigurationExample"
   "../../../Tests/WSConfigurationExample/main.swift"
 )
-target_link_libraries("WSConfigurationExample" PUBLIC
+target_link_libraries("WSConfigurationExample" PRIVATE
   "WorkspaceConfiguration"
   "SDGControlFlow"
 )
@@ -1049,7 +1049,7 @@ add_library("WSCustomTask"
 )
 set_target_properties("WSCustomTask" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSCustomTask" PRIVATE -enable-testing)
-target_link_libraries("WSCustomTask" PUBLIC
+target_link_libraries("WSCustomTask" PRIVATE
   "WSGeneralImports"
   "WorkspaceConfiguration"
   "SDGSwift"
@@ -1062,7 +1062,7 @@ add_library("WSSwift"
 )
 set_target_properties("WSSwift" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSSwift" PRIVATE -enable-testing)
-target_link_libraries("WSSwift" PUBLIC
+target_link_libraries("WSSwift" PRIVATE
   "WSGeneralImports"
   "WorkspaceConfiguration"
   "SDGSwiftSource"
@@ -1073,7 +1073,7 @@ add_library("WorkspaceProjectConfiguration"
 )
 set_target_properties("WorkspaceProjectConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WorkspaceProjectConfiguration" PRIVATE -enable-testing)
-target_link_libraries("WorkspaceProjectConfiguration" PUBLIC
+target_link_libraries("WorkspaceProjectConfiguration" PRIVATE
   "WorkspaceConfiguration"
 )
 
@@ -1094,7 +1094,7 @@ add_library("WSProject"
 )
 set_target_properties("WSProject" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSProject" PRIVATE -enable-testing)
-target_link_libraries("WSProject" PUBLIC
+target_link_libraries("WSProject" PRIVATE
   "WSGeneralImports"
   "WorkspaceConfiguration"
   "WorkspaceProjectConfiguration"
@@ -1110,7 +1110,7 @@ add_library("WSFileHeaders"
 )
 set_target_properties("WSFileHeaders" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSFileHeaders" PRIVATE -enable-testing)
-target_link_libraries("WSFileHeaders" PUBLIC
+target_link_libraries("WSFileHeaders" PRIVATE
   "WSGeneralImports"
   "WSProject"
 )
@@ -1120,7 +1120,7 @@ add_library("WSGit"
 )
 set_target_properties("WSGit" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSGit" PRIVATE -enable-testing)
-target_link_libraries("WSGit" PUBLIC
+target_link_libraries("WSGit" PRIVATE
   "WSGeneralImports"
   "WSProject"
 )
@@ -1130,7 +1130,7 @@ add_library("WSGitHub"
 )
 set_target_properties("WSGitHub" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSGitHub" PRIVATE -enable-testing)
-target_link_libraries("WSGitHub" PUBLIC
+target_link_libraries("WSGitHub" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WorkspaceProjectConfiguration"
@@ -1143,7 +1143,7 @@ add_library("WSLicence"
 )
 set_target_properties("WSLicence" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSLicence" PRIVATE -enable-testing)
-target_link_libraries("WSLicence" PUBLIC
+target_link_libraries("WSLicence" PRIVATE
   "WSGeneralImports"
   "WorkspaceConfiguration"
   "WSProject"
@@ -1155,7 +1155,7 @@ add_library("WSNormalization"
 )
 set_target_properties("WSNormalization" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSNormalization" PRIVATE -enable-testing)
-target_link_libraries("WSNormalization" PUBLIC
+target_link_libraries("WSNormalization" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSSwift"
@@ -1168,7 +1168,7 @@ add_library("WSParsing"
 )
 set_target_properties("WSParsing" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSParsing" PRIVATE -enable-testing)
-target_link_libraries("WSParsing" PUBLIC
+target_link_libraries("WSParsing" PRIVATE
   "WSGeneralImports"
   "WSLocalizations"
   "WSProject"
@@ -1179,7 +1179,7 @@ add_library("WSExamples"
 )
 set_target_properties("WSExamples" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSExamples" PRIVATE -enable-testing)
-target_link_libraries("WSExamples" PUBLIC
+target_link_libraries("WSExamples" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSParsing"
@@ -1222,7 +1222,7 @@ add_library("WSProofreading"
 )
 set_target_properties("WSProofreading" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSProofreading" PRIVATE -enable-testing)
-target_link_libraries("WSProofreading" PUBLIC
+target_link_libraries("WSProofreading" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSCustomTask"
@@ -1239,7 +1239,7 @@ add_library("WSResources"
 )
 set_target_properties("WSResources" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSResources" PRIVATE -enable-testing)
-target_link_libraries("WSResources" PUBLIC
+target_link_libraries("WSResources" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSSwift"
@@ -1252,7 +1252,7 @@ add_library("WSScripts"
 )
 set_target_properties("WSScripts" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSScripts" PRIVATE -enable-testing)
-target_link_libraries("WSScripts" PUBLIC
+target_link_libraries("WSScripts" PRIVATE
   "WSGeneralImports"
   "WSProject"
 )
@@ -1264,7 +1264,7 @@ add_library("WSValidation"
 )
 set_target_properties("WSValidation" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSValidation" PRIVATE -enable-testing)
-target_link_libraries("WSValidation" PUBLIC
+target_link_libraries("WSValidation" PRIVATE
   "WSGeneralImports"
   "WSProject"
 )
@@ -1275,7 +1275,7 @@ add_library("WSXcode"
 )
 set_target_properties("WSXcode" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSXcode" PRIVATE -enable-testing)
-target_link_libraries("WSXcode" PUBLIC
+target_link_libraries("WSXcode" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WorkspaceProjectConfiguration"
@@ -1307,7 +1307,7 @@ add_library("WSDocumentation"
 )
 set_target_properties("WSDocumentation" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSDocumentation" PRIVATE -enable-testing)
-target_link_libraries("WSDocumentation" PUBLIC
+target_link_libraries("WSDocumentation" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSParsing"
@@ -1330,7 +1330,7 @@ add_library("WSContinuousIntegration"
 )
 set_target_properties("WSContinuousIntegration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSContinuousIntegration" PRIVATE -enable-testing)
-target_link_libraries("WSContinuousIntegration" PUBLIC
+target_link_libraries("WSContinuousIntegration" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSSwift"
@@ -1345,7 +1345,7 @@ add_library("WSOpenSource"
 )
 set_target_properties("WSOpenSource" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSOpenSource" PRIVATE -enable-testing)
-target_link_libraries("WSOpenSource" PUBLIC
+target_link_libraries("WSOpenSource" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSExamples"
@@ -1359,7 +1359,7 @@ add_library("WSTesting"
 )
 set_target_properties("WSTesting" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSTesting" PRIVATE -enable-testing)
-target_link_libraries("WSTesting" PUBLIC
+target_link_libraries("WSTesting" PRIVATE
   "WSGeneralImports"
   "WSProject"
   "WSValidation"
@@ -1400,7 +1400,7 @@ add_library("WSInterface"
 )
 set_target_properties("WSInterface" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSInterface" PRIVATE -enable-testing)
-target_link_libraries("WSInterface" PUBLIC
+target_link_libraries("WSInterface" PRIVATE
   "WSGeneralImports"
   "WorkspaceProjectConfiguration"
   "WSProject"
@@ -1427,7 +1427,7 @@ add_library("WSGeneralTestImports"
 )
 set_target_properties("WSGeneralTestImports" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSGeneralTestImports" PRIVATE -enable-testing)
-target_link_libraries("WSGeneralTestImports" PUBLIC
+target_link_libraries("WSGeneralTestImports" PRIVATE
   "WSGeneralImports"
   "WorkspaceConfiguration"
   "WSInterface"
@@ -1442,7 +1442,7 @@ add_library("WorkspaceLibrary"
 )
 set_target_properties("WorkspaceLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WorkspaceLibrary" PRIVATE -enable-testing)
-target_link_libraries("WorkspaceLibrary" PUBLIC
+target_link_libraries("WorkspaceLibrary" PRIVATE
   "WSGeneralImports"
   "WorkspaceProjectConfiguration"
   "WSInterface"
@@ -1463,7 +1463,7 @@ add_library("WorkspaceLibraryTests"
 )
 set_target_properties("WorkspaceLibraryTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WorkspaceLibraryTests" PRIVATE -enable-testing)
-target_link_libraries("WorkspaceLibraryTests" PUBLIC
+target_link_libraries("WorkspaceLibraryTests" PRIVATE
   "WSGeneralTestImports"
   "WSCustomTask"
   "WorkspaceProjectConfiguration"
@@ -1476,7 +1476,7 @@ target_link_libraries("WorkspaceLibraryTests" PUBLIC
 add_executable("WorkspaceTool"
   "../../../Sources/WorkspaceTool/main.swift"
 )
-target_link_libraries("WorkspaceTool" PUBLIC
+target_link_libraries("WorkspaceTool" PRIVATE
   "WorkspaceLibrary"
 )
 

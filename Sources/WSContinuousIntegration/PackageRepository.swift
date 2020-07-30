@@ -232,7 +232,7 @@ import WSSwift
             case .library, .executable, .test:
               let dependencies = target.dependencyTargets
               if ¬dependencies.isEmpty {
-                cmake.append("target_link_libraries(\(sanitize(target.name)) PUBLIC")
+                cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
                 for dependency in dependencies {
                   cmake.append("  " + sanitize(dependency.name))
                 }

@@ -800,7 +800,7 @@ func adjustForWindows() {
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
-  let impossibleTargets: Set<String> = [
+  var impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
     "test‐ios‐simulator",
@@ -809,10 +809,70 @@ func adjustForWindows() {
 
   // #warning(Haven’t figured out SwiftPM.)
   // (See also !(os(Windows) && SWIFT_PACKAGE))
-  impossibleDependencies.append(contentsOf: [
-    "SDGCSS",
-    "SDGWeb"
-  ])
+  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+    impossibleDependencies.append(contentsOf: [
+      "SDGLogicTestUtilities",
+      "SDGMathematicsTestUtilities",
+      "SDGCollectionsTestUtilities",
+      "SDGCollation",
+      "SDGPersistence",
+      "SDGPersistenceTestUtilities",
+      "SDGRandomizationTestUtilities",
+      "SDGLocalization",
+      "SDGLocalizationTestUtilities",
+      "SDGGeometryTestUtilities",
+      "SDGCalendar",
+      "SDGPrecisionMathematics",
+      "SDGExternalProcess",
+      "SDGVersioning",
+      "SDGTesting",
+      "SDGXCTestUtilities",
+
+      "SDGWeb",
+      "SDGHTML",
+
+      "SDGSwift",
+      "SDGSwiftPackageManager",
+      "SDGSwiftSource",
+      "SDGXcode",
+      "SDGSwiftConfigurationLoading",
+
+      "SDGCommandLine",
+      "SDGCommandLineTestUtilities",
+      "SDGExportedCommandLineInterface"
+    ])
+    impossibleTargets.formUnion([
+      "WorkspaceConfiguration",
+      "WorkspaceLibrary",
+      "WorkspaceTool",
+      "WSContinuousIntegration",
+      "WSCustomTask",
+      "WSDocumentation",
+      "WSExamples",
+      "WSFileHeaders",
+      "WSGeneralImports",
+      "WSGeneralTestImports",
+      "WSGit",
+      "WSGitHub",
+      "WSInterface",
+      "WSLicence",
+      "WSLocalizations",
+      "WSNormalization",
+      "WSOpenSource",
+      "WSParsing",
+      "WSProject",
+      "WSProofreading",
+      "WSResources",
+      "WSScripts",
+      "WSSwift",
+      "WSTesting",
+      "WSValidation",
+      "WSXcode",
+
+      "WorkspaceLibraryTests",
+      "WSConfigurationExample"
+    ])
+  }
 
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)

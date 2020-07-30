@@ -869,6 +869,7 @@ func adjustForWindows() {
       "WSTesting",
       "WSValidation",
       "WSXcode",
+      "WorkspaceProjectConfiguration",
 
       "WorkspaceLibraryTests",
       "WSConfigurationExample"

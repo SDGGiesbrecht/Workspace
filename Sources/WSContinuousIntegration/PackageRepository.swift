@@ -191,7 +191,7 @@ import WSSwift
             cmake.append("")
             switch target.type {
             case .library, .test:
-              cmake.append("add_library(" + sanitize(target.name))
+              cmake.append("add_library(\(sanitize(target.name)) SHARED")
             case .executable:
               cmake.append("add_executable(" + sanitize(target.name))
             case .systemModule:  // @exempt(from: tests)

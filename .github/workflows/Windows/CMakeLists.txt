@@ -13,7 +13,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Use dynamic linking" YES)
 
-add_library("SDGControlFlow"
+add_library("SDGControlFlow" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGControlFlow/APILocalization.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGControlFlow/Assert.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGControlFlow/Caching.swift"
@@ -34,7 +34,7 @@ add_library("SDGControlFlow"
 set_target_properties("SDGControlFlow" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGControlFlow" PRIVATE -enable-testing)
 
-add_library("SDGLogic"
+add_library("SDGLogic" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLogic/Any.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLogic/Bool.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLogic/Equatable.swift"
@@ -45,7 +45,7 @@ add_library("SDGLogic"
 set_target_properties("SDGLogic" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGLogic" PRIVATE -enable-testing)
 
-add_library("SDGMathematics"
+add_library("SDGMathematics" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGMathematics/Angle.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGMathematics/BitField.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGMathematics/ClosedRange.swift"
@@ -87,7 +87,7 @@ target_link_libraries("SDGMathematics" PRIVATE
   "SDGLogic"
 )
 
-add_library("SDGCollections"
+add_library("SDGCollections" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCollections/Addable.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCollections/Associative/BijectiveMapping.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCollections/Associative/ContextualMapping.swift"
@@ -143,7 +143,7 @@ target_link_libraries("SDGCollections" PRIVATE
   "SDGMathematics"
 )
 
-add_library("SDGText"
+add_library("SDGText" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CharacterSet.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CollectionStringFamily.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGText/CollectionUnicodeScalar.swift"
@@ -184,7 +184,7 @@ target_link_libraries("SDGText" PRIVATE
   "SDGCollections"
 )
 
-add_library("SDGPersistence"
+add_library("SDGPersistence" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistence/Data.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistence/FileConvertible.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistence/FileManager.swift"
@@ -205,7 +205,7 @@ target_link_libraries("SDGPersistence" PRIVATE
   "SDGText"
 )
 
-add_library("SDGLocalization"
+add_library("SDGLocalization" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLocalization/CachedLocalization.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLocalization/Extensions/Bool.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLocalization/Extensions/CodableViaEnumeration.swift"
@@ -261,7 +261,7 @@ target_link_libraries("SDGLocalization" PRIVATE
   "SDGPersistence"
 )
 
-add_library("SDGCommandLineLocalizations"
+add_library("SDGCommandLineLocalizations" SHARED
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLineLocalizations/APILocalization.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLineLocalizations/Exports.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLineLocalizations/InterfaceLocalization.swift"
@@ -273,7 +273,7 @@ target_link_libraries("SDGCommandLineLocalizations" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGCornerstoneLocalizations"
+add_library("SDGCornerstoneLocalizations" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCornerstoneLocalizations/APILocalization.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCornerstoneLocalizations/FormatLocalization.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCornerstoneLocalizations/InterfaceLocalization.swift"
@@ -285,7 +285,7 @@ target_link_libraries("SDGCornerstoneLocalizations" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGCalendar"
+add_library("SDGCalendar" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCalendar/Abstract Components/CalendarComponent.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCalendar/Abstract Components/CardinalCalendarComponent.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGCalendar/Abstract Components/ConsistentDurationCalendarComponent.swift"
@@ -343,7 +343,7 @@ target_link_libraries("SDGCalendar" PRIVATE
   "SDGCornerstoneLocalizations"
 )
 
-add_library("SDGExternalProcess"
+add_library("SDGExternalProcess" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGExternalProcess/ExternalProcess.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGExternalProcess/ExternalProcessError.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGExternalProcess/LegacyMode.swift"
@@ -359,7 +359,7 @@ target_link_libraries("SDGExternalProcess" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGTesting"
+add_library("SDGTesting" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGTesting/PerformanceTest.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGTesting/Test.swift"
 )
@@ -373,7 +373,7 @@ target_link_libraries("SDGTesting" PRIVATE
   "SDGCornerstoneLocalizations"
 )
 
-add_library("SDGPersistenceTestUtilities"
+add_library("SDGPersistenceTestUtilities" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistenceTestUtilities/Codable.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistenceTestUtilities/FileConvertible.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGPersistenceTestUtilities/Specification.swift"
@@ -393,7 +393,7 @@ target_link_libraries("SDGPersistenceTestUtilities" PRIVATE
   "SDGCornerstoneLocalizations"
 )
 
-add_library("SDGLocalizationTestUtilities"
+add_library("SDGLocalizationTestUtilities" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGLocalizationTestUtilities/CustomStringConvertible.swift"
 )
 set_target_properties("SDGLocalizationTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -406,7 +406,7 @@ target_link_libraries("SDGLocalizationTestUtilities" PRIVATE
   "SDGPersistenceTestUtilities"
 )
 
-add_library("SDGVersioning"
+add_library("SDGVersioning" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGVersioning/Version.swift"
 )
 set_target_properties("SDGVersioning" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -421,7 +421,7 @@ target_link_libraries("SDGVersioning" PRIVATE
   "SDGCornerstoneLocalizations"
 )
 
-add_library("SDGXCTestUtilities"
+add_library("SDGXCTestUtilities" SHARED
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGXCTestUtilities/TestCase.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGXCTestUtilities/XCTAssert.swift"
 )
@@ -435,7 +435,7 @@ target_link_libraries("SDGXCTestUtilities" PRIVATE
   "SDGPersistence"
 )
 
-add_library("SDGSwiftConfiguration"
+add_library("SDGSwiftConfiguration" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Configuration.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Context.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Export.swift"
@@ -443,7 +443,7 @@ add_library("SDGSwiftConfiguration"
 set_target_properties("SDGSwiftConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGSwiftConfiguration" PRIVATE -enable-testing)
 
-add_library("SDGSwiftLocalizations"
+add_library("SDGSwiftLocalizations" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftLocalizations/APILocalization.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftLocalizations/InterfaceLocalization.swift"
 )
@@ -453,7 +453,7 @@ target_link_libraries("SDGSwiftLocalizations" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGSwift"
+add_library("SDGSwift" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/Build.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/CoverageRegion.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwift/FileTestCoverage.swift"
@@ -484,7 +484,7 @@ target_link_libraries("SDGSwift" PRIVATE
   "SDGVersioning"
 )
 
-add_library("SDGCommandLine"
+add_library("SDGCommandLine" SHARED
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLine/Argument/AnyArgumentTypeDefinition.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLine/Argument/ArgumentInterface.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLine/Argument/ArgumentType.swift"
@@ -527,7 +527,7 @@ target_link_libraries("SDGCommandLine" PRIVATE
   "SDGSwift"
 )
 
-add_library("SDGCommandLineTestUtilities"
+add_library("SDGCommandLineTestUtilities" SHARED
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGCommandLineTestUtilities/Command.swift"
 )
 set_target_properties("SDGCommandLineTestUtilities" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -543,7 +543,7 @@ target_link_libraries("SDGCommandLineTestUtilities" PRIVATE
   "SDGPersistenceTestUtilities"
 )
 
-add_library("SDGExportedCommandLineInterface"
+add_library("SDGExportedCommandLineInterface" SHARED
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGExportedCommandLineInterface/ArgumentInterface.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGExportedCommandLineInterface/CommandInterface.swift"
   "../../../.build/SDG/Dependencies/SDGCommandLine/Sources/SDGExportedCommandLineInterface/OptionInterface.swift"
@@ -557,7 +557,7 @@ target_link_libraries("SDGExportedCommandLineInterface" PRIVATE
   "SDGExternalProcess"
 )
 
-add_library("SDGSwiftConfigurationLoading"
+add_library("SDGSwiftConfigurationLoading" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/Configuration.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/ConfigurationError.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfigurationLoading/LegacyMode.swift"
@@ -576,7 +576,7 @@ target_link_libraries("SDGSwiftConfigurationLoading" PRIVATE
   "SDGVersioning"
 )
 
-add_library("SDGSwiftPackageManager"
+add_library("SDGSwiftPackageManager" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/Git.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/PackageRepository.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftPackageManager/PackageRepositoryInitializationError.swift"
@@ -594,7 +594,7 @@ target_link_libraries("SDGSwiftPackageManager" PRIVATE
   "SDGVersioning"
 )
 
-add_library("SDGXcode"
+add_library("SDGXcode" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGXcode/PackageRepository.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGXcode/SwiftCompiler.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGXcode/Xcode.swift"
@@ -617,7 +617,7 @@ target_link_libraries("SDGXcode" PRIVATE
   "SDGVersioning"
 )
 
-add_library("SDGCSS"
+add_library("SDGCSS" SHARED
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGCSS/CSS.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGCSS/Resources.swift"
 )
@@ -628,7 +628,7 @@ target_link_libraries("SDGCSS" PRIVATE
   "SDGText"
 )
 
-add_library("SDGWebLocalizations"
+add_library("SDGWebLocalizations" SHARED
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGWebLocalizations/InterfaceLocalization.swift"
 )
 set_target_properties("SDGWebLocalizations" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -637,7 +637,7 @@ target_link_libraries("SDGWebLocalizations" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGHTML"
+add_library("SDGHTML" SHARED
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/Entities.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/HTML.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGHTML/Localization.swift"
@@ -689,7 +689,7 @@ target_link_libraries("SDGHTML" PRIVATE
   "SDGLocalization"
 )
 
-add_library("SDGSwiftSource"
+add_library("SDGSwiftSource" SHARED
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftSource/API/APIElement.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftSource/API/ConformanceReference.swift"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftSource/API/Protocols/APIElementProtocol.swift"
@@ -879,7 +879,7 @@ target_link_libraries("SDGSwiftSource" PRIVATE
   "SDGHTML"
 )
 
-add_library("SDGWeb"
+add_library("SDGWeb" SHARED
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGWeb/Copyright.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGWeb/PageTemplate.swift"
   "../../../.build/SDG/Dependencies/SDGWeb/Sources/SDGWeb/PageTemplateLoadingError.swift"
@@ -907,14 +907,14 @@ target_link_libraries("SDGWeb" PRIVATE
   "SDGCalendar"
 )
 
-add_library("WSCrossPlatformC"
+add_library("WSCrossPlatformC" SHARED
   "../../../Tests/WSCrossPlatformC/CrossPlatform.c"
 )
 set_target_properties("WSCrossPlatformC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSCrossPlatformC" PRIVATE -enable-testing)
 target_include_directories("WSCrossPlatformC" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../../../Tests/WSCrossPlatformC/include")
 
-add_library("WSLocalizations"
+add_library("WSLocalizations" SHARED
   "../../../Sources/WSLocalizations/ContentLocalization.swift"
   "../../../Sources/WSLocalizations/InterfaceLocalization.swift"
 )
@@ -924,7 +924,7 @@ target_link_libraries("WSLocalizations" PRIVATE
   "SDGLocalization"
 )
 
-add_library("WSGeneralImports"
+add_library("WSGeneralImports" SHARED
   "../../../Sources/WSGeneralImports/Exports.swift"
   "../../../Sources/WSGeneralImports/ProcessInfo.swift"
 )
@@ -944,7 +944,7 @@ target_link_libraries("WSGeneralImports" PRIVATE
   "SDGSwift"
 )
 
-add_library("SwiftFormatConfiguration"
+add_library("SwiftFormatConfiguration" SHARED
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
   "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/RuleRegistry+Generated.swift"
@@ -952,7 +952,7 @@ add_library("SwiftFormatConfiguration"
 set_target_properties("SwiftFormatConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SwiftFormatConfiguration" PRIVATE -enable-testing)
 
-add_library("WSCrossPlatform"
+add_library("WSCrossPlatform" SHARED
   "../../../Tests/WSCrossPlatform/CrossPlatform.swift"
 )
 set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -962,7 +962,7 @@ target_link_libraries("WSCrossPlatform" PRIVATE
   "SwiftFormatConfiguration"
 )
 
-add_library("WSCrossPlatformTests"
+add_library("WSCrossPlatformTests" SHARED
   "../../../Tests/WSCrossPlatformTests/CrossPlatformTests.swift"
 )
 set_target_properties("WSCrossPlatformTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -984,7 +984,7 @@ target_link_libraries("WSCrossPlatformTool" PRIVATE
   "WSCrossPlatform"
 )
 
-add_library("WorkspaceConfiguration"
+add_library("WorkspaceConfiguration" SHARED
   "../../../Sources/WorkspaceConfiguration/Configuration/ContinousIntegrationConfiguration.swift"
   "../../../Sources/WorkspaceConfiguration/Configuration/CustomTask.swift"
   "../../../Sources/WorkspaceConfiguration/Configuration/Documentation/APIDocumentationConfiguration.swift"
@@ -1046,7 +1046,7 @@ target_link_libraries("WSConfigurationExample" PRIVATE
   "SDGControlFlow"
 )
 
-add_library("WSCustomTask"
+add_library("WSCustomTask" SHARED
   "../../../Sources/WSCustomTask/CustomTask.swift"
 )
 set_target_properties("WSCustomTask" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1058,7 +1058,7 @@ target_link_libraries("WSCustomTask" PRIVATE
   "SDGExternalProcess"
 )
 
-add_library("WSSwift"
+add_library("WSSwift" SHARED
   "../../../Sources/WSSwift/SwiftLanguage.Casing.swift"
   "../../../Sources/WSSwift/SwiftLanguage.swift"
 )
@@ -1070,7 +1070,7 @@ target_link_libraries("WSSwift" PRIVATE
   "SDGSwiftSource"
 )
 
-add_library("WorkspaceProjectConfiguration"
+add_library("WorkspaceProjectConfiguration" SHARED
   "../../../Workspace.swift"
 )
 set_target_properties("WorkspaceProjectConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1079,7 +1079,7 @@ target_link_libraries("WorkspaceProjectConfiguration" PRIVATE
   "WorkspaceConfiguration"
 )
 
-add_library("WSProject"
+add_library("WSProject" SHARED
   "../../../Sources/WSProject/BlockCommentSyntax.swift"
   "../../../Sources/WSProject/Copyright.swift"
   "../../../Sources/WSProject/Exports.swift"
@@ -1107,7 +1107,7 @@ target_link_libraries("WSProject" PRIVATE
   "SDGSwiftConfigurationLoading"
 )
 
-add_library("WSFileHeaders"
+add_library("WSFileHeaders" SHARED
   "../../../Sources/WSFileHeaders/PackageRepository.swift"
 )
 set_target_properties("WSFileHeaders" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1117,7 +1117,7 @@ target_link_libraries("WSFileHeaders" PRIVATE
   "WSProject"
 )
 
-add_library("WSGit"
+add_library("WSGit" SHARED
   "../../../Sources/WSGit/PackageRepository.swift"
 )
 set_target_properties("WSGit" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1127,7 +1127,7 @@ target_link_libraries("WSGit" PRIVATE
   "WSProject"
 )
 
-add_library("WSGitHub"
+add_library("WSGitHub" SHARED
   "../../../Sources/WSGitHub/PackageRepository.swift"
 )
 set_target_properties("WSGitHub" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1138,7 +1138,7 @@ target_link_libraries("WSGitHub" PRIVATE
   "WorkspaceProjectConfiguration"
 )
 
-add_library("WSLicence"
+add_library("WSLicence" SHARED
   "../../../Sources/WSLicence/Licence.swift"
   "../../../Sources/WSLicence/PackageRepository.swift"
   "../../../Sources/WSLicence/Resources.swift"
@@ -1151,7 +1151,7 @@ target_link_libraries("WSLicence" PRIVATE
   "WSProject"
 )
 
-add_library("WSNormalization"
+add_library("WSNormalization" SHARED
   "../../../Sources/WSNormalization/Configuration.swift"
   "../../../Sources/WSNormalization/PackageRepository.swift"
 )
@@ -1164,7 +1164,7 @@ target_link_libraries("WSNormalization" PRIVATE
   "SwiftFormatConfiguration"
 )
 
-add_library("WSParsing"
+add_library("WSParsing" SHARED
   "../../../Sources/WSParsing/InterfaceLocalization.swift"
   "../../../Sources/WSParsing/PatternMatch.swift"
 )
@@ -1176,7 +1176,7 @@ target_link_libraries("WSParsing" PRIVATE
   "WSProject"
 )
 
-add_library("WSExamples"
+add_library("WSExamples" SHARED
   "../../../Sources/WSExamples/PackageRepository.swift"
 )
 set_target_properties("WSExamples" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1187,7 +1187,7 @@ target_link_libraries("WSExamples" PRIVATE
   "WSParsing"
 )
 
-add_library("WSProofreading"
+add_library("WSProofreading" SHARED
   "../../../Sources/WSProofreading/PackageRepository.swift"
   "../../../Sources/WSProofreading/ProofreadingReporter.swift"
   "../../../Sources/WSProofreading/ProofreadingStatus.swift"
@@ -1235,7 +1235,7 @@ target_link_libraries("WSProofreading" PRIVATE
   "SDGSwiftSource"
 )
 
-add_library("WSResources"
+add_library("WSResources" SHARED
   "../../../Sources/WSResources/PackageRepository.swift"
   "../../../Sources/WSResources/PackageRepositoryTarget.swift"
 )
@@ -1248,7 +1248,7 @@ target_link_libraries("WSResources" PRIVATE
   "SDGSwiftPackageManager"
 )
 
-add_library("WSScripts"
+add_library("WSScripts" SHARED
   "../../../Sources/WSScripts/PackageRepository.swift"
   "../../../Sources/WSScripts/Script.swift"
 )
@@ -1259,7 +1259,7 @@ target_link_libraries("WSScripts" PRIVATE
   "WSProject"
 )
 
-add_library("WSValidation"
+add_library("WSValidation" SHARED
   "../../../Sources/WSValidation/Output.swift"
   "../../../Sources/WSValidation/ReportSection.swift"
   "../../../Sources/WSValidation/ValidationStatus.swift"
@@ -1271,7 +1271,7 @@ target_link_libraries("WSValidation" PRIVATE
   "WSProject"
 )
 
-add_library("WSXcode"
+add_library("WSXcode" SHARED
   "../../../Sources/WSXcode/PackageRepository.swift"
   "../../../Sources/WSXcode/Resources.swift"
 )
@@ -1284,7 +1284,7 @@ target_link_libraries("WSXcode" PRIVATE
   "SDGXcode"
 )
 
-add_library("WSDocumentation"
+add_library("WSDocumentation" SHARED
   "../../../Sources/WSDocumentation/APIElement.swift"
   "../../../Sources/WSDocumentation/CommandInterface.swift"
   "../../../Sources/WSDocumentation/CommandInterfaceInformation.swift"
@@ -1324,7 +1324,7 @@ target_link_libraries("WSDocumentation" PRIVATE
   "SDGCSS"
 )
 
-add_library("WSContinuousIntegration"
+add_library("WSContinuousIntegration" SHARED
   "../../../Sources/WSContinuousIntegration/ContinuousIntegrationJob.swift"
   "../../../Sources/WSContinuousIntegration/PackageGraph.swift"
   "../../../Sources/WSContinuousIntegration/PackageRepository.swift"
@@ -1342,7 +1342,7 @@ target_link_libraries("WSContinuousIntegration" PRIVATE
   "SDGSwiftSource"
 )
 
-add_library("WSOpenSource"
+add_library("WSOpenSource" SHARED
   "../../../Sources/WSOpenSource/PackageRepository.swift"
 )
 set_target_properties("WSOpenSource" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1355,7 +1355,7 @@ target_link_libraries("WSOpenSource" PRIVATE
   "SDGSwiftSource"
 )
 
-add_library("WSTesting"
+add_library("WSTesting" SHARED
   "../../../Sources/WSTesting/ContinuousIntegrationJob.swift"
   "../../../Sources/WSTesting/PackageRepository.swift"
 )
@@ -1372,7 +1372,7 @@ target_link_libraries("WSTesting" PRIVATE
   "SDGXcode"
 )
 
-add_library("WSInterface"
+add_library("WSInterface" SHARED
   "../../../Sources/WSInterface/CheckForUpdates.swift"
   "../../../Sources/WSInterface/Document.swift"
   "../../../Sources/WSInterface/Normalize.swift"
@@ -1424,7 +1424,7 @@ target_link_libraries("WSInterface" PRIVATE
   "SDGVersioning"
 )
 
-add_library("WSGeneralTestImports"
+add_library("WSGeneralTestImports" SHARED
   "../../../Sources/WSGeneralTestImports/Exports.swift"
 )
 set_target_properties("WSGeneralTestImports" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1439,7 +1439,7 @@ target_link_libraries("WSGeneralTestImports" PRIVATE
   "SDGCommandLineTestUtilities"
 )
 
-add_library("WorkspaceLibrary"
+add_library("WorkspaceLibrary" SHARED
   "../../../Sources/WorkspaceLibrary/Execution.swift"
 )
 set_target_properties("WorkspaceLibrary" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
@@ -1450,7 +1450,7 @@ target_link_libraries("WorkspaceLibrary" PRIVATE
   "WSInterface"
 )
 
-add_library("WorkspaceLibraryTests"
+add_library("WorkspaceLibraryTests" SHARED
   "../../../Tests/WorkspaceLibraryTests/APITests.swift"
   "../../../Tests/WorkspaceLibraryTests/FastTestLocalization.swift"
   "../../../Tests/WorkspaceLibraryTests/InternalTests.swift"

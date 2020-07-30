@@ -802,7 +802,6 @@ func adjustForWindows() {
   ]
   let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
-    "WSCrossPlatformC",
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
   ]

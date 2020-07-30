@@ -165,7 +165,7 @@ import WSSwift
           var cmake: [StrictString] = [
             "cmake_minimum_required(VERSION 3.15)",
             "",
-            "project(\(sanitize(package.name)) LANGUAGES Swift)",
+            "project(\(sanitize(package.name)) LANGUAGES Swift C)",
             "",
             "include(CTest)",
             "",
@@ -198,7 +198,7 @@ import WSSwift
               break
             }
             for source in target.sources.paths {
-              let absoluteURL = URL(fileURLWithPath: source.pathString)
+              let absoluteURL = source.asURL
               let relativeURL = absoluteURL.path(relativeTo: packageTarget.package.path.asURL)
               cmake.append("  " + quote(pathPrefix + relativeURL))
             }
@@ -210,12 +210,16 @@ import WSSwift
             }
             switch target.type {
             case .library, .test:
-              cmake.append(
-                "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
-              )
-              cmake.append(
-                "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
-              )
+              cmake.append(contentsOf: [
+                "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})",
+                "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)",
+              ])
+              if let c = target.underlyingTarget as? ClangTarget {
+                let include = c.includeDir.asURL.path(relativeTo: packageTarget.package.path.asURL)
+                cmake.append(
+                  "target_include_directories(\(sanitize(target.name)) PUBLIC \u{22}${CMAKE_CURRENT_SOURCE_DIR}/../../../\(include)\u{22})"
+                )
+              }
             case .executable, .systemModule:
               break
             }

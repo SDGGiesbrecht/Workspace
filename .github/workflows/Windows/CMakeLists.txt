@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 3.15)
 
-project("Workspace" LANGUAGES Swift)
+project("Workspace" LANGUAGES Swift C)
 
 include(CTest)
 
@@ -907,6 +907,13 @@ target_link_libraries("SDGWeb" PRIVATE
   "SDGCalendar"
 )
 
+add_library("WSCrossPlatformC"
+  "../../../Tests/WSCrossPlatformC/CrossPlatform.c"
+)
+set_target_properties("WSCrossPlatformC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatformC" PRIVATE -enable-testing)
+target_include_directories("WSCrossPlatformC" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../../../Tests/WSCrossPlatformC/include")
+
 add_library("WSLocalizations"
   "../../../Sources/WSLocalizations/ContentLocalization.swift"
   "../../../Sources/WSLocalizations/InterfaceLocalization.swift"
@@ -951,6 +958,7 @@ add_library("WSCrossPlatform"
 set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("WSCrossPlatform" PRIVATE -enable-testing)
 target_link_libraries("WSCrossPlatform" PRIVATE
+  "WSCrossPlatformC"
   "SwiftFormatConfiguration"
 )
 

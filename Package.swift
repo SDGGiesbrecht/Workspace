@@ -810,6 +810,7 @@ func adjustForWindows() {
   // #warning(Haven’t figured out SwiftPM.)
   // (See also !(os(Windows) && SWIFT_PACKAGE))
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+    package.products = []
     impossibleDependencies.append(contentsOf: [
       "SDGLogicTestUtilities",
       "SDGMathematicsTestUtilities",

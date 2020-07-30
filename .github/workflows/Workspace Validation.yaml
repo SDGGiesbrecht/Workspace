@@ -167,7 +167,7 @@ jobs:
         ubuntu1804 run \
           TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
-            --configuration release \
+            --configuration release -Xswiftc -enable-testing \
             --build-tests \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \

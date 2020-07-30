@@ -118,7 +118,6 @@ jobs:
           UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
           apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
             install --assume-yes \
-              clang-9 \
               binutils \
               git \
               libc6-dev \

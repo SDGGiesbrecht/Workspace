@@ -210,11 +210,12 @@ import WSSwift
             }
             switch target.type {
             case .library, .test:
-              cmake.append(contentsOf: [
-                "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})",
-                "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)",
-              ])
-              if let c = target.underlyingTarget as? ClangTarget {
+              if target.underlyingTarget is SwiftTarget {
+                cmake.append(contentsOf: [
+                  "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})",
+                  "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)",
+                ])
+              } else if let c = target.underlyingTarget as? ClangTarget {
                 let include = c.includeDir.asURL.path(relativeTo: packageTarget.package.path.asURL)
                 cmake.append(
                   "target_include_directories(\(sanitize(target.name)) PUBLIC \u{22}${CMAKE_CURRENT_SOURCE_DIR}/../../../\(include)\u{22})"

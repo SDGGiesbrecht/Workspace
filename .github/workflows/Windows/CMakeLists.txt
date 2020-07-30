@@ -910,8 +910,6 @@ target_link_libraries("SDGWeb" PRIVATE
 add_library("WSCrossPlatformC" SHARED
   "../../../Tests/WSCrossPlatformC/CrossPlatform.c"
 )
-set_target_properties("WSCrossPlatformC" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSCrossPlatformC" PRIVATE -enable-testing)
 target_include_directories("WSCrossPlatformC" PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../../../Tests/WSCrossPlatformC/include")
 
 add_library("WSLocalizations" SHARED

@@ -165,7 +165,7 @@ jobs:
         find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/um'
         find '/c/Program Files (x86)/Windows Kits/NETFXSDK'
         ubuntu1804 run \
-          TARGETING_WINDOWS='true' GENERATING_CMAKE_FOR_WINDOWS='true' \
+          TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             --configuration release \
             --build-tests --enable-test-discovery \

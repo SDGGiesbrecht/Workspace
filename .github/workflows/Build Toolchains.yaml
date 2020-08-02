@@ -309,6 +309,11 @@ jobs:
         set -x
         cd swift-build
         cmake --build Dispatch --target install
+    - name: Embed ICU
+      shell: bash
+      run: |
+        set -x
+        cp -R Android/ICU/lib/* Android/Swift/Android.sdk/usr/lib
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

@@ -834,6 +834,9 @@ func adjustForWindows() {
 #endif
 // #workaround(Swift 5.2.4, Until packages work natively on windows.)
 import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  adjustForWindows()
+}
 if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
   adjustForWindows()
 }

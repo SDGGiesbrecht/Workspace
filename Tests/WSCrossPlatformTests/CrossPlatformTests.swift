@@ -14,27 +14,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !(os(Windows) && SWIFT_PACKAGE)
 import SDGPersistence
 import SDGExternalProcess
 import SDGVersioning
 import SDGSwift
-#endif
 
 @testable import WSCrossPlatform
 
 import XCTest
 
-#if !(os(Windows) && SWIFT_PACKAGE)
 import SDGXCTestUtilities
 import SDGPersistenceTestUtilities
-#else
-typealias TestCase = XCTestCase
-#endif
 
 final class CrossPlatformTests: TestCase {
 
-  #if !(os(Windows) && SWIFT_PACKAGE)
   func testCachePermissions() throws {
     var directory = FileManager.default.url(in: .cache, at: "Directory")
     try? FileManager.default.removeItem(at: directory)
@@ -58,13 +51,11 @@ final class CrossPlatformTests: TestCase {
       ).get()
     #endif
   }
-  #endif
 
   func
     testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName()
   {}
 
-  #if !(os(Windows) && SWIFT_PACKAGE)
   func testRepositoryPresence() throws {
     compare(
       "Android",
@@ -85,7 +76,6 @@ final class CrossPlatformTests: TestCase {
       try "text".save(to: directory.appendingPathComponent("Text.txt"))
     }
   }
-  #endif
 
   func testTests() {
     helloWorld()

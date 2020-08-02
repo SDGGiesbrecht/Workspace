@@ -794,87 +794,18 @@ let package = Package(
 
 func adjustForWindows() {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
-  var impossibleDependencies = [
+  let impossibleDependencies = [
     "SwiftPM",
     "SwiftToolsSupport",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
-  var impossibleTargets: Set<String> = [
+  let impossibleTargets: Set<String> = [
     "WSCrossPlatform‐Unicode",
     "WSCrossPlatformC",
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
   ]
-
-  // #warning(Haven’t figured out SwiftPM.)
-  // (See also !(os(Windows) && SWIFT_PACKAGE))
-  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-    package.products = []
-    impossibleDependencies.append(contentsOf: [
-      "SDGLogicTestUtilities",
-      "SDGMathematicsTestUtilities",
-      "SDGCollectionsTestUtilities",
-      "SDGCollation",
-      "SDGPersistence",
-      "SDGPersistenceTestUtilities",
-      "SDGRandomizationTestUtilities",
-      "SDGLocalization",
-      "SDGLocalizationTestUtilities",
-      "SDGGeometryTestUtilities",
-      "SDGCalendar",
-      "SDGPrecisionMathematics",
-      "SDGExternalProcess",
-      "SDGVersioning",
-      "SDGTesting",
-      "SDGXCTestUtilities",
-
-      "SDGWeb",
-      "SDGHTML",
-
-      "SDGSwift",
-      "SDGSwiftPackageManager",
-      "SDGSwiftSource",
-      "SDGXcode",
-      "SDGSwiftConfigurationLoading",
-
-      "SDGCommandLine",
-      "SDGCommandLineTestUtilities",
-      "SDGExportedCommandLineInterface"
-    ])
-    impossibleTargets.formUnion([
-      "WorkspaceConfiguration",
-      "WorkspaceLibrary",
-      "WorkspaceTool",
-      "WSContinuousIntegration",
-      "WSCustomTask",
-      "WSDocumentation",
-      "WSExamples",
-      "WSFileHeaders",
-      "WSGeneralImports",
-      "WSGeneralTestImports",
-      "WSGit",
-      "WSGitHub",
-      "WSInterface",
-      "WSLicence",
-      "WSLocalizations",
-      "WSNormalization",
-      "WSOpenSource",
-      "WSParsing",
-      "WSProject",
-      "WSProofreading",
-      "WSResources",
-      "WSScripts",
-      "WSSwift",
-      "WSTesting",
-      "WSValidation",
-      "WSXcode",
-      "WorkspaceProjectConfiguration",
-
-      "WorkspaceLibraryTests",
-      "WSConfigurationExample"
-    ])
-  }
 
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)

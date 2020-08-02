@@ -161,6 +161,7 @@ jobs:
         # UCRTVersion: 10.0.19041.0
         # VCToolsInstallDir: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.26.28801\
         # VCToolsVersion: 14.26.28801
+        find '/c/Program Files (x86)/Windows Kits/10/Include/10.0.19041.0/ucrt'
         find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/ucrt'
         find '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801'
         find '/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/um'

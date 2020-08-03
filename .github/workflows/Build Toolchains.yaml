@@ -313,7 +313,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        cp -R Android/ICU/lib/* Android/Swift/Android.sdk/usr/lib
+        cp Android/ICU/lib/libicui18n.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:

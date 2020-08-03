@@ -567,7 +567,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(self.wsl(makeDirectory("/tmp")))
     }
     result.append(cURL(from: url, to: temporaryTar, wsl: wsl))
-    var tar: StrictString = "tar \u{2D}\u{2D}extract \u{2D}\u{2D}force\u{2D}local \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
+    var tar: StrictString =
+      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}force\u{2D}local \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
     if wsl {
       tar = self.wsl(tar)
     }
@@ -843,7 +844,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion
-        .string(droppingEmptyPatch: true)
+          .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(
             heading: installLinuxStepName,
@@ -897,28 +898,34 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               wsl("swift \u{2D}\u{2D}version"),
             ]
           ),
-          script(heading: buildStepName, localization: interfaceLocalization, commands: [
-            "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p",
-            wsl([
-              "TARGETING_WINDOWS='true' \u{5C}",
-              "swift build --destination .github/workflows/Windows/SDK.json \u{5C}",
-              "  --configuration release \u{5C}",
-              "  -Xswiftc -use-ld=lld \u{5C}",
-              "  -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
-              "  -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
-              "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
-              "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \u{5C}",
-              "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}' \u{5C}",
-              "  -Xswiftc -L -Xswiftc '\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}' \u{5C}",
-              "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${VCToolsInstallDir}/include\u{22}' \u{5C}",
-              "  -Xswiftc -L -Xswiftc '\u{22}/${VCToolsInstallDir}/lib/x64\u{22}' \u{5C}",
-              "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}' \u{5C}",
-              "  -Xswiftc -L -Xswiftc '\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64\u{22}' \u{5C}",
-              "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}' \u{5C}",
-              "  -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \u{5C}",
-              "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows"
-              ].joinedAsLines())
-          ])
+          script(
+            heading: buildStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p",
+              wsl(
+                [
+                  "TARGETING_WINDOWS='true' \u{5C}",
+                  "swift build --destination .github/workflows/Windows/SDK.json \u{5C}",
+                  "  --configuration release \u{5C}",
+                  "  -Xswiftc -use-ld=lld \u{5C}",
+                  "  -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
+                  "  -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
+                  "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
+                  "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \u{5C}",
+                  "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}' \u{5C}",
+                  "  -Xswiftc -L -Xswiftc '\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}' \u{5C}",
+                  "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${VCToolsInstallDir}/include\u{22}' \u{5C}",
+                  "  -Xswiftc -L -Xswiftc '\u{22}/${VCToolsInstallDir}/lib/x64\u{22}' \u{5C}",
+                  "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}' \u{5C}",
+                  "  -Xswiftc -L -Xswiftc '\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64\u{22}' \u{5C}",
+                  "  -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}' \u{5C}",
+                  "  -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \u{5C}",
+                  "  -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows",
+                ].joinedAsLines()
+              ),
+            ]
+          ),
         ]
         )
         var clones: [StrictString] = []

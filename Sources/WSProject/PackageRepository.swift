@@ -158,7 +158,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
     private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-      let variable = "GENERATING_CMAKE_FOR_WINDOWS"
+      let variable = "TARGETING_WINDOWS"
       #if !os(Windows)
         // #workaround(SwiftPM 0.6.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))

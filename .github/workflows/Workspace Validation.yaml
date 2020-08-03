@@ -156,10 +156,6 @@ jobs:
       run: |
         set -x
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
-        # UniversalCRTSdkDir: C:\Program Files (x86)\Windows Kits\10\
-        # UCRTVersion: 10.0.19041.0
-        # VCToolsInstallDir: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.26.28801\
-        # VCToolsVersion: 14.26.28801
         ubuntu1804 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
@@ -169,17 +165,12 @@ jobs:
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/ucrt"' \
-            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/10.0.19041.0/ucrt/x64"' \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/include'\' \
-            -Xswiftc -L -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/lib/x64'\' \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/um"' \
-            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/10.0.19041.0/um/x64"' \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/shared"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${VCToolsInstallDir}/include"' \
+            -Xswiftc -L -Xswiftc '"/${VCToolsInstallDir}/lib/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
-    - name: Test
-      shell: bash
-      run: |
-        set -x
-        .build/x86_64-unknown-windows-msvc/debug/WorkspacePackageTests.xctest.exe

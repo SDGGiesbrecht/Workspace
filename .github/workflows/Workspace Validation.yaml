@@ -248,7 +248,7 @@ jobs:
         curl --location \
           'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
           --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
-        tar --extract --force-local --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
+        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
         cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
@@ -374,7 +374,7 @@ jobs:
         curl --location \
           'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
           --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+        tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         sudo mkdir -p /
         sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
         swift --version

@@ -567,8 +567,9 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(self.wsl(makeDirectory("/tmp")))
     }
     result.append(cURL(from: url, to: temporaryTar, wsl: wsl))
+    let forceLocal = wsl ? " \u{2D}\u{2D}force\u{2D}local" : ""
     var tar: StrictString =
-      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}force\u{2D}local \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
+      "tar \u{2D}\u{2D}extract\(forceLocal) \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
     if wsl {
       tar = self.wsl(tar)
     }

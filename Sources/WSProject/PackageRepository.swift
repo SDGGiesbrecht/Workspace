@@ -56,7 +56,9 @@ import WorkspaceProjectConfiguration
     #endif
 
     public func resetFileCache(debugReason: String) {
-      PackageRepository.fileCaches[location] = FileCache()
+      #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+        PackageRepository.fileCaches[location] = FileCache()
+      #endif
       #if DEBUG
         print(
           "(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
@@ -90,7 +92,9 @@ import WorkspaceProjectConfiguration
 
     public func resetManifestCache(debugReason: String) {
       resetFileCache(debugReason: debugReason)
-      PackageRepository.manifestCaches[location] = ManifestCache()
+      #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+        PackageRepository.manifestCaches[location] = ManifestCache()
+      #endif
       #if DEBUG
         print(
           "(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"

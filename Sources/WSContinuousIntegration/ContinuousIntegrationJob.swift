@@ -46,6 +46,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   public static let currentXcodeVersion = Version(11, 6)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
+  private static let currentWSLImage = currentLinuxVersion.replacingMatches(for: ".", with: "")
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -432,7 +433,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString]) -> StrictString {
+  private func wsl(_ command: StrictString) -> StrictString {
+    let command = command.replacingMatches(for: "\n", with: "\n  ")
+    return "ubuntu\(ContinuousIntegrationJob.currentWSLImage) run \u{5C}\n  \(command)"
+  }
+
+  private func aptGet(_ packages: [StrictString], wsl: Bool = false) -> StrictString {
     let packages = packages.joined(separator: " ")
     return [
       "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
@@ -486,17 +492,33 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     _ url: StrictString,
     andUnzipTo destination: StrictString,
     containerName: StrictString? = nil,
-    sudoCopy: Bool = false
+    sudoCopy: Bool = false,
+    localTemporaryDirectory: Bool = false,
+    use7z: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = containerName ?? zipFileName.truncated(before: ".")
-    let temporaryZip: StrictString = "/tmp/\(zipFileName)"
-    let temporary: StrictString = "/tmp/\(fileName)"
-    return [
-      cURL(from: url, to: temporaryZip),
-      "unzip \(temporaryZip) \u{2D}d /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy),
-    ].joinedAsLines()
+    var temporaryZip: StrictString = "/tmp/\(zipFileName)"
+    var temporary: StrictString = "/tmp/\(fileName)"
+    if localTemporaryDirectory {
+      let local: StrictString = ".build/SDG"
+      temporaryZip.prepend(contentsOf: local)
+      temporary.prepend(contentsOf: local)
+    }
+    var result: [StrictString] = []
+    if localTemporaryDirectory {
+      result.append(makeDirectory(temporaryZip.truncated(before: "/\(zipFileName)")))
+    }
+    result.append(cURL(from: url, to: temporaryZip))
+    if use7z {
+      result.append("7z x \(temporaryZip) -o\(destination)")
+    } else {
+      result.append(contentsOf: [
+        "unzip \(temporaryZip) \u{2D}d /tmp",
+        copy(from: temporary, to: destination, sudo: sudoCopy),
+      ])
+    }
+    return result.joinedAsLines()
   }
 
   private func cURL(
@@ -782,9 +804,48 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        result.append(
-          script(heading: installLinuxStepName, localization: interfaceLocalization, commands: [
-          ])
+        result.append(contentsOf: [
+          script(
+            heading: installLinuxStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://aka.ms/wsl\u{2D}ubuntu\u{2D}\(ContinuousIntegrationJob.currentWSLImage)",
+                andUnzipTo: ".build/SDG/Linux/Ubuntu",
+                localTemporaryDirectory: true,
+                use7z: true
+              ),
+              prependPath("$(pwd)/.build/SDG/Linux/Ubuntu"),
+              "ubuntu\(ContinuousIntegrationJob.currentWSLImage) install \u{2D}\u{2D}root",
+            ]
+          ),
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(
+                [
+                  "binutils",
+                  "git",
+                  "libc6-dev",
+                  "libcurl4",
+                  "libedit2",
+                  "libgcc-5-dev",
+                  "libpython2.7",
+                  "libsqlite3-0",
+                  "libstdc++-5-dev",
+                  "libxml2",
+                  "lld-6.0",
+                  "pkg-config",
+                  "tzdata",
+                  "zlib1g-dev",
+                ],
+                wsl: true
+              ),
+              wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}6.0 //usr/bin/lld\u{2D}link"),
+            ]
+          ),
+        ]
         )
         var clones: [StrictString] = []
         // #workaround(SwiftSyntax 0.50200.0, Cannot build.)

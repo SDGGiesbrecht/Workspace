@@ -126,12 +126,12 @@ jobs:
       shell: bash
       run: |
         set -x
-        mkdir -p .build/SDG/Linux
+        mkdir -p .build/SDG/tmp
         curl --location \
           'https://aka.ms/wsl-ubuntu-1804' \
-          --output '.build/SDG/Linux/ubuntu-1804.zip'
-        7z x .build/SDG/Linux/ubuntu-1804.zip -o.build/SDG/Linux/Ubuntu
-        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu"
+          --output '.build/SDG/tmp/wsl-ubuntu-1804'
+        7z x .build/SDG/tmp/wsl-ubuntu-1804 -o.build/SDG/Linux/Ubuntu
+        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804 install --root
     - name: Install SwiftPM dependencies on Linux

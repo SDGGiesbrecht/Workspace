@@ -169,13 +169,13 @@ jobs:
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '/${UniversalCRTSdkDir}/Include/10.0.19041.0/ucrt' \
-            -Xswiftc -L -Xswiftc '/${UniversalCRTSdkDir}/lib/10.0.19041.0/ucrt/x64' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/ucrt"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/10.0.19041.0/ucrt/x64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/include'\' \
             -Xswiftc -L -Xswiftc \''//mnt/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.26.28801/lib/x64'\' \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '/${UniversalCRTSdkDir}/Include/10.0.19041.0/um' \
-            -Xswiftc -L -Xswiftc '/${UniversalCRTSdkDir}/lib/10.0.19041.0/um/x64' \
-            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '/${UniversalCRTSdkDir}/Include/10.0.19041.0/shared' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/um"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/10.0.19041.0/um/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/10.0.19041.0/shared"' \
             -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
     - name: Test

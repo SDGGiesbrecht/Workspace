@@ -439,11 +439,31 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   private func aptGet(_ packages: [StrictString], wsl: Bool = false) -> StrictString {
-    let packages = packages.joined(separator: " ")
-    return [
-      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
-    ].joinedAsLines()
+    var update: StrictString = "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes"
+    if wsl {
+      update = self.wsl(update)
+    }
+    var installLines: [StrictString] = [
+      "UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \u{5C}",
+      "apt\u{2D}get \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confdef\u{22} \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confold\u{22} \u{5C}",
+      "  install \u{2D}\u{2D}assume\u{2D}yes \u{5C}",
+    ]
+    let sorted = packages.sorted()
+    installLines.append(
+      contentsOf: sorted.indices.map { index in
+        let package = sorted[index]
+        var entry: StrictString = "    \(package)"
+        if index ≠ sorted.indices.last {
+          entry.append(contentsOf: " \u{5C}")
+        }
+        return entry
+      }
+    )
+    var install = installLines.joinedAsLines()
+    if wsl {
+      install = self.wsl(install)
+    }
+    return [update, install].joinedAsLines()
   }
 
   private func cURL(

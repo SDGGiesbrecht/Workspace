@@ -134,7 +134,7 @@ jobs:
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804 install --root
-    - name: Install SwiftPM dependencies on Linux
+    - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
@@ -217,7 +217,7 @@ jobs:
         git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.1 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.6 --depth 1 --config advice.detachedHead=false
         git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
-    - name: Build tests
+    - name: Build
       shell: bash
       run: |
         set -x
@@ -274,13 +274,20 @@ jobs:
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
     - name: Install cURL
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes curl
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
     - name: Refresh
       shell: bash
       run: |
@@ -477,13 +484,20 @@ jobs:
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
     - name: Install cURL
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes curl
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
     - name: Refresh
       shell: bash
       run: |

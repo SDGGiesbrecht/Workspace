@@ -178,8 +178,7 @@ jobs:
             -Xswiftc -L -Xswiftc \''//mnt/c/Program Files (x86)/Windows Kits/10/lib/10.0.19041.0/um/x64'\' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc \''//mnt/c/Program Files (x86)/Windows Kits/10/Include/10.0.19041.0/shared'\' \
             -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
-            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows \
-            -v
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
     - name: Test
       shell: bash
       run: |

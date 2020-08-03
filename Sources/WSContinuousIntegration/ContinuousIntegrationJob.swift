@@ -782,6 +782,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
+        result.append(
+          script(heading: installLinuxStepName, localization: interfaceLocalization, commands: [
+          ])
+        )
         var clones: [StrictString] = []
         // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
@@ -1083,6 +1087,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch Android SDK"
       case .deutschDeutschland:
         return "Android‐Entwicklungsausrüstung holen"
+      }
+    })
+  }
+
+  private var installLinuxStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Linux"
+      case .deutschDeutschland:
+        return "Linux installieren"
       }
     })
   }

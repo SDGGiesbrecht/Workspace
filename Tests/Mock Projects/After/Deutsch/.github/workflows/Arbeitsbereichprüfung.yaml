@@ -148,6 +148,85 @@ jobs:
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         swift --version
+    - name: Linux installieren
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG/tmp
+        curl --location \
+          'https://aka.ms/wsl-ubuntu-1804' \
+          --output '.build/SDG/tmp/wsl-ubuntu-1804'
+        7z x .build/SDG/tmp/wsl-ubuntu-1804 -o.build/SDG/Linux/Ubuntu
+        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
+        ubuntu1804 install --root
+    - name: SwiftPM‐Abhängigkeiten installieren
+      shell: bash
+      run: |
+        set -x
+        ubuntu1804 run \
+          apt-get update --assume-yes
+        ubuntu1804 run \
+          UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+          apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+            install --assume-yes \
+              binutils \
+              git \
+              libc6-dev \
+              libcurl4 \
+              libedit2 \
+              libgcc-5-dev \
+              libpython2.7 \
+              libsqlite3-0 \
+              libstdc++-5-dev \
+              libxml2 \
+              lld-6.0 \
+              pkg-config \
+              tzdata \
+              zlib1g-dev
+        ubuntu1804 run \
+          ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
+    - name: SwiftPM installieren
+      shell: bash
+      run: |
+        set -x
+        ubuntu1804 run \
+          mkdir -p /tmp
+        ubuntu1804 run \
+          curl --location \
+            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
+            --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+        ubuntu1804 run \
+          tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+        ubuntu1804 run \
+          mkdir -p /
+        ubuntu1804 run \
+          cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
+        ubuntu1804 run \
+          swift --version
+    - name: Erstellen
+      shell: bash
+      run: |
+        set -x
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
+        ubuntu1804 run \
+          TARGETING_WINDOWS='true' \
+          swift build --destination .github/workflows/Windows/SDK.json \
+            --configuration release \
+            -Xswiftc -use-ld=lld \
+            -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
+            -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${VCToolsInstallDir}/include"' \
+            -Xswiftc -L -Xswiftc '"/${VCToolsInstallDir}/lib/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
+            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
     - name: Abhängigkeiten holen
       shell: bash
       run: |
@@ -209,13 +288,20 @@ jobs:
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
     - name: cURL installieren
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes curl
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
     - name: Arbeitsbereich installieren
       shell: bash
       run: |
@@ -591,13 +677,20 @@ jobs:
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes libsqlite3-dev libncurses-dev
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
     - name: cURL installieren
       shell: bash
       run: |
         set -x
         apt-get update --assume-yes
-        apt-get install --assume-yes curl
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
     - name: Arbeitsbereich installieren
       shell: bash
       run: |

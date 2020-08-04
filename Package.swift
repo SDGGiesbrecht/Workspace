@@ -252,7 +252,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 3, 2)
+      from: Version(5, 4, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -260,7 +260,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(2, 0, 1)
+      from: Version(2, 0, 2)
     ),
     .package(
       name: "SwiftPM",
@@ -806,6 +806,7 @@ func adjustForWindows() {
     "test‐ios‐simulator",
     "test‐tvos‐simulator",
   ]
+
   package.targets.removeAll(where: { target in
     return impossibleTargets.contains(target.name)
   })
@@ -833,7 +834,7 @@ func adjustForWindows() {
 #endif
 // #workaround(Swift 5.2.4, Until packages work natively on windows.)
 import Foundation
-if ProcessInfo.processInfo.environment["GENERATING_CMAKE_FOR_WINDOWS"] == "true" {
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   adjustForWindows()
 }
 

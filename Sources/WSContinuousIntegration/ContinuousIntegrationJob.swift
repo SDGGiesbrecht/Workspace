@@ -46,6 +46,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   public static let currentXcodeVersion = Version(11, 6)
   private static let currentWindowsVersion = "2019"
   private static let currentLinuxVersion = "18.04"
+  private static let currentWSLImage = currentLinuxVersion.replacingMatches(for: ".", with: "")
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -432,18 +433,44 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString]) -> StrictString {
-    let packages = packages.joined(separator: " ")
-    return [
-      "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes",
-      "apt\u{2D}get install \u{2D}\u{2D}assume\u{2D}yes \(packages)",
-    ].joinedAsLines()
+  private func wsl(_ command: StrictString) -> StrictString {
+    let command = command.replacingMatches(for: "\n", with: "\n  ")
+    return "ubuntu\(ContinuousIntegrationJob.currentWSLImage) run \u{5C}\n  \(command)"
+  }
+
+  private func aptGet(_ packages: [StrictString], wsl: Bool = false) -> StrictString {
+    var update: StrictString = "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes"
+    if wsl {
+      update = self.wsl(update)
+    }
+    var installLines: [StrictString] = [
+      "UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \u{5C}",
+      "apt\u{2D}get \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confdef\u{22} \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confold\u{22} \u{5C}",
+      "  install \u{2D}\u{2D}assume\u{2D}yes \u{5C}",
+    ]
+    let sorted = packages.sorted()
+    installLines.append(
+      contentsOf: sorted.indices.map { index in
+        let package = sorted[index]
+        var entry: StrictString = "    \(package)"
+        if index ≠ sorted.indices.last {
+          entry.append(contentsOf: " \u{5C}")
+        }
+        return entry
+      }
+    )
+    var install = installLines.joinedAsLines()
+    if wsl {
+      install = self.wsl(install)
+    }
+    return [update, install].joinedAsLines()
   }
 
   private func cURL(
     from origin: StrictString,
     to destination: StrictString,
-    allowVariableSubstitution: Bool = false
+    allowVariableSubstitution: Bool = false,
+    wsl: Bool = false
   ) -> StrictString {
     let quotedDestination: StrictString
     if allowVariableSubstitution {
@@ -451,11 +478,15 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     } else {
       quotedDestination = "\u{27}\(destination)\u{27}"
     }
-    return [
+    var result: StrictString = [
       "curl \u{2D}\u{2D}location \u{5C}",
       "  \u{27}\(origin)\u{27} \u{5C}",
       "  \u{2D}\u{2D}output \(quotedDestination)",
     ].joinedAsLines()
+    if wsl {
+      result = self.wsl(result)
+    }
+    return result
   }
 
   private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
@@ -464,12 +495,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private func copy(
     from origin: StrictString,
     to destination: StrictString,
-    sudo: Bool = false
+    sudo: Bool = false,
+    wsl: Bool = false
   ) -> StrictString {
-    return [
+    var result: [StrictString] = [
       makeDirectory(destination, sudo: sudo),
-      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)",
-    ].joinedAsLines()
+      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/\(wsl ? "usr" : "*") \(destination)\(wsl ? "/" : "")",
+    ]
+    if wsl {
+      result = result.map { self.wsl($0) }
+    }
+    return result.joinedAsLines()
   }
 
   private func cURLAndInstallMSI(_ url: StrictString) -> StrictString {
@@ -486,34 +522,60 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     _ url: StrictString,
     andUnzipTo destination: StrictString,
     containerName: StrictString? = nil,
-    sudoCopy: Bool = false
+    sudoCopy: Bool = false,
+    localTemporaryDirectory: Bool = false,
+    use7z: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = containerName ?? zipFileName.truncated(before: ".")
-    let temporaryZip: StrictString = "/tmp/\(zipFileName)"
-    let temporary: StrictString = "/tmp/\(fileName)"
-    return [
-      cURL(from: url, to: temporaryZip),
-      "unzip \(temporaryZip) \u{2D}d /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy),
-    ].joinedAsLines()
+    var temporaryZip: StrictString = "/tmp/\(zipFileName)"
+    var temporary: StrictString = "/tmp/\(fileName)"
+    if localTemporaryDirectory {
+      let local: StrictString = ".build/SDG"
+      temporaryZip.prepend(contentsOf: local)
+      temporary.prepend(contentsOf: local)
+    }
+    var result: [StrictString] = []
+    if localTemporaryDirectory {
+      result.append(makeDirectory(temporaryZip.truncated(before: "/\(zipFileName)")))
+    }
+    result.append(cURL(from: url, to: temporaryZip))
+    if use7z {
+      result.append("7z x \(temporaryZip) \u{2D}o\(destination)")
+    } else {
+      result.append(contentsOf: [
+        "unzip \(temporaryZip) \u{2D}d /tmp",
+        copy(from: temporary, to: destination, sudo: sudoCopy),
+      ])
+    }
+    return result.joinedAsLines()
   }
 
   private func cURL(
     _ url: StrictString,
     named name: StrictString? = nil,
     andUntarTo destination: StrictString,
-    sudoCopy: Bool = false
+    sudoCopy: Bool = false,
+    wsl: Bool = false
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = name ?? tarFileName.truncated(before: ".tar")
     let temporaryTar: StrictString = "/tmp/\(tarFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
-    return [
-      cURL(from: url, to: temporaryTar),
-      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp",
-      copy(from: temporary, to: destination, sudo: sudoCopy),
-    ].joinedAsLines()
+    var result: [StrictString] = []
+    if wsl {
+      result.append(self.wsl(makeDirectory("/tmp")))
+    }
+    result.append(cURL(from: url, to: temporaryTar, wsl: wsl))
+    let forceLocal = wsl ? " \u{2D}\u{2D}force\u{2D}local" : ""
+    var tar: StrictString =
+      "tar \u{2D}\u{2D}extract\(forceLocal) \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
+    if wsl {
+      tar = self.wsl(tar)
+    }
+    result.append(tar)
+    result.append(copy(from: temporary, to: destination, sudo: sudoCopy, wsl: wsl))
+    return result.joinedAsLines()
   }
 
   private func grantPermissions(to path: StrictString, sudo: Bool = true) -> StrictString {
@@ -782,6 +844,91 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
+        let version = ContinuousIntegrationJob.currentSwiftVersion
+          .string(droppingEmptyPatch: true)
+        result.append(contentsOf: [
+          script(
+            heading: installLinuxStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://aka.ms/wsl\u{2D}ubuntu\u{2D}\(ContinuousIntegrationJob.currentWSLImage)",
+                andUnzipTo: ".build/SDG/Linux/Ubuntu",
+                localTemporaryDirectory: true,
+                use7z: true
+              ),
+              prependPath("$(pwd)/.build/SDG/Linux/Ubuntu"),
+              "ubuntu\(ContinuousIntegrationJob.currentWSLImage) install \u{2D}\u{2D}root",
+            ]
+          ),
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(
+                [
+                  "binutils",
+                  "git",
+                  "libc6\u{2D}dev",
+                  "libcurl4",
+                  "libedit2",
+                  "libgcc\u{2D}5\u{2D}dev",
+                  "libpython2.7",
+                  "libsqlite3\u{2D}0",
+                  "libstdc++\u{2D}5\u{2D}dev",
+                  "libxml2",
+                  "lld\u{2D}6.0",
+                  "pkg\u{2D}config",
+                  "tzdata",
+                  "zlib1g\u{2D}dev",
+                ],
+                wsl: true
+              ),
+              wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}6.0 //usr/bin/lld\u{2D}link"),
+            ]
+          ),
+          script(
+            heading: installSwiftPMStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+                andUntarTo: "/",
+                wsl: true
+              ),
+              wsl("swift \u{2D}\u{2D}version"),
+            ]
+          ),
+          script(
+            heading: buildStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p",
+              wsl(
+                [
+                  "TARGETING_WINDOWS=\u{27}true\u{27} \u{5C}",
+                  "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
+                  "  \u{2D}\u{2D}configuration release \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}sdk \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/include\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/lib/x64\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows/x86_64 \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows",
+                ].joinedAsLines()
+              ),
+            ]
+          ),
+        ]
+        )
         var clones: [StrictString] = []
         // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
@@ -1076,6 +1223,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var installSwiftPMStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install SwiftPM"
+      case .deutschDeutschland:
+        return "SwiftPM installieren"
+      }
+    })
+  }
+
   private var fetchAndroidSDKStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -1083,6 +1241,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch Android SDK"
       case .deutschDeutschland:
         return "Android‐Entwicklungsausrüstung holen"
+      }
+    })
+  }
+
+  private var installLinuxStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Linux"
+      case .deutschDeutschland:
+        return "Linux installieren"
       }
     })
   }

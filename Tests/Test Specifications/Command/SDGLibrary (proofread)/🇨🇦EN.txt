@@ -25,6 +25,7 @@ Proofreading source code... (§1)
 .github/PULL_REQUEST_TEMPLATE.md
 .github/workflows/Android/SDK.json
 .github/workflows/Documentation Deployment.yaml
+.github/workflows/Windows/SDK.json
 .github/workflows/Windows/WindowsMain.swift
 .github/workflows/Workspace Validation.yaml
 .gitignore

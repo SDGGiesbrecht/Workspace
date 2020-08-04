@@ -903,7 +903,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: buildStepName,
             localization: interfaceLocalization,
             commands: [
-              "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p",
+              "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p",
               wsl(
                 [
                   "TARGETING_WINDOWS=\u{27}true\u{27} \u{5C}",

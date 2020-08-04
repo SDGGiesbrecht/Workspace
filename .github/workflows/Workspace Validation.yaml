@@ -109,9 +109,7 @@ jobs:
         ubuntu1804 install --root
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
         ubuntu1804 run \
-          find '"/${UniversalCRTSdkDir}"'
-        ubuntu1804 run \
-          find '"/${VCToolsInstallDir}"'
+          find '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"'
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

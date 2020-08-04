@@ -134,6 +134,8 @@ jobs:
               zlib1g-dev
         ubuntu1804 run \
           ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
+        ubuntu1804 run \
+          find //usr/bin
     - name: Install SwiftPM
       shell: bash
       run: |

@@ -541,7 +541,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     result.append(cURL(from: url, to: temporaryZip))
     if use7z {
-      result.append("7z x \(temporaryZip) -o\(destination)")
+      result.append("7z x \(temporaryZip) \u{2D}o\(destination)")
     } else {
       result.append(contentsOf: [
         "unzip \(temporaryZip) \u{2D}d /tmp",

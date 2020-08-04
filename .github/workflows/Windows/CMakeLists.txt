@@ -46,59 +46,6 @@ add_library("SDGLogic"
 set_target_properties("SDGLogic" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
 target_compile_options("SDGLogic" PRIVATE -enable-testing)
 
-add_library("SDGSwiftConfiguration"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Configuration.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Context.swift"
-  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Export.swift"
-)
-set_target_properties("SDGSwiftConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SDGSwiftConfiguration" PRIVATE -enable-testing)
-
-add_library("SwiftFormatConfiguration"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
-  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/RuleRegistry+Generated.swift"
-)
-set_target_properties("SwiftFormatConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("SwiftFormatConfiguration" PRIVATE -enable-testing)
-
-add_library("WSCrossPlatform"
-  "../../../Tests/WSCrossPlatform/CrossPlatform.swift"
-)
-set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSCrossPlatform" PRIVATE -enable-testing)
-target_link_libraries("WSCrossPlatform" PRIVATE
-  "SwiftFormatConfiguration"
-)
-
-add_executable("WSCrossPlatformTool"
-  "../../../Tests/WSCrossPlatformTool/main.swift"
-)
-target_link_libraries("WSCrossPlatformTool" PRIVATE
-  "WSCrossPlatform"
-)
-
-add_library("_NumericsShims"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/_NumericsShims/_NumericsShims.c"
-)
-set_target_properties("_NumericsShims" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("_NumericsShims" PRIVATE -enable-testing)
-
-add_library("RealModule"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/AlgebraicField.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/Double+Real.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/ElementaryFunctions.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/Float+Real.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/Float80+Real.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/Real.swift"
-  "../../../.build/SDG/Dependencies/swift-numerics/Sources/RealModule/RealFunctions.swift"
-)
-set_target_properties("RealModule" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("RealModule" PRIVATE -enable-testing)
-target_link_libraries("RealModule" PRIVATE
-  "_NumericsShims"
-)
-
 add_library("SDGMathematics"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGMathematics/Angle.swift"
   "../../../.build/SDG/Dependencies/SDGCornerstone/Sources/SDGMathematics/BitField.swift"
@@ -139,7 +86,6 @@ target_compile_options("SDGMathematics" PRIVATE -enable-testing)
 target_link_libraries("SDGMathematics" PRIVATE
   "SDGControlFlow"
   "SDGLogic"
-  "RealModule"
 )
 
 add_library("SDGCollections"
@@ -490,6 +436,14 @@ target_link_libraries("SDGXCTestUtilities" PRIVATE
   "SDGText"
   "SDGPersistence"
 )
+
+add_library("SDGSwiftConfiguration"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Configuration.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Context.swift"
+  "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftConfiguration/Export.swift"
+)
+set_target_properties("SDGSwiftConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SDGSwiftConfiguration" PRIVATE -enable-testing)
 
 add_library("SDGSwiftLocalizations"
   "../../../.build/SDG/Dependencies/SDGSwift/Sources/SDGSwiftLocalizations/APILocalization.swift"
@@ -955,21 +909,6 @@ target_link_libraries("SDGWeb" PRIVATE
   "SDGCalendar"
 )
 
-add_library("WSCrossPlatformTests"
-  "../../../Tests/WSCrossPlatformTests/CrossPlatformTests.swift"
-)
-set_target_properties("WSCrossPlatformTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
-target_compile_options("WSCrossPlatformTests" PRIVATE -enable-testing)
-target_link_libraries("WSCrossPlatformTests" PRIVATE
-  "WSCrossPlatform"
-  "SDGPersistence"
-  "SDGExternalProcess"
-  "SDGVersioning"
-  "SDGSwift"
-  "SDGXCTestUtilities"
-  "SDGPersistenceTestUtilities"
-)
-
 add_library("WSLocalizations"
   "../../../Sources/WSLocalizations/ContentLocalization.swift"
   "../../../Sources/WSLocalizations/InterfaceLocalization.swift"
@@ -998,6 +937,45 @@ target_link_libraries("WSGeneralImports" PRIVATE
   "SDGExternalProcess"
   "SDGCommandLine"
   "SDGSwift"
+)
+
+add_library("SwiftFormatConfiguration"
+  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Configuration.swift"
+  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/Indent.swift"
+  "../../../.build/SDG/Dependencies/swift-format/Sources/SwiftFormatConfiguration/RuleRegistry+Generated.swift"
+)
+set_target_properties("SwiftFormatConfiguration" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("SwiftFormatConfiguration" PRIVATE -enable-testing)
+
+add_library("WSCrossPlatform"
+  "../../../Tests/WSCrossPlatform/CrossPlatform.swift"
+)
+set_target_properties("WSCrossPlatform" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatform" PRIVATE -enable-testing)
+target_link_libraries("WSCrossPlatform" PRIVATE
+  "SwiftFormatConfiguration"
+)
+
+add_library("WSCrossPlatformTests"
+  "../../../Tests/WSCrossPlatformTests/CrossPlatformTests.swift"
+)
+set_target_properties("WSCrossPlatformTests" PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})
+target_compile_options("WSCrossPlatformTests" PRIVATE -enable-testing)
+target_link_libraries("WSCrossPlatformTests" PRIVATE
+  "WSCrossPlatform"
+  "SDGPersistence"
+  "SDGExternalProcess"
+  "SDGVersioning"
+  "SDGSwift"
+  "SDGXCTestUtilities"
+  "SDGPersistenceTestUtilities"
+)
+
+add_executable("WSCrossPlatformTool"
+  "../../../Tests/WSCrossPlatformTool/main.swift"
+)
+target_link_libraries("WSCrossPlatformTool" PRIVATE
+  "WSCrossPlatform"
 )
 
 add_library("WorkspaceConfiguration"

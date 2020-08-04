@@ -134,10 +134,6 @@ jobs:
               zlib1g-dev
         ubuntu1804 run \
           ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
-        ubuntu1804 run \
-          find //usr/bin
-        ubuntu1804 run \
-          ln -Fs //usr/bin/clang-9 //usr/bin/clang
     - name: Install SwiftPM
       shell: bash
       run: |
@@ -154,6 +150,8 @@ jobs:
           mkdir -p /
         ubuntu1804 run \
           cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
+        ubuntu1804 run \
+          ln -Fs //usr/bin/clang-9 //usr/bin/clang
         ubuntu1804 run \
           swift --version
     - name: Build

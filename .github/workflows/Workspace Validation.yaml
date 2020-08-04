@@ -107,6 +107,11 @@ jobs:
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         ubuntu1804 install --root
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
+        ubuntu1804 run \
+          find '"/${UniversalCRTSdkDir}"'
+        ubuntu1804 run \
+          find '"/${VCToolsInstallDir}"'
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

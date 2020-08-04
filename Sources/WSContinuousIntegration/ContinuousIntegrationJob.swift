@@ -868,6 +868,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               aptGet(
                 [
                   "binutils",
+                  "clang\u{2D}9",
                   "git",
                   "libc6\u{2D}dev",
                   "libcurl4",
@@ -896,6 +897,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 andUntarTo: "/",
                 wsl: true
               ),
+              wsl("ln \u{2D}fs //usr/bin/clang\u{2D}9 //usr/bin/clang"),
               wsl("swift \u{2D}\u{2D}version"),
             ]
           ),
@@ -915,12 +917,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/include\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${VCToolsInstallDir}/include\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/lib/x64\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}\u{27} \u{5C}",
+                  "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows/x86_64 \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows",
                 ].joinedAsLines()

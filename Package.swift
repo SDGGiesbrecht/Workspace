@@ -281,8 +281,6 @@ let package = Package(
       .exact(Version(0, 50200, 1))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
-    // #workaround(Until SwiftPM builds.)
-    .package(name: "llbuild", url: "https://github.com/apple/swift-llbuild.git", .exact(Version(0, 3, 0)))
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -741,8 +739,6 @@ let package = Package(
       dependencies: [
         "WSCrossPlatformC",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        // #workaround(Until SwiftPM builds.)
-        .product(name: "llbuildSwift", package: "llbuild")
       ],
       path: "Tests/WSCrossPlatform"
     ),

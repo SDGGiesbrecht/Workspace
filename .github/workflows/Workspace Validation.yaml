@@ -178,7 +178,7 @@ jobs:
             -Xcc -isystem -Xcc '"/${VCToolsInstallDir}/include"' \
             -Xswiftc -L -Xswiftc '"/${VCToolsInstallDir}/lib/x64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
-            -Xcc-isystem-Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
+            -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
             -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \

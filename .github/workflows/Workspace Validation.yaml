@@ -183,6 +183,9 @@ jobs:
       run: |
         set -x
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion/p:VCToolsInstallDir/p
+        ubuntu1804 run echo '"${UniversalCRTSdkDir}"'
+        ubuntu1804 run echo '"${UCRTVersion}"'
+        ubuntu1804 run echo '"${VCToolsInstallDir}"'
         ubuntu1804 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \

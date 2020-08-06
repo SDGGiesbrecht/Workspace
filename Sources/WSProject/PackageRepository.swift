@@ -158,13 +158,17 @@ import WorkspaceProjectConfiguration
       }
     #endif
     private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-      let variable = "TARGETING_WINDOWS"
+      let variables = ["TARGETING_WINDOWS", "GENERATING_TESTS"]
       #if !os(Windows)
         // #workaround(SwiftPM 0.6.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
-          try? ProcessEnv.setVar(variable, value: "true")
+          for variable in variables {
+            try? ProcessEnv.setVar(variable, value: "true")
+          }
           defer {
-            try? ProcessEnv.unsetVar(variable)
+            for variable in variables {
+              try? ProcessEnv.unsetVar(variable)
+            }
           }
         #endif
       #endif

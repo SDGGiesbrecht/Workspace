@@ -16,24 +16,8 @@
 
 import XCTest
 
-@testable import WSCrossPlatformTests
 @testable import WorkspaceLibraryTests
-
-extension WSCrossPlatformTests.CrossPlatformTests {
-  static let windowsTests: [XCTestCaseEntry] = [
-    testCase([
-      ("testCachePermissions", testCachePermissions),
-      ("testGit", testGit),
-      (
-        "testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName",
-        testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName
-      ),
-      ("testRepositoryPresence", testRepositoryPresence),
-      ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
-      ("testTests", testTests),
-    ])
-  ]
-}
+@testable import WSCrossPlatformTests
 
 extension WorkspaceLibraryTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
@@ -99,9 +83,25 @@ extension WorkspaceLibraryTests.InternalTests {
   ]
 }
 
+extension WSCrossPlatformTests.CrossPlatformTests {
+  static let windowsTests: [XCTestCaseEntry] = [
+    testCase([
+      ("testCachePermissions", testCachePermissions),
+      ("testGit", testGit),
+      (
+        "testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName",
+        testReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyReallyLongTestName
+      ),
+      ("testRepositoryPresence", testRepositoryPresence),
+      ("testTemporaryDirectoryPermissions", testTemporaryDirectoryPermissions),
+      ("testTests", testTests),
+    ])
+  ]
+}
+
 var tests = [XCTestCaseEntry]()
-tests += WSCrossPlatformTests.CrossPlatformTests.windowsTests
 tests += WorkspaceLibraryTests.APITests.windowsTests
 tests += WorkspaceLibraryTests.InternalTests.windowsTests
+tests += WSCrossPlatformTests.CrossPlatformTests.windowsTests
 
 XCTMain(tests)

@@ -905,7 +905,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
 // Windows Tests (Generated automatically by Workspace.)
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true",
+  ProcessInfo.processInfo.environment["GENERATING_TESTS"] == nil
+{
   var tests: [Target] = []
   var other: [Target] = []
   for target in package.targets {

@@ -902,3 +902,11 @@ func adjustForWeb() {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()
 }
+
+var dependencies: [Target.Dependency] = []
+for target in package.targets where target.type == .test {
+  dependencies.append(.target(name: target.name))
+}
+package.targets.append(
+  .target(name: "PackageTests", dependencies: dependencies, path: ".github/workflows/Windows")
+)

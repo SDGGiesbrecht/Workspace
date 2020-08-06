@@ -114,7 +114,8 @@ import WSSwift
           output: output
         )
       }
-      try refreshCMake(output: output)
+      try cleanCMakeUp(output: output)
+      try refreshWindowsTests(output: output)
       try refreshWindowsSDK(output: output)
       try refreshAndroidSDK(output: output)
     }
@@ -140,230 +141,86 @@ import WSSwift
       }
     }
 
-    private func refreshCMake(output: Command.Output) throws {
+    private func cleanCMakeUp(output: Command.Output) throws {
       let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
       let mainURL = location.appendingPathComponent(".github/workflows/Windows/WindowsMain.swift")
-      if try ¬relevantJobs(output: output).contains(.windows) {
-        delete(url, output: output)
-        delete(mainURL, output: output)
-      } else {
-        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
-          let package = try self.cachedWindowsPackage()
-          let graph = try self.cachedWindowsPackageGraph()
+      delete(url, output: output)
+      delete(mainURL, output: output)
+    }
 
-          func quote(_ string: String) -> StrictString {
-            return "\u{22}\(string)\u{22}"
-          }
-          func sanitize(_ string: String) -> StrictString {
-            return quote(
-              String(
-                string.map({ $0.isASCII ∧ $0.isLetter ? $0 : "_" })
-              )
-            )
-          }
-
-          var cmake: [StrictString] = [
-            "cmake_minimum_required(VERSION 3.15)",
-            "",
-            "project(\(sanitize(package.name)) LANGUAGES Swift)",
-            "",
-            "include(CTest)",
-            "",
-            "set(CMAKE_Swift_MODULE_DIRECTORY ${CMAKE_BINARY_DIR}/swift)",
-            "set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
-            "set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)",
-            "set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)",
-            "",
-            "option(BUILD_SHARED_LIBS \u{22}Use dynamic linking\u{22} YES)",
-          ]
-
-          var testTargets: [ResolvedTarget] = []
-          for packageTarget in graph.sortedReachableTargets() {
-            let target = packageTarget.target
-            var pathPrefix: String = "../../../"
-            if ¬graph.rootPackages.contains(where: { $0.name == packageTarget.package.name }) {
-              pathPrefix += ".build/SDG/Dependencies/\(packageTarget.package.name)/"
-            }
-
-            if case .test = target.type {
-              testTargets.append(target)
-            }
-            cmake.append("")
-            switch target.type {
-            case .library, .test:
-              cmake.append("add_library(" + sanitize(target.name))
-            case .executable:
-              cmake.append("add_executable(" + sanitize(target.name))
-            case .systemModule:  // @exempt(from: tests)
-              break
-            }
-            for source in target.sources.paths {
-              let absoluteURL = URL(fileURLWithPath: source.pathString)
-              let relativeURL = absoluteURL.path(relativeTo: packageTarget.package.path.asURL)
-              cmake.append("  " + quote(pathPrefix + relativeURL))
-            }
-            switch target.type {
-            case .library, .executable, .test:
-              cmake.append(")")
-            case .systemModule:  // @exempt(from: tests)
-              break
-            }
-            switch target.type {
-            case .library, .test:
-              cmake.append(
-                "set_target_properties(\(sanitize(target.name)) PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_Swift_MODULE_DIRECTORY})"
-              )
-              cmake.append(
-                "target_compile_options(\(sanitize(target.name)) PRIVATE \u{2D}enable\u{2D}testing)"
-              )
-            case .executable, .systemModule:
-              break
-            }
-            switch target.type {
-            case .library, .executable, .test:
-              let dependencies = target.dependencyTargets
-              if ¬dependencies.isEmpty {
-                cmake.append("target_link_libraries(\(sanitize(target.name)) PRIVATE")
-                for dependency in dependencies {
-                  cmake.append("  " + sanitize(dependency.name))
-                }
-                cmake.append(")")
-              }
-            case .systemModule:  // @exempt(from: tests)
-              break
-            }
-          }
-
-          cmake.append(contentsOf: [
-            "",
-            "add_executable(WindowsMain",
-            "  WindowsMain.swift",
-            ")",
-          ])
-          if ¬testTargets.isEmpty {
-            cmake.append("target_link_libraries(WindowsMain PRIVATE")
-            for testTarget in testTargets {
-              cmake.append("  " + sanitize(testTarget.name))
-            }
-            cmake.append(")")
-          }
-          cmake.append(contentsOf: [
-            "add_test(NAME WindowsMain COMMAND WindowsMain)",
-            "set_property(TEST WindowsMain PROPERTY ENVIRONMENT \u{22}LD_LIBRARY_PATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}\u{22})",
-          ])
-
-          var cmakeFile = try TextFile(possiblyAt: url)
-          cmakeFile.body = String(cmake.joinedAsLines())
-          try cmakeFile.writeChanges(for: self, output: output)
-
-          try refreshWindowsMain(testTargets: testTargets, url: mainURL, output: output)
-        #endif
-      }
+    private func refreshWindowsTests(output: Command.Output) throws {
+      // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
+        try refreshWindowsMain(output: output)
+      #endif
     }
 
     // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
       private func refreshWindowsMain(
-        testTargets: [ResolvedTarget],
-        url: URL,
         output: Command.Output
       ) throws {
-        var main: [String] = [
-          "import XCTest",
-          "",
-        ]
-        var testClasses: [(name: String, methods: [String])] = []
-        for testTarget in testTargets {
-          main.append("@testable import \(testTarget.name)")
-          testClasses.append(contentsOf: try testTarget.testClasses())
-        }
-        main.append("")
+        let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
+        if try ¬relevantJobs(output: output).contains(.windows) {
+          delete(url, output: output)
+        } else {
 
-        if try isWorkspaceProject() {
-          main.append(contentsOf: [
-            "#if os(macOS)",
-            "  import Foundation",
-            "",
-            "  typealias XCTestCaseClosure = (XCTestCase) throws \u{2D}> Void",
-            "  typealias XCTestCaseEntry = (",
-            "    testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)]",
-            "  )",
-            "",
-            "  func test<T: XCTestCase>(",
-            "    _ testFunc: @escaping (T) \u{2D}> () throws \u{2D}> Void",
-            "  ) \u{2D}> XCTestCaseClosure {",
-            "    return { try testFunc($0 as! T)() }",
-            "  }",
-            "",
-            "  func testCase<T: XCTestCase>(",
-            "    _ allTests: [(String, (T) \u{2D}> () throws \u{2D}> Void)]",
-            "  ) \u{2D}> XCTestCaseEntry {",
-            "    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }",
-            "    return (T.self, tests)",
-            "  }",
-            "",
-            "  func XCTMain(_ testCases: [XCTestCaseEntry]) \u{2D}> Never {",
-            "    for testGroup in testCases {",
-            "      let testClass = testGroup.testCaseClass.init()",
-            "      print(type(of: testClass))",
-            "      for test in testGroup.allTests {",
-            "        print(test.0)",
-            "        do {",
-            "          try test.1(testClass)",
-            "        } catch {",
-            "          print(error.localizedDescription)",
-            "        }",
-            "      }",
-            "    }",
-            "    exit(EXIT_SUCCESS)",
-            "  }",
-            "#endif",
-            "",
-          ])
-        }
+          let graph = try self.cachedWindowsPackageGraph()
+          let testTargets = graph.testTargets()
 
-        for testClass in testClasses {
-          main.append(contentsOf: [
-            "extension \(testClass.name) {",
-            "  static let windowsTests: [XCTestCaseEntry] = [",
-            "    testCase([",
-          ])
-          for methodIndex in testClass.methods.indices {
-            let method = testClass.methods[methodIndex]
-            let comma = methodIndex == testClass.methods.indices.last ? "" : ","
-            main.append("      (\u{22}\(method)\u{22}, \(method))\(comma)")
+          var main: [String] = [
+            "import XCTest",
+            "",
+          ]
+          var testClasses: [(name: String, methods: [String])] = []
+          for testTarget in testTargets {
+            main.append("@testable import \(testTarget.name)")
+            testClasses.append(contentsOf: try testTarget.testClasses())
           }
+          main.append("")
+
+          for testClass in testClasses {
+            main.append(contentsOf: [
+              "extension \(testClass.name) {",
+              "  static let windowsTests: [XCTestCaseEntry] = [",
+              "    testCase([",
+            ])
+            for methodIndex in testClass.methods.indices {
+              let method = testClass.methods[methodIndex]
+              let comma = methodIndex == testClass.methods.indices.last ? "" : ","
+              main.append("      (\u{22}\(method)\u{22}, \(method))\(comma)")
+            }
+            main.append(contentsOf: [
+              "    ])",
+              "  ]",
+              "}",
+              "",
+            ])
+          }
+
           main.append(contentsOf: [
-            "    ])",
-            "  ]",
-            "}",
-            "",
+            "var tests = [XCTestCaseEntry]()"
           ])
+          for testClass in testClasses {
+            main.append("tests += \(testClass.name).windowsTests")
+          }
+
+          main.append(contentsOf: [
+            "",
+            "XCTMain(tests)",
+          ])
+
+          var source = main.joinedAsLines()
+          try SwiftLanguage.format(
+            generatedCode: &source,
+            accordingTo: try configuration(output: output),
+            for: url
+          )
+
+          var windowsMain = try TextFile(possiblyAt: url)
+          windowsMain.body = source
+          try windowsMain.writeChanges(for: self, output: output)
         }
-
-        main.append(contentsOf: [
-          "var tests = [XCTestCaseEntry]()"
-        ])
-        for testClass in testClasses {
-          main.append("tests += \(testClass.name).windowsTests")
-        }
-
-        main.append(contentsOf: [
-          "",
-          "XCTMain(tests)",
-        ])
-
-        var source = main.joinedAsLines()
-        try SwiftLanguage.format(
-          generatedCode: &source,
-          accordingTo: try configuration(output: output),
-          for: url
-        )
-
-        var windowsMain = try TextFile(possiblyAt: url)
-        windowsMain.body = source
-        try windowsMain.writeChanges(for: self, output: output)
       }
     #endif
 

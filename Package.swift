@@ -903,10 +903,34 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   adjustForWeb()
 }
 
-var dependencies: [Target.Dependency] = []
-for target in package.targets where target.type == .test {
-  dependencies.append(.target(name: target.name))
+var tests: [Target] = []
+var other: [Target] = []
+for target in package.targets {
+  if target.type == .test {
+    tests.append(target)
+  } else {
+    other.append(target)
+  }
 }
+package.targets = other
+package.targets.append(contentsOf: tests.map({ test in
+  return .target(
+    name: test.name,
+    dependencies: test.dependencies,
+    path: test.path ?? "Tests/\(test.name)",
+    exclude: test.exclude,
+    sources: test.sources,
+    publicHeadersPath: test.publicHeadersPath,
+    cSettings: test.cSettings,
+    cxxSettings: test.cxxSettings,
+    swiftSettings: test.swiftSettings,
+    linkerSettings: test.linkerSettings
+  )
+}))
 package.targets.append(
-  .target(name: "PackageTests", dependencies: dependencies, path: ".github/workflows/Windows")
+  .target(
+    name: "PackageTests",
+    dependencies: tests.map({ Target.Dependency.target(name: $0.name) }),
+    path: ".github/workflows/Windows"
+  )
 )

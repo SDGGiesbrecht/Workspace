@@ -151,12 +151,79 @@ import WSSwift
     private func refreshWindowsTests(output: Command.Output) throws {
       // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
+        try refreshWindowsTestsManifestAdjustments(output: output)
         try refreshWindowsMain(output: output)
       #endif
     }
 
     // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
+      private func refreshWindowsTestsManifestAdjustments(output: Command.Output) throws {
+        let url = location.appendingPathComponent("Package.swift")
+        var manifest = try TextFile(possiblyAt: url)
+
+        let start = "// Windows Tests (Generated automatically by Workspace.)"
+        let end = "// End Windows Tests"
+        let startPattern = ConcatenatedPatterns(
+          start,
+          ConditionalPattern<Character>({ _ in return true })
+        )
+        let range =
+          manifest.contents.firstMatch(for: startPattern + end)?.range
+          ?? manifest.contents[manifest.contents.endIndex...].bounds
+
+        if try ¬relevantJobs(output: output).contains(.windows) {
+          manifest.contents.replaceSubrange(range, with: "")
+        } else {
+          manifest.contents.replaceSubrange(
+            range,
+            with: [
+              start,
+              "import Foundation",
+              "if ProcessInfo.processInfo.environment[\u{22}TARGETING_WINDOWS\u{22}] == \u{22}true\u{22},",
+              "  ProcessInfo.processInfo.environment[\u{22}GENERATING_TESTS\u{22}] == nil",
+              "{",
+              "  var tests: [Target] = []",
+              "  var other: [Target] = []",
+              "  for target in package.targets {",
+              "    if target.type == .test {",
+              "      tests.append(target)",
+              "    } else {",
+              "      other.append(target)",
+              "    }",
+              "  }",
+              "  package.targets = other",
+              "  package.targets.append(",
+              "    contentsOf: tests.map({ test in",
+              "      return .target(",
+              "        name: test.name,",
+              "        dependencies: test.dependencies,",
+              "        path: test.path ?? \u{22}Tests/\u{5C}(test.name)\u{22},",
+              "        exclude: test.exclude,",
+              "        sources: test.sources,",
+              "        publicHeadersPath: test.publicHeadersPath,",
+              "        cSettings: test.cSettings,",
+              "        cxxSettings: test.cxxSettings,",
+              "        swiftSettings: test.swiftSettings,",
+              "        linkerSettings: test.linkerSettings",
+              "      )",
+              "    })",
+              "  )",
+              "  package.targets.append(",
+              "    .target(",
+              "      name: \u{22}WindowsTests\u{22},",
+              "      dependencies: tests.map({ Target.Dependency.target(name: $0.name) }),",
+              "      path: \u{22}Tests/WindowsTests\u{22}",
+              "    )",
+              "  )",
+              "}",
+              end,
+            ].joinedAsLines()
+          )
+        }
+        try manifest.writeChanges(for: self, output: output)
+      }
+
       private func refreshWindowsMain(
         output: Command.Output
       ) throws {

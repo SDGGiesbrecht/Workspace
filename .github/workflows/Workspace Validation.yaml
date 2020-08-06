@@ -185,4 +185,5 @@ jobs:
       shell: bash
       run: |
         set -x
-        .build/x86_64-unknown-windows-msvc/Windowstests.exe
+        find .build/x86_64-unknown-windows-msvc/release
+        .build/x86_64-unknown-windows-msvc/release/Windowstests.exe

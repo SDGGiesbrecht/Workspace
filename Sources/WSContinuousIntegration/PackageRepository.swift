@@ -166,7 +166,7 @@ import WSSwift
         let end = "// End Windows Tests"
         let startPattern = ConcatenatedPatterns(
           start,
-          ConditionalPattern<Character>({ _ in return true })
+          RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
         )
         let range =
           manifest.contents.firstMatch(for: startPattern + end)?.range

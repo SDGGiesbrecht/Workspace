@@ -26,6 +26,7 @@ import SDGCollections
 
     internal func testTargets() -> [ResolvedTarget] {
       return rootPackages.flatMap({ $0.targets.filter({ $0.type == .test }) })
+        .sorted(by: { $0.name < $1.name })
     }
   }
 #endif

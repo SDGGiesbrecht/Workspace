@@ -52,9 +52,11 @@ class APITests: TestCase {
         }
         if let altered = NSURL.fileURL(withPathComponents: pathComponents) {
           setTestSpecificationDirectory(to: altered)
+          print("Altered to:")
           print(altered)
         }
       } else {
+        print("First isn’t mnt.")
         print(automaticDirectory.pathComponents)
       }
     #endif

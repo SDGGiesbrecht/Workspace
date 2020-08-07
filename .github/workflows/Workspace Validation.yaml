@@ -69,13 +69,6 @@ jobs:
         msiexec //i icu.msi
         export PATH="/c/Library/icu-64/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
-    - name: Configure C++
-      shell: bash
-      run: |
-        set -x
-        export PATH="${PATH}:/c/Windows/System32/downlevel"
-        echo "::set-env name=PATH::${PATH}"
-        # https://aka.ms/vs/16/release/vc_redist.x86.exe
     - name: Install Swift
       shell: bash
       run: |

@@ -38,12 +38,21 @@ class APITests: TestCase {
       #endif
     }
   }()
+  static let configureWindowsTestDirectory: Void = {
+    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
+    #if os(Windows)
+      let automaticDirectory = testSpecificationDirectory()
+      print(automaticDirectory)
+      setTestSpecificationDirectory(to: automaticDirectory)
+    #endif
+  }()
   override func setUp() {
     super.setUp()
     Command.Output.testMode = true
     PackageRepository.emptyRelatedProjectCache()  // Make sure starting state is consistent.
     CustomTask.emptyCache()
     APITests.configureGit
+    APITests.configureWindowsTestDirectory
   }
 
   func testAllDisabled() {

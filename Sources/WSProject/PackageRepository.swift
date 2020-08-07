@@ -170,8 +170,9 @@ import WorkspaceProjectConfiguration
         }
       }
     #endif
-    private static func withSimulatedWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T
-    {
+    private static func withSimulatedWindowsEnvironment<T>(
+      _ closure: () throws -> T
+    ) rethrows -> T {
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if os(Windows) || os(WASI) || os(Android)
         return try closure()

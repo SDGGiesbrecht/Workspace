@@ -41,10 +41,19 @@ class APITests: TestCase {
   static let configureWindowsTestDirectory: Void = {
     // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
     #if os(Windows)
-      let automaticDirectory = testSpecificationDirectory()
+      var automaticDirectory = testSpecificationDirectory()
       print(automaticDirectory)
       print(URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-      setTestSpecificationDirectory(to: automaticDirectory)
+    if automaticDirectory.pathComponents.first == "mnt" {
+      var pathComponents = automaticDirectory.pathComponents
+      pathComponents.removeFirst()
+      pathComponents.first?.append(":")
+      let altered = NSURL.fileURL(withPathComponents: pathComponents)
+      setTestSpecificationDirectory(to: altered)
+      print(altered)
+    } else {
+      print(automaticDirectory.pathComponents)
+    }
     #endif
   }()
   override func setUp() {

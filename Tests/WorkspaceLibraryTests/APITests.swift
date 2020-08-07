@@ -42,17 +42,12 @@ class APITests: TestCase {
     // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
     #if os(Windows)
       var directory = testSpecificationDirectory().path
-      print("automaticDirectory: \(directory)")
       if directory.hasPrefix("\u{5C}mnt\u{5C}") {
         directory.removeFirst(5)
         let driveLetter = directory.removeFirst()
         directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        print("repaired: \(directory)")
         let url = URL(fileURLWithPath: directory)
-        print("url: \(url.absoluteString)")
         setTestSpecificationDirectory(to: url)
-      } else {
-        print("Didn’t start with \u{5C}mnt\u{5C}")
       }
     #endif
   }()

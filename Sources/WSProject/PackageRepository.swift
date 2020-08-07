@@ -174,14 +174,9 @@ import WorkspaceProjectConfiguration
     private static func withSimulatedWindowsEnvironment<T>(
       _ closure: () throws -> T
     ) rethrows -> T {
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
-      #if os(Windows) || os(WASI) || os(Android)
-        return try closure()
-      #else
-        return try with(environment: "TARGETING_WINDOWS") {
-          return try with(environment: "GENERATING_TESTS", closure: closure)
-        }
-      #endif
+      return try with(environment: "TARGETING_WINDOWS") {
+        return try with(environment: "GENERATING_TESTS", closure: closure)
+      }
     }
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)

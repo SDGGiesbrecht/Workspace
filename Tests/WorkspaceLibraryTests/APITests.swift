@@ -50,7 +50,11 @@ class APITests: TestCase {
         var pathComponents = conjoined.components(separatedBy: "\u{5C}") as [String]
         print("Split path components:")
         print(pathComponents)
-        pathComponents.removeFirst()
+        for _ in 1 ... 2 {
+          if ¬pathComponents.isEmpty {
+            pathComponents.removeFirst()
+          }
+        }
         if let first = pathComponents.first {
           pathComponents[pathComponents.startIndex] = first.appending(":")
         }

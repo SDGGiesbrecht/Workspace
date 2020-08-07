@@ -43,6 +43,7 @@ class APITests: TestCase {
     #if os(Windows)
       let automaticDirectory = testSpecificationDirectory()
       print(automaticDirectory)
+      print(URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
       setTestSpecificationDirectory(to: automaticDirectory)
     #endif
   }()

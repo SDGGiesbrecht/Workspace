@@ -910,7 +910,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
                 [
                   "TARGETING_WINDOWS=\u{27}true\u{27} \u{5C}",
                   "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
-                  "  \u{2D}\u{2D}configuration release \u{5C}",
+                  "  \u{2D}\u{2D}configuration release \u{2D}Xswiftc \u{2D}enable\u{2D}testing \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}sdk \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
@@ -935,45 +935,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           ),
         ]
         )
-        var clones: [StrictString] = []
-        // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
-          let graph = try project.cachedWindowsPackageGraph()
-          for package in graph.packages.sorted(by: { $0.name < $1.name }) {
-            if let version = package.underlyingPackage.manifest.version {
-              let url = package.underlyingPackage.manifest.url
-              clones.append(
-                "git clone \(url) .build/SDG/Dependencies/\(package.name) \u{2D}\u{2D}branch \(version.description) \u{2D}\u{2D}depth 1 \u{2D}\u{2D}config advice.detachedHead=false"
-              )
-            }
-          }
-        #endif
-        result.append(
-          script(
-            heading: fetchDependenciesStepName,
-            localization: interfaceLocalization,
-            commands: clones
-          )
-        )
-        result.append(
-          script(
-            heading: buildStepName,
-            localization: interfaceLocalization,
-            commands: [
-              compressPATH(),
-              "cmake \u{2D}G Ninja \u{2D}S .github/workflows/Windows \u{2D}B .build/SDG/CMake \u{2D}DCMAKE_Swift_FLAGS=\u{27}\u{2D}sdk C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift \u{2D}I C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows \u{2D}L C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{27}",
-              "cmake \u{2D}\u{2D}build \u{27}.build/SDG/CMake\u{27}",
-            ]
-          )
-        )
         result.append(
           script(
             heading: testStepName,
             localization: interfaceLocalization,
             commands: [
               compressPATH(),
-              "cd .build/SDG/CMake",
-              "ctest \u{2D}\u{2D}verbose",
+              ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/release/WindowsTests.exe",
             ]
           )
         )
@@ -1291,17 +1259,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Refresh"
       case .deutschDeutschland:
         return "Auffrischen"
-      }
-    })
-  }
-
-  private var fetchDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch dependencies"
-      case .deutschDeutschland:
-        return "Abhängigkeiten holen"
       }
     })
   }

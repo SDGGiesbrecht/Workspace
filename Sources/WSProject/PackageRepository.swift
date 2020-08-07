@@ -158,27 +158,24 @@ import WorkspaceProjectConfiguration
       }
     #endif
     private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-      let variable = "TARGETING_WINDOWS"
+      let variables = ["TARGETING_WINDOWS", "GENERATING_TESTS"]
       #if !os(Windows)
         // #workaround(SwiftPM 0.6.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
-          try? ProcessEnv.setVar(variable, value: "true")
+          for variable in variables {
+            try? ProcessEnv.setVar(variable, value: "true")
+          }
           defer {
-            try? ProcessEnv.unsetVar(variable)
+            for variable in variables {
+              try? ProcessEnv.unsetVar(variable)
+            }
           }
         #endif
       #endif
       return try closure()
     }
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-      public func cachedWindowsPackage() throws -> PackageModel.Package {
-        return try cached(in: &manifestCache.windowsPackage) {
-          return try PackageRepository.withWindowsEnvironment {
-            return try package().get()
-          }
-        }
-      }
 
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
       public func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()

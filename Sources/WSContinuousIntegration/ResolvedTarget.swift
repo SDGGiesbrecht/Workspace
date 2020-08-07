@@ -28,16 +28,6 @@ import SDGLogic
 
   extension ResolvedTarget {
 
-    internal var dependencyTargets: [ResolvedTarget] {
-      return dependencies.flatMap { (dependency) -> [ResolvedTarget] in
-        if let product = dependency.product {
-          return product.targets
-        } else {
-          return [dependency.target!]
-        }
-      }
-    }
-
     internal func testClasses() throws -> [(name: String, methods: [String])] {
       var found: [(name: String, methods: [String])] = []
       for file in sources.paths.sorted() {

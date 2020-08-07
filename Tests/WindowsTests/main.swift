@@ -1,5 +1,5 @@
 /*
- WindowsMain.swift
+ main.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -18,44 +18,6 @@ import XCTest
 
 @testable import WSCrossPlatformTests
 @testable import WorkspaceLibraryTests
-
-#if os(macOS)
-  import Foundation
-
-  typealias XCTestCaseClosure = (XCTestCase) throws -> Void
-  typealias XCTestCaseEntry = (
-    testCaseClass: XCTestCase.Type, allTests: [(String, XCTestCaseClosure)]
-  )
-
-  func test<T: XCTestCase>(
-    _ testFunc: @escaping (T) -> () throws -> Void
-  ) -> XCTestCaseClosure {
-    return { try testFunc($0 as! T)() }
-  }
-
-  func testCase<T: XCTestCase>(
-    _ allTests: [(String, (T) -> () throws -> Void)]
-  ) -> XCTestCaseEntry {
-    let tests: [(String, XCTestCaseClosure)] = allTests.map { ($0.0, test($0.1)) }
-    return (T.self, tests)
-  }
-
-  func XCTMain(_ testCases: [XCTestCaseEntry]) -> Never {
-    for testGroup in testCases {
-      let testClass = testGroup.testCaseClass.init()
-      print(type(of: testClass))
-      for test in testGroup.allTests {
-        print(test.0)
-        do {
-          try test.1(testClass)
-        } catch {
-          print(error.localizedDescription)
-        }
-      }
-    }
-    exit(EXIT_SUCCESS)
-  }
-#endif
 
 extension WSCrossPlatformTests.CrossPlatformTests {
   static let windowsTests: [XCTestCaseEntry] = [

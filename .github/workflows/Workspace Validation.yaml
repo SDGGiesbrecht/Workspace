@@ -189,7 +189,7 @@ jobs:
         ubuntu1804 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
-            --configuration release \
+            --configuration release -Xswiftc -enable-testing \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
@@ -208,36 +208,12 @@ jobs:
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
-    - name: Fetch dependencies
-      shell: bash
-      run: |
-        set -x
-        git clone https://github.com/SDGGiesbrecht/SDGCommandLine .build/SDG/Dependencies/SDGCommandLine --branch 1.4.3 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/SDGCornerstone .build/SDG/Dependencies/SDGCornerstone --branch 5.4.1 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/SDGSwift .build/SDG/Dependencies/SDGSwift --branch 2.0.2 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/SDGWeb .build/SDG/Dependencies/SDGWeb --branch 5.3.1 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-package-manager .build/SDG/Dependencies/SwiftPM --branch 0.6.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-syntax .build/SDG/Dependencies/SwiftSyntax --branch 0.50200.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/SDGGiesbrecht/swift-cmark .build/SDG/Dependencies/cmark --branch 0.0.50200 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-llbuild.git .build/SDG/Dependencies/llbuild --branch 0.3.0 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-argument-parser.git .build/SDG/Dependencies/swift-argument-parser --branch 0.0.6 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-format .build/SDG/Dependencies/swift-format --branch 0.50200.1 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-numerics .build/SDG/Dependencies/swift-numerics --branch 0.0.6 --depth 1 --config advice.detachedHead=false
-        git clone https://github.com/apple/swift-tools-support-core.git .build/SDG/Dependencies/swift-tools-support-core --branch 0.1.0 --depth 1 --config advice.detachedHead=false
-    - name: Build
-      shell: bash
-      run: |
-        set -x
-        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        cmake -G Ninja -S .github/workflows/Windows -B .build/SDG/CMake -DCMAKE_Swift_FLAGS='-sdk C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk -I C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift -I C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 -L C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk\usr\lib\swift\windows -L C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows'
-        cmake --build '.build/SDG/CMake'
     - name: Test
       shell: bash
       run: |
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        cd .build/SDG/CMake
-        ctest --verbose
+        .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
   Web:
     runs-on: macos-10.15
     steps:

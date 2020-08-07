@@ -27,6 +27,11 @@ jobs:
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Search System
+      shell: bash
+      run: |
+        set -x
+        find /c/Windows/System32
     - name: Set Visual Studio up
       shell: bash
       run: |

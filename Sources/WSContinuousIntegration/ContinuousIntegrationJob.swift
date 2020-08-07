@@ -242,21 +242,21 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var environmentVariableName: StrictString {
     switch self {
-    case .macOS:
+    case .macOS:  // @exempt(from: tests) Unreachable from Linux.
       return "MACOS"
     case .windows:
       return "WINDOWS"
     case .web:
       return "WEB"
-    case .linux:
+    case .linux:  // @exempt(from: tests) Unreachable from macOS.
       return "LINUX"
-    case .tvOS:
+    case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "TVOS"
-    case .iOS:
+    case .iOS:  // @exempt(from: tests) Unreachable from Linux.
       return "IOS"
     case .android:
       return "ANDROID"
-    case .watchOS:
+    case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       return "WATCHOS"
     case .miscellaneous, .deployment:
       unreachable()

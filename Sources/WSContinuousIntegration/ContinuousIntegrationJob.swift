@@ -941,7 +941,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               compressPATH(),
-              ".build/x86_64-unknown-windows-msvc/release/WindowsTests.exe"
+              ".build/x86_64-unknown-windows-msvc/release/WindowsTests.exe",
             ]
           )
         )

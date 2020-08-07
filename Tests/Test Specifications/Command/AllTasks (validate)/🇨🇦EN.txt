@@ -13,7 +13,6 @@ Proofreading source code... (§1)
 .github/PULL_REQUEST_TEMPLATE.md
 .github/workflows/Android/SDK.json
 .github/workflows/Windows/SDK.json
-.github/workflows/Windows/WindowsMain.swift
 .github/workflows/Workspace Validation.yaml
 .gitignore
 LICENSE.md
@@ -66,6 +65,7 @@ Executables and tests should not contain access control. (accessControl)
    func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
+Tests/WindowsTests/main.swift
 
 Checking build for macOS... (§2)
 

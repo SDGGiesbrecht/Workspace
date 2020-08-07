@@ -1,5 +1,5 @@
 /*
- WindowsMain.swift
+ main.swift
 
  This source file is part of the SDG open source project.
  Diese Quelldatei ist Teil des quelloffenen SDG‐Projekt.

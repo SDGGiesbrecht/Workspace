@@ -11,7 +11,6 @@ Proofreading source code... (§1)
 
 .github/workflows/Android/SDK.json
 .github/workflows/Windows/SDK.json
-.github/workflows/Windows/WindowsMain.swift
 .github/workflows/Workspace Validation.yaml
 .gitignore
 LICENSE.md
@@ -21,6 +20,7 @@ Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.
 Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift
 Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swift
 Tests/LinuxMain.swift
+Tests/WindowsTests/main.swift
 
 ✓ Source code passes proofreading.
 

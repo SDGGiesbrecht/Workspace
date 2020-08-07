@@ -44,12 +44,18 @@ class APITests: TestCase {
       var automaticDirectory = testSpecificationDirectory()
       print(automaticDirectory)
       print(URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-      if automaticDirectory.pathComponents.first == "mnt" {
-        var pathComponents = automaticDirectory.pathComponents
+      if automaticDirectory.pathComponents.count == 1,
+        let conjoined = automaticDirectory.pathComponents.first,
+        conjoined.hasPrefix("\u{5C}mnt\u{5C}") {
+        var pathComponents = conjoined.components(separatedBy: "\u{5C}") as [String]
+        print("Split path components:")
+        print(pathComponents)
         pathComponents.removeFirst()
         if let first = pathComponents.first {
           pathComponents[pathComponents.startIndex] = first.appending(":")
         }
+        print("Repaired path components:")
+        print(pathComponents)
         if let altered = NSURL.fileURL(withPathComponents: pathComponents) {
           setTestSpecificationDirectory(to: altered)
           print("Altered to:")

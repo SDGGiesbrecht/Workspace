@@ -916,20 +916,22 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     }
   }
   package.targets = other
-  package.targets.append(contentsOf: tests.map({ test in
-    return .target(
-      name: test.name,
-      dependencies: test.dependencies,
-      path: test.path ?? "Tests/\(test.name)",
-      exclude: test.exclude,
-      sources: test.sources,
-      publicHeadersPath: test.publicHeadersPath,
-      cSettings: test.cSettings,
-      cxxSettings: test.cxxSettings,
-      swiftSettings: test.swiftSettings,
-      linkerSettings: test.linkerSettings
-    )
-  }))
+  package.targets.append(
+    contentsOf: tests.map({ test in
+      return .target(
+        name: test.name,
+        dependencies: test.dependencies,
+        path: test.path ?? "Tests/\(test.name)",
+        exclude: test.exclude,
+        sources: test.sources,
+        publicHeadersPath: test.publicHeadersPath,
+        cSettings: test.cSettings,
+        cxxSettings: test.cxxSettings,
+        swiftSettings: test.swiftSettings,
+        linkerSettings: test.linkerSettings
+      )
+    })
+  )
   package.targets.append(
     .target(
       name: "WindowsTests",

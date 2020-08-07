@@ -44,16 +44,16 @@ class APITests: TestCase {
       var automaticDirectory = testSpecificationDirectory()
       print(automaticDirectory)
       print(URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-    if automaticDirectory.pathComponents.first == "mnt" {
-      var pathComponents = automaticDirectory.pathComponents
-      pathComponents.removeFirst()
-      pathComponents.first?.append(":")
-      let altered = NSURL.fileURL(withPathComponents: pathComponents)
-      setTestSpecificationDirectory(to: altered)
-      print(altered)
-    } else {
-      print(automaticDirectory.pathComponents)
-    }
+      if automaticDirectory.pathComponents.first == "mnt" {
+        var pathComponents = automaticDirectory.pathComponents
+        pathComponents.removeFirst()
+        pathComponents.first?.append(":")
+        let altered = NSURL.fileURL(withPathComponents: pathComponents)
+        setTestSpecificationDirectory(to: altered)
+        print(altered)
+      } else {
+        print(automaticDirectory.pathComponents)
+      }
     #endif
   }()
   override func setUp() {

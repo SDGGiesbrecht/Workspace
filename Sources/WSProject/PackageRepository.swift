@@ -138,16 +138,17 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Environment
 
-    // #workaround(SwiftPM 0.6.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      public static func with<T>(environment variable: StrictString, closure: () throws -> T)
-        rethrows -> T
-      {
+    public static func with<T>(
+      environment variable: StrictString,
+      closure: () throws -> T
+    ) rethrows -> T {
+      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
         try? ProcessEnv.setVar(String(variable), value: "true")
         defer { try? ProcessEnv.unsetVar(String(variable)) }
-        return try closure()
-      }
-    #endif
+      #endif
+      return try closure()
+    }
 
     // MARK: - Miscellaneous Properties
 

@@ -136,6 +136,19 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
+    // MARK: - Environment
+
+    // #workaround(SwiftPM 0.6.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
+      public static func with<T>(environment variable: StrictString, closure: () throws -> T)
+        rethrows -> T
+      {
+        try? ProcessEnv.setVar(String(variable), value: "true")
+        defer { try? ProcessEnv.unsetVar(String(variable)) }
+        return try closure()
+      }
+    #endif
+
     // MARK: - Miscellaneous Properties
 
     public func isWorkspaceProject() throws -> Bool {
@@ -157,22 +170,16 @@ import WorkspaceProjectConfiguration
         }
       }
     #endif
-    private static func withWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T {
-      let variables = ["TARGETING_WINDOWS", "GENERATING_TESTS"]
-      #if !os(Windows)
-        // #workaround(SwiftPM 0.6.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
-          for variable in variables {
-            try? ProcessEnv.setVar(variable, value: "true")
-          }
-          defer {
-            for variable in variables {
-              try? ProcessEnv.unsetVar(variable)
-            }
-          }
-        #endif
+    private static func withSimulatedWindowsEnvironment<T>(_ closure: () throws -> T) rethrows -> T
+    {
+      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if os(Windows) || os(WASI) || os(Android)
+        return try closure()
+      #else
+        return try with(environment: "TARGETING_WINDOWS") {
+          return try with(environment: "GENERATING_TESTS", closure: closure)
+        }
       #endif
-      return try closure()
     }
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
@@ -183,7 +190,7 @@ import WorkspaceProjectConfiguration
       }
       public func cachedWindowsPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.windowsPackageGraph) {
-          return try PackageRepository.withWindowsEnvironment {
+          return try PackageRepository.withSimulatedWindowsEnvironment {
             return try packageGraph().get()
           }
         }

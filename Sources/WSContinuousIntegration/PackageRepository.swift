@@ -180,7 +180,7 @@ import WSSwift
             with: [
               start,
               "import Foundation",
-              "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariableName)\u{22}] == \u{22}true\u{22},",
+              "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariable)\u{22}] == \u{22}true\u{22},",
               "  ProcessInfo.processInfo.environment[\u{22}GENERATING_TESTS\u{22}] == nil",
               "{",
               "  var tests: [Target] = []",

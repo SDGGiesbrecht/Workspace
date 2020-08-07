@@ -174,15 +174,8 @@ import WorkspaceProjectConfiguration
       #endif
       return try closure()
     }
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-      public func cachedWindowsPackage() throws -> PackageModel.Package {
-        return try cached(in: &manifestCache.windowsPackage) {
-          return try PackageRepository.withWindowsEnvironment {
-            return try package().get()
-          }
-        }
-      }
 
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
       public func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()

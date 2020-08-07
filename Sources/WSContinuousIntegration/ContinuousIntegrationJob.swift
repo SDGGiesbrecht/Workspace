@@ -1263,17 +1263,6 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var fetchDependenciesStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch dependencies"
-      case .deutschDeutschland:
-        return "Abhängigkeiten holen"
-      }
-    })
-  }
-
   private var validateStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {

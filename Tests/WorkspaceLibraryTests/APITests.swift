@@ -47,10 +47,13 @@ class APITests: TestCase {
       if automaticDirectory.pathComponents.first == "mnt" {
         var pathComponents = automaticDirectory.pathComponents
         pathComponents.removeFirst()
-        pathComponents.first?.append(":")
-        let altered = NSURL.fileURL(withPathComponents: pathComponents)
-        setTestSpecificationDirectory(to: altered)
-        print(altered)
+        if let first = pathComponents.first {
+          pathComponents[pathComponents.startIndex] = first.appending(":")
+        }
+        if let altered = NSURL.fileURL(withPathComponents: pathComponents) {
+          setTestSpecificationDirectory(to: altered)
+          print(altered)
+        }
       } else {
         print(automaticDirectory.pathComponents)
       }

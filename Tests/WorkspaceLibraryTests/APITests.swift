@@ -41,33 +41,19 @@ class APITests: TestCase {
   static let configureWindowsTestDirectory: Void = {
     // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
     #if os(Windows)
-      var automaticDirectory = testSpecificationDirectory()
-      print(automaticDirectory)
-      print(URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-      if automaticDirectory.pathComponents.count == 1,
-        let conjoined = automaticDirectory.pathComponents.first,
-        conjoined.hasPrefix("\u{5C}mnt\u{5C}") {
-        var pathComponents = conjoined.components(separatedBy: "\u{5C}") as [String]
-        print("Split path components:")
-        print(pathComponents)
-        for _ in 1 ... 2 {
-          if ¬pathComponents.isEmpty {
-            pathComponents.removeFirst()
-          }
-        }
-        if let first = pathComponents.first {
-          pathComponents[pathComponents.startIndex] = first.appending(":")
-        }
-        print("Repaired path components:")
-        print(pathComponents)
-        if let altered = NSURL.fileURL(withPathComponents: pathComponents) {
-          setTestSpecificationDirectory(to: altered)
-          print("Altered to:")
-          print(altered)
-        }
+      var directory = testSpecificationDirectory().path
+      print("automaticDirectory: \(directory)")
+      if directory.hasPrefix("/mnt/") {
+        directory.removeFirst(5)
+        let driveLetter = directory.removeFirst()
+        directory.replaceMatches(for: "/", with: "\u{5C}")
+        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
+        print("repaired: \(directory)")
+        let url = URL(fileURLWithPath: directory)
+        print("url: \(url.absoluteString)")
+        setTestSpecificationDirectory(to: url)
       } else {
-        print("First isn’t mnt.")
-        print(automaticDirectory.pathComponents)
+        print("Didn’t start with /mnt/")
       }
     #endif
   }()

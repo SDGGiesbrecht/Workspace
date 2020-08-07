@@ -934,7 +934,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p",
               wsl(
                 [
-                  "\(ContinuousIntegrationJob.windows.environmentVariableName)=\u{27}true\u{27} \u{5C}",
+                  "\(ContinuousIntegrationJob.windows.environmentVariable)=\u{27}true\u{27} \u{5C}",
                   "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
                   "  \u{2D}\u{2D}configuration release \u{2D}Xswiftc \u{2D}enable\u{2D}testing \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
@@ -977,7 +977,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: buildStepName,
             localization: interfaceLocalization,
             commands: [
-              "export \(ContinuousIntegrationJob.web.environmentVariableName)=true",
+              "export \(ContinuousIntegrationJob.web.environmentVariable)=true",
               ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi",
             ]
           )
@@ -988,7 +988,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: buildStepName,
             localization: interfaceLocalization,
             commands: [
-              "export \(ContinuousIntegrationJob.android.environmentVariableName)=true",
+              "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
               "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}",
               "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",

@@ -240,6 +240,32 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  private var environmentVariableName: StrictString {
+    switch self {
+    case .macOS:
+      return "MACOS"
+    case .windows:
+      return "WINDOWS"
+    case .web:
+      return "WEB"
+    case .linux:
+      return "LINUX"
+    case .tvOS:
+      return "TVOS"
+    case .iOS:
+      return "IOS"
+    case .android:
+      return "ANDROID"
+    case .watchOS:
+      return "WATCHOS"
+    case .miscellaneous, .deployment:
+      unreachable()
+    }
+  }
+  public var environmentVariable: StrictString {
+    return "TARGETING_\(environmentVariableName)"
+  }
+
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
@@ -908,7 +934,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
               "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p",
               wsl(
                 [
-                  "TARGETING_WINDOWS=\u{27}true\u{27} \u{5C}",
+                  "\(ContinuousIntegrationJob.windows.environmentVariableName)=\u{27}true\u{27} \u{5C}",
                   "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
                   "  \u{2D}\u{2D}configuration release \u{2D}Xswiftc \u{2D}enable\u{2D}testing \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
@@ -951,7 +977,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: buildStepName,
             localization: interfaceLocalization,
             commands: [
-              "export TARGETING_WEB=true",
+              "export \(ContinuousIntegrationJob.web.environmentVariableName)=true",
               ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi",
             ]
           )
@@ -962,7 +988,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: buildStepName,
             localization: interfaceLocalization,
             commands: [
-              "export TARGETING_ANDROID=true",
+              "export \(ContinuousIntegrationJob.android.environmentVariableName)=true",
               "swift build \u{2D}\u{2D}destination .github/workflows/Android/SDK.json \u{5C}",
               "  \u{2D}\u{2D}build\u{2D}tests \u{2D}\u{2D}enable\u{2D}test\u{2D}discovery \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",

@@ -18,6 +18,8 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
+import SDGExternalProcess
+
 extension Platform {
 
   // MARK: - Static Properties
@@ -30,7 +32,9 @@ extension Platform {
     #elseif os(WASI)
       return .web
     #elseif os(Linux)
-      return .linux
+      print(ProcessInfo.processInfo.environment)
+      print(try? Shell.default.run(command: ["lsb_release", "-a"]).get())
+      return .ubuntu
     #elseif os(Android)
       return .android
     #endif

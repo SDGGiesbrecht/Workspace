@@ -39,7 +39,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  public static let currentSwiftVersion = Version(5, 2, 1)
+  public static let currentSwiftVersion = Version(5, 2, 4)
+  public static let experimentalSwiftVersion = Version(5, 2, 1)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}31"
   private static let experimentalDownloads =
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
@@ -748,7 +749,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.experimentalSwiftVersion
           .string(droppingEmptyPatch: true)
         let platform: StrictString =
           "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}RELEASE/stdlib/public/Platform"
@@ -849,7 +850,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.experimentalSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(
@@ -932,7 +933,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.experimentalSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(

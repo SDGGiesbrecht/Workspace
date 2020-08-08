@@ -21,6 +21,7 @@ on:
 
 jobs:
   Deployment:
+    name: Deployment
     runs-on: ubuntu-18.04
     container: swift:5.2.1-focal
     steps:

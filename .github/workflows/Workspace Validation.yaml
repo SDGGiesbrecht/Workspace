@@ -18,6 +18,7 @@ on: [push, pull_request]
 
 jobs:
   macOS:
+    name: macOS
     runs-on: macos-10.15
     steps:
     - name: Check out
@@ -45,6 +46,7 @@ jobs:
         set -x
         swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
+    name: Windows
     runs-on: windows-2019
     steps:
     - name: Check out
@@ -215,6 +217,7 @@ jobs:
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
   Web:
+    name: Web
     runs-on: macos-10.15
     steps:
     - name: Check out
@@ -242,6 +245,7 @@ jobs:
         export TARGETING_WEB=true
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
   CentOS:
+    name: CentOS
     runs-on: ubuntu-18.04
     container: swift:5.2.1-centos8
     steps:
@@ -287,6 +291,7 @@ jobs:
         set -x
         chmod -R a+rwx .
   Ubuntu:
+    name: Ubuntu
     runs-on: ubuntu-18.04
     container: swift:5.2.1-focal
     steps:
@@ -332,6 +337,7 @@ jobs:
         set -x
         chmod -R a+rwx .
   tvOS:
+    name: tvOS
     runs-on: macos-10.15
     steps:
     - name: Check out
@@ -359,6 +365,7 @@ jobs:
         set -x
         swift run test‐tvos‐simulator
   iOS:
+    name: iOS
     runs-on: macos-10.15
     steps:
     - name: Check out
@@ -386,6 +393,7 @@ jobs:
         set -x
         swift run test‐ios‐simulator
   Android:
+    name: Android
     runs-on: ubuntu-18.04
     steps:
     - name: Check out
@@ -496,7 +504,8 @@ jobs:
         api-level: 29
         arch: x86_64
         script: .build/SDG/Emulator.sh
-  Amazon Linux:
+  Amazon_Linux:
+    name: Amazon Linux
     runs-on: ubuntu-18.04
     container: swift:5.2.1-amazonlinux2
     steps:
@@ -542,6 +551,7 @@ jobs:
         set -x
         chmod -R a+rwx .
   Miscellaneous:
+    name: Miscellaneous
     runs-on: ubuntu-18.04
     container: swift:5.2.1-focal
     steps:

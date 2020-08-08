@@ -34,7 +34,7 @@ jobs:
       run: |
         set -x
         yum install --assumeyes \
-          libsqlite3x-devel
+          sqlite-devel
         # apt-get update --assume-yes
         # UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
         # apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \

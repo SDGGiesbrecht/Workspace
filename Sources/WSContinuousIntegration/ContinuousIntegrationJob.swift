@@ -694,8 +694,10 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       let configuration = try project.configuration(output: output)
       let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
+      let jobName = name.resolved(for: interfaceLocalization)
       var result: [StrictString] = [
-        "  \(name.resolved(for: interfaceLocalization)):",
+        "  \(jobName.replacingMatches(for: " ", with: "_")):",
+        "    name: \(jobName)",
         runsOn(gitHubActionMachine),
       ]
       if let container = dockerImage {

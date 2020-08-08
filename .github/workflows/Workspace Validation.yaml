@@ -33,7 +33,6 @@ jobs:
       shell: bash
       run: |
         set -x
-        yum search sqlite
         yum install --assumeyes \
           libsqlite3x-devel
         # apt-get update --assume-yes
@@ -129,6 +128,8 @@ jobs:
       run: |
         set -x
         yum search sqlite
+        yum install --assumeyes \
+          sqlite-devel
         # apt-get update --assume-yes
         # UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
         # apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \

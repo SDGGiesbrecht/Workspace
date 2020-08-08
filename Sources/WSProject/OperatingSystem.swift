@@ -24,6 +24,7 @@ extension Platform {
 
   // MARK: - Static Properties
 
+  #warning("Not resolved yet.")
   public static var current: Platform {
     #if os(macOS)
       return .macOS
@@ -33,7 +34,7 @@ extension Platform {
       return .web
     #elseif os(Linux)
       print(ProcessInfo.processInfo.environment)
-      print(try? Shell.default.run(command: ["lsb_release", "-a"]).get())
+      print(try? Shell.default.run(command: ["lsb_release", "-a"]).get() as Any)
       return .ubuntu
     #elseif os(Android)
       return .android

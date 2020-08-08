@@ -119,7 +119,7 @@ extension Workspace {
               }
             #endif
 
-            try options.project.test(
+            options.project.test(
               on: job,
               validationStatus: &validationStatus,
               output: output

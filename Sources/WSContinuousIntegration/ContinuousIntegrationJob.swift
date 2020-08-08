@@ -29,7 +29,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case macOS
   case windows
   case web
-  case linux
+  case ubuntu
   case tvOS
   case iOS
   case android
@@ -45,8 +45,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentMacOSVersion = Version(10, 15)
   public static let currentXcodeVersion = Version(11, 6)
   private static let currentWindowsVersion = "2019"
-  private static let currentLinuxVersion = "18.04"
-  private static let currentWSLImage = currentLinuxVersion.replacingMatches(for: ".", with: "")
+  private static let currentUbuntuVersion = "20.04"
+  private static let currentWSLImage = currentUbuntuVersion.replacingMatches(for: ".", with: "")
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -82,12 +82,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "Netz"
         }
       })
-    case .linux:
+    case .ubuntu:
       return UserFacing({ (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
-          return "Linux"
+          return "Ubuntu"
         }
       })
     case .tvOS:
@@ -179,12 +179,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "netz"
         }
       })
-    case .linux:
+    case .ubuntu:
       return UserFacing({ (localization) in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
-          return "linux"
+          return "ubuntu"
         }
       })
     case .tvOS:
@@ -248,8 +248,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "WINDOWS"
     case .web:
       return "WEB"
-    case .linux:  // @exempt(from: tests) Unreachable from macOS.
-      return "LINUX"
+    case .ubuntu:  // @exempt(from: tests) Unreachable from macOS.
+      return "UBUNTU"
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "TVOS"
     case .iOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -276,8 +276,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return try .windows ∈ project.configuration(output: output).supportedPlatforms
       case .web:
         return try .web ∈ project.configuration(output: output).supportedPlatforms
-      case .linux:
-        return try .linux ∈ project.configuration(output: output).supportedPlatforms
+      case .ubuntu:
+        return try .ubuntu ∈ project.configuration(output: output).supportedPlatforms
       case .tvOS:
         return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
       case .iOS:
@@ -305,8 +305,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .windows
     case .web:
       return .web
-    case .linux, .miscellaneous, .deployment:
-      return .linux
+    case .ubuntu, .miscellaneous, .deployment:
+      return .ubuntu
     case .android:
       return .android
     }
@@ -361,8 +361,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
-    case .linux, .android:
-      return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentLinuxVersion)"
+    case .ubuntu, .android:
+      return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
     }
@@ -372,7 +372,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS, .windows, .web, .android:
       return nil
-    case .linux:
+    case .ubuntu:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
       return "swift:\(version)\u{2D}bionic"
     case .tvOS, .iOS, .watchOS:
@@ -424,8 +424,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         environment = "Windows"
       case .web:
         environment = "Web"
-      case .linux:
-        environment = "Linux"
+      case .ubuntu:
+        environment = "Ubuntu"
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
@@ -767,7 +767,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-      case .linux:
+      case .ubuntu:
         result.append(contentsOf: [
           script(
             heading: installSwiftPMDependenciesStepName,
@@ -835,7 +835,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       }
 
       switch platform {
-      case .macOS, .linux, .iOS, .watchOS, .tvOS:
+      case .macOS, .ubuntu, .iOS, .watchOS, .tvOS:
         if ¬(try project.isWorkspaceProject()) {
           result.append(
             try workspaceStep(
@@ -1086,7 +1086,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       switch platform {
       case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
         break
-      case .linux:
+      case .ubuntu:
         result.append(
           script(
             heading: grantCachPermissionsStepName,
@@ -1417,7 +1417,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .web, .linux, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
+      case .macOS, .windows, .web, .ubuntu, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

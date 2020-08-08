@@ -142,9 +142,9 @@ extension Workspace.Validate {
             output: output
           ))
         {
-          try purgingAutoreleased {
+          purgingAutoreleased {
 
-            try options.project.build(
+            options.project.build(
               for: job,
               validationStatus: &validationStatus,
               output: output

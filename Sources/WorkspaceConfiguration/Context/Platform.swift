@@ -47,8 +47,8 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// Linux.
-  case linux  // 1991‐09‐17
+  /// Ubuntu.
+  case ubuntu  // 2004‐10‐20
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// tvOS.
@@ -89,11 +89,11 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .deutschDeutschland:
         return "Netz"
       }
-    case .linux:
+    case .ubuntu:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
-        return "Linux"
+        return "Ubuntu"
       }
     case .tvOS:
       switch localization {

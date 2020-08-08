@@ -24,9 +24,10 @@ extension ContinuousIntegrationJob {
 
   // MARK: - Sets
 
+  #warning("Add new ones?")
   public static let coverageJobs: Set<ContinuousIntegrationJob> = [
     .macOS,
-    .linux,
+    .ubuntu,
     .tvOS,
     .iOS,
   ]
@@ -53,7 +54,7 @@ extension ContinuousIntegrationJob {
       return "Windows"
     case .web:  // @exempt(from: tests) Unreachable from Linux.
       return "Web"
-    case .linux:  // @exempt(from: tests)
+    case .ubuntu:  // @exempt(from: tests)
       return "Linux"  // @exempt(from: tests) Unreachable from macOS.
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
@@ -75,8 +76,8 @@ extension ContinuousIntegrationJob {
       return "Windows"
     case .web:  // @exempt(from: tests) Unreachable from Linux.
       return "Netz"
-    case .linux:  // @exempt(from: tests)
-      return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+    case .ubuntu:  // @exempt(from: tests)
+      return "Ubuntu"  // @exempt(from: tests) Unreachable from macOS.
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
     case .iOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -94,7 +95,7 @@ extension ContinuousIntegrationJob {
 
   internal var buildSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .linux, .android, .miscellaneous, .deployment:
+    case .macOS, .windows, .web, .ubuntu, .android, .miscellaneous, .deployment:
       unreachable()
     case .tvOS:
       return .tvOS(simulator: false)
@@ -107,7 +108,7 @@ extension ContinuousIntegrationJob {
 
   internal var testSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .linux, .android, .watchOS, .miscellaneous, .deployment:
+    case .macOS, .windows, .web, .ubuntu, .android, .watchOS, .miscellaneous, .deployment:
       unreachable()
     case .tvOS:  // @exempt(from: tests)
       // @exempt(from: tests) Tested separately.

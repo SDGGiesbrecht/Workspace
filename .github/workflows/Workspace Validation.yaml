@@ -129,7 +129,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        yum search sqlite
+        yum search ncurses
         yum install --assumeyes \
           sqlite-devel
         # apt-get update --assume-yes

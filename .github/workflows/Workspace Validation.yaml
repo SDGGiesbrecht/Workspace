@@ -241,16 +241,16 @@ jobs:
         set -x
         export TARGETING_WEB=true
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
-  Linux:
+  CentOS:
     runs-on: ubuntu-18.04
-    container: swift:5.2.1-bionic
+    container: swift:5.2.1-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        key: CentOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash
@@ -280,7 +280,52 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run workspace validate •job linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Ubuntu:
+    runs-on: ubuntu-18.04
+    container: swift:5.2.1-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Grant permission to cache
       shell: bash
       run: |
@@ -451,16 +496,61 @@ jobs:
         api-level: 29
         arch: x86_64
         script: .build/SDG/Emulator.sh
-  Miscellaneous:
+  Amazon Linux:
     runs-on: ubuntu-18.04
-    container: swift:5.2.1-bionic
+    container: swift:5.2.1-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install cURL
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Miscellaneous:
+    runs-on: ubuntu-18.04
+    container: swift:5.2.1-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash

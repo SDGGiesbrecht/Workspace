@@ -22,14 +22,14 @@ on:
 jobs:
   Deployment:
     runs-on: ubuntu-18.04
-    container: swift:5.2.1-bionic
+    container: swift:5.2.1-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Cache Workspace
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install SwiftPM dependencies
       shell: bash

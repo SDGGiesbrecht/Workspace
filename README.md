@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-macOS • Linux
+macOS • CentOS • Ubuntu • Amazon Linux
 
 [Documentation](https://sdggiesbrecht.github.io/Workspace/%F0%9F%87%AC%F0%9F%87%A7EN)
 
@@ -49,7 +49,7 @@ Workspace automates management of Swift projects.
     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
 - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-- Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
+- Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 
 ## Installation

@@ -24,12 +24,13 @@ extension ContinuousIntegrationJob {
 
   // MARK: - Sets
 
-  #warning("Add new ones?")
   public static let coverageJobs: Set<ContinuousIntegrationJob> = [
     .macOS,
+    .centOS,
     .ubuntu,
     .tvOS,
     .iOS,
+    .amazonLinux
   ]
   public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
   public static let buildJobs: Set<ContinuousIntegrationJob> =
@@ -54,14 +55,18 @@ extension ContinuousIntegrationJob {
       return "Windows"
     case .web:  // @exempt(from: tests) Unreachable from Linux.
       return "Web"
-    case .ubuntu:  // @exempt(from: tests)
-      return "Linux"  // @exempt(from: tests) Unreachable from macOS.
+    case .centOS:  // @exempt(from: tests)  Unreachable from macOS.
+      return "CentOS"
+    case .ubuntu:  // @exempt(from: tests)  Unreachable from macOS.
+      return "Linux"  // @exempt(from: tests)
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
     case .iOS:  // @exempt(from: tests) Unreachable from Linux.
       return "iOS"
     case .android:  // @exempt(from: tests) Unreachable from Linux.
       return "Android"
+    case .amazonLinux:  // @exempt(from: tests)  Unreachable from macOS.
+      return "Amazon Linux"
     case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       return "watchOS"
     case .miscellaneous, .deployment:
@@ -76,6 +81,8 @@ extension ContinuousIntegrationJob {
       return "Windows"
     case .web:  // @exempt(from: tests) Unreachable from Linux.
       return "Netz"
+    case .centOS:  // @exempt(from: tests)  Unreachable from macOS.
+      return "CentOS"
     case .ubuntu:  // @exempt(from: tests)
       return "Ubuntu"  // @exempt(from: tests) Unreachable from macOS.
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -86,6 +93,8 @@ extension ContinuousIntegrationJob {
       return "Android"
     case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       return "watchOS"
+    case .amazonLinux:  // @exempt(from: tests)  Unreachable from macOS.
+      return "Amazon Linux"
     case .miscellaneous, .deployment:
       unreachable()
     }
@@ -95,7 +104,7 @@ extension ContinuousIntegrationJob {
 
   internal var buildSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .ubuntu, .android, .miscellaneous, .deployment:
+    case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .miscellaneous, .deployment:
       unreachable()
     case .tvOS:
       return .tvOS(simulator: false)
@@ -108,7 +117,7 @@ extension ContinuousIntegrationJob {
 
   internal var testSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .ubuntu, .android, .watchOS, .miscellaneous, .deployment:
+    case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .watchOS, .miscellaneous, .deployment:
       unreachable()
     case .tvOS:  // @exempt(from: tests)
       // @exempt(from: tests) Tested separately.

@@ -29,10 +29,12 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case macOS
   case windows
   case web
+  case centOS
   case ubuntu
   case tvOS
   case iOS
   case android
+  case amazonLinux
   case watchOS
   case miscellaneous
   case deployment
@@ -45,8 +47,11 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentMacOSVersion = Version(10, 15)
   public static let currentXcodeVersion = Version(11, 6)
   private static let currentWindowsVersion = "2019"
-  private static let currentUbuntuVersion = "20.04"
+  private static let currentCentOSVersion = "8"
+  private static let currentUbuntuName = "focal"  // Used by Docker image
+  private static let currentUbuntuVersion = "18.04"  // Used by GitHub host
   private static let currentWSLImage = currentUbuntuVersion.replacingMatches(for: ".", with: "")
+  private static let currentAmazonLinuxVerison = "2"
 
   public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
@@ -82,6 +87,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "Netz"
         }
       })
+    case .centOS:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "CentOS"
+        }
+      })
     case .ubuntu:
       return UserFacing({ (localization) in
         switch localization {
@@ -112,6 +125,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "Android"
+        }
+      })
+    case .amazonLinux:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "Amazon Linux"
         }
       })
     case .watchOS:
@@ -179,6 +200,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
           return "netz"
         }
       })
+    case .centOS:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "centos"
+        }
+      })
     case .ubuntu:
       return UserFacing({ (localization) in
         switch localization {
@@ -209,6 +238,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
           .deutschDeutschland:
           return "android"
+        }
+      })
+    case .amazonLinux:
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "amazon‐linux"
         }
       })
     case .watchOS:
@@ -248,6 +285,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "WINDOWS"
     case .web:
       return "WEB"
+    case .centOS:  // @exempt(from: tests) Unreachable from macOS.
+      return "CENTOS"
     case .ubuntu:  // @exempt(from: tests) Unreachable from macOS.
       return "UBUNTU"
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -256,6 +295,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return "IOS"
     case .android:
       return "ANDROID"
+    case .amazonLinux:  // @exempt(from: tests) Unreachable from macOS.
+      return "AMAZON_LINUX"
     case .watchOS:  // @exempt(from: tests) Unreachable from Linux.
       return "WATCHOS"
     case .miscellaneous, .deployment:
@@ -276,6 +317,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return try .windows ∈ project.configuration(output: output).supportedPlatforms
       case .web:
         return try .web ∈ project.configuration(output: output).supportedPlatforms
+      case .centOS:
+        return try .centOS ∈ project.configuration(output: output).supportedPlatforms
       case .ubuntu:
         return try .ubuntu ∈ project.configuration(output: output).supportedPlatforms
       case .tvOS:
@@ -286,6 +329,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         return try .android ∈ project.configuration(output: output).supportedPlatforms
       case .watchOS:
         return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
+      case .amazonLinux:
+        return try .amazonLinux ∈ project.configuration(output: output).supportedPlatforms
       case .miscellaneous:
         return true
       case .deployment:
@@ -305,10 +350,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       return .windows
     case .web:
       return .web
+    case .centOS:
+      return .centOS
     case .ubuntu, .miscellaneous, .deployment:
       return .ubuntu
     case .android:
       return .android
+    case .amazonLinux:
+      return .amazonLinux
     }
   }
 
@@ -361,7 +410,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
-    case .ubuntu, .android:
+    case .centOS, .ubuntu, .android, .amazonLinux:
       return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
@@ -372,11 +421,17 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     switch platform {
     case .macOS, .windows, .web, .android:
       return nil
+    case .centOS:
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
     case .ubuntu:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
-      return "swift:\(version)\u{2D}bionic"
+      return "swift:\(version)\u{2D}\(ContinuousIntegrationJob.currentUbuntuName)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
+    case .amazonLinux:
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      return "swift:\(version)\u{2D}amazonlinux\(ContinuousIntegrationJob.currentAmazonLinuxVerison)"
     }
   }
 
@@ -424,12 +479,16 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
         environment = "Windows"
       case .web:
         environment = "Web"
+      case .centOS:
+        environment = "CentOS"
       case .ubuntu:
         environment = "Ubuntu"
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
         environment = "Android"
+      case .amazonLinux:
+        environment = "Amazon‐Linux"
       }
       return uses(
         "actions/cache@v1",
@@ -767,7 +826,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-      case .ubuntu:
+      case .centOS, .ubuntu, .amazonLinux:
         result.append(contentsOf: [
           script(
             heading: installSwiftPMDependenciesStepName,
@@ -835,7 +894,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       }
 
       switch platform {
-      case .macOS, .ubuntu, .iOS, .watchOS, .tvOS:
+      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
         if ¬(try project.isWorkspaceProject()) {
           result.append(
             try workspaceStep(
@@ -1086,7 +1145,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       switch platform {
       case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
         break
-      case .ubuntu:
+      case .centOS, .ubuntu, .amazonLinux:
         result.append(
           script(
             heading: grantCachPermissionsStepName,
@@ -1417,7 +1476,7 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .web, .ubuntu, .tvOS, .iOS, .android, .watchOS, .miscellaneous:
+      case .macOS, .windows, .web, .centOS, .ubuntu, .tvOS, .iOS, .android, .amazonLinux, .watchOS, .miscellaneous:
         return true
       case .deployment:
         return false

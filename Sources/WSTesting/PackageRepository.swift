@@ -55,7 +55,7 @@ import WSProofreading
         do {
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
-          case .macOS, .ubuntu:
+          case .macOS, .centOS, .ubuntu, .amazonLinux:
             buildCommand = { output in
               let log = try self.build(
                 releaseConfiguration: false,
@@ -159,7 +159,7 @@ import WSProofreading
 
         let testCommand: (Command.Output) -> Bool
         switch job {
-        case .macOS, .ubuntu:
+        case .macOS, .centOS, .ubuntu, .amazonLinux:
           // @exempt(from: tests) Tested separately.
           testCommand = { output in
             do {
@@ -273,7 +273,7 @@ import WSProofreading
         #if !(os(Windows) || os(WASI) || os(Android))
           let report: TestCoverageReport
           switch job {
-          case .macOS, .ubuntu:
+          case .macOS, .centOS, .ubuntu, .amazonLinux:
             guard
               let fromPackageManager = try codeCoverageReport(
                 ignoreCoveredRegions: true,

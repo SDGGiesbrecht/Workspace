@@ -48,7 +48,7 @@ import PackageDescription
 ///     - [Lizenzhinweise](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/Lizenzeinstellungen.html)
 ///     - [Mitwirkungsanweisungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/GitHubConfiguration.html)
 /// - Für Verwendung neben dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.
-/// - Verwaltet Projekte für macOS, Windows, Netz, Ubuntu, tvOS, iOS, Android und watchOS.
+/// - Verwaltet Projekte für macOS, Windows, Netz, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux und watchOS.
 /// - [Konfigurierbar](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Biblioteken/WorkspaceConfiguration.html)
 // @localization(🇺🇸EN)
 /// Workspace automates management of Swift projects.
@@ -80,7 +80,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/LicenseConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Ubuntu, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
@@ -112,7 +112,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Ubuntu, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇬🇧EN)
 /// Workspace automates management of Swift projects.
@@ -144,9 +144,8 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Ubuntu, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
-#warning("Add to documentation list. ↑")
 let package = Package(
   name: "Workspace",
   platforms: [

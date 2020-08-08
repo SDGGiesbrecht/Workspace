@@ -47,6 +47,10 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// CentOS.
+  case centOS  // 2004‐05‐14
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Ubuntu.
   case ubuntu  // 2004‐10‐20
 
@@ -61,6 +65,10 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Android.
   case android  // 2008‐09‐23
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Amazon Linux.
+  case amazonLinux  // 2011‐09‐26
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// watchOS.
@@ -89,6 +97,12 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .deutschDeutschland:
         return "Netz"
       }
+    case .centOS:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "CentOS"
+      }
     case .ubuntu:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
@@ -113,6 +127,12 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
         .deutschDeutschland:
         return "Android"
       }
+    case .amazonLinux:
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+      .deutschDeutschland:
+      return "Amazon Linux"
+    }
     case .watchOS:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,

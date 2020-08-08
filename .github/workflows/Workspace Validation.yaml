@@ -41,10 +41,12 @@ jobs:
         #   install --assume-yes \
         #     libncurses-dev \
         #     libsqlite3-dev
-    - name: Install cURL
+    - name: Install Workspace Dependencies
       shell: bash
       run: |
         set -x
+        yum install --assumeyes \
+          which
         # apt-get update --assume-yes
         # UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
         # apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \

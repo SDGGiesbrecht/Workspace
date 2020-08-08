@@ -38,102 +38,103 @@ import WSProofreading
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
+      try PackageRepository.with(environment: job.environmentVariable) {
+        let section = validationStatus.newSection()
 
-      let section = validationStatus.newSection()
-
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Checking build for \(job.englishName)..." + section.anchor
-          case .deutschDeutschland:
-            return "Erstellung für \(job.deutscherName) wird geprüft ..." + section.anchor
-          }
-        }).resolved().formattedAsSectionHeader()
-      )
-
-      do {
-        let buildCommand: (Command.Output) throws -> Bool
-        switch job {
-        case .macOS, .linux:
-          buildCommand = { output in
-            let log = try self.build(
-              releaseConfiguration: false,
-              reportProgress: { output.print($0) }
-            ).get()
-            return ¬SwiftCompiler.warningsOccurred(during: log)
-          }
-        case .windows, .web, .android, .miscellaneous, .deployment:
-          unreachable()
-        case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
-          buildCommand = { output in
-            let log = try self.build(
-              for: job.buildSDK,
-              reportProgress: { report in
-                if let relevant = Xcode.abbreviate(output: report) {
-                  output.print(relevant)
-                }
-              }
-            ).get()
-            return ¬Xcode.warningsOccurred(during: log)
-          }
-        }
-
-        if try buildCommand(output) {
-          validationStatus.passStep(
-            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "There are no compiler warnings for \(job.englishName)."
-              case .deutschDeutschland:
-                return "Es gibt keine Übersetzerwarnungen zu \(job.deutscherName)."
-              }
-            })
-          )
-        } else {
-          validationStatus.failStep(
-            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "There are compiler warnings for \(job.englishName)."
-                  + section.crossReference.resolved(for: localization)
-              case .deutschDeutschland:
-                return "Es gibt Übersetzerwarnungen zu \(job.englishName)."
-                  + section.crossReference.resolved(for: localization)
-              }
-            })
-          )
-        }
-      } catch {
-        // @exempt(from: tests) Unreachable on Linux.
-        var description = StrictString(error.localizedDescription)
-        if let schemeError = error as? Xcode.SchemeError {
-          switch schemeError {
-          case .xcodeError:  // @exempt(from: tests)
-            description = ""  // Already printed.
-          case .foundationError, .noPackageScheme:  // @exempt(from: tests)
-            break
-          }
-        }
-        output.print(description.formattedAsError())
-
-        validationStatus.failStep(
-          message: UserFacing<
-            StrictString,
-            InterfaceLocalization
-          >({ localization in  // @exempt(from: tests)
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
-            case .englishUnitedKingdom,
-              .englishUnitedStates,
-              .englishCanada:  // @exempt(from: tests)
-              return "Build failed for \(job.englishName)."
-                + section.crossReference.resolved(for: localization)
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Checking build for \(job.englishName)..." + section.anchor
             case .deutschDeutschland:
-              return "Erstellung für \(job.deutscherName) ist fehlgeschlagen."
-                + section.crossReference.resolved(for: localization)
+              return "Erstellung für \(job.deutscherName) wird geprüft ..." + section.anchor
             }
-          })
+          }).resolved().formattedAsSectionHeader()
         )
+
+        do {
+          let buildCommand: (Command.Output) throws -> Bool
+          switch job {
+          case .macOS, .linux:
+            buildCommand = { output in
+              let log = try self.build(
+                releaseConfiguration: false,
+                reportProgress: { output.print($0) }
+              ).get()
+              return ¬SwiftCompiler.warningsOccurred(during: log)
+            }
+          case .windows, .web, .android, .miscellaneous, .deployment:
+            unreachable()
+          case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
+            buildCommand = { output in
+              let log = try self.build(
+                for: job.buildSDK,
+                reportProgress: { report in
+                  if let relevant = Xcode.abbreviate(output: report) {
+                    output.print(relevant)
+                  }
+                }
+              ).get()
+              return ¬Xcode.warningsOccurred(during: log)
+            }
+          }
+
+          if try buildCommand(output) {
+            validationStatus.passStep(
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "There are no compiler warnings for \(job.englishName)."
+                case .deutschDeutschland:
+                  return "Es gibt keine Übersetzerwarnungen zu \(job.deutscherName)."
+                }
+              })
+            )
+          } else {
+            validationStatus.failStep(
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "There are compiler warnings for \(job.englishName)."
+                    + section.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                  return "Es gibt Übersetzerwarnungen zu \(job.englishName)."
+                    + section.crossReference.resolved(for: localization)
+                }
+              })
+            )
+          }
+        } catch {
+          // @exempt(from: tests) Unreachable on Linux.
+          var description = StrictString(error.localizedDescription)
+          if let schemeError = error as? Xcode.SchemeError {
+            switch schemeError {
+            case .xcodeError:  // @exempt(from: tests)
+              description = ""  // Already printed.
+            case .foundationError, .noPackageScheme:  // @exempt(from: tests)
+              break
+            }
+          }
+          output.print(description.formattedAsError())
+
+          validationStatus.failStep(
+            message: UserFacing<
+              StrictString,
+              InterfaceLocalization
+            >({ localization in  // @exempt(from: tests)
+              switch localization {
+              case .englishUnitedKingdom,
+                .englishUnitedStates,
+                .englishCanada:  // @exempt(from: tests)
+                return "Build failed for \(job.englishName)."
+                  + section.crossReference.resolved(for: localization)
+              case .deutschDeutschland:
+                return "Erstellung für \(job.deutscherName) ist fehlgeschlagen."
+                  + section.crossReference.resolved(for: localization)
+              }
+            })
+          )
+        }
       }
     }
 
@@ -142,85 +143,86 @@ import WSProofreading
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
+      try PackageRepository.with(environment: job.environmentVariable) {
+        let section = validationStatus.newSection()
 
-      let section = validationStatus.newSection()
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Testing on \(job.englishName)..." + section.anchor
+            case .deutschDeutschland:
+              return "Auf \(job.deutscherName) wird getestet ..." + section.anchor
+            }
+          }).resolved().formattedAsSectionHeader()
+        )
 
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Testing on \(job.englishName)..." + section.anchor
-          case .deutschDeutschland:
-            return "Auf \(job.deutscherName) wird getestet ..." + section.anchor
+        let testCommand: (Command.Output) -> Bool
+        switch job {
+        case .macOS, .linux:
+          // @exempt(from: tests) Tested separately.
+          testCommand = { output in
+            do {
+              _ = try self.test(reportProgress: { output.print($0) }).get()
+              return true
+            } catch {
+              return false
+            }
           }
-        }).resolved().formattedAsSectionHeader()
-      )
-
-      let testCommand: (Command.Output) -> Bool
-      switch job {
-      case .macOS, .linux:
-        // @exempt(from: tests) Tested separately.
-        testCommand = { output in
-          do {
-            _ = try self.test(reportProgress: { output.print($0) }).get()
-            return true
-          } catch {
-            return false
-          }
-        }
-      case .windows, .web, .android, .miscellaneous, .deployment:
-        unreachable()
-      case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
-        testCommand = { output in
-          switch self.test(
-            on: job.testSDK,
-            reportProgress: { report in
-              if let relevant = Xcode.abbreviate(output: report) {
-                output.print(relevant)
+        case .windows, .web, .android, .miscellaneous, .deployment:
+          unreachable()
+        case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
+          testCommand = { output in
+            switch self.test(
+              on: job.testSDK,
+              reportProgress: { report in
+                if let relevant = Xcode.abbreviate(output: report) {
+                  output.print(relevant)
+                }
               }
+            )
+            {
+            case .failure(let error):
+              var description = StrictString(error.localizedDescription)
+              switch error {
+              case .xcodeError:
+                description = ""  // Already printed.
+              case .foundationError, .noPackageScheme:
+                break
+              }
+              output.print(description.formattedAsError())
+              return false
+            case .success:
+              return true
             }
-          )
-          {
-          case .failure(let error):
-            var description = StrictString(error.localizedDescription)
-            switch error {
-            case .xcodeError:
-              description = ""  // Already printed.
-            case .foundationError, .noPackageScheme:
-              break
-            }
-            output.print(description.formattedAsError())
-            return false
-          case .success:
-            return true
           }
         }
-      }
 
-      if testCommand(output) {
-        validationStatus.passStep(
-          message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Tests pass on \(job.englishName)."
-            case .deutschDeutschland:
-              return "Teste werden auf \(job.deutscherName) bestanden."
-            }
-          })
-        )
-      } else {
-        validationStatus.failStep(
-          message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Tests fail on \(job.englishName)."
-                + section.crossReference.resolved(for: localization)
-            case .deutschDeutschland:
-              return "Teste werden auf \(job.deutscherName) nicht bestanden."
-                + section.crossReference.resolved(for: localization)
-            }
-          })
-        )
+        if testCommand(output) {
+          validationStatus.passStep(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Tests pass on \(job.englishName)."
+              case .deutschDeutschland:
+                return "Teste werden auf \(job.deutscherName) bestanden."
+              }
+            })
+          )
+        } else {
+          validationStatus.failStep(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Tests fail on \(job.englishName)."
+                  + section.crossReference.resolved(for: localization)
+              case .deutschDeutschland:
+                return "Teste werden auf \(job.deutscherName) nicht bestanden."
+                  + section.crossReference.resolved(for: localization)
+              }
+            })
+          )
+        }
       }
     }
 
@@ -229,7 +231,6 @@ import WSProofreading
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
-
       let section = validationStatus.newSection()
       output.print(
         UserFacing<StrictString, InterfaceLocalization>({ localization in

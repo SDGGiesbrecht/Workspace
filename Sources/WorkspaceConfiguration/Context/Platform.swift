@@ -128,11 +128,11 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
         return "Android"
       }
     case .amazonLinux:
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-      .deutschDeutschland:
-      return "Amazon Linux"
-    }
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Amazon Linux"
+      }
     case .watchOS:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,

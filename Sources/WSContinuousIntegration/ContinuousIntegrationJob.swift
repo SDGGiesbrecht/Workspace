@@ -431,7 +431,8 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       unreachable()
     case .amazonLinux:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
-      return "swift:\(version)\u{2D}amazonlinux\(ContinuousIntegrationJob.currentAmazonLinuxVerison)"
+      return
+        "swift:\(version)\u{2D}amazonlinux\(ContinuousIntegrationJob.currentAmazonLinuxVerison)"
     }
   }
 
@@ -1476,7 +1477,8 @@ extension Optional where Wrapped == ContinuousIntegrationJob {
     switch self {
     case .none:
       switch job {
-      case .macOS, .windows, .web, .centOS, .ubuntu, .tvOS, .iOS, .android, .amazonLinux, .watchOS, .miscellaneous:
+      case .macOS, .windows, .web, .centOS, .ubuntu, .tvOS, .iOS, .android, .amazonLinux, .watchOS,
+        .miscellaneous:
         return true
       case .deployment:
         return false

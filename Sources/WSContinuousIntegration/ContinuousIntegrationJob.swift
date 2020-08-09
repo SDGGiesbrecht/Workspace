@@ -533,7 +533,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     installLines.append(
       contentsOf: sorted.indices.map { index in
         let package = sorted[index]
-        var entry: StrictString = "    \(package)"
+        var entry: StrictString = "  \(package)"
         if index ≠ sorted.indices.last {
           entry.append(contentsOf: " \u{5C}")
         }

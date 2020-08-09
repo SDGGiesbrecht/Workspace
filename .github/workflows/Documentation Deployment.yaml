@@ -42,7 +42,7 @@ jobs:
           install --assume-yes \
             libncurses-dev \
             libsqlite3-dev
-    - name: Install cURL
+    - name: Install Workspace dependencies
       shell: bash
       run: |
         set -x

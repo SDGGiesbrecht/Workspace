@@ -836,14 +836,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
             commands: [
-              aptGet(["libsqlite3\u{2D}dev", "libncurses\u{2D}dev"])
+              aptGet(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
             ]
           ),
           script(
             heading: installWorkspaceDependencies,
             localization: interfaceLocalization,
             commands: [
-              aptGet(["curl"])
+              aptGet(["curl", "which"])
             ]
           ),
         ])
@@ -853,7 +853,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
             commands: [
-              aptGet(["libsqlite3\u{2D}dev", "libncurses\u{2D}dev"])
+              aptGet(["libncurses\u{2D}dev", "libsqlite3\u{2D}dev"])
             ]
           ),
           script(

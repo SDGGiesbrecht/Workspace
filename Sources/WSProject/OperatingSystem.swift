@@ -24,7 +24,6 @@ extension Platform {
 
   // MARK: - Static Properties
 
-  #warning("Not resolved yet.")
   public static let current: Platform = {
     #if os(macOS)
       return .macOS

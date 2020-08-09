@@ -26,7 +26,6 @@ extension Platform {
 
   #warning("Not resolved yet.")
   public static var current: Platform {
-    print(ProcessInfo.processInfo.environment)
     switch Shell.default.run(command: ["cat", "/etc/os-release"]) {
     case .failure(let failure):
       print(failure)

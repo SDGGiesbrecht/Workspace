@@ -830,7 +830,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-      case .centOS, .ubuntu, .amazonLinux:
+      case .centOS, .amazonLinux:
         result.append(contentsOf: [
           script(
             heading: installSwiftPMDependenciesStepName,
@@ -840,7 +840,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           ),
           script(
-            heading: installCURLStepName,
+            heading: installWorkspaceDependencies,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(["curl"])
+            ]
+          ),
+        ])
+      case .ubuntu:
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(["libsqlite3\u{2D}dev", "libncurses\u{2D}dev"])
+            ]
+          ),
+          script(
+            heading: installWorkspaceDependencies,
             localization: interfaceLocalization,
             commands: [
               aptGet(["curl"])
@@ -1319,13 +1336,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var installCURLStepName: UserFacing<StrictString, InterfaceLocalization> {
+  private var installWorkspaceDependencies: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install cURL"
+        return "Install Workspace dependencies"
       case .deutschDeutschland:
-        return "cURL installieren"
+        return "Abhängigkeiten von Arbeitsbereich installieren"
       }
     })
   }

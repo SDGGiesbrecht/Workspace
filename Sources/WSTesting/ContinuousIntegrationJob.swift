@@ -58,7 +58,7 @@ extension ContinuousIntegrationJob {
     case .centOS:  // @exempt(from: tests)  Unreachable from macOS.
       return "CentOS"
     case .ubuntu:  // @exempt(from: tests)  Unreachable from macOS.
-      return "Linux"  // @exempt(from: tests)
+      return "Ubuntu"  // @exempt(from: tests)
     case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
       return "tvOS"
     case .iOS:  // @exempt(from: tests) Unreachable from Linux.

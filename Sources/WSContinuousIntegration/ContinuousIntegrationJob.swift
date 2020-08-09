@@ -527,7 +527,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func yumInstallation(_ packages: [StrictString]) -> StrictString {
     var installLines: [StrictString] = [
-      "yum install \u{2D}\u{2D}assumeyes \u{5C}",
+      "yum install \u{2D}\u{2D}assumeyes \u{5C}"
     ]
     let sorted = packages.sorted()
     installLines.append(

@@ -131,6 +131,7 @@ jobs:
         set -x
         yum search ncurses
         yum install --assumeyes \
+          ncurses-devel
           sqlite-devel
         # apt-get update --assume-yes
         # UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \

@@ -525,6 +525,24 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     return "ubuntu\(ContinuousIntegrationJob.currentWSLImage) run \u{5C}\n  \(command)"
   }
 
+  private func yumInstallation(_ packages: [StrictString]) -> StrictString {
+    var installLines: [StrictString] = [
+      "yum install \u{2D}\u{2D}assumeyes \u{5C}",
+    ]
+    let sorted = packages.sorted()
+    installLines.append(
+      contentsOf: sorted.indices.map { index in
+        let package = sorted[index]
+        var entry: StrictString = "    \(package)"
+        if index ≠ sorted.indices.last {
+          entry.append(contentsOf: " \u{5C}")
+        }
+        return entry
+      }
+    )
+    return installLines.joinedAsLines()
+  }
+
   private func aptGet(_ packages: [StrictString], wsl: Bool = false) -> StrictString {
     var update: StrictString = "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes"
     if wsl {
@@ -836,14 +854,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
             commands: [
-              aptGet(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
+              yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
             ]
           ),
           script(
             heading: installWorkspaceDependencies,
             localization: interfaceLocalization,
             commands: [
-              aptGet(["curl", "which"])
+              yumInstallation(["curl", "which"])
             ]
           ),
         ])

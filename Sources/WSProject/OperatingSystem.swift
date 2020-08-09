@@ -26,12 +26,6 @@ extension Platform {
 
   #warning("Not resolved yet.")
   public static let current: Platform = {
-    switch Shell.default.run(command: ["cat", "/etc/os-release"]) {
-    case .failure(let failure):
-      print(failure)
-    case .success(let success):
-      print(success)
-    }
     #if os(macOS)
       return .macOS
     #elseif os(Windows)
@@ -42,6 +36,8 @@ extension Platform {
       if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"]).get() {
         if systemInformation.contains("ID=\u{22}centos\u{22}") {
           return .centOS
+        } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {
+          return .amazonLinux
         }
       }
       return .ubuntu

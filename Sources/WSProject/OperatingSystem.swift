@@ -25,7 +25,7 @@ extension Platform {
   // MARK: - Static Properties
 
   #warning("Not resolved yet.")
-  public static var current: Platform {
+  public static let current: Platform = {
     switch Shell.default.run(command: ["cat", "/etc/os-release"]) {
     case .failure(let failure):
       print(failure)
@@ -39,9 +39,14 @@ extension Platform {
     #elseif os(WASI)
       return .web
     #elseif os(Linux)
+      if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"]).get() {
+        if systemInformation.contains("ID=\u{22}centos\u{22}") {
+          return .centOS
+        }
+      }
       return .ubuntu
     #elseif os(Android)
       return .android
     #endif
-  }
+  }()
 }

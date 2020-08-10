@@ -104,7 +104,14 @@ extension ContinuousIntegrationJob {
 
   internal var buildSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .miscellaneous,
+    case .macOS,  // @exempt(from: tests)
+      .windows,
+      .web,
+      .centOS,
+      .ubuntu,
+      .android,
+      .amazonLinux,
+      .miscellaneous,
       .deployment:
       unreachable()
     case .tvOS:

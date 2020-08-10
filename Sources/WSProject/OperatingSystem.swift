@@ -36,15 +36,12 @@ extension Platform {
         .get()
       {
         if systemInformation.contains("ID=\u{22}centos\u{22}") {
-          // @exempt(from: tests) Unreachable from Ubuntu.
-          return .centOS
-        } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {
-          // @exempt(from: tests) Unreachable from Ubuntu.
-          return .amazonLinux
+          return .centOS  // @exempt(from: tests)
+        } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
+          return .amazonLinux  // @exempt(from: tests)
         }
       }
-      // @exempt(from: tests) Unreachable from CentOS.
-      return .ubuntu
+      return .ubuntu  // @exempt(from: tests)
     #elseif os(Android)
       return .android
     #endif

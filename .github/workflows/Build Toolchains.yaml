@@ -309,6 +309,13 @@ jobs:
         set -x
         cd swift-build
         cmake --build Dispatch --target install
+    - name: Embed ICU
+      shell: bash
+      run: |
+        set -x
+        cp Android/ICU/lib/libicui18n.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicuuc.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicudata.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:
@@ -317,8 +324,8 @@ jobs:
     - name: Test SDK
       shell: bash
       run: |
+        cd HelloWorld
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift build \
-          --package-path HelloWorld \
           --build-tests --enable-test-discovery \
           --triple x86_64-unknown-linux-android \
           --sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
@@ -330,3 +337,48 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
+    - name: Copy libraries
+      shell: bash
+      run: |
+        set -x
+        cd HelloWorld
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        cp -R ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests
+        path: HelloWorld/.build/x86_64-unknown-linux-android/debug
+  Android:
+    runs-on: macos-10.15
+    needs: Linux
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare script
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/HelloWorldPackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
+#    - name: Test
+#      uses: reactivecircus/android-emulator-runner@v2
+#      with:
+#        api-level: 29
+#        arch: x86_64
+#        script: .build/SDG/Emulator.sh

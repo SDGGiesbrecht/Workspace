@@ -48,7 +48,7 @@ import PackageDescription
 ///     - [Lizenzhinweise](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/Lizenzeinstellungen.html)
 ///     - [Mitwirkungsanweisungen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/GitHubConfiguration.html)
 /// - Für Verwendung neben dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.
-/// - Verwaltet Projekte für macOS, Windows, Netz, Linux, tvOS, iOS, Android und watchOS.
+/// - Verwaltet Projekte für macOS, Windows, Netz, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux und watchOS.
 /// - [Konfigurierbar](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Biblioteken/WorkspaceConfiguration.html)
 // @localization(🇺🇸EN)
 /// Workspace automates management of Swift projects.
@@ -80,7 +80,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/LicenseConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
@@ -112,7 +112,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
 // @localization(🇬🇧EN)
 /// Workspace automates management of Swift projects.
@@ -144,7 +144,7 @@ import PackageDescription
 ///     - [Licence notices](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/LicenceConfiguration.html)
 ///     - [Contributing instructions](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/GitHubConfiguration.html)
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
-/// - Manages projects for macOS, Windows, web, Linux, tvOS, iOS, Android and watchOS.
+/// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
 let package = Package(
   name: "Workspace",
@@ -174,7 +174,7 @@ let package = Package(
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
     ///
-    /// konfiguration.unterstützteSchichte = [.macOS, .windows, .linux, .android]
+    /// konfiguration.unterstützteSchichte = [.macOS, .windows, .ubuntu, .android]
     ///
     /// konfiguration.dokumentation.aktuelleVersion = Version(1, 0, 0)
     /// konfiguration.dokumentation.projektSeite = URL(string: "projekt.de")
@@ -219,7 +219,7 @@ let package = Package(
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()
     ///
-    /// configuration.supportedPlatforms = [.macOS, .windows, .linux, .android]
+    /// configuration.supportedPlatforms = [.macOS, .windows, .ubuntu, .android]
     ///
     /// configuration.documentation.currentVersion = Version(1, 0, 0)
     /// configuration.documentation.projectWebsite = URL(string: "project.uk")
@@ -576,7 +576,7 @@ let package = Package(
     /// let konfiguration = ArbeitsbereichKonfiguration()
     /// konfiguration.alleAufgabenEinschalten()
     ///
-    /// konfiguration.unterstützteSchichte = [.macOS, .windows, .linux, .android]
+    /// konfiguration.unterstützteSchichte = [.macOS, .windows, .ubuntu, .android]
     ///
     /// konfiguration.dokumentation.aktuelleVersion = Version(1, 0, 0)
     /// konfiguration.dokumentation.projektSeite = URL(string: "projekt.de")
@@ -621,7 +621,7 @@ let package = Package(
     /// let configuration = WorkspaceConfiguration()
     /// configuration.optIntoAllTasks()
     ///
-    /// configuration.supportedPlatforms = [.macOS, .windows, .linux, .android]
+    /// configuration.supportedPlatforms = [.macOS, .windows, .ubuntu, .android]
     ///
     /// configuration.documentation.currentVersion = Version(1, 0, 0)
     /// configuration.documentation.projectWebsite = URL(string: "project.uk")

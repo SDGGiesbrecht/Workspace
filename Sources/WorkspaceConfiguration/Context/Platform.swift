@@ -47,8 +47,12 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// Linux.
-  case linux  // 1991‐09‐17
+  /// CentOS.
+  case centOS  // 2004‐05‐14
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Ubuntu.
+  case ubuntu  // 2004‐10‐20
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// tvOS.
@@ -61,6 +65,10 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Android.
   case android  // 2008‐09‐23
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Amazon Linux.
+  case amazonLinux  // 2011‐09‐26
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// watchOS.
@@ -89,11 +97,17 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .deutschDeutschland:
         return "Netz"
       }
-    case .linux:
+    case .centOS:
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
-        return "Linux"
+        return "CentOS"
+      }
+    case .ubuntu:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Ubuntu"
       }
     case .tvOS:
       switch localization {
@@ -112,6 +126,12 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
         .deutschDeutschland:
         return "Android"
+      }
+    case .amazonLinux:
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+        .deutschDeutschland:
+        return "Amazon Linux"
       }
     case .watchOS:
       switch localization {

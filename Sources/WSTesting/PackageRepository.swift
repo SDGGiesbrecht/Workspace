@@ -37,8 +37,8 @@ import WSProofreading
       for job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
-    ) throws {
-      try PackageRepository.with(environment: job.environmentVariable) {
+    ) {
+      PackageRepository.with(environment: job.environmentVariable) {
         let section = validationStatus.newSection()
 
         output.print(
@@ -55,7 +55,7 @@ import WSProofreading
         do {
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
-          case .macOS, .linux:
+          case .macOS, .centOS, .ubuntu, .amazonLinux:
             buildCommand = { output in
               let log = try self.build(
                 releaseConfiguration: false,
@@ -142,8 +142,8 @@ import WSProofreading
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
-    ) throws {
-      try PackageRepository.with(environment: job.environmentVariable) {
+    ) {
+      PackageRepository.with(environment: job.environmentVariable) {
         let section = validationStatus.newSection()
 
         output.print(
@@ -159,7 +159,7 @@ import WSProofreading
 
         let testCommand: (Command.Output) -> Bool
         switch job {
-        case .macOS, .linux:
+        case .macOS, .centOS, .ubuntu, .amazonLinux:
           // @exempt(from: tests) Tested separately.
           testCommand = { output in
             do {
@@ -273,7 +273,7 @@ import WSProofreading
         #if !(os(Windows) || os(WASI) || os(Android))
           let report: TestCoverageReport
           switch job {
-          case .macOS, .linux:
+          case .macOS, .centOS, .ubuntu, .amazonLinux:
             guard
               let fromPackageManager = try codeCoverageReport(
                 ignoreCoveredRegions: true,

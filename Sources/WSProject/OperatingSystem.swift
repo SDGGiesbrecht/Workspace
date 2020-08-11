@@ -18,11 +18,13 @@ import WSGeneralImports
 
 import WorkspaceConfiguration
 
+import SDGExternalProcess
+
 extension Platform {
 
   // MARK: - Static Properties
 
-  public static var current: Platform {
+  public static let current: Platform = {
     #if os(macOS)
       return .macOS
     #elseif os(Windows)
@@ -30,9 +32,18 @@ extension Platform {
     #elseif os(WASI)
       return .web
     #elseif os(Linux)
-      return .linux
+      if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"])
+        .get()
+      {
+        if systemInformation.contains("ID=\u{22}centos\u{22}") {
+          return .centOS  // @exempt(from: tests)
+        } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
+          return .amazonLinux  // @exempt(from: tests)
+        }
+      }
+      return .ubuntu  // @exempt(from: tests)
     #elseif os(Android)
       return .android
     #endif
-  }
+  }()
 }

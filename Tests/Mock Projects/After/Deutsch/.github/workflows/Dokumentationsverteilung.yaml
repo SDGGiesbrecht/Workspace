@@ -9,15 +9,16 @@ on:
 
 jobs:
   Verteilung:
+    name: Verteilung
     runs-on: ubuntu-18.04
-    container: swift:5.2.1-bionic
+    container: swift:5.2.4-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1
     - name: Arbeitsbereich zwischenspeichern
       uses: actions/cache@v1
       with:
-        key: Linux‐${{ hashFiles('.github/workflows/**') }}
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: SwiftPM‐Abhängigkeiten installieren
       shell: bash
@@ -29,7 +30,7 @@ jobs:
           install --assume-yes \
             libncurses-dev \
             libsqlite3-dev
-    - name: cURL installieren
+    - name: Abhängigkeiten von Arbeitsbereich installieren
       shell: bash
       run: |
         set -x

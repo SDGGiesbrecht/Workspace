@@ -29,7 +29,7 @@
   let configuration = WorkspaceConfiguration()
   configuration.optIntoAllTasks()
 
-  configuration.supportedPlatforms = [.macOS, .windows, .linux, .android]
+  configuration.supportedPlatforms = [.macOS, .windows, .ubuntu, .android]
 
   configuration.documentation.currentVersion = Version(1, 0, 0)
   configuration.documentation.projectWebsite = URL(string: "project.uk")
@@ -66,7 +66,7 @@
   let konfiguration = ArbeitsbereichKonfiguration()
   konfiguration.alleAufgabenEinschalten()
 
-  konfiguration.unterstützteSchichte = [.macOS, .windows, .linux, .android]
+  konfiguration.unterstützteSchichte = [.macOS, .windows, .ubuntu, .android]
 
   konfiguration.dokumentation.aktuelleVersion = Version(1, 0, 0)
   konfiguration.dokumentation.projektSeite = URL(string: "projekt.de")

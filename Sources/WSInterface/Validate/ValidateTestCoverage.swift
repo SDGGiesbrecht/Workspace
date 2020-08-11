@@ -121,7 +121,7 @@ extension Workspace.Validate {
               }
             #endif
 
-            try options.project.test(
+            options.project.test(
               on: job,
               validationStatus: &validationStatus,
               output: output

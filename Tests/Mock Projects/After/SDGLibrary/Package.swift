@@ -52,9 +52,7 @@ let package = Package(
 )
 // Windows Tests (Generated automatically by Workspace.)
 import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true",
-  ProcessInfo.processInfo.environment["GENERATING_TESTS"] == nil
-{
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   var tests: [Target] = []
   var other: [Target] = []
   for target in package.targets {

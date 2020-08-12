@@ -180,9 +180,7 @@ import WSSwift
             with: [
               start,
               "import Foundation",
-              "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariable)\u{22}] == \u{22}true\u{22},",
-              "  ProcessInfo.processInfo.environment[\u{22}GENERATING_TESTS\u{22}] == nil",
-              "{",
+              "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariable)\u{22}] == \u{22}true\u{22} {",
               "  var tests: [Target] = []",
               "  var other: [Target] = []",
               "  for target in package.targets {",
@@ -232,7 +230,7 @@ import WSSwift
           delete(url, output: output)
         } else {
 
-          let graph = try self.cachedWindowsPackageGraph()
+          let graph = try self.cachedPackageGraph()
           let testTargets = graph.testTargets()
 
           var main: [String] = [

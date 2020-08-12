@@ -171,25 +171,11 @@ import WorkspaceProjectConfiguration
         }
       }
     #endif
-    private static func withSimulatedWindowsEnvironment<T>(
-      _ closure: () throws -> T
-    ) rethrows -> T {
-      return try with(environment: "TARGETING_WINDOWS") {
-        return try with(environment: "GENERATING_TESTS", closure: closure)
-      }
-    }
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
       public func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()
-        }
-      }
-      public func cachedWindowsPackageGraph() throws -> PackageGraph {
-        return try cached(in: &manifestCache.windowsPackageGraph) {
-          return try PackageRepository.withSimulatedWindowsEnvironment {
-            return try packageGraph().get()
-          }
         }
       }
     #endif

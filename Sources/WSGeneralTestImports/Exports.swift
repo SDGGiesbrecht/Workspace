@@ -28,7 +28,3 @@
 @_exported import SDGXCTestUtilities
 
 @_exported import SDGCommandLineTestUtilities
-
-#if os(Windows)  // #workaround(Swift 5.2.4, CMake needs at least one symbol.)
-  public func _cmakeProduceLibrary() {}
-#endif

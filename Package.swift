@@ -788,25 +788,12 @@ func adjustForWindows() {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
-    "SwiftToolsSupport",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
-  let impossibleTargets: Set<String> = [
-    "WSCrossPlatform‐Unicode",
-    "WSCrossPlatformC",
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-  ]
-
-  package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
-  })
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      var mergedImpossible = impossibleDependencies
-      mergedImpossible.append(contentsOf: impossibleTargets)
-      return mergedImpossible.contains(where: { impossible in
+      return impossibleDependencies.contains(where: { impossible in
         "\(dependency)".contains(impossible)
       })
     })
@@ -834,7 +821,6 @@ func adjustForAndroid() {
   // #workaround(Swift 5.2.4, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
-    "SwiftToolsSupport",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]

@@ -784,57 +784,11 @@ let package = Package(
   ]
 )
 
-func adjustForWindows() {
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
-    "SwiftToolsSupport",
-    "SwiftSyntax",
-    "SwiftFormat\u{22}",
-  ]
-  let impossibleTargets: Set<String> = [
-    "WSCrossPlatform‐Unicode",
-    "WSCrossPlatformC",
-    "test‐ios‐simulator",
-    "test‐tvos‐simulator",
-  ]
-
-  package.targets.removeAll(where: { target in
-    return impossibleTargets.contains(target.name)
-  })
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      var mergedImpossible = impossibleDependencies
-      mergedImpossible.append(contentsOf: impossibleTargets)
-      return mergedImpossible.contains(where: { impossible in
-        "\(dependency)".contains(impossible)
-      })
-    })
-  }
-  // #workaround(Swift 5.2.4, Triggers assertion failure when generating CMake without this.)
-  package.dependencies.append(contentsOf: [
-    .package(url: "https://github.com/apple/swift\u{2D}numerics", .exact(Version(0, 0, 6))),
-    .package(
-      name: "cmark",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}cmark",
-      .exact(Version(0, 0, 50200))
-    ),
-  ])
-}
-#if os(Windows)
-  adjustForWindows()
-#endif
-// #workaround(Swift 5.2.4, Until packages work natively on windows.)
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  adjustForWindows()
-}
-
-func adjustForAndroid() {
-  // #workaround(Swift 5.2.4, These cannot build on Android.)
-  let impossibleDependencies = [
-    "SwiftPM",
-    "SwiftToolsSupport",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
@@ -846,14 +800,24 @@ func adjustForAndroid() {
     })
   }
 }
-#if os(Android)
-  adjustForAndroid()
-#endif
+
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
+  // #workaround(Swift 5.2.4, These cannot build on Android.)
+  let impossibleDependencies = [
+    "SwiftPM",
+    "SwiftSyntax",
+    "SwiftFormat\u{22}",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        "\(dependency)".contains(impossible)
+      })
+    })
+  }
 }
 
-func adjustForWeb() {
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
     "swift\u{2D}package\u{2D}manager"
@@ -887,9 +851,6 @@ func adjustForWeb() {
     // #workaround(Swift 5.2.4, Web lacks Foundation.)
     target.exclude.append("Resources.swift")
   }
-}
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  adjustForWeb()
 }
 
 // Windows Tests (Generated automatically by Workspace.)

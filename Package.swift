@@ -856,7 +856,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 func adjustForWeb() {
   // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
-    "swift\u{2D}package\u{2D}manager",
+    "swift\u{2D}package\u{2D}manager"
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {

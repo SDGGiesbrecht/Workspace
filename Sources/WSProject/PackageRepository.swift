@@ -14,6 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if os(Windows)
+  import WinSDK
+#endif
+
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
@@ -140,15 +144,21 @@ import WorkspaceProjectConfiguration
       let key = String(variable)
       let value = "true"
       #if os(Windows)
-        key.withCString(encodedAs: UTF16.self, { keyString in
-          value.withCString(encodedAs: UTF16.self) { valueString in
-            SetEnvironmentVariableW(keyString, valueString)
+        key.withCString(
+          encodedAs: UTF16.self,
+          { keyString in
+            value.withCString(encodedAs: UTF16.self) { valueString in
+              SetEnvironmentVariableW(keyString, valueString)
+            }
           }
-        })
+        )
         defer {
-          key.withCString(encodedAs: UTF16.self, { keyString in
-              SetEnvironmentVariableW(keyStr, nil)
-          })
+          key.withCString(
+            encodedAs: UTF16.self,
+            { keyString in
+              SetEnvironmentVariableW(keyString, nil)
+            }
+          )
         }
       #else
         setenv(key, value, 1)

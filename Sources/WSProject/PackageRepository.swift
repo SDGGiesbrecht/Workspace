@@ -14,6 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if os(Windows)
+  import WinSDK
+#endif
+
 import SDGLogic
 import SDGCollections
 import WSGeneralImports
@@ -23,11 +27,6 @@ import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
 import WorkspaceProjectConfiguration
-
-// #workaround(SwiftPM 0.6.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
-  import TSCBasic
-#endif
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
@@ -142,10 +141,28 @@ import WorkspaceProjectConfiguration
       environment variable: StrictString,
       closure: () throws -> T
     ) rethrows -> T {
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
-        try? ProcessEnv.setVar(String(variable), value: "true")
-        defer { try? ProcessEnv.unsetVar(String(variable)) }
+      let key = String(variable)
+      let value = "true"
+      #if os(Windows)
+        key.withCString(
+          encodedAs: UTF16.self,
+          { keyString in
+            value.withCString(encodedAs: UTF16.self) { valueString in
+              SetEnvironmentVariableW(keyString, valueString)
+            }
+          }
+        )
+        defer {
+          key.withCString(
+            encodedAs: UTF16.self,
+            { keyString in
+              SetEnvironmentVariableW(keyString, nil)
+            }
+          )
+        }
+      #else
+        setenv(key, value, 1)
+        defer { unsetenv(key) }
       #endif
       return try closure()
     }

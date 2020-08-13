@@ -24,11 +24,6 @@ import SDGSwiftConfigurationLoading
 
 import WorkspaceProjectConfiguration
 
-// #workaround(SwiftPM 0.6.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
-  import TSCBasic
-#endif
-
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
   extension PackageRepository {

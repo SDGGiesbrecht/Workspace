@@ -267,10 +267,6 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
       .exact(Version(0, 6, 0))
     ),
-    .package(  // #workaround(Swift 5.2.4, Until packages work natively on windows.)
-      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
-      .exact(Version(0, 1, 0))
-    ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
@@ -385,10 +381,6 @@ let package = Package(
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(
-          name: "SwiftToolsSupport\u{2D}auto",
-          package: "swift\u{2D}tools\u{2D}support\u{2D}core"
-        ),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
@@ -865,7 +857,6 @@ func adjustForWeb() {
   // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
     "swift\u{2D}package\u{2D}manager",
-    "swift\u{2D}tools\u{2D}support\u{2D}core.git",
   ]
   package.dependencies.removeAll(where: { dependency in
     for impossible in impossiblePackages {
@@ -884,8 +875,6 @@ func adjustForWeb() {
     "SwiftPM",
     // SwiftSyntax
     "SwiftSyntax",
-    // SwiftToolsSupport
-    "swift\u{2D}tools\u{2D}support\u{2D}core",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

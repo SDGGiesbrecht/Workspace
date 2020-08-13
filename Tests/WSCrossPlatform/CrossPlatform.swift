@@ -32,9 +32,7 @@
   import Dispatch
 #endif
 
-#if !os(Windows)  // #workaround(Swift 5.2.4, Cannot build C.)
-  import WSCrossPlatformC
-#endif
+import WSCrossPlatformC
 
 // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
 #if !os(WASI)
@@ -55,9 +53,7 @@ public func helloWorld() {
   #if !os(WASI)
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
-  #if !os(Windows)  // #workaround(Swift 5.2.4, Cannot build C.)
-    helloC()
-  #endif
+  helloC()
   // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
   #if !os(WASI)
     print(Configuration())

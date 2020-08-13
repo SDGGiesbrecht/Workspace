@@ -137,10 +137,22 @@ import WorkspaceProjectConfiguration
       environment variable: StrictString,
       closure: () throws -> T
     ) rethrows -> T {
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
-        try? ProcessEnv.setVar(String(variable), value: "true")
-        defer { try? ProcessEnv.unsetVar(String(variable)) }
+      let key = String(variable)
+      let value = "true"
+      #if os(Windows)
+        key.withCString(encodedAs: UTF16.self, { keyString in
+          value.withCString(encodedAs: UTF16.self) { valueString in
+            SetEnvironmentVariableW(keyString, valueString)
+          }
+        })
+        defer {
+          key.withCString(encodedAs: UTF16.self, { keyString in
+              SetEnvironmentVariableW(keyStr, nil)
+          })
+        }
+      #else
+        setenv(key, value, 1)
+        defer { unsetenv(key) }
       #endif
       return try closure()
     }

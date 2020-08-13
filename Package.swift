@@ -784,7 +784,8 @@ let package = Package(
   ]
 )
 
-func adjustForWindows() {
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
   let impossibleDependencies = [
     "SwiftPM",
@@ -799,16 +800,8 @@ func adjustForWindows() {
     })
   }
 }
-#if os(Windows)
-  adjustForWindows()
-#endif
-// #workaround(Swift 5.2.4, Until packages work natively on windows.)
-import Foundation
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  adjustForWindows()
-}
 
-func adjustForAndroid() {
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.2.4, These cannot build on Android.)
   let impossibleDependencies = [
     "SwiftPM",
@@ -823,14 +816,8 @@ func adjustForAndroid() {
     })
   }
 }
-#if os(Android)
-  adjustForAndroid()
-#endif
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  adjustForAndroid()
-}
 
-func adjustForWeb() {
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
   let impossiblePackages: [String] = [
     "swift\u{2D}package\u{2D}manager"
@@ -864,9 +851,6 @@ func adjustForWeb() {
     // #workaround(Swift 5.2.4, Web lacks Foundation.)
     target.exclude.append("Resources.swift")
   }
-}
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  adjustForWeb()
 }
 
 // Windows Tests (Generated automatically by Workspace.)

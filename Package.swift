@@ -252,11 +252,11 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 4, 1)
+      from: Version(5, 5, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 4, 3)
+      from: Version(1, 5, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",

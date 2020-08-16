@@ -861,7 +861,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: installWorkspaceDependencies,
             localization: interfaceLocalization,
             commands: [
-              yumInstallation(["curl", "which"])
+              yumInstallation(["curl"])
             ]
           ),
         ])

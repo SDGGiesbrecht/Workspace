@@ -276,7 +276,7 @@ let package = Package(
       url: "https://github.com/apple/swift\u{2D}format",
       .exact(Version(0, 50200, 1))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 3, 1)),
+    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 4, 0)),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)

@@ -123,8 +123,7 @@ jobs:
       run: |
         set -x
         yum install --assumeyes \
-          curl \
-          which
+          curl
     - name: Install Workspace
       shell: bash
       run: |
@@ -418,8 +417,7 @@ jobs:
       run: |
         set -x
         yum install --assumeyes \
-          curl \
-          which
+          curl
     - name: Install Workspace
       shell: bash
       run: |

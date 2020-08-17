@@ -294,8 +294,7 @@ jobs:
       run: |
         set -x
         yum install --assumeyes \
-          curl \
-          which
+          curl
     - name: Arbeitsbereich installieren
       shell: bash
       run: |
@@ -701,8 +700,7 @@ jobs:
       run: |
         set -x
         yum install --assumeyes \
-          curl \
-          which
+          curl
     - name: Arbeitsbereich installieren
       shell: bash
       run: |

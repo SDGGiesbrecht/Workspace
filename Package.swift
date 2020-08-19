@@ -260,7 +260,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(2, 1, 0)
+      from: Version(2, 1, 1)
     ),
     .package(
       name: "SwiftPM",

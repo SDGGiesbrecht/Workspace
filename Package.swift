@@ -280,10 +280,10 @@ let package = Package(
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
-    .target(name: "WorkspaceTool", dependencies: [.target(name: "WorkspaceLibrary")]),
+    .target(name: "WorkspaceTool", dependencies: [.target(name: "WorkspaceImplementation")]),
     // The umbrella library. (Shared by the various localized executables.)
     .target(
-      name: "WorkspaceLibrary",
+      name: "WorkspaceImplementation",
       dependencies: [
         "WSGeneralImports",
         "WorkspaceProjectConfiguration",
@@ -697,7 +697,7 @@ let package = Package(
       ]
     ),
     .testTarget(
-      name: "WorkspaceLibraryTests",
+      name: "WorkspaceTests",
       dependencies: [
         "WSGeneralTestImports",
         "WSCustomTask",

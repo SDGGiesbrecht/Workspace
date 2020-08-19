@@ -17,7 +17,7 @@
 import XCTest
 
 @testable import WSCrossPlatformTests
-@testable import WorkspaceLibraryTests
+@testable import WorkspaceTests
 
 extension WSCrossPlatformTests.CrossPlatformTests {
   static let windowsTests: [XCTestCaseEntry] = [
@@ -35,7 +35,7 @@ extension WSCrossPlatformTests.CrossPlatformTests {
   ]
 }
 
-extension WorkspaceLibraryTests.APITests {
+extension WorkspaceTests.APITests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testAllDisabled", testAllDisabled),
@@ -89,7 +89,7 @@ extension WorkspaceLibraryTests.APITests {
   ]
 }
 
-extension WorkspaceLibraryTests.InternalTests {
+extension WorkspaceTests.InternalTests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testGitIgnoreCoverage", testGitIgnoreCoverage),
@@ -101,7 +101,7 @@ extension WorkspaceLibraryTests.InternalTests {
 
 var tests = [XCTestCaseEntry]()
 tests += WSCrossPlatformTests.CrossPlatformTests.windowsTests
-tests += WorkspaceLibraryTests.APITests.windowsTests
-tests += WorkspaceLibraryTests.InternalTests.windowsTests
+tests += WorkspaceTests.APITests.windowsTests
+tests += WorkspaceTests.InternalTests.windowsTests
 
 XCTMain(tests)

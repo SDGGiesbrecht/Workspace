@@ -47,7 +47,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/unicode-org/icu --branch release-65-1 --depth 1
+        git clone https://github.com/unicode-org/icu --branch release-67-1 --depth 1
     - name: Build ICU for Linux
       # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToBuildUNIX
       shell: bash

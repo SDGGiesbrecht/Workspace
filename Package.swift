@@ -289,12 +289,12 @@ let package = Package(
         "WorkspaceProjectConfiguration",
         "WSProject",
         "WSValidation",
+        "WSSwift",
         "WSScripts",
         "WSGit",
         "WSOpenSource",
         "WSLicence",
         "WSGitHub",
-        "WSContinuousIntegration",
         "WSResources",
         "WSFileHeaders",
         "WSExamples",
@@ -305,7 +305,10 @@ let package = Package(
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
@@ -358,22 +361,6 @@ let package = Package(
         "WSGeneralImports",
         "WSProject",
         "WorkspaceProjectConfiguration",
-      ]
-    ),
-
-    // Continuous integration management.
-    .target(
-      name: "WSContinuousIntegration",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        "WSScripts",
-        "WSDocumentation",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 

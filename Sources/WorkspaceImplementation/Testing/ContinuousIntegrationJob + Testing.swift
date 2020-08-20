@@ -16,7 +16,6 @@
 
 import SDGCollections
 import WSGeneralImports
-import WSContinuousIntegration
 
 import SDGXcode
 
@@ -24,7 +23,7 @@ extension ContinuousIntegrationJob {
 
   // MARK: - Sets
 
-  static let coverageJobs: Set<ContinuousIntegrationJob> = [
+  internal static let coverageJobs: Set<ContinuousIntegrationJob> = [
     .macOS,
     .centOS,
     .ubuntu,
@@ -32,8 +31,8 @@ extension ContinuousIntegrationJob {
     .iOS,
     .amazonLinux,
   ]
-  static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
-  static let buildJobs: Set<ContinuousIntegrationJob> =
+  internal static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
+  internal static let buildJobs: Set<ContinuousIntegrationJob> =
     testJobs ∪ [
       .watchOS
     ]

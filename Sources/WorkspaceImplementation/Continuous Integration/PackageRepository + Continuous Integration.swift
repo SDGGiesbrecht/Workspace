@@ -31,7 +31,7 @@ import WSSwift
 #if !os(WASI)
   extension PackageRepository {
 
-    public func refreshContinuousIntegration(output: Command.Output) throws {
+    internal func refreshContinuousIntegration(output: Command.Output) throws {
       try refreshGitHubWorkflows(output: output)
       delete(location.appendingPathComponent(".travis.yml"), output: output)
     }

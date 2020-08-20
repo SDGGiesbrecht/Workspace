@@ -22,7 +22,7 @@ import WSProject
 import WSScripts
 import WSDocumentation
 
-public enum ContinuousIntegrationJob: Int, CaseIterable {
+internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // MARK: - Cases
 
@@ -39,14 +39,14 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  public static let currentSwiftVersion = Version(5, 2, 4)
-  public static let experimentalSwiftVersion = Version(5, 2, 1)
+  internal static let currentSwiftVersion = Version(5, 2, 4)
+  internal static let experimentalSwiftVersion = Version(5, 2, 1)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}31"
   private static let experimentalDownloads =
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
-  public static let currentXcodeVersion = Version(11, 6)
+  internal static let currentXcodeVersion = Version(11, 6)
   private static let currentWindowsVersion = "2019"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
@@ -54,7 +54,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentWSLImage = currentUbuntuVersion.replacingMatches(for: ".", with: "")
   private static let currentAmazonLinuxVerison = "2"
 
-  public static let simulatorJobs: Set<ContinuousIntegrationJob> = [
+  internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
     .tvOS,
   ]
@@ -174,7 +174,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  public var argumentName: UserFacing<StrictString, InterfaceLocalization> {
+  internal var argumentName: UserFacing<StrictString, InterfaceLocalization> {
     switch self {
     case .macOS:
       return UserFacing({ (localization) in
@@ -304,13 +304,13 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
       unreachable()
     }
   }
-  public var environmentVariable: StrictString {
+  internal var environmentVariable: StrictString {
     return "TARGETING_\(environmentVariableName)"
   }
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
+    internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
       switch self {
       case .macOS:
         return try .macOS ∈ project.configuration(output: output).supportedPlatforms
@@ -343,7 +343,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   #endif
 
-  public var platform: Platform {
+  internal var platform: Platform {
     switch self {
     case .macOS, .tvOS, .iOS, .watchOS:
       return .macOS
@@ -1511,7 +1511,7 @@ public enum ContinuousIntegrationJob: Int, CaseIterable {
 
 extension Optional where Wrapped == ContinuousIntegrationJob {
 
-  public func includes(job: ContinuousIntegrationJob) -> Bool {
+  internal func includes(job: ContinuousIntegrationJob) -> Bool {
     switch self {
     case .none:
       switch job {

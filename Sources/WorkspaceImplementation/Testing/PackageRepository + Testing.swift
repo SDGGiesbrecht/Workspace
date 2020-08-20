@@ -24,7 +24,6 @@ import SDGSwiftPackageManager
 import SDGXcode
 
 import WSValidation
-import WSContinuousIntegration
 import WSProofreading
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
@@ -33,7 +32,7 @@ import WSProofreading
 
     // MARK: - Testing
 
-    func build(
+    internal func build(
       for job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -138,7 +137,7 @@ import WSProofreading
       }
     }
 
-    func test(
+    internal func test(
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -226,7 +225,7 @@ import WSProofreading
       }
     }
 
-    func validateCodeCoverage(
+    internal func validateCodeCoverage(
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output

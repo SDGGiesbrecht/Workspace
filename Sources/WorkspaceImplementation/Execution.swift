@@ -22,7 +22,6 @@ import WSGeneralImports
 #endif
 
 import WorkspaceProjectConfiguration
-import WSInterface
 
 public func run() {  // @exempt(from: tests)
 

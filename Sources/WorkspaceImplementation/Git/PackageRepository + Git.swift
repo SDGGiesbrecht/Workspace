@@ -69,7 +69,7 @@ import WSProject
         + ignoreEntriesForXcode
     }
 
-    public func refreshGitConfiguration(output: Command.Output) throws {
+    internal func refreshGitConfiguration(output: Command.Output) throws {
 
       let entries =
         try PackageRepository.ignoreEntries

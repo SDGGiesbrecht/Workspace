@@ -290,7 +290,6 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSGit",
         "WSOpenSource",
         "WSLicence",
         "WSGitHub",
@@ -312,15 +311,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Git management.
-    .target(
-      name: "WSGit",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
 
     // Open source management.
     .target(

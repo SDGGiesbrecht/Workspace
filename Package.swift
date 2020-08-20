@@ -292,12 +292,12 @@ let package = Package(
         "WSValidation",
         "WSSwift",
         "WSParsing",
-        "WSCustomTask",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
+        .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
@@ -311,17 +311,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Mechanism for embedding third party tools.
-    .target(
-      name: "WSCustomTask",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        .product(name: "SDGSwift", package: "SDGSwift"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ]
-    ),
 
     // Utilities for validation reports.
     .target(
@@ -522,8 +511,8 @@ let package = Package(
       name: "WorkspaceTests",
       dependencies: [
         "WSGeneralTestImports",
-        "WSCustomTask",
         "WorkspaceProjectConfiguration",
+        "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),

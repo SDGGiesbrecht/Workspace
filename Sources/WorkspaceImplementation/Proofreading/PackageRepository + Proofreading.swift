@@ -25,7 +25,6 @@ import WSGeneralImports
 import SDGSwiftSource
 
 import WSProject
-import WSCustomTask
 
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))

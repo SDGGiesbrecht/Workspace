@@ -294,15 +294,18 @@ let package = Package(
         "WSParsing",
         "WSXcode",
         "WSProofreading",
-        "WSDocumentation",
+        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SDGHTML", package: "SDGWeb"),
+        .product(name: "SDGCSS", package: "SDGWeb"),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
       ]
     ),
 
@@ -332,26 +335,6 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Documentation generation.
-    .target(
-      name: "WSDocumentation",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSParsing",
-        "WSValidation",
-        "WSXcode",
-        "WSSwift",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
-        .product(name: "SDGHTML", package: "SDGWeb"),
-        .product(name: "SDGCSS", package: "SDGWeb"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
       ]
     ),
 

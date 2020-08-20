@@ -25,7 +25,7 @@
 
   extension Array where Element == SymbolDocumentation {
 
-    public func resolved(
+    internal func resolved(
       localizations: [LocalizationIdentifier]
     ) -> (
       documentation: [LocalizationIdentifier: DocumentationSyntax],

@@ -38,7 +38,7 @@ internal class Page {
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static let template: StrictString = {
-      var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
+      var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
       result.header = ""
       return StrictString(result.contents)
     }()

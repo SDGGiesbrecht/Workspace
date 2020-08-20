@@ -36,11 +36,11 @@ import WSXcode
 
     // MARK: - Static Properties
 
-    public static let documentationDirectoryName = "docs"  // Matches GitHub Pages.
+    internal static let documentationDirectoryName = "docs"  // Matches GitHub Pages.
 
     // MARK: - Properties
 
-    public func hasTargetsToDocument() throws -> Bool {
+    internal func hasTargetsToDocument() throws -> Bool {
       #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
         return true
       #else
@@ -50,7 +50,7 @@ import WSXcode
 
     // MARK: - Configuration
 
-    public var defaultDocumentationDirectory: URL {
+    internal var defaultDocumentationDirectory: URL {
       return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
@@ -190,7 +190,7 @@ import WSXcode
 
     // MARK: - Documentation
 
-    public func document(
+    internal func document(
       outputDirectory: URL,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -354,10 +354,10 @@ import WSXcode
 
       try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
       try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
-      var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
+      var siteCSS = TextFile(mockFileWithContents: Resources.Documentation.site, fileType: .css)
       siteCSS.header = ""
       try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
-      var siteJavaScript = TextFile(mockFileWithContents: Resources.script, fileType: .javaScript)
+      var siteJavaScript = TextFile(mockFileWithContents: Resources.Documentation.script, fileType: .javaScript)
       siteJavaScript.header = ""
       try siteJavaScript.contents.save(
         to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
@@ -426,7 +426,7 @@ import WSXcode
 
     // MARK: - Validation
 
-    public func validateDocumentationCoverage(
+    internal func validateDocumentationCoverage(
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
@@ -542,7 +542,7 @@ import WSXcode
       }
     }
 
-    public func refreshInheritedDocumentation(output: Command.Output) throws {
+    internal func refreshInheritedDocumentation(output: Command.Output) throws {
 
       for url in try sourceFiles(output: output) {
         try purgingAutoreleased {

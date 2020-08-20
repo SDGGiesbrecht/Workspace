@@ -19,7 +19,6 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
-import WSDocumentation
 
 internal enum ContinuousIntegrationJob: Int, CaseIterable {
 

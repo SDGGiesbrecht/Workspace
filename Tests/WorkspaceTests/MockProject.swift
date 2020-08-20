@@ -16,7 +16,7 @@
 
 import SDGLogic
 import SDGCollections
-@testable import WSInterface
+@testable import WorkspaceImplementation
 import WSGeneralTestImports
 
 import SDGExternalProcess

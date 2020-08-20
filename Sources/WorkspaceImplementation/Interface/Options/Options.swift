@@ -21,7 +21,7 @@ extension Options {
 
   // MARK: - General
 
-  public var job: ContinuousIntegrationJob? {
+  internal var job: ContinuousIntegrationJob? {
     return value(for: ContinuousIntegrationJob.option)
   }
 

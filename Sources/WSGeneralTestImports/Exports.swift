@@ -16,7 +16,7 @@
 
 @_exported import WSGeneralImports
 @_exported import WorkspaceConfiguration
-@_exported import WSInterface
+@_exported import WorkspaceImplementation
 
 // #workaround(Swift 5.2.4, Web lacks XCTest.)
 #if !os(WASI)

@@ -287,18 +287,6 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WorkspaceProjectConfiguration",
-        "WSInterface",
-      ]
-    ),
-
-    // Components
-
-    // Defines the public command line interface.
-    .target(
-      name: "WSInterface",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceProjectConfiguration",
         "WSProject",
         "WSValidation",
         "WSScripts",
@@ -318,6 +306,8 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
       ]
     ),
+
+    // Components
 
     // Workspace scripts.
     .target(
@@ -689,7 +679,7 @@ let package = Package(
       dependencies: [
         "WSGeneralImports",
         "WorkspaceConfiguration",
-        "WSInterface",
+        "WorkspaceImplementation",
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
@@ -712,7 +702,7 @@ let package = Package(
       name: "test‐ios‐simulator",
       dependencies: [
         "WSGeneralImports",
-        "WSInterface",
+        "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
       path: "Tests/test‐ios‐simulator"
@@ -721,7 +711,7 @@ let package = Package(
       name: "test‐tvos‐simulator",
       dependencies: [
         "WSGeneralImports",
-        "WSInterface",
+        "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
       path: "Tests/test‐tvos‐simulator"

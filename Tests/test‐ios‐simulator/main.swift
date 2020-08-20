@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import SDGExternalProcess
 
-import WSInterface
+import WorkspaceImplementation
 
 do {
   // #workaround(Swift 5.2.4, Web lacks Foundation.)

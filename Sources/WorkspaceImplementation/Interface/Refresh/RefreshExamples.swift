@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSExamples
-
 extension Workspace.Refresh {
 
   internal enum Examples {

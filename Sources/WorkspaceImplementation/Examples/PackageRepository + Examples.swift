@@ -40,7 +40,7 @@ import WSParsing
         + InterfaceLocalization.endExampleDeclaration
     }
 
-    public func examples(output: Command.Output) throws -> [StrictString: StrictString] {
+    internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
       return try _withExampleCache {
         var list: [StrictString: StrictString] = [:]
 
@@ -100,7 +100,7 @@ import WSParsing
       }
     }
 
-    public func refreshExamples(output: Command.Output) throws {
+    internal func refreshExamples(output: Command.Output) throws {
 
       files: for url in try sourceFiles(output: output)
       where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {

@@ -19,7 +19,6 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
-import WSExamples
 import WSDocumentation
 
 import SDGSwiftSource

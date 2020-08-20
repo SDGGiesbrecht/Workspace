@@ -291,7 +291,7 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSExamples",
+        "WSParsing",
         "WSNormalization",
         "WSXcode",
         "WSProofreading",
@@ -307,16 +307,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Example management.
-    .target(
-      name: "WSExamples",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSParsing",
-      ]
-    ),
 
     // Normalization.
     .target(

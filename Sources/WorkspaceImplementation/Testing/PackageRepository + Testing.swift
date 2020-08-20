@@ -33,7 +33,7 @@ import WSProofreading
 
     // MARK: - Testing
 
-    public func build(
+    func build(
       for job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -138,7 +138,7 @@ import WSProofreading
       }
     }
 
-    public func test(
+    func test(
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -226,7 +226,7 @@ import WSProofreading
       }
     }
 
-    public func validateCodeCoverage(
+    func validateCodeCoverage(
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output

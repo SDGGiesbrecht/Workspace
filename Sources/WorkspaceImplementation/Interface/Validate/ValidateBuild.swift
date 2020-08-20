@@ -20,7 +20,6 @@ import WSGeneralImports
 
 import WSProject
 import WSValidation
-import WSTesting
 import WSContinuousIntegration
 
 extension Workspace.Validate {

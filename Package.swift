@@ -301,9 +301,11 @@ let package = Package(
         "WSNormalization",
         "WSXcode",
         "WSProofreading",
-        "WSTesting",
         "WSDocumentation",
+        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SDGXcode", package: "SDGSwift"),
       ]
     ),
 
@@ -442,21 +444,6 @@ let package = Package(
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Testing.
-    .target(
-      name: "WSTesting",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSValidation",
-        "WSContinuousIntegration",
-        "WSProofreading",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGXcode", package: "SDGSwift"),
       ]
     ),
 

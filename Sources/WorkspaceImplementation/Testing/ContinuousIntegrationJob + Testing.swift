@@ -24,7 +24,7 @@ extension ContinuousIntegrationJob {
 
   // MARK: - Sets
 
-  public static let coverageJobs: Set<ContinuousIntegrationJob> = [
+  static let coverageJobs: Set<ContinuousIntegrationJob> = [
     .macOS,
     .centOS,
     .ubuntu,
@@ -32,8 +32,8 @@ extension ContinuousIntegrationJob {
     .iOS,
     .amazonLinux,
   ]
-  public static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
-  public static let buildJobs: Set<ContinuousIntegrationJob> =
+  static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
+  static let buildJobs: Set<ContinuousIntegrationJob> =
     testJobs ∪ [
       .watchOS
     ]

@@ -113,7 +113,7 @@ import SDGSwiftPackageManager
       return target
     }
 
-    public func refreshResources(output: Command.Output) throws {
+    internal func refreshResources(output: Command.Output) throws {
 
       var targets: [Target: [URL]] = [:]
       for resource in try resourceFiles(output: output) {

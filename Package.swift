@@ -291,7 +291,6 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSResources",
         "WSFileHeaders",
         "WSExamples",
         "WSNormalization",
@@ -309,18 +308,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Resource management.
-    .target(
-      name: "WSResources",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
 
     // File header management.
     .target(

@@ -21,7 +21,7 @@ import WSProject
 #if !os(WASI)
   extension PackageRepository {
 
-    public func refreshLicence(output: Command.Output) throws {
+    internal func refreshLicence(output: Command.Output) throws {
 
       guard let licence = try configuration(output: output).licence.licence else {
         throw Command.Error(

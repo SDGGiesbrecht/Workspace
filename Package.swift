@@ -286,11 +286,11 @@ let package = Package(
       name: "WorkspaceImplementation",
       dependencies: [
         "WSGeneralImports",
+        "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSLicence",
         "WSGitHub",
         "WSResources",
         "WSFileHeaders",
@@ -310,16 +310,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Licence management.
-    .target(
-      name: "WSLicence",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        "WSProject",
-      ]
-    ),
 
     // GitHub management.
     .target(

@@ -20,7 +20,7 @@ import WSGeneralImports
 import WorkspaceProjectConfiguration
 import WSProject
 
-public enum Script: Int, CaseIterable {
+internal enum Script: Int, CaseIterable {
 
   // MARK: - Cases
 
@@ -171,7 +171,7 @@ public enum Script: Int, CaseIterable {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static func getWorkspace(
+    internal static func getWorkspace(
       andExecute command: StrictString,
       for project: PackageRepository,
       useSystemCache: Bool = true,

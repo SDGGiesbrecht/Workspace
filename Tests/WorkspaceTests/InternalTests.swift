@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import WSScripts
+@testable import WorkspaceImplementation
 import WSGeneralTestImports
 
 import WSProject

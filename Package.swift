@@ -290,7 +290,6 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSScripts",
         "WSGit",
         "WSOpenSource",
         "WSLicence",
@@ -313,15 +312,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Workspace scripts.
-    .target(
-      name: "WSScripts",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
 
     // Git management.
     .target(

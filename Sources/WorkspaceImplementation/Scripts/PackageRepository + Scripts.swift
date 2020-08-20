@@ -22,12 +22,12 @@ import WSProject
 #if !os(WASI)
   extension PackageRepository {
 
-    public static let repositorySDGDirectory: StrictString = ".build/SDG"
-    public static let repositoryWorkspaceCacheDirectory: StrictString =
+    internal static let repositorySDGDirectory: StrictString = ".build/SDG"
+    internal static let repositoryWorkspaceCacheDirectory: StrictString =
       repositorySDGDirectory
       + "/Workspace"
 
-    public func refreshScripts(output: Command.Output) throws {
+    internal func refreshScripts(output: Command.Output) throws {
 
       for deprecated in Script.deprecatedFileNames {
         delete(location.appendingPathComponent(String(deprecated)), output: output)

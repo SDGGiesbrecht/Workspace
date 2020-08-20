@@ -18,8 +18,6 @@
 
   import WSGeneralImports
 
-  import WSXcode
-
   extension Workspace.Refresh {
 
     internal enum Xcode {

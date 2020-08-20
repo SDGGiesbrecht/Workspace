@@ -90,7 +90,7 @@ import WorkspaceProjectConfiguration
         ].joinedAsLines()
       }
 
-      public func refreshXcodeProject(output: Command.Output) throws {
+      internal func refreshXcodeProject(output: Command.Output) throws {
         _ = try generateXcodeProject(reportProgress: { output.print($0) }).get()
         resetFileCache(debugReason: "generate\u{2D}xcodeproj")
         output.print("")
@@ -130,7 +130,7 @@ import WorkspaceProjectConfiguration
               "/xcshareddata/xcschemes/Proofread.xcscheme"
             )
           )
-          var schemeDefinition = Resources.proofreadScheme
+          var schemeDefinition = Resources.Xcode.proofreadScheme
           schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
           schemeDefinition.replaceMatches(
             for: "[*project*]",

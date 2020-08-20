@@ -292,7 +292,6 @@ let package = Package(
         "WSValidation",
         "WSSwift",
         "WSParsing",
-        "WSXcode",
         "WSProofreading",
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
@@ -310,17 +309,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Xcode project management.
-    .target(
-      name: "WSXcode",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WorkspaceProjectConfiguration",
-        .product(name: "SDGXcode", package: "SDGSwift"),
-      ]
-    ),
 
     // Proofreading.
     .target(

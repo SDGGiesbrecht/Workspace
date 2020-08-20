@@ -40,7 +40,7 @@ import WSCustomTask
 #if !os(WASI)
   extension PackageRepository {
 
-    public func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
+    internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
       #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)

@@ -292,39 +292,25 @@ let package = Package(
         "WSValidation",
         "WSSwift",
         "WSParsing",
-        "WSProofreading",
-        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(name: "SDGHTML", package: "SDGWeb"),
-        .product(name: "SDGCSS", package: "SDGWeb"),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
-      ]
-    ),
-
-    // Components
-
-    // Proofreading.
-    .target(
-      name: "WSProofreading",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
         "WSCustomTask",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGXcode", package: "SDGSwift"),
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
+        .product(name: "SDGHTML", package: "SDGWeb"),
+        .product(name: "SDGCSS", package: "SDGWeb"),
       ]
     ),
+
+    // Components
 
     // Mechanism for embedding third party tools.
     .target(

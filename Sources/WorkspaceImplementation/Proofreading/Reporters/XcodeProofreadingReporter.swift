@@ -16,11 +16,11 @@
 
 import WSGeneralImports
 
-public final class XcodeProofreadingReporter: ProofreadingReporter {
+internal final class XcodeProofreadingReporter: ProofreadingReporter {
 
   // MARK: - Static Properties
 
-  public static let `default` = XcodeProofreadingReporter()
+  internal static let `default` = XcodeProofreadingReporter()
 
   // MARK: - Initialization
 
@@ -28,11 +28,11 @@ public final class XcodeProofreadingReporter: ProofreadingReporter {
 
   // MARK: - ProofreadingReporter
 
-  public func reportParsing(file: String, to output: Command.Output) {
+  internal func reportParsing(file: String, to output: Command.Output) {
     // Unneeded.
   }
 
-  public func report(violation: StyleViolation, to output: Command.Output) {
+  internal func report(violation: StyleViolation, to output: Command.Output) {
 
     let file = violation.file.contents
     let lines = file.lines

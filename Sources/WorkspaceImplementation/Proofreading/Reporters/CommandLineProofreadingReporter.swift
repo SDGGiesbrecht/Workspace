@@ -16,11 +16,11 @@
 
 import WSGeneralImports
 
-public final class CommandLineProofreadingReporter: ProofreadingReporter {
+internal final class CommandLineProofreadingReporter: ProofreadingReporter {
 
   // MARK: - Static Properties
 
-  public static let `default` = CommandLineProofreadingReporter()
+  internal static let `default` = CommandLineProofreadingReporter()
 
   // MARK: - Initialization
 
@@ -28,7 +28,7 @@ public final class CommandLineProofreadingReporter: ProofreadingReporter {
 
   // MARK: - ProofreadingReporter
 
-  public func reportParsing(file: String, to output: Command.Output) {
+  internal func reportParsing(file: String, to output: Command.Output) {
     output.print(file.in(FontWeight.bold))
   }
 
@@ -68,7 +68,7 @@ public final class CommandLineProofreadingReporter: ProofreadingReporter {
     return result
   }
 
-  public func report(violation: StyleViolation, to output: Command.Output) {
+  internal func report(violation: StyleViolation, to output: Command.Output) {
 
     func highlight<S: StringFamily>(_ problem: S) -> S {
       if violation.noticeOnly {
@@ -97,7 +97,7 @@ public final class CommandLineProofreadingReporter: ProofreadingReporter {
   }
 
   // Parallel reporting style for test coverage.
-  public func report(
+  internal func report(
     violation: Range<String.ScalarView.Index>,
     in file: String,
     to output: Command.Output

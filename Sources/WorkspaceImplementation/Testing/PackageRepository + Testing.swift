@@ -24,7 +24,6 @@ import SDGSwiftPackageManager
 import SDGXcode
 
 import WSValidation
-import WSProofreading
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

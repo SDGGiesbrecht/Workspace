@@ -17,7 +17,7 @@
 import WSGeneralImports
 import WSProject
 
-public struct StyleViolation {
+internal struct StyleViolation {
 
   // MARK: - Static Properties
 

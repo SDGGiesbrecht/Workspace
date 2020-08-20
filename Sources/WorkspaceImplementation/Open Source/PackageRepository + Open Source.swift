@@ -90,7 +90,7 @@ import SDGSwiftSource
       try file.writeChanges(for: self, output: output)
     }
 
-    public func refreshReadMe(output: Command.Output) throws {
+    internal func refreshReadMe(output: Command.Output) throws {
 
       try refreshReadMe(
         at: location.appendingPathComponent("README.md"),

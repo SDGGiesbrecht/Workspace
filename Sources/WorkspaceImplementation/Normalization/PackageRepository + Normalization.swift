@@ -30,7 +30,7 @@ import WSSwift
 #if !os(WASI)
   extension PackageRepository {
 
-    public func normalize(output: Command.Output) throws {
+    internal func normalize(output: Command.Output) throws {
 
       // #workaround(SwiftPM 0.6.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))

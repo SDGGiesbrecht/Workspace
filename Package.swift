@@ -292,7 +292,6 @@ let package = Package(
         "WSValidation",
         "WSSwift",
         "WSParsing",
-        "WSNormalization",
         "WSXcode",
         "WSProofreading",
         "WSDocumentation",
@@ -302,23 +301,12 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
       ]
     ),
 
     // Components
-
-    // Normalization.
-    .target(
-      name: "WSNormalization",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
 
     // Xcode project management.
     .target(

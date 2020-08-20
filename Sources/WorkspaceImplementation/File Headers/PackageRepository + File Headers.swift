@@ -36,7 +36,7 @@ import WSProject
       )
     }
 
-    public func refreshFileHeaders(output: Command.Output) throws {
+    internal func refreshFileHeaders(output: Command.Output) throws {
 
       let template = try fileHeader(output: output)
 

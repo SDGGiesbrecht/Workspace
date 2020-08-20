@@ -291,7 +291,6 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSFileHeaders",
         "WSExamples",
         "WSNormalization",
         "WSXcode",
@@ -308,15 +307,6 @@ let package = Package(
     ),
 
     // Components
-
-    // File header management.
-    .target(
-      name: "WSFileHeaders",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
 
     // Example management.
     .target(

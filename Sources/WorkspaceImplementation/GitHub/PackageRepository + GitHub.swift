@@ -51,7 +51,7 @@ import WSProject
 
     // MARK: - Refreshment
 
-    public func refreshGitHubConfiguration(output: Command.Output) throws {
+    internal func refreshGitHubConfiguration(output: Command.Output) throws {
       try refreshContributingInstructions(output: output)
       try refreshIssueTemplates(output: output)
 

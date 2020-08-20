@@ -291,7 +291,6 @@ let package = Package(
         "WSProject",
         "WSValidation",
         "WSSwift",
-        "WSGitHub",
         "WSResources",
         "WSFileHeaders",
         "WSExamples",
@@ -310,16 +309,6 @@ let package = Package(
     ),
 
     // Components
-
-    // GitHub management.
-    .target(
-      name: "WSGitHub",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WorkspaceProjectConfiguration",
-      ]
-    ),
 
     // Resource management.
     .target(

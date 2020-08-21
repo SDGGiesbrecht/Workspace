@@ -423,27 +423,6 @@ let package = Package(
       ]
     ),
 
-    // Centralizes imports needed almost everywhere.
-    .target(
-      name: "WSGeneralImports",
-      dependencies: [
-        "WSLocalizations",
-
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-
-        .product(name: "SDGCommandLine", package: "SDGCommandLine"),
-
-        .product(name: "SDGSwift", package: "SDGSwift"),
-      ]
-    ),
-
     // Tests
 
     .target(

@@ -20,7 +20,7 @@
 
   import SDGSwiftSource
 
-  import WSProject
+  import WorkspaceConfiguration
 
   extension Array where Element == SymbolDocumentation {
 

@@ -15,7 +15,8 @@
  */
 
 import WSGeneralImports
-import WSProject
+
+import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
@@ -43,7 +44,7 @@ import WSProject
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
       let oldContents = file.contents
 
-      let copyright = WSProject.copyright(fromText: oldContents)
+      let copyright = WorkspaceImplementation.copyright(fromText: oldContents)
       let projectName = try self.projectName(
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output

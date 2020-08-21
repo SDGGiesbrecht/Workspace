@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-
 import SDGSwiftSource
 
 internal struct ParameterGrouping: SyntaxRule {

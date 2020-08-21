@@ -22,12 +22,12 @@ extension StringFamily {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public var isWhitespace: Bool {
+    internal var isWhitespace: Bool {
       return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
   #endif
 
-  public mutating func trimMarginalWhitespace() {
+  internal mutating func trimMarginalWhitespace() {
     while scalars.first == " " {
       scalars.removeFirst()
     }
@@ -36,7 +36,7 @@ extension StringFamily {
     }
   }
 
-  public func strippingCommonIndentation() -> Self {
+  internal func strippingCommonIndentation() -> Self {
     var smallestIndent = Int.max
     let lines = self.lines.map { $0.line }
     for line in lines {

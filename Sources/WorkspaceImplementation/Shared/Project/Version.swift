@@ -1,5 +1,5 @@
 /*
- ProductType.swift
+ Version.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -14,16 +14,22 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import WSGeneralImports
+import SDGVersioning
+
+import SDGSwiftPackageManager
+
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
-  extension ProductType {
-
-    public var isLibrary: Bool {
-      if case .library = self {
-        return true
-      } else {
-        return false
-      }
-    }
-  }
+  import PackageModel
 #endif
+
+extension SDGVersioning.Version {
+
+  // #workaround(SwiftPM 0.6.0, Cannot build.)
+  #if !(os(Windows) || os(WASI) || os(Android))
+    internal init(_ version: PackageModel.Version) {
+      self.init(version.major, version.minor, version.patch)
+    }
+  #endif
+}

@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import SDGExportedCommandLineInterface
 
-import WSProject
+import WorkspaceConfiguration
 
 internal struct CommandInterfaceInformation {
 

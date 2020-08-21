@@ -20,8 +20,6 @@ import SDGVersioning
 
 import SDGExternalProcess
 
-import WSProject
-
 internal struct WorkaroundReminders: Warning {
 
   internal static let noticeOnly = true

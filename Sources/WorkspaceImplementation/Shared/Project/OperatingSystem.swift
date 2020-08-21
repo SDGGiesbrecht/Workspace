@@ -24,7 +24,7 @@ extension Platform {
 
   // MARK: - Static Properties
 
-  public static let current: Platform = {
+  internal static let current: Platform = {
     #if os(macOS)
       return .macOS
     #elseif os(Windows)

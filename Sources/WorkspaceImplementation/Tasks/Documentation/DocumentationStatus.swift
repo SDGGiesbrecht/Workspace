@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
-import WSProject
+import WorkspaceConfiguration
 
 internal class DocumentationStatus {
 

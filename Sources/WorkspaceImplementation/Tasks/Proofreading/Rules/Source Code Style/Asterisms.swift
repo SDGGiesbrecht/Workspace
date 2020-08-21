@@ -17,8 +17,6 @@
 import SDGLogic
 import WSGeneralImports
 
-import WSProject
-
 import SDGSwiftSource
 
 internal struct Asterisms: SyntaxRule {

@@ -17,13 +17,13 @@
 import SDGLogic
 import WSGeneralImports
 
-public struct TextFile {
+internal struct TextFile {
 
   // MARK: - Initialization
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public init(alreadyAt location: URL) throws {
+    internal init(alreadyAt location: URL) throws {
       guard let fileType = FileType(url: location) else {
         unreachable()
       }
@@ -39,7 +39,7 @@ public struct TextFile {
       )
     }
 
-    public init(possiblyAt location: URL, executable: Bool = false) throws {
+    internal init(possiblyAt location: URL, executable: Bool = false) throws {
       do {
         self = try TextFile(alreadyAt: location)
         if isExecutable ≠ executable {
@@ -61,7 +61,7 @@ public struct TextFile {
       }
     }
 
-    public init(mockFileWithContents contents: String, fileType: FileType) {
+    internal init(mockFileWithContents contents: String, fileType: FileType) {
       var url: URL?
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
         url = temporary
@@ -98,7 +98,7 @@ public struct TextFile {
   private var hasChanged: Bool
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public let location: URL
+    internal let location: URL
   #endif
 
   private var isExecutable: Bool {
@@ -109,7 +109,7 @@ public struct TextFile {
     }
   }
 
-  public let fileType: FileType
+  internal let fileType: FileType
 
   private var _contents: String {
     willSet {
@@ -118,7 +118,7 @@ public struct TextFile {
       #endif
     }
   }
-  public var contents: String {
+  internal var contents: String {
     get {
       return _contents
     }
@@ -145,7 +145,7 @@ public struct TextFile {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public var headerStart: String.ScalarView.Index {
+    internal var headerStart: String.ScalarView.Index {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return fileType.syntax.headerStart(file: self)
       #else
@@ -165,7 +165,7 @@ public struct TextFile {
       #endif
     }
 
-    public var header: String {
+    internal var header: String {
       get {
         return fileType.syntax.header(file: self)
       }
@@ -174,7 +174,7 @@ public struct TextFile {
       }
     }
 
-    public var body: String {
+    internal var body: String {
       get {
         return String(contents[headerEnd...])
       }
@@ -200,7 +200,7 @@ public struct TextFile {
 
     // MARK: - Writing
 
-    public static func reportWriteOperation(
+    internal static func reportWriteOperation(
       to location: URL,
       in repository: PackageRepository,
       output: Command.Output
@@ -219,7 +219,7 @@ public struct TextFile {
       )
     }
 
-    public func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
+    internal func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
       if hasChanged {
         TextFile.reportWriteOperation(to: location, in: repository, output: output)
 

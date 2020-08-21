@@ -15,7 +15,6 @@
  */
 
 import WSGeneralImports
-import WSProject
 
 internal struct StyleViolation {
 

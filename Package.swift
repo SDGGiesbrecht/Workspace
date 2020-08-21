@@ -289,12 +289,13 @@ let package = Package(
         "WSLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
-        "WSProject",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
+        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
@@ -305,23 +306,6 @@ let package = Package(
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
-      ]
-    ),
-
-    // Components
-
-    // Defines general project structure queries and cache.
-    .target(
-      name: "WSProject",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        "WorkspaceProjectConfiguration",
-        .product(name: "SDGCalendar", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
       ]
     ),
 

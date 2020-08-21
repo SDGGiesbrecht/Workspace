@@ -17,8 +17,6 @@
 import SDGLogic
 import WSGeneralImports
 
-import WSProject
-
 internal struct CompatibilityCharacters: TextRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

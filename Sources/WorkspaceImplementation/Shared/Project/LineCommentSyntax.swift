@@ -17,7 +17,7 @@
 import SDGCollections
 import WSGeneralImports
 
-public struct LineCommentSyntax {
+internal struct LineCommentSyntax {
 
   // MARK: - Initialization
 
@@ -33,7 +33,7 @@ public struct LineCommentSyntax {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public func comment(contents: String, indent: String = "") -> String {
+    internal func comment(contents: String, indent: String = "") -> String {
 
       var first = true
       var result: [String] = []

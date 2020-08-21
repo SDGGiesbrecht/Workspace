@@ -17,8 +17,6 @@
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
   extension PackageRepository {

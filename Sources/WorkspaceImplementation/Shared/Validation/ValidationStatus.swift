@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-
 internal struct ValidationStatus {
 
   // MARK: - Static Properties

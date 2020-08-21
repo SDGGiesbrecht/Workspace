@@ -24,7 +24,7 @@
   import SDGHTML
   import SDGSwiftSource
 
-  import WSProject
+  import WorkspaceConfiguration
 
   internal class CommandPage: Page {
 

@@ -17,8 +17,8 @@
 import SDGLogic
 import WSGeneralImports
 
+import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
-import WSProject
 
 internal enum Script: Int, CaseIterable {
 

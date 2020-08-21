@@ -18,8 +18,6 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 import SDGSwiftSource
 
 internal struct CalloutCasing: SyntaxRule {

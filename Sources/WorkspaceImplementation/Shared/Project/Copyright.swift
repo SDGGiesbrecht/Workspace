@@ -21,7 +21,7 @@ import SDGCalendar
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
-  public func copyright(fromText text: String) -> StrictString {
+  internal func copyright(fromText text: String) -> StrictString {
 
     var oldStartDate: String?
     for symbol in ["©", "(C)", "(c)"] {

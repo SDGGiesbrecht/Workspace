@@ -24,7 +24,7 @@
   import SwiftSyntax
   import SDGSwiftSource
 
-  import WSProject
+  import WorkspaceConfiguration
 
   extension APIElement {
 

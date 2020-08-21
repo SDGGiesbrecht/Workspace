@@ -18,7 +18,7 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-public struct FileSyntax {
+internal struct FileSyntax {
 
   // MARK: - Initialization
 
@@ -39,12 +39,12 @@ public struct FileSyntax {
   private let requiredFirstLineToken: String?
 
   private let blockCommentSyntax: BlockCommentSyntax?
-  public let lineCommentSyntax: LineCommentSyntax?
-  public var hasComments: Bool {
+  internal let lineCommentSyntax: LineCommentSyntax?
+  internal var hasComments: Bool {
     return blockCommentSyntax ≠ nil ∨ lineCommentSyntax ≠ nil
   }
 
-  public let semanticLineTerminalWhitespace: [String]
+  internal let semanticLineTerminalWhitespace: [String]
 
   // MARK: - Output
 
@@ -99,7 +99,7 @@ public struct FileSyntax {
 
     // MARK: - Parsing
 
-    public func rangeOfFirstComment(
+    internal func rangeOfFirstComment(
       in range: Range<String.ScalarView.Index>,
       of file: TextFile
     ) -> Range<String.ScalarView.Index>? {
@@ -126,7 +126,7 @@ public struct FileSyntax {
       }
     }
 
-    public func contentsOfFirstComment(
+    internal func contentsOfFirstComment(
       in range: Range<String.ScalarView.Index>,
       of file: TextFile
     ) -> String? {

@@ -15,7 +15,6 @@
  */
 
 import WSGeneralImports
-import WSProject
 
 extension Command.Output {
 

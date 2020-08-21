@@ -18,8 +18,6 @@ import WSGeneralImports
 
 import SDGExportedCommandLineInterface
 
-import WSProject
-
 extension CommandInterface {
 
   internal mutating func sentenceCaseDescriptions() {

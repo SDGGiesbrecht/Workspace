@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-
 internal struct MissingImplementation: TextRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

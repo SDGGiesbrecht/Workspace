@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-
 internal struct DeprecatedTestManifests: TextRule {
   // Deprecated in 0.25.0 (2019‐11‐03)
 

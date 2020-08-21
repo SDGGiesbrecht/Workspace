@@ -23,7 +23,6 @@ import SDGExternalProcess
 import SDGHTML
 import SDGWeb
 
-import WSProject
 import WorkspaceProjectConfiguration
 
 extension PackageRepository {

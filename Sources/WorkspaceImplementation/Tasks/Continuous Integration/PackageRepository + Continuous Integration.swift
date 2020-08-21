@@ -18,13 +18,13 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
   import SwiftFormat
 #endif
+
+import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

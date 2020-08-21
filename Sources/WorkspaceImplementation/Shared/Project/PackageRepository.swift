@@ -26,13 +26,17 @@ import SDGExternalProcess
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
+import PackageModel
+import PackageGraph
+
+import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
   extension PackageRepository {
 
-    private static let macOSDeploymentVersion = Version(10, 10)
+    private static let macOSDeploymentVersion = SDGVersioning.Version(10, 10)
 
     // MARK: - Cache
 
@@ -54,7 +58,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
 
-    public func resetFileCache(debugReason: String) {
+    internal func resetFileCache(debugReason: String) {
       #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         PackageRepository.fileCaches[location] = FileCache()
       #endif
@@ -89,7 +93,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
 
-    public func resetManifestCache(debugReason: String) {
+    internal func resetManifestCache(debugReason: String) {
       resetFileCache(debugReason: debugReason)
       #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         PackageRepository.manifestCaches[location] = ManifestCache()
@@ -123,7 +127,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
 
-    public func resetConfigurationCache(debugReason: String) {
+    internal func resetConfigurationCache(debugReason: String) {
       resetManifestCache(debugReason: "testing")
       #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         PackageRepository.configurationCaches[location] = ConfigurationCache()
@@ -137,7 +141,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Environment
 
-    public static func with<T>(
+    internal static func with<T>(
       environment variable: StrictString,
       closure: () throws -> T
     ) rethrows -> T {
@@ -169,20 +173,20 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Miscellaneous Properties
 
-    public func isWorkspaceProject() throws -> Bool {
+    internal func isWorkspaceProject() throws -> Bool {
       return try packageName() == "Workspace"
     }
 
     // MARK: - Manifest
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-      public func cachedManifest() throws -> PackageModel.Manifest {
+      internal func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
         }
       }
 
-      public func cachedPackage() throws -> PackageModel.Package {
+      internal func cachedPackage() throws -> PackageModel.Package {
         return try cached(in: &manifestCache.package) {
           return try package().get()
         }
@@ -190,14 +194,14 @@ import WorkspaceProjectConfiguration
     #endif
 
     #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
-      public func cachedPackageGraph() throws -> PackageGraph {
+      internal func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()
         }
       }
     #endif
 
-    public func packageName() throws -> StrictString {
+    internal func packageName() throws -> StrictString {
       #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
         return "[???]"
       #else
@@ -205,13 +209,13 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
+    internal func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
       -> StrictString
     {
       return try configuration(output: output).projectName[localization] ?? packageName()
     }
 
-    public func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+    internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
       let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
         return LocalizationIdentifier(localization.code)
       }).resolved()
@@ -220,7 +224,7 @@ import WorkspaceProjectConfiguration
 
     // #workaround(SwiftPM 0.6.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
-      public func products() throws -> [PackageModel.Product] {
+      internal func products() throws -> [PackageModel.Product] {
         return try cached(in: &manifestCache.products) {
           var products: [PackageModel.Product] = []
 
@@ -247,7 +251,7 @@ import WorkspaceProjectConfiguration
         }
       }
 
-      public func dependenciesByName() throws -> [String: ResolvedPackage] {
+      internal func dependenciesByName() throws -> [String: ResolvedPackage] {
         return try cached(in: &manifestCache.dependenciesByName) {
           let graph = try cachedPackageGraph()
 
@@ -262,7 +266,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Configuration
 
-    public func configurationContext() throws -> WorkspaceContext {
+    internal func configurationContext() throws -> WorkspaceContext {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return WorkspaceContext(
           _location: location,
@@ -303,7 +307,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public static let workspaceConfigurationNames = UserFacing<StrictString, InterfaceLocalization>(
+    internal static let workspaceConfigurationNames = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -313,7 +317,7 @@ import WorkspaceProjectConfiguration
         }
       })
 
-    public func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
+    internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return WorkspaceConfiguration()
       #else
@@ -347,7 +351,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
       guard let result = try configuration(output: output).documentation.localizations.first
       else {
         throw Command.Error(
@@ -366,7 +370,7 @@ import WorkspaceProjectConfiguration
       return result
     }
 
-    public func fileHeader(output: Command.Output) throws -> StrictString {
+    internal func fileHeader(output: Command.Output) throws -> StrictString {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return ""
       #else
@@ -378,7 +382,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func documentationCopyright(
+    internal func documentationCopyright(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: StrictString] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
@@ -392,7 +396,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+    internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return [:]
       #else
@@ -404,7 +408,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func contributingInstructions(
+    internal func contributingInstructions(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: Markdown] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
@@ -418,7 +422,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func issueTemplates(
+    internal func issueTemplates(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
@@ -434,7 +438,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Files
 
-    public func allFiles() throws -> [URL] {
+    internal func allFiles() throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return []
       #else
@@ -449,7 +453,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func trackedFiles(output: Command.Output) throws -> [URL] {
+    internal func trackedFiles(output: Command.Output) throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return []
       #else
@@ -471,7 +475,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func sourceFiles(output: Command.Output) throws -> [URL] {
+    internal func sourceFiles(output: Command.Output) throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
         return []
       #else
@@ -494,7 +498,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func _withExampleCache(
+    internal func _withExampleCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
@@ -506,7 +510,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    public func _withDocumentationCache(
+    internal func _withDocumentationCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
       #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
@@ -520,7 +524,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Actions
 
-    public func delete(_ location: URL, output: Command.Output) {
+    internal func delete(_ location: URL, output: Command.Output) {
       if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
         output.print(
@@ -557,7 +561,7 @@ import WorkspaceProjectConfiguration
       at: "Related Projects"
     )
 
-    public static func relatedPackage(
+    internal static func relatedPackage(
       _ package: SDGSwift.Package,
       output: Command.Output
     ) throws -> PackageRepository {
@@ -612,7 +616,7 @@ import WorkspaceProjectConfiguration
       return repository
     }
 
-    public static func emptyRelatedProjectCache() {
+    internal static func emptyRelatedProjectCache() {
       try? FileManager.default.removeItem(at: relatedProjectCache)
     }
   }

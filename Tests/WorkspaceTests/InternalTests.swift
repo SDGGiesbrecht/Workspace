@@ -17,8 +17,6 @@
 @testable import WorkspaceImplementation
 import WSGeneralTestImports
 
-import WSProject
-
 class InternalTests: TestCase {
 
   func testGitIgnoreCoverage() throws {

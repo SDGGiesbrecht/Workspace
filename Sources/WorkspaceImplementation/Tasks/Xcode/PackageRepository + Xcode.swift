@@ -18,7 +18,6 @@ import WSGeneralImports
 
 import SDGXcode
 
-import WSProject
 import WorkspaceProjectConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

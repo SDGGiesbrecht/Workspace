@@ -18,8 +18,6 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 extension Workspace.Validate {
 
   internal enum TestCoverage {

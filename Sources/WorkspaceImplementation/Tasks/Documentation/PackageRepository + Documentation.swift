@@ -25,7 +25,7 @@ import SDGSwiftSource
 import SDGHTML
 import SDGCSS
 
-import WSProject
+import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
@@ -110,10 +110,10 @@ import WSProject
 
       let dates: StrictString
       if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
-        dates = StrictString(WSProject.copyright(fromText: "©\(specified.inEnglishDigits())"))
+        dates = StrictString(WorkspaceImplementation.copyright(fromText: "©\(specified.inEnglishDigits())"))
       } else {
         documentationStatus.reportMissingYearFirstPublished()
-        dates = StrictString(WSProject.copyright(fromText: ""))
+        dates = StrictString(WorkspaceImplementation.copyright(fromText: ""))
       }
       template = template.mapValues { $0.replacingMatches(for: "#dates", with: dates) }
 

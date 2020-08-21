@@ -19,8 +19,6 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
-import WSProject
-
 internal struct SyntaxColouring: SyntaxRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

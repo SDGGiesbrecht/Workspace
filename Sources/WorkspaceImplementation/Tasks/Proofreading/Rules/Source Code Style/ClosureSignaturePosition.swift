@@ -22,8 +22,6 @@ import WSGeneralImports
 #endif
 import SDGSwiftSource
 
-import WSProject
-
 internal struct ClosureSignaturePosition: SyntaxRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

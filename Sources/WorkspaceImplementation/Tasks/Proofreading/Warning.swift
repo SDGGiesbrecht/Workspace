@@ -17,8 +17,6 @@
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
   // #workaround(Swift 5.2.4, Web lacks Foundation.)

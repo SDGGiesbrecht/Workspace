@@ -18,8 +18,6 @@
 #if !(os(Windows) || os(WASI) || os(Android))
   import WSGeneralImports
 
-  import WSProject
-
   import SDGSwiftSource
 
   extension PackageAPI {

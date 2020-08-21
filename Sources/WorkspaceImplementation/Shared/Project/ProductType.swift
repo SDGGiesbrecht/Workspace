@@ -1,5 +1,5 @@
 /*
- Exports.swift
+ ProductType.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -14,14 +14,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !(os(Windows) || os(WASI) || os(Android))  // #workaround(SwiftPM 0.6.0, Cannot build.)
-  @_exported import class PackageModel.Manifest
-  @_exported import class PackageModel.Package
-  @_exported import struct PackageGraph.PackageGraph
-  @_exported import class PackageModel.Product
-  @_exported import enum PackageModel.ProductType
-  @_exported import class PackageModel.ResolvedPackage
-  @_exported import class PackageModel.Target
-#endif
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import PackageModel
 
-@_exported import WorkspaceConfiguration
+  extension ProductType {
+
+    internal var isLibrary: Bool {
+      if case .library = self {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+#endif

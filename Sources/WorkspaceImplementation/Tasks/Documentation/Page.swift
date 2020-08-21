@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import SDGHTML
 
-import WSProject
+import WorkspaceConfiguration
 
 internal class Page {
 

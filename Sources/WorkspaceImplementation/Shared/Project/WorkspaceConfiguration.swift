@@ -16,9 +16,11 @@
 
 import WSGeneralImports
 
+import WorkspaceConfiguration
+
 extension WorkspaceConfiguration {
 
-  public func developmentInterfaceLocalization() -> InterfaceLocalization {
+  internal func developmentInterfaceLocalization() -> InterfaceLocalization {
     let configuredLocalization = documentation.localizations
       .first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
     return configuredLocalization ?? InterfaceLocalization.fallbackLocalization

@@ -23,8 +23,6 @@ import WSGeneralImports
 #endif
 import SDGSwiftSource
 
-import WSProject
-
 internal struct ListSeparation: SyntaxRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

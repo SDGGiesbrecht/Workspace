@@ -18,17 +18,17 @@ import SDGCollections
 import WSGeneralImports
 import WorkspaceProjectConfiguration
 
-public enum FileType {
+internal enum FileType {
 
   // MARK: - Static Properties
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
-    public static func resetUnsupportedFileTypes() {
+    internal static func resetUnsupportedFileTypes() {
       unsupportedFileTypesEncountered = [:]
     }
-    public static func unsupportedTypesWarning(
+    internal static func unsupportedTypesWarning(
       for project: PackageRepository,
       output: Command.Output
     ) throws -> StrictString? {
@@ -98,7 +98,7 @@ public enum FileType {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public init?(url: URL) {
+    internal init?(url: URL) {
 
       if let special = FileType.specialNames[url.lastPathComponent] {
         self = special
@@ -195,12 +195,12 @@ public enum FileType {
 
   private static let swiftBlockCommentSyntax = BlockCommentSyntax(start: "/*", end: "*/")
   private static let swiftLineCommentSyntax = LineCommentSyntax(start: "//")
-  public static let swiftDocumentationSyntax = FileSyntax(
+  internal static let swiftDocumentationSyntax = FileSyntax(
     blockCommentSyntax: BlockCommentSyntax(start: "/*" + "*", end: "*/"),
     lineCommentSyntax: LineCommentSyntax(start: "///")
   )
 
-  public var syntax: FileSyntax {
+  internal var syntax: FileSyntax {
     switch self {
 
     case .swift, .c, .cPlusPlus, .css, .javaScript, .objectiveC, .objectiveCPlusPlus, .strings:

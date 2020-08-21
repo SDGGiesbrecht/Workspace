@@ -19,8 +19,6 @@ import WSGeneralImports
 
 import SDGSwiftPackageManager
 
-import WSProject
-
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel

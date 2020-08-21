@@ -17,7 +17,7 @@
 import SDGLogic
 import WSGeneralImports
 
-import WSProject
+import WorkspaceConfiguration
 
 extension LocalizationIdentifier {
 

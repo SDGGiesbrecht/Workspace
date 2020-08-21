@@ -18,8 +18,6 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-
 internal struct Marks: TextRule {
 
   internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(

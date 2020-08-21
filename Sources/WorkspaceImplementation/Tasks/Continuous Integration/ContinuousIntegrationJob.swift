@@ -18,7 +18,7 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
+import WorkspaceConfiguration
 
 internal enum ContinuousIntegrationJob: Int, CaseIterable {
 

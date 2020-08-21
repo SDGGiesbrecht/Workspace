@@ -20,8 +20,6 @@ import WSGeneralImports
 
 import SDGSwiftSource
 
-import WSProject
-
 internal protocol RuleProtocol {
   static var identifier: UserFacing<StrictString, InterfaceLocalization> { get }
   static var noticeOnly: Bool { get }

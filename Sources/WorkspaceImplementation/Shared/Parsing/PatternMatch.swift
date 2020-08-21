@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-
 extension PatternMatch
 where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
 

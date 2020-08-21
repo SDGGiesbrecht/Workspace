@@ -14,7 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@_exported import WSGeneralImports
 @_exported import WorkspaceConfiguration
 @_exported import WorkspaceImplementation
 

@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
-
 public enum Workspace {
 
   private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in

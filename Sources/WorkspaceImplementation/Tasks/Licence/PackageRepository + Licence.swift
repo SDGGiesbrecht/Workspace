@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
-
 import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

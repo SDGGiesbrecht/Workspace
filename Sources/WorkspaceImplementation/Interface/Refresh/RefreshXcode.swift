@@ -16,8 +16,6 @@
 
 #if !os(Linux)
 
-  import WSGeneralImports
-
   extension Workspace.Refresh {
 
     internal enum Xcode {

@@ -22,7 +22,8 @@
       ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
       ∨ isInGitHubAction  // @exempt(from: tests)
 
-    internal static let isInGitHubAction = ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+    internal static let isInGitHubAction =
+      ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
 
     internal static let isPullRequest =
       ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil

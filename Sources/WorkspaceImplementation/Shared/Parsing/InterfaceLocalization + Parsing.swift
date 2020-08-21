@@ -16,7 +16,7 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
+
 import WSLocalizations
 
 extension InterfaceLocalization {

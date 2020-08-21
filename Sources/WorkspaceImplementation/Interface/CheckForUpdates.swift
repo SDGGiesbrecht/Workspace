@@ -15,7 +15,7 @@
  */
 
 import SDGLogic
-import WSGeneralImports
+
 import SDGVersioning
 
 import WorkspaceProjectConfiguration

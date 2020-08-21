@@ -16,7 +16,6 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
 
 import WorkspaceProjectConfiguration
 

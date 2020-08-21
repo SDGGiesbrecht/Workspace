@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
-
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax

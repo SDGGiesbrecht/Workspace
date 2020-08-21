@@ -18,7 +18,6 @@
 #if !(os(Windows) || os(WASI) || os(Android))
   import SDGLogic
   import SDGMathematics
-  import WSGeneralImports
 
   import SDGExportedCommandLineInterface
   import SDGHTML

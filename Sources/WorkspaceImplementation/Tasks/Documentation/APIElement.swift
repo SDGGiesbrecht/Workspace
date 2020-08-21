@@ -19,7 +19,6 @@
   import SDGLogic
   import SDGMathematics
   import SDGCollections
-  import WSGeneralImports
 
   import SwiftSyntax
   import SDGSwiftSource

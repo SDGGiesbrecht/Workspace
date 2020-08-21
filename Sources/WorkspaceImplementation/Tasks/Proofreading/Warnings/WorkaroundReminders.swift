@@ -15,7 +15,7 @@
  */
 
 import SDGMathematics
-import WSGeneralImports
+
 import SDGVersioning
 
 import SDGExternalProcess

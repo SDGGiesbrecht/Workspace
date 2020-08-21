@@ -16,7 +16,6 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

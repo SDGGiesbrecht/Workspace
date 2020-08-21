@@ -15,7 +15,6 @@
  */
 
 import SDGLogic
-import WSGeneralImports
 
 internal struct CompatibilityCharacters: TextRule {
 

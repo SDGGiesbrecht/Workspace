@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
-
 internal struct DeprecatedTestManifests: TextRule {
   // Deprecated in 0.25.0 (2019‐11‐03)
 

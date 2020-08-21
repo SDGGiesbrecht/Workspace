@@ -15,7 +15,7 @@
  */
 
 @testable import WorkspaceImplementation
-import WSGeneralImports
+
 import WorkspaceConfiguration
 
 extension CustomTask {

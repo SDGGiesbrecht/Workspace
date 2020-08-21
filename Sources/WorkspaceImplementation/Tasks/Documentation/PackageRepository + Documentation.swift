@@ -17,7 +17,6 @@
 import SDGLogic
 import SDGMathematics
 import SDGCollections
-import WSGeneralImports
 
 import SDGSwift
 import SDGXcode

@@ -15,7 +15,7 @@
  */
 
 import SDGCollections
-import WSGeneralImports
+
 import WorkspaceProjectConfiguration
 
 internal enum FileType {

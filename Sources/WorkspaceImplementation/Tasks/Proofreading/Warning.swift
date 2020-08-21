@@ -15,7 +15,6 @@
  */
 
 import SDGCollections
-import WSGeneralImports
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }

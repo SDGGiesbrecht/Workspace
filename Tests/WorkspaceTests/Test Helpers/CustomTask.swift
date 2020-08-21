@@ -14,9 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import WorkspaceImplementation
+import Foundation
 
 import WorkspaceConfiguration
+@testable import WorkspaceImplementation
 
 extension CustomTask {
 

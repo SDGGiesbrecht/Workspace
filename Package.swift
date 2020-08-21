@@ -443,11 +443,18 @@ let package = Package(
     .testTarget(
       name: "WorkspaceTests",
       dependencies: [
+        "WSLocalizations",
         "WSGeneralTestImports",
         "WorkspaceProjectConfiguration",
         "WorkspaceImplementation",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
+        .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
       ]

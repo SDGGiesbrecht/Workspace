@@ -14,18 +14,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-import WSGeneralTestImports
+import Foundation
 
+import WSGeneralTestImports
+import SDGLogic
 import SDGExternalProcess
 
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceConfiguration
 import WorkspaceImplementation
 
 class APITests: TestCase {
 
   static let configureGit: Void = {
-    if ProcessInfo.isInGitHubAction {
+    if isInGitHubAction {
       #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
         _ = try? Git.runCustomSubcommand(
           ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],

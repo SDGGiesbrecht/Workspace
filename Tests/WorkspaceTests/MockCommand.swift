@@ -18,6 +18,8 @@ import WSGeneralTestImports
 
 import SDGCommandLine
 
+import WSLocalizations
+
 let mockCommand = Command(
   name: UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {

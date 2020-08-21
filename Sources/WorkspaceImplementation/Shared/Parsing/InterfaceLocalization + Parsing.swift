@@ -21,7 +21,7 @@ import WSLocalizations
 
 extension InterfaceLocalization {
 
-  public typealias DirectivePattern = ConcatenatedPatterns<
+  internal typealias DirectivePattern = ConcatenatedPatterns<
     [Unicode.Scalar],
     NaryAlternativePatterns<StrictString>
   >
@@ -32,7 +32,7 @@ extension InterfaceLocalization {
     return [scalar]
       + NaryAlternativePatterns(Array(Set(allCases.map({ name.resolved(for: $0) }))))
   }
-  public typealias DirectivePatternWithArguments = ConcatenatedPatterns<
+  internal typealias DirectivePatternWithArguments = ConcatenatedPatterns<
     ConcatenatedPatterns<
       ConcatenatedPatterns<DirectivePattern, String.ScalarView>,
       RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
@@ -90,7 +90,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let exampleDeclaration: DirectivePatternWithArguments =
+    internal static let exampleDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(exampleDeclarationName)
   #endif
 
@@ -103,7 +103,7 @@ extension InterfaceLocalization {
         return "beispielBeenden"
       }
     })
-  public static let endExampleDeclaration: DirectivePattern = declarationPattern(
+  internal static let endExampleDeclaration: DirectivePattern = declarationPattern(
     endExampleDecarationName
   )
 
@@ -118,7 +118,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let exampleDirective: DirectivePatternWithArguments =
+    internal static let exampleDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(
         exampleDirectiveName
       )
@@ -137,7 +137,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let documentationDeclaration: DirectivePatternWithArguments =
+    internal static let documentationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(documentationDeclarationName)
   #endif
 
@@ -152,7 +152,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let documentationDirective: DirectivePatternWithArguments =
+    internal static let documentationDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(documentationDirectiveName)
   #endif
 
@@ -171,7 +171,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let localizationDeclaration: DirectivePatternWithArguments =
+    internal static let localizationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(localizationDeclarationName)
   #endif
 
@@ -188,7 +188,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let crossReferenceDeclaration: DirectivePatternWithArguments =
+    internal static let crossReferenceDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(crossReferenceDeclarationName)
   #endif
 
@@ -205,7 +205,7 @@ extension InterfaceLocalization {
     })
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public static let notLocalizedDeclaration: DirectivePatternWithArguments =
+    internal static let notLocalizedDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(notLocalizedDeclarationName)
   #endif
 }

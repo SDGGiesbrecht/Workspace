@@ -21,7 +21,7 @@ import WSProject
 extension PatternMatch
 where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
 
-  public func declarationArgument() -> StrictString {
+  internal func declarationArgument() -> StrictString {
     guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
       let closingParenthesis = contents.lastMatch(for: ")".scalars)
     else {
@@ -36,7 +36,7 @@ where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.S
     return argument
   }
 
-  public func directiveArgument() -> StrictString {
+  internal func directiveArgument() -> StrictString {
     return declarationArgument()
   }
 }

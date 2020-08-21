@@ -21,7 +21,6 @@
   import SDGSwiftSource
 
   import WSProject
-  import WSParsing
 
   extension Array where Element == SymbolDocumentation {
 

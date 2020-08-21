@@ -286,10 +286,10 @@ let package = Package(
       name: "WorkspaceImplementation",
       dependencies: [
         "WSGeneralImports",
+        "WSLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WSProject",
-        "WSParsing",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
@@ -309,16 +309,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Utilities related to parsing in‐source declarations and directives.
-    .target(
-      name: "WSParsing",
-      dependencies: [
-        "WSGeneralImports",
-        "WSLocalizations",
-        "WSProject",
-      ]
-    ),
 
     // Defines general project structure queries and cache.
     .target(

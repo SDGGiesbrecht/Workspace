@@ -19,8 +19,6 @@ import SDGCollections
 import WSGeneralImports
 
 import WorkspaceProjectConfiguration
-import WSValidation
-import WSContinuousIntegration
 
 extension Workspace.Validate {
 

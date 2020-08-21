@@ -16,9 +16,6 @@
 
 import WSGeneralImports
 
-import WSProject
-import WSGitHub
-
 extension Workspace.Refresh {
 
   internal enum GitHub {

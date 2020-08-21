@@ -15,8 +15,6 @@
  */
 
 import WSGeneralImports
-import WSProject
-import WSResources
 
 extension Workspace.Refresh {
 

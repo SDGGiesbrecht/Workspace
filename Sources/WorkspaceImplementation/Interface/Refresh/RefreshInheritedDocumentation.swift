@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSDocumentation
-
 extension Workspace.Refresh {
 
   internal enum InheritedDocumentation {

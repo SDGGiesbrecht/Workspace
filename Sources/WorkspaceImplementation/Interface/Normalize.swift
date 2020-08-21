@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSNormalization
-
 extension Workspace {
   internal enum Normalize {
 

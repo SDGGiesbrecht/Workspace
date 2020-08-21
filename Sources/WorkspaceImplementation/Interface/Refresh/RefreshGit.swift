@@ -16,8 +16,6 @@
 
 import WSGeneralImports
 
-import WSGit
-
 extension Workspace.Refresh {
 
   internal enum Git {

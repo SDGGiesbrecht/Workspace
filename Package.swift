@@ -286,254 +286,26 @@ let package = Package(
       name: "WorkspaceImplementation",
       dependencies: [
         "WSGeneralImports",
-        "WorkspaceProjectConfiguration",
-        "WSProject",
-        "WSValidation",
-        "WSScripts",
-        "WSGit",
-        "WSOpenSource",
-        "WSLicence",
-        "WSGitHub",
-        "WSContinuousIntegration",
-        "WSResources",
-        "WSFileHeaders",
-        "WSExamples",
-        "WSNormalization",
-        "WSXcode",
-        "WSProofreading",
-        "WSTesting",
-        "WSDocumentation",
-        .product(name: "SDGVersioning", package: "SDGCornerstone"),
-      ]
-    ),
-
-    // Components
-
-    // Workspace scripts.
-    .target(
-      name: "WSScripts",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
-
-    // Git management.
-    .target(
-      name: "WSGit",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
-
-    // Open source management.
-    .target(
-      name: "WSOpenSource",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSExamples",
-        "WSDocumentation",
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-      ]
-    ),
-
-    // Licence management.
-    .target(
-      name: "WSLicence",
-      dependencies: [
-        "WSGeneralImports",
+        "WSLocalizations",
         "WorkspaceConfiguration",
-        "WSProject",
-      ]
-    ),
-
-    // GitHub management.
-    .target(
-      name: "WSGitHub",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
         "WorkspaceProjectConfiguration",
-      ]
-    ),
-
-    // Continuous integration management.
-    .target(
-      name: "WSContinuousIntegration",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        "WSScripts",
-        "WSDocumentation",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Resource management.
-    .target(
-      name: "WSResources",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // File header management.
-    .target(
-      name: "WSFileHeaders",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
-
-    // Example management.
-    .target(
-      name: "WSExamples",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSParsing",
-      ]
-    ),
-
-    // Normalization.
-    .target(
-      name: "WSNormalization",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSSwift",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Xcode project management.
-    .target(
-      name: "WSXcode",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WorkspaceProjectConfiguration",
-        .product(name: "SDGXcode", package: "SDGSwift"),
-      ]
-    ),
-
-    // Proofreading.
-    .target(
-      name: "WSProofreading",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSCustomTask",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Testing.
-    .target(
-      name: "WSTesting",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSValidation",
-        "WSContinuousIntegration",
-        "WSProofreading",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
-        .product(name: "SDGXcode", package: "SDGSwift"),
-      ]
-    ),
-
-    // Documentation generation.
-    .target(
-      name: "WSDocumentation",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-        "WSParsing",
-        "WSValidation",
-        "WSXcode",
-        "WSSwift",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-        .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
-        .product(name: "SDGHTML", package: "SDGWeb"),
-        .product(name: "SDGCSS", package: "SDGWeb"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
-      ]
-    ),
-
-    // Mechanism for embedding third party tools.
-    .target(
-      name: "WSCustomTask",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        .product(name: "SDGSwift", package: "SDGSwift"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ]
-    ),
-
-    // Utilities for validation reports.
-    .target(
-      name: "WSValidation",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
-
-    // Utilities related to Swift syntax.
-    .target(
-      name: "WSSwift",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
-
-    // Utilities related to parsing in‐source declarations and directives.
-    .target(
-      name: "WSParsing",
-      dependencies: [
-        "WSGeneralImports",
-        "WSLocalizations",
-        "WSProject",
-      ]
-    ),
-
-    // Defines general project structure queries and cache.
-    .target(
-      name: "WSProject",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        "WorkspaceProjectConfiguration",
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
-        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
+        .product(name: "SDGSwift", package: "SDGSwift"),
+        .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
+        .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGXcode", package: "SDGSwift"),
+        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
+        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
+        .product(name: "SDGHTML", package: "SDGWeb"),
+        .product(name: "SDGCSS", package: "SDGWeb"),
       ]
     ),
 
@@ -690,8 +462,8 @@ let package = Package(
       name: "WorkspaceTests",
       dependencies: [
         "WSGeneralTestImports",
-        "WSCustomTask",
         "WorkspaceProjectConfiguration",
+        "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGHTML", package: "SDGWeb"),

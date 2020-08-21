@@ -18,10 +18,7 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSProject
-import WSValidation
-import WSTesting
-import WSContinuousIntegration
+import WorkspaceConfiguration
 
 extension Workspace.Validate {
 

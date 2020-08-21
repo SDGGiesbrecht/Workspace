@@ -18,9 +18,6 @@ import SDGLogic
 import SDGCollections
 import WSGeneralImports
 
-import WSValidation
-import WSContinuousIntegration
-
 extension Workspace {
 
   internal enum Test {

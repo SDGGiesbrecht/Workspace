@@ -20,7 +20,7 @@ import WSGeneralTestImports
 import SDGExternalProcess
 
 import WorkspaceConfiguration
-import WSProject
+import WorkspaceImplementation
 
 class APITests: TestCase {
 
@@ -54,7 +54,7 @@ class APITests: TestCase {
   override func setUp() {
     super.setUp()
     Command.Output.testMode = true
-    PackageRepository.emptyRelatedProjectCache()  // Make sure starting state is consistent.
+    PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
     CustomTask.emptyCache()
     APITests.configureGit
     APITests.configureWindowsTestDirectory

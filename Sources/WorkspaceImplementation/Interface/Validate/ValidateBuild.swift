@@ -14,9 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceConfiguration
 
 extension Workspace.Validate {

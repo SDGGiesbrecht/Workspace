@@ -15,6 +15,7 @@
  */
 
 import SDGLogic
+import SDGText
 
 import SDGHTML
 

@@ -14,8 +14,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCollections
+import Foundation
 
+import SDGCollections
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceProjectConfiguration
 
 internal enum FileType {

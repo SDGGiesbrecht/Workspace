@@ -14,8 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
+
+import SDGCommandLine
 
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
@@ -24,6 +29,7 @@ import SDGCollections
 import SDGSwiftSource
 import SDGHTML
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 internal struct PackageInterface {

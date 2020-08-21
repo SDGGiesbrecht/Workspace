@@ -16,6 +16,15 @@
 
 #if !os(Linux)
 
+  import SDGText
+  import SDGLocalization
+
+  import SDGCommandLine
+
+  import SDGSwift
+
+  import WSLocalizations
+
   extension Workspace.Refresh {
 
     internal enum Xcode {

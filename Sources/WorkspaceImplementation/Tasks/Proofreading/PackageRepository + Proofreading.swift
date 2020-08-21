@@ -14,14 +14,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+import SDGCommandLine
+
+import SDGSwift
+import SDGSwiftSource
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
-import SDGSwiftSource
 
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
@@ -31,6 +37,8 @@ import SDGSwiftSource
 #if !os(WASI)
   import SwiftFormatConfiguration
 #endif
+
+import WSLocalizations
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

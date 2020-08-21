@@ -19,10 +19,13 @@
   import SDGLogic
   import SDGMathematics
 
+  import SDGCommandLine
   import SDGExportedCommandLineInterface
+
   import SDGHTML
   import SDGSwiftSource
 
+  import WSLocalizations
   import WorkspaceConfiguration
 
   internal class CommandPage: Page {

@@ -14,9 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+import Dispatch
+
+import SDGControlFlow
 import SDGLogic
 import SDGMathematics
 import SDGCollections
+
+import SDGCommandLine
 
 import SDGSwift
 import SDGXcode
@@ -24,6 +30,7 @@ import SDGSwiftSource
 import SDGHTML
 import SDGCSS
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

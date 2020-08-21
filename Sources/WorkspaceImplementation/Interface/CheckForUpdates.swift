@@ -14,10 +14,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+import Foundation
 
+import SDGLogic
+import SDGText
+import SDGLocalization
 import SDGVersioning
 
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceProjectConfiguration
 
 extension Workspace {

@@ -14,6 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGCollections
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import WSLocalizations
+
 internal final class CommandLineProofreadingReporter: ProofreadingReporter {
 
   // MARK: - Static Properties

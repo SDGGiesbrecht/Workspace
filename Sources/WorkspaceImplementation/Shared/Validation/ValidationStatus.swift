@@ -14,6 +14,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGMathematics
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
+
 internal struct ValidationStatus {
 
   // MARK: - Static Properties

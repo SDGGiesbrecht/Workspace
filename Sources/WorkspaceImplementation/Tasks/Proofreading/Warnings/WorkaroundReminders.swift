@@ -14,11 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+import SDGLogic
 import SDGMathematics
-
+import SDGText
+import SDGLocalization
 import SDGVersioning
-
 import SDGExternalProcess
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 
 internal struct WorkaroundReminders: Warning {
 

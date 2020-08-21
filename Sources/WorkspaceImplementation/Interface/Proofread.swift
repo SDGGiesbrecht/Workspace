@@ -14,6 +14,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
+
 extension Workspace {
   internal enum Proofread {
 

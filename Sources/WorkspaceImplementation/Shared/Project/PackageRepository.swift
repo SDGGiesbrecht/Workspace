@@ -14,15 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
 #if os(Windows)
   import WinSDK
 #endif
 
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
-
 import SDGExternalProcess
 
+import SDGCommandLine
+
+import SDGSwift
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
@@ -32,6 +36,7 @@ import SDGSwiftConfigurationLoading
   import PackageGraph
 #endif
 
+import WSLocalizations
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 

@@ -14,6 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import WSLocalizations
+
 extension Workspace.Refresh {
 
   internal enum Scripts {

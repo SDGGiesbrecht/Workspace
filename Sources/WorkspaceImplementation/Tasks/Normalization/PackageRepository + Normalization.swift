@@ -14,9 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
+import SDGControlFlow
 import SDGLogic
 import SDGCollections
 
+import SDGCommandLine
+
+import SDGSwift
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat

@@ -15,7 +15,14 @@
  */
 
 import SDGLogic
+import SDGText
+import SDGLocalization
 
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 

@@ -15,6 +15,14 @@
  */
 
 import SDGCollections
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }

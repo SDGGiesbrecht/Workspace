@@ -31,7 +31,7 @@ import SDGSwiftSource
   import SwiftFormat
 #endif
 
-public enum SwiftLanguage {
+internal enum SwiftLanguage {
 
   // MARK: - Static Properties
 
@@ -129,7 +129,7 @@ public enum SwiftLanguage {
 
     // MARK: - Generating
 
-    public static func identifier(for string: StrictString, casing: Casing) -> StrictString {
+    internal static func identifier(for string: StrictString, casing: Casing) -> StrictString {
       var identifier = string
 
       switch casing {
@@ -211,7 +211,7 @@ public enum SwiftLanguage {
       return identifier
     }
 
-    public static func format(
+    internal static func format(
       generatedCode code: inout String,
       accordingTo configuration: WorkspaceConfiguration,
       for fileURL: URL

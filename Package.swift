@@ -289,7 +289,6 @@ let package = Package(
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WSProject",
-        "WSSwift",
         "WSParsing",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
@@ -310,18 +309,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Utilities related to Swift syntax.
-    .target(
-      name: "WSSwift",
-      dependencies: [
-        "WSGeneralImports",
-        "WorkspaceConfiguration",
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
-        .product(name: "SDGSwiftSource", package: "SDGSwift"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
-      ]
-    ),
 
     // Utilities related to parsing in‐source declarations and directives.
     .target(

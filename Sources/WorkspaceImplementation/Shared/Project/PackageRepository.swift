@@ -209,7 +209,8 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    internal func projectName(in localization: LocalizationIdentifier, output: Command.Output) throws
+    internal func projectName(in localization: LocalizationIdentifier, output: Command.Output)
+      throws
       -> StrictString
     {
       return try configuration(output: output).projectName[localization] ?? packageName()
@@ -307,7 +308,9 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    internal static let workspaceConfigurationNames = UserFacing<StrictString, InterfaceLocalization>(
+    internal static let workspaceConfigurationNames = UserFacing<
+      StrictString, InterfaceLocalization
+    >(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

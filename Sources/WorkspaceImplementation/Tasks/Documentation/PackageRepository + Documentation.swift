@@ -110,7 +110,9 @@ import WorkspaceConfiguration
 
       let dates: StrictString
       if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
-        dates = StrictString(WorkspaceImplementation.copyright(fromText: "©\(specified.inEnglishDigits())"))
+        dates = StrictString(
+          WorkspaceImplementation.copyright(fromText: "©\(specified.inEnglishDigits())")
+        )
       } else {
         documentationStatus.reportMissingYearFirstPublished()
         dates = StrictString(WorkspaceImplementation.copyright(fromText: ""))
@@ -354,7 +356,10 @@ import WorkspaceConfiguration
       var siteCSS = TextFile(mockFileWithContents: Resources.Documentation.site, fileType: .css)
       siteCSS.header = ""
       try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
-      var siteJavaScript = TextFile(mockFileWithContents: Resources.Documentation.script, fileType: .javaScript)
+      var siteJavaScript = TextFile(
+        mockFileWithContents: Resources.Documentation.script,
+        fileType: .javaScript
+      )
       siteJavaScript.header = ""
       try siteJavaScript.contents.save(
         to: outputDirectory.appendingPathComponent("JavaScript/Site.js")

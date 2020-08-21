@@ -16,7 +16,7 @@
 
 import WSGeneralImports
 
-public struct ReportSection {
+internal struct ReportSection {
 
   // MARK: - Initialization
 
@@ -34,11 +34,11 @@ public struct ReportSection {
     return "§" + number.inDigits()
   }
 
-  public var anchor: StrictString {
+  internal var anchor: StrictString {
     return " (" + identifier + ")"
   }
 
-  public var crossReference: UserFacing<StrictString, InterfaceLocalization> {
+  internal var crossReference: UserFacing<StrictString, InterfaceLocalization> {
     let identifier = self.identifier
     return UserFacing({ localization in
       switch localization {

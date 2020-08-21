@@ -27,7 +27,6 @@ import SDGCSS
 
 import WSProject
 import WSParsing
-import WSValidation
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

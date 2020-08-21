@@ -21,12 +21,12 @@ extension Command.Output {
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public func succeed(message: StrictString, project: PackageRepository) throws {
+    internal func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)
       print(message.formattedAsSuccess().separated())
     }
 
-    public func listWarnings(for project: PackageRepository) throws {
+    internal func listWarnings(for project: PackageRepository) throws {
       if let unsupportedFiles = try FileType.unsupportedTypesWarning(for: project, output: self) {
         print(unsupportedFiles.formattedAsWarning().separated())
       }

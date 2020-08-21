@@ -19,7 +19,6 @@ import SDGCollections
 import WSGeneralImports
 
 import WSProject
-import WSValidation
 
 extension Workspace.Validate {
 

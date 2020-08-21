@@ -18,7 +18,7 @@ import WSGeneralImports
 
 import WSProject
 
-public struct ValidationStatus {
+internal struct ValidationStatus {
 
   // MARK: - Static Properties
 
@@ -34,7 +34,7 @@ public struct ValidationStatus {
 
   // MARK: - Initialization
 
-  public init() {}
+  internal init() {}
 
   // MARK: - Properties
 
@@ -45,19 +45,19 @@ public struct ValidationStatus {
 
   // MARK: - Usage
 
-  public mutating func newSection() -> ReportSection {
+  internal mutating func newSection() -> ReportSection {
     currentSection += 1
     return ReportSection(number: currentSection)
   }
 
-  public mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
+  internal mutating func passStep(message: UserFacing<StrictString, InterfaceLocalization>) {
     summary.append(
       (ValidationStatus.passOrFailSymbol.resolved(using: true) + " " + message.resolved())
         .formattedAsSuccess()
     )
   }
 
-  public mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
+  internal mutating func failStep(message: UserFacing<StrictString, InterfaceLocalization>) {
     passing = false
     summary.append(
       (ValidationStatus.passOrFailSymbol.resolved(using: false) + " " + message.resolved())
@@ -65,13 +65,13 @@ public struct ValidationStatus {
     )
   }
 
-  public var validatedSomething: Bool {
+  internal var validatedSomething: Bool {
     return ¬summary.isEmpty
   }
 
   // #workaround(Swift 5.2.4, Web lacks Foundation.)
   #if !os(WASI)
-    public func reportOutcome(project: PackageRepository, output: Command.Output) throws {
+    internal func reportOutcome(project: PackageRepository, output: Command.Output) throws {
       output.print(summary.joined(separator: "\n").separated())
 
       try output.listWarnings(for: project)

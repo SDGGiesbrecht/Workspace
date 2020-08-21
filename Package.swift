@@ -289,7 +289,6 @@ let package = Package(
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WSProject",
-        "WSValidation",
         "WSSwift",
         "WSParsing",
         .product(name: "SDGLogic", package: "SDGCornerstone"),
@@ -311,15 +310,6 @@ let package = Package(
     ),
 
     // Components
-
-    // Utilities for validation reports.
-    .target(
-      name: "WSValidation",
-      dependencies: [
-        "WSGeneralImports",
-        "WSProject",
-      ]
-    ),
 
     // Utilities related to Swift syntax.
     .target(

@@ -26,8 +26,11 @@ import SDGExternalProcess
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
-import PackageModel
-import PackageGraph
+// #workaround(SwiftPM 0.6.0, Cannot build.)
+#if !(os(Windows) || os(WASI) || os(Android))
+  import PackageModel
+  import PackageGraph
+#endif
 
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration

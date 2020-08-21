@@ -285,7 +285,6 @@ let package = Package(
     .target(
       name: "WorkspaceImplementation",
       dependencies: [
-        "WSGeneralImports",
         "WSLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
@@ -428,7 +427,6 @@ let package = Package(
     .target(
       name: "WSGeneralTestImports",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceConfiguration",
         "WorkspaceImplementation",
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
@@ -452,7 +450,6 @@ let package = Package(
     .target(
       name: "test‐ios‐simulator",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
@@ -461,7 +458,6 @@ let package = Package(
     .target(
       name: "test‐tvos‐simulator",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],

@@ -57,6 +57,13 @@ jobs:
         cd icu4c-build-linux
         ../icu/icu4c/source/runConfigureICU Linux
         make
+    - name: Create Android C toolchain
+      # Based on https://gist.github.com/DanielSerdyukov/188d47e29150622352f1
+      shell: bash
+      run: |
+        set -x
+        ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
+          --install-dir=${GITHUB_WORKSPACE}/Android/C
     - name: Build ICU for Android
       # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToCrossCompileICU
       shell: bash
@@ -67,7 +74,9 @@ jobs:
         ../icu/icu4c/source/configure \
           --host=x86_64-unknown-linux-android \
           --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
-          --prefix=${GITHUB_WORKSPACE}/Android/ICU
+          --prefix=${GITHUB_WORKSPACE}/Android/ICU \
+          CC=${GITHUB_WORKSPACE}/Android/C/x86_64-linux-android29-clang \
+          CXX=${GITHUB_WORKSPACE}/Android/C/x86_64-linux-android29-clang++
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU

@@ -76,8 +76,8 @@ jobs:
           --host=x86_64-unknown-linux-android \
           --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
           --prefix=${GITHUB_WORKSPACE}/Android/ICU \
-          CC=${GITHUB_WORKSPACE}/Android/C/x86_64-linux-android29-clang \
-          CXX=${GITHUB_WORKSPACE}/Android/C/x86_64-linux-android29-clang++
+          CC=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang \
+          CXX=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang++
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU

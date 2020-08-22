@@ -14,10 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import XCTest
+
 @testable import WSCrossPlatformTests
 @testable import WorkspaceTests
-
-import XCTest
 
 extension WSCrossPlatformTests.CrossPlatformTests {
   static let windowsTests: [XCTestCaseEntry] = [

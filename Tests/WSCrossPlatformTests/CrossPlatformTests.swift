@@ -14,12 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-@testable import WSCrossPlatform
-
 import SDGPersistence
 import SDGExternalProcess
 import SDGVersioning
 import SDGSwift
+
+@testable import WSCrossPlatform
 
 import XCTest
 

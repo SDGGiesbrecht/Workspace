@@ -14,13 +14,20 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGText
+import SDGLocalization
+
 import SDGCommandLine
 
 import SDGSwift
 
 import WSLocalizations
+import WorkspaceConfiguration
 @testable import WorkspaceImplementation
-import WSGeneralTestImports
+
+import XCTest
+
+import SDGXCTestUtilities
 
 class InternalTests: TestCase {
 

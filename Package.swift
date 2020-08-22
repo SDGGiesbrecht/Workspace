@@ -429,22 +429,11 @@ let package = Package(
 
     // Tests
 
-    .target(
-      name: "WSGeneralTestImports",
-      dependencies: [
-        "WorkspaceConfiguration",
-        "WorkspaceImplementation",
-        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-        .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine"),
-      ]
-    ),
     .testTarget(
       name: "WorkspaceTests",
       dependencies: [
         "WSLocalizations",
-        "WSGeneralTestImports",
+        "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WorkspaceImplementation",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
@@ -453,7 +442,11 @@ let package = Package(
         .product(name: "SDGText", package: "SDGCornerstone"),
         .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
+        .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine"),
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),

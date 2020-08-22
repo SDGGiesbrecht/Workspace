@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralTestImports
+import SDGLocalization
 
 enum OnlyBritish: String, InputLocalization, Localization {
 

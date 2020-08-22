@@ -16,7 +16,6 @@
 
 import Foundation
 
-import WSGeneralTestImports
 import SDGLogic
 import SDGExternalProcess
 
@@ -27,6 +26,13 @@ import SDGSwift
 import WSLocalizations
 import WorkspaceConfiguration
 import WorkspaceImplementation
+
+import XCTest
+
+import SDGLocalizationTestUtilities
+import SDGXCTestUtilities
+
+import SDGCommandLineTestUtilities
 
 class APITests: TestCase {
 

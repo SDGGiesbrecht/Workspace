@@ -14,9 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGControlFlow
 import SDGLogic
 import SDGCollections
+import SDGText
 import SDGExternalProcess
 
 import SDGCommandLine
@@ -26,9 +29,15 @@ import SDGHTML
 import SDGWeb
 
 import WSLocalizations
+import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 @testable import WorkspaceImplementation
-import WSGeneralTestImports
+
+import XCTest
+
+import SDGPersistenceTestUtilities
+
+import SDGCommandLineTestUtilities
 
 extension PackageRepository {
 

@@ -64,6 +64,7 @@ jobs:
         set -x
         ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
           --install-dir=${GITHUB_WORKSPACE}/Android/C
+        find ${GITHUB_WORKSPACE}/Android/C
     - name: Build ICU for Android
       # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToCrossCompileICU
       shell: bash

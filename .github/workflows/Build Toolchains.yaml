@@ -67,7 +67,8 @@ jobs:
         ../icu/icu4c/source/configure \
           --host=x86_64-unknown-linux-android \
           --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
-          --prefix=${GITHUB_WORKSPACE}/Android/ICU
+          --prefix=${GITHUB_WORKSPACE}/Android/ICU \
+          --enable-weak-threads
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU

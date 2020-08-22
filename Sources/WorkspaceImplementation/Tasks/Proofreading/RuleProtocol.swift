@@ -16,9 +16,12 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
+import SDGText
+import SDGLocalization
 
 import SDGSwiftSource
+
+import WSLocalizations
 
 internal protocol RuleProtocol {
   static var identifier: UserFacing<StrictString, InterfaceLocalization> { get }

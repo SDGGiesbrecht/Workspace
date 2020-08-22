@@ -14,7 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 
 internal struct MissingImplementation: TextRule {
 

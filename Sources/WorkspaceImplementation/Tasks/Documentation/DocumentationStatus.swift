@@ -14,10 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
+import SDGCommandLine
 
 import SDGSwiftSource
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 internal class DocumentationStatus {

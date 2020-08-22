@@ -16,8 +16,12 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
 
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 import WorkspaceConfiguration
 
 internal enum ContinuousIntegrationJob: Int, CaseIterable {

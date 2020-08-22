@@ -15,7 +15,8 @@
  */
 
 import SDGCollections
-import WSGeneralImports
+import SDGText
+import SDGLocalization
 
 import SDGXcode
 

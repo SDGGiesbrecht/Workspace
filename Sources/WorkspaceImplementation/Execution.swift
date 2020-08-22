@@ -14,13 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
-
+// #workaround(Swift 5.2.4, Web lacks Foundation.)
+#if !os(WASI)
+  import Foundation
+#endif
 // #workaround(Swift 5.2.4, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
 #endif
 
+import SDGText
+import SDGLocalization
+
+import WSLocalizations
 import WorkspaceProjectConfiguration
 
 public func run() {  // @exempt(from: tests)

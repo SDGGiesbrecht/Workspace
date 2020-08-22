@@ -14,10 +14,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Swift 5.2.4, Web lacks Foundation.)
+#if !os(WASI)
+  import Foundation
+#endif
+// #workaround(Swift 5.2.4, Web lacks Dispatch.)
+#if !os(WASI)
+  import Dispatch
+#endif
+
+import SDGControlFlow
 import SDGLogic
 import SDGMathematics
 import SDGCollections
-import WSGeneralImports
+
+import SDGCommandLine
 
 import SDGSwift
 import SDGXcode
@@ -25,6 +36,7 @@ import SDGSwiftSource
 import SDGHTML
 import SDGCSS
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

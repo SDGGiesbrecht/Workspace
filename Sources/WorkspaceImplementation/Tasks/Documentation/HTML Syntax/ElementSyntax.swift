@@ -15,7 +15,7 @@
  */
 
 import SDGLogic
-import WSGeneralImports
+import SDGText
 
 import SDGHTML
 

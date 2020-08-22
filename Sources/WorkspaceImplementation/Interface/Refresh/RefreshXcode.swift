@@ -16,7 +16,14 @@
 
 #if !os(Linux)
 
-  import WSGeneralImports
+  import SDGText
+  import SDGLocalization
+
+  import SDGCommandLine
+
+  import SDGSwift
+
+  import WSLocalizations
 
   extension Workspace.Refresh {
 

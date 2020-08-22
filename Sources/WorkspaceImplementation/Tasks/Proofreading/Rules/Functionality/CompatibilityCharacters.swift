@@ -15,7 +15,14 @@
  */
 
 import SDGLogic
-import WSGeneralImports
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import SDGSwift
+
+import WSLocalizations
 
 internal struct CompatibilityCharacters: TextRule {
 

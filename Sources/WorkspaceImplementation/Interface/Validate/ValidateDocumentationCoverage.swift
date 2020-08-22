@@ -15,7 +15,12 @@
  */
 
 import SDGLogic
-import WSGeneralImports
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import WSLocalizations
 
 extension Workspace.Validate {
 

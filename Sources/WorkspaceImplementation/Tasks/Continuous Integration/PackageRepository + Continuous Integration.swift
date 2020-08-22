@@ -16,14 +16,19 @@
 
 import SDGLogic
 import SDGCollections
-import WSGeneralImports
+import SDGText
+import SDGLocalization
 
+import SDGCommandLine
+
+import SDGSwift
 // #workaround(SwiftPM 0.6.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
   import SwiftFormat
 #endif
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

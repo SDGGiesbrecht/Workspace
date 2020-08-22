@@ -14,8 +14,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
+import SDGCommandLine
 
+import SDGSwift
 import SDGSwiftSource
 
 internal protocol TextRule: RuleProtocol {

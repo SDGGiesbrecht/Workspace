@@ -17,14 +17,17 @@
 import SDGLogic
 import SDGMathematics
 import SDGCollections
-import WSGeneralImports
 
+import SDGCommandLine
+
+import SDGSwift
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
 
+import WSLocalizations
 import WorkspaceConfiguration
 
 internal struct UnicodeRule: SyntaxRule {

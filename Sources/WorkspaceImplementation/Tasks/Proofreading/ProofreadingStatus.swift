@@ -15,13 +15,19 @@
  */
 
 import SDGLogic
-import WSGeneralImports
+import SDGCollections
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
 
 #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
   internal protocol DiagnosticConsumer {}
 #else
   import SwiftSyntax
 #endif
+
+import WSLocalizations
 
 internal class ProofreadingStatus: DiagnosticConsumer {
 

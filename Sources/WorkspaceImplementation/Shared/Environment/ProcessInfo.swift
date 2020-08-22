@@ -1,5 +1,5 @@
 /*
- Exports.swift
+ ProcessInfo.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -16,19 +16,21 @@
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
-  @_exported import Foundation
+  import Foundation
+
+  import SDGLogic
+
+  extension ProcessInfo {
+
+    internal static let isInContinuousIntegration =
+      ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
+      ∨ isInGitHubAction  // @exempt(from: tests)
+
+    internal static let isInGitHubAction =
+      ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+
+    internal static let isPullRequest =
+      ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
+      ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
+  }
 #endif
-
-@_exported import SDGControlFlow
-@_exported import SDGLogic
-@_exported import SDGMathematics
-@_exported import SDGCollections
-@_exported import SDGText
-@_exported import SDGPersistence
-@_exported import SDGLocalization
-
-@_exported import SDGCommandLine
-
-@_exported import SDGSwift
-
-@_exported import WSLocalizations

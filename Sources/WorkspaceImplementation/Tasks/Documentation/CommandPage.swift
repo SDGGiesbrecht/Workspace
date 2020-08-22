@@ -18,12 +18,14 @@
 #if !(os(Windows) || os(WASI) || os(Android))
   import SDGLogic
   import SDGMathematics
-  import WSGeneralImports
 
+  import SDGCommandLine
   import SDGExportedCommandLineInterface
+
   import SDGHTML
   import SDGSwiftSource
 
+  import WSLocalizations
   import WorkspaceConfiguration
 
   internal class CommandPage: Page {

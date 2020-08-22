@@ -16,10 +16,10 @@
 
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
+  import SDGControlFlow
   import SDGLogic
   import SDGMathematics
   import SDGCollections
-  import WSGeneralImports
 
   import SwiftSyntax
   import SDGSwiftSource

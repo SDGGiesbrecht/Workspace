@@ -1,12 +1,12 @@
 /*
- Rule.swift
+ ProcessInfo.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2019–2020 Jeremy David Giesbrecht and the Workspace project contributors.
- Urheberrecht ©2019–2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+ Copyright ©2020 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 
  Soli Deo gloria.
 
@@ -14,9 +14,10 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSource
+import Foundation
 
-internal enum Rule {
-  case text(TextRule.Type)
-  case syntax(SyntaxRule.Type)
+@testable import WorkspaceImplementation
+
+var isInGitHubAction: Bool {
+  return ProcessInfo.isInGitHubAction
 }

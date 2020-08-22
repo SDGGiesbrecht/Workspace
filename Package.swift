@@ -285,15 +285,19 @@ let package = Package(
     .target(
       name: "WorkspaceImplementation",
       dependencies: [
-        "WSGeneralImports",
         "WSLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGMathematics", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
         .product(name: "SDGSwift", package: "SDGSwift"),
@@ -423,33 +427,11 @@ let package = Package(
       ]
     ),
 
-    // Centralizes imports needed almost everywhere.
-    .target(
-      name: "WSGeneralImports",
-      dependencies: [
-        "WSLocalizations",
-
-        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
-        .product(name: "SDGLogic", package: "SDGCornerstone"),
-        .product(name: "SDGMathematics", package: "SDGCornerstone"),
-        .product(name: "SDGCollections", package: "SDGCornerstone"),
-        .product(name: "SDGText", package: "SDGCornerstone"),
-        .product(name: "SDGPersistence", package: "SDGCornerstone"),
-        .product(name: "SDGLocalization", package: "SDGCornerstone"),
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-
-        .product(name: "SDGCommandLine", package: "SDGCommandLine"),
-
-        .product(name: "SDGSwift", package: "SDGSwift"),
-      ]
-    ),
-
     // Tests
 
     .target(
       name: "WSGeneralTestImports",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceConfiguration",
         "WorkspaceImplementation",
         .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
@@ -461,11 +443,18 @@ let package = Package(
     .testTarget(
       name: "WorkspaceTests",
       dependencies: [
+        "WSLocalizations",
         "WSGeneralTestImports",
         "WorkspaceProjectConfiguration",
         "WorkspaceImplementation",
+        .product(name: "SDGControlFlow", package: "SDGCornerstone"),
+        .product(name: "SDGLogic", package: "SDGCornerstone"),
+        .product(name: "SDGCollections", package: "SDGCornerstone"),
+        .product(name: "SDGText", package: "SDGCornerstone"),
+        .product(name: "SDGLocalization", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
+        .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
       ]
@@ -473,7 +462,6 @@ let package = Package(
     .target(
       name: "test‐ios‐simulator",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],
@@ -482,7 +470,6 @@ let package = Package(
     .target(
       name: "test‐tvos‐simulator",
       dependencies: [
-        "WSGeneralImports",
         "WorkspaceImplementation",
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
       ],

@@ -14,7 +14,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WSGeneralImports
+// #workaround(Swift 5.2.4, Web lacks Foundation.)
+#if !os(WASI)
+  import Foundation
+#endif
+
+import SDGText
+import SDGLocalization
+
+import SDGCommandLine
+
+import WSLocalizations
 
 extension Workspace {
   internal enum Document {

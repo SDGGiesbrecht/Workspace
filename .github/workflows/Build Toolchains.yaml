@@ -78,7 +78,7 @@ jobs:
           --prefix=${GITHUB_WORKSPACE}/Android/ICU \
           CC=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang \
           CXX=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang++ \
-          RINLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ranlib \
+          RANLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ranlib \
           AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ar
         make
         make install

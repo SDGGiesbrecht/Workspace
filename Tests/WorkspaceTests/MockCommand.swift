@@ -19,7 +19,7 @@ import SDGLocalization
 
 import SDGCommandLine
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 let mockCommand = Command(
   name: UserFacing<StrictString, InterfaceLocalization>({ localization in

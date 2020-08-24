@@ -19,7 +19,7 @@
 
   import SDGSwiftSource
 
-  import WSLocalizations
+  import WorkspaceLocalizations
   import WorkspaceConfiguration
 
   extension Array where Element == SymbolDocumentation {

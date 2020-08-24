@@ -25,7 +25,7 @@
   import SDGHTML
   import SDGSwiftSource
 
-  import WSLocalizations
+  import WorkspaceLocalizations
   import WorkspaceConfiguration
 
   internal class CommandPage: Page {

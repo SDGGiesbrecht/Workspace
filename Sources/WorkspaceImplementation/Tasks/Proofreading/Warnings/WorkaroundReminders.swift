@@ -26,7 +26,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal struct WorkaroundReminders: Warning {
 

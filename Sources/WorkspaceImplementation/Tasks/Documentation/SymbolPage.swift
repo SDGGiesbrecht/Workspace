@@ -26,7 +26,7 @@ import SDGCommandLine
 import SDGSwiftSource
 import SDGHTML
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 
 // #workaround(SwiftSyntax 0.50200.0, Cannot build.)

@@ -32,7 +32,7 @@ import SDGCommandLine
 import SDGSwiftSource
 import SDGHTML
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 
 internal struct PackageInterface {

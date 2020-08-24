@@ -24,7 +24,7 @@ import SDGCollections
 import SDGText
 import SDGLocalization
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 extension InterfaceLocalization {
 

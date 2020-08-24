@@ -15,7 +15,7 @@
  */
 
 import SDGControlFlow
-import WSLocalizations
+import WorkspaceLocalizations
 
 // @localization(🇩🇪DE) @crossReference(LocalizationIdentifier)
 /// Eine lokalisationskennzeichen; entweder ein IETF‐Sprachkennzeichen oder ein Sprachsymbol.

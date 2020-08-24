@@ -28,7 +28,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
 extension Workspace {

@@ -285,7 +285,7 @@ let package = Package(
     .target(
       name: "WorkspaceImplementation",
       dependencies: [
-        "WSLocalizations",
+        "WorkspaceLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
@@ -405,7 +405,7 @@ let package = Package(
     .target(
       name: "WorkspaceConfiguration",
       dependencies: [
-        "WSLocalizations",
+        "WorkspaceLocalizations",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
         .product(name: "SDGLogic", package: "SDGCornerstone"),
         .product(name: "SDGCollections", package: "SDGCornerstone"),
@@ -421,7 +421,7 @@ let package = Package(
 
     // Defines the lists of supported localizations.
     .target(
-      name: "WSLocalizations",
+      name: "WorkspaceLocalizations",
       dependencies: [
         .product(name: "SDGLocalization", package: "SDGCornerstone")
       ]
@@ -432,7 +432,7 @@ let package = Package(
     .testTarget(
       name: "WorkspaceTests",
       dependencies: [
-        "WSLocalizations",
+        "WorkspaceLocalizations",
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
         "WorkspaceImplementation",

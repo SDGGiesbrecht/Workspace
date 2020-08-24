@@ -21,7 +21,7 @@ import SDGLocalization
 
 import SDGSwiftSource
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal protocol RuleProtocol {
   static var identifier: UserFacing<StrictString, InterfaceLocalization> { get }

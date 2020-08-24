@@ -16,7 +16,7 @@
 
 import SDGControlFlow
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 // @localization(🇩🇪DE) @crossReference(Platform)
 /// Eine Schicht.

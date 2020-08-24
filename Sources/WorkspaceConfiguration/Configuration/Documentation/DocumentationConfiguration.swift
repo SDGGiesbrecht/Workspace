@@ -16,7 +16,7 @@
 
 import SDGLogic
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration)
 /// Einstellungen zur Dokumentation.

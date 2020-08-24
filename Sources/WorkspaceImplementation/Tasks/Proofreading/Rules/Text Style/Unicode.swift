@@ -27,7 +27,7 @@ import SDGSwift
 #endif
 import SDGSwiftSource
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 
 internal struct UnicodeRule: SyntaxRule {

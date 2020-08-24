@@ -23,7 +23,7 @@ import SDGCommandLine
 import SDGSwift
 import SDGSwiftSource
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal struct Asterisms: SyntaxRule {
 

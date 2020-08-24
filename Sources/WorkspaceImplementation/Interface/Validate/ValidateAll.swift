@@ -26,7 +26,7 @@ import SDGLocalization
 
 import SDGCommandLine
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
 extension Workspace.Validate {

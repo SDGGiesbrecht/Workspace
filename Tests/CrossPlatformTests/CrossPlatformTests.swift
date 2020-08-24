@@ -19,14 +19,14 @@ import SDGExternalProcess
 import SDGVersioning
 import SDGSwift
 
-@testable import WSCrossPlatform
+@testable import CrossPlatform
 
 import XCTest
 
 import SDGXCTestUtilities
 import SDGPersistenceTestUtilities
 
-final class CrossPlatformTests: TestCase {
+final class Tests: TestCase {
 
   func testCachePermissions() throws {
     var directory = FileManager.default.url(in: .cache, at: "Directory")

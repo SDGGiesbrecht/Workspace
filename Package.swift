@@ -469,27 +469,22 @@ let package = Package(
       path: "Tests/test‐tvos‐simulator"
     ),
     .target(
-      name: "WSCrossPlatform",
+      name: "CrossPlatform",
       dependencies: [
-        "WSCrossPlatformC",
+        "CrossPlatformC",
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
-      path: "Tests/WSCrossPlatform"
+      path: "Tests/CrossPlatform"
     ),
     .target(
-      name: "WSCrossPlatform‐Unicode",
-      dependencies: ["WSCrossPlatform"],
-      path: "Tests/WSCrossPlatform‐Unicode"
-    ),
-    .target(
-      name: "WSCrossPlatformTool",
-      dependencies: ["WSCrossPlatform"],
-      path: "Tests/WSCrossPlatformTool"
+      name: "cross‐platform‐tool",
+      dependencies: ["CrossPlatform"],
+      path: "Tests/cross‐platform‐tool"
     ),
     .testTarget(
-      name: "WSCrossPlatformTests",
+      name: "CrossPlatformTests",
       dependencies: [
-        "WSCrossPlatform",
+        "CrossPlatform",
         .product(name: "SDGPersistence", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
@@ -499,17 +494,17 @@ let package = Package(
       ]
     ),
     .target(
-      name: "WSCrossPlatformC",
-      path: "Tests/WSCrossPlatformC"
+      name: "CrossPlatformC",
+      path: "Tests/CrossPlatformC"
     ),
 
     .target(
-      name: "WSConfigurationExample",
+      name: "WorkspaceConfigurationExample",
       dependencies: [
         "WorkspaceConfiguration",
         .product(name: "SDGControlFlow", package: "SDGCornerstone"),
       ],
-      path: "Tests/WSConfigurationExample"
+      path: "Tests/WorkspaceConfigurationExample"
     ),
 
     // Other

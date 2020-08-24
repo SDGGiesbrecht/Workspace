@@ -16,10 +16,10 @@
 
 import XCTest
 
-@testable import WSCrossPlatformTests
+@testable import CrossPlatformTests
 @testable import WorkspaceTests
 
-extension WSCrossPlatformTests.CrossPlatformTests {
+extension CrossPlatformTests.Tests {
   static let windowsTests: [XCTestCaseEntry] = [
     testCase([
       ("testCachePermissions", testCachePermissions),
@@ -100,7 +100,7 @@ extension WorkspaceTests.InternalTests {
 }
 
 var tests = [XCTestCaseEntry]()
-tests += WSCrossPlatformTests.CrossPlatformTests.windowsTests
+tests += CrossPlatformTests.Tests.windowsTests
 tests += WorkspaceTests.APITests.windowsTests
 tests += WorkspaceTests.InternalTests.windowsTests
 

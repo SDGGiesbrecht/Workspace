@@ -1,11 +1,5 @@
 $ workspace validate build •no‐colour
 
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to “SDG.xcodeproj/project.pbxproj”...
-
 Checking build for macOS... (§1)
 
 [$ swift...]

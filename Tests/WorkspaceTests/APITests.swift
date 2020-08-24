@@ -29,6 +29,7 @@ import WorkspaceImplementation
 
 import XCTest
 
+import SDGPersistenceTestUtilities
 import SDGLocalizationTestUtilities
 import SDGXCTestUtilities
 

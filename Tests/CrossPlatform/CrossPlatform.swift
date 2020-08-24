@@ -32,7 +32,7 @@
   import Dispatch
 #endif
 
-import WSCrossPlatformC
+import CrossPlatformC
 
 // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
 #if !os(WASI)

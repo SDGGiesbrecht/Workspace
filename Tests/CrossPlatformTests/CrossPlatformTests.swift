@@ -19,7 +19,7 @@ import SDGExternalProcess
 import SDGVersioning
 import SDGSwift
 
-@testable import WSCrossPlatform
+@testable import CrossPlatform
 
 import XCTest
 

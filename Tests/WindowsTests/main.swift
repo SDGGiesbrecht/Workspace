@@ -16,7 +16,7 @@
 
 import XCTest
 
-@testable import WSCrossPlatformTests
+@testable import CrossPlatformTests
 @testable import WorkspaceTests
 
 extension WSCrossPlatformTests.CrossPlatformTests {

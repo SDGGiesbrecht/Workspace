@@ -28,7 +28,7 @@ import SDGSwift
 import SDGHTML
 import SDGWeb
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 @testable import WorkspaceImplementation

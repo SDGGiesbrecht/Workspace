@@ -23,7 +23,7 @@
 
   import SDGSwift
 
-  import WSLocalizations
+  import WorkspaceLocalizations
 
   extension Workspace.Refresh {
 

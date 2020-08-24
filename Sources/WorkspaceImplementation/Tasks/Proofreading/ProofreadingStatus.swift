@@ -27,7 +27,7 @@ import SDGCommandLine
   import SwiftSyntax
 #endif
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal class ProofreadingStatus: DiagnosticConsumer {
 

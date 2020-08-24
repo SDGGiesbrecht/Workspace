@@ -16,7 +16,7 @@
 
 import SDGLogic
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration)
 /// Einstellungen zur Lies‐mich Datei.

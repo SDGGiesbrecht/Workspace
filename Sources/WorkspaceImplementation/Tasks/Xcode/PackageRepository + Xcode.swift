@@ -22,7 +22,7 @@ import SDGCommandLine
 import SDGSwift
 import SDGXcode
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

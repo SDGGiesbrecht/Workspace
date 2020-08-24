@@ -26,7 +26,7 @@ import SDGSwift
 #endif
 import SDGSwiftSource
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal struct ClosureSignaturePosition: SyntaxRule {
 

@@ -39,7 +39,7 @@ import SDGSwiftConfigurationLoading
   import PackageGraph
 #endif
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 

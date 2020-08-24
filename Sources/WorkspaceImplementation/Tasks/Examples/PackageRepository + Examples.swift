@@ -24,7 +24,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)

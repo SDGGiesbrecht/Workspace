@@ -17,7 +17,7 @@
 import SDGText
 import SDGLocalization
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal struct StyleViolation {
 

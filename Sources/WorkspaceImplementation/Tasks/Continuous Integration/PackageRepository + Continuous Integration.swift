@@ -28,7 +28,7 @@ import SDGSwift
   import SwiftFormat
 #endif
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)

@@ -18,7 +18,7 @@ import SDGLogic
 
 import SDGSwiftConfiguration
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration)
 // @documentation(ArbeitsbereichKonfiguration)

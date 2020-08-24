@@ -27,7 +27,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
 internal enum FileType {

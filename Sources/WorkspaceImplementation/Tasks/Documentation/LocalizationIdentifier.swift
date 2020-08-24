@@ -16,7 +16,7 @@
 
 import SDGLogic
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceConfiguration
 
 extension LocalizationIdentifier {

@@ -26,7 +26,7 @@
 import SDGText
 import SDGLocalization
 
-import WSLocalizations
+import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
 public func run() {  // @exempt(from: tests)

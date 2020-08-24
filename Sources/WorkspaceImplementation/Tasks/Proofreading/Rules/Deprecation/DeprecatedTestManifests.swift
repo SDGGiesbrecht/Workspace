@@ -21,7 +21,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal struct DeprecatedTestManifests: TextRule {
   // Deprecated in 0.25.0 (2019‐11‐03)

@@ -22,7 +22,7 @@ import SDGCommandLine
 
 import SDGSwift
 
-import WSLocalizations
+import WorkspaceLocalizations
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }

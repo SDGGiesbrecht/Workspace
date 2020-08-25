@@ -835,7 +835,7 @@ class APITests: TestCase {
           ["refresh", "file‐headers"],
           ["refresh", "examples"],
           ["refresh", "inherited‐documentation"],
-          ["test"]
+          ["test"],
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,

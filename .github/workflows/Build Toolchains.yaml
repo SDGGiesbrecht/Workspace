@@ -79,7 +79,8 @@ jobs:
           CC=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang \
           CXX=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang++ \
           RANLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ranlib \
-          AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ar
+          AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ar \
+          --enable-layout=no
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU

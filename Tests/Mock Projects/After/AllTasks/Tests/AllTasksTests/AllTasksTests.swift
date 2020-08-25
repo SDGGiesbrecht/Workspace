@@ -18,8 +18,4 @@ final class AllTasksTests: XCTestCase {
     // results.
     XCTAssertEqual(AllTasks().text, "Hello, World!")
   }
-
-  static var allTests = [
-    ("testExample", testExample)
-  ]
 }

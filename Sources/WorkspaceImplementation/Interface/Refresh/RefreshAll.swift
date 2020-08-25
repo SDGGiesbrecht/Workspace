@@ -78,28 +78,6 @@ extension Workspace.Refresh {
             }
           }).resolved()
 
-          if let xcodeProject = (try? options.project.xcodeProject())??.lastPathComponent {
-            // @exempt(from: tests) Unreachable on Linux.
-            let xcodeInstructions = UserFacing<StrictString, InterfaceLocalization>(
-              { localization in
-                switch localization {
-                case .englishUnitedKingdom:
-                  return "Open ‘\(StrictString(xcodeProject))’ to work on the project."
-                case .englishUnitedStates, .englishCanada:
-                  return "Open “\(StrictString(xcodeProject))” to work on the project."
-                case .deutschDeutschland:
-                  return
-                    "Um auf das Projekt zu arbeiten, „\(StrictString(xcodeProject))“ öffnen."
-                }
-              }
-            ).resolved()
-
-            success = [
-              success,
-              xcodeInstructions,
-            ].joinedAsLines()
-          }
-
           try output.succeed(message: success, project: options.project)
         #endif
       }

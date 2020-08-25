@@ -365,7 +365,6 @@ public final class WorkspaceConfiguration: Configuration {
     licence.manage = true
     fileHeaders.manage = true
     gitHub.manage = true
-    xcode.manage = true
     normalize = true
     documentation.readMe.manage = true
     continuousIntegration.manage = true

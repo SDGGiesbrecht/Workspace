@@ -1,11 +1,5 @@
 $ workspace test •no‐colour
 
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to “SDG.xcodeproj/project.pbxproj”...
-
 Testing on macOS... (§1)
 
 [$ swift...]

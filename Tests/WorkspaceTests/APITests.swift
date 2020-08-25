@@ -829,11 +829,13 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.2.4, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
+      configuration.xcode.manage = true
       PackageRepository(mock: "Headers").test(
         commands: [
           ["refresh", "file‐headers"],
           ["refresh", "examples"],
           ["refresh", "inherited‐documentation"],
+          ["test"],
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,

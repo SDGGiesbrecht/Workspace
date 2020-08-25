@@ -30,6 +30,5 @@ $ Dependency
 Hello, world!
 
 ‘CustomTasks’ is refreshed and ready.
-Open ‘CustomTasks.xcodeproj’ to work on the project.
 
 0

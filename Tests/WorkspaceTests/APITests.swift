@@ -100,7 +100,6 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.optIntoAllTasks()
-      configuration.xcode.manage = true
       configuration.documentation.localizations = ["🇮🇱עב"]
       configuration.licence.licence = .copyright
       configuration.documentation.api.yearFirstPublished = 2018

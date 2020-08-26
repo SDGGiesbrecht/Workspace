@@ -78,8 +78,8 @@ jobs:
           --prefix=${GITHUB_WORKSPACE}/Android/ICU \
           CC=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang \
           CXX=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang++ \
-          RANLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ranlib \
-          AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-ar \
+          RANLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android-ranlib \
+          AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android-ar \
           --enable-layoutex=no
         make
         make install

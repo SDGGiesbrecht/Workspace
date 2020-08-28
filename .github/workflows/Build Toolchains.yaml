@@ -101,7 +101,7 @@ jobs:
         set -x
         mkdir swift-source
         cd swift-source
-        git clone https://github.com/apple/swift.git --depth 1
+        git clone https://github.com/apple/swift.git --branch release/5.3 --depth 1
         ./swift/utils/update-checkout --clone --skip-history
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain

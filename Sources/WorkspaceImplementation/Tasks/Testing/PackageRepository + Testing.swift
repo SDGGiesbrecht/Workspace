@@ -245,7 +245,7 @@ import WorkspaceLocalizations
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Checking test coverage on \(job.englishName)..." + section.anchor
           case .deutschDeutschland:
-            return "Testabdeckung auf \(job.deutscherName) wird geprüft ..."
+            return "Testabdeckung auf \(job.deutscherName) wird geprüft ..." + section.anchor
           }
         }).resolved().formattedAsSectionHeader()
       )

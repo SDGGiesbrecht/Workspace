@@ -104,7 +104,8 @@ extension Workspace.Validate {
       #endif
 
       // Proofread
-      if options.job == .miscellaneous ∨ options.job == nil {
+      if options.job == .miscellaneous ∨ options.job == nil,
+        ¬ProcessInfo.isInContinuousIntegration {
         try Workspace.Proofread.executeAsStep(
           normalizingFirst: false,
           options: options,

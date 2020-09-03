@@ -103,17 +103,20 @@ extension Workspace.Validate {
         )
       #endif
 
-      // Proofread
-      if options.job == .miscellaneous ∨ options.job == nil,
-        ¬ProcessInfo.isInContinuousIntegration
-      {
-        try Workspace.Proofread.executeAsStep(
-          normalizingFirst: false,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
+      #if !os(WASI)
+        // Proofread
+        if options.job == .miscellaneous ∨ options.job == nil,
+          ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting
+        {
+          try Workspace.Proofread.executeAsStep(
+            normalizingFirst: false,
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
+        }
+      #endif
 
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)

@@ -66,6 +66,7 @@ class APITests: TestCase {
   }()
   override func setUp() {
     super.setUp()
+    engageSelfTestingMode()
     Command.Output.testMode = true
     PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
     CustomTask.emptyCache()

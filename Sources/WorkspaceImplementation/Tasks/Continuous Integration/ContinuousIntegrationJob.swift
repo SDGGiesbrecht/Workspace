@@ -48,7 +48,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
-  internal static let currentXcodeVersion = Version(11, 6)
+  internal static let currentXcodeVersion = Version(11, 7)
   private static let currentWindowsVersion = "2019"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image

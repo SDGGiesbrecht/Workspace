@@ -17,6 +17,10 @@ Proofreading source code... (§1)
 .gitignore
 LICENSE.md
 Package.swift
+Line 38
+Workaround: Test targets don’t work on watchOS. (workaroundReminders)
+  // #workaround(xcodebuild -version 11.6, Test targets don’t work on watchOS.) @exempt(from: unicode)
+
 Line 24
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
     // .package(url: /* package url */, from: "1.0.0"),

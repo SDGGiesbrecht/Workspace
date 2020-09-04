@@ -40,6 +40,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -274,6 +289,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -320,6 +350,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -353,6 +398,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -381,6 +441,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -528,6 +603,21 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate build •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        swift run workspace test •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate test coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate test‐coverage •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
@@ -579,6 +669,11 @@ jobs:
       run: |
         set -x
         swift run workspace proofread •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate documentation coverage
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate documentation‐coverage •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |

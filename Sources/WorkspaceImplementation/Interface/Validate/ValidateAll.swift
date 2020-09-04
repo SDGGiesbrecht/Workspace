@@ -105,7 +105,7 @@ extension Workspace.Validate {
 
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
-        if ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting {
+        if ¬ProcessInfo.isInContinuousIntegration ∨ _isDuringSpecificationTest {
 
           // Proofread
           if options.job == .miscellaneous ∨ options.job == nil {

@@ -32,7 +32,5 @@
     internal static let isPullRequest =
       ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
       ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
-
-    internal static var selfTesting = false
   }
 #endif

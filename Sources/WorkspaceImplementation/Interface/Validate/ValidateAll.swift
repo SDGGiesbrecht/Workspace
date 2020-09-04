@@ -60,24 +60,13 @@ extension Workspace.Validate {
         ContinuousIntegrationJob.option
       ],
       execution: { arguments, options, output in
-
         var validationStatus = ValidationStatus()
-
-        if options.job == .deployment {
-          try executeAsStep(
-            validationStatus: &validationStatus,
-            arguments: arguments,
-            options: options,
-            output: output
-          )
-        } else {
-          try executeAsStep(
-            validationStatus: &validationStatus,
-            arguments: arguments,
-            options: options,
-            output: output
-          )
-        }
+        try executeAsStep(
+          validationStatus: &validationStatus,
+          arguments: arguments,
+          options: options,
+          output: output
+        )
       }
     )
 
@@ -114,15 +103,20 @@ extension Workspace.Validate {
         )
       #endif
 
-      // Proofread
-      if options.job == .miscellaneous ∨ options.job == nil {
-        try Workspace.Proofread.executeAsStep(
-          normalizingFirst: false,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
+      // #workaround(Swift 5.2.4, Web lacks Foundation.)
+      #if !os(WASI)
+        // Proofread
+        if options.job == .miscellaneous ∨ options.job == nil,
+          ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting
+        {
+          try Workspace.Proofread.executeAsStep(
+            normalizingFirst: false,
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
+        }
+      #endif
 
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)

@@ -975,19 +975,22 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       }
 
-      switch platform {
+      let androidProductsDirectory: StrictString =
+        ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+      switch self {
       case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
-        let mainStepName = self == .deployment ? documentStepName : validateStepName
-        result.append(
-          try workspaceStep(
-            named: mainStepName,
-            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
-            localization: interfaceLocalization,
-            configuration: configuration,
-            project: project,
-            output: output
+        if try project.configuration(output: output).testing.prohibitCompilerWarnings {
+          result.append(
+            try workspaceStep(
+              named: buildStepName,
+              command: "validate build •job \(argumentName.resolved(for: .englishCanada))",
+              localization: interfaceLocalization,
+              configuration: configuration,
+              project: project,
+              output: output
+            )
           )
-        )
+        }
       case .windows:
         let version = ContinuousIntegrationJob.experimentalSwiftVersion
           .string(droppingEmptyPatch: true)
@@ -1080,16 +1083,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           ),
         ]
         )
-        result.append(
-          script(
-            heading: testStepName,
-            localization: interfaceLocalization,
-            commands: [
-              compressPATH(),
-              ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/release/WindowsTests.exe",
-            ]
-          )
-        )
       case .web:
         result.append(
           script(
@@ -1120,8 +1113,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let productsDirectory: StrictString =
-          ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
         result.append(
           script(
             heading: copyLibrariesStepName,
@@ -1130,29 +1121,60 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               copy(
                 from:
                   "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
-                to: productsDirectory
+                to: androidProductsDirectory
               ),
-              copy(from: "/Library/icu\u{2D}64/usr/lib", to: productsDirectory),
+              copy(from: "/Library/icu\u{2D}64/usr/lib", to: androidProductsDirectory),
               copy(
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
-                to: productsDirectory
+                to: androidProductsDirectory
               ),
               copy(
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
-                to: productsDirectory
+                to: androidProductsDirectory
               ),
             ]
           )
         )
+      case .miscellaneous, .deployment:
+        break
+      }
+
+      switch platform {
+      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
+        let mainStepName = self == .deployment ? documentStepName : validateStepName
+        result.append(
+          try workspaceStep(
+            named: mainStepName,
+            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
+            localization: interfaceLocalization,
+            configuration: configuration,
+            project: project,
+            output: output
+          )
+        )
+      case .windows:
+        result.append(
+          script(
+            heading: testStepName,
+            localization: interfaceLocalization,
+            commands: [
+              compressPATH(),
+              ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/release/WindowsTests.exe",
+            ]
+          )
+        )
+      case .web:
+        break
+      case .android:
         result.append(contentsOf: [
           step(uploadTestsStepName, localization: interfaceLocalization),
           uses(
             "actions/upload\u{2D}artifact@v1",
             with: [
               "name": "tests",
-              "path": "\(productsDirectory)",
+              "path": "\(androidProductsDirectory)",
             ]
           ),
 
@@ -1168,7 +1190,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             "actions/download\u{2D}artifact@v1",
             with: [
               "name": "tests",
-              "path": "\(productsDirectory)",
+              "path": "\(androidProductsDirectory)",
             ]
           ),
           script(

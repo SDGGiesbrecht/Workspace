@@ -121,7 +121,9 @@ extension Workspace.Validate {
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
         // Build
-        if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
+        if try options.project.configuration(output: output).testing.prohibitCompilerWarnings,
+          ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting
+        {
           try Workspace.Validate.Build.executeAsStep(
             options: options,
             validationStatus: &validationStatus,

@@ -1305,21 +1305,23 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         }
       }
 
+      let validateStep = try workspaceStep(
+        named: validateStepName,
+        command: "validate •job \(argumentName.resolved(for: .englishCanada))",
+        localization: interfaceLocalization,
+        configuration: configuration,
+        project: project,
+        output: output
+      )
       switch platform {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
-        let mainStepName = self == .deployment ? documentStepName : validateStepName
-        result.append(
-          try workspaceStep(
-            named: mainStepName,
-            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
-            localization: interfaceLocalization,
-            configuration: configuration,
-            project: project,
-            output: output
-          )
-        )
+      case .macOS, .centOS, .ubuntu, .amazonLinux, .watchOS:
+        result.append(validateStep)
       case .windows, .web, .android:
         break
+      case .tvOS, .iOS:
+        if try ¬project.isWorkspaceProject() {
+          result.append(validateStep)
+        }
       }
 
       switch platform {

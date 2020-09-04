@@ -61,7 +61,7 @@ jobs:
       run: |
         set -x
         swift run workspace document •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Document
+    - name: Validate
       shell: bash
       run: |
         set -x

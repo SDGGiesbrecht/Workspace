@@ -977,19 +977,18 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       let androidProductsDirectory: StrictString =
         ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+      let buildStep = try workspaceStep(
+        named: buildStepName,
+        command: "validate build •job \(argumentName.resolved(for: .englishCanada))",
+        localization: interfaceLocalization,
+        configuration: configuration,
+        project: project,
+        output: output
+      )
       switch self {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
+      case .macOS, .centOS, .ubuntu, .amazonLinux, .watchOS:
         if try project.configuration(output: output).testing.prohibitCompilerWarnings {
-          result.append(
-            try workspaceStep(
-              named: buildStepName,
-              command: "validate build •job \(argumentName.resolved(for: .englishCanada))",
-              localization: interfaceLocalization,
-              configuration: configuration,
-              project: project,
-              output: output
-            )
-          )
+          result.append(buildStep)
         }
       case .windows:
         let version = ContinuousIntegrationJob.experimentalSwiftVersion
@@ -1094,6 +1093,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
+      case .tvOS, .iOS:
+        if try ¬project.isWorkspaceProject(),
+          try project.configuration(output: output).testing.prohibitCompilerWarnings
+        {
+          result.append(buildStep)
+        }
       case .android:
         result.append(
           script(
@@ -1141,8 +1146,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         break
       }
 
-      switch self {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux:
+      let testSteps: [StrictString] = try {
+        var result: [StrictString] = []
         result.append(
           try workspaceStep(
             named: testStepName,
@@ -1165,6 +1170,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             )
           )
         }
+        return result
+      }()
+      switch self {
+      case .macOS, .centOS, .ubuntu, .amazonLinux:
+        result.append(contentsOf: testSteps)
       case .windows:
         result.append(
           script(
@@ -1178,6 +1188,30 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       case .web, .watchOS, .miscellaneous, .deployment:
         break
+      case .tvOS:
+        if try project.isWorkspaceProject() {
+          result.append(
+            script(
+              heading: testStepName,
+              localization: interfaceLocalization,
+              commands: ["swift run test‐tvos‐simulator"]
+            )
+          )
+        } else if try project.configuration(output: output).testing.prohibitCompilerWarnings {
+          result.append(contentsOf: testSteps)
+        }
+      case .iOS:
+        if try project.isWorkspaceProject() {
+          result.append(
+            script(
+              heading: testStepName,
+              localization: interfaceLocalization,
+              commands: ["swift run test‐tvos‐simulator"]
+            )
+          )
+        } else if try project.configuration(output: output).testing.prohibitCompilerWarnings {
+          result.append(contentsOf: testSteps)
+        }
       case .android:
         result.append(contentsOf: [
           step(uploadTestsStepName, localization: interfaceLocalization),

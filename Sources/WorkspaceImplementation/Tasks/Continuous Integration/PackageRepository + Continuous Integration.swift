@@ -75,7 +75,6 @@ import WorkspaceConfiguration
         workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
       }
 
-      try adjustForWorkspace(&workflow)
       var workflowFile = try TextFile(
         possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
       )
@@ -122,27 +121,6 @@ import WorkspaceConfiguration
       try refreshWindowsTests(output: output)
       try refreshWindowsSDK(output: output)
       try refreshAndroidSDK(output: output)
-    }
-
-    private func adjustForWorkspace(_ configuration: inout [StrictString]) throws {
-      if try isWorkspaceProject() {
-        configuration = configuration.map { line in
-          var line = line
-          line.scalars.replaceMatches(
-            for:
-              "swift run workspace validate •job ios •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-              .scalars,
-            with: "swift run test‐ios‐simulator".scalars
-          )
-          line.scalars.replaceMatches(
-            for:
-              "swift run workspace validate •job tvos •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-              .scalars,
-            with: "swift run test‐tvos‐simulator".scalars
-          )
-          return line
-        }
-      }
     }
 
     private func cleanCMakeUp(output: Command.Output) throws {

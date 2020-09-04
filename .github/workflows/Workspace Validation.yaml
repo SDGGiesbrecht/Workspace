@@ -398,26 +398,16 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Build
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate build •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Test
       shell: bash
       run: |
         set -x
-        swift run workspace test •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Validate test coverage
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate test‐coverage •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐tvos‐simulator
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift run test‐tvos‐simulator
+        swift run workspace validate •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   iOS:
     name: iOS
     runs-on: macos-10.15
@@ -441,26 +431,16 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Build
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate build •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Test
       shell: bash
       run: |
         set -x
-        swift run workspace test •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Validate test coverage
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate test‐coverage •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐tvos‐simulator
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift run test‐ios‐simulator
+        swift run workspace validate •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Android:
     name: Android
     runs-on: ubuntu-18.04

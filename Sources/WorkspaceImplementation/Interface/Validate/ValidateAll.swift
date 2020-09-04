@@ -105,78 +105,80 @@ extension Workspace.Validate {
 
       // #workaround(Swift 5.2.4, Web lacks Foundation.)
       #if !os(WASI)
-        // Proofread
-        if options.job == .miscellaneous ∨ options.job == nil,
-          ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting
-        {
-          try Workspace.Proofread.executeAsStep(
-            normalizingFirst: false,
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
-        }
-      #endif
+        if ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting {
 
-      // #workaround(Swift 5.2.4, Web lacks Foundation.)
-      #if !os(WASI)
-        // Build
-        if try options.project.configuration(output: output).testing.prohibitCompilerWarnings,
-          ¬ProcessInfo.isInContinuousIntegration ∨ ProcessInfo.selfTesting
-        {
-          try Workspace.Validate.Build.executeAsStep(
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
-        }
-
-        // Test
-        if try options.project.configuration(output: output).testing.enforceCoverage {
-          if let job = options.job,
-            job ∉ ContinuousIntegrationJob.coverageJobs
-          {
-            // Coverage impossible to check.
-            try Workspace.Test.executeAsStep(
-              options: options,
-              validationStatus: &validationStatus,
-              output: output
-            )
-          } else {
-            // Check coverage.
-            try Workspace.Validate.TestCoverage.executeAsStep(
+          // Proofread
+          if options.job == .miscellaneous ∨ options.job == nil {
+            try Workspace.Proofread.executeAsStep(
+              normalizingFirst: false,
               options: options,
               validationStatus: &validationStatus,
               output: output
             )
           }
-        } else {
-          // Coverage irrelevant.
-          try Workspace.Test.executeAsStep(
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
-        }
-      #endif
 
-      // Document
-      if options.job.includes(job: .miscellaneous) {
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
-        #if !os(WASI)
-          if try ¬options.project.configuration(output: output).documentation.api.generate
-            ∨ options.project.configuration(output: output).documentation.api
-            .serveFromGitHubPagesBranch,
-            try options.project.configuration(output: output).documentation.api
-              .enforceCoverage
-          {
-            try Workspace.Validate.DocumentationCoverage.executeAsStep(
+          // Build
+          if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
+            try Workspace.Validate.Build.executeAsStep(
               options: options,
               validationStatus: &validationStatus,
               output: output
             )
-          } else if try options.project.configuration(output: output).documentation.api
-            .generate
+          }
+
+          // Test
+          if try options.project.configuration(output: output).testing.enforceCoverage {
+            if let job = options.job,
+              job ∉ ContinuousIntegrationJob.coverageJobs
+            {
+              // Coverage impossible to check.
+              try Workspace.Test.executeAsStep(
+                options: options,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            } else {
+              // Check coverage.
+              try Workspace.Validate.TestCoverage.executeAsStep(
+                options: options,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            }
+          } else {
+            // Coverage irrelevant.
+            try Workspace.Test.executeAsStep(
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
+          }
+
+          // Document
+          if options.job.includes(job: .miscellaneous) {
+            if try ¬options.project.configuration(output: output).documentation.api.generate
+              ∨ options.project.configuration(output: output).documentation.api
+              .serveFromGitHubPagesBranch,
+              try options.project.configuration(output: output).documentation.api.enforceCoverage
+            {
+              try Workspace.Validate.DocumentationCoverage.executeAsStep(
+                options: options,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            } else if try options.project.configuration(output: output).documentation.api
+              .generate
+            {
+              try Workspace.Document.executeAsStep(
+                outputDirectory: options.project.defaultDocumentationDirectory,
+                options: options,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            }
+          }
+          if options.job.includes(job: .deployment),
+            try options.project.configuration(output: output).documentation.api.generate
           {
             try Workspace.Document.executeAsStep(
               outputDirectory: options.project.defaultDocumentationDirectory,
@@ -185,20 +187,6 @@ extension Workspace.Validate {
               output: output
             )
           }
-        #endif
-      }
-
-      // #workaround(Swift 5.2.4, Web lacks Foundation.)
-      #if !os(WASI)
-        if options.job.includes(job: .deployment),
-          try options.project.configuration(output: output).documentation.api.generate
-        {
-          try Workspace.Document.executeAsStep(
-            outputDirectory: options.project.defaultDocumentationDirectory,
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
         }
 
         // Custom

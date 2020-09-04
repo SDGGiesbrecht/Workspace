@@ -1141,19 +1141,30 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         break
       }
 
-      switch platform {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
-        let mainStepName = self == .deployment ? documentStepName : validateStepName
+      switch self {
+      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux:
         result.append(
           try workspaceStep(
-            named: mainStepName,
-            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
+            named: testStepName,
+            command: "test •job \(argumentName.resolved(for: .englishCanada))",
             localization: interfaceLocalization,
             configuration: configuration,
             project: project,
             output: output
           )
         )
+        if try project.configuration(output: output).testing.enforceCoverage {
+          result.append(
+            try workspaceStep(
+              named: testCoverageStepName,
+              command: "validate test‐coverage •job \(argumentName.resolved(for: .englishCanada))",
+              localization: interfaceLocalization,
+              configuration: configuration,
+              project: project,
+              output: output
+            )
+          )
+        }
       case .windows:
         result.append(
           script(
@@ -1165,7 +1176,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-      case .web:
+      case .web, .watchOS, .miscellaneous, .deployment:
         break
       case .android:
         result.append(contentsOf: [
@@ -1222,6 +1233,59 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           ),
         ])
+      }
+
+      let documentStep = try workspaceStep(
+        named: documentStepName,
+        command: "document •job \(argumentName.resolved(for: .englishCanada))",
+        localization: interfaceLocalization,
+        configuration: configuration,
+        project: project,
+        output: output
+      )
+      switch self {
+      case .macOS, .windows, .web, .centOS, .ubuntu, .tvOS, .iOS, .android, .amazonLinux, .watchOS:
+        break
+      case .miscellaneous:
+        if try ¬project.configuration(output: output).documentation.api.generate
+          ∨ project.configuration(output: output).documentation.api.serveFromGitHubPagesBranch,
+          try project.configuration(output: output).documentation.api.enforceCoverage
+        {
+          result.append(
+            try workspaceStep(
+              named: documentationCoverageStepName,
+              command:
+                "validate documentation‐coverage •job \(argumentName.resolved(for: .englishCanada))",
+              localization: interfaceLocalization,
+              configuration: configuration,
+              project: project,
+              output: output
+            )
+          )
+        } else if try project.configuration(output: output).documentation.api.generate {
+          result.append(documentStep)
+        }
+      case .deployment:
+        if try project.configuration(output: output).documentation.api.generate {
+          result.append(documentStep)
+        }
+      }
+
+      switch platform {
+      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
+        let mainStepName = self == .deployment ? documentStepName : validateStepName
+        result.append(
+          try workspaceStep(
+            named: mainStepName,
+            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
+            localization: interfaceLocalization,
+            configuration: configuration,
+            project: project,
+            output: output
+          )
+        )
+      case .windows, .web, .android:
+        break
       }
 
       switch platform {
@@ -1518,6 +1582,17 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
+  private var testCoverageStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate test coverage"
+      case .deutschDeutschland:
+        return "Testabdeckung prüfen"
+      }
+    })
+  }
+
   private var documentStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -1525,6 +1600,17 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Document"
       case .deutschDeutschland:
         return "Dokumentieren"
+      }
+    })
+  }
+
+  private var documentationCoverageStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate documentation coverage"
+      case .deutschDeutschland:
+        return "Dokumentationsabdeckung prüfen"
       }
     })
   }

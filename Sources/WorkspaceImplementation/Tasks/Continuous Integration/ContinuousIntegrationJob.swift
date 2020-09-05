@@ -383,6 +383,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   #if !os(WASI)
     private func workspaceStep(
       named name: UserFacing<StrictString, InterfaceLocalization>,
+      followFailure: Bool,
       command: StrictString,
       localization: InterfaceLocalization,
       configuration: WorkspaceConfiguration,
@@ -392,6 +393,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       return script(
         heading: name,
         localization: localization,
+        followFailure: followFailure,
         commands: try Script.getWorkspace(
           andExecute: appendLanguage(to: command, configuration: configuration),
           for: project,
@@ -508,13 +510,21 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func script(
     heading: UserFacing<StrictString, InterfaceLocalization>,
     localization: InterfaceLocalization,
+    followFailure: Bool = false,
     commands: [StrictString]
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
       "      shell: bash",
-      "      run: |",
     ]
+    if followFailure {
+      result.append(contentsOf: [
+        "      if: ${{ success() || failure() }}"
+      ])
+    }
+    result.append(contentsOf: [
+      "      run: |"
+    ])
     result.append(
       contentsOf: commands.prepending("set \u{2D}x")
         .joinedAsLines().lines.map({ "        \(StrictString($0.line))" })
@@ -940,6 +950,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           result.append(
             try workspaceStep(
               named: installWorkspaceStepName,
+              followFailure: false,
               command: "version",
               localization: interfaceLocalization,
               configuration: configuration,
@@ -951,6 +962,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         result.append(
           try workspaceStep(
             named: refreshStepName,
+            followFailure: false,
             command: "refresh",
             localization: interfaceLocalization,
             configuration: configuration,
@@ -966,6 +978,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         result.append(
           try workspaceStep(
             named: proofreadStepName,
+            followFailure: true,
             command: "proofread",
             localization: interfaceLocalization,
             configuration: configuration,
@@ -979,6 +992,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
       let buildStep = try workspaceStep(
         named: buildStepName,
+        followFailure: true,
         command: "validate build •job \(argumentName.resolved(for: .englishCanada))",
         localization: interfaceLocalization,
         configuration: configuration,
@@ -1151,6 +1165,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         result.append(
           try workspaceStep(
             named: testStepName,
+            followFailure: true,
             command: "test •job \(argumentName.resolved(for: .englishCanada))",
             localization: interfaceLocalization,
             configuration: configuration,
@@ -1162,6 +1177,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           result.append(
             try workspaceStep(
               named: testCoverageStepName,
+              followFailure: true,
               command: "validate test‐coverage •job \(argumentName.resolved(for: .englishCanada))",
               localization: interfaceLocalization,
               configuration: configuration,
@@ -1271,6 +1287,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       let documentStep = try workspaceStep(
         named: documentStepName,
+        followFailure: true,
         command: "document •job \(argumentName.resolved(for: .englishCanada))",
         localization: interfaceLocalization,
         configuration: configuration,
@@ -1288,6 +1305,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           result.append(
             try workspaceStep(
               named: documentationCoverageStepName,
+              followFailure: true,
               command:
                 "validate documentation‐coverage •job \(argumentName.resolved(for: .englishCanada))",
               localization: interfaceLocalization,
@@ -1307,6 +1325,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       let validateStep = try workspaceStep(
         named: validateStepName,
+        followFailure: true,
         command: "validate •job \(argumentName.resolved(for: .englishCanada))",
         localization: interfaceLocalization,
         configuration: configuration,

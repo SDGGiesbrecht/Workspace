@@ -58,11 +58,13 @@ jobs:
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Document
       shell: bash
+      if: ${{ success() || failure() }}
       run: |
         set -x
         swift run workspace document •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
+      if: ${{ success() || failure() }}
       run: |
         set -x
         swift run workspace validate •job deployment •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

@@ -958,25 +958,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             output: output
           )
         )
-      case .windows, .web, .android:
-        break
-      }
-
-      if self == .miscellaneous {
-        result.append(
-          try workspaceStep(
-            named: proofreadStepName,
-            command: "proofread",
-            localization: interfaceLocalization,
-            configuration: configuration,
-            project: project,
-            output: output
-          )
-        )
-      }
-
-      switch platform {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
         let mainStepName = self == .deployment ? documentStepName : validateStepName
         result.append(
           try workspaceStep(
@@ -1404,17 +1385,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Refresh"
       case .deutschDeutschland:
         return "Auffrischen"
-      }
-    })
-  }
-
-  private var proofreadStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Proofread"
-      case .deutschDeutschland:
-        return "Korrekturlesen"
       }
     })
   }

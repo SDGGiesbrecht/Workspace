@@ -128,11 +128,16 @@ extension Workspace.Validate {
               }
             #endif
 
-            options.project.test(
-              on: job,
-              validationStatus: &validationStatus,
-              output: output
-            )
+            // #workaround(Swift 5.2.4, Web lacks Foundation.)
+            #if !os(WASI)
+              if ¬ProcessInfo.isInContinuousIntegration ∨ _isDuringSpecificationTest {
+                options.project.test(
+                  on: job,
+                  validationStatus: &validationStatus,
+                  output: output
+                )
+              }
+            #endif
             try options.project.validateCodeCoverage(
               on: job,
               validationStatus: &validationStatus,

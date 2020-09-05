@@ -673,7 +673,7 @@ jobs:
       if: ${{ success() || failure() }}
       run: |
         set -x
-        swift run workspace validate documentation‐coverage •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate documentation‐coverage •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       if: ${{ success() || failure() }}

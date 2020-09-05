@@ -519,7 +519,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     ]
     if followFailure {
       result.append(contentsOf: [
-        "      if: ${{ success() || failure() }}"
+        "      if: ${{ success() |\u{7C} failure() }}"
       ])
     }
     result.append(contentsOf: [
@@ -1307,7 +1307,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               named: documentationCoverageStepName,
               followFailure: true,
               command:
-                "validate documentation‐coverage •job \(argumentName.resolved(for: .englishCanada))",
+                "validate documentation‐coverage",
               localization: interfaceLocalization,
               configuration: configuration,
               project: project,

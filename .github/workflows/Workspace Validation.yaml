@@ -574,11 +574,6 @@ jobs:
       run: |
         set -x
         swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Proofread
-      shell: bash
-      run: |
-        set -x
-        swift run workspace proofread •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |

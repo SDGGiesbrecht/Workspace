@@ -34,7 +34,7 @@ jobs:
         set -x
         sudo xcode-select -switch /Applications/Xcode_11.7.app
         xcodebuild -version
-        swift --version
+        swift --versio
     - name: Refresh
       shell: bash
       run: |

@@ -740,8 +740,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       switch platform {
       case .macOS:
-        let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
           .string(droppingEmptyPatch: true)
+        if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
+          xcodeVersion.removeLast(2)
+        }
         result.append(
           script(
             heading: setXcodeUpStepName,

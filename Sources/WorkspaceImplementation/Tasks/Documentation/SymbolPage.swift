@@ -701,7 +701,8 @@ import WorkspaceConfiguration
           ),
         ]),
         rightParen: SyntaxFactory.makeToken(.rightParen),
-        trailingClosure: nil
+        trailingClosure: nil,
+        additionalTrailingClosures: nil
       )
 
       let source = dependencyStatement.syntaxHighlightedHTML(

@@ -178,7 +178,7 @@ internal struct UnicodeRule: SyntaxRule {
           .poundImageLiteralKeyword, .poundColorLiteralKeyword, .unknown, .identifier,
           .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator,
           .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield,
-          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter:
+          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.

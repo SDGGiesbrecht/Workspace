@@ -841,7 +841,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .web:
         let snapshot = ContinuousIntegrationJob.currentExperimentalSwiftWebSnapshot
         let releaseName: StrictString =
-          "swift\u{2D}wasm\u{2D}DEVELOPMENT\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
+          "swift\u{2D}wasm\u{2D}5.3\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
         result.append(
           script(
             heading: installSwiftStepName,

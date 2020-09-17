@@ -36,7 +36,7 @@ extension Array where Element: StringFamily {
         }
         return result
       }
-    #else
+    #else  // @exempt(from: tests)
       return joined(separator: "\n" as Element)
     #endif
   }

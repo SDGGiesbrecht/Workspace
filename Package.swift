@@ -252,7 +252,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      .branch("swift‐5.3") // #warning(Temporary branch!)
+      .branch("swift‐5.3")  // #warning(Temporary branch!)
       //from: Version(5, 5, 0)
     ),
     .package(
@@ -261,13 +261,13 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      .branch("swift‐5.3") // #warning(Temporary branch!)
+      .branch("swift‐5.3")  // #warning(Temporary branch!)
       //from: Version(2, 1, 1)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .branch("swift‐5.3") // #warning(Temporary branch!)
+      .branch("swift‐5.3")  // #warning(Temporary branch!)
       //.exact(Version(0, 6, 0))
     ),
     .package(
@@ -277,7 +277,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
-      .branch("swift-5.3-branch") // #warning(Temporary branch!)
+      .branch("swift-5.3-branch")  // #warning(Temporary branch!)
       //.exact(Version(0, 50200, 1))
     ),
     .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 4, 0)),
@@ -529,7 +529,7 @@ let package = Package(
         "Sources",
         "Tests",
         "Validate (Linux).sh",
-        "Validate (macOS).command"
+        "Validate (macOS).command",
       ],
       sources: ["Workspace.swift"]
     ),

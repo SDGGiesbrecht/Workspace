@@ -113,7 +113,7 @@ import WorkspaceLocalizations
           accessControl = ""
         #else
           switch loadedTarget.type {
-          case .library, .systemModule:
+          case .library, .systemModule, .binary:
             accessControl = "internal "
           case .executable, .test:
             accessControl = ""

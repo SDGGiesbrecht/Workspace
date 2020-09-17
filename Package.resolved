@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": "swift‐5.3",
-          "revision": "34caeb28ccf22bd5cd604a7e778a57f617a85db0",
+          "revision": "b15d39177f324c0d4188893aee13db93400ae652",
           "version": null
         }
       },
@@ -95,9 +95,9 @@
         "package": "SwiftSyntax",
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
-          "branch": null,
-          "revision": "0688b9cfc4c3dd234e4f55f1f056b2affc849873",
-          "version": "0.50200.0"
+          "branch": "swift-5.3-RELEASE",
+          "revision": "e39d380a1877da137d45cc5dcd23676a3fd00476",
+          "version": null
         }
       },
       {

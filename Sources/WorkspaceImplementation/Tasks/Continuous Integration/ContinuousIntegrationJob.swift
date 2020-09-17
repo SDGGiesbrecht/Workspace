@@ -828,11 +828,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: [
               cURLAndInstallMSI("\(experimentalRelease)/toolchain.msi"),
               cURLAndInstallMSI("\(experimentalRelease)/sdk.msi"),
-              cURLAndInstallMSI("\(experimentalRelease)/runtime.msi"),
               prependPath(
                 "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
               ),
-              prependPath("/c/Library/Swift\u{2D}development/bin"),
               prependPath(
                 "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
               ),

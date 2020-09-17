@@ -519,6 +519,17 @@ let package = Package(
         "WorkspaceConfiguration"
       ],
       path: "",
+      exclude: [
+        "LICENSE.md",
+        "README.md",
+        "Refresh (Linux).sh",
+        "Refresh (macOS).command",
+        "Resources",
+        "Sources",
+        "Tests",
+        "Validate (Linux).sh",
+        "Validate (macOS).command"
+      ],
       sources: ["Workspace.swift"]
     ),
   ]

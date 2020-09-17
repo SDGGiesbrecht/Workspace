@@ -808,6 +808,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
+        // #workaround(Can these just use the installer?)
         let experimentalRelease: StrictString =
           "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)"
         result.append(

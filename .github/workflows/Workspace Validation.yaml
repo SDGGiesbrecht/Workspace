@@ -247,7 +247,7 @@ jobs:
   CentOS:
     name: CentOS
     runs-on: ubuntu-18.04
-    container: swift:5.2.4-centos8
+    container: swift:5.3-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -287,7 +287,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -501,7 +501,7 @@ jobs:
   Amazon_Linux:
     name: Amazon Linux
     runs-on: ubuntu-18.04
-    container: swift:5.2.4-amazonlinux2
+    container: swift:5.3-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -541,7 +541,7 @@ jobs:
   Miscellaneous:
     name: Miscellaneous
     runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

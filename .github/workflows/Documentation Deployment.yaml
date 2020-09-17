@@ -23,7 +23,7 @@ jobs:
   Deployment:
     name: Deployment
     runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

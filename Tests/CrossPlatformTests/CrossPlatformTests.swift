@@ -29,7 +29,7 @@ import SDGPersistenceTestUtilities
 final class Tests: TestCase {
 
   func testCachePermissions() throws {
-    var directory = FileManager.default.url(in: .cache, at: "Directory")
+    let directory = FileManager.default.url(in: .cache, at: "Directory")
     try? FileManager.default.removeItem(at: directory)
     defer { try? FileManager.default.removeItem(at: directory) }
 

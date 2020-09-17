@@ -54,10 +54,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentMacOSVersion = Version(10, 15)
   internal static let currentXcodeVersion = Version(12)
   private static let currentWindowsVersion = "2019"
+  private static let currentWSLImage = "1804"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
   private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
-  private static let currentWSLImage = currentUbuntuVersion.replacingMatches(for: ".", with: "")
   private static let currentAmazonLinuxVerison = "2"
 
   internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [

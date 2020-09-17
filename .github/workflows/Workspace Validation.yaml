@@ -123,19 +123,19 @@ jobs:
         set -x
         mkdir -p .build/SDG/tmp
         curl --location \
-          'https://aka.ms/wsl-ubuntu-2004' \
-          --output '.build/SDG/tmp/wsl-ubuntu-2004'
-        7z x .build/SDG/tmp/wsl-ubuntu-2004 -o.build/SDG/Linux/Ubuntu
+          'https://aka.ms/wsl-ubuntu-1804' \
+          --output '.build/SDG/tmp/wsl-ubuntu-1804'
+        7z x .build/SDG/tmp/wsl-ubuntu-1804 -o.build/SDG/Linux/Ubuntu
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "::set-env name=PATH::${PATH}"
-        ubuntu2004 install --root
+        ubuntu1804 install --root
     - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
-        ubuntu2004 run \
+        ubuntu1804 run \
           apt-get update --assume-yes
-        ubuntu2004 run \
+        ubuntu1804 run \
           UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
           apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
             install --assume-yes \
@@ -154,34 +154,34 @@ jobs:
               pkg-config \
               tzdata \
               zlib1g-dev
-        ubuntu2004 run \
+        ubuntu1804 run \
           ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
     - name: Install SwiftPM
       shell: bash
       run: |
         set -x
-        ubuntu2004 run \
+        ubuntu1804 run \
           mkdir -p /tmp
-        ubuntu2004 run \
+        ubuntu1804 run \
           curl --location \
             'https://swift.org/builds/swift-5.3-release/ubuntu1804/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu18.04.tar.gz' \
             --output '/tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz'
-        ubuntu2004 run \
+        ubuntu1804 run \
           tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-        ubuntu2004 run \
+        ubuntu1804 run \
           mkdir -p /
-        ubuntu2004 run \
+        ubuntu1804 run \
           cp -R /tmp/swift-5.3-RELEASE-ubuntu18.04/usr //
-        ubuntu2004 run \
+        ubuntu1804 run \
           ln -fs //usr/bin/clang-9 //usr/bin/clang
-        ubuntu2004 run \
+        ubuntu1804 run \
           swift --version
     - name: Build
       shell: bash
       run: |
         set -x
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
-        ubuntu2004 run \
+        ubuntu1804 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             --configuration release -Xswiftc -enable-testing \

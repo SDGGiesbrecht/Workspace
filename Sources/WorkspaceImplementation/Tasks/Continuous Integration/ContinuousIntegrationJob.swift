@@ -43,7 +43,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   // #warning(These versions all need updating.)
   internal static let currentSwiftVersion = Version(5, 3, 0)
-  internal static let experimentalSwiftVersion = Version(5, 2, 1)
+  // #warning(Is this one obsolete?)
+  internal static let experimentalSwiftVersion = Version(5, 3, 0)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}31"
   private static let experimentalDownloads =
     "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"

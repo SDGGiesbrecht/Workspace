@@ -76,23 +76,23 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/visualc.modulemap' \
           --output "${VCToolsInstallDir}/include/module.modulemap"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.apinotes' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/visualc.apinotes' \
           --output "${VCToolsInstallDir}/include/visualc.apinotes"
         curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
+          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
     - name: Install ICU
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/icu.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/icu.msi' \
           --output '/tmp/icu.msi'
         cd /tmp
         msiexec //i icu.msi
@@ -103,17 +103,17 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/toolchain.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/toolchain.msi' \
           --output '/tmp/toolchain.msi'
         cd /tmp
         msiexec //i toolchain.msi
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/sdk.msi' \
           --output '/tmp/sdk.msi'
         cd /tmp
         msiexec //i sdk.msi
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/runtime.msi' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/runtime.msi' \
           --output '/tmp/runtime.msi'
         cd /tmp
         msiexec //i runtime.msi
@@ -171,14 +171,14 @@ jobs:
           mkdir -p /tmp
         ubuntu1804 run \
           curl --location \
-            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-            --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+            'https://swift.org/builds/swift-5.3-release/ubuntu1804/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu18.04.tar.gz' \
+            --output '/tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
-          tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         ubuntu1804 run \
           mkdir -p /
         ubuntu1804 run \
-          cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
+          cp -R /tmp/swift-5.3-RELEASE-ubuntu18.04/usr //
         ubuntu1804 run \
           ln -fs //usr/bin/clang-9 //usr/bin/clang
         ubuntu1804 run \
@@ -402,18 +402,18 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-          --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+          'https://swift.org/builds/swift-5.3-release/ubuntu1804/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu18.04.tar.gz' \
+          --output '/tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
+        sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu18.04/* /
         swift --version
     - name: Fetch Android SDK
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk-android-x86_64.zip' \
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/sdk-android-x86_64.zip' \
           --output '/tmp/sdk-android-x86_64.zip'
         unzip /tmp/sdk-android-x86_64.zip -d /tmp
         sudo mkdir -p /Library

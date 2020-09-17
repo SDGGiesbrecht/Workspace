@@ -252,7 +252,8 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 5, 0)
+      .branch("swift‐5.3") // #warning(Temporary branch!)
+      //from: Version(5, 5, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -260,12 +261,14 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(2, 1, 1)
+      .branch("swift‐5.3") // #warning(Temporary branch!)
+      //from: Version(2, 1, 1)
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 6, 0))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
+      .branch("swift‐5.3") // #warning(Temporary branch!)
+      //.exact(Version(0, 6, 0))
     ),
     .package(
       name: "SwiftSyntax",

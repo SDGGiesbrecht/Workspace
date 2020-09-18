@@ -903,6 +903,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                 andUntarTo: "/",
                 sudoCopy: true
               ),
+              prependPath("/usr/bin"),
               "swift \u{2D}\u{2D}version",
             ]
           ),

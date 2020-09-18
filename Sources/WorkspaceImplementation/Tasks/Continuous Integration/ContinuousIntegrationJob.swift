@@ -892,13 +892,14 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .android:
         let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
+        let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
           script(
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion).tar.gz",
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
                 andUntarTo: "/",
                 sudoCopy: true
               ),

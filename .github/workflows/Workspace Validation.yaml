@@ -400,7 +400,8 @@ jobs:
         tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         sudo mkdir -p /
         sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/* /
-        which swift
+        export PATH="/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
         swift --version
     - name: Fetch Android SDK
       shell: bash

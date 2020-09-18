@@ -41,15 +41,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  // #warning(These versions all need updating.)
   internal static let currentSwiftVersion = Version(5, 3, 0)
   // #warning(Is this one obsolete?)
-  internal static let experimentalSwiftVersion = Version(5, 3, 0)
-  // #warning(Is this one obsolete?)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}09\u{2D}13"
-  // #warning(Is this one obsolete?)
-  private static let experimentalDownloads =
-    "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
 
   private static let currentMacOSVersion = Version(10, 15)
   internal static let currentXcodeVersion = Version(12)
@@ -776,7 +770,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         let platform: StrictString =
           "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}RELEASE/stdlib/public/Platform"
@@ -893,7 +887,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(
@@ -913,28 +907,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)/sdk\u{2D}android\u{2D}x86_64.zip",
-                andUnzipTo: "/Library",
-                containerName: "Library",
+                "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
+                andUnzipTo: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),
+              // #warning(Is this necessary?)
               grantPermissions(to: "/Library"),
-              "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
-            ]
-          ),
-          // #workaround(Should be a single download.)
-          script(
-            heading: fetchICUStepName,
-            localization: interfaceLocalization,
-            commands: [
-              cURL(
-                "\(ContinuousIntegrationJob.experimentalDownloads)/icu\u{2D}android\u{2D}x64.zip",
-                andUnzipTo: "/"
-              ),
-              cURL(
-                from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
-                to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so"
-              ),
             ]
           ),
         ])
@@ -976,7 +954,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(

@@ -1102,15 +1102,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                   "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
                 to: productsDirectory
               ),
-              copy(from: "/Library/icu\u{2D}64/usr/lib", to: productsDirectory),
               copy(
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
-                to: productsDirectory
-              ),
-              copy(
-                from:
-                  "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
                 to: productsDirectory
               ),
             ]

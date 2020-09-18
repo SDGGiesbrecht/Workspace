@@ -898,7 +898,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion).tar.gz",
                 andUntarTo: "/",
                 sudoCopy: true
               ),

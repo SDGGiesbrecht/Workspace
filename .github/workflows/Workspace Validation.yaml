@@ -410,7 +410,7 @@ jobs:
           --output '/tmp/Android.sdk.zip'
         unzip /tmp/Android.sdk.zip -d /tmp
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        sudo cp -R /tmp/Android/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
     - name: Build
       shell: bash

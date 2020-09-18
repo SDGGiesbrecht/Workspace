@@ -632,7 +632,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     use7z: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = containerName ?? zipFileName.truncated(before: ".")
+    let fileName = containerName
+      ?? zipFileName.components(separatedBy: ".")
+      .dropLast().lazy.map({ StrictString($0.contents) })
+      .joined(separator: ".")
     var temporaryZip: StrictString = "/tmp/\(zipFileName)"
     var temporary: StrictString = "/tmp/\(fileName)"
     if localTemporaryDirectory {

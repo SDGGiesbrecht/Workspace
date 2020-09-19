@@ -174,4 +174,5 @@ jobs:
         which api-ms-win-crt-string-l1-1-0.dll
         cp -R "${ucrt_redistributables}"/* .build/x86_64-unknown-windows-msvc/release
         find .build/x86_64-unknown-windows-msvc/release
+        dumpbin //imports .build/x86_64-unknown-windows-msvc/release/api-ms-win-crt-string-l1-1-0.dll
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

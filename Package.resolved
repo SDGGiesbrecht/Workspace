@@ -5,9 +5,9 @@
         "package": "SDGCommandLine",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
-          "branch": null,
-          "revision": "f4b0558f4c76bad3821902ff21c044263beb7eaf",
-          "version": "1.5.0"
+          "branch": "swift‐5.3",
+          "revision": "13021123c10ed5d6609bbb8594b6d4b94fc62577",
+          "version": null
         }
       },
       {
@@ -32,9 +32,9 @@
         "package": "SDGWeb",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
-          "branch": null,
-          "revision": "a59df1bbf31a94d469f0632ed5e0e0cde857e6e7",
-          "version": "5.4.0"
+          "branch": "swift‐5.3",
+          "revision": "ef4265b0f490c21514a0c091a4f8ad97d5512113",
+          "version": null
         }
       },
       {

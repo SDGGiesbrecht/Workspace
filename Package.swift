@@ -257,7 +257,8 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 5, 0)
+      .branch("swift‐5.3")  // #warning(Temporary branch!)
+      //from: Version(1, 5, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
@@ -273,14 +274,18 @@ let package = Package(
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50200, 0))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       .branch("swift-5.3-branch")  // #warning(Temporary branch!)
       //.exact(Version(0, 50200, 1))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 4, 0)),
+    .package(
+      url: "https://github.com/SDGGiesbrecht/SDGWeb",
+      .branch("swift‐5.3")  // #warning(Temporary branch!)
+      // from: Version(5, 4, 0)
+    ),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)

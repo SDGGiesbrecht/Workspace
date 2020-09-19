@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": "swift‐5.3",
-          "revision": "b96cc2170913f5cc579840878b92913689f08b68",
+          "revision": "92ed71e2579f5d2e90658a0ca4fbee1b6adf598d",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": "swift‐5.3",
-          "revision": "b15d39177f324c0d4188893aee13db93400ae652",
+          "revision": "f5a5ab82881ec48e3328fa1836ff9d28807ed491",
           "version": null
         }
       },
@@ -60,7 +60,7 @@
         "repositoryURL": "https://github.com/apple/swift-format",
         "state": {
           "branch": "swift-5.3-branch",
-          "revision": "ef0ec02e290f3725ea9c2862dacb2b345db143bc",
+          "revision": "e286081a1342944236bde8653f5ca763ba61cfc3",
           "version": null
         }
       },

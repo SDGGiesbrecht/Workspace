@@ -47,7 +47,6 @@ jobs:
       shell: bash
       run: |
         set -x
-        find / -iname api-ms-win-crt-string-l1-1-0.dll
         curl --location \
           'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"

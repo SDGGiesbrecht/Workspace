@@ -43,22 +43,6 @@ jobs:
         echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
         echo "::set-env name=UCRTVersion::${UCRTVersion}"
         echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
-    - name: Fetch WinSDK module maps
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/visualc.modulemap' \
-          --output "${VCToolsInstallDir}/include/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/visualc.apinotes' \
-          --output "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
     - name: Install Swift
       shell: bash
       run: |
@@ -67,6 +51,10 @@ jobs:
           'https://github.com/compnerd/swift-build/releases/download/v5.3/installer.exe' \
           --output '/tmp/installer.exe'
         /tmp/installer.exe //passive
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
         export PATH="/c/Library/icu-67/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"

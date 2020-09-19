@@ -164,11 +164,11 @@ jobs:
       shell: bash
       run: |
         set -x
-        ucrt_redistributables=$(cygpath -u "${UniversalCRTSdkDir}")"/Redist/${UCRTVersion}/ucrt/DLLs/x64"
+        ucrt_redistributables=$(cygpath -u "${UniversalCRTSdkDir}")"Redist/${UCRTVersion}/ucrt/DLLs/x64"
         echo "${ucrt_redistributables}"
         find "${ucrt_redistributables}"
         export PATH="${ucrt_redistributables}:${PATH}"
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        cp "${ucrt_redistributables}" .build/x86_64-unknown-windows-msvc/release
+        cp -R "${ucrt_redistributables}"/* .build/x86_64-unknown-windows-msvc/release
         find .build/x86_64-unknown-windows-msvc/release
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

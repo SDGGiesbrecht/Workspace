@@ -169,4 +169,5 @@ jobs:
         find "${ucrt_redistributables}"
         export PATH="${ucrt_redistributables}:${PATH}"
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
+        dumpbin //imports .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

@@ -173,7 +173,7 @@ jobs:
         find .build/x86_64-unknown-windows-msvc/release
     - name: Debug
       shell: powershell
-      run |
+      run: |
         $env:path -split ";"
     - name: Test
       shell: bash

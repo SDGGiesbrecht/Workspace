@@ -158,7 +158,12 @@ jobs:
         which api-ms-win-crt-string-l1-1-0.dll
         cp -R "${ucrt_redistributables}"/* .build/x86_64-unknown-windows-msvc/release
         find .build/x86_64-unknown-windows-msvc/release
-        procmon -accepteula -backingfile /c/temp/proc.pml -quiet
+        curl --location \
+          'https://download.sysinternals.com/files/ProcessMonitor.zip' \
+          --output '.build/SDG/tmp/ProcessMonitor.zip'
+        7z x .build/SDG/tmp/ProcessMonitor.zip -o.build/SDG/Linux/Ubuntu
+        cp .build/SDG/Linux/Ubuntu/ProcessMonitor/Procmon.exe .build/SDG/Linux/Ubuntu/Procmon.exe
+        Procmon -accepteula -backingfile /c/temp/proc.pml -quiet
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
-        procmon -accepteula -terminate -quiet
+        Procmon -accepteula -terminate -quiet
         cat /c/temp/proc.pml

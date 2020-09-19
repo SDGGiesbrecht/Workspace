@@ -39,7 +39,6 @@ jobs:
         set +x
         source ./exported_environment.sh
         set -x
-        printenv
         echo "::set-env name=PATH::${PATH}"
         echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
         echo "::set-env name=UCRTVersion::${UCRTVersion}"

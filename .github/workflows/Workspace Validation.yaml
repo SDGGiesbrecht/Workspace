@@ -148,10 +148,6 @@ jobs:
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
-    - name: Copy libraries
-      shell: bash
-      run: |
-        set -x
     - name: Test
       shell: bash
       run: |

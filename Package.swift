@@ -278,8 +278,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
-      .branch("swift-5.3-branch")  // #warning(Temporary branch!)
-      //.exact(Version(0, 50200, 1))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

@@ -47,8 +47,6 @@ jobs:
       shell: bash
       run: |
         set -x
-        find "${UniversalCRTSdkDir}"
-        find "${VCToolsInstallDir}"
         curl --location \
           'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
@@ -166,7 +164,8 @@ jobs:
       shell: bash
       run: |
         set -x
-        export PATH="${UniversalCRTSdkDir}/Redist/${UCRTVersion}/ucrt/DLLs/x64:${PATH}"
-        echo "${PATH}"
+        UCRT_REDIST="${UniversalCRTSdkDir}/Redist/${UCRTVersion}/ucrt/DLLs/x64"
+        find "${UCRT_REDIST}"
+        export PATH="${UCRT_REDIST}:${PATH}"
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

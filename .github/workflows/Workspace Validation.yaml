@@ -171,6 +171,10 @@ jobs:
         echo "::set-env name=PATH::${PATH}"
         cp -R "${ucrt_redistributables}"/* .build/x86_64-unknown-windows-msvc/release
         find .build/x86_64-unknown-windows-msvc/release
+    - name: Debug
+      shell: powershell
+      run |
+        $env:path -split ";"
     - name: Test
       shell: bash
       run: |

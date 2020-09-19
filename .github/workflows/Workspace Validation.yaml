@@ -76,15 +76,9 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.3/toolchain.msi' \
-          --output '/tmp/toolchain.msi'
-        cd /tmp
-        msiexec //i toolchain.msi
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.3/sdk.msi' \
-          --output '/tmp/sdk.msi'
-        cd /tmp
-        msiexec //i sdk.msi
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/installer.exe' \
+          --output '/tmp/installer.exe'
+        installer.exe
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"

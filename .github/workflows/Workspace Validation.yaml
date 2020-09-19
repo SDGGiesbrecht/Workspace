@@ -169,5 +169,6 @@ jobs:
         find "${ucrt_redistributables}"
         export PATH="${ucrt_redistributables}:${PATH}"
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        export PATH='/c/Program Files (x86)/Windows Kits/10//Redist/10.0.19041.0/ucrt/DLLs/x64:/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:/c/Library/icu-67/usr/bin:/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Tools/MSVC/14.27.29110/bin/HostX64/x64:/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/Common7/IDE/VC/VCPackages:/c/Program Files (x86)/Microsoft SDKs/Windows/v10.0A/bin/NETFX 4.8 Tools/x64:/c/Program Files (x86)/Windows Kits/10/bin/10.0.19041.0/x64:/c/Program Files (x86)/Windows Kits/10/bin/x64:/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin:/c/windows/Microsoft.NET/Framework64/v4.0.30319'
+        cp "${ucrt_redistributables}" .build/x86_64-unknown-windows-msvc/release
+        find .build/x86_64-unknown-windows-msvc/release
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

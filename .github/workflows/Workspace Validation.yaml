@@ -59,17 +59,6 @@ jobs:
         curl --location \
           'https://raw.githubusercontent.com/apple/swift/swift-5.3-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
           --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: Install ICU
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.3/icu.msi' \
-          --output '/tmp/icu.msi'
-        cd /tmp
-        msiexec //i icu.msi
-        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
     - name: Install Swift
       shell: bash
       run: |
@@ -79,6 +68,8 @@ jobs:
           --output '/tmp/installer.exe'
         /tmp/installer.exe //passive
         find /c/Library
+        export PATH="/c/Library/icu-67/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"

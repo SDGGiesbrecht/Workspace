@@ -903,7 +903,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),
-              // #warning(Is this necessary?)
               grantPermissions(to: "/Library"),
             ]
           ),

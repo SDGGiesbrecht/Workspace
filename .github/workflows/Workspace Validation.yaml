@@ -167,5 +167,5 @@ jobs:
         sleep 10
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe || true
         sleep 10
-        .build/SDG/ProcessMonitorProcmon -accepteula -terminate -quiet
+        .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet
         cat /c/temp/proc.pml

@@ -167,7 +167,9 @@ jobs:
         sleep 1
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe || true
         .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet
-        .build/SDG/ProcessMonitor/Procmon -accepteula -quiet -openlog .build/SDG/Log.pml -saveas .build/SDG/Log.csv
+        .build/SDG/ProcessMonitor/Procmon -accepteula -quiet -openlog .build/SDG/Log.pml -saveas .build/SDG/Log.csv &
+        sleep 1
+        .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet
     - name: Upload log
       uses: actions/upload-artifact@v1
       with:

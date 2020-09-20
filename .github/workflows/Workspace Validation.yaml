@@ -162,6 +162,7 @@ jobs:
           'https://download.sysinternals.com/files/ProcessMonitor.zip' \
           --output '.build/SDG/tmp/ProcessMonitor.zip'
         7z x .build/SDG/tmp/ProcessMonitor.zip -o.build/SDG/Linux/Ubuntu
+        find .build/SDG/Linux/Ubuntu
         cp .build/SDG/Linux/Ubuntu/ProcessMonitor/Procmon.exe .build/SDG/Linux/Ubuntu/Procmon.exe
         Procmon -accepteula -backingfile /c/temp/proc.pml -quiet
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe

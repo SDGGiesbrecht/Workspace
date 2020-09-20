@@ -163,11 +163,14 @@ jobs:
           --output '.build/SDG/tmp/ProcessMonitor.zip'
         7z x .build/SDG/tmp/ProcessMonitor.zip -o.build/SDG/ProcessMonitor
         find .build/SDG/ProcessMonitor
+        mkdir .build/SDG/Log
+        find .build/SDG/Log
         .build/SDG/ProcessMonitor/Procmon -accepteula -backingfile .build/SDG/Log/Log.pml -quiet &
         sleep 1
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe || true
         .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet
         sleep 1
+        find .build/SDG/Log
         .build/SDG/ProcessMonitor/Procmon -accepteula -quiet -openlog .build/SDG/Log/Log.pml -saveas .build/SDG/Log/Log.csv &
         sleep 5
         .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet

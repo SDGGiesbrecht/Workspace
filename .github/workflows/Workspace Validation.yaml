@@ -164,12 +164,12 @@ jobs:
         7z x .build/SDG/tmp/ProcessMonitor.zip -o.build/SDG/ProcessMonitor
         find .build/SDG/ProcessMonitor
         .build/SDG/ProcessMonitor/Procmon -accepteula -backingfile .build/SDG/Log.pml -quiet &
-        sleep 10
+        sleep 1
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe || true
-        sleep 10
         .build/SDG/ProcessMonitor/Procmon -accepteula -terminate -quiet
+        .build/SDG/ProcessMonitor/Procmon -accepteula -quiet -openlog .build/SDG/Log.pml -saveas .build/SDG/Log.csv
     - name: Upload log
       uses: actions/upload-artifact@v1
       with:
-        name: Log.pml
-        path: .build/SDG/Log.pml
+        name: Log
+        path: .build/SDG/Log.csv

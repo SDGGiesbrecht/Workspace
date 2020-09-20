@@ -171,7 +171,7 @@ jobs:
         .build/SDG/ProcessMonitor/Procmon -terminate
         sleep 1
         find .build/SDG/Log
-        .build/SDG/ProcessMonitor/Procmon -openlog .build/SDG/Log/Log.pml -saveas .build/SDG/Log/Log.csv &
+        .build/SDG/ProcessMonitor/Procmon -openlog .build/SDG/Log/Log.pml -saveas .build/SDG/Log/Log.csv
         sleep 5
         .build/SDG/ProcessMonitor/Procmon -terminate
         find .build/SDG/Log

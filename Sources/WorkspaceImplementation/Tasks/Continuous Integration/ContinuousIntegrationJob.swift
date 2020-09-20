@@ -637,7 +637,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     use7z: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = containerName
+    let fileName =
+      containerName
       ?? zipFileName.components(separatedBy: ".")
       .dropLast().lazy.map({ StrictString($0.contents) })
       .joined(separator: ".")
@@ -788,10 +789,26 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURLAndExecuteWindowsInstaller("\(experimentalRelease)/installer.exe"),
-              copyFile(from: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap", to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"),
-              copyFile(from: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap", to: "${VCToolsInstallDir}/include/module.modulemap"),
-              copyFile(from: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes", to: "${VCToolsInstallDir}/include/visualc.apinotes"),
-              copyFile(from: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap", to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap",
+                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap",
+                to: "${VCToolsInstallDir}/include/module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes",
+                to: "${VCToolsInstallDir}/include/visualc.apinotes"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap",
+                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+              ),
               prependPath("/c/Library/icu-67/usr/bin"),
               prependPath(
                 "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
@@ -882,7 +899,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             commands: [
               cURL(
                 "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
-                andUnzipTo: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
+                andUnzipTo:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),
               // #warning(Is this necessary?)

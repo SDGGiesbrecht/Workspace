@@ -32,6 +32,7 @@ jobs:
       shell: cmd
       run: |
         where git
+        git --version
     - name: Set Visual Studio up
       shell: bash
       run: |

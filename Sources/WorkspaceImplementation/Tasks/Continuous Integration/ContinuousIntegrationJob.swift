@@ -809,11 +809,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                   "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap",
                 to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
               ),
-              prependPath("/c/Library/icu-67/usr/bin"),
+              prependPath("/c/Library/icu\u{2D}67/usr/bin"),
               prependPath(
                 "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
               ),
-              prependPath("/c/Library/Swift-development/bin"),
+              prependPath("/c/Library/Swift\u{2D}development/bin"),
               prependPath(
                 "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
               ),

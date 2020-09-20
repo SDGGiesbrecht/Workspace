@@ -163,7 +163,8 @@ jobs:
           --output '.build/SDG/tmp/ProcessMonitor.zip'
         7z x .build/SDG/tmp/ProcessMonitor.zip -o.build/SDG/ProcessMonitor
         find .build/SDG/ProcessMonitor
-        .build/SDG/ProcessMonitor/Procmon -accepteula -backingfile /c/temp/proc.pml -quiet
+        .build/SDG/ProcessMonitor/Procmon -accepteula -backingfile /c/temp/proc.pml -quiet &
+        sleep 10
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
         .build/SDG/ProcessMonitorProcmon -accepteula -terminate -quiet
         cat /c/temp/proc.pml

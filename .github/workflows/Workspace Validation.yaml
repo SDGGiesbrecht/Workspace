@@ -171,5 +171,5 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v1
       with:
-        name: tests
+        name: Log.pml
         path: .build/SDG/Log.pml

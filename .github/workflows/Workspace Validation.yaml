@@ -55,6 +55,7 @@ jobs:
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+        find /c/Library
         export PATH="/c/Library/icu-67/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"

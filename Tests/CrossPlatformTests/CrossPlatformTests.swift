@@ -38,12 +38,14 @@ final class Tests: TestCase {
 
   func testGit() throws {
     #if os(Windows)  // #workaround(Swift 5.2.4, SegFault with the standard method.)
-      #if false // #workaround(Something is wrong here.)
-        let locations = try Shell.default.run(command: ["where", "git"]).get()
-        let path = String(locations.lines.first!.line)
-        let process = ExternalProcess(at: URL(fileURLWithPath: path))
-        _ = try process.run(["\u{2D}\u{2D}version"]).get()
-      #endif
+      let locations = try Shell.default.run(command: ["where", "git"]).get()
+      #warning("Debugging...")
+      print("locations: \(locations)")
+      let path = String(locations.lines.first!.line)
+      let process = ExternalProcess(at: URL(fileURLWithPath: path))
+      #warning("Debugging...")
+      print("process: \(process)")
+      _ = try process.run(["\u{2D}\u{2D}version"]).get()
     #elseif os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
     #else

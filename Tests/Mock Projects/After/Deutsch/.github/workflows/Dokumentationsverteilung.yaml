@@ -10,8 +10,8 @@ on:
 jobs:
   Verteilung:
     name: Verteilung
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1

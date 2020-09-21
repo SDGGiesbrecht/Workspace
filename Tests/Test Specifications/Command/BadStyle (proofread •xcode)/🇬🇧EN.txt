@@ -73,7 +73,7 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Text Style/Unicode.swift:72:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:1:5: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:2:5: warning: Every symbol in a library should have access control. (accessControl)
-[Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:1:5: warning: Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+[Temporary]/BadStyle/Sources/BadStyle/SwiftFormat.swift:1:5: warning: Rename constant 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Warning.swift:3:4: warning: This should trigger a warning. (manualWarnings)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:3:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:6:4: warning: Workaround: This should trigger. The workaround may no longer be necessary. (workaroundReminders)
@@ -81,13 +81,14 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:12:4: warning: Workaround: This should trigger no matter what. (workaroundReminders)
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (workaroundReminders)
 [Temporary]/BadStyle/Sources/executable/AccessControl.swift:1:1: warning: Executables and tests should not contain access control. (accessControl)
+[Temporary]/BadStyle/Sources/executable/AccessControl.swift:2:1: warning: Replace 'fileprivate' with 'private' on file-scoped declarations. (swiftFormat[FileScopedDeclarationPrivacy])
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:3: warning: Executables and tests should not contain access control. (accessControl)
-[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
-[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:15: warning: Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:15: warning: Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 
 $ Dependency fail
 Hello, world!

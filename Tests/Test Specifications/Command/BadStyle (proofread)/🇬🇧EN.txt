@@ -364,7 +364,7 @@ Every symbol in a library should have access control. (accessControl)
 let DontTrigger = false  // @exempt(from: swiftFormat[AlwaysUseLowerCamelCase])
 
 Line 1
-Rename variable 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename constant 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
 
 Sources/BadStyle/Warnings/Warning.swift
@@ -398,6 +398,9 @@ Line 1
 Executables and tests should not contain access control. (accessControl)
 internal struct ShouldNot {}  // Should warn; should not have access control.
  struct ShouldNot {}  // Should warn; should not have access control.
+
+Line 2
+Replace 'fileprivate' with 'private' on file-scoped declarations. (swiftFormat[FileScopedDeclarationPrivacy])
 
 Sources/executable/main.swift
 Tests/BadStyleTests/BadStyleTests.swift
@@ -441,11 +444,11 @@ Executables and tests should not contain access control. (accessControl)
    func __allTests() -> [XCTestCaseEntry] {
 
 Line 8
-Rename variable '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
     static let __allTests__BadStyleTests = [
 
 Line 13
-Rename variable '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
   public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift

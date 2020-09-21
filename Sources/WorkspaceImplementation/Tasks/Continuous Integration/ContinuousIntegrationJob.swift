@@ -574,19 +574,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     from origin: StrictString,
     to destination: StrictString,
-    allowVariableSubstitution: Bool = false,
     wsl: Bool = false
   ) -> StrictString {
-    let quotedDestination: StrictString
-    if allowVariableSubstitution {
-      quotedDestination = "\u{22}\(destination)\u{22}"
-    } else {
-      quotedDestination = "\u{27}\(destination)\u{27}"
-    }
     var result: StrictString = [
       "curl \u{2D}\u{2D}location \u{5C}",
       "  \u{27}\(origin)\u{27} \u{5C}",
-      "  \u{2D}\u{2D}output \(quotedDestination)",
+      "  \u{2D}\u{2D}output \u{27}\(destination)\u{27}",
     ].joinedAsLines()
     if wsl {
       result = self.wsl(result)
@@ -1231,17 +1224,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Set Visual Studio up"
       case .deutschDeutschland:
         return "Visual Studio einrichten"
-      }
-    })
-  }
-
-  private var fetchICUStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch ICU"
-      case .deutschDeutschland:
-        return "ICU holen"
       }
     })
   }

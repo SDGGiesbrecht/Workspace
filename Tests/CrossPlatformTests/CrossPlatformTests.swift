@@ -37,12 +37,7 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-    #if os(Windows)
-      #warning("Temporary exception.")
-      let process = ExternalProcess(at: URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
-      let output = try process.run(["\u{2D}\u{2D}version"]).get()
-      print(output)
-    #elseif os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    #if os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
     #else
       _ = try Git.runCustomSubcommand(

@@ -330,7 +330,7 @@ import WorkspaceLocalizations
           var irrelevantFiles: Set<URL> = []
           for target in try package().get().targets {
             switch target.type {
-            case .library, .systemModule:
+            case .library, .systemModule, .binary:
               break  // Coverage matters.
             case .executable:
               // Not testable.

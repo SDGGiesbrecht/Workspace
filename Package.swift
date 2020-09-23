@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.3
 
 /*
  Package.swift
@@ -149,8 +149,8 @@ import PackageDescription
 let package = Package(
   name: "Workspace",
   platforms: [
-    // These must also be updated in Sources/WSProject/PackageRepository.swift.
-    .macOS(.v10_10)
+    // These must also be updated in Sources/WorkspaceImplementation/Shared/Project/PackageRepository.swift.
+    .macOS(.v10_12)
   ],
   products: [
     // @localization(🇩🇪DE)
@@ -252,31 +252,34 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(5, 5, 0)
+      from: Version(6, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 5, 0)
+      from: Version(1, 5, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(2, 1, 1)
+      from: Version(3, 0, 0)
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 6, 0))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50200, 0))
+      .exact(Version(0, 50300, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
-      .exact(Version(0, 50200, 1))
+      .exact(Version(0, 50300, 0))
     ),
-    .package(url: "https://github.com/SDGGiesbrecht/SDGWeb", from: Version(5, 4, 0)),
+    .package(
+      url: "https://github.com/SDGGiesbrecht/SDGWeb",
+      from: Version(5, 4, 1)
+    ),
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -516,6 +519,17 @@ let package = Package(
         "WorkspaceConfiguration"
       ],
       path: "",
+      exclude: [
+        "LICENSE.md",
+        "README.md",
+        "Refresh (Linux).sh",
+        "Refresh (macOS).command",
+        "Resources",
+        "Sources",
+        "Tests",
+        "Validate (Linux).sh",
+        "Validate (macOS).command",
+      ],
       sources: ["Workspace.swift"]
     ),
   ]

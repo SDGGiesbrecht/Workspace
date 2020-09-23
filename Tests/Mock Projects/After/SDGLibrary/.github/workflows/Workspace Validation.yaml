@@ -33,7 +33,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -110,52 +110,20 @@ jobs:
         echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
         echo "::set-env name=UCRTVersion::${UCRTVersion}"
         echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
-    - name: Fetch WinSDK module maps
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/ucrt.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.modulemap' \
-          --output "${VCToolsInstallDir}/include/module.modulemap"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/visualc.apinotes' \
-          --output "${VCToolsInstallDir}/include/visualc.apinotes"
-        curl --location \
-          'https://raw.githubusercontent.com/apple/swift/swift-5.2.1-RELEASE/stdlib/public/Platform/winsdk.modulemap' \
-          --output "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-    - name: Install ICU
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/icu.msi' \
-          --output '/tmp/icu.msi'
-        cd /tmp
-        msiexec //i icu.msi
-        export PATH="/c/Library/icu-64/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
     - name: Install Swift
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/toolchain.msi' \
-          --output '/tmp/toolchain.msi'
-        cd /tmp
-        msiexec //i toolchain.msi
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk.msi' \
-          --output '/tmp/sdk.msi'
-        cd /tmp
-        msiexec //i sdk.msi
-        curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/runtime.msi' \
-          --output '/tmp/runtime.msi'
-        cd /tmp
-        msiexec //i runtime.msi
+          'https://github.com/compnerd/swift-build/releases/download/v5.3/installer.exe' \
+          --output '/tmp/installer.exe'
+        /tmp/installer.exe //passive
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
+        cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+        export PATH="/c/Library/icu-67/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
         echo "::set-env name=PATH::${PATH}"
         export PATH="/c/Library/Swift-development/bin:${PATH}"
@@ -210,14 +178,14 @@ jobs:
           mkdir -p /tmp
         ubuntu1804 run \
           curl --location \
-            'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-            --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
+            'https://swift.org/builds/swift-5.3-release/ubuntu1804/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu18.04.tar.gz' \
+            --output '/tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz'
         ubuntu1804 run \
-          tar --extract --force-local --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz --directory /tmp
         ubuntu1804 run \
           mkdir -p /
         ubuntu1804 run \
-          cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/usr //
+          cp -R /tmp/swift-5.3-RELEASE-ubuntu18.04/usr //
         ubuntu1804 run \
           ln -fs //usr/bin/clang-9 //usr/bin/clang
         ubuntu1804 run \
@@ -271,11 +239,11 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
-          --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
-        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz' \
+          --output '/tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz'
+        tar --extract --file /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
+        cp -R /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash
@@ -285,8 +253,8 @@ jobs:
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
   CentOS:
     name: CentOS
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-centos8
+    runs-on: ubuntu-20.04
+    container: swift:5.3-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -363,8 +331,8 @@ jobs:
         chmod -R a+rwx .
   Ubuntu:
     name: Ubuntu
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -460,7 +428,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -526,7 +494,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -579,7 +547,7 @@ jobs:
         fi
   Android:
     name: Android
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -593,37 +561,25 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://swift.org/builds/swift-5.2.1-release/ubuntu1804/swift-5.2.1-RELEASE/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz' \
-          --output '/tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz'
-        tar --extract --file /tmp/swift-5.2.1-RELEASE-ubuntu18.04.tar.gz --directory /tmp
+          'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.2.1-RELEASE-ubuntu18.04/* /
+        sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/* /
+        export PATH="/usr/bin:${PATH}"
+        echo "::set-env name=PATH::${PATH}"
         swift --version
     - name: Fetch Android SDK
       shell: bash
       run: |
         set -x
         curl --location \
-          'https://github.com/compnerd/swift-build/releases/download/v5.2.1/sdk-android-x86_64.zip' \
-          --output '/tmp/sdk-android-x86_64.zip'
-        unzip /tmp/sdk-android-x86_64.zip -d /tmp
-        sudo mkdir -p /Library
-        sudo cp -R /tmp/Library/* /Library
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3/Android.sdk.zip' \
+          --output '/tmp/Android.sdk.zip'
+        unzip /tmp/Android.sdk.zip -d /tmp
+        sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
-        sed -i -e s~C:/Microsoft/AndroidNDK64/android-ndk-r16b~${ANDROID_HOME}/ndk-bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
-    - name: Fetch ICU
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/icu-android-x64.zip' \
-          --output '/tmp/icu-android-x64.zip'
-        unzip /tmp/icu-android-x64.zip -d /tmp
-        mkdir -p /
-        cp -R /tmp/icu-android-x64/* /
-        curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005/libicudt64.so' \
-          --output '/Library/icu-64/usr/lib/libicudt64.so'
     - name: Build
       shell: bash
       run: |
@@ -636,8 +592,6 @@ jobs:
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
           -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
-          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
-          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
     - name: Copy libraries
       shell: bash
       run: |
@@ -645,11 +599,7 @@ jobs:
         mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
         mkdir -p .build/x86_64-unknown-linux-android/debug
-        cp -R /Library/icu-64/usr/lib/* .build/x86_64-unknown-linux-android/debug
-        mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
-        mkdir -p .build/x86_64-unknown-linux-android/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
     - name: Upload tests
       uses: actions/upload-artifact@v1
       with:
@@ -691,8 +641,8 @@ jobs:
         script: .build/SDG/Emulator.sh
   Amazon_Linux:
     name: Amazon Linux
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-amazonlinux2
+    runs-on: ubuntu-20.04
+    container: swift:5.3-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -782,7 +732,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -835,8 +785,8 @@ jobs:
         fi
   Miscellaneous:
     name: Miscellaneous
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

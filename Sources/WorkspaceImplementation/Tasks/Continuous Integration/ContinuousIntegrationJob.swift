@@ -41,19 +41,16 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  internal static let currentSwiftVersion = Version(5, 2, 4)
-  internal static let experimentalSwiftVersion = Version(5, 2, 1)
-  private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}03\u{2D}31"
-  private static let experimentalDownloads =
-    "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90pre%E2%80%905.2%E2%80%902020%E2%80%9002%E2%80%9005"
+  internal static let currentSwiftVersion = Version(5, 3, 0)
+  private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}09\u{2D}13"
 
   private static let currentMacOSVersion = Version(10, 15)
-  internal static let currentXcodeVersion = Version(11, 7)
+  internal static let currentXcodeVersion = Version(12)
   private static let currentWindowsVersion = "2019"
+  private static let currentWSLImage = "1804"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
-  private static let currentUbuntuVersion = "18.04"  // Used by GitHub host
-  private static let currentWSLImage = currentUbuntuVersion.replacingMatches(for: ".", with: "")
+  private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
   private static let currentAmazonLinuxVerison = "2"
 
   internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -576,19 +573,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     from origin: StrictString,
     to destination: StrictString,
-    allowVariableSubstitution: Bool = false,
     wsl: Bool = false
   ) -> StrictString {
-    let quotedDestination: StrictString
-    if allowVariableSubstitution {
-      quotedDestination = "\u{22}\(destination)\u{22}"
-    } else {
-      quotedDestination = "\u{27}\(destination)\u{27}"
-    }
     var result: StrictString = [
       "curl \u{2D}\u{2D}location \u{5C}",
       "  \u{27}\(origin)\u{27} \u{5C}",
-      "  \u{2D}\u{2D}output \(quotedDestination)",
+      "  \u{2D}\u{2D}output \u{27}\(destination)\u{27}",
     ].joinedAsLines()
     if wsl {
       result = self.wsl(result)
@@ -599,7 +589,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
     return "\(sudo ? "sudo " : "")mkdir \u{2D}p \(directory)"
   }
-  private func copy(
+  private func copyDirectory(
     from origin: StrictString,
     to destination: StrictString,
     sudo: Bool = false,
@@ -614,14 +604,19 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     }
     return result.joinedAsLines()
   }
+  private func copyFile(
+    from origin: StrictString,
+    to destination: StrictString
+  ) -> StrictString {
+    return "cp \u{22}\(origin)\u{22} \u{22}\(destination)\u{22}"
+  }
 
-  private func cURLAndInstallMSI(_ url: StrictString) -> StrictString {
-    let msi = StrictString(url.components(separatedBy: "/").last!.contents)
-    let temporaryMSI: StrictString = "/tmp/\(msi)"
+  private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
+    let installer = StrictString(url.components(separatedBy: "/").last!.contents)
+    let temporaryInstaller: StrictString = "/tmp/\(installer)"
     return [
-      cURL(from: url, to: temporaryMSI),
-      "cd /tmp",
-      "msiexec //i \(msi)",
+      cURL(from: url, to: temporaryInstaller),
+      "\(temporaryInstaller) //passive",
     ].joinedAsLines()
   }
 
@@ -634,7 +629,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     use7z: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-    let fileName = containerName ?? zipFileName.truncated(before: ".")
+    let fileName =
+      containerName
+      ?? zipFileName.components(separatedBy: ".")
+      .dropLast().lazy.map({ StrictString($0.contents) })
+      .joined(separator: ".")
     var temporaryZip: StrictString = "/tmp/\(zipFileName)"
     var temporary: StrictString = "/tmp/\(fileName)"
     if localTemporaryDirectory {
@@ -652,7 +651,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     } else {
       result.append(contentsOf: [
         "unzip \(temporaryZip) \u{2D}d /tmp",
-        copy(from: temporary, to: destination, sudo: sudoCopy),
+        copyDirectory(from: temporary, to: destination, sudo: sudoCopy),
       ])
     }
     return result.joinedAsLines()
@@ -681,7 +680,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       tar = self.wsl(tar)
     }
     result.append(tar)
-    result.append(copy(from: temporary, to: destination, sudo: sudoCopy, wsl: wsl))
+    result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy, wsl: wsl))
     return result.joinedAsLines()
   }
 
@@ -736,8 +735,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       switch platform {
       case .macOS:
-        let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
           .string(droppingEmptyPatch: true)
+        if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
+          xcodeVersion.removeLast(2)
+        }
         result.append(
           script(
             heading: setXcodeUpStepName,
@@ -769,58 +771,37 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
-        let platform: StrictString =
-          "https://raw.githubusercontent.com/apple/swift/swift\u{2D}\(version)\u{2D}RELEASE/stdlib/public/Platform"
-        result.append(
-          script(
-            heading: fetchWinSDKModuleMapsStepName,
-            localization: interfaceLocalization,
-            commands: [
-              cURL(
-                from: "\(platform)/ucrt.modulemap",
-                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap",
-                allowVariableSubstitution: true
-              ),
-              cURL(
-                from: "\(platform)/visualc.modulemap",
-                to: "${VCToolsInstallDir}/include/module.modulemap",
-                allowVariableSubstitution: true
-              ),
-              cURL(
-                from: "\(platform)/visualc.apinotes",
-                to: "${VCToolsInstallDir}/include/visualc.apinotes",
-                allowVariableSubstitution: true
-              ),
-              cURL(
-                from: "\(platform)/winsdk.modulemap",
-                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap",
-                allowVariableSubstitution: true
-              ),
-            ]
-          )
-        )
         let experimentalRelease: StrictString =
           "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)"
-        result.append(
-          script(
-            heading: installICUStepName,
-            localization: interfaceLocalization,
-            commands: [
-              cURLAndInstallMSI("\(experimentalRelease)/icu.msi"),
-              prependPath("/c/Library/icu\u{2D}64/usr/bin"),
-            ]
-          )
-        )
         result.append(
           script(
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
-              cURLAndInstallMSI("\(experimentalRelease)/toolchain.msi"),
-              cURLAndInstallMSI("\(experimentalRelease)/sdk.msi"),
-              cURLAndInstallMSI("\(experimentalRelease)/runtime.msi"),
+              cURLAndExecuteWindowsInstaller("\(experimentalRelease)/installer.exe"),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap",
+                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap",
+                to: "${VCToolsInstallDir}/include/module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes",
+                to: "${VCToolsInstallDir}/include/visualc.apinotes"
+              ),
+              copyFile(
+                from:
+                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap",
+                to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+              ),
+              prependPath("/c/Library/icu\u{2D}67/usr/bin"),
               prependPath(
                 "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
               ),
@@ -835,7 +816,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .web:
         let snapshot = ContinuousIntegrationJob.currentExperimentalSwiftWebSnapshot
         let releaseName: StrictString =
-          "swift\u{2D}wasm\u{2D}DEVELOPMENT\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
+          "swift\u{2D}wasm\u{2D}5.3\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
         result.append(
           script(
             heading: installSwiftStepName,
@@ -887,18 +868,20 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
+        let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
           script(
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
                 andUntarTo: "/",
                 sudoCopy: true
               ),
+              prependPath("/usr/bin"),
               "swift \u{2D}\u{2D}version",
             ]
           ),
@@ -907,28 +890,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)/sdk\u{2D}android\u{2D}x86_64.zip",
-                andUnzipTo: "/Library",
-                containerName: "Library",
+                "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
+                andUnzipTo:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),
               grantPermissions(to: "/Library"),
-              "sed \u{2D}i \u{2D}e s~C:/Microsoft/AndroidNDK64/android\u{2D}ndk\u{2D}r16b~${ANDROID_HOME}/ndk\u{2D}bundle~g /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap",
-            ]
-          ),
-          // #workaround(Should be a single download.)
-          script(
-            heading: fetchICUStepName,
-            localization: interfaceLocalization,
-            commands: [
-              cURL(
-                "\(ContinuousIntegrationJob.experimentalDownloads)/icu\u{2D}android\u{2D}x64.zip",
-                andUnzipTo: "/"
-              ),
-              cURL(
-                from: "\(ContinuousIntegrationJob.experimentalDownloads)/libicudt64.so",
-                to: "/Library/icu\u{2D}64/usr/lib/libicudt64.so"
-              ),
             ]
           ),
         ])
@@ -970,7 +937,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        let version = ContinuousIntegrationJob.experimentalSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(
@@ -1096,8 +1063,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
               "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}gcc\u{2D}toolchain=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/x86_64\u{2D}4.9/prebuilt/linux\u{2D}x86_64 \u{5C}",
               "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}sysroot=${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64 \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android/x86_64 \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
             ]
           )
         )
@@ -1108,20 +1073,14 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: copyLibrariesStepName,
             localization: interfaceLocalization,
             commands: [
-              copy(
+              copyDirectory(
                 from:
                   "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
                 to: productsDirectory
               ),
-              copy(from: "/Library/icu\u{2D}64/usr/lib", to: productsDirectory),
-              copy(
+              copyDirectory(
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
-                to: productsDirectory
-              ),
-              copy(
-                from:
-                  "/Library/Developer/Platforms/Android.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/android",
                 to: productsDirectory
               ),
             ]
@@ -1264,39 +1223,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Set Visual Studio up"
       case .deutschDeutschland:
         return "Visual Studio einrichten"
-      }
-    })
-  }
-
-  private var fetchWinSDKModuleMapsStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch WinSDK module maps"
-      case .deutschDeutschland:
-        return "WinSDK‐Modulabbildungen holen"
-      }
-    })
-  }
-
-  private var fetchICUStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Fetch ICU"
-      case .deutschDeutschland:
-        return "ICU holen"
-      }
-    })
-  }
-
-  private var installICUStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install ICU"
-      case .deutschDeutschland:
-        return "ICU installieren"
       }
     })
   }

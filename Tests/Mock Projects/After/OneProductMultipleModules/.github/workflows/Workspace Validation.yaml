@@ -20,7 +20,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -87,11 +87,11 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz' \
-          --output '/tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz'
-        tar --extract --file /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a-osx.tar.gz --directory /tmp
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz' \
+          --output '/tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz'
+        tar --extract --file /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        cp -R /tmp/swift-wasm-DEVELOPMENT-SNAPSHOT-2020-03-31-a/* .build/SDG/Swift
+        cp -R /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash
@@ -101,8 +101,8 @@ jobs:
         .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
   CentOS:
     name: CentOS
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-centos8
+    runs-on: ubuntu-20.04
+    container: swift:5.3-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -179,8 +179,8 @@ jobs:
         chmod -R a+rwx .
   Ubuntu:
     name: Ubuntu
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -276,7 +276,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -342,7 +342,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -395,8 +395,8 @@ jobs:
         fi
   Amazon_Linux:
     name: Amazon Linux
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-amazonlinux2
+    runs-on: ubuntu-20.04
+    container: swift:5.3-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -486,7 +486,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_11.7.app
+        sudo xcode-select -switch /Applications/Xcode_12.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -539,8 +539,8 @@ jobs:
         fi
   Miscellaneous:
     name: Miscellaneous
-    runs-on: ubuntu-18.04
-    container: swift:5.2.4-focal
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

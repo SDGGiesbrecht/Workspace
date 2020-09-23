@@ -29,7 +29,7 @@ import SDGPersistenceTestUtilities
 final class Tests: TestCase {
 
   func testCachePermissions() throws {
-    var directory = FileManager.default.url(in: .cache, at: "Directory")
+    let directory = FileManager.default.url(in: .cache, at: "Directory")
     try? FileManager.default.removeItem(at: directory)
     defer { try? FileManager.default.removeItem(at: directory) }
 
@@ -37,12 +37,7 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-    #if os(Windows)  // #workaround(Swift 5.2.4, SegFault with the standard method.)
-      let locations = try Shell.default.run(command: ["where", "git"]).get()
-      let path = String(locations.lines.first!.line)
-      let process = ExternalProcess(at: URL(fileURLWithPath: path))
-      _ = try process.run(["\u{2D}\u{2D}version"]).get()
-    #elseif os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    #if os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
     #else
       _ = try Git.runCustomSubcommand(

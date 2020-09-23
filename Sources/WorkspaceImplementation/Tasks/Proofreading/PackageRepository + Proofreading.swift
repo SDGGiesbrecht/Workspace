@@ -92,7 +92,7 @@ import WorkspaceLocalizations
           for target in try cachedPackage().targets {
             let setting: Setting?
             switch target.type {
-            case .library:
+            case .library, .binary:
               setting = .library
             case .executable, .test:
               setting = .topLevel

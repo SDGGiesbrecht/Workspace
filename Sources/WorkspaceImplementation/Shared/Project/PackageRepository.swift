@@ -47,7 +47,7 @@ import WorkspaceProjectConfiguration
 #if !os(WASI)
   extension PackageRepository {
 
-    private static let macOSDeploymentVersion = SDGVersioning.Version(10, 10)
+    private static let macOSDeploymentVersion = SDGVersioning.Version(10, 12)
 
     // MARK: - Cache
 

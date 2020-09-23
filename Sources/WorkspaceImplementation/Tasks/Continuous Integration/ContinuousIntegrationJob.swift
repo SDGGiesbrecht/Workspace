@@ -42,7 +42,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 0)
-  // #warning(Is this one obsolete?)
   private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}09\u{2D}13"
 
   private static let currentMacOSVersion = Version(10, 15)

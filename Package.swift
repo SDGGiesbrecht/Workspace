@@ -536,6 +536,7 @@ let package = Package(
 )
 
 import Foundation
+
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.2.4, These cannot build on Windows.)
   let impossibleDependencies = [

@@ -59,7 +59,8 @@ jobs:
         curl --location \
           'https://dl.google.com/android/repository/android-ndk-r20b-linux-x86_64.zip' \
           --output '/tmp/android-ndk-r21d.zip'
-        unzip /tmp/android-ndk-r21d.zip -d ${ANDROID_HOME}/ndk-bundle
+        unzip /tmp/android-ndk-r21d.zip -d /tmp
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
     - name: Build
       shell: bash
       run: |

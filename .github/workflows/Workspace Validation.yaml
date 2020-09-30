@@ -69,14 +69,10 @@ jobs:
         swift build --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
-          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \
-          -Xcc -isystem -Xcc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/include \
-          -Xcc -isystem -Xcc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/c++/v1 \
-          -Xcc -isystem -Xcc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/linux \
-          -Xcc -isystem -Xcc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
+          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64 \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
     - name: Copy libraries
       shell: bash
       run: |

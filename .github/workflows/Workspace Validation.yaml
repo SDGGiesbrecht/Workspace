@@ -52,35 +52,24 @@ jobs:
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
-    - name: Fetch NDK
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip' \
-          --output '/tmp/android-ndk-r18b.zip'
-        unzip /tmp/android-ndk-r18b.zip -d /tmp
-        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle‐18
-        sudo cp -R /tmp/android-ndk-r18b/* ${ANDROID_HOME}/ndk-bundle‐18
     - name: Build
       shell: bash
       run: |
         set -x
         export TARGETING_ANDROID=true
-        rm -rf /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/clang/include/module.modulemap
         swift build --destination .github/workflows/Android/SDK.json \
           --build-tests --enable-test-discovery \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
-          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle‐18/sysroot \
-          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle‐18/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle‐18/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle‐18/platforms/android-29/arch-x86_64 \
+          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
     - name: Copy libraries
       shell: bash
       run: |
         set -x
         mkdir -p .build/x86_64-unknown-linux-android/debug
-        cp -R ${ANDROID_HOME}/ndk-bundle‐18/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
         mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
     - name: Upload tests

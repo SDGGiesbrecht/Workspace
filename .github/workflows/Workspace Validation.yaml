@@ -57,7 +57,7 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://dl.google.com/android/repository/android-ndk-r20b-linux-x86_64.zip' \
+          'https://dl.google.com/android/repository/android-ndk-r20d-linux-x86_64.zip' \
           --output '/tmp/android-ndk-r20d.zip'
         unzip /tmp/android-ndk-r20d.zip -d /tmp
         sudo cp -R /tmp/android-ndk-r20d/* ${ANDROID_HOME}/ndk-bundle

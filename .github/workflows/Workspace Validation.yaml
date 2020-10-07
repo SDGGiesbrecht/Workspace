@@ -17,6 +17,34 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    name: macOS
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
   Windows:
     name: Windows
     runs-on: windows-2019
@@ -158,3 +186,354 @@ jobs:
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
+  Web:
+    name: Web
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz' \
+          --output '/tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz'
+        tar --extract --file /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz --directory /tmp
+        mkdir -p .build/SDG/Swift
+        cp -R /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/* .build/SDG/Swift
+        .build/SDG/Swift/usr/bin/swift --version
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi
+  CentOS:
+    name: CentOS
+    runs-on: ubuntu-20.04
+    container: swift:5.3-centos8
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: CentOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  tvOS:
+    name: tvOS
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐tvos‐simulator
+  iOS:
+    name: iOS
+    runs-on: macos-10.15
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐ios‐simulator
+  Android:
+    name: Android
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Android‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        sudo mkdir -p /
+        sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/* /
+        export PATH="/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        swift --version
+    - name: Fetch Android SDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3/Android.sdk.zip' \
+          --output '/tmp/Android.sdk.zip'
+        unzip /tmp/Android.sdk.zip -d /tmp
+        sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo chmod -R a+rwx /Library
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_ANDROID=true
+        export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
+        swift build --destination .github/workflows/Android/SDK.json \
+          --build-tests --enable-test-discovery \
+          -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
+          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
+    - name: Copy libraries
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+  Android_II:
+    name: Android II
+    runs-on: macos-10.15
+    needs: Android
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare script
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/WorkspacePackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        arch: x86_64
+        script: .build/SDG/Emulator.sh
+  Amazon_Linux:
+    name: Amazon Linux
+    runs-on: ubuntu-20.04
+    container: swift:5.3-amazonlinux2
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Miscellaneous:
+    name: Miscellaneous
+    runs-on: ubuntu-20.04
+    container: swift:5.3-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

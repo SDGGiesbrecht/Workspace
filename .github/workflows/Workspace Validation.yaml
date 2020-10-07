@@ -51,6 +51,7 @@ jobs:
           'https://swift.org/builds/swift-5.3-release/windows10/swift-5.3-RELEASE/swift-5.3-RELEASE-windows10.exe' \
           --output '/tmp/swift-5.3-RELEASE-windows10.exe'
         /tmp/swift-5.3-RELEASE-windows10.exe //passive
+        printenv
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"

@@ -39,10 +39,10 @@ jobs:
         set +x
         source ./exported_environment.sh
         set -x
-        echo "::set-env name=PATH::${PATH}"
-        echo "::set-env name=UniversalCRTSdkDir::${UniversalCRTSdkDir}"
-        echo "::set-env name=UCRTVersion::${UCRTVersion}"
-        echo "::set-env name=VCToolsInstallDir::${VCToolsInstallDir}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        echo "UniversalCRTSdkDir=${UniversalCRTSdkDir}" >> $GITHUB_ENV
+        echo "UCRTVersion=${UCRTVersion}" >> $GITHUB_ENV
+        echo "VCToolsInstallDir=${VCToolsInstallDir}" >> $GITHUB_ENV
     - name: Install Swift
       shell: bash
       run: |
@@ -52,19 +52,19 @@ jobs:
           --output '/tmp/swift-5.3-RELEASE-windows10.exe'
         /tmp/swift-5.3-RELEASE-windows10.exe //passive
         export SDKROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
-        echo "::set-env name=SDKROOT::${SDKROOT}"
+        echo "SDKROOT=${SDKROOT}" >> $GITHUB_ENV
         cp "${SDKROOT}/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
         cp "${SDKROOT}/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
         export PATH="/c/Library/icu-67/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         export PATH="/c/Library/Swift-development/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
     - name: Install Linux
       shell: bash
@@ -76,7 +76,7 @@ jobs:
           --output '.build/SDG/tmp/wsl-ubuntu-1804'
         7z x .build/SDG/tmp/wsl-ubuntu-1804 -o.build/SDG/Linux/Ubuntu
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         ubuntu1804 install --root
     - name: Install SwiftPM dependencies
       shell: bash

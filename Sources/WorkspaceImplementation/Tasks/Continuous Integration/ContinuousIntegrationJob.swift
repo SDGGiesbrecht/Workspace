@@ -782,8 +782,13 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
-              cURLAndExecuteWindowsInstaller("https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"),
-              set(environmentVariable: "SDKROOT", to: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"),
+              cURLAndExecuteWindowsInstaller(
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
+              ),
+              set(
+                environmentVariable: "SDKROOT",
+                to: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
+              ),
               export("SDKROOT"),
               copyFile(
                 from:

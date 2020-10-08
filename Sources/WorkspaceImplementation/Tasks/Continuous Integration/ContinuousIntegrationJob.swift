@@ -46,7 +46,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private static let currentMacOSVersion = Version(10, 15)
   internal static let currentXcodeVersion = Version(12)
-  private static let currentWindowsVersion = "2019"
+  private static let currentWindowsVersion = "10"
+  private static let currentVisualStudioVersion = "2019"
   private static let currentWSLImage = "1804"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
@@ -409,7 +410,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
-      return "windows\u{2D}\(ContinuousIntegrationJob.currentWindowsVersion)"
+      return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
     case .centOS, .ubuntu, .android, .amazonLinux:
       return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
     case .tvOS, .iOS, .watchOS:
@@ -689,13 +690,16 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "\(prefix)chmod \u{2D}R a+rwx \(path)"
   }
 
+  private func set(environmentVariable: StrictString, to value: StrictString) -> StrictString {
+    return "export \(environmentVariable)=\u{22}\(value)\u{22}"
+  }
   private func export(_ environmentVariable: StrictString) -> StrictString {
-    return "echo \u{22}::set\u{2D}env name=\(environmentVariable)::${\(environmentVariable)}\u{22}"
+    return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
   }
 
   private func prependPath(_ entry: StrictString) -> StrictString {
     return [
-      "export PATH=\u{22}\(entry):${PATH}\u{22}",
+      set(environmentVariable: "PATH", to: "\(entry):${PATH}"),
       export("PATH"),
     ].joinedAsLines()
   }
@@ -773,32 +777,37 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
         let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
-        let experimentalRelease: StrictString =
-          "https://github.com/compnerd/swift\u{2D}build/releases/download/v\(version)"
         result.append(
           script(
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
-              cURLAndExecuteWindowsInstaller("\(experimentalRelease)/installer.exe"),
+              cURLAndExecuteWindowsInstaller(
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
+              ),
+              set(
+                environmentVariable: "SDKROOT",
+                to: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
+              ),
+              export("SDKROOT"),
               copyFile(
                 from:
-                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/ucrt.modulemap",
+                  "${SDKROOT}/usr/share/ucrt.modulemap",
                 to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
               ),
               copyFile(
                 from:
-                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.modulemap",
+                  "${SDKROOT}/usr/share/visualc.modulemap",
                 to: "${VCToolsInstallDir}/include/module.modulemap"
               ),
               copyFile(
                 from:
-                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/visualc.apinotes",
+                  "${SDKROOT}/usr/share/visualc.apinotes",
                 to: "${VCToolsInstallDir}/include/visualc.apinotes"
               ),
               copyFile(
                 from:
-                  "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/share/winsdk.modulemap",
+                  "${SDKROOT}/usr/share/winsdk.modulemap",
                 to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
               ),
               prependPath("/c/Library/icu\u{2D}67/usr/bin"),

@@ -73,6 +73,7 @@ public struct RepositoryConfiguration: Codable {
     "xcworkspacedata",
   ]
 
+  #warning("Not localized yet.")
   public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
   public static let _refreshScriptLinuxFileName: StrictString = "Refresh (Linux).sh"
 

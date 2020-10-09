@@ -430,6 +430,7 @@ jobs:
       shell: bash
       run: |
         set -x
+        sudo rm -rf /usr/lib/clang/10.0.0
         curl --location \
           'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
           --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'

@@ -61,7 +61,18 @@ import WorkspaceLocalizations
         entries.insert(Script.validateLinux.fileName(localization: localization))
       }
       return entries.sorted().map { entry in
-        return String(entry.replacingMatches(for: " ", with: #"\ "#))
+        let escaped = entry.replacingMatches(for: " ", with: #"\ "#)
+        let patched: [ExtendedGraphemeCluster] = escaped.clusters.map { cluster in
+          let string = String(cluster)
+          if string.decomposedStringWithCanonicalMapping.scalars
+            .elementsEqual(string.precomposedStringWithCanonicalMapping.scalars)
+          {
+            return cluster
+          } else {
+            return "*"
+          }
+        }
+        return String(patched)
       }
     }
 

@@ -75,7 +75,9 @@ public struct RepositoryConfiguration: Codable {
     "xcworkspacedata",
   ]
 
-  public static func _refreshScriptMacOSFileName(localization: InterfaceLocalization) -> StrictString {
+  public static func _refreshScriptMacOSFileName(
+    localization: InterfaceLocalization
+  ) -> StrictString {
     switch localization {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "Refresh (macOS).command"
@@ -83,7 +85,9 @@ public struct RepositoryConfiguration: Codable {
       return "Auffrischen (macOS).command"
     }
   }
-  public static func _refreshScriptLinuxFileName(localization: InterfaceLocalization) -> StrictString {
+  public static func _refreshScriptLinuxFileName(
+    localization: InterfaceLocalization
+  ) -> StrictString {
     switch localization {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "Refresh (Linux).sh"
@@ -114,8 +118,12 @@ public struct RepositoryConfiguration: Codable {
       "docs"
     ]
     for localization in InterfaceLocalization.allCases {
-      paths.insert(String(RepositoryConfiguration._refreshScriptMacOSFileName(localization: localization)))
-      paths.insert(String(RepositoryConfiguration._refreshScriptLinuxFileName(localization: localization)))
+      paths.insert(
+        String(RepositoryConfiguration._refreshScriptMacOSFileName(localization: localization))
+      )
+      paths.insert(
+        String(RepositoryConfiguration._refreshScriptLinuxFileName(localization: localization))
+      )
     }
     return paths
   }()

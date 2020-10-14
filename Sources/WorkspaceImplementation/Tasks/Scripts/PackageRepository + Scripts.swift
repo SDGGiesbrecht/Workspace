@@ -33,7 +33,8 @@ import SDGSwift
 
     internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
 
-      let localization = try project.configuration(output: output).developmentInterfaceLocalization()
+      let localization = try project.configuration(output: output)
+        .developmentInterfaceLocalization()
 
       for deprecated in Script.deprecatedFileNames {
         delete(location.appendingPathComponent(String(deprecated)), output: output)
@@ -43,7 +44,9 @@ import SDGSwift
         try purgingAutoreleased {
 
           var file = try TextFile(
-            possiblyAt: location.appendingPathComponent(String(script.fileName(localization: localization))),
+            possiblyAt: location.appendingPathComponent(
+              String(script.fileName(localization: localization))
+            ),
             executable: true
           )
           file.contents.replaceSubrange(

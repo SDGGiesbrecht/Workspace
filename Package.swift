@@ -81,35 +81,34 @@ import PackageDescription
 ///
 /// #### Änderungen prüfen
 ///
-/// #warning(Left off here.)
-/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
+/// Wenn das Projekt zum Stoßen, zum Zusammenführen oder für eine Abziehungsanforderung bereit scheint, kann das Projektzustand geprüft werden, in dem man auf das `Prüfen`‐Skript doppelklickt.
 ///
-/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
+/// `Prüfen` öffnet ein Terminalfenster in dem Arbeitsbereich das Projekt auf verschiedene Arte prüft.
 ///
-/// When it finishes, it prints a summary of which tests passed and which tests failed.
+/// Wenn es fertig ist, zeigt es eine Zusammenfassung davon, welche Prüfungen bestanden wurden, und welche nicht.
 ///
-/// *Oops! I never realized that would happen...*
+/// *Hoppla! So eine Nebenwirkung habe ich nicht verhergesehen...*
 ///
-/// #### Summary
+/// #### Zusammenfassung
 ///
-/// 1. `Refresh` before working.
-/// 2. `Validate` when it looks complete.
+/// 1. `Auffrischen` vor der Arbeit.
+/// 2. `Prüfen`, wenn es vollständig scheint.
 ///
-/// *Wow! That was so much easier than doing it all manually!*
+/// *Toll! Das war so viel einfacher, als das ganze von Hand zu machen!*
 ///
-/// #### Advanced
+/// #### Fortgeschrittene Verwendung
 ///
-/// While the above workflow is the simplest to learn, Workspace can also be installed as a command line tool that can be used in a wider variety of ways. Most notably, any individual task can be executed in isolation, which can speed things up considerably for users who become familiar with it.
+/// Obwohl das vorhergehende Arbeitsablauf am Leichtesten gelernt wird, ist Arbeitsbereich auch als Befehlszeilwerkzeug installierbar, um eine Vielfalt von Einsetzungen zu ermöglichen. Vor allem können einzelne Aufgaben ausgeführt werden, wodurch können erfahrener Benutzer schneller an erwünste Ergebnisse kommen können.
 ///
-/// ### Applying Workspace to a Project
+/// ### Arbeitsbereich an einem Projekt anwenden
 ///
-/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
+/// Um Arbeitsbereich an einem Projekt anzuwenden, führt man den folgenden Befehl im Wurzel des Projektlagers aus. (Eine vollständige Installation wird benötigt.)
 ///
 /// ```shell
-/// $ workspace refresh
+/// $ arbeitsbereich auffrischen
 /// ```
 ///
-/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html) file. `optIntoAllTasks()` can be used in the configuration file to easily activate everything at once, no matter how much it might end up overwriting.
+/// Arbeitsbereich hält sich erstmals von Aufgaben zurück, die darin bestehen, in Projektdateien zu schreiben. Solche Aufgaben müssen mit einem [Konfigurationsdatei](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html) eingeschalltet werden. In der Konfigurationsdatei, kann man `alleAufgabenEinschalten()` verwenden, um leicht alles gleichzeitig einzuschalten, egal wie viel dadurch überschrieben wird.
 // @localization(🇺🇸EN)
 /// Workspace automates management of Swift projects.
 ///

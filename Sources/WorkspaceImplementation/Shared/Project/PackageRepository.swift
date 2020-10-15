@@ -475,6 +475,10 @@ import WorkspaceProjectConfiguration
 
           var ignoredURLs: [URL] = try ignoredFiles().get()
           ignoredURLs.append(location.appendingPathComponent(".git"))
+          #warning("Debugging...")
+          for url in ignoredURLs {
+            print("Ignored: \(url.path)")
+          }
 
           let result = try allFiles().filter { (url) in
             for ignoredURL in ignoredURLs {

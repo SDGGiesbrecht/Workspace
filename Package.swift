@@ -91,8 +91,8 @@ import PackageDescription
 ///
 /// #### Zusammenfassung
 ///
-/// 1. `Auffrischen` vor der Arbeit.
-/// 2. `Prüfen`, wenn es vollständig scheint.
+/// - `Auffrischen` vor der Arbeit.
+/// - `Prüfen`, wenn es vollständig scheint.
 ///
 /// *Toll! Das war so viel einfacher, als das ganze von Hand zu machen!*
 ///
@@ -182,8 +182,8 @@ import PackageDescription
 ///
 /// #### Summary
 ///
-/// 1. `Refresh` before working.
-/// 2. `Validate` when it looks complete.
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
 ///
 /// *Wow! That was so much easier than doing it all manually!*
 ///
@@ -273,8 +273,8 @@ import PackageDescription
 ///
 /// #### Summary
 ///
-/// 1. `Refresh` before working.
-/// 2. `Validate` when it looks complete.
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
 ///
 /// *Wow! That was so much easier than doing it all manually!*
 ///
@@ -364,8 +364,8 @@ import PackageDescription
 ///
 /// #### Summary
 ///
-/// 1. `Refresh` before working.
-/// 2. `Validate` when it looks complete.
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
 ///
 /// *Wow! That was so much easier than doing it all manually!*
 ///

@@ -20,10 +20,13 @@
 #endif
 
 import SDGCollections
+import SDGText
 
 import SDGCommandLine
 
 import SDGSwift
+
+import WorkspaceLocalizations
 
 // #workaround(Swift 5.2.4, Web lacks Foundation.)
 #if !os(WASI)
@@ -43,7 +46,7 @@ import SDGSwift
       ]
     }
 
-    private static var ignoreEntriesForSwiftProjectManager: [String] {
+    private static var ignoreEntriesForSwiftPackageManager: [String] {
       return [
         ".build",
         "Packages",
@@ -52,10 +55,25 @@ import SDGSwift
     }
 
     private static var ignoreEntriesForWorkspace: [String] {
-      return [
-        "Validate\\ (macOS).command",
-        "Validate\\ (Linux).sh",
-      ]
+      var entries: Set<StrictString> = []
+      for localization in InterfaceLocalization.allCases {
+        entries.insert(Script.validateMacOS.fileName(localization: localization))
+        entries.insert(Script.validateLinux.fileName(localization: localization))
+      }
+      return entries.sorted().map { entry in
+        let escaped = entry.replacingMatches(for: " ", with: #"\ "#)
+        let patched: [ExtendedGraphemeCluster] = escaped.clusters.map { cluster in
+          let string = String(cluster)
+          if string.decomposedStringWithCanonicalMapping.scalars
+            .elementsEqual(string.precomposedStringWithCanonicalMapping.scalars)
+          {
+            return cluster
+          } else {
+            return "*"
+          }
+        }
+        return String(patched)
+      }
     }
 
     private static var ignoreEntriesForXcode: [String] {
@@ -70,7 +88,7 @@ import SDGSwift
     private static var ignoreEntries: [String] {
       return ignoreEntriesForMacOS
         + ignoreEntriesForLinux
-        + ignoreEntriesForSwiftProjectManager
+        + ignoreEntriesForSwiftPackageManager
         + ignoreEntriesForWorkspace
         + ignoreEntriesForXcode
     }

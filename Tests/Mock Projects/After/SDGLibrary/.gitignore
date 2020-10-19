@@ -18,8 +18,10 @@
 .build
 Packages
 .swiftpm
-Validate\ (macOS).command
+Pr*fen\ (Linux).sh
+Pr*fen\ (macOS).command
 Validate\ (Linux).sh
+Validate\ (macOS).command
 *.xcodeproj
 IDEWorkspaceChecks.plist
 xcuserdata

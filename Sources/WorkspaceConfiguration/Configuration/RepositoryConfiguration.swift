@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import WorkspaceLocalizations
+
 // @localization(🇩🇪DE) @crossReference(RepositoryConfiguration)
 /// Einstellungen zum Lager.
 public typealias Lagerseinstellungen = RepositoryConfiguration
@@ -73,8 +75,26 @@ public struct RepositoryConfiguration: Codable {
     "xcworkspacedata",
   ]
 
-  public static let _refreshScriptMacOSFileName: StrictString = "Refresh (macOS).command"
-  public static let _refreshScriptLinuxFileName: StrictString = "Refresh (Linux).sh"
+  public static func _refreshScriptMacOSFileName(
+    localization: InterfaceLocalization
+  ) -> StrictString {
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Refresh (macOS).command"
+    case .deutschDeutschland:
+      return "Auffrischen (macOS).command"
+    }
+  }
+  public static func _refreshScriptLinuxFileName(
+    localization: InterfaceLocalization
+  ) -> StrictString {
+    switch localization {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Refresh (Linux).sh"
+    case .deutschDeutschland:
+      return "Auffrischen (Linux).sh"
+    }
+  }
 
   // @localization(🇩🇪DE) @crossReference(RepositoryConfiguration.ignoredPaths)
   /// Pfade, die Quellverarbeitung übergehen soll.
@@ -93,9 +113,18 @@ public struct RepositoryConfiguration: Codable {
   /// Dateien unter diesen Pfaden werden keine Vorspänne bekommen, und werden nicht Korrektur gelesen.
   ///
   /// Die Pfade sind vom Paketenwurzel ausgehend.
-  public var ignoredPaths: Set<String> = [
-    "docs",
-    String(RepositoryConfiguration._refreshScriptMacOSFileName),
-    String(RepositoryConfiguration._refreshScriptLinuxFileName),
-  ]
+  public var ignoredPaths: Set<String> = {
+    var paths: Set<String> = [
+      "docs"
+    ]
+    for localization in InterfaceLocalization.allCases {
+      paths.insert(
+        String(RepositoryConfiguration._refreshScriptMacOSFileName(localization: localization))
+      )
+      paths.insert(
+        String(RepositoryConfiguration._refreshScriptLinuxFileName(localization: localization))
+      )
+    }
+    return paths
+  }()
 }

@@ -50,6 +50,65 @@ import PackageDescription
 /// - Für Verwendung neben dem [Swift Package Manager](https://swift.org/package-manager/) vorgesehen.
 /// - Verwaltet Projekte für macOS, Windows, Netz, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux und watchOS.
 /// - [Konfigurierbar](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Biblioteken/WorkspaceConfiguration.html)
+///
+/// ### Der Arbeitsablauf von Arbeitsbereich
+///
+/// (Das folgende Beispielspaket ist ein echtes Git‐Lager mit dem man Arbeitsbereich ausprobieren kann.)
+///
+/// #### Wenn der Lager nachgebaut wird
+///
+/// Der Aufwand, nach Werkzeuge fürs Arbeitsablauf zu suchen, kann Mitwirkende abschrecken. Andererseits, Werkzeuge im Lager zu sammeln führt schnell zum Durcheinander. Um Beide zu verhindern, wenn ein von Arbeitsbereich verwaltetes Projekt abgezogen, gestoßen oder nachgebaut wird ...
+///
+/// ```shell
+/// git clone https://github.com/SDGGiesbrecht/SDGCornerstone
+/// ```
+///
+/// ... kommt nur ein kleiner Teil von Arbeitsbereich mit: Ein kürzes Skript namens `Auffrischen`, das ein paar Schichtnebenformen hat.
+///
+/// *Hmm ... Wenn ich nur bessere Werkzeuge vorhanden hätte ... Ach, vielleicht kann ich ...*
+///
+/// #### Das Projekt auffrischen
+///
+/// Um das Projekt aufzufrischen, doppelklickt man schichtgemäß auf das `Auffrischen`‐Skript. (Das Skript ist auch vom Befehlszeile ausführbar, falls das System so eingestellt ist, dass es Skripte beim Doppleklick nicht ausführt.)
+///
+/// `Auffrischen` öffnet ein Terminalfenster und bereichtet von seinem Ablauf, während es das Projekt für Entwicklung bereitet. (Es kann dauern das erste Mal, aber beim Wiederholen geht es viel schneller.)
+///
+/// *So sieht ’s besser aus. Zum Programmieren!*
+///
+/// *[Dies hinzufügen ... Das entfernen ... Noch was hier ändern ...]*
+///
+/// *... Und fertig. Aber wenn ich durch mein Arbeit was kaputtgemacht habe? Ach, Sieh mal! Ich kann ...*
+///
+/// #### Änderungen prüfen
+///
+/// Wenn das Projekt zum Stoßen, zum Zusammenführen oder für eine Abziehungsanforderung bereit scheint, kann das Projektzustand geprüft werden, in dem man auf das `Prüfen`‐Skript doppelklickt.
+///
+/// `Prüfen` öffnet ein Terminalfenster in dem Arbeitsbereich das Projekt auf verschiedene Arte prüft.
+///
+/// Wenn es fertig ist, zeigt es eine Zusammenfassung davon, welche Prüfungen bestanden wurden, und welche nicht.
+///
+/// *Hoppla! So eine Nebenwirkung habe ich nicht verhergesehen...*
+///
+/// #### Zusammenfassung
+///
+/// - `Auffrischen` vor der Arbeit.
+/// - `Prüfen`, wenn es vollständig scheint.
+///
+/// *Toll! Das war so viel einfacher, als das ganze von Hand zu machen!*
+///
+/// #### Fortgeschrittene Verwendung
+///
+/// Obwohl das vorhergehende Arbeitsablauf am Leichtesten gelernt wird, ist Arbeitsbereich auch als Befehlszeilwerkzeug installierbar, um eine Vielfalt von Einsetzungen zu ermöglichen. Vor allem können einzelne Aufgaben ausgeführt werden, wodurch können erfahrener Benutzer schneller an erwünste Ergebnisse kommen können.
+///
+/// ### Arbeitsbereich an einem Projekt anwenden
+///
+/// Um Arbeitsbereich an einem Projekt anzuwenden, führt man den folgenden Befehl im Wurzel des Projektlagers aus. (Eine vollständige Installation wird benötigt.)
+///
+/// ```shell
+/// $ arbeitsbereich auffrischen
+/// ```
+///
+/// Arbeitsbereich hält sich erstmals von Aufgaben zurück, die darin bestehen, in Projektdateien zu schreiben. Solche Aufgaben müssen mit einem [Konfigurationsdatei](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html) eingeschalltet werden. In der Konfigurationsdatei, kann man `alleAufgabenEinschalten()` verwenden, um leicht alles gleichzeitig einzuschalten, egal wie viel dadurch überschrieben wird.
 // @localization(🇺🇸EN)
 /// Workspace automates management of Swift projects.
 ///
@@ -82,6 +141,65 @@ import PackageDescription
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 /// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html)
+///
+/// ### The Workspace Workflow
+///
+/// (The following demonstration package is a real repository. You can use it to follow along.)
+///
+/// #### When the Repository Is Cloned
+///
+/// The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
+///
+/// ```shell
+/// git clone https://github.com/SDGGiesbrecht/SDGCornerstone
+/// ```
+///
+/// ...only one small piece of Workspace comes with it: A short script called `Refresh` that has several platform variants.
+///
+/// *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
+///
+/// #### Refresh the Project
+///
+/// To refresh the project, double‐click the `Refresh` script for your platform. (You can also execute the script from the command line if your system is set up not to execute scripts when they are double‐clicked.)
+///
+/// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
+///
+/// *This looks better. Let’s get coding!*
+///
+/// *[Add this... Remove that... Change something over here...]*
+///
+/// *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
+///
+/// #### Validate Changes
+///
+/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
+///
+/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
+///
+/// When it finishes, it prints a summary of which tests passed and which tests failed.
+///
+/// *Oops! I never realized that would happen...*
+///
+/// #### Summary
+///
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
+///
+/// *Wow! That was so much easier than doing it all manually!*
+///
+/// #### Advanced
+///
+/// While the above workflow is the simplest to learn, Workspace can also be installed as a command line tool that can be used in a wider variety of ways. Most notably, any individual task can be executed in isolation, which can speed things up considerably for users who become familiar with it.
+///
+/// ### Applying Workspace to a Project
+///
+/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
+///
+/// ```shell
+/// $ workspace refresh
+/// ```
+///
+/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Libraries/WorkspaceConfiguration.html) file. `optIntoAllTasks()` can be used in the configuration file to easily activate everything at once, no matter how much it might end up overwriting.
 // @localization(🇨🇦EN)
 /// Workspace automates management of Swift projects.
 ///
@@ -114,6 +232,65 @@ import PackageDescription
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 /// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html)
+///
+/// ### The Workspace Workflow
+///
+/// (The following demonstration package is a real repository. You can use it to follow along.)
+///
+/// #### When the Repository Is Cloned
+///
+/// The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
+///
+/// ```shell
+/// git clone https://github.com/SDGGiesbrecht/SDGCornerstone
+/// ```
+///
+/// ...only one small piece of Workspace comes with it: A short script called `Refresh` that has several platform variants.
+///
+/// *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
+///
+/// #### Refresh the Project
+///
+/// To refresh the project, double‐click the `Refresh` script for your platform. (You can also execute the script from the command line if your system is set up not to execute scripts when they are double‐clicked.)
+///
+/// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
+///
+/// *This looks better. Let’s get coding!*
+///
+/// *[Add this... Remove that... Change something over here...]*
+///
+/// *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
+///
+/// #### Validate Changes
+///
+/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
+///
+/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
+///
+/// When it finishes, it prints a summary of which tests passed and which tests failed.
+///
+/// *Oops! I never realized that would happen...*
+///
+/// #### Summary
+///
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
+///
+/// *Wow! That was so much easier than doing it all manually!*
+///
+/// #### Advanced
+///
+/// While the above workflow is the simplest to learn, Workspace can also be installed as a command line tool that can be used in a wider variety of ways. Most notably, any individual task can be executed in isolation, which can speed things up considerably for users who become familiar with it.
+///
+/// ### Applying Workspace to a Project
+///
+/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
+///
+/// ```shell
+/// $ workspace refresh
+/// ```
+///
+/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Libraries/WorkspaceConfiguration.html) file. `optIntoAllTasks()` can be used in the configuration file to easily activate everything at once, no matter how much it might end up overwriting.
 // @localization(🇬🇧EN)
 /// Workspace automates management of Swift projects.
 ///
@@ -146,6 +323,65 @@ import PackageDescription
 /// - Designed to interoperate with the [Swift Package Manager](https://swift.org/package-manager/).
 /// - Manages projects for macOS, Windows, web, CentOS, Ubuntu, tvOS, iOS, Android, Amazon Linux and watchOS.
 /// - [Configurable](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html)
+///
+/// ### The Workspace Workflow
+///
+/// (The following demonstration package is a real repository. You can use it to follow along.)
+///
+/// #### When the Repository Is Cloned
+///
+/// The need to hunt down workflow tools can deter contributors. On the other hand, including them in the repository causes a lot of clutter. To reduce both, when a project using Workspace is pulled, pushed, or cloned...
+///
+/// ```shell
+/// git clone https://github.com/SDGGiesbrecht/SDGCornerstone
+/// ```
+///
+/// ...only one small piece of Workspace comes with it: A short script called `Refresh` that has several platform variants.
+///
+/// *Hmm... I wish I had more tools at my disposal... Hey! What if I...*
+///
+/// #### Refresh the Project
+///
+/// To refresh the project, double‐click the `Refresh` script for your platform. (You can also execute the script from the command line if your system is set up not to execute scripts when they are double‐clicked.)
+///
+/// `Refresh` opens a terminal window, and in it Workspace reports its actions while it sets the project folder up for development. (This may take a while the first time, but subsequent runs are faster.)
+///
+/// *This looks better. Let’s get coding!*
+///
+/// *[Add this... Remove that... Change something over here...]*
+///
+/// *...All done. I wonder if I broke anything while I was working? Hey! It looks like I can...*
+///
+/// #### Validate Changes
+///
+/// When the project seems ready for a push, merge, or pull request, validate the current state of the project by double‐clicking the `Validate` script.
+///
+/// `Validate` opens a terminal window and in it Workspace runs the project through a series of checks.
+///
+/// When it finishes, it prints a summary of which tests passed and which tests failed.
+///
+/// *Oops! I never realized that would happen...*
+///
+/// #### Summary
+///
+/// - `Refresh` before working.
+/// - `Validate` when it looks complete.
+///
+/// *Wow! That was so much easier than doing it all manually!*
+///
+/// #### Advanced
+///
+/// While the above workflow is the simplest to learn, Workspace can also be installed as a command line tool that can be used in a wider variety of ways. Most notably, any individual task can be executed in isolation, which can speed things up considerably for users who become familiar with it.
+///
+/// ### Applying Workspace to a Project
+///
+/// To apply Workspace to a project, run the following command in the root of the project’s repository. (This requires a full install.)
+///
+/// ```shell
+/// $ workspace refresh
+/// ```
+///
+/// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html) file. `optIntoAllTasks()` can be used in the configuration file to easily activate everything at once, no matter how much it might end up overwriting.
 let package = Package(
   name: "Workspace",
   platforms: [

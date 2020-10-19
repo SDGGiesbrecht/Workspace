@@ -64,7 +64,7 @@ extension Workspace.Refresh {
 
         // #workaround(Swift 5.2.4, Web lacks Foundation.)
         #if !os(WASI)
-          try options.project.refreshScripts(output: output)
+          try options.project.refreshScripts(project: options.project, output: output)
         #endif
       }
     )

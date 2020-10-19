@@ -37,16 +37,26 @@ internal enum Script: Int, CaseIterable {
 
   // MARK: - Properties
 
-  internal var fileName: StrictString {
+  internal func fileName(localization: InterfaceLocalization) -> StrictString {
     switch self {
     case .refreshMacOS:
-      return RepositoryConfiguration._refreshScriptMacOSFileName
+      return RepositoryConfiguration._refreshScriptMacOSFileName(localization: localization)
     case .refreshLinux:
-      return RepositoryConfiguration._refreshScriptLinuxFileName
+      return RepositoryConfiguration._refreshScriptLinuxFileName(localization: localization)
     case .validateMacOS:
-      return "Validate (macOS).command"
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate (macOS).command"
+      case .deutschDeutschland:
+        return "Prüfen (macOS).command"
+      }
     case .validateLinux:
-      return "Validate (Linux).sh"
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Validate (Linux).sh"
+      case .deutschDeutschland:
+        return "Prüfen (Linux).sh"
+      }
     }
   }
   private var deprecatedPre0_1_1FileName: StrictString? {
@@ -65,7 +75,7 @@ internal enum Script: Int, CaseIterable {
     var deprecated: Set<StrictString> = []
     for script in Script.allCases {
       if let pre0_1_1 = script.deprecatedPre0_1_1FileName,
-        pre0_1_1 ≠ script.fileName
+        pre0_1_1 ≠ script.fileName(localization: .englishCanada)
       {
         deprecated.insert(pre0_1_1)
       }

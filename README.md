@@ -92,8 +92,8 @@ When it finishes, it prints a summary of which tests passed and which tests fail
 
 #### Summary
 
-1. `Refresh` before working.
-2. `Validate` when it looks complete.
+- `Refresh` before working.
+- `Validate` when it looks complete.
 
 *Wow! That was so much easier than doing it all manually!*
 

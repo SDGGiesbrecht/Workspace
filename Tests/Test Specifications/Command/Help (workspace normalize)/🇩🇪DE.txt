@@ -1,0 +1,26 @@
+$ arbeitsbereich normalize help •no‐colour
+
+arbeitsbereich normalisieren normalisiert die Dateien des Projekt, in dem Leerzeichen vom Zeilenende entfernt werden, Unix‐Zeilenumbrüche eingetauscht werden, kanonische Zersetzung ausgeführt wird und Swift‐Dateien formatiert werden.
+
+Für die algemeine Formatierung, wendet Arbeitsbereich das offiziele Formatierer an, der als swift‐format bekannt ist. Weitere Informationen über swift‐format sind bei ‹https://github.com/apple/swift-format› erhältlich.
+
+Innerhalb eines Arbeitsberich‐Konfiguration befindet sich das swift‐format‐Konfiguration unter „korrektur.swiftFormatKonfiguration“ und es verwendet das Swift‐Programmierschnittstelle aus seinem eigenen SwiftFormatConfiguration‐Modul. Siehe ‹https://github.com/apple/swift-format/blob/0.50300.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
+
+Wenn das ganze Eigenschaft auf nil eingestellt ist, wird swift‐format völlig ausgeschaltet.
+
+Unterbefehle
+
+hilfe zeigt Gebrauchsinformationen an.
+
+Optionen
+
+•ohne‐farben Blendet Farben aus der Ausgabe aus.
+•projekt [Pfad] Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist.
+•sprache [Spracheinstellung] Eine Sprache anstelle deren zu verwenden, die in den Einstellungen angegeben ist.
+
+Argumentarte
+
+[Pfad] Ein Pfadname. Die Form „/...“ gibt einen vollständigen Pfad an. Die Form „~/...“ gibt einen relativen Pfad an, ausgehend von dem Benutzerverzeichnis. Alles andere gilt als relativer Pfad, ausgehened vom aktuellen Arbeitsverzeichnis.
+[Spracheinstellung] Eine Liste IETF Sprachbezeichnungen oder SDGCornerstone‐Sprachsymbole. Doppelpunkte geben die Ersatzreihenfolge an. Kommata geben an, dass mehrere Sprachen verwendet werden sollen. Beispiele: „de-DE“ oder „🇩🇪DE“ → Deutsch aus Deutschland, “bar,de;fr” → beide Bairisch und Deutsch, sonst Französisch
+
+0

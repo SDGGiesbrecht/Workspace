@@ -53,27 +53,36 @@ extension Workspace {
         }
       })
 
+    private static let swiftFormatLink = "https://github.com/apple/swift\u{2D}format"
+    private static let swiftFormatConfigurationLink =
+      "https://github.com/apple/swift\u{2D}format/blob/0.50300.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20"
     private static let discussion = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {
         case .englishUnitedKingdom:
           return
             [
-              "The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹https://github.com/apple/swift\u{2D}format›.",
+              "The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹\(Normalize.swiftFormatLink)›.",
               "",
-              "Inside a Workspace configuration, the configuration for swift‐format is found under ‘proofreading.swiftFormatConfiguration’ and it uses the Swift API from its own SwiftFormatConfiguration module. Setting the entire property to nil will completely disable swift‐format.",
+              "Inside a Workspace configuration, the configuration for swift‐format is found under ‘proofreading.swiftFormatConfiguration’ and it uses the Swift API from its own SwiftFormatConfiguration module. See ‹\(Normalize.swiftFormatConfigurationLink)›.",
+              "",
+              "Setting the entire property to nil will completely disable swift‐format.",
             ].joinedAsLines()
         case .englishUnitedStates, .englishCanada:
           return [
-            "The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹https://github.com/apple/swift\u{2D}format›.",
+            "The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹\(Normalize.swiftFormatLink)›.",
             "",
-            "Inside a Workspace configuration, the configuration for swift‐format is found under “proofreading.swiftFormatConfiguration” and it uses the Swift API from its own SwiftFormatConfiguration module. Setting the entire property to nil will completely disable swift‐format.",
+            "Inside a Workspace configuration, the configuration for swift‐format is found under “proofreading.swiftFormatConfiguration” and it uses the Swift API from its own SwiftFormatConfiguration module. See ‹\(Normalize.swiftFormatConfigurationLink)›",
+            "",
+            "Setting the entire property to nil will completely disable swift‐format.",
           ].joinedAsLines()
         case .deutschDeutschland:
           return [
-            "Für die algemeine Formatierung, wendet Arbeitsbereich das offiziele Formatierer an, der als swift‐format bekannt ist. Weitere Informationen über swift‐format sind bei ‹https://github.com/apple/swift\u{2D}format› erhältlich.",
+            "Für die algemeine Formatierung, wendet Arbeitsbereich das offiziele Formatierer an, der als swift‐format bekannt ist. Weitere Informationen über swift‐format sind bei ‹\(Normalize.swiftFormatLink)› erhältlich.",
             "",
-            "Innerhalb eines Arbeitsberich‐Konfiguration befindet sich das swift‐format‐Konfiguration unter „korrektur.swiftFormatKonfiguration“ und es verwendet das Swift‐Programmierschnittstelle aus seinem eigenen SwiftFormatConfiguration‐Modul. Wenn das ganze Eigenschaft auf nil eingestellt ist, wird swift‐format völlig ausgeschaltet.",
+            "Innerhalb eines Arbeitsberich‐Konfiguration befindet sich das swift‐format‐Konfiguration unter „korrektur.swiftFormatKonfiguration“ und es verwendet das Swift‐Programmierschnittstelle aus seinem eigenen SwiftFormatConfiguration‐Modul. Siehe ‹\(Normalize.swiftFormatConfigurationLink)›",
+            "",
+            "Wenn das ganze Eigenschaft auf nil eingestellt ist, wird swift‐format völlig ausgeschaltet.",
           ].joinedAsLines()
         }
       })

@@ -510,6 +510,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
+      // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
       .exact(Version(0, 50300, 0))
     ),
     .package(

@@ -924,6 +924,13 @@ class APITests: TestCase {
         uniqueTestName: "Help (workspace refresh scripts)",
         overwriteSpecificationInsteadOfFailing: false
       )
+      testCommand(
+        Workspace.command,
+        with: ["normalize", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace normalize)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 

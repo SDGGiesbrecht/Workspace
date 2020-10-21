@@ -1,0 +1,26 @@
+$ workspace normalize help •no‐colour
+
+workspace normalize normalizes the project’s files by removing trailing whitespace, applying Unix newlines, performing canonical decomposition and formatting Swift files.
+
+The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹https://github.com/apple/swift-format›.
+
+Inside a Workspace configuration, the configuration for swift‐format is found under “proofreading.swiftFormatConfiguration” and it uses the Swift API from its own SwiftFormatConfiguration module. See ‹https://github.com/apple/swift-format/blob/0.50300.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
+
+Setting the entire property to nil will completely disable swift‐format.
+
+Subcommands
+
+help displays usage information.
+
+Options
+
+•language [language preference] A language to use instead of the one specified in preferences.
+•no‐colour Removes colour from the output.
+•project [path] The location of the target project if it is not at the current working directory.
+
+Argument Types
+
+[language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-CA” or “🇨🇦EN” → Canadian English, “cwd,en;fr” → both Woods Cree and English, otherwise French
+[path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
+
+0

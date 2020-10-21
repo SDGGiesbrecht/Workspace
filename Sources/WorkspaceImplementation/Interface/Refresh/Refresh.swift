@@ -38,10 +38,10 @@ extension Workspace {
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
           return
-            "refreshes the project by updating its components and readying it for development."
+            "refreshes the project by updating its components and readying it for development (provided any such tasks have been configured)."
         case .deutschDeutschland:
           return
-            "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung."
+            "frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung (vorausgesetzt, solche Aufgaben konfiguriert sind)."
         }
       })
 

@@ -1,6 +1,6 @@
 $ workspace refresh help •no‐colour
 
-workspace refresh refreshes the project by updating its components and readying it for development.
+workspace refresh refreshes the project by updating its components and readying it for development (provided any such tasks have been configured).
 
 Subcommands
 

@@ -4,7 +4,7 @@ arbeitsbereich automatisiert die Verwaltung von Swift‐Projekten.
 
 Unterbefehle
 
-auffrischen frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung.
+auffrischen frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung (vorausgesetzt, solche Aufgaben konfiguriert sind).
 dokumentieren erstellt Dokumentation über die Programmierschnittstellen.
 hilfe zeigt Gebrauchsinformationen an.
 korrekturlesen liest die Projektquellenstyl Korrektur.

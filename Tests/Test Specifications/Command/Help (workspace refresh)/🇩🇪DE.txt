@@ -1,6 +1,6 @@
 $ arbeitsbereich refresh help •no‐colour
 
-arbeitsbereich auffrischen frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung.
+arbeitsbereich auffrischen frischt das Projekt auf, durch Aktualisierungen der Bestandteile und Vorbereitungen für Entwicklung (vorausgesetzt, solche Aufgaben konfiguriert sind).
 
 Unterbefehle
 

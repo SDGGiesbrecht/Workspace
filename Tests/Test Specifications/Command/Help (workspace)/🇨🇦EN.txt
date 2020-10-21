@@ -9,7 +9,7 @@ document generates API documentation.
 help displays usage information.
 normalize normalizes the project’s files by removing trailing whitespace, applying Unix newlines, performing canonical decomposition and formatting Swift files.
 proofread proofreads the project’s source for style violations.
-refresh refreshes the project by updating its components and readying it for development.
+refresh refreshes the project by updating its components and readying it for development (provided any such tasks have been configured).
 test runs the project’s test targets.
 validate validates the project against a thorough battery of tests.
 

@@ -38,3 +38,9 @@ protocol ProtocolScope {
 /// let x = 0 // Should not warn; just documentation.
 /// ```
 internal struct Struct {}
+
+internal class Class {
+  deinit {
+    let x = 0 // Should not warn; local scope.
+  }
+}

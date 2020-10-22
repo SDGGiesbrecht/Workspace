@@ -117,6 +117,7 @@ internal struct AccessControl: SyntaxRule {
           // Local variables don’t need access control.
           ancestor.is(FunctionDeclSyntax.self)
             ∨ ancestor.is(InitializerDeclSyntax.self)
+            ∨ ancestor.is(DeinitializerDeclSyntax.self)
             ∨ ancestor.is(VariableDeclSyntax.self)
             ∨ ancestor.is(SubscriptDeclSyntax.self)
             // Protocol members cannot have access control.

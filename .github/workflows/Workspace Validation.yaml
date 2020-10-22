@@ -89,22 +89,20 @@ jobs:
           apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
             install --assume-yes \
               binutils \
-              clang-9 \
               git \
+              gnupg2 \
               libc6-dev \
               libcurl4 \
               libedit2 \
-              libgcc-5-dev \
+              libgcc-9-dev \
               libpython2.7 \
               libsqlite3-0 \
-              libstdc++-5-dev \
+              libstdc++-9-dev \
               libxml2 \
-              lld-6.0 \
+              libz3-dev \
               pkg-config \
               tzdata \
               zlib1g-dev
-        ubuntu2004 run \
-          ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
     - name: Install SwiftPM
       shell: bash
       run: |

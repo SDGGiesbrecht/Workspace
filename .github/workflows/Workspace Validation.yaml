@@ -131,7 +131,8 @@ jobs:
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
         ubuntu2004 run \
           TARGETING_WINDOWS='true' \
-          swift build --destination .github/workflows/Windows/SDK.json \
+          swift build --triple x86_64-unknown-windows-msvc \
+            --sdk //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \

@@ -154,7 +154,9 @@ internal enum FileType {
   case objectiveC
   case objectiveCPlusPlus
   case python
+  case ruby
   case shell
+  case stencil
   case strings
   case swift
   case swiftPackageManifest
@@ -188,10 +190,14 @@ internal enum FileType {
     "md": .markdown,
     "mm": .objectiveCPlusPlus,
     "pbxproj": .xcodeProject,
+    "podspec": .ruby,
     "py": .python,
+    "rb": .ruby,
     "sh": .shell,
+    "stencil": .stencil,
     "swift": .swift,
     "strings": .strings,
+    "xcplayground": .xml,
     "xcscheme": .xml,
     "xml": .xml,
     "yaml": .yaml,
@@ -263,11 +269,21 @@ internal enum FileType {
         blockCommentSyntax: BlockCommentSyntax(start: "#|", end: "|#"),
         lineCommentSyntax: LineCommentSyntax(start: ";")
       )
+    case .ruby:
+      return FileSyntax(
+        blockCommentSyntax: nil,
+        lineCommentSyntax: LineCommentSyntax(start: "#")
+      )
     case .python:
       return FileSyntax(
         blockCommentSyntax: nil,
         lineCommentSyntax: LineCommentSyntax(start: "#"),
         requiredFirstLineToken: "#!"
+      )
+    case .stencil:
+      return FileSyntax(
+        blockCommentSyntax: BlockCommentSyntax(start: "{#", end: "#}"),
+        lineCommentSyntax: nil
       )
 
     case .json:

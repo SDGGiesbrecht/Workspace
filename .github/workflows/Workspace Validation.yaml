@@ -104,7 +104,7 @@ jobs:
               pkg-config \
               tzdata \
               zlib1g-dev
-        ubuntu1804 run \
+        ubuntu2004 run \
           ln -s //usr/bin/lld-link-10 //usr/bin/lld-link
     - name: Install SwiftPM
       shell: bash

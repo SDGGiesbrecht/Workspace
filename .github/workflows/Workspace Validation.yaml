@@ -120,8 +120,6 @@ jobs:
         ubuntu2004 run \
           cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/usr //
         ubuntu2004 run \
-          ln -fs //usr/bin/clang-9 //usr/bin/clang
-        ubuntu2004 run \
           swift --version
     - name: Build
       shell: bash

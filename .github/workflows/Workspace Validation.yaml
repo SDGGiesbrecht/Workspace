@@ -82,7 +82,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        ubuntu2020 run \
+        ubuntu2004 run \
           apt-get update --assume-yes
         ubuntu2004 run \
           UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \

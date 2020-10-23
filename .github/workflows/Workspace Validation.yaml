@@ -132,6 +132,14 @@ jobs:
         ubuntu2004 run \
           echo '"${SDKROOT}"'
         ubuntu2004 run \
+          echo '"/${SDKROOT}"'
+        ubuntu2004 run \
+          echo '"/${SDKROOT}/usr/lib/swift"'
+        ubuntu2004 run \
+          echo '"/${SDKROOT}/usr/lib/swift/windows"'
+        ubuntu2004 run \
+          echo '"/${SDKROOT}/usr/lib/swift/windows/x86_64"'
+        ubuntu2004 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \

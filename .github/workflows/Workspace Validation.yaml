@@ -53,6 +53,8 @@ jobs:
         /tmp/swift-5.3-RELEASE-windows10.exe //passive
         export SDKROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
         echo "SDKROOT=${SDKROOT}" >> $GITHUB_ENV
+        export XCTESTROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development"
+        echo "XCTESTROOT=${XCTESTROOT}" >> $GITHUB_ENV
         cp "${SDKROOT}/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
@@ -128,7 +130,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p:SDKROOT/p
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p:SDKROOT/p:XCTESTROOT/p
         ubuntu2004 run \
           echo '"${SDKROOT}"'
         ubuntu2004 run \
@@ -139,6 +141,10 @@ jobs:
           echo '"/${SDKROOT}/usr/lib/swift/windows"'
         ubuntu2004 run \
           echo '"/${SDKROOT}/usr/lib/swift/windows/x86_64"'
+        ubuntu2004 run \
+          echo '"/${XCTESTROOT}/usr/lib/swift/windows/x86_64"'
+        ubuntu2004 run \
+          echo '"/${XCTESTROOT}/usr/lib/swift/windows"'
         ubuntu2004 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
@@ -158,8 +164,8 @@ jobs:
             -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
-            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
-            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
+            -Xswiftc -I -Xswiftc '"/${XCTESTROOT}/usr/lib/swift/windows/x86_64"' \
+            -Xswiftc -L -Xswiftc '"/${XCTESTROOT}/usr/lib/swift/windows"'
     - name: Test
       shell: bash
       run: |

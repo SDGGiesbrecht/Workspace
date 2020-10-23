@@ -53,8 +53,6 @@ jobs:
         /tmp/swift-5.3-RELEASE-windows10.exe //passive
         export SDKROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
         echo "SDKROOT=${SDKROOT}" >> $GITHUB_ENV
-        export XCTESTROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development"
-        echo "XCTESTROOT=${XCTESTROOT}" >> $GITHUB_ENV
         cp "${SDKROOT}/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
@@ -130,28 +128,17 @@ jobs:
       shell: bash
       run: |
         set -x
-        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p:SDKROOT/p:XCTESTROOT/p
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p:SDKROOT/p
         ubuntu2004 run \
           echo '"${SDKROOT}"'
-        ubuntu2004 run \
-          echo '"/${SDKROOT}"'
-        ubuntu2004 run \
-          echo '"/${SDKROOT}/usr/lib/swift"'
-        ubuntu2004 run \
-          echo '"/${SDKROOT}/usr/lib/swift/windows"'
-        ubuntu2004 run \
-          echo '"/${SDKROOT}/usr/lib/swift/windows/x86_64"'
-        ubuntu2004 run \
-          echo '"/${XCTESTROOT}/usr/lib/swift/windows/x86_64"'
-        ubuntu2004 run \
-          echo '"/${XCTESTROOT}/usr/lib/swift/windows"'
         ubuntu2004 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \
-            -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
-            -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
-            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
+            -Xswiftc -sdk -Xswiftc '"/${SDKROOT}"' \
+            -Xswiftc -resource-dir -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
+            -Xswiftc -I -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
+            -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows"' \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \

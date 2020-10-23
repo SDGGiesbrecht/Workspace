@@ -157,4 +157,4 @@ jobs:
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
         find .build/x86_64-unknown-windows-msvc/debug
-        .build/x86_64-unknown-windows-msvc/debug/WorkspacePackageTests.xctest
+        .build/x86_64-unknown-windows-msvc/debug/WorkspacePackageTests.xctest.exe

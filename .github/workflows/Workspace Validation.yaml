@@ -150,7 +150,7 @@ jobs:
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
-            -Xswiftc -resource-dir -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
+            -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
             -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows"' \
             -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows/x86_64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \

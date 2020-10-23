@@ -164,8 +164,8 @@ jobs:
             -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
-            -Xswiftc -I -Xswiftc '"/${XCTESTROOT}/usr/lib/swift/windows/x86_64"' \
-            -Xswiftc -L -Xswiftc '"/${XCTESTROOT}/usr/lib/swift/windows"'
+            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
     - name: Test
       shell: bash
       run: |

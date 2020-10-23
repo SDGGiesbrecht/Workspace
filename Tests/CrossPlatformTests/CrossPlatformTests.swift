@@ -42,10 +42,10 @@ final class Tests: TestCase {
     #else
       // #workaround(Segmentation fault—worked until switch to debug mode.)
       #if !os(Windows)
-      _ = try Git.runCustomSubcommand(
-        ["\u{2D}\u{2D}version"],
-        versionConstraints: Version(0)..<Version(Int.max)
-      ).get()
+        _ = try Git.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(0)..<Version(Int.max)
+        ).get()
       #endif
     #endif
   }

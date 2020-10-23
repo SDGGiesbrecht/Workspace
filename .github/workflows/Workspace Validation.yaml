@@ -137,7 +137,6 @@ jobs:
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc '"/${SDKROOT}"' \
             -Xswiftc -resource-dir -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
-            -Xswiftc -I -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
             -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows"' \
             -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows/x86_64"' \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \

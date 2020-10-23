@@ -135,7 +135,7 @@ jobs:
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \
-            -Xswiftc -resource-dir -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
+            -Xswiftc -sdk -Xswiftc '"/${SDKROOT}"' \
             -Xswiftc -I -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
             -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows"' \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \

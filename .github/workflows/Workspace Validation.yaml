@@ -128,16 +128,14 @@ jobs:
       shell: bash
       run: |
         set -x
-        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p:SDKROOT/p
-        ubuntu2004 run \
-          echo '"${SDKROOT}"'
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
         ubuntu2004 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \
-            -Xswiftc -sdk -Xswiftc '"/${SDKROOT}"' \
-            -Xswiftc -resource-dir -Xswiftc '"/${SDKROOT}/usr/lib/swift"' \
-            -Xswiftc -L -Xswiftc '"/${SDKROOT}/usr/lib/swift/windows"' \
+            -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
+            -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \

@@ -48,7 +48,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   internal static let currentXcodeVersion = Version(12)
   private static let currentWindowsVersion = "10"
   private static let currentVisualStudioVersion = "2019"
-  private static let currentWSLImage = "1804"
+  private static let currentWSLImage = "2004"
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
   private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
@@ -955,7 +955,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://aka.ms/wsl\u{2D}ubuntu\u{2D}\(ContinuousIntegrationJob.currentWSLImage)",
+                "https://aka.ms/wslubuntu\(ContinuousIntegrationJob.currentWSLImage)",
                 andUnzipTo: ".build/SDG/Linux/Ubuntu",
                 localTemporaryDirectory: true,
                 use7z: true
@@ -971,24 +971,25 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               aptGet(
                 [
                   "binutils",
-                  "clang\u{2D}9",
                   "git",
+                  "gnupg2",
                   "libc6\u{2D}dev",
                   "libcurl4",
                   "libedit2",
-                  "libgcc\u{2D}5\u{2D}dev",
+                  "libgcc\u{2D}9\u{2D}dev",
                   "libpython2.7",
                   "libsqlite3\u{2D}0",
-                  "libstdc++\u{2D}5\u{2D}dev",
+                  "libstdc++\u{2D}9\u{2D}dev",
                   "libxml2",
-                  "lld\u{2D}6.0",
+                  "libz3\u{2D}dev",
+                  "lld\u{2D}10",
                   "pkg\u{2D}config",
                   "tzdata",
                   "zlib1g\u{2D}dev",
                 ],
                 wsl: true
               ),
-              wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}6.0 //usr/bin/lld\u{2D}link"),
+              wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}10 //usr/bin/lld\u{2D}link"),
             ]
           ),
           script(
@@ -996,11 +997,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu1804/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu18.04.tar.gz",
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ContinuousIntegrationJob.currentWSLImage)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion).tar.gz",
                 andUntarTo: "/",
                 wsl: true
               ),
-              wsl("ln \u{2D}fs //usr/bin/clang\u{2D}9 //usr/bin/clang"),
               wsl("swift \u{2D}\u{2D}version"),
             ]
           ),
@@ -1013,12 +1013,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                 [
                   "\(ContinuousIntegrationJob.windows.environmentVariable)=\u{27}true\u{27} \u{5C}",
                   "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
-                  "  \u{2D}\u{2D}configuration release \u{2D}Xswiftc \u{2D}enable\u{2D}testing \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}sdk \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
+                  "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
-                  "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
                   "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}\u{27} \u{5C}",
@@ -1044,7 +1043,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               compressPATH(),
-              ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/release/WindowsTests.exe",
+              ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/debug/WindowsTests.exe",
             ]
           )
         )

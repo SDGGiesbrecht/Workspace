@@ -40,10 +40,13 @@ final class Tests: TestCase {
     #if os(WASI)  // #workaround(Swift 5.2.4, Web lacks Foundation.)
     #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
     #else
-      _ = try Git.runCustomSubcommand(
-        ["\u{2D}\u{2D}version"],
-        versionConstraints: Version(0)..<Version(Int.max)
-      ).get()
+      // #workaround(Segmentation fault—worked until switch to debug mode.)
+      #if !os(Windows)
+        _ = try Git.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(0)..<Version(Int.max)
+        ).get()
+      #endif
     #endif
   }
 

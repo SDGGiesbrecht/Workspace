@@ -100,73 +100,71 @@ jobs:
         set -x
         mkdir -p .build/SDG/tmp
         curl --location \
-          'https://aka.ms/wsl-ubuntu-1804' \
-          --output '.build/SDG/tmp/wsl-ubuntu-1804'
-        7z x .build/SDG/tmp/wsl-ubuntu-1804 -o.build/SDG/Linux/Ubuntu
+          'https://aka.ms/wslubuntu2004' \
+          --output '.build/SDG/tmp/wslubuntu2004'
+        7z x .build/SDG/tmp/wslubuntu2004 -o.build/SDG/Linux/Ubuntu
         export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
-        ubuntu1804 install --root
+        ubuntu2004 install --root
     - name: Install SwiftPM dependencies
       shell: bash
       run: |
         set -x
-        ubuntu1804 run \
+        ubuntu2004 run \
           apt-get update --assume-yes
-        ubuntu1804 run \
+        ubuntu2004 run \
           UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
           apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
             install --assume-yes \
               binutils \
-              clang-9 \
               git \
+              gnupg2 \
               libc6-dev \
               libcurl4 \
               libedit2 \
-              libgcc-5-dev \
+              libgcc-9-dev \
               libpython2.7 \
               libsqlite3-0 \
-              libstdc++-5-dev \
+              libstdc++-9-dev \
               libxml2 \
-              lld-6.0 \
+              libz3-dev \
+              lld-10 \
               pkg-config \
               tzdata \
               zlib1g-dev
-        ubuntu1804 run \
-          ln -s //usr/bin/lld-link-6.0 //usr/bin/lld-link
+        ubuntu2004 run \
+          ln -s //usr/bin/lld-link-10 //usr/bin/lld-link
     - name: Install SwiftPM
       shell: bash
       run: |
         set -x
-        ubuntu1804 run \
+        ubuntu2004 run \
           mkdir -p /tmp
-        ubuntu1804 run \
+        ubuntu2004 run \
           curl --location \
-            'https://swift.org/builds/swift-5.3-release/ubuntu1804/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu18.04.tar.gz' \
-            --output '/tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz'
-        ubuntu1804 run \
-          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu18.04.tar.gz --directory /tmp
-        ubuntu1804 run \
+            'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
+            --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+        ubuntu2004 run \
+          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        ubuntu2004 run \
           mkdir -p /
-        ubuntu1804 run \
-          cp -R /tmp/swift-5.3-RELEASE-ubuntu18.04/usr //
-        ubuntu1804 run \
-          ln -fs //usr/bin/clang-9 //usr/bin/clang
-        ubuntu1804 run \
+        ubuntu2004 run \
+          cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/usr //
+        ubuntu2004 run \
           swift --version
     - name: Build
       shell: bash
       run: |
         set -x
         export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
-        ubuntu1804 run \
+        ubuntu2004 run \
           TARGETING_WINDOWS='true' \
           swift build --destination .github/workflows/Windows/SDK.json \
-            --configuration release -Xswiftc -enable-testing \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
             -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
+            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
             -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
-            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows/x86_64 \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64"' \
@@ -185,7 +183,7 @@ jobs:
       run: |
         set -x
         export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
-        .build/x86_64-unknown-windows-msvc/release/WindowsTests.exe
+        .build/x86_64-unknown-windows-msvc/debug/WindowsTests.exe
   Web:
     name: Web
     runs-on: macos-10.15

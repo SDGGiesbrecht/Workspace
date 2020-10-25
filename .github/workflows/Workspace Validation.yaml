@@ -63,7 +63,6 @@ jobs:
           --build-tests --enable-test-discovery \
           --triple x86_64-unknown-linux-android \
           --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk\
-          -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \

@@ -574,13 +574,12 @@ jobs:
         set -x
         export TARGETING_ANDROID=true
         export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
-        swift build --destination .github/workflows/Android/SDK.json \
+        swift build --triple x86_64-unknown-linux-android \
           --build-tests --enable-test-discovery \
-          -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
+          --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
           -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64
     - name: Bibliotheken kopieren
       shell: bash
       run: |

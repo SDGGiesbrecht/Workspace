@@ -5,7 +5,6 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
-.github/workflows/Android/SDK.json
 .github/workflows/Windows/SDK.json
 .github/workflows/Workspace Validation.yaml
 .gitignore

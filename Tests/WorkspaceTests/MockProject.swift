@@ -76,7 +76,7 @@ extension PackageRepository {
     withDependency: Bool = false,
     withCustomTask: Bool = false,
     overwriteSpecificationInsteadOfFailing: Bool,
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line
   ) where L: InputLocalization {
 

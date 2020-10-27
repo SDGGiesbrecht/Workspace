@@ -21,7 +21,7 @@ let repositoryRoot: URL = {
     // @exempt(from: tests)
     return URL(fileURLWithPath: overridden)
   } else {
-    var result = URL(fileURLWithPath: #file)
+    var result = URL(fileURLWithPath: #filePath)
     for _ in 1...3 {
       result.deleteLastPathComponent()
     }

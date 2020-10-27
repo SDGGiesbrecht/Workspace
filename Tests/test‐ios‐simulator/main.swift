@@ -28,7 +28,7 @@ do {
   #if !os(WASI)
     ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
-    let repositoryRoot = URL(fileURLWithPath: #file).deletingLastPathComponent()
+    let repositoryRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
       .deletingLastPathComponent().deletingLastPathComponent()
 
     let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")

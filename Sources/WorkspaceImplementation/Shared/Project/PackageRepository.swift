@@ -474,6 +474,8 @@ import WorkspaceProjectConfiguration
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
           var ignoredURLs: [URL] = try ignoredFiles().get()
+          #warning("Debugging...")
+          print("Ignored list", ignoredURLs.map({ $0.path }))
           ignoredURLs.append(location.appendingPathComponent(".git"))
 
           let result = try allFiles().filter { (url) in

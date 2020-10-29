@@ -544,10 +544,30 @@ let package = Package(
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(name: "SwiftPM\u{2D}auto", package: "SwiftPM"),
-        .product(name: "SwiftSyntax", package: "SwiftSyntax"),
+        .product(
+          name: "SwiftPM\u{2D}auto",
+          package: "SwiftPM",
+          // #workaround(SwiftPM 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50300.0, Does not support Andriod yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux])
+        ),
+        .product(
+          name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
-        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormat",
+          package: "swift\u{2D}format",
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
+          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
+          // #workaround(SwiftSyntax 0.50300.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
+        ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
       ]
@@ -774,23 +794,7 @@ let package = Package(
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.2.4, These cannot build on Windows.)
-  let impossibleDependencies = [
-    "SwiftPM",
-    "SwiftSyntax",
-    "SwiftFormat\u{22}",
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        "\(dependency)".contains(impossible)
-      })
-    })
-  }
-}
-
-if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.2.4, These cannot build on Android.)
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",
@@ -806,28 +810,18 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  // #workaround(Swift 5.2.4, Web won’t resolve manifests with dynamic libraries.)
-  let impossiblePackages: [String] = [
-    "swift\u{2D}package\u{2D}manager"
+  let impossibleDependencies: [String] = [
+    // #workaround(Swift 5.3, Web toolchain rejects manifest due to dynamic library.)
+    "SwiftPM",
+    // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
+    "SwiftSyntax",
+    "SwiftFormat\u{22}",
   ]
   package.dependencies.removeAll(where: { dependency in
-    for impossible in impossiblePackages {
-      if dependency.url.hasSuffix(impossible) {
-        return true
-      }
-    }
-    return false
+    return impossibleDependencies.contains(where: { impossible in
+      return (dependency.name ?? dependency.url).contains(impossible)
+    })
   })
-  // #workaround(Swift 5.2.4, Cannot build for web.)
-  let impossibleDependencies: Set<String> = [
-    // SwiftFormat
-    "SwiftFormat\u{22}",
-    "SwiftFormatConfiguration",
-    // SwiftPM
-    "SwiftPM",
-    // SwiftSyntax
-    "SwiftSyntax",
-  ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       return impossibleDependencies.contains(where: { impossible in
@@ -836,8 +830,24 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     })
   }
   for target in package.targets {
-    // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
     target.exclude.append("Resources.swift")
+  }
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
+  let impossibleDependencies = [
+    "SwiftPM",
+    "SwiftSyntax",
+    "SwiftFormat\u{22}",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        "\(dependency)".contains(impossible)
+      })
+    })
   }
 }
 

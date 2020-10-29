@@ -816,6 +816,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
+    // #workaround(Swift 5.3, Excluding only web causes manifest to crash.)
+    "SwiftFormatConfiguration"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in

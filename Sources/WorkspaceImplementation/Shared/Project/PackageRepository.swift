@@ -474,22 +474,21 @@ import WorkspaceProjectConfiguration
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
           var ignoredURLs: [URL] = try ignoredFiles().get()
-          #warning("Debugging...")
-          print("Ignored list", ignoredURLs.map({ $0.path }))
           ignoredURLs.append(location.appendingPathComponent(".git"))
+          // #workaround(SDGSwift 3.0.0, Git started quoting “Validate (macOS).command” and SDGSwift doesn’t catch it yet.)
+          ignoredURLs = Array(ignoredURLs.map({ url in
+            return [
+              url,
+              URL(fileURLWithPath: url.path.replacingOccurrences(of: "\u{5C}\u{22}", with: ""))
+            ]
+          }).joined())
 
-          let result = try allFiles().filter { (url) in
-            #warning("Debugging...")
-            print("Checking", url.path)
+          let result = try allFiles().filter { url in
             for ignoredURL in ignoredURLs {
               if url.is(in: ignoredURL) {
-                #warning("Debugging...")
-                print("Ignored.")
                 return false
               }
             }
-            #warning("Debugging...")
-            print("Tracked.")
             return true
           }
           return result

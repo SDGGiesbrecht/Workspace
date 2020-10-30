@@ -484,8 +484,6 @@ import WorkspaceProjectConfiguration
               ]
             }).joined()
           )
-          #warning("Debugging...")
-          print(ignoredURLs.map({ $0.path }))
 
           let result = try allFiles().filter { url in
             for ignoredURL in ignoredURLs {

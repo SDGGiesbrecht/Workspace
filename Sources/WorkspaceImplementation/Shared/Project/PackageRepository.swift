@@ -480,7 +480,7 @@ import WorkspaceProjectConfiguration
             ignoredURLs.map({ url in
               return [
                 url,
-                URL(fileURLWithPath: url.path.replacingOccurrences(of: "\u{5C}\u{22}", with: "")),
+                URL(fileURLWithPath: url.path.replacingOccurrences(of: "\u{22}", with: "")),
               ]
             }).joined()
           )

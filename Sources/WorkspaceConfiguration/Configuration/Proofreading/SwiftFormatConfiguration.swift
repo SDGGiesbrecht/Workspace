@@ -50,7 +50,7 @@
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(swift-format 0.50200.1, Leads to crash.) @exempt(from: unicode)
+      // #workaround(swift-format 0.50300.0, Leads to crash.) @exempt(from: unicode)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

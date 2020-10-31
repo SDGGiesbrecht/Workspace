@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+// #workaround(Swift 5.3, SwiftFormat cannot build.)
 #if !os(WASI)
   // @localization(🇩🇪DE) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
   /// Eine SwiftFormat‐Konfiguration.
@@ -45,12 +45,12 @@
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(swift-format 0.50200.1, Can these be restored?) @exempt(from: unicode)
+      // #workaround(swift-format 0.50300.0, Can these be restored?) @exempt(from: unicode)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
 
       configuration.lineBreakBeforeEachArgument = true
       configuration.lineBreakBeforeEachGenericRequirement = true
-      // #workaround(swift-format 0.50200.1, Leads to crash.) @exempt(from: unicode)
+      // #workaround(swift-format 0.50300.0, Leads to crash.) @exempt(from: unicode)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
       return configuration
     }

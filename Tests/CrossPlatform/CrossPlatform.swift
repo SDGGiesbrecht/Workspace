@@ -34,7 +34,7 @@
 
 import CrossPlatformC
 
-// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+// #workaround(Swift 5.3, SwiftFormat cannot build.)
 #if !os(WASI)
   import SwiftFormatConfiguration  // External package.
 #endif
@@ -54,7 +54,7 @@ public func helloWorld() {
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
   helloC()
-  // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+  // #workaround(Swift 5.3, SwiftFormat cannot build.)
   #if !os(WASI)
     print(Configuration())
   #endif

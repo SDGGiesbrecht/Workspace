@@ -39,7 +39,7 @@ import WorkspaceLocalizations
     // MARK: - Structure
 
     private func targets() throws -> [Target] {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
         return []
       #else
         return try cachedPackage().targets.lazy.map { loaded in

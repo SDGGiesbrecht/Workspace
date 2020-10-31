@@ -30,7 +30,7 @@ import SDGCommandLine
 import SDGSwift
 import SDGSwiftPackageManager
 
-// #workaround(SwiftPM 0.6.0, Cannot build.)
+// #workaround(SwiftPM 0.7.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
   import SwiftFormat
@@ -46,7 +46,7 @@ import WorkspaceLocalizations
 
       // MARK: - Initialization
 
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      // #workaround(SwiftPM 0.7.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         internal init(
           loadedTarget: PackageModel.Target,
@@ -59,14 +59,14 @@ import WorkspaceLocalizations
 
       // MARK: - Properties
 
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      // #workaround(SwiftPM 0.7.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         private let loadedTarget: PackageModel.Target
       #endif
       private let package: PackageRepository
 
       internal var name: String {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
           return ""
         #else
           return loadedTarget.name
@@ -74,7 +74,7 @@ import WorkspaceLocalizations
       }
 
       private var sourceDirectory: URL {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
+        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
           return package.location
         #else
           return loadedTarget.sources.root.asURL
@@ -108,7 +108,7 @@ import WorkspaceLocalizations
         of package: PackageRepository
       ) throws -> StrictString {
         let accessControl: String
-        // #workaround(SwiftPM 0.6.0, Cannot build.)
+        // #workaround(SwiftPM 0.7.0, Cannot build.)
         #if os(Windows) || os(WASI) || os(Android)
           accessControl = ""
         #else

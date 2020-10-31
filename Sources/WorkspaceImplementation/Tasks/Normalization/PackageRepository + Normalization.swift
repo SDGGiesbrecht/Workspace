@@ -26,7 +26,7 @@ import SDGCollections
 import SDGCommandLine
 
 import SDGSwift
-// #workaround(SwiftPM 0.6.0, Cannot build.)
+// #workaround(SwiftPM 0.7.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
@@ -37,7 +37,7 @@ import SDGSwift
 
     internal func normalize(output: Command.Output) throws {
 
-      // #workaround(SwiftPM 0.6.0, Cannot build.)
+      // #workaround(SwiftPM 0.7.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         var formatter: SwiftFormatter?
         if let formatConfiguration = try configuration(output: output).proofreading
@@ -53,7 +53,7 @@ import SDGSwift
           if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)
 
-            // #workaround(SwiftPM 0.6.0, Cannot build.)
+            // #workaround(SwiftPM 0.7.0, Cannot build.)
             #if !(os(Windows) || os(WASI) || os(Android))
               if let formatter = formatter,
                 file.fileType == .swift ∨ file.fileType == .swiftPackageManifest

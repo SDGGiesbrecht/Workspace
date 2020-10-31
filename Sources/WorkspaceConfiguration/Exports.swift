@@ -30,7 +30,7 @@
 
 @_exported import SDGSwiftConfiguration
 
-// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+// #workaround(Swift 5.3, SwiftFormat cannot build.)
 #if !os(WASI)
   @_exported import SwiftFormatConfiguration
 #endif

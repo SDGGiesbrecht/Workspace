@@ -36,7 +36,7 @@ import SDGSwiftSource
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
-// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+// #workaround(Swift 5.3, SwiftFormat cannot build.)
 #if !os(WASI)
   import SwiftFormatConfiguration
 #endif

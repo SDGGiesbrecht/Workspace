@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+// #workaround(Swift 5.3, SwiftFormat cannot build.)
 #if !os(WASI)
   // @localization(🇩🇪DE) @notLocalized(🇬🇧EN) @notLocalized(🇺🇸EN) @notLocalized(🇨🇦EN)
   /// Eine SwiftFormat‐Konfiguration.

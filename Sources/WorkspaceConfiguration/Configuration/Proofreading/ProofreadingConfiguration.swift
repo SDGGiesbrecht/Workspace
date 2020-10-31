@@ -29,7 +29,7 @@ public typealias Korrektureinstellungen = ProofreadingConfiguration
 /// ```
 public struct ProofreadingConfiguration: Codable {
 
-  // #workaround(swift-format 0.50200.1, listSeparation is disabled because SwiftFormat ignores its configuration.) @exempt(from: unicode)
+  // #workaround(swift-format 0.50300.0, listSeparation is disabled because SwiftFormat ignores its configuration.) @exempt(from: unicode)
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingConfiguration.rules)
   /// The set of active proofreading rules.
@@ -49,7 +49,7 @@ public struct ProofreadingConfiguration: Codable {
     set { rules = newValue }
   }
 
-  // #workaround(Swift 5.2.4, SwiftFormat cannot build.)
+  // #workaround(Swift 5.3, SwiftFormat cannot build.)
   #if !os(WASI)
     // @localization(🇩🇪DE) @crossReference(swiftFormatConfiguration)
     /// Die SwiftFormat‐Konfiguration.

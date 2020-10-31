@@ -45,7 +45,7 @@
       configuration.rules["AllPublicDeclarationsHaveDocumentation"] = false
 
       // Bugs currently result in false positives.
-      // #workaround(swift-format 0.50200.1, Can these be restored?) @exempt(from: unicode)
+      // #workaround(swift-format 0.50300.0, Can these be restored?) @exempt(from: unicode)
       configuration.rules["AlwaysUseLowerCamelCase"] = false
 
       configuration.lineBreakBeforeEachArgument = true

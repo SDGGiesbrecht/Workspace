@@ -50,7 +50,7 @@ import WorkspaceConfiguration
     // MARK: - Properties
 
     internal func hasTargetsToDocument() throws -> Bool {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.6.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
         return true
       #else
         return try cachedPackage().products.contains(where: { $0.type.isLibrary })

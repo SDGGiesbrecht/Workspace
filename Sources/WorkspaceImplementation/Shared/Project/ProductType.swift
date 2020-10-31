@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SwiftPM 0.6.0, Cannot build.)
+// #workaround(SwiftPM 0.7.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
 

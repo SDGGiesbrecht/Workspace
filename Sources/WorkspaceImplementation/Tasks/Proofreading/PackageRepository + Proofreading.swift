@@ -87,7 +87,7 @@ import WorkspaceLocalizations
         {
           settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
         }
-        // #workaround(SwiftPM 0.6.0, Cannot build.)
+        // #workaround(SwiftPM 0.7.0, Cannot build.)
         #if !(os(Windows) || os(WASI) || os(Android))
           for target in try cachedPackage().targets {
             let setting: Setting?

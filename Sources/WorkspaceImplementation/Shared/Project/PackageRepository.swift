@@ -190,7 +190,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Manifest
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
       internal func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
@@ -204,7 +204,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.2.4, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
       internal func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()

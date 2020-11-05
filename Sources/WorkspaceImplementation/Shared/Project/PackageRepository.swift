@@ -51,7 +51,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Cache
 
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+    #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
       // This needs to be reset if any files are added, renamed, or deleted.
       private class FileCache {
         fileprivate var allFiles: [URL]?
@@ -70,7 +70,7 @@ import WorkspaceProjectConfiguration
     #endif
 
     internal func resetFileCache(debugReason: String) {
-      #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         PackageRepository.fileCaches[location] = FileCache()
       #endif
       #if DEBUG
@@ -80,7 +80,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+    #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
       // This only needs to be reset if a Swift source file is added, renamed, or removed.
       // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
       // Changes to support files do not require a reset (read‐me, etc.).
@@ -106,7 +106,7 @@ import WorkspaceProjectConfiguration
 
     internal func resetManifestCache(debugReason: String) {
       resetFileCache(debugReason: debugReason)
-      #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         PackageRepository.manifestCaches[location] = ManifestCache()
       #endif
       #if DEBUG
@@ -116,7 +116,7 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+    #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
       // These do not need to be reset during the execution of any command. (They do between tests.)
       private class ConfigurationCache {
         // Nothing modifies the package, product or module names or adds removes entries.
@@ -140,7 +140,7 @@ import WorkspaceProjectConfiguration
 
     internal func resetConfigurationCache(debugReason: String) {
       resetManifestCache(debugReason: "testing")
-      #if !os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         PackageRepository.configurationCaches[location] = ConfigurationCache()
       #endif
       #if DEBUG
@@ -279,7 +279,7 @@ import WorkspaceProjectConfiguration
     // MARK: - Configuration
 
     internal func configurationContext() throws -> WorkspaceContext {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return WorkspaceContext(
           _location: location,
           manifest: PackageManifest(_packageName: String(try packageName()), products: [])
@@ -332,7 +332,7 @@ import WorkspaceProjectConfiguration
       })
 
     internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return WorkspaceConfiguration()
       #else
         return try cached(in: &configurationCache.configuration) {
@@ -385,7 +385,7 @@ import WorkspaceProjectConfiguration
     }
 
     internal func fileHeader(output: Command.Output) throws -> StrictString {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return ""
       #else
         return try cached(in: &configurationCache.fileHeader) {
@@ -399,7 +399,7 @@ import WorkspaceProjectConfiguration
     internal func documentationCopyright(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &configurationCache.documentationCopyright) {
@@ -411,7 +411,7 @@ import WorkspaceProjectConfiguration
     }
 
     internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &configurationCache.readMe) {
@@ -425,7 +425,7 @@ import WorkspaceProjectConfiguration
     internal func contributingInstructions(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: Markdown] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &configurationCache.contributingInstructions) {
@@ -439,7 +439,7 @@ import WorkspaceProjectConfiguration
     internal func issueTemplates(
       output: Command.Output
     ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &configurationCache.issueTemplates) {
@@ -453,7 +453,7 @@ import WorkspaceProjectConfiguration
     // MARK: - Files
 
     internal func allFiles() throws -> [URL] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return []
       #else
         return try cached(in: &fileCache.allFiles) { () -> [URL] in
@@ -468,7 +468,7 @@ import WorkspaceProjectConfiguration
     }
 
     internal func trackedFiles(output: Command.Output) throws -> [URL] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return []
       #else
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
@@ -499,7 +499,7 @@ import WorkspaceProjectConfiguration
     }
 
     internal func sourceFiles(output: Command.Output) throws -> [URL] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return []
       #else
         let configuration = try self.configuration(output: output)
@@ -524,7 +524,7 @@ import WorkspaceProjectConfiguration
     internal func _withExampleCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &fileCache.examples) {
@@ -536,7 +536,7 @@ import WorkspaceProjectConfiguration
     internal func _withDocumentationCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.2.4, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
         return [:]
       #else
         return try cached(in: &fileCache.documentation) {

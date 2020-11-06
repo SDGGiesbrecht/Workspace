@@ -42,7 +42,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 0)
-  private static let currentExperimentalSwiftWebSnapshot = "2020\u{2D}09\u{2D}13"
 
   private static let currentMacOSVersion = Version(10, 15)
   internal static let currentXcodeVersion = Version(12)
@@ -406,12 +405,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private var gitHubActionMachine: StrictString {
     switch platform {
     // #workaround(Swift 5.2.4, Linux cannot find Dispatch in Web toolchain.)
-    case .macOS, .web:
+    case .macOS:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
     case .windows:
       return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
-    case .centOS, .ubuntu, .android, .amazonLinux:
+    case .web, .centOS, .ubuntu, .android, .amazonLinux:
       return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
@@ -823,17 +822,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .web:
-        let snapshot = ContinuousIntegrationJob.currentExperimentalSwiftWebSnapshot
-        let releaseName: StrictString =
-          "swift\u{2D}wasm\u{2D}5.3\u{2D}SNAPSHOT\u{2D}\(snapshot)\u{2D}a"
+        let version = ContinuousIntegrationJob.currentSwiftVersion.string()
         result.append(
           script(
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/swiftwasm/swift/releases/download/\(releaseName)/\(releaseName)\u{2D}osx.tar.gz",
-                named: releaseName,
+                "https://github.com/swiftwasm/swift/releases/download/swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion)_x86_64.tar.gz",
+                named: "swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE",
                 andUntarTo: ".build/SDG/Swift"
               ),
               ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",

@@ -24,7 +24,9 @@
   #endif
 #endif
 #if canImport(FoundationXML)
-  import FoundationXML
+  #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
+    import FoundationXML
+  #endif
 #endif
 
 // #workaround(Swift 5.2.4, Web lacks Dispatch.)

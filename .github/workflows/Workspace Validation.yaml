@@ -186,7 +186,7 @@ jobs:
         .build/x86_64-unknown-windows-msvc/debug/WindowsTests.exe
   Web:
     name: Web
-    runs-on: macos-10.15
+    runs-on: ubuntu-20.04
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -200,11 +200,11 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz' \
-          --output '/tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz'
-        tar --extract --file /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a-osx.tar.gz --directory /tmp
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3.0-RELEASE/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz' \
+          --output '/tmp/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz'
+        tar --extract --file /tmp/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        cp -R /tmp/swift-wasm-5.3-SNAPSHOT-2020-09-13-a/* .build/SDG/Swift
+        cp -R /tmp/swift-wasm-5.3.0-RELEASE/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash

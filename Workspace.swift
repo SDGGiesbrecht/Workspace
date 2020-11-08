@@ -22,7 +22,7 @@ public enum Metadata {
   // Set this to latestStableVersion for release commits, nil the rest of the time.
   public static let thisVersion: Version? = nil
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     public static let packageURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
     public static let issuesURL = packageURL.appendingPathComponent("issues")
@@ -42,7 +42,7 @@ public let configuration: WorkspaceConfiguration = {
   configuration.supportedPlatforms.remove(.watchOS)
 
   configuration.documentation.currentVersion = Metadata.latestStableVersion
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     configuration.documentation.projectWebsite = URL(
       string: "https://github.com/SDGGiesbrecht/Workspace#workspace"

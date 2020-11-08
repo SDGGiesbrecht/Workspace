@@ -42,7 +42,7 @@ public enum Workspace {
           "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let projectOption = Option(
       name: projectName,
@@ -51,7 +51,7 @@ public enum Workspace {
     )
   #endif
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if os(WASI)
     internal static let standardOptions: [AnyOption] = []
   #else

@@ -64,7 +64,7 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           try options.project.refreshReadMe(output: output)
         #endif

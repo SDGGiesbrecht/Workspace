@@ -22,7 +22,7 @@ import SDGSwift
 
 extension Command.Output {
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)

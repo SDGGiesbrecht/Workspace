@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -34,7 +34,7 @@ internal enum FileType {
 
   // MARK: - Static Properties
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private static var unsupportedFileTypesEncountered: [String: URL] = [:]
     internal static func resetUnsupportedFileTypes() {
@@ -108,7 +108,7 @@ internal enum FileType {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal init?(url: URL) {
 

@@ -39,13 +39,16 @@ public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
   #if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
-    print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks FoundationNetworking.)
+      print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+    #endif
   #endif
-  // #workaround(Swift 5.3, FoundationXML is broken.)
-  #if !os(WASI)
+  #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  print(DispatchQueue(label: "Hello, Dispatch!"))
+  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks DispatchQueue.)
+    print(DispatchQueue(label: "Hello, Dispatch!"))
+  #endif
   helloC()
   // #workaround(Swift 5.3, SwiftFormat cannot build.)
   #if !os(WASI)

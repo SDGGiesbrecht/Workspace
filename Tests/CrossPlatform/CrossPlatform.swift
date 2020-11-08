@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 #if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
   #if canImport(FoundationNetworking)
     import FoundationNetworking
@@ -29,10 +26,7 @@
   #endif
 #endif
 
-// #workaround(Swift 5.2.4, Web lacks Dispatch.)
-#if !os(WASI)
-  import Dispatch
-#endif
+import Dispatch
 
 import CrossPlatformC
 
@@ -43,18 +37,15 @@ import CrossPlatformC
 
 public func helloWorld() {
   print("Hello, world!")
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  print(NSString(string: "Hello, Foundation!"))
+  #if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
+    print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
+  #endif
+  // #workaround(Swift 5.3, FoundationXML is broken.)
   #if !os(WASI)
-    print(NSString(string: "Hello, Foundation!"))
-    #if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
-      print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
-    #endif
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  // #workaround(Swift 5.2.4, Web lacks Dispatch.)
-  #if !os(WASI)
-    print(DispatchQueue(label: "Hello, Dispatch!"))
-  #endif
+  print(DispatchQueue(label: "Hello, Dispatch!"))
   helloC()
   // #workaround(Swift 5.3, SwiftFormat cannot build.)
   #if !os(WASI)

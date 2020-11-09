@@ -33,7 +33,7 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private static let template: StrictString = {
       var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
@@ -119,7 +119,7 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
     #if os(WASI)
       var mutable: StrictString = ""
     #else

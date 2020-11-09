@@ -64,7 +64,7 @@ extension Workspace.Refresh {
           try executeAsStep(withArguments: arguments, options: options, output: output)
         }
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           let projectName = try options.project.localizedIsolatedProjectName(output: output)
           var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -89,7 +89,7 @@ extension Workspace.Refresh {
       output: Command.Output
     ) throws {
 
-      // #workaround(Swift 5.2.4, Web lacks Foundation.)
+      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
       #if !os(WASI)
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
@@ -190,7 +190,7 @@ extension Workspace.Refresh {
         output: output
       )
 
-      // #workaround(Swift 5.2.4, Web lacks Foundation.)
+      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
       #if !os(WASI)
         // Normalization
         if try options.project.configuration(output: output).normalize {

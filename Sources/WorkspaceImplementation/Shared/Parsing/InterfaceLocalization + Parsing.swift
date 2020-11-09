@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -46,7 +46,7 @@ extension InterfaceLocalization {
     >,
     String.ScalarView
   >
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private static func patternWithArguments(
       named name: UserFacing<StrictString, InterfaceLocalization>,
@@ -69,7 +69,7 @@ extension InterfaceLocalization {
   ) -> DirectivePattern {
     return pattern(named: name, startingWith: "@")
   }
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private static func declarationPatternWithArguments(
       _ name: UserFacing<StrictString, InterfaceLocalization>
@@ -95,7 +95,7 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let exampleDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(exampleDeclarationName)
@@ -123,7 +123,7 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let exampleDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(
@@ -142,7 +142,7 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let documentationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(documentationDeclarationName)
@@ -157,7 +157,7 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let documentationDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(documentationDirectiveName)
@@ -176,7 +176,7 @@ extension InterfaceLocalization {
         return "lokalisation"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let localizationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(localizationDeclarationName)
@@ -193,7 +193,7 @@ extension InterfaceLocalization {
         return "querverweis"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let crossReferenceDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(crossReferenceDeclarationName)
@@ -210,7 +210,7 @@ extension InterfaceLocalization {
         return "nichtLokalisiert"
       }
     })
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static let notLocalizedDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(notLocalizedDeclarationName)

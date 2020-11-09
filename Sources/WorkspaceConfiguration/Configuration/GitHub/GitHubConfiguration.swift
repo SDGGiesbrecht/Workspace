@@ -71,7 +71,7 @@ public struct GitHubConfiguration: Codable {
     guard let match = localization._reasonableMatch else {
       return nil
     }
-    // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
     #if os(WASI)
       return nil
     #else
@@ -124,7 +124,7 @@ public struct GitHubConfiguration: Codable {
     for localization in localizations {
       if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           template.replaceMatches(
             for: "#packageName".scalars,
@@ -132,7 +132,7 @@ public struct GitHubConfiguration: Codable {
           )
         #endif
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if os(WASI)
           template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
         #else
@@ -233,7 +233,7 @@ public struct GitHubConfiguration: Codable {
     return result
   })
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(GitHubConfiguration.pullRequestTemplate)

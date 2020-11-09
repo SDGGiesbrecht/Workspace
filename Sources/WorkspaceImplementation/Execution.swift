@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -31,7 +31,7 @@ import WorkspaceProjectConfiguration
 
 public func run() {  // @exempt(from: tests)
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     DispatchQueue.global(qos: .utility).sync {
 

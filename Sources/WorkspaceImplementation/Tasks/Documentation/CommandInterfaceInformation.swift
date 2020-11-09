@@ -29,7 +29,7 @@ internal struct CommandInterfaceInformation {
   internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
   internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal func pageURL(
       in outputDirectory: URL,

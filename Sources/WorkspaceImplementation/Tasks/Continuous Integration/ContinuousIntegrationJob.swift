@@ -307,7 +307,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "TARGETING_\(environmentVariableName)"
   }
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
       switch self {
@@ -376,7 +376,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return command
   }
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private func workspaceStep(
       named name: UserFacing<StrictString, InterfaceLocalization>,
@@ -469,7 +469,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return uses("actions/checkout@v1")
   }
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private func cache() -> StrictString {
       let environment: StrictString
@@ -708,7 +708,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
   }
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal func gitHubWorkflowJob(
       for project: PackageRepository,

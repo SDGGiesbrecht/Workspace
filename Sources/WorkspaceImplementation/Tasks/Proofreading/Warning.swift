@@ -26,7 +26,7 @@ import WorkspaceLocalizations
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     static func message(
       for details: StrictString,
@@ -38,7 +38,7 @@ internal protocol Warning: TextRule {
 
 extension Warning {
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static func check(
       file: TextFile,

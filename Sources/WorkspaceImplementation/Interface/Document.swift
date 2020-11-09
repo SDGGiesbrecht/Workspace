@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -80,7 +80,7 @@ extension Workspace {
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
@@ -110,14 +110,14 @@ extension Workspace {
               })
           )
         }
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
       }
     )
 
-    // #workaround(Swift 5.2.4, Web lacks Foundation.)
+    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
     #if !os(WASI)
       internal static func executeAsStep(
         outputDirectory: URL,

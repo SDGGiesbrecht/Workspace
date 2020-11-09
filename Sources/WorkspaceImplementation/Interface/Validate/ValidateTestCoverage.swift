@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.2.4, Web lacks Foundation.)
+// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
 #if !os(WASI)
   import Foundation
 #endif
@@ -60,7 +60,7 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           #if !os(Linux)
             if try options.project.configuration(output: output).xcode.manage {
@@ -84,7 +84,7 @@ extension Workspace.Validate {
           output: output
         )
 
-        // #workaround(Swift 5.2.4, Web lacks Foundation.)
+        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
@@ -97,7 +97,7 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      // #workaround(Swift 5.2.4, Web lacks Foundation.)
+      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
       #if !os(WASI)
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)

@@ -25,7 +25,7 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Static Properties
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
     /// Der Zusammenhang des aktuellen Projekts.
@@ -48,7 +48,7 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Initialization
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     public init(_location: URL, manifest: PackageManifest) {
       self.location = _location
@@ -58,7 +58,7 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Properties
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
     /// The location of the configured repository.

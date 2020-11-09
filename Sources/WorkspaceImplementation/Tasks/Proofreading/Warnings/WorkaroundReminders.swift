@@ -51,7 +51,7 @@ internal struct WorkaroundReminders: Warning {
     }
   })
 
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal static func message(
       for details: StrictString,
@@ -118,7 +118,7 @@ internal struct WorkaroundReminders: Warning {
   #endif
 
   private static var dependencyVersionCache: [StrictString: SDGVersioning.Version?] = [:]
-  // #workaround(Swift 5.2.4, Web lacks Foundation.)
+  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     private static func currentVersion(
       of dependency: StrictString,

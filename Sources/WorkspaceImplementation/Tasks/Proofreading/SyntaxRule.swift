@@ -17,14 +17,14 @@
 import SDGCommandLine
 
 import SDGSwift
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
 
 internal protocol SyntaxRule: RuleProtocol {
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     static func check(
       _ node: Syntax,
@@ -66,7 +66,7 @@ internal protocol SyntaxRule: RuleProtocol {
 }
 
 extension SyntaxRule {
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     internal static func check(
       _ node: Syntax,

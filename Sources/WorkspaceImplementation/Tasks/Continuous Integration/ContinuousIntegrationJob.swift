@@ -404,7 +404,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var gitHubActionMachine: StrictString {
     switch platform {
-    // #workaround(Swift 5.2.4, Linux cannot find Dispatch in Web toolchain.)
     case .macOS:
       return
         "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"

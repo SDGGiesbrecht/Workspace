@@ -18,7 +18,7 @@
 #if !os(WASI)
   import Foundation
 #endif
-// #workaround(Swift 5.2.4, Web lacks Dispatch.)
+// #workaround(Swift 5.3, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
 #endif
@@ -173,7 +173,7 @@ import WorkspaceConfiguration
                 "### [\(name)](\(url.absoluteString))",
               ]
 
-              // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+              // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
               #if !(os(Windows) || os(WASI) || os(Android))
                 if let packageDocumentation = try? PackageAPI.documentation(
                   for: package.package().get()
@@ -315,7 +315,7 @@ import WorkspaceConfiguration
       let developmentLocalization = try self.developmentLocalization(output: output)
       let customReplacements = try customFileNameReplacements(output: output)
 
-      // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         let api = try PackageAPI(
           package: cachedPackageGraph(),

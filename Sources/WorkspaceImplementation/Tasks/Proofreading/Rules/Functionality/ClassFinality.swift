@@ -22,7 +22,7 @@ import SDGLocalization
 import SDGCommandLine
 
 import SDGSwift
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
@@ -53,7 +53,7 @@ internal struct ClassFinality: SyntaxRule {
       }
     })
 
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
 
     // MARK: - SyntaxRule

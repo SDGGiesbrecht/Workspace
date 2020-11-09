@@ -51,26 +51,12 @@ class APITests: TestCase {
       #endif
     }
   }()
-  static let configureWindowsTestDirectory: Void = {
-    // #workaround(SDGCornerstone 5.4.1, Path translation not handled yet.)
-    #if os(Windows)
-      var directory = testSpecificationDirectory().path
-      if directory.hasPrefix("\u{5C}mnt\u{5C}") {
-        directory.removeFirst(5)
-        let driveLetter = directory.removeFirst()
-        directory.prepend(contentsOf: "\(driveLetter.uppercased()):")
-        let url = URL(fileURLWithPath: directory)
-        setTestSpecificationDirectory(to: url)
-      }
-    #endif
-  }()
   override func setUp() {
     super.setUp()
     Command.Output.testMode = true
     PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
     CustomTask.emptyCache()
     APITests.configureGit
-    APITests.configureWindowsTestDirectory
   }
 
   func testAllDisabled() {
@@ -251,11 +237,9 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    #if !os(Windows)  // #workaround(SDGSwift 2.0.1, Git cannot find itself.)
-      // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
-      #if !os(Android)
-        _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
-      #endif
+    // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
+    #if !os(Android)
+      _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
     #endif
   }
 

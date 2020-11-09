@@ -435,11 +435,7 @@ extension PackageRepository {
                     line: line
                   )
                 } else {
-                  // #workaround(SDGSwift 3.0.0, Git status does not handle special characters correctly.)
-                  if ¬fileName.contains("Prüfen") {
-
-                    XCTFail("Unexpected file produced: “\(fileName)”")
-                  }
+                  XCTFail("Unexpected file produced: “\(fileName)”")
                 }
               } else {
                 if (try? String(from: after)) ≠ nil {

@@ -37,16 +37,11 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-    #if os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
-    #else
-      // #workaround(Segmentation fault—worked until switch to debug mode.)
-      #if !os(Windows)
-        _ = try Git.runCustomSubcommand(
-          ["\u{2D}\u{2D}version"],
-          versionConstraints: Version(0)..<Version(Int.max)
-        ).get()
-      #endif
+    #if !os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
+      _ = try Git.runCustomSubcommand(
+        ["\u{2D}\u{2D}version"],
+        versionConstraints: Version(0)..<Version(Int.max)
+      ).get()
     #endif
   }
 

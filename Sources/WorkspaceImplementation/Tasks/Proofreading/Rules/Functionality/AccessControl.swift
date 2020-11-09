@@ -25,7 +25,7 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
@@ -67,7 +67,7 @@ internal struct AccessControl: SyntaxRule {
   private static let lowLevels: Set<String> = ["fileprivate", "private"]
   private static let allLevels = highLevels ∪ lowLevels
 
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
 
     private static func checkLibrary(

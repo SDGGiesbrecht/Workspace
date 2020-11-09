@@ -16,14 +16,14 @@
 
 import SDGLogic
 
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 import SDGSwiftSource
 
 internal protocol Parameter {
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     var firstName: TokenSyntax? { get }
     var secondName: TokenSyntax? { get }
@@ -34,7 +34,7 @@ internal protocol Parameter {
 extension Parameter {
 
   internal func parameterNames() -> [String] {
-    // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
     #if os(Windows) || os(WASI) || os(Android)
       return []
     #else

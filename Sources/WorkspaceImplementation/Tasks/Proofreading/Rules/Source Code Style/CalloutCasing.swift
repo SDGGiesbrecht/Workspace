@@ -54,7 +54,7 @@ internal struct CalloutCasing: SyntaxRule {
     }
   })
 
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     internal static func check(
       _ node: ExtendedSyntax,

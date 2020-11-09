@@ -27,12 +27,12 @@ import SDGCommandLine
 
 import SDGSwift
 import SDGSwiftSource
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftSyntax
 #endif
 
-// #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import SwiftFormat
 #endif
@@ -50,7 +50,7 @@ import WorkspaceLocalizations
     internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
-      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
         var linter: Bool?
       #else
         var linter: SwiftLinter?
@@ -126,7 +126,7 @@ import WorkspaceLocalizations
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+                // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
                 #if !(os(Windows) || os(Android))
                   let syntax = try SyntaxParser.parseAndRetry(url)
                   try RuleSyntaxScanner(

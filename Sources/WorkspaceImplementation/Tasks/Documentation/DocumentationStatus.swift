@@ -43,7 +43,7 @@ internal class DocumentationStatus {
     output.print(problem.resolved().formattedAsError().separated())
   }
 
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     private func report(
       problem: UserFacing<StrictString, InterfaceLocalization>,
@@ -257,7 +257,7 @@ internal class DocumentationStatus {
     }
   }
 
-  // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     internal func reportExcessiveHeading(
       symbol: APIElement,

@@ -153,14 +153,14 @@ import WorkspaceConfiguration
     }
 
     private func refreshWindowsTests(output: Command.Output) throws {
-      // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         try refreshWindowsTestsManifestAdjustments(output: output)
         try refreshWindowsMain(output: output)
       #endif
     }
 
-    // #workaround(SwiftSyntax 0.50200.0, Cannot build.)
+    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
       private func refreshWindowsTestsManifestAdjustments(output: Command.Output) throws {
         let url = location.appendingPathComponent("Package.swift")

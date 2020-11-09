@@ -18,7 +18,7 @@
 #if !os(WASI)
   import Foundation
 #endif
-// #workaround(Swift 5.2.4, Web lacks Dispatch.)
+// #workaround(Swift 5.3, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
 #endif

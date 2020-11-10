@@ -435,6 +435,8 @@ extension PackageRepository {
                     line: line
                   )
                 } else {
+                  #warning("Debugging...")
+                  print(try PackageRepository(at: location).ignoredFiles().get())
                   XCTFail("Unexpected file produced: “\(fileName)”")
                 }
               } else {

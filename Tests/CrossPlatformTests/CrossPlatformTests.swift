@@ -38,10 +38,25 @@ final class Tests: TestCase {
 
   func testGit() throws {
     #if !os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      _ = try Git.runCustomSubcommand(
-        ["\u{2D}\u{2D}version"],
-        versionConstraints: Version(0)..<Version(Int.max)
-      ).get()
+      #if !os(Windows)
+        // #workaround(SDGSwift 3.0.2, The standard way hits a segmentation fault.)
+        guard
+          let git = ExternalProcess(
+            searching: [],
+            commandName: "git",
+            validate: { _ in true }
+          )
+        else {
+          XCTFail("Failed to locate Git.")
+          return
+        }
+        print(try git.run(["\u{2D}\u{2D}version"]).get())
+      #else
+        _ = try Git.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(0)..<Version(Int.max)
+        ).get()
+      #endif
     #endif
   }
 

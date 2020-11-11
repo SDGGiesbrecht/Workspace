@@ -436,7 +436,10 @@ extension PackageRepository {
                   )
                 } else {
                   #warning("Debugging...")
+                  print("Untracked:")
                   print(try PackageRepository(at: location).ignoredFiles().get())
+                  print("Tracked:")
+                  print(try PackageRepository(at: location).trackedFiles().get())
                   XCTFail("Unexpected file produced: “\(fileName)”")
                 }
               } else {

@@ -39,7 +39,7 @@ final class Tests: TestCase {
   func testGit() throws {
     #if !os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
       #if !os(Android)  // #workaround(Swift 5.3, Emulator lacks Git.)
-        #if !os(Windows)
+        #if os(Windows)
           // #workaround(SDGSwift 3.0.2, The standard way hits a segmentation fault.)
           guard
             let git = ExternalProcess(

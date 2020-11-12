@@ -237,9 +237,11 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
-    #if !os(Android)
-      _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
+    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
+      // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
+      #if !os(Android)
+        _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
+      #endif
     #endif
   }
 

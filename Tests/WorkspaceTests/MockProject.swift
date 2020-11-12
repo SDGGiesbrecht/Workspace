@@ -439,7 +439,9 @@ extension PackageRepository {
                   print("Untracked:")
                   print(try PackageRepository(at: location).ignoredFiles().get())
                   print("Tracked:")
-                  print(try PackageRepository(at: location).trackedFiles(output: Command.Output.mock))
+                  print(
+                    try PackageRepository(at: location).trackedFiles(output: Command.Output.mock)
+                  )
                   XCTFail("Unexpected file produced: “\(fileName)”")
                 }
               } else {

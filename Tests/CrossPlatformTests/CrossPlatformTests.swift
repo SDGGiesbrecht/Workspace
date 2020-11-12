@@ -40,7 +40,7 @@ final class Tests: TestCase {
     #if !os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
       #if !os(Android)  // #workaround(Swift 5.3, Emulator lacks Git.)
         #if os(Windows)
-          // #workaround(SDGSwift 3.0.2, The standard way hits a segmentation fault.)
+          // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
           guard
             let git = ExternalProcess(
               searching: [],
@@ -53,7 +53,8 @@ final class Tests: TestCase {
           }
           let version = try git.run(["\u{2D}\u{2D}version"]).get()
           print(version)
-          print(Version(firstIn: version))
+          // #workaround(Swift 5.3, Segmentation fault.)
+          // print(Version(firstIn: version))
         #else
           _ = try Git.runCustomSubcommand(
             ["\u{2D}\u{2D}version"],

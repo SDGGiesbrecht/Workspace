@@ -53,8 +53,8 @@ final class Tests: TestCase {
           }
           let version = try git.run(["\u{2D}\u{2D}version"]).get()
           print(version)
-          // #workaround(Swift 5.3, Segmentation fault.)
-          // print(Version(firstIn: version))
+        // #workaround(Swift 5.3, Segmentation fault.)
+        // print(Version(firstIn: version))
         #else
           _ = try Git.runCustomSubcommand(
             ["\u{2D}\u{2D}version"],

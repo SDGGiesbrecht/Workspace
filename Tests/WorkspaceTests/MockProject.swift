@@ -435,14 +435,10 @@ extension PackageRepository {
                     line: line
                   )
                 } else {
-                  #warning("Debugging...")
-                  print("Untracked:")
-                  print(try PackageRepository(at: location).ignoredFiles().get())
-                  print("Tracked:")
-                  print(
-                    try PackageRepository(at: location).trackedFiles(output: Command.Output.mock)
-                  )
-                  XCTFail("Unexpected file produced: “\(fileName)”")
+                  // #workaround(SDGSwift 3.0.2, Git status does not handle special characters correctly.)
+                  if ¬fileName.contains("Prüfen") {
+                    XCTFail("Unexpected file produced: “\(fileName)”")
+                  }
                 }
               } else {
                 if (try? String(from: after)) ≠ nil {

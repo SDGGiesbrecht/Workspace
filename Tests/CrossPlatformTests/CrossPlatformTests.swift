@@ -51,7 +51,9 @@ final class Tests: TestCase {
             XCTFail("Failed to locate Git.")
             return
           }
-          print(try git.run(["\u{2D}\u{2D}version"]).get())
+          let version = try git.run(["\u{2D}\u{2D}version"]).get()
+          print(version)
+          print(Version(firstIn: version))
         #else
           _ = try Git.runCustomSubcommand(
             ["\u{2D}\u{2D}version"],

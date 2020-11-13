@@ -37,15 +37,30 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-    #if os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #elseif os(Android)  // #workaround(Swift 5.2.4, Process doesn’t work.)
-    #else
-      // #workaround(Segmentation fault—worked until switch to debug mode.)
-      #if !os(Windows)
-        _ = try Git.runCustomSubcommand(
-          ["\u{2D}\u{2D}version"],
-          versionConstraints: Version(0)..<Version(Int.max)
-        ).get()
+    #if !os(WASI)  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
+      #if !os(Android)  // #workaround(Swift 5.3, Emulator lacks Git.)
+        #if os(Windows)
+          // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
+          guard
+            let git = ExternalProcess(
+              searching: [],
+              commandName: "git",
+              validate: { _ in true }
+            )
+          else {
+            XCTFail("Failed to locate Git.")
+            return
+          }
+          let version = try git.run(["\u{2D}\u{2D}version"]).get()
+          print(version)
+        // #workaround(Swift 5.3, Segmentation fault.)
+        // print(Version(firstIn: version))
+        #else
+          _ = try Git.runCustomSubcommand(
+            ["\u{2D}\u{2D}version"],
+            versionConstraints: Version(0)..<Version(Int.max)
+          ).get()
+        #endif
       #endif
     #endif
   }

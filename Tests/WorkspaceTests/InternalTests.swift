@@ -55,40 +55,38 @@ class InternalTests: TestCase {
       ".github",
     ]
 
-    #if !os(Windows)  // #workaround(SDGCornerstone 5.2.0, Git not found during GitHub action.)
-      // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
-      #if !os(Android)
-        _ = try Command(
-          name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-          directArguments: [],
-          options: [],
-          execution: { (_, _, output: Command.Output) in
+    // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
+    #if !os(Android)
+      _ = try Command(
+        name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+        description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+        directArguments: [],
+        options: [],
+        execution: { (_, _, output: Command.Output) in
 
-            let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
-            let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
-            let unexpected = relative.filter { path in
+          let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
+          let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+          let unexpected = relative.filter { path in
 
-              for prefix in expectedPrefixes {
-                if path.hasPrefix(prefix) {
-                  return false
-                }
+            for prefix in expectedPrefixes {
+              if path.hasPrefix(prefix) {
+                return false
               }
-
-              return true
             }
 
-            XCTAssert(
-              unexpected.isEmpty,
-              [
-                "Unexpected files are being tracked by Git:",
-                unexpected.joinedAsLines(),
-              ].joinedAsLines()
-            )
-
+            return true
           }
-        ).execute(with: []).get()
-      #endif
+
+          XCTAssert(
+            unexpected.isEmpty,
+            [
+              "Unexpected files are being tracked by Git:",
+              unexpected.joinedAsLines(),
+            ].joinedAsLines()
+          )
+
+        }
+      ).execute(with: []).get()
     #endif
   }
 

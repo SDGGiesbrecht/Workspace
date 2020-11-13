@@ -15,10 +15,8 @@
  */
 
 import Foundation
-#if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
-  #if canImport(FoundationNetworking)
-    import FoundationNetworking
-  #endif
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
 #endif
 #if canImport(FoundationXML)
   #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
@@ -40,10 +38,8 @@ import CrossPlatformC
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !os(Android)  // #workaround(Swift 5.2.4, Linkage broken in SDK.)
-    #if !os(WASI)  // #workaround(Swift 5.3, Web lacks FoundationNetworking.)
-      print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
-    #endif
+  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks FoundationNetworking.)
+    print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   #endif
   #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
     print(XMLElement(name: "Hello, FoundationXML!"))

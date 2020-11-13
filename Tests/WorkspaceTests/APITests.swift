@@ -831,7 +831,7 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    #if !os(Android)  // #workaround(Swift 5.2.4, Segmentation fault)
+    //#if !os(Android)  // #warning(Swift 5.2.4, Segmentation fault.)
       testCommand(
         Workspace.command,
         with: ["help"],
@@ -917,7 +917,7 @@ class APITests: TestCase {
         uniqueTestName: "Help (workspace normalize)",
         overwriteSpecificationInsteadOfFailing: false
       )
-    #endif
+    //#endif
   }
 
   func testInvalidResourceDirectory() {
@@ -1392,14 +1392,14 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Android)  // #workaround(Swift 5.2.4, Segmentation fault.)
+    //#if !os(Android)  // #warning(Swift 5.2.4, Segmentation fault.)
       #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
         try FileManager.default.do(in: repositoryRoot) {
           _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
       #endif
-    #endif
+    //#endif
   }
 
   func testTestCoverageExemptionToken() {

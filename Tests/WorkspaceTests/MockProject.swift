@@ -141,7 +141,7 @@ extension PackageRepository {
 
         try FileManager.default.do(in: location) {
           #if os(Android)
-            // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
+            // #workaround(Swift 5.3.1, Emulator lacks Git.)
             return
           #endif
           _ = try Shell.default.run(command: ["git", "init"]).get()

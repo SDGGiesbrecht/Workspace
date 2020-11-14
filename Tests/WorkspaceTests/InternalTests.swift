@@ -55,7 +55,7 @@ class InternalTests: TestCase {
       ".github",
     ]
 
-    // #workaround(Swift 5.2.4, Emulator lacks Git, but processes don’t work anyway.)
+    // #workaround(Swift 5.3.1, Emulator lacks Git.)
     #if !os(Android)
       _ = try Command(
         name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),

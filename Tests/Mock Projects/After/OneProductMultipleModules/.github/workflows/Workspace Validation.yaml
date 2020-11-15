@@ -7,7 +7,7 @@ on: [push, pull_request]
 jobs:
   macOS:
     name: macOS
-    runs-on: macos-10.15
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -20,7 +20,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.app
+        sudo xcode-select -switch /Applications/Xcode_12.2.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -263,7 +263,7 @@ jobs:
         chmod -R a+rwx .
   tvOS:
     name: tvOS
-    runs-on: macos-10.15
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -276,7 +276,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.app
+        sudo xcode-select -switch /Applications/Xcode_12.2.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -329,7 +329,7 @@ jobs:
         fi
   iOS:
     name: iOS
-    runs-on: macos-10.15
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -342,7 +342,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.app
+        sudo xcode-select -switch /Applications/Xcode_12.2.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -473,7 +473,7 @@ jobs:
         chmod -R a+rwx .
   watchOS:
     name: watchOS
-    runs-on: macos-10.15
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -486,7 +486,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.app
+        sudo xcode-select -switch /Applications/Xcode_12.2.app
         xcodebuild -version
         swift --version
     - name: Install Workspace

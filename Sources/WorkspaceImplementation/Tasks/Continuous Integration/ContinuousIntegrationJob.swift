@@ -43,8 +43,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   internal static let currentSwiftVersion = Version(5, 3, 0)
 
-  private static let currentMacOSVersion = Version(10, 15)
-  internal static let currentXcodeVersion = Version(12)
+  private static let currentMacOSVersion = Version(11)
+  internal static let currentXcodeVersion = Version(12, 2)
   private static let currentWindowsVersion = "10"
   private static let currentVisualStudioVersion = "2019"
   private static let currentWSLImage = "2004"

@@ -200,11 +200,11 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3.1-RELEASE/swift-wasm-5.3.1-RELEASE-ubuntu20.04_x86_64.tar.gz' \
-          --output '/tmp/swift-wasm-5.3.1-RELEASE-ubuntu20.04_x86_64.tar.gz'
-        tar --extract --file /tmp/swift-wasm-5.3.1-RELEASE-ubuntu20.04_x86_64.tar.gz --directory /tmp
+          'https://github.com/swiftwasm/swift/releases/download/swift-wasm-5.3.0-RELEASE/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz' \
+          --output '/tmp/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz'
+        tar --extract --file /tmp/swift-wasm-5.3.0-RELEASE-ubuntu20.04_x86_64.tar.gz --directory /tmp
         mkdir -p .build/SDG/Swift
-        cp -R /tmp/swift-wasm-5.3.1-RELEASE/* .build/SDG/Swift
+        cp -R /tmp/swift-wasm-5.3.0-RELEASE/* .build/SDG/Swift
         .build/SDG/Swift/usr/bin/swift --version
     - name: Build
       shell: bash

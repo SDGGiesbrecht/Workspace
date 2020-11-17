@@ -42,6 +42,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 1)
+  internal static let currentWebSwiftVersion = Version(5, 3, 0)
 
   private static let currentMacOSVersion = Version(11)
   internal static let currentXcodeVersion = Version(12, 2)
@@ -821,7 +822,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .web:
-        let version = ContinuousIntegrationJob.currentSwiftVersion.string()
+        let version = ContinuousIntegrationJob.currentWebSwiftVersion.string()
         result.append(
           script(
             heading: installSwiftStepName,

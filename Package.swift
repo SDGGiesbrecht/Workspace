@@ -488,7 +488,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(6, 1, 1)
+      from: Version(6, 2, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -831,9 +831,15 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
-  for target in package.targets {
-    // #workaround(Swift 5.3, Web doesn’t have Foundation yet.)
-    target.exclude.append("Resources.swift")
+
+  // #workaround(SDGWeb 5.4.2, Web API incomplete.)
+  package.targets = package.targets.filter { target in
+    switch target.name {
+    case "WorkspaceTests":
+      return false
+    default:
+      return true
+    }
   }
 }
 

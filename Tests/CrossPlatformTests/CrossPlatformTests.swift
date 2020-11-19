@@ -30,11 +30,11 @@ final class Tests: TestCase {
 
   func testCachePermissions() throws {
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
-    let directory = FileManager.default.url(in: .cache, at: "Directory")
-    try? FileManager.default.removeItem(at: directory)
-    defer { try? FileManager.default.removeItem(at: directory) }
+      let directory = FileManager.default.url(in: .cache, at: "Directory")
+      try? FileManager.default.removeItem(at: directory)
+      defer { try? FileManager.default.removeItem(at: directory) }
 
-    try "text".save(to: directory.appendingPathComponent("Text.txt"))
+      try "text".save(to: directory.appendingPathComponent("Text.txt"))
     #endif
   }
 
@@ -82,17 +82,17 @@ final class Tests: TestCase {
       .deletingPathExtension().deletingPathExtension()
       .appendingPathComponent(".build/SDG/Ignored/Text.txt")
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
-    try? FileManager.default.removeItem(at: ignored)
-    defer { try? FileManager.default.removeItem(at: ignored) }
-    try "text".save(to: ignored)
+      try? FileManager.default.removeItem(at: ignored)
+      defer { try? FileManager.default.removeItem(at: ignored) }
+      try "text".save(to: ignored)
     #endif
   }
 
   func testTemporaryDirectoryPermissions() throws {
     #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
-    try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
-      try "text".save(to: directory.appendingPathComponent("Text.txt"))
-    }
+      try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
+        try "text".save(to: directory.appendingPathComponent("Text.txt"))
+      }
     #endif
   }
 

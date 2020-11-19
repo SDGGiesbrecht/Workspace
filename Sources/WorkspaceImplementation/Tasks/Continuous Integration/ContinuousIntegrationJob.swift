@@ -48,6 +48,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentWindowsVersion = "10"
   private static let currentVisualStudioVersion = "2019"
   private static let currentWSLImage = "2004"
+  private static let currentCartonVersion = Version(0, 8, 2)
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
   private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
@@ -418,8 +419,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private var dockerImage: StrictString? {
     switch platform {
-    case .macOS, .windows, .web, .android:
+    case .macOS, .windows, .android:
       return nil
+    case .web:
+      return "ghcr.io/swiftwasm/carton:\(ContinuousIntegrationJob.currentCartonVersion.string())"
     case .centOS:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
       return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
@@ -821,21 +824,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .web:
-        let version = ContinuousIntegrationJob.currentSwiftVersion.string()
-        result.append(
-          script(
-            heading: installSwiftStepName,
-            localization: interfaceLocalization,
-            commands: [
-              cURL(
-                "https://github.com/swiftwasm/swift/releases/download/swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion)_x86_64.tar.gz",
-                named: "swift\u{2D}wasm\u{2D}\(version)\u{2D}RELEASE",
-                andUntarTo: ".build/SDG/Swift"
-              ),
-              ".build/SDG/Swift/usr/bin/swift \u{2D}\u{2D}version",
-            ]
-          )
-        )
+        break
       case .centOS, .amazonLinux:
         result.append(contentsOf: [
           script(
@@ -1046,11 +1035,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .web:
         result.append(
           script(
-            heading: buildStepName,
+            heading: testStepName,
             localization: interfaceLocalization,
             commands: [
               "export \(ContinuousIntegrationJob.web.environmentVariable)=true",
-              ".build/SDG/Swift/usr/bin/swift build \u{2D}\u{2D}triple wasm32\u{2D}unknown\u{2D}wasi",
+              "carton test",
             ]
           )
         )

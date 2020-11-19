@@ -35,4 +35,3 @@ jobs:
         set -x
         export TARGETING_WEB=true
         carton test
-        .build/SDG/Swift/usr/bin/swift build --triple wasm32-unknown-wasi

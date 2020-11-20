@@ -492,7 +492,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 5, 2)
+      from: Version(1, 6, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",

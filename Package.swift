@@ -515,7 +515,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(5, 4, 2)
+      from: Version(5, 5, 0)
     ),
   ],
   targets: [

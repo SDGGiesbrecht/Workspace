@@ -14,14 +14,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import Foundation
+
 import SDGText
 import SDGLocalization
+import SDGVersioning
 
 import SDGCommandLine
 
 import WorkspaceLocalizations
+import WorkspaceProjectConfiguration
 
-public enum Workspace {
+public enum Workspace: Tool {
 
   private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {
@@ -97,4 +101,11 @@ public enum Workspace {
       Workspace.CheckForUpdates.command,
     ]
   )
+
+  // MARK: - Tool
+
+  public static let applicationIdentifier: StrictString = "ca.solideogloria.Workspace"
+  public static let version: Version? = Metadata.thisVersion
+  public static let packageURL: URL? = Metadata.packageURL
+  public static let rootCommand: Command = command
 }

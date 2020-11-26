@@ -35,12 +35,8 @@ public func run() {  // @exempt(from: tests)
   #if !os(WASI)
     DispatchQueue.global(qos: .utility).sync {
 
-      ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace"
-      ProcessInfo.version = Metadata.thisVersion
-      ProcessInfo.packageURL = Metadata.packageURL
-
       #if os(Windows) || os(Linux) || os(Android)
-        Workspace.command.executeAsMain()
+        Workspace.main()
       #else
         let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
@@ -54,7 +50,7 @@ public func run() {  // @exempt(from: tests)
           options: [.userInitiated, .idleSystemSleepDisabled],
           reason: String(reason.resolved())
         ) {
-          Workspace.command.executeAsMain()
+          Workspace.main()
         }
       #endif
     }

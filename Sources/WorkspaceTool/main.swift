@@ -16,4 +16,4 @@
 
 import WorkspaceImplementation
 
-WorkspaceImplementation.run()
+SleeplessMain.main()

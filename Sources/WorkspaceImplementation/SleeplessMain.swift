@@ -29,30 +29,32 @@ import SDGLocalization
 import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
-public func run() {  // @exempt(from: tests)
+public struct SleeplessMain {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    DispatchQueue.global(qos: .utility).sync {
+  public static func main() {  // @exempt(from: tests)
+    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
+    #if !os(WASI)
+      DispatchQueue.global(qos: .utility).sync {
 
-      #if os(Windows) || os(Linux) || os(Android)
-        Workspace.main()
-      #else
-        let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Workspace"
-          case .deutschDeutschland:
-            return "Arbeitsbereich"
-          }
-        })
-        ProcessInfo.processInfo.performActivity(
-          options: [.userInitiated, .idleSystemSleepDisabled],
-          reason: String(reason.resolved())
-        ) {
+        #if os(Windows) || os(Linux) || os(Android)
           Workspace.main()
-        }
-      #endif
-    }
-  #endif
+        #else
+          let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Workspace"
+            case .deutschDeutschland:
+              return "Arbeitsbereich"
+            }
+          })
+          ProcessInfo.processInfo.performActivity(
+            options: [.userInitiated, .idleSystemSleepDisabled],
+            reason: String(reason.resolved())
+          ) {
+            Workspace.main()
+          }
+        #endif
+      }
+    #endif
+  }
 }

@@ -57,22 +57,6 @@ import WorkspaceProjectConfiguration
           }
         })
 
-      private static let proofreadTargetIdentifier = "WORKSPACE_PROOFREAD_TARGET"
-      private static let proofreadScriptIdentifier = "WORKSPACE_PROOFREAD_SCRIPT"
-
-      private var aggregateTarget: String {
-        return [
-          "        \(PackageRepository.proofreadTargetIdentifier) = {",
-          "            isa = PBXAggregateTarget;",
-          "            buildPhases = (",
-          "                \(PackageRepository.proofreadScriptIdentifier),",
-          "            );",
-          "            name = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-          "            productName = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-          "        };",
-        ].joinedAsLines()
-      }
-
       private func script() throws -> String {
         if try isWorkspaceProject() {
           return "swift run workspace proofread •xcode"  // @exempt(from: tests)
@@ -84,49 +68,64 @@ import WorkspaceProjectConfiguration
         }
       }
 
-      private func scriptObject() throws -> String {
+      private func xcodeProjectSource() throws -> StrictString {
         return [
-          "        \(PackageRepository.proofreadScriptIdentifier) = {",
-          "            isa = PBXShellScriptBuildPhase;",
-          "            shellPath = /bin/sh;",
-          "            shellScript = \u{22}\(try script())\u{22};",
-          "        };",
+          "// !$*UTF8*$!",
+          "{",
+          "  archiveVersion = \u{22}1\u{22};",
+          "  objectVersion = \u{22}46\u{22};",
+          "  objects = {",
+          "    \u{22}project\u{22} = {",
+          "      isa = \u{22}PBXProject\u{22};",
+          "      buildConfigurationList = \u{22}build configuration list\u{22};",
+          "      compatibilityVersion = \u{22}Xcode 3.2\u{22};",
+          "      mainGroup = \u{22}main group\u{22};",
+          "      projectDirPath = \u{22}.\u{22};",
+          "      targets = (",
+          "        \u{22}proofread target\u{22}",
+          "      );",
+          "    };",
+          "    \u{22}build configuration list\u{22} = {",
+          "      isa = \u{22}XCConfigurationList\u{22};",
+          "      buildConfigurations = (",
+          "        \u{22}release\u{22}",
+          "      );",
+          "    };",
+          "    \u{22}main group\u{22} = {",
+          "      isa = \u{22}PBXGroup\u{22};",
+          "      children = ();",
+          "    };",
+          "    \u{22}proofread target\u{22} = {",
+          "      isa = PBXAggregateTarget;",
+          "      buildPhases = (",
+          "        \u{22}proofread script\u{22},",
+          "      );",
+          "      name = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
+          "      productName = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
+          "    };",
+          "    \u{22}proofread script\u{22} = {",
+          "      isa = PBXShellScriptBuildPhase;",
+          "      shellPath = /bin/sh;",
+          "      shellScript = \u{22}\(try script())\u{22};",
+          "    };",
+          "    \u{22}release\u{22} = {",
+          "      isa = \u{22}XCBuildConfiguration\u{22};",
+          "      buildSettings = {};",
+          "      name = \u{22}Release\u{22};",
+          "    };",
+          "  };",
+          "  rootObject = \u{22}project\u{22};",
+          "}",
         ].joinedAsLines()
       }
 
       internal func refreshXcodeProject(output: Command.Output) throws {
-        _ = try generateXcodeProject(reportProgress: { output.print($0) }).get()
-        resetFileCache(debugReason: "generate\u{2D}xcodeproj")
-        output.print("")
-
+        #warning("Rename project.")
         if let projectBundle = try xcodeProject() {
           var project = try TextFile(
             alreadyAt: projectBundle.appendingPathComponent("project.pbxproj")
           )
-
-          let objectsLine = "objects = {"
-          if let range = project.contents.scalars.firstMatch(for: objectsLine.scalars)?.range {
-            project.contents.scalars.replaceSubrange(
-              range,
-              with: [
-                objectsLine,
-                aggregateTarget,
-                try scriptObject(),
-              ].joinedAsLines().scalars
-            )
-          }
-
-          let targetsLine = "targets = ("
-          if let range = project.contents.scalars.firstMatch(for: targetsLine.scalars)?.range {
-            project.contents.scalars.replaceSubrange(
-              range,
-              with: [
-                targetsLine,
-                PackageRepository.proofreadTargetIdentifier + ",",
-              ].joinedAsLines().scalars
-            )
-          }
-
+          project.contents = String(try xcodeProjectSource())
           try project.writeChanges(for: self, output: output)
 
           var scheme = try TextFile(

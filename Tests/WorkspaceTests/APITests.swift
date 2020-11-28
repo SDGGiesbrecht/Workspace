@@ -653,22 +653,18 @@ class APITests: TestCase {
       konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
       konfiguration.dokumentation.programmierschnittstelle
         .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-      var commands: [[StrictString]] = [
-        ["auffrischen", "skripte"],
-        ["auffrischen", "git"],
-        ["auffrischen", "fortlaufende‐einbindung"],
-        ["auffrischen", "ressourcen"],
-        ["normalisieren"],
-        ["prüfen", "erstellung"],
-        ["prüfen", "testabdeckung"],
-        ["prüfen", "dokumentationsabdeckung"],
-        ["dokumentieren"],
-      ]
-      #if !os(Linux)
-        commands.append(["auffrischen", "xcode"])
-      #endif
       PackageRepository(mock: "Deutsch").test(
-        commands: commands,
+        commands: [
+          ["auffrischen", "skripte"],
+          ["auffrischen", "git"],
+          ["auffrischen", "fortlaufende‐einbindung"],
+          ["auffrischen", "ressourcen"],
+          ["normalisieren"],
+          ["prüfen", "erstellung"],
+          ["prüfen", "testabdeckung"],
+          ["prüfen", "dokumentationsabdeckung"],
+          ["dokumentieren"],
+        ],
         configuration: konfiguration,
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
@@ -1263,34 +1259,28 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
-      var commands: [[StrictString]] = [
-        ["refresh", "scripts"],
-        ["refresh", "git"],
-        ["refresh", "read‐me"],
-        ["refresh", "licence"],
-        ["refresh", "github"],
-        ["refresh", "continuous‐integration"],
-        ["refresh", "resources"],
-        ["refresh", "file‐headers"],
-        ["refresh", "examples"],
-        ["refresh", "inherited‐documentation"],
-        ["normalize"],
-      ]
-      #if !os(Linux)
-        commands.append(["refresh", "xcode"])
-      #endif
-      commands.append(contentsOf: [
-        ["proofread"],
-        ["validate", "build"],
-        ["test"],
-        ["validate", "test‐coverage"],
-        ["validate", "documentation‐coverage"],
-
-        ["proofread", "•xcode"],
-        ["validate"],
-      ])
       PackageRepository(mock: "SDGLibrary").test(
-        commands: commands,
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
+
+          ["proofread", "•xcode"],
+          ["validate"],
+        ],
         configuration: configuration,
         sdg: true,
         localizations: FastTestLocalization.self,
@@ -1346,33 +1336,27 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
-      var commands: [[StrictString]] = [
-        ["refresh", "scripts"],
-        ["refresh", "git"],
-        ["refresh", "read‐me"],
-        ["refresh", "licence"],
-        ["refresh", "github"],
-        ["refresh", "continuous‐integration"],
-        ["refresh", "resources"],
-        ["refresh", "file‐headers"],
-        ["refresh", "examples"],
-        ["refresh", "inherited‐documentation"],
-        ["normalize"],
-      ]
-      #if !os(Linux)
-        commands.append(["refresh", "xcode"])
-      #endif
-      commands.append(contentsOf: [
-        ["proofread"],
-        ["validate", "build"],
-        ["test"],
-        ["validate", "test‐coverage"],
-        ["validate", "documentation‐coverage"],
-
-        ["proofread", "•xcode"],
-      ])
       PackageRepository(mock: "SDGTool").test(
-        commands: commands,
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
+
+          ["proofread", "•xcode"],
+        ],
         configuration: configuration,
         sdg: true,
         localizations: FastTestLocalization.self,

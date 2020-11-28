@@ -1,9 +1,0 @@
-$ workspace auffrischen xcode •no‐colour
-
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to ‘Deutsch.xcodeproj/project.pbxproj’...
-Writing to ‘Deutsch.xcodeproj//xcshareddata/xcschemes/Proofread.xcscheme’...
-0

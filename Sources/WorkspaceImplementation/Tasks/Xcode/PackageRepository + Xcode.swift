@@ -68,7 +68,7 @@ import WorkspaceProjectConfiguration
         }
       }
 
-    #warning("Extract to resource.")
+      #warning("Extract to resource.")
       private func xcodeProjectSource() throws -> StrictString {
         return [
           "// !$*UTF8*$!",
@@ -121,13 +121,15 @@ import WorkspaceProjectConfiguration
       }
 
       internal func refreshXcodeProject(output: Command.Output) throws {
-        let projectBundle = location.appendingPathComponent("\(PackageRepository.proofreadTargetName.resolved()).xcodeproj")
+        let projectBundle = location.appendingPathComponent(
+          "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
+        )
         var project = try TextFile(
           possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
         )
         project.contents = String(try xcodeProjectSource())
         try project.writeChanges(for: self, output: output)
-        
+
         var scheme = try TextFile(
           possiblyAt: projectBundle.appendingPathComponent(
             "/xcshareddata/xcschemes/Scheme.xcscheme"

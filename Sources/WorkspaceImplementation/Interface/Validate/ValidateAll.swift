@@ -116,7 +116,7 @@ extension Workspace.Validate {
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {
-        try Workspace.Proofread.executeAsStep(
+        try Workspace.Proofread.Proofread.executeAsStep(
           normalizingFirst: false,
           options: options,
           validationStatus: &validationStatus,

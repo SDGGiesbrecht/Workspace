@@ -354,8 +354,6 @@ class APITests: TestCase {
       configuration.arbeitsablaufsskripteBereitstellen = false
       XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
       configuration.lager.ignoredPaths.insert("...")
-      configuration.xcode.verwalten = false
-      XCTAssertFalse(configuration.xcode.verwalten)
       configuration.license.license = nil
       XCTAssertNil(configuration.license.license)
       configuration.lizenz.lizenz = .mit
@@ -571,7 +569,6 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
-      configuration.xcode.manage = true
       PackageRepository(mock: "CustomTasks").test(
         commands: [
           ["refresh"],
@@ -762,7 +759,6 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.documentation.localizations = ["zxx"]
-      configuration.xcode.manage = true
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
       PackageRepository(mock: "FailingDocumentationCoverage").test(
@@ -780,7 +776,6 @@ class APITests: TestCase {
   func testFailingTests() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
-      configuration.xcode.manage = true
       configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
       // Attempt to remove existing derived data so that the build is clean.
       // Otherwise Xcode skips the build stages where the awaited warnings occur.
@@ -815,7 +810,6 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
-      configuration.xcode.manage = true
       PackageRepository(mock: "Headers").test(
         commands: [
           ["refresh", "file‐headers"],
@@ -1168,7 +1162,6 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
-      configuration.xcode.manage = true
       configuration.documentation.currentVersion = Version(0, 1, 0)
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.localizations = [

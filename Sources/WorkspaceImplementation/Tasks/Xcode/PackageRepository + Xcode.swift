@@ -68,7 +68,7 @@ import WorkspaceProjectConfiguration
         }
       }
 
-      internal func refreshXcodeProject(output: Command.Output) throws {
+      internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
         let projectBundle = location.appendingPathComponent(
           "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
         )

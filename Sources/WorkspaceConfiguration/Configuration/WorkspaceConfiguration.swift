@@ -214,12 +214,6 @@ public final class WorkspaceConfiguration: Configuration {
   /// Options related to GitHub.
   public var gitHub: GitHubConfiguration = GitHubConfiguration()
 
-  // @localization(🇩🇪DE)
-  /// Einstellungen zu Xcode.
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  /// Options related to Xcode.
-  public var xcode: XcodeConfiguration = XcodeConfiguration()
-
   // @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(WorkspaceConfiguration.normalize)
   /// Whether or not to normalize project files.
@@ -529,7 +523,6 @@ public final class WorkspaceConfiguration: Configuration {
     case licence
     case fileHeaders
     case gitHub
-    case xcode
     case normalize
     case proofreading
     case testing
@@ -551,7 +544,6 @@ public final class WorkspaceConfiguration: Configuration {
     try container.encode(licence, forKey: .licence)
     try container.encode(fileHeaders, forKey: .fileHeaders)
     try container.encode(gitHub, forKey: .gitHub)
-    try container.encode(xcode, forKey: .xcode)
     try container.encode(normalize, forKey: .normalize)
     try container.encode(proofreading, forKey: .proofreading)
     try container.encode(testing, forKey: .testing)
@@ -577,7 +569,6 @@ public final class WorkspaceConfiguration: Configuration {
     licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
     fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
     gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
-    xcode = try container.decode(XcodeConfiguration.self, forKey: .xcode)
     normalize = try container.decode(Bool.self, forKey: .normalize)
     proofreading = try container.decode(ProofreadingConfiguration.self, forKey: .proofreading)
     testing = try container.decode(TestingConfiguration.self, forKey: .testing)

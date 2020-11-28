@@ -1,5 +1,5 @@
 /*
- RefreshXcode.swift
+ ProofreadGenerateXcodeProject.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -25,15 +25,16 @@
 
   import WorkspaceLocalizations
 
-  extension Workspace.Refresh {
+  extension Workspace.Proofread {
 
-    internal enum Xcode {
+    internal enum GenerateXcodeProject {
 
       private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-          .deutschDeutschland:
-          return "xcode"
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "generate‐xcode‐project"
+        case .deutschDeutschland:
+          return "xcode‐projekt‐erstellen"
         }
       })
 
@@ -41,9 +42,10 @@
         { localization in
           switch localization {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "regenerates the project’s Xcode set‐up."
+            return "generates an Xcode project that can display proofreading results inline."
           case .deutschDeutschland:
-            return "erstellt die Xcode‐Einrichtung des Projekts neu."
+            return
+              "erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt."
           }
         })
 
@@ -63,16 +65,16 @@
           UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Refreshing Xcode project..."
+              return "Generating Xcode project..."
             case .deutschDeutschland:
-              return "Xcode‐Projekt wird aufgefrischt ..."
+              return "Xcode‐Projekt wird erstellt ..."
             }
           }).resolved().formattedAsSectionHeader()
         )
 
         // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
-          try options.project.refreshXcodeProject(output: output)
+          try options.project.refreshProofreadingXcodeProject(output: output)
         #endif
       }
     }

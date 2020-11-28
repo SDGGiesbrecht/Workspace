@@ -61,11 +61,6 @@ extension Workspace {
 
         // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
         #if !os(WASI)
-          #if !os(Linux)
-            if try options.project.configuration(output: output).xcode.manage {
-              try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-            }
-          #endif
 
           try Validate.Build.validate(
             job: options.job,

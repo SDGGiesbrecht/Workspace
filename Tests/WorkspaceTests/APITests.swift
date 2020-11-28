@@ -835,21 +835,13 @@ class APITests: TestCase {
       uniqueTestName: "Help (workspace proofread)",
       overwriteSpecificationInsteadOfFailing: false
     )
-    #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
-        }
-      }
-    #else
-      testCommand(
-        Workspace.command,
-        with: ["refresh", "help"],
-        localizations: InterfaceLocalization.self,
-        uniqueTestName: "Help (workspace refresh)",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    #endif
+    testCommand(
+      Workspace.command,
+      with: ["refresh", "help"],
+      localizations: InterfaceLocalization.self,
+      uniqueTestName: "Help (workspace refresh)",
+      overwriteSpecificationInsteadOfFailing: false
+    )
     testCommand(
       Workspace.command,
       with: ["validate", "help"],

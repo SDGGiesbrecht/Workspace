@@ -14,69 +14,66 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !os(Linux)
+import SDGText
+import SDGLocalization
 
-  import SDGText
-  import SDGLocalization
+import SDGCommandLine
 
-  import SDGCommandLine
+import SDGSwift
 
-  import SDGSwift
+import WorkspaceLocalizations
 
-  import WorkspaceLocalizations
+extension Workspace.Proofread {
 
-  extension Workspace.Proofread {
+  internal enum GenerateXcodeProject {
 
-    internal enum GenerateXcodeProject {
+    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "generate‐xcode‐project"
+      case .deutschDeutschland:
+        return "xcode‐projekt‐erstellen"
+      }
+    })
 
-      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "generate‐xcode‐project"
+          return "generates an Xcode project that can display proofreading results inline."
         case .deutschDeutschland:
-          return "xcode‐projekt‐erstellen"
+          return
+            "erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt."
         }
       })
 
-      private static let description = UserFacing<StrictString, InterfaceLocalization>(
-        { localization in
+    internal static let command = Command(
+      name: name,
+      description: description,
+      directArguments: [],
+      options: Workspace.standardOptions,
+      execution: { (_, options: Options, output: Command.Output) throws in
+        try executeAsStep(options: options, output: output)
+      }
+    )
+
+    internal static func executeAsStep(options: Options, output: Command.Output) throws {
+
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "generates an Xcode project that can display proofreading results inline."
+            return "Generating Xcode project..."
           case .deutschDeutschland:
-            return
-              "erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt."
+            return "Xcode‐Projekt wird erstellt ..."
           }
-        })
-
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
-          try executeAsStep(options: options, output: output)
-        }
+        }).resolved().formattedAsSectionHeader()
       )
 
-      internal static func executeAsStep(options: Options, output: Command.Output) throws {
-
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Generating Xcode project..."
-            case .deutschDeutschland:
-              return "Xcode‐Projekt wird erstellt ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
-          try options.project.refreshProofreadingXcodeProject(output: output)
-        #endif
-      }
+      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
+      #if !os(WASI)
+        try options.project.refreshProofreadingXcodeProject(output: output)
+      #endif
     }
   }
-#endif
+}

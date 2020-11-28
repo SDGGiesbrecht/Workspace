@@ -68,6 +68,7 @@ import WorkspaceProjectConfiguration
         }
       }
 
+    #warning("Extract to resource.")
       private func xcodeProjectSource() throws -> StrictString {
         return [
           "// !$*UTF8*$!",
@@ -120,28 +121,26 @@ import WorkspaceProjectConfiguration
       }
 
       internal func refreshXcodeProject(output: Command.Output) throws {
-        #warning("Rename project.")
-        if let projectBundle = try xcodeProject() {
-          var project = try TextFile(
-            alreadyAt: projectBundle.appendingPathComponent("project.pbxproj")
+        let projectBundle = location.appendingPathComponent("\(PackageRepository.proofreadTargetName.resolved()).xcodeproj")
+        var project = try TextFile(
+          possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
+        )
+        project.contents = String(try xcodeProjectSource())
+        try project.writeChanges(for: self, output: output)
+        
+        var scheme = try TextFile(
+          possiblyAt: projectBundle.appendingPathComponent(
+            "/xcshareddata/xcschemes/Scheme.xcscheme"
           )
-          project.contents = String(try xcodeProjectSource())
-          try project.writeChanges(for: self, output: output)
-
-          var scheme = try TextFile(
-            possiblyAt: projectBundle.appendingPathComponent(
-              "/xcshareddata/xcschemes/Proofread.xcscheme"
-            )
-          )
-          var schemeDefinition = Resources.Xcode.proofreadScheme
-          schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
-          schemeDefinition.replaceMatches(
-            for: "[*project*]",
-            with: projectBundle.lastPathComponent
-          )
-          scheme.contents = schemeDefinition
-          try scheme.writeChanges(for: self, output: output)
-        }
+        )
+        var schemeDefinition = Resources.Xcode.proofreadScheme
+        schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
+        schemeDefinition.replaceMatches(
+          for: "[*project*]",
+          with: projectBundle.lastPathComponent
+        )
+        scheme.contents = schemeDefinition
+        try scheme.writeChanges(for: self, output: output)
       }
 
     #endif

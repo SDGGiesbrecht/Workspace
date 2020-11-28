@@ -68,58 +68,6 @@ import WorkspaceProjectConfiguration
         }
       }
 
-      #warning("Extract to resource.")
-      private func xcodeProjectSource() throws -> StrictString {
-        return [
-          "// !$*UTF8*$!",
-          "{",
-          "  archiveVersion = \u{22}1\u{22};",
-          "  objectVersion = \u{22}46\u{22};",
-          "  objects = {",
-          "    \u{22}project\u{22} = {",
-          "      isa = \u{22}PBXProject\u{22};",
-          "      buildConfigurationList = \u{22}build configuration list\u{22};",
-          "      compatibilityVersion = \u{22}Xcode 3.2\u{22};",
-          "      mainGroup = \u{22}main group\u{22};",
-          "      projectDirPath = \u{22}.\u{22};",
-          "      targets = (",
-          "        \u{22}proofread target\u{22}",
-          "      );",
-          "    };",
-          "    \u{22}build configuration list\u{22} = {",
-          "      isa = \u{22}XCConfigurationList\u{22};",
-          "      buildConfigurations = (",
-          "        \u{22}release\u{22}",
-          "      );",
-          "    };",
-          "    \u{22}main group\u{22} = {",
-          "      isa = \u{22}PBXGroup\u{22};",
-          "      children = ();",
-          "    };",
-          "    \u{22}proofread target\u{22} = {",
-          "      isa = PBXAggregateTarget;",
-          "      buildPhases = (",
-          "        \u{22}proofread script\u{22},",
-          "      );",
-          "      name = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-          "      productName = \u{22}\(PackageRepository.proofreadTargetName.resolved())\u{22};",
-          "    };",
-          "    \u{22}proofread script\u{22} = {",
-          "      isa = PBXShellScriptBuildPhase;",
-          "      shellPath = /bin/sh;",
-          "      shellScript = \u{22}\(try script())\u{22};",
-          "    };",
-          "    \u{22}release\u{22} = {",
-          "      isa = \u{22}XCBuildConfiguration\u{22};",
-          "      buildSettings = {};",
-          "      name = \u{22}Release\u{22};",
-          "    };",
-          "  };",
-          "  rootObject = \u{22}project\u{22};",
-          "}",
-        ].joinedAsLines()
-      }
-
       internal func refreshXcodeProject(output: Command.Output) throws {
         let projectBundle = location.appendingPathComponent(
           "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
@@ -127,7 +75,16 @@ import WorkspaceProjectConfiguration
         var project = try TextFile(
           possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
         )
-        project.contents = String(try xcodeProjectSource())
+        var projectDefinition = try! String(file: Resources.Xcode.proofreadProject, origin: nil)
+        let encoding: String = String(projectDefinition.prefix(through: "\n")!.contents)
+        projectDefinition.drop(through: "*/\n\n")
+        projectDefinition.prepend(contentsOf: encoding)
+        projectDefinition.replaceMatches(
+          for: "[*target*]",
+          with: String(PackageRepository.proofreadTargetName.resolved())
+        )
+        projectDefinition.replaceMatches(for: "[*script*]", with: try script())
+        project.contents = projectDefinition
         try project.writeChanges(for: self, output: output)
 
         var scheme = try TextFile(

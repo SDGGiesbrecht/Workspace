@@ -32,7 +32,7 @@ extension Workspace {
       description: Workspace.Proofread.Proofread.description,
       subcommands: [
         Workspace.Proofread.Proofread.command,
-        Workspace.Proofread.GenerateXcodeProject.command
+        Workspace.Proofread.GenerateXcodeProject.command,
       ],
       defaultSubcommand: Workspace.Proofread.Proofread.command
     )

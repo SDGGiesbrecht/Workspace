@@ -87,7 +87,7 @@ import WorkspaceProjectConfiguration
 
       var scheme = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent(
-          "xcshareddata/xcschemes/Scheme.xcscheme"
+          "xcshareddata/xcschemes/\(PackageRepository.proofreadTargetName.resolved()).xcscheme"
         )
       )
       var schemeDefinition = Resources.Xcode.proofreadScheme

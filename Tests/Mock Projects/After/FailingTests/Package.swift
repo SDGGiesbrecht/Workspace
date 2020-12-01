@@ -26,3 +26,8 @@ let package = Package(
             dependencies: ["FailingTests"]),
     ]
 )
+
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  package.targets.removeAll(where: { $0.isTest })
+}

@@ -16,7 +16,6 @@ license regenerates the project’s license file.
 read‐me regenerates the project’s read‐me file.
 resources regenerates code providing access to the project’s resources.
 scripts regenerates the project’s refresh and validation scripts.
-xcode regenerates the project’s Xcode set‐up.
 
 Options
 

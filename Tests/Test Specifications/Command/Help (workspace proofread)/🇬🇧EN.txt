@@ -4,7 +4,9 @@ workspace proofread proofreads the project’s source for style violations.
 
 Subcommands
 
+generate‐xcode‐project generates an Xcode project that can display proofreading results inline.
 help displays usage information.
+proofread proofreads the project’s source for style violations.
 
 Options
 

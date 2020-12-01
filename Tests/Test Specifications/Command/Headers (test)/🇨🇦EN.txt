@@ -1,12 +1,5 @@
 $ workspace test •no‐colour
 
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to “Headers.xcodeproj/project.pbxproj”...
-Writing to “Headers.xcodeproj//xcshareddata/xcschemes/Proofread.xcscheme”...
-
 Testing on macOS... (§1)
 
 [$ swift...]

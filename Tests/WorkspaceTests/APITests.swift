@@ -620,6 +620,8 @@ class APITests: TestCase {
         ["refresh"],
         ["validate"],
         ["validate", "•job", "macos"],
+
+        ["proofread", "generate‐xcode‐project"]
       ]
       PackageRepository(mock: "Default").test(
         commands: commands,

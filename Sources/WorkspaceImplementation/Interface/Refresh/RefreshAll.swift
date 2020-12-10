@@ -197,17 +197,6 @@ extension Workspace.Refresh {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
         }
 
-        // Xcode
-        #if !os(Linux)
-          if try options.project.configuration(output: output).xcode.manage {
-            try Workspace.Refresh.Xcode.command.execute(
-              withArguments: arguments,
-              options: options,
-              output: output
-            )
-          }
-        #endif
-
         // Custom
         for task in try options.project.configuration(output: output).customRefreshmentTasks {
           output.print(

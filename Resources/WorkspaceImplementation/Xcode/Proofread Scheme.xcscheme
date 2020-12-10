@@ -23,7 +23,7 @@
          <BuildActionEntry>
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "WORKSPACE_PROOFREAD_TARGET"
+               BlueprintIdentifier = "proofread target"
                BuildableName = "Proofread"
                BlueprintName = "Proofread"
                ReferencedContainer = "container:[*project*]">

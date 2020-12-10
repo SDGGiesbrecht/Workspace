@@ -46,7 +46,7 @@ extension Workspace {
       })
 
     private static var subcommands: [Command] {
-      var list = [
+      return [
         All.command,
         Scripts.command,
         Git.command,
@@ -59,10 +59,6 @@ extension Workspace {
         Examples.command,
         InheritedDocumentation.command,
       ]
-      #if !os(Linux)
-        list.append(Xcode.command)
-      #endif
-      return list
     }
 
     internal static let command = Command(

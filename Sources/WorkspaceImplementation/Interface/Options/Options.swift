@@ -44,6 +44,6 @@ extension Options {
   // MARK: - Proofreading
 
   internal var runAsXcodeBuildPhase: Bool {
-    return value(for: Workspace.Proofread.runAsXcodeBuildPhase)
+    return value(for: Workspace.Proofread.Proofread.runAsXcodeBuildPhase)
   }
 }

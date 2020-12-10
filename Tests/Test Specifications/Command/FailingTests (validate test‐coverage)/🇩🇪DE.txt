@@ -1,11 +1,5 @@
 $ arbeitsbereich validate test‐coverage •no‐colour
 
-Xcode‐Projekt wird aufgefrischt ...
-
-[$ swift...]
-
-Zu „FailingTests.xcodeproj/project.pbxproj“ wird geschrieben ...
-
 Auf macOS wird getestet ... (§1)
 
 [$ swift...]

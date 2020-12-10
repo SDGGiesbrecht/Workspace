@@ -354,8 +354,6 @@ class APITests: TestCase {
       configuration.arbeitsablaufsskripteBereitstellen = false
       XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
       configuration.lager.ignoredPaths.insert("...")
-      configuration.xcode.verwalten = false
-      XCTAssertFalse(configuration.xcode.verwalten)
       configuration.license.license = nil
       XCTAssertNil(configuration.license.license)
       configuration.lizenz.lizenz = .mit
@@ -571,7 +569,6 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
-      configuration.xcode.manage = true
       PackageRepository(mock: "CustomTasks").test(
         commands: [
           ["refresh"],
@@ -623,6 +620,8 @@ class APITests: TestCase {
         ["refresh"],
         ["validate"],
         ["validate", "•job", "macos"],
+
+        ["proofread", "generate‐xcode‐project"],
       ]
       PackageRepository(mock: "Default").test(
         commands: commands,
@@ -656,22 +655,20 @@ class APITests: TestCase {
       konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
       konfiguration.dokumentation.programmierschnittstelle
         .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-      var commands: [[StrictString]] = [
-        ["auffrischen", "skripte"],
-        ["auffrischen", "git"],
-        ["auffrischen", "fortlaufende‐einbindung"],
-        ["auffrischen", "ressourcen"],
-        ["normalisieren"],
-        ["prüfen", "erstellung"],
-        ["prüfen", "testabdeckung"],
-        ["prüfen", "dokumentationsabdeckung"],
-        ["dokumentieren"],
-      ]
-      #if !os(Linux)
-        commands.append(["auffrischen", "xcode"])
-      #endif
       PackageRepository(mock: "Deutsch").test(
-        commands: commands,
+        commands: [
+          ["auffrischen", "skripte"],
+          ["auffrischen", "git"],
+          ["auffrischen", "fortlaufende‐einbindung"],
+          ["auffrischen", "ressourcen"],
+          ["normalisieren"],
+          ["prüfen", "erstellung"],
+          ["prüfen", "testabdeckung"],
+          ["prüfen", "dokumentationsabdeckung"],
+          ["dokumentieren"],
+
+          ["korrekturlesen", "xcode‐projekt‐erstellen"],
+        ],
         configuration: konfiguration,
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
@@ -762,7 +759,6 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.documentation.localizations = ["zxx"]
-      configuration.xcode.manage = true
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
       PackageRepository(mock: "FailingDocumentationCoverage").test(
@@ -780,7 +776,6 @@ class APITests: TestCase {
   func testFailingTests() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
-      configuration.xcode.manage = true
       configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
       // Attempt to remove existing derived data so that the build is clean.
       // Otherwise Xcode skips the build stages where the awaited warnings occur.
@@ -815,7 +810,6 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
-      configuration.xcode.manage = true
       PackageRepository(mock: "Headers").test(
         commands: [
           ["refresh", "file‐headers"],
@@ -831,27 +825,21 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    testCommand(
-      Workspace.command,
-      with: ["help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["proofread", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace proofread)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    #if os(Linux)  // Linux has no “xcode” subcommand, causing spec mis‐match.
-      for localization in InterfaceLocalization.allCases {
-        try LocalizationSetting(orderOfPrecedence: [localization.code]).do {
-          _ = try Workspace.command.execute(with: ["refresh", "help"]).get()
-        }
-      }
-    #else
+    #if !os(Windows)  // #workaround(Swift 5.3.1, SegFault)
+      testCommand(
+        Workspace.command,
+        with: ["help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["proofread", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace proofread)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
       testCommand(
         Workspace.command,
         with: ["refresh", "help"],
@@ -859,63 +847,63 @@ class APITests: TestCase {
         uniqueTestName: "Help (workspace refresh)",
         overwriteSpecificationInsteadOfFailing: false
       )
+      testCommand(
+        Workspace.command,
+        with: ["validate", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace validate)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["document", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace document)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "continuous‐integration", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh continuous‐integration)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "examples", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh examples)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "inherited‐documentation", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "resources", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh resources)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "scripts", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh scripts)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["normalize", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace normalize)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
-    testCommand(
-      Workspace.command,
-      with: ["validate", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace validate)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["document", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace document)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "continuous‐integration", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh continuous‐integration)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "examples", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh examples)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "inherited‐documentation", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "resources", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh resources)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["refresh", "scripts", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace refresh scripts)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
-    testCommand(
-      Workspace.command,
-      with: ["normalize", "help"],
-      localizations: InterfaceLocalization.self,
-      uniqueTestName: "Help (workspace normalize)",
-      overwriteSpecificationInsteadOfFailing: false
-    )
   }
 
   func testInvalidResourceDirectory() {
@@ -1168,7 +1156,6 @@ class APITests: TestCase {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
-      configuration.xcode.manage = true
       configuration.documentation.currentVersion = Version(0, 1, 0)
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.localizations = [
@@ -1270,34 +1257,28 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
-      var commands: [[StrictString]] = [
-        ["refresh", "scripts"],
-        ["refresh", "git"],
-        ["refresh", "read‐me"],
-        ["refresh", "licence"],
-        ["refresh", "github"],
-        ["refresh", "continuous‐integration"],
-        ["refresh", "resources"],
-        ["refresh", "file‐headers"],
-        ["refresh", "examples"],
-        ["refresh", "inherited‐documentation"],
-        ["normalize"],
-      ]
-      #if !os(Linux)
-        commands.append(["refresh", "xcode"])
-      #endif
-      commands.append(contentsOf: [
-        ["proofread"],
-        ["validate", "build"],
-        ["test"],
-        ["validate", "test‐coverage"],
-        ["validate", "documentation‐coverage"],
-
-        ["proofread", "•xcode"],
-        ["validate"],
-      ])
       PackageRepository(mock: "SDGLibrary").test(
-        commands: commands,
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
+
+          ["proofread", "•xcode"],
+          ["validate"],
+        ],
         configuration: configuration,
         sdg: true,
         localizations: FastTestLocalization.self,
@@ -1353,33 +1334,27 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
-      var commands: [[StrictString]] = [
-        ["refresh", "scripts"],
-        ["refresh", "git"],
-        ["refresh", "read‐me"],
-        ["refresh", "licence"],
-        ["refresh", "github"],
-        ["refresh", "continuous‐integration"],
-        ["refresh", "resources"],
-        ["refresh", "file‐headers"],
-        ["refresh", "examples"],
-        ["refresh", "inherited‐documentation"],
-        ["normalize"],
-      ]
-      #if !os(Linux)
-        commands.append(["refresh", "xcode"])
-      #endif
-      commands.append(contentsOf: [
-        ["proofread"],
-        ["validate", "build"],
-        ["test"],
-        ["validate", "test‐coverage"],
-        ["validate", "documentation‐coverage"],
-
-        ["proofread", "•xcode"],
-      ])
       PackageRepository(mock: "SDGTool").test(
-        commands: commands,
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
+
+          ["proofread", "•xcode"],
+        ],
         configuration: configuration,
         sdg: true,
         localizations: FastTestLocalization.self,

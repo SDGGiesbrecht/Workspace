@@ -16,7 +16,6 @@ lies‐mich erstellt die Lies‐mich‐Datei des Projekts neu.
 lizenz erstellt die Lizenzdatei der Projekt neu.
 ressourcen erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt.
 skripte erstellt die Auffrisch‐ und Überprüfungskripte neu.
-xcode erstellt die Xcode‐Einrichtung des Projekts neu.
 
 Optionen
 

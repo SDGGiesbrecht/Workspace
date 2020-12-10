@@ -1,5 +1,5 @@
 /*
- Proofread.swift
+ ProofreadProofread.swift
 
  This source file is part of the Workspace open source project.
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -24,10 +24,10 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-extension Workspace {
+extension Workspace.Proofread {
   internal enum Proofread {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
+    internal static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "proofread"
@@ -36,7 +36,7 @@ extension Workspace {
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+    internal static let description = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -69,7 +69,7 @@ extension Workspace {
       name: name,
       description: description,
       directArguments: [],
-      options: standardOptions + [runAsXcodeBuildPhase],
+      options: Workspace.standardOptions + [runAsXcodeBuildPhase],
       execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
         var validationStatus = ValidationStatus()
         try executeAsStep(

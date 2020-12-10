@@ -1,8 +1,0 @@
-$ arbeitsbereich auffrischen xcode •no‐colour
-
-Xcode‐Projekt wird aufgefrischt ...
-
-[$ swift...]
-
-Zu „Deutsch.xcodeproj/project.pbxproj“ wird geschrieben ...
-0

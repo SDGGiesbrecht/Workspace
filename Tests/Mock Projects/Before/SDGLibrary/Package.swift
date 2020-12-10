@@ -30,3 +30,8 @@ let package = Package(
         .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")])
     ]
 )
+
+import Foundation
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  package.targets.removeAll(where: { $0.isTest })
+}

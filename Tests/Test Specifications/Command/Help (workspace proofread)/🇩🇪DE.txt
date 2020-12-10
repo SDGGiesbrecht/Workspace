@@ -5,6 +5,8 @@ arbeitsbereich korrekturlesen liest die Projektquellenstyl Korrektur.
 Unterbefehle
 
 hilfe zeigt Gebrauchsinformationen an.
+korrekturlesen liest die Projektquellenstyl Korrektur.
+xcode‐projekt‐erstellen erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt.
 
 Optionen
 

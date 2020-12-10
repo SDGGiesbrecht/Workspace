@@ -1,12 +1,5 @@
 $ workspace validate build •no‐colour
 
-Refreshing Xcode project...
-
-[$ swift...]
-
-Writing to ‘FailingTests.xcodeproj/project.pbxproj’...
-Writing to ‘FailingTests.xcodeproj//xcshareddata/xcschemes/Proofread.xcscheme’...
-
 Checking build for macOS... (§1)
 
 [$ swift...]

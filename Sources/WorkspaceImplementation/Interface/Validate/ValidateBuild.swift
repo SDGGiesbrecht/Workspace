@@ -63,12 +63,6 @@ extension Workspace.Validate {
             for: options.project,
             output: output
           )
-
-          #if !os(Linux)
-            if try options.project.configuration(output: output).xcode.manage {
-              try Workspace.Refresh.Xcode.executeAsStep(options: options, output: output)
-            }
-          #endif
         #endif
 
         var validationStatus = ValidationStatus()

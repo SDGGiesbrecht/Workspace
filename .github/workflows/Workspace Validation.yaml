@@ -187,7 +187,7 @@ jobs:
   Web:
     name: Web
     runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.9.0
+    container: ghcr.io/swiftwasm/carton:0.9
     steps:
     - name: Check out
       uses: actions/checkout@v1

@@ -621,7 +621,7 @@ class APITests: TestCase {
         ["validate"],
         ["validate", "•job", "macos"],
 
-        ["proofread", "generate‐xcode‐project"]
+        ["proofread", "generate‐xcode‐project"],
       ]
       PackageRepository(mock: "Default").test(
         commands: commands,
@@ -667,7 +667,7 @@ class APITests: TestCase {
           ["prüfen", "dokumentationsabdeckung"],
           ["dokumentieren"],
 
-          ["korrekturlesen", "xcode‐projekt‐erstellen"]
+          ["korrekturlesen", "xcode‐projekt‐erstellen"],
         ],
         configuration: konfiguration,
         localizations: InterfaceLocalization.self,

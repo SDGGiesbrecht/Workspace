@@ -48,7 +48,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentWindowsVersion = "10"
   private static let currentVisualStudioVersion = "2019"
   private static let currentWSLImage = "2004"
-  private static let currentCartonVersion = Version(0, 8, 2)
+  private static let currentCartonVersion = Version(0, 9, 0)
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
   private static let currentUbuntuVersion = "20.04"  // Used by GitHub host

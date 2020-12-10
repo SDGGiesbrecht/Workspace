@@ -666,6 +666,8 @@ class APITests: TestCase {
           ["prüfen", "testabdeckung"],
           ["prüfen", "dokumentationsabdeckung"],
           ["dokumentieren"],
+
+          ["korrekturlesen", "xcode‐projekt‐erstellen"]
         ],
         configuration: konfiguration,
         localizations: InterfaceLocalization.self,

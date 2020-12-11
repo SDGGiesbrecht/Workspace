@@ -422,7 +422,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     case .macOS, .windows, .android:
       return nil
     case .web:
-      return "ghcr.io/swiftwasm/carton:\(ContinuousIntegrationJob.currentCartonVersion.string())"
+      let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
+      return "ghcr.io/swiftwasm/carton:\(version)"
     case .centOS:
       let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
       return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"

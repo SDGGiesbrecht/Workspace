@@ -425,15 +425,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
       return "ghcr.io/swiftwasm/carton:\(version)"
     case .centOS:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
     case .ubuntu:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return "swift:\(version)\u{2D}\(ContinuousIntegrationJob.currentUbuntuName)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .amazonLinux:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return
         "swift:\(version)\u{2D}amazonlinux\(ContinuousIntegrationJob.currentAmazonLinuxVerison)"
     }

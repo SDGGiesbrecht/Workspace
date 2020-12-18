@@ -42,6 +42,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 2)
+  private static let androidSwiftVersion = Version(5, 3, 0)
 
   private static let currentMacOSVersion = Version(11)
   internal static let currentXcodeVersion = Version(12, 3)
@@ -863,7 +864,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.androidSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [

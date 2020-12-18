@@ -32,7 +32,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Refresh
@@ -76,9 +76,9 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://swift.org/builds/swift-5.3-release/windows10/swift-5.3-RELEASE/swift-5.3-RELEASE-windows10.exe' \
-          --output '/tmp/swift-5.3-RELEASE-windows10.exe'
-        /tmp/swift-5.3-RELEASE-windows10.exe //passive
+          'https://swift.org/builds/swift-5.3.2-release/windows10/swift-5.3.2-RELEASE/swift-5.3.2-RELEASE-windows10.exe' \
+          --output '/tmp/swift-5.3.2-RELEASE-windows10.exe'
+        /tmp/swift-5.3.2-RELEASE-windows10.exe //passive
         export SDKROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
         echo "SDKROOT=${SDKROOT}" >> $GITHUB_ENV
         cp "${SDKROOT}/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
@@ -142,14 +142,14 @@ jobs:
           mkdir -p /tmp
         ubuntu2004 run \
           curl --location \
-            'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
-            --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+            'https://swift.org/builds/swift-5.3.2-release/ubuntu2004/swift-5.3.2-RELEASE/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz' \
+            --output '/tmp/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz'
         ubuntu2004 run \
-          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+          tar --extract --force-local --file /tmp/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         ubuntu2004 run \
           mkdir -p /
         ubuntu2004 run \
-          cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/usr //
+          cp -R /tmp/swift-5.3.2-RELEASE-ubuntu20.04/usr //
         ubuntu2004 run \
           swift --version
     - name: Build
@@ -205,7 +205,7 @@ jobs:
   CentOS:
     name: CentOS
     runs-on: ubuntu-20.04
-    container: swift:5.3-centos8
+    container: swift:5.3.2-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -245,7 +245,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-20.04
-    container: swift:5.3-focal
+    container: swift:5.3.2-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -303,7 +303,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Refresh
@@ -331,7 +331,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Refresh
@@ -361,11 +361,11 @@ jobs:
         set -x
         sudo rm -rf /usr/lib/clang/10.0.0
         curl --location \
-          'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
-        tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+          'https://swift.org/builds/swift-5.3.2-release/ubuntu2004/swift-5.3.2-RELEASE/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3.2-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.3.2-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
@@ -374,7 +374,7 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3/Android.sdk.zip' \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3.2/Android.sdk.zip' \
           --output '/tmp/Android.sdk.zip'
         unzip /tmp/Android.sdk.zip -d /tmp
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
@@ -442,7 +442,7 @@ jobs:
   Amazon_Linux:
     name: Amazon Linux
     runs-on: ubuntu-20.04
-    container: swift:5.3-amazonlinux2
+    container: swift:5.3.2-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -482,7 +482,7 @@ jobs:
   Miscellaneous:
     name: Miscellaneous
     runs-on: ubuntu-20.04
-    container: swift:5.3-focal
+    container: swift:5.3.2-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

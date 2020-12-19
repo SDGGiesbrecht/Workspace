@@ -42,6 +42,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 2)
+  // #workaround(Swift 5.3.2, Foundation is busted.)
+  private static let windowsSwiftVersion = Version(5, 3, 1)
+  // #workaround(No up‐to‐date toolchain available.)
   private static let androidSwiftVersion = Version(5, 3, 0)
 
   private static let currentMacOSVersion = Version(11)
@@ -778,7 +781,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.windowsSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(
           script(
@@ -934,7 +937,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.windowsSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(

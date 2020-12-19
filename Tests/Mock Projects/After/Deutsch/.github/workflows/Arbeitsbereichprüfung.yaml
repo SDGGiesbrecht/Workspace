@@ -20,7 +20,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -231,7 +231,7 @@ jobs:
   CentOS:
     name: CentOS
     runs-on: ubuntu-20.04
-    container: swift:5.3-centos8
+    container: swift:5.3.2-centos8
     steps:
     - name: Holen
       uses: actions/checkout@v1
@@ -309,7 +309,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-20.04
-    container: swift:5.3-focal
+    container: swift:5.3.2-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1
@@ -405,7 +405,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -471,7 +471,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -620,7 +620,7 @@ jobs:
   Amazon_Linux:
     name: Amazon Linux
     runs-on: ubuntu-20.04
-    container: swift:5.3-amazonlinux2
+    container: swift:5.3.2-amazonlinux2
     steps:
     - name: Holen
       uses: actions/checkout@v1
@@ -710,7 +710,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.2.app
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
         xcodebuild -version
         swift --version
     - name: Arbeitsbereich installieren
@@ -764,7 +764,7 @@ jobs:
   Sonstiges:
     name: Sonstiges
     runs-on: ubuntu-20.04
-    container: swift:5.3-focal
+    container: swift:5.3.2-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1

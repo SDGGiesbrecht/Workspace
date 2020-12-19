@@ -68,6 +68,7 @@ extension RuleProtocol {
     reportViolation(
       in: file,
       at: file.contents.indices(of: location),
+      replacementSuggestion: replacementSuggestion,
       message: message,
       status: status
     )

@@ -375,7 +375,8 @@ import WorkspaceLocalizations
             try purgingAutoreleased {
               let sourceFile = try String(from: file.file)
               regionLoop: for region in file.regions {
-                let startLineIndex = region.region.lowerBound.line(in: sourceFile.lines)
+                let convertedRegion = sourceFile.indices(of: region.region)
+                let startLineIndex = convertedRegion.lowerBound.line(in: sourceFile.lines)
                 let startLine = sourceFile.lines[startLineIndex].line
                 for token in sameLineTokens where startLine.contains(token.scalars) {
                   continue regionLoop  // Ignore and move on.
@@ -390,7 +391,7 @@ import WorkspaceLocalizations
                 // No ignore tokens.
 
                 CommandLineProofreadingReporter.default.report(
-                  violation: region.region,
+                  violation: convertedRegion,
                   in: sourceFile,
                   to: output
                 )

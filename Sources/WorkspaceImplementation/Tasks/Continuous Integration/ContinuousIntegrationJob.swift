@@ -41,10 +41,14 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  internal static let currentSwiftVersion = Version(5, 3, 0)
+  internal static let currentSwiftVersion = Version(5, 3, 2)
+  // #workaround(Is Foundation busted in 5.3.2, or does CoreFoundation just need a new import path?)
+  private static let windowsSwiftVersion = Version(5, 3, 0)
+  // #workaround(No up‐to‐date toolchain available.)
+  private static let androidSwiftVersion = Version(5, 3, 0)
 
   private static let currentMacOSVersion = Version(11)
-  internal static let currentXcodeVersion = Version(12, 2)
+  internal static let currentXcodeVersion = Version(12, 3)
   private static let currentWindowsVersion = "10"
   private static let currentVisualStudioVersion = "2019"
   private static let currentWSLImage = "2004"
@@ -425,15 +429,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
       return "ghcr.io/swiftwasm/carton:\(version)"
     case .centOS:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
     case .ubuntu:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return "swift:\(version)\u{2D}\(ContinuousIntegrationJob.currentUbuntuName)"
     case .tvOS, .iOS, .watchOS:
       unreachable()
     case .amazonLinux:
-      let version = ContinuousIntegrationJob.currentSwiftVersion.string(droppingEmptyPatch: true)
+      let version = ContinuousIntegrationJob.currentSwiftVersion.string()
       return
         "swift:\(version)\u{2D}amazonlinux\(ContinuousIntegrationJob.currentAmazonLinuxVerison)"
     }
@@ -777,7 +781,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.windowsSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(
           script(
@@ -863,7 +867,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.androidSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
@@ -933,7 +937,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           )
         )
       case .windows:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.windowsSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           script(

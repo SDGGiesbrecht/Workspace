@@ -57,4 +57,20 @@ extension RuleProtocol {
       status.report(violation: notExempt)
     }
   }
+
+  internal static func reportViolation(
+    in file: TextFile,
+    at location: Range<String.ScalarOffset>,
+    replacementSuggestion: StrictString? = nil,
+    message: UserFacing<StrictString, InterfaceLocalization>,
+    status: ProofreadingStatus
+  ) {
+    reportViolation(
+      in: file,
+      at: file.contents.indices(of: location),
+      replacementSuggestion: replacementSuggestion,
+      message: message,
+      status: status
+    )
+  }
 }

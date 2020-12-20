@@ -135,6 +135,35 @@ internal struct UnicodeRule: SyntaxRule {
 
     private static func check(
       _ node: String,
+      range: @escaping @autoclosure () -> Range<String.ScalarOffset>,
+      textFreedom: TextFreedom,
+      kind: @escaping @autoclosure () -> EitherTokenKind,
+      isPrefix: @escaping @autoclosure () -> Bool,
+      isInfix: @escaping @autoclosure () -> Bool,
+      isFloatLiteral: @escaping @autoclosure () -> Bool,
+      isInAvailabilityDeclaration: @escaping @autoclosure () -> Bool,
+      file: TextFile,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
+      check(
+        node,
+        range: file.contents.indices(of: range()),
+        textFreedom: textFreedom,
+        kind: kind(),
+        isPrefix: isPrefix(),
+        isInfix: isInfix(),
+        isFloatLiteral: isFloatLiteral(),
+        isInAvailabilityDeclaration: isInAvailabilityDeclaration(),
+        file: file,
+        project: project,
+        status: status,
+        output: output
+      )
+    }
+    private static func check(
+      _ node: String,
       range: @escaping @autoclosure () -> Range<String.ScalarView.Index>,
       textFreedom: TextFreedom,
       kind: @escaping @autoclosure () -> EitherTokenKind,

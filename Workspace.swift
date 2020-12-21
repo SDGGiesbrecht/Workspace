@@ -20,7 +20,7 @@ public enum Metadata {
 
   public static let latestStableVersion = Version(0, 36, 0)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = latestStableVersion
+  public static let thisVersion: Version? = nil
 
   // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)

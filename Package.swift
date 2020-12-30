@@ -831,7 +831,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
-
   // #workaround(SDGWeb 5.4.2, Web API incomplete.)
   package.targets = package.targets.filter { target in
     switch target.name {

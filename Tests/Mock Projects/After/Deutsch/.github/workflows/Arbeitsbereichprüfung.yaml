@@ -213,7 +213,7 @@ jobs:
   Netz:
     name: Netz
     runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.9
+    container: ghcr.io/swiftwasm/carton:0.9.1
     steps:
     - name: Holen
       uses: actions/checkout@v1

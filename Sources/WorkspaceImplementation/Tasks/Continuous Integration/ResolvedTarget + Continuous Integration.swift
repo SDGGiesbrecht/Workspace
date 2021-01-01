@@ -5,8 +5,8 @@
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2020 Jeremy David Giesbrecht and the Workspace project contributors.
- Urheberrecht ©2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+ Copyright ©2020–2021 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2020–2021 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 
  Soli Deo gloria.
 

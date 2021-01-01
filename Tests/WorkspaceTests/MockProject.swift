@@ -396,6 +396,10 @@ extension PackageRepository {
                 for: Metadata.latestStableVersion.string().scalars,
                 with: "[Current Version]".scalars
               )
+              text.scalars.replaceMatches(
+                for: CalendarDate.gregorianNow().gregorianYear.inEnglishDigits(),
+                with: "[Current Date]".scalars
+              )
               try text.save(to: file)
             }
           }

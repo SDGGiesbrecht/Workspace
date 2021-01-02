@@ -2,7 +2,7 @@
  README.md
 
 
- ©2020
+ ©[Current Date]
 
  Licensed under the MIT Licence.
  See https://opensource.org/licenses/MIT for licence information.

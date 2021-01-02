@@ -7,9 +7,9 @@
  Diese Quelldatei ist Teil des quelloffenen SDG‐Projekt.
  https://example.github.io/SDG/SDG
 
- Copyright ©2020 John Doe and the SDG project contributors.
- Urheberrecht ©2020 John Doe und die Mitwirkenden des SDG‐Projekts.
- ©2020
+ Copyright ©[Current Date] John Doe and the SDG project contributors.
+ Urheberrecht ©[Current Date] John Doe und die Mitwirkenden des SDG‐Projekts.
+ ©[Current Date]
 
  Soli Deo gloria.
 

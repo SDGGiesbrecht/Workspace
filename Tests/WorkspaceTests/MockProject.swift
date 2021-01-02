@@ -5,8 +5,8 @@
  Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
  https://github.com/SDGGiesbrecht/Workspace#workspace
 
- Copyright ©2018–2020 Jeremy David Giesbrecht and the Workspace project contributors.
- Urheberrecht ©2018–2020 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+ Copyright ©2018–2021 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2018–2021 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 
  Soli Deo gloria.
 
@@ -395,6 +395,10 @@ extension PackageRepository {
               text.scalars.replaceMatches(
                 for: Metadata.latestStableVersion.string().scalars,
                 with: "[Current Version]".scalars
+              )
+              text.scalars.replaceMatches(
+                for: CalendarDate.gregorianNow().gregorianYear.inEnglishDigits(),
+                with: "[Current Date]".scalars
               )
               try text.save(to: file)
             }

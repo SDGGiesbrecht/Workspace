@@ -40,7 +40,7 @@ extension WorkspaceConfiguration {
     return "https://sdggiesbrecht.github.io/Workspace/\(path).html"
   }
 
-  private static func configurationRecommendation(
+  internal static func configurationRecommendation(
     for property: StrictString,
     localization: InterfaceLocalization
   ) -> StrictString {

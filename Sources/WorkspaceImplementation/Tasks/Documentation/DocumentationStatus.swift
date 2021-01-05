@@ -214,13 +214,19 @@ internal class DocumentationStatus {
           return
             ([
               "No original copyright date is specified.",
-              "(Configure it under “documentation.api.yearFirstPublished”.)",
+              WorkspaceConfiguration.configurationRecommendation(
+                for: "documentation.api.yearFirstPublished",
+                localization: localization
+              ),
             ] as [StrictString]).joinedAsLines()
         case .deutschDeutschland:
           return
             ([
               "Kein ursprüngliche Urheberrechtsdatum wurde angegeben.",
-              "(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)",
+              WorkspaceConfiguration.configurationRecommendation(
+                for: "dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung",
+                localization: localization
+              ),
             ] as [StrictString]).joinedAsLines()
         }
       })
@@ -237,19 +243,28 @@ internal class DocumentationStatus {
             return
               ([
                 "A localisation has no copyright specified: \(arbitraryDescriptionOf: localization)",
-                "(Configure it under “documentation.api.copyrightNotice”.)",
+                WorkspaceConfiguration.configurationRecommendation(
+                  for: "documentation.api.copyrightNotice",
+                  localization: warningLocalization
+                ),
               ] as [StrictString]).joinedAsLines()
           case .englishUnitedStates, .englishCanada:
             return
               ([
                 "A localization has no copyright specified: \(arbitraryDescriptionOf: localization)",
-                "(Configure it under “documentation.api.copyrightNotice”.)",
+                WorkspaceConfiguration.configurationRecommendation(
+                  for: "documentation.api.copyrightNotice",
+                  localization: warningLocalization
+                ),
               ] as [StrictString]).joinedAsLines()
           case .deutschDeutschland:
             return
               ([
                 "Einer Lokalization fehlt die Urheberrechtsschutzvermerk: \(arbitraryDescriptionOf: localization)",
-                "(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)",
+                WorkspaceConfiguration.configurationRecommendation(
+                  for: "dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk",
+                  localization: warningLocalization
+                ),
               ] as [StrictString]).joinedAsLines()
           }
         })

@@ -24,4 +24,34 @@ extension WorkspaceConfiguration {
       .first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
     return configuredLocalization ?? InterfaceLocalization.fallbackLocalization
   }
+
+  internal static func configurationLink(for localization: InterfaceLocalization) -> StrictString {
+    let path: StrictString
+    switch localization {
+    case .englishUnitedKingdom:
+      path = "🇬🇧EN/Types/WorkspaceConfiguration"
+    case .englishUnitedStates:
+      path = "🇺🇸EN/Types/WorkspaceConfiguration"
+    case .englishCanada:
+      path = "🇨🇦EN/Types/WorkspaceConfiguration"
+    case .deutschDeutschland:
+      path = "🇩🇪DE/Typen/ArbeitsbereichKonfiguration"
+    }
+    return "https://sdggiesbrecht.github.io/Workspace/\(path).html"
+  }
+
+  private static func configurationRecommendation(
+    for property: StrictString,
+    localization: InterfaceLocalization
+  ) -> StrictString {
+    let link = configurationLink(for: localization)
+    switch localization {
+    case .englishUnitedKingdom:
+      return "(Configure it under ‘\(property)’. See \(link).)"
+    case .englishUnitedStates, .englishCanada:
+      return "(Configure it under “\(property)”. See \(link).)"
+    case .deutschDeutschland:
+      return "(Es ist unter „\(property)“ zu konfigurieren. Siehe \(link))"
+    }
+  }
 }

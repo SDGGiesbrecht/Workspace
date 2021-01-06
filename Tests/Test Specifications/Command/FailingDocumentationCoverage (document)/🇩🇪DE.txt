@@ -5,14 +5,14 @@ Dokumentation wird erstellt ...
 Verstorbene Ressourcenzeiger werden weiterleitet ...
 
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
-(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
+(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
 „FailingDocumentationCoverage“ wird zerteilt ...
 Die Programmierschnitstelle wird verarbeitet ...
 Auszeichnung wird erstellt ...
 
 Einer Lokalization fehlt die Urheberrechtsschutzvermerk: zxx
-(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren.)
+(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
 
 Einem Symbol fehlt die Beschreibung.

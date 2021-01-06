@@ -5,14 +5,14 @@ Generating documentation... (§1)
 Checking for defunct URLs to redirect...
 
 No original copyright date is specified.
-(Configure it under “documentation.api.yearFirstPublished”.)
+(Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
 Parsing “FailingDocumentationCoverage”...
 Processing API...
 Generating HTML...
 
 A localization has no copyright specified: zxx
-(Configure it under “documentation.api.copyrightNotice”.)
+(Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
 
 A symbol has no description:

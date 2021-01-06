@@ -4,9 +4,10 @@ Checking documentation coverage... (§1)
 
 
 No original copyright date is specified.
-(Configure it under “documentation.api.yearFirstPublished”.)
+(Configure it under ‘documentation.api.yearFirstPublished’. See https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/WorkspaceConfiguration.html.)
 
 There are no localisations specified. (documentation.localisations)
+(Configure it under ‘documentation.localisations’. See https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/WorkspaceConfiguration.html.)
 
 ✗ Failed to process documentation. (See [⌘F] ‘§1’)
 

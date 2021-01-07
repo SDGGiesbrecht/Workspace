@@ -4,9 +4,10 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 
 
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
-(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren.)
+(Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-Keine Lokalisationen sind angegeben. (dokumentation.localisationen)
+Keine Lokalisationen sind angegeben.
+(Es ist unter „dokumentation.localisationen“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
 ✗ Die Dokumentationsverarbeitung ist fehlgeschlagen. (Siehe [⌘F] „§1“)
 

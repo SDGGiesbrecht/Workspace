@@ -372,11 +372,32 @@ import WorkspaceProjectConfiguration
           description: UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
             case .englishUnitedKingdom:
-              return "There are no localisations specified. (documentation.localisations)"
+              return
+                ([
+                  "There are no localisations specified. (documentation.localisations)",
+                  WorkspaceConfiguration.configurationRecommendation(
+                    for: "documentation.localisations",
+                    localization: localization
+                  ),
+                ] as [StrictString]).joinedAsLines()
             case .englishUnitedStates, .englishCanada:
-              return "There are no localizations specified. (documentation.localizations)"
+              return
+                ([
+                  "There are no localizations specified.",
+                  WorkspaceConfiguration.configurationRecommendation(
+                    for: "documentation.localizations",
+                    localization: localization
+                  ),
+                ] as [StrictString]).joinedAsLines()
             case .deutschDeutschland:
-              return "Keine Lokalisationen sind angegeben. (dokumentation.localisationen)"
+              return
+                ([
+                  "Keine Lokalisationen sind angegeben.",
+                  WorkspaceConfiguration.configurationRecommendation(
+                    for: "dokumentation.localisationen",
+                    localization: localization
+                  ),
+                ] as [StrictString]).joinedAsLines()
             }
           })
         )

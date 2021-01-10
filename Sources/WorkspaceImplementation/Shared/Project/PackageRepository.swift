@@ -374,7 +374,7 @@ import WorkspaceProjectConfiguration
             case .englishUnitedKingdom:
               return
                 ([
-                  "There are no localisations specified. (documentation.localisations)",
+                  "There are no localisations specified.",
                   WorkspaceConfiguration.configurationRecommendation(
                     for: "documentation.localisations",
                     localization: localization

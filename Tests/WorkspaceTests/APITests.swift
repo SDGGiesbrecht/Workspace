@@ -1080,7 +1080,7 @@ class APITests: TestCase {
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,
-        overwriteSpecificationInsteadOfFailing: true
+        overwriteSpecificationInsteadOfFailing: false
       )
     #endif
   }

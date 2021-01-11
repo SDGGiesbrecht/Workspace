@@ -167,6 +167,7 @@ extension PackageRepository {
 
           for command in commands {
             FileType.resetUnsupportedFileTypes()
+            PackageRepository.resetLocalizationFallback()
 
             print(
               StrictString("$ workspace ")

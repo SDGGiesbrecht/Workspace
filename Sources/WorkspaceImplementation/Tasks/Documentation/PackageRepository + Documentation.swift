@@ -75,10 +75,11 @@ import WorkspaceConfiguration
     }
 
     private func platforms(
+      localizations: [LocalizationIdentifier],
       output: Command.Output
     ) throws -> [LocalizationIdentifier: [StrictString]] {
       var result: [LocalizationIdentifier: [StrictString]] = [:]
-      for localization in try configuration(output: output).documentation.localizations {
+      for localization in localizations {
         var list: [StrictString] = []
         for platform in try configuration(output: output).supportedPlatforms.sorted() {
           list.append(platform._isolatedName(for: localization._bestMatch))
@@ -332,11 +333,8 @@ import WorkspaceConfiguration
           relatedProjects = try self.relatedProjects(output: output)
         }
 
-        var localizations = configuration.documentation.localizations
-        if localizations.isEmpty {
-          // Allow easy preview without configuring a localization, even though this state is generally inadvisable. See localizationFallbackWarning().
-          localizations.append(developmentLocalization)
-        }
+        // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
+        let localizations = configuration.localizationsOrSystemFallback
 
         let interface = PackageInterface(
           localizations: localizations,
@@ -345,7 +343,7 @@ import WorkspaceConfiguration
           cli: cli,
           packageURL: configuration.documentation.repositoryURL,
           version: configuration.documentation.currentVersion,
-          platforms: try platforms(output: output),
+          platforms: try platforms(localizations: localizations, output: output),
           installation: configuration.documentation.installationInstructions
             .resolve(configuration),
           importing: configuration.documentation.importingInstructions.resolve(configuration),

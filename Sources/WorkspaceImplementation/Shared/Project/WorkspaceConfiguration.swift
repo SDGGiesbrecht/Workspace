@@ -14,6 +14,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGLogic
+import SDGLocalization
+
 import WorkspaceLocalizations
 import WorkspaceConfiguration
 
@@ -23,6 +26,15 @@ extension WorkspaceConfiguration {
     let configuredLocalization = documentation.localizations
       .first.flatMap { InterfaceLocalization(reasonableMatchFor: $0.code) }
     return configuredLocalization ?? InterfaceLocalization.fallbackLocalization
+  }
+
+  internal var localizationsOrSystemFallback: [LocalizationIdentifier] {
+    let configured = documentation.localizations
+    if ¬configured.isEmpty {
+      return configured
+    } else {
+      return [LocalizationIdentifier(AnyLocalization.resolved())]
+    }
   }
 
   internal static func configurationLink(for localization: InterfaceLocalization) -> StrictString {

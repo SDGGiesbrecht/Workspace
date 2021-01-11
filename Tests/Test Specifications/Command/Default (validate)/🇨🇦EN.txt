@@ -86,8 +86,36 @@ Checking documentation coverage... (§8)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
-There are no localizations specified.
-(Configure it under “documentation.localizations”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
+Parsing “Default”...
+Loading inheritance from “Swift”...
+Loading inheritance from “Foundation”...
+Loading inheritance from “Dispatch”...
+Loading inheritance from “XCTest”...
+Processing API...
+Generating HTML...
+
+A localization has no copyright specified: English (Canada)
+(Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
+
+
+A symbol has no description:
+Default.🇨🇦EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “Package(name: "Default"”.)
+
+
+A symbol has no description:
+Default.🇨🇦EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.library(name: "Default"”.)
+
+...Default...
+
+A symbol has no description:
+Default.🇨🇦EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.target(name: "Default"”.)
+
 
 Summary
 
@@ -99,7 +127,12 @@ Summary
 ✗ Build failed for watchOS. (See [⌘F] “§5”)
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
-✗ Failed to process documentation. (See [⌘F] “§8”)
+✗ Documentation coverage is incomplete. (See [⌘F] “§8”)
+
+
+The project has no localizations configured.
+Workspace has fallen back to the system language, which may produce different results on different devices.
+(Configure it under “documentation.localizations”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
 “Default” fails validation.
 2

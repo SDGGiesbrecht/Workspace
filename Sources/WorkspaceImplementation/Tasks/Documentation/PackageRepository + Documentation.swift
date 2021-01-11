@@ -332,8 +332,14 @@ import WorkspaceConfiguration
           relatedProjects = try self.relatedProjects(output: output)
         }
 
+        var localizations = configuration.documentation.localizations
+        if localizations.isEmpty {
+          // Allow easy preview without configuring a localization, even though this state is generally inadvisable. See localizationFallbackWarning().
+          localizations.append(developmentLocalization)
+        }
+
         let interface = PackageInterface(
-          localizations: configuration.documentation.localizations,
+          localizations: localizations,
           developmentLocalization: developmentLocalization,
           api: api,
           cli: cli,

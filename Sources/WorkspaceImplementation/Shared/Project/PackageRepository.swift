@@ -378,7 +378,8 @@ import WorkspaceProjectConfiguration
         case .englishUnitedKingdom:
           return
             ([
-              "There are no localisations specified.",
+              "The project has no localisations configured.",
+              "Workspace has fallen back to the system language, which may produce different results on different devices.",
               WorkspaceConfiguration.configurationRecommendation(
                 for: "documentation.localisations",
                 localization: localization
@@ -387,7 +388,8 @@ import WorkspaceProjectConfiguration
         case .englishUnitedStates, .englishCanada:
           return
             ([
-              "There are no localizations specified.",
+              "The project has no localizations configured.",
+              "Workspace has fallen back to the system language, which may produce different results on different devices.",
               WorkspaceConfiguration.configurationRecommendation(
                 for: "documentation.localizations",
                 localization: localization
@@ -396,7 +398,8 @@ import WorkspaceProjectConfiguration
         case .deutschDeutschland:
           return
             ([
-              "Keine Lokalisationen sind angegeben.",
+              "Das Projekt hat keine eingestellte Lokalisationen.",
+              "Arbeitsbereich ist auf die Systemsprache zurückgefallen. Das kann zu verschiedenen Ergebnissen auf verschiedenen Geräten führen.",
               WorkspaceConfiguration.configurationRecommendation(
                 for: "dokumentation.localisationen",
                 localization: localization

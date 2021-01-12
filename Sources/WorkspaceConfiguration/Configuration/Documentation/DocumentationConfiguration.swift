@@ -275,7 +275,7 @@ public struct DocumentationConfiguration: Codable {
       }
 
       var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.localizations {
+      for localization in configuration.documentation.localizationsOrSystemFallback {
         if let provided = localization._reasonableMatch {
           result[localization] = localizedToolInstallationInstructions(
             packageURL: packageURL,
@@ -316,7 +316,7 @@ public struct DocumentationConfiguration: Codable {
       }
 
       var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.localizations {
+      for localization in configuration.documentation.localizationsOrSystemFallback {
         if let provided = localization._reasonableMatch {
           result[localization] = localizedLibraryImportingInstructions(
             packageURL: packageURL,

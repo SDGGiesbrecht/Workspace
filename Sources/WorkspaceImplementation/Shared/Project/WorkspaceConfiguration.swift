@@ -29,12 +29,7 @@ extension WorkspaceConfiguration {
   }
 
   internal var localizationsOrSystemFallback: [LocalizationIdentifier] {
-    let configured = documentation.localizations
-    if ¬configured.isEmpty {
-      return configured
-    } else {
-      return [LocalizationIdentifier(AnyLocalization.resolved())]
-    }
+    return documentation._localizationsOrSystemFallback
   }
 
   internal static func configurationLink(for localization: InterfaceLocalization) -> StrictString {

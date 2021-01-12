@@ -177,6 +177,15 @@ public struct DocumentationConfiguration: Codable {
     set { localizations = newValue }
   }
 
+  public var _localizationsOrSystemFallback: [LocalizationIdentifier] {
+    let configured = localizations
+    if ¬configured.isEmpty {
+      return configured
+    } else {
+      return [LocalizationIdentifier(AnyLocalization.resolved())]
+    }
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.currentVersion)
   /// The semantic version of the current stable release of the project.

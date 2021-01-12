@@ -105,9 +105,9 @@ public struct ReadMeConfiguration: Codable {
         "#packageDocumentation",
       ]
 
-      if let installation = configuration.documentation.installationInstructions.resolve(
-        configuration
-      )[localization] {
+      if let installation = configuration.documentation.installationInstructions
+        .resolve(configuration)[localization]
+      {
         let header: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,

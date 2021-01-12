@@ -185,6 +185,9 @@ public struct DocumentationConfiguration: Codable {
       return [LocalizationIdentifier(AnyLocalization.resolved())]
     }
   }
+  internal var localizationsOrSystemFallback: [LocalizationIdentifier] {
+    return _localizationsOrSystemFallback
+  }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.currentVersion)

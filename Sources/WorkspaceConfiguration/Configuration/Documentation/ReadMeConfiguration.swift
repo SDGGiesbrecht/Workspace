@@ -74,7 +74,7 @@ public struct ReadMeConfiguration: Codable {
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
     var result: [LocalizationIdentifier: Markdown] = [:]
-    for localization in configuration.documentation.localizationsOrSystemFallback {
+    for localization in configuration.documentation.knownLocalizations() {
 
       var readMe: [StrictString] = []
 

@@ -2,6 +2,5 @@ $ arbeitsbereich refresh read‐me •no‐colour
 
 Lies‐mich wird aufgefrischt ...
 
-Keine Lokalisationen sind angegeben.
-(Es ist unter „dokumentation.localisationen“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
-9223372036854775807
+Zu „README.md“ wird geschrieben ...
+0

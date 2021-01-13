@@ -503,6 +503,7 @@ import WorkspaceConfiguration
           }
         }
       } catch {
+        // @exempt(from: tests) Only triggered by system or networking errors.
         output.print(error.localizedDescription.formattedAsError())
         validationStatus.failStep(
           message: UserFacing({ localization in

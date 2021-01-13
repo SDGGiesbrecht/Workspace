@@ -3,4 +3,9 @@ $ arbeitsbereich refresh read‐me •no‐colour
 Lies‐mich wird aufgefrischt ...
 
 Zu „README.md“ wird geschrieben ...
+
+Das Projekt hat keine eingestellte Lokalisationen.
+Arbeitsbereich ist auf die Systemsprache zurückgefallen. Das kann zu verschiedenen Ergebnissen auf verschiedenen Geräten führen.
+(Es ist unter „dokumentation.localisationen“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
+
 0

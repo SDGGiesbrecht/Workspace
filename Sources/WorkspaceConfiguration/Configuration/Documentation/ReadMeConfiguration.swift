@@ -74,7 +74,7 @@ public struct ReadMeConfiguration: Codable {
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
     var result: [LocalizationIdentifier: Markdown] = [:]
-    for localization in configuration.documentation.localizations {
+    for localization in configuration.documentation.knownLocalizations() {
 
       var readMe: [StrictString] = []
 
@@ -105,9 +105,9 @@ public struct ReadMeConfiguration: Codable {
         "#packageDocumentation",
       ]
 
-      if let installation = configuration.documentation.installationInstructions.resolve(
-        configuration
-      )[localization] {
+      if let installation = configuration.documentation.installationInstructions
+        .resolve(configuration)[localization]
+      {
         let header: StrictString
         switch localization._bestMatch {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,

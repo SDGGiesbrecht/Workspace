@@ -30,6 +30,9 @@ extension Command.Output {
     }
 
     internal func listWarnings(for project: PackageRepository) throws {
+      if let noLocalizationSpecified = PackageRepository.localizationFallbackWarning() {
+        print(noLocalizationSpecified.formattedAsWarning().separated())
+      }
       if let unsupportedFiles = try FileType.unsupportedTypesWarning(for: project, output: self) {
         print(unsupportedFiles.formattedAsWarning().separated())
       }

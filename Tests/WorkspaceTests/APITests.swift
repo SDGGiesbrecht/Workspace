@@ -1071,11 +1071,14 @@ class APITests: TestCase {
 
   func testNoLocalizations() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
       PackageRepository(mock: "NoLocalizations").test(
         commands: [
           ["refresh", "read‐me"],
           ["validate", "documentation‐coverage"],
         ],
+        configuration: configuration,
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )

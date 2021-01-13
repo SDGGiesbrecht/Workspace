@@ -6,10 +6,39 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-Keine Lokalisationen sind angegeben.
-(Es ist unter „dokumentation.localisationen“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
+„NoLocalizations“ wird zerteilt ...
+Die Programmierschnitstelle wird verarbeitet ...
+Auszeichnung wird erstellt ...
 
-✗ Die Dokumentationsverarbeitung ist fehlgeschlagen. (Siehe [⌘F] „§1“)
+Einer Lokalization fehlt die Urheberrechtsschutzvermerk: Deutsch (Deustchland)
+(Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
+
+
+Einem Symbol fehlt die Beschreibung.
+NoLocalizations.🇩🇪DE
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "NoLocalizations"“.)
+
+
+Einem Symbol fehlt die Beschreibung.
+NoLocalizations.🇩🇪DE
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "NoLocalizations"“.)
+
+... NoLocalizations ...
+
+Einem Symbol fehlt die Beschreibung.
+NoLocalizations.🇩🇪DE
+(Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "NoLocalizations"“.)
+
+
+✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)
+
+
+Das Projekt hat keine eingestellte Lokalisationen.
+Arbeitsbereich ist auf die Systemsprache zurückgefallen. Das kann zu verschiedenen Ergebnissen auf verschiedenen Geräten führen.
+(Es ist unter „dokumentation.localisationen“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
 „NoLocalizations“ besteht die Überprüfung nicht.
 2

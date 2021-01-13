@@ -2,6 +2,9 @@ $ workspace refresh read‐me •no‐colour
 
 Refreshing read‐me...
 
-There are no localizations specified.
+
+The project has no localizations configured.
+Workspace has fallen back to the system language, which may produce different results on different devices.
 (Configure it under “documentation.localizations”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
-9223372036854775807
+
+0

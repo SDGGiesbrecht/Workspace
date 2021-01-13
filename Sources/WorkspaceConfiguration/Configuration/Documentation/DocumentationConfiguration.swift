@@ -177,6 +177,13 @@ public struct DocumentationConfiguration: Codable {
     set { localizations = newValue }
   }
 
+  internal func knownLocalizations() -> Set<LocalizationIdentifier> {
+    var set = Set(localizations)
+    set ∪= Set(ContentLocalization.allCases.lazy.map({ LocalizationIdentifier($0) }))
+    set.insert(LocalizationIdentifier(AnyLocalization.resolved()))
+    return set
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.currentVersion)
   /// The semantic version of the current stable release of the project.
@@ -263,7 +270,7 @@ public struct DocumentationConfiguration: Codable {
       }
 
       var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.localizations {
+      for localization in configuration.documentation.knownLocalizations() {
         if let provided = localization._reasonableMatch {
           result[localization] = localizedToolInstallationInstructions(
             packageURL: packageURL,
@@ -304,7 +311,7 @@ public struct DocumentationConfiguration: Codable {
       }
 
       var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.localizations {
+      for localization in configuration.documentation.knownLocalizations() {
         if let provided = localization._reasonableMatch {
           result[localization] = localizedLibraryImportingInstructions(
             packageURL: packageURL,

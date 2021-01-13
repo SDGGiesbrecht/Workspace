@@ -365,44 +365,56 @@ import WorkspaceProjectConfiguration
       #endif
     }
 
-    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
-      guard let result = try configuration(output: output).documentation.localizations.first
-      else {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return
-                ([
-                  "There are no localisations specified.",
-                  WorkspaceConfiguration.configurationRecommendation(
-                    for: "documentation.localisations",
-                    localization: localization
-                  ),
-                ] as [StrictString]).joinedAsLines()
-            case .englishUnitedStates, .englishCanada:
-              return
-                ([
-                  "There are no localizations specified.",
-                  WorkspaceConfiguration.configurationRecommendation(
-                    for: "documentation.localizations",
-                    localization: localization
-                  ),
-                ] as [StrictString]).joinedAsLines()
-            case .deutschDeutschland:
-              return
-                ([
-                  "Keine Lokalisationen sind angegeben.",
-                  WorkspaceConfiguration.configurationRecommendation(
-                    for: "dokumentation.localisationen",
-                    localization: localization
-                  ),
-                ] as [StrictString]).joinedAsLines()
-            }
-          })
-        )
+    private static var fellBackToUserLocalization = false
+    internal static func resetLocalizationFallback() {
+      fellBackToUserLocalization = false
+    }
+    internal static func localizationFallbackWarning() -> StrictString? {
+      guard fellBackToUserLocalization else {
+        return nil
       }
-      return result
+      return UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          return
+            ([
+              "The project has no localisations configured.",
+              "Workspace has fallen back to the system language, which may produce different results on different devices.",
+              WorkspaceConfiguration.configurationRecommendation(
+                for: "documentation.localisations",
+                localization: localization
+              ),
+            ] as [StrictString]).joinedAsLines()
+        case .englishUnitedStates, .englishCanada:
+          return
+            ([
+              "The project has no localizations configured.",
+              "Workspace has fallen back to the system language, which may produce different results on different devices.",
+              WorkspaceConfiguration.configurationRecommendation(
+                for: "documentation.localizations",
+                localization: localization
+              ),
+            ] as [StrictString]).joinedAsLines()
+        case .deutschDeutschland:
+          return
+            ([
+              "Das Projekt hat keine eingestellte Lokalisationen.",
+              "Arbeitsbereich ist auf die Systemsprache zurückgefallen. Das kann zu verschiedenen Ergebnissen auf verschiedenen Geräten führen.",
+              WorkspaceConfiguration.configurationRecommendation(
+                for: "dokumentation.localisationen",
+                localization: localization
+              ),
+            ] as [StrictString]).joinedAsLines()
+        }
+      }).resolved()
+    }
+    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+      if let specified = try configuration(output: output).documentation.localizations.first {
+        return specified
+      } else {
+        PackageRepository.fellBackToUserLocalization = true
+        return LocalizationIdentifier(AnyLocalization.resolved())
+      }
     }
 
     internal func fileHeader(output: Command.Output) throws -> StrictString {

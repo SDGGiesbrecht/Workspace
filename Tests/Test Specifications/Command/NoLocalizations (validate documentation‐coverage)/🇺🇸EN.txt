@@ -6,10 +6,39 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
-There are no localizations specified.
-(Configure it under “documentation.localizations”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
+Parsing “NoLocalizations”...
+Processing API...
+Generating HTML...
 
-✗ Failed to process documentation. (See [⌘F] “§1”)
+A localization has no copyright specified: English (United States)
+(Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
+
+
+A symbol has no description:
+NoLocalizations.🇺🇸EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “Package(name: "NoLocalizations"”.)
+
+
+A symbol has no description:
+NoLocalizations.🇺🇸EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.library(name: "NoLocalizations"”.)
+
+...NoLocalizations...
+
+A symbol has no description:
+NoLocalizations.🇺🇸EN
+(Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
+Workspace will look for documentation on the line above “.target(name: "NoLocalizations"”.)
+
+
+✗ Documentation coverage is incomplete. (See [⌘F] “§1”)
+
+
+The project has no localizations configured.
+Workspace has fallen back to the system language, which may produce different results on different devices.
+(Configure it under “documentation.localizations”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
 “NoLocalizations” fails validation.
 2

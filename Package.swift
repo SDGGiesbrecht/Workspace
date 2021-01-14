@@ -794,7 +794,7 @@ let package = Package(
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",
@@ -811,12 +811,12 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.3, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
-    // #workaround(Swift 5.3, Conditional dependencies fail to skip for web.)
+    // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
-    // #workaround(Swift 5.3, Excluding only web causes manifest to crash.)
+    // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
     "SwiftFormatConfiguration",
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -831,7 +831,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
-  // #workaround(SDGWeb 5.4.2, Web API incomplete.)
+  // #workaround(SDGCommandLine 1.6.1, Web API incomplete.)
   package.targets = package.targets.filter { target in
     switch target.name {
     case "WorkspaceTests":
@@ -843,7 +843,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
     "SwiftPM",
     "SwiftSyntax",

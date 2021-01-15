@@ -56,6 +56,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private static let currentCentOSVersion = "8"
   private static let currentUbuntuName = "focal"  // Used by Docker image
   private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
+  private static let currentAnroidNDKVersion = "21"
   private static let currentAmazonLinuxVerison = "2"
 
   internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -631,6 +632,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     _ url: StrictString,
     andUnzipTo destination: StrictString,
     containerName: StrictString? = nil,
+    removeExisting: Bool = false,
     sudoCopy: Bool = false,
     localTemporaryDirectory: Bool = false,
     use7z: Bool = false
@@ -656,10 +658,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     if use7z {
       result.append("7z x \(temporaryZip) \u{2D}o\(destination)")
     } else {
-      result.append(contentsOf: [
-        "unzip \(temporaryZip) \u{2D}d /tmp",
-        copyDirectory(from: temporary, to: destination, sudo: sudoCopy),
-      ])
+      result.append("unzip \(temporaryZip) \u{2D}d /tmp")
+      if removeExisting {
+        result.append("rm \u{2D}rf \(destination)")
+      }
+      result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
     }
     return result.joinedAsLines()
   }
@@ -867,6 +870,21 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       case .tvOS, .iOS, .watchOS:
         unreachable()
       case .android:
+        result.append(
+          script(
+            heading: fetchAndroidNDKStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://dl.google.com/android/repository/android-ndk-r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d-linux-x86_64.zip",
+                andUnzipTo:
+                  "${ANDROID_HOME}/ndk-bundle",
+                removeExisting: true,
+                sudoCopy: true
+              )
+            ]
+          )
+        )
         let version = ContinuousIntegrationJob.androidSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
@@ -1222,6 +1240,17 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Set Visual Studio up"
       case .deutschDeutschland:
         return "Visual Studio einrichten"
+      }
+    })
+  }
+
+  private var fetchAndroidNDKStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Fetch Android NDK"
+      case .deutschDeutschland:
+        return "Android‐NDK holen"
       }
     })
   }

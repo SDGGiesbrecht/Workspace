@@ -365,7 +365,7 @@ jobs:
         unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
         rm -rf ${ANDROID_HOME}/ndk-bundle
         sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
-        sudo cp -R /tmp/android-ndk-r21d-linux-x86_64/* ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
     - name: Install Swift
       shell: bash
       run: |

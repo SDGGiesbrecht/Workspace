@@ -879,6 +879,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                 "https://dl.google.com/android/repository/android-ndk-r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d-linux-x86_64.zip",
                 andUnzipTo:
                   "${ANDROID_HOME}/ndk-bundle",
+                containerName: "android-ndk-r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
                 removeExisting: true,
                 sudoCopy: true
               )

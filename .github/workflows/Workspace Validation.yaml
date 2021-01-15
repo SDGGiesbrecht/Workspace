@@ -32,6 +32,8 @@ jobs:
       uses: nttld/setup-ndk@v1
       with:
         ndk-version: r21d
+      run: |
+        echo ${{ steps.setup-ndk.outputs.ndk-path }}
     - name: Install Swift
       shell: bash
       run: |

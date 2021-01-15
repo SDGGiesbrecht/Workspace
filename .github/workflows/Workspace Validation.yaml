@@ -28,6 +28,10 @@ jobs:
       with:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Fetch Android NDK
+      uses: nttld/setup-ndk@v1
+      with:
+        ndk-version: r21d
     - name: Install Swift
       shell: bash
       run: |

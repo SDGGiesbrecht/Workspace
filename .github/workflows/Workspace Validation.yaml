@@ -30,10 +30,11 @@ jobs:
         path: .build/SDG/Workspace
     - name: Fetch Android NDK
       uses: nttld/setup-ndk@v1
+      id: ndk
       with:
         ndk-version: r21d
     - run: |
-        echo ${{ steps.setup-ndk.outputs.ndk-path }}
+        echo ${{ steps.ndk.outputs.ndk-path }}
     - name: Install Swift
       shell: bash
       run: |

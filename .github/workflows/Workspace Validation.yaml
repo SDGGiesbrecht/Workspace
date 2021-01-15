@@ -29,12 +29,16 @@ jobs:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Fetch Android NDK
-      uses: nttld/setup-ndk@v1
-      id: ndk
-      with:
-        ndk-version: r21d
-    - run: |
-        echo ${{ steps.ndk.outputs.ndk-path }}
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/NDK.zip'
+        unzip /tmp/NDK.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/NDK/* ${ANDROID_HOME}/ndk-bundle
     - name: Install Swift
       shell: bash
       run: |

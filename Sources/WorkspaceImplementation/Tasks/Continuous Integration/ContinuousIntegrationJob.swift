@@ -876,10 +876,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://dl.google.com/android/repository/android-ndk-r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d-linux-x86_64.zip",
+                "https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d\u{2D}linux\u{2D}x86_64.zip",
                 andUnzipTo:
-                  "${ANDROID_HOME}/ndk-bundle",
-                containerName: "android-ndk-r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
+                  "${ANDROID_HOME}/ndk\u{2D}bundle",
+                containerName: "android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
                 removeExisting: true,
                 sudoCopy: true
               )

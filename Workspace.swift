@@ -18,9 +18,9 @@ import WorkspaceConfiguration
 
 public enum Metadata {
 
-  public static let latestStableVersion = Version(0, 36, 0)
+  public static let latestStableVersion = Version(0, 36, 1)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = nil
+  public static let thisVersion: Version? = latestStableVersion
 
   // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)

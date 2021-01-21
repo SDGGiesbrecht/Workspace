@@ -10,7 +10,7 @@ jobs:
     - name: Check out
       uses: actions/checkout@v1
     - name: Install Swift dependencies
-      # Based on https://github.com/apple/swift#linux
+      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#ubuntu-linux
       shell: bash
       run: |
         set -x
@@ -24,7 +24,7 @@ jobs:
           libedit-dev \
           libicu-dev \
           libncurses5-dev \
-          libpython-dev \
+          libpython3-dev \
           libsqlite3-dev \
           libxml2-dev \
           ninja-build \
@@ -36,6 +36,7 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+        sudo snap install sccache --candidate --classic
     - name: Check Android NDK
       shell: bash
       run: |

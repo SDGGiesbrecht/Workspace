@@ -48,7 +48,7 @@ jobs:
         sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
         sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build
     - name: Fetch ICU source
       shell: bash

@@ -42,7 +42,7 @@ jobs:
       run: |
         set -x
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build
     - name: Fetch ICU source
       shell: bash

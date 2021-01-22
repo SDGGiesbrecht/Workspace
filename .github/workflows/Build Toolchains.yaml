@@ -96,7 +96,7 @@ jobs:
         set -x
         rm -rf icu
     - name: Fetch Swift source
-      # Based on https://github.com/apple/swift#getting-sources-for-swift-and-related-projects
+      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#cloning-the-project
       shell: bash
       run: |
         set -x

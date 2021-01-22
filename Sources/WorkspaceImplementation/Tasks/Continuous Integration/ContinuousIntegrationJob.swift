@@ -42,7 +42,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 2)
-  // #workaround(Is Foundation busted in 5.3.2, or does CoreFoundation just need a new import path?)
+  // #workaround(Swift 5.3.2, Foundation cannot find CoreFoundation in later patches.)
   private static let windowsSwiftVersion = Version(5, 3, 0)
   // #workaround(No up‐to‐date toolchain available.)
   private static let androidSwiftVersion = Version(5, 3, 0)

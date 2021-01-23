@@ -104,7 +104,7 @@ internal struct TextFile {
 
   // MARK: - Properties
 
-  #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
+  #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
     private class Cache {
       fileprivate var headerStart: String.ScalarView.Index?
       fileprivate var headerEnd: String.ScalarView.Index?
@@ -130,7 +130,7 @@ internal struct TextFile {
 
   private var _contents: String {
     willSet {
-      #if !os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
+      #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         cache = Cache()
       #endif
     }
@@ -163,7 +163,7 @@ internal struct TextFile {
   // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
   #if !os(WASI)
     internal var headerStart: String.ScalarView.Index {
-      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return fileType.syntax.headerStart(file: self)
       #else
         return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
@@ -173,7 +173,7 @@ internal struct TextFile {
     }
 
     internal var headerEnd: String.ScalarView.Index {
-      #if os(Windows)  // #workaround(Swift 5.3, Declaration may not be in a Comdat!)
+      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return fileType.syntax.headerEnd(file: self)
       #else
         return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in

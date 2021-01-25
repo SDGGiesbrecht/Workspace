@@ -109,7 +109,7 @@ jobs:
         mkdir swift-source
         cd swift-source
         git clone https://github.com/apple/swift.git --branch swift-5.3.2-RELEASE --depth 1
-        ./swift/utils/update-checkout --tag swift-5.3.2-RELEASE --clone --skip-history
+        ./swift/utils/update-checkout --tag swift-5.3.2-RELEASE --clone
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini

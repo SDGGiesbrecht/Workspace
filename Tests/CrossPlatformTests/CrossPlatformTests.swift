@@ -39,7 +39,7 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-      #if !os(Android)  // #workaround(Swift 5.3, Emulator lacks Git.)
+      #if !PLATFORM_LACKS_GIT
         #if os(Windows)
           // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
           guard

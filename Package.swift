@@ -792,6 +792,17 @@ let package = Package(
   ]
 )
 
+for target in package.targets {
+  var swiftSettings = target.swiftSettings ?? []
+  defer { target.swiftSettings = swiftSettings }
+  swiftSettings.append(contentsOf: [
+
+    // Internal‐only:
+    // #workaround(Swift 5.3.2, Android emulator lacks Git.)
+    .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+  ])
+}
+
 import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {

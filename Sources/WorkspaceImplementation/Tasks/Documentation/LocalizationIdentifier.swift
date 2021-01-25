@@ -28,8 +28,6 @@ extension LocalizationIdentifier {
     return supported.textDirection
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
       let localizationDirectory = String(
         file.path(relativeTo: outputDirectory)
@@ -42,5 +40,4 @@ extension LocalizationIdentifier {
         return AnyLocalization(code: "und")
       }
     }
-  #endif
 }

@@ -20,8 +20,6 @@ extension Licence {
 
   // MARK: - Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal var text: StrictString {
       var source: String
       switch self {
@@ -40,5 +38,4 @@ extension Licence {
       let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
       return StrictString(file.body)
     }
-  #endif
 }

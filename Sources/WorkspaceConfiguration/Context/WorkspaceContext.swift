@@ -25,8 +25,6 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Static Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
     /// Der Zusammenhang des aktuellen Projekts.
     public static var aktueller: Arbeitsbereichszusammenhang {
@@ -44,22 +42,16 @@ public struct WorkspaceContext: Context {
         _current = newValue
       }
     }
-  #endif
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     public init(_location: URL, manifest: PackageManifest) {
       self.location = _location
       self.manifest = manifest
     }
-  #endif
 
   // MARK: - Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
     /// The location of the configured repository.
     public let location: URL
@@ -68,7 +60,6 @@ public struct WorkspaceContext: Context {
     public var standort: EinheitlicherRessourcenzeiger {
       return location
     }
-  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.manifest)
   /// Information from the package manifest.

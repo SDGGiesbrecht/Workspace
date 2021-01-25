@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 #if os(Windows)
   import WinSDK
 #endif
@@ -43,8 +40,6 @@ import WorkspaceLocalizations
 import WorkspaceConfiguration
 import WorkspaceProjectConfiguration
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     private static let macOSDeploymentVersion = SDGVersioning.Version(10, 12)
@@ -667,4 +662,3 @@ import WorkspaceProjectConfiguration
       try? FileManager.default.removeItem(at: relatedProjectCache)
     }
   }
-#endif

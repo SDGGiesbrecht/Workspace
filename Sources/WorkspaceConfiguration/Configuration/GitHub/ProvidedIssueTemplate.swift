@@ -165,8 +165,6 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       }
     }
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       if self == .bugReport {
         let products = WorkspaceContext.current.manifest.products
         contents.append("")
@@ -226,7 +224,6 @@ internal enum ProvidedIssueTemplate: CaseIterable {
           )
         }
       }
-    #endif
 
     switch self {
     case .bugReport, .featureRequest, .documentationCorrection:

@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -37,8 +34,6 @@ import WorkspaceConfiguration
 
 internal struct PackageInterface {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func specify(package: URL?, version: Version?) -> StrictString? {
       guard let specified = package else {
         return nil
@@ -134,7 +129,6 @@ internal struct PackageInterface {
       )
       .normalizedSource()
     }
-  #endif
 
   private static func specify(version: Version?) -> StrictString? {
     guard let specified = version else {
@@ -291,15 +285,12 @@ internal struct PackageInterface {
       )
 
       if hasInstallation {
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           result.append(
             generateLoneIndexEntry(
               named: installation(localization: localization),
               target: installationLocation(localization: localization)
             )
           )
-        #endif
       }
       if hasImporting {
         result.append(
@@ -486,8 +477,6 @@ internal struct PackageInterface {
     var entries: [StrictString] = []
     for (_, entry) in tools.commands {
       if let interface = entry.interfaces[localization] {
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           entries.append(
             ElementSyntax(
               "a",
@@ -499,7 +488,6 @@ internal struct PackageInterface {
               inline: false
             ).normalizedSource()
           )
-        #endif
       }
     }
     return generateIndexSection(
@@ -534,8 +522,6 @@ internal struct PackageInterface {
     ).normalizedSource()
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func generateLoneIndexEntry(
       named name: StrictString,
       target: StrictString
@@ -555,7 +541,6 @@ internal struct PackageInterface {
         inline: false
       ).normalizedSource()
     }
-  #endif
 
   private static func installation(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
@@ -735,8 +720,6 @@ internal struct PackageInterface {
 
   // MARK: - Output
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func outputHTML(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
@@ -1411,5 +1394,4 @@ internal struct PackageInterface {
         #endif
       }
     }
-  #endif
 }

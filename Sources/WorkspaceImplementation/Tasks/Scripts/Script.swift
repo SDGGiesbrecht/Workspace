@@ -185,8 +185,6 @@ internal enum Script: Int, CaseIterable {
       }
     })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static func getWorkspace(
       andExecute command: StrictString,
       for project: PackageRepository,
@@ -272,5 +270,4 @@ internal enum Script: Int, CaseIterable {
 
       return lines.joined(separator: "\n")
     }
-  #endif
 }

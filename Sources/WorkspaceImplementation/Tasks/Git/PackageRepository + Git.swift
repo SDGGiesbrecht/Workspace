@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGCollections
 import SDGText
@@ -28,8 +25,6 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     // MARK: - Lists
@@ -124,4 +119,3 @@ import WorkspaceLocalizations
       }
     }
   }
-#endif

@@ -55,15 +55,12 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           try validate(
             job: options.job,
             against: ContinuousIntegrationJob.buildJobs,
             for: options.project,
             output: output
           )
-        #endif
 
         var validationStatus = ValidationStatus()
 
@@ -73,15 +70,10 @@ extension Workspace.Validate {
           output: output
         )
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       internal static func job(
         _ job: ContinuousIntegrationJob,
         isRelevantTo project: PackageRepository,
@@ -119,7 +111,6 @@ extension Workspace.Validate {
           )
         }
       }
-    #endif
 
     internal static func executeAsStep(
       options: Options,
@@ -127,8 +118,6 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Build.job(
@@ -147,7 +136,6 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
     }
   }
 }

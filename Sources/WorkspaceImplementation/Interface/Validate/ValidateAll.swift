@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -88,8 +85,6 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         if ¬ProcessInfo.isInContinuousIntegration {
           // @exempt(from: tests)
           try Workspace.Refresh.All.executeAsStep(
@@ -112,7 +107,6 @@ extension Workspace.Validate {
             }
           }).resolved().formattedAsSectionHeader()
         )
-      #endif
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {
@@ -124,8 +118,6 @@ extension Workspace.Validate {
         )
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -162,12 +154,9 @@ extension Workspace.Validate {
             output: output
           )
         }
-      #endif
 
       // Document
       if options.job.includes(job: .miscellaneous) {
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
             .serveFromGitHubPagesBranch,
@@ -189,11 +178,8 @@ extension Workspace.Validate {
               output: output
             )
           }
-        #endif
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         if options.job.includes(job: .deployment),
           try options.project.configuration(output: output).documentation.api.generate
         {
@@ -309,7 +295,6 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
 
       output.print("Summary".formattedAsSectionHeader())
 
@@ -339,10 +324,7 @@ extension Workspace.Validate {
         )
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         try validationStatus.reportOutcome(project: options.project, output: output)
-      #endif
     }
   }
 }

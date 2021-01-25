@@ -387,8 +387,6 @@ public final class WorkspaceConfiguration: Configuration {
       licence.licence = .apache2_0
     }
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       documentation.relatedProjects.append(
         .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
       )
@@ -410,12 +408,9 @@ public final class WorkspaceConfiguration: Configuration {
       documentation.relatedProjects.append(
         .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
       )
-    #endif
   }
 
   public func _applySDGOverrides() {
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       let project = WorkspaceContext.current.manifest.packageName
       let repositoryURL =
         documentation.repositoryURL?.absoluteString
@@ -436,27 +431,20 @@ public final class WorkspaceConfiguration: Configuration {
       for localization in ["🇨🇦EN", "🇬🇧EN", "🇺🇸EN"] as [LocalizationIdentifier] {
         documentation.about[localization] = Markdown(about)
       }
-    #endif
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
-    #endif
 
     assert(documentation.currentVersion ≠ nil, "No version specified.")
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
     if openSource {
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         assert(documentation.projectWebsite ≠ nil, "No project website specified.")
         if needsAPIDocumentation {
           assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
         }
         assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
-      #endif
 
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")

@@ -36,8 +36,6 @@ internal struct CompatibilityCharacters: TextRule {
       }
     })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static func check(
       file: TextFile,
       in project: PackageRepository,
@@ -71,5 +69,4 @@ internal struct CompatibilityCharacters: TextRule {
         }
       }
     }
-  #endif
 }

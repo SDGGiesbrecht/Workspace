@@ -26,20 +26,15 @@ import WorkspaceLocalizations
 
 internal protocol Warning: TextRule {
   static var trigger: UserFacing<StrictString, InterfaceLocalization> { get }
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     static func message(
       for details: StrictString,
       in project: PackageRepository,
       output: Command.Output
     ) throws -> UserFacing<StrictString, InterfaceLocalization>?
-  #endif
 }
 
 extension Warning {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static func check(
       file: TextFile,
       in project: PackageRepository,
@@ -79,5 +74,4 @@ extension Warning {
         }
       }
     }
-  #endif
 }

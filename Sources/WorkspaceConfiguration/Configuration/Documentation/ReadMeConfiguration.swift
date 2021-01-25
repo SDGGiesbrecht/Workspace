@@ -95,10 +95,7 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
-      #endif
 
       readMe += [
         "",
@@ -163,8 +160,6 @@ public struct ReadMeConfiguration: Codable {
   // MARK: - Useful components.
 
   private static let documentationDirectoryName = "Documentation"
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     public static func _documentationDirectory(for project: URL) -> URL {
       return project.appendingPathComponent(documentationDirectoryName)
     }
@@ -192,7 +187,6 @@ public struct ReadMeConfiguration: Codable {
       }
       return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
-  #endif
 
   // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.apiLink(for:in:))
   /// Baut Verweise zur Programmierschnittstellendokumentation auf, die von der Konfiguration hergeleitet sind.
@@ -222,10 +216,6 @@ public struct ReadMeConfiguration: Codable {
     in localization: LocalizationIdentifier
   ) -> StrictString? {
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return nil
-    #else
       guard let baseURL = configuration.documentation.documentationURL,
         let provided = localization._reasonableMatch
       else {
@@ -247,13 +237,10 @@ public struct ReadMeConfiguration: Codable {
         )
         + ")"
       return link
-    #endif
   }
 
   // MARK: - Related Projects
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     public static func _relatedProjectsLocation(
       for project: URL,
       localization: LocalizationIdentifier
@@ -267,5 +254,4 @@ public struct ReadMeConfiguration: Codable {
       }
       return _locationOfDocumentationFile(named: name, for: localization, in: project)
     }
-  #endif
 }

@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -34,8 +31,6 @@ internal struct TextFile {
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal init(alreadyAt location: URL) throws {
       guard let fileType = FileType(url: location) else {
         unreachable()
@@ -100,7 +95,6 @@ internal struct TextFile {
       self.hasChanged = isNew
       self.fileType = fileType
     }
-  #endif
 
   // MARK: - Properties
 
@@ -113,10 +107,7 @@ internal struct TextFile {
   #endif
 
   private var hasChanged: Bool
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal let location: URL
-  #endif
 
   private var isExecutable: Bool {
     willSet {  // @exempt(from: tests) Unreachable except with corrupt files.
@@ -160,8 +151,6 @@ internal struct TextFile {
 
   // MARK: - File Headers
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal var headerStart: String.ScalarView.Index {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return fileType.syntax.headerStart(file: self)
@@ -255,5 +244,4 @@ internal struct TextFile {
         }
       }
     }
-  #endif
 }

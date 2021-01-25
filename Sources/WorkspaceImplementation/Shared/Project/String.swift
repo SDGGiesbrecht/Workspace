@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGCollections
@@ -25,12 +22,9 @@ import SDGText
 
 extension StringFamily {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal var isWhitespace: Bool {
       return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
-  #endif
 
   internal mutating func trimMarginalWhitespace() {
     while scalars.first == " " {

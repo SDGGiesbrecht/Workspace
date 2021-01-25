@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGCollections
@@ -53,8 +50,6 @@ internal struct FileSyntax {
 
   // MARK: - Output
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private func comment(contents: String) -> String? {
       if let blockSyntax = blockCommentSyntax {
         return blockSyntax.comment(contents: contents)
@@ -231,5 +226,4 @@ internal struct FileSyntax {
       }
       unreachable()
     }
-  #endif
 }

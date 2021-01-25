@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 // #workaround(Swift 5.3, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
@@ -39,8 +36,6 @@ import SDGCSS
 import WorkspaceLocalizations
 import WorkspaceConfiguration
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     // MARK: - Static Properties
@@ -661,4 +656,3 @@ import WorkspaceConfiguration
       }
     }
   }
-#endif

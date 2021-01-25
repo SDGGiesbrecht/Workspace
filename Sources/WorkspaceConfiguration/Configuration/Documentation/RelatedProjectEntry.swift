@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   // @localization(🇩🇪DE) @crossReference(RelatedProjectEntry)
   /// Ein Eintrag zur Liste der verwanten Projekten.
   public typealias EintragZuVerwantdenProjekten = RelatedProjectEntry
@@ -95,4 +93,3 @@
       }
     }
   }
-#endif

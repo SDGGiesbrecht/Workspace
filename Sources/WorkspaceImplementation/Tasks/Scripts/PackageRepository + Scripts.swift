@@ -22,8 +22,6 @@ import SDGCommandLine
 
 import SDGSwift
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     internal static let repositorySDGDirectory: StrictString = ".build/SDG"
@@ -60,4 +58,3 @@ import SDGSwift
       }
     }
   }
-#endif

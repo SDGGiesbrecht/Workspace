@@ -80,10 +80,7 @@ extension Workspace.Proofread {
         )
 
         if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
-          // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-          #if !os(WASI)
             try validationStatus.reportOutcome(project: options.project, output: output)
-          #endif
         }
       }
     )
@@ -95,12 +92,9 @@ extension Workspace.Proofread {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
         }
-      #endif
 
       let section = validationStatus.newSection()
 
@@ -124,8 +118,6 @@ extension Workspace.Proofread {
         reporter = CommandLineProofreadingReporter.default
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         if try options.project.proofread(reporter: reporter, output: output) {
           validationStatus.passStep(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -151,7 +143,6 @@ extension Workspace.Proofread {
             })
           )
         }
-      #endif
     }
   }
 }

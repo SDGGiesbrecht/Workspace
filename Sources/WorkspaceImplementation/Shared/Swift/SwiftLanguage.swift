@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGMathematics
@@ -39,8 +36,6 @@ internal enum SwiftLanguage {
 
   // MARK: - Static Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static let allowedIdentifierStarters: CharacterSet = {
       // From https://developer.apple.com/library/content/documentation/Swift/Conceptual/Swift_Programming_Language/LexicalStructure.html#//apple_ref/doc/uid/TP40014097-CH30-ID412
 
@@ -230,5 +225,4 @@ internal enum SwiftLanguage {
         }
       #endif
     }
-  #endif
 }

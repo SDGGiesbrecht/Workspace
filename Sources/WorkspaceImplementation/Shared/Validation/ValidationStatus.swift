@@ -76,8 +76,6 @@ internal struct ValidationStatus {
     return ¬summary.isEmpty
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func reportOutcome(project: PackageRepository, output: Command.Output) throws {
       output.print(summary.joined(separator: "\n").separated())
 
@@ -113,5 +111,4 @@ internal struct ValidationStatus {
         )
       }
     }
-  #endif
 }

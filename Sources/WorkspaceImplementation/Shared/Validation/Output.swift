@@ -22,8 +22,6 @@ import SDGSwift
 
 extension Command.Output {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)
       print(message.formattedAsSuccess().separated())
@@ -37,5 +35,4 @@ extension Command.Output {
         print(unsupportedFiles.formattedAsWarning().separated())
       }
     }
-  #endif
 }

@@ -117,10 +117,7 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           try options.project.refreshResources(output: output)
-        #endif
       }
     )
   }

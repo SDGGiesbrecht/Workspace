@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -31,8 +28,6 @@ import SDGSwift
   import SwiftFormat
 #endif
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     internal func normalize(output: Command.Output) throws {
@@ -97,4 +92,3 @@ import SDGSwift
       }
     }
   }
-#endif

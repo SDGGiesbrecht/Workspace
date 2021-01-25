@@ -70,10 +70,7 @@ extension Workspace.Proofread {
         }).resolved().formattedAsSectionHeader()
       )
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         try options.project.refreshProofreadingXcodeProject(output: output)
-      #endif
     }
   }
 }

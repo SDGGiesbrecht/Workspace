@@ -313,8 +313,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "TARGETING_\(environmentVariableName)"
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
       switch self {
       case .macOS:
@@ -346,7 +344,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             .documentation.api.serveFromGitHubPagesBranch)
       }
     }
-  #endif
 
   internal var platform: Platform {
     switch self {
@@ -382,8 +379,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return command
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private func workspaceStep(
       named name: UserFacing<StrictString, InterfaceLocalization>,
       command: StrictString,
@@ -404,7 +399,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     }
-  #endif
 
   // MARK: - GitHub Actions
 
@@ -477,8 +471,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return uses("actions/checkout@v1")
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private func cache() -> StrictString {
       let environment: StrictString
       switch platform {
@@ -508,7 +500,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         ]
       )
     }
-  #endif
 
   private func script(
     heading: UserFacing<StrictString, InterfaceLocalization>,
@@ -718,8 +709,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func gitHubWorkflowJob(
       for project: PackageRepository,
       output: Command.Output
@@ -1198,7 +1187,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
       return result
     }
-  #endif
 
   // MARK: - Localized Text
 

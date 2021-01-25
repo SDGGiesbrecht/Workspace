@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -28,8 +25,6 @@ import SDGCommandLine
 
 import SDGSwift
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     private static let skippedRelativePaths: [String] = [
@@ -76,4 +71,3 @@ import SDGSwift
       }
     }
   }
-#endif

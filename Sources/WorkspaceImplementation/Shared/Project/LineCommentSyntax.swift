@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGCollections
@@ -36,8 +33,6 @@ internal struct LineCommentSyntax {
 
   // MARK: - Output
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func comment(contents: String, indent: String = "") -> String {
 
       var first = true
@@ -172,5 +167,4 @@ internal struct LineCommentSyntax {
     internal func contentsOfFirstComment(in string: String) -> String? {
       return contentsOfFirstComment(in: string.startIndex..<string.endIndex, of: string)
     }
-  #endif
 }

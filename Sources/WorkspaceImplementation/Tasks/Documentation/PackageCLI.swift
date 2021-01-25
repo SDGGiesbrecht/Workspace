@@ -41,8 +41,6 @@ internal struct PackageCLI {
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal init(
       tools: [URL],
       localizations: [LocalizationIdentifier],
@@ -76,7 +74,6 @@ internal struct PackageCLI {
       }
       self.commands = commands
     }
-  #endif
 
   // MARK: - Properties
 

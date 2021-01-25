@@ -33,14 +33,11 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static let template: StrictString = {
       var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
       result.header = ""
       return StrictString(result.contents)
     }()
-  #endif
 
   private static func watermark(localization: LocalizationIdentifier) -> StrictString {
     let resolved = localization._bestMatch
@@ -119,12 +116,7 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      var mutable: StrictString = ""
-    #else
       var mutable = Page.template
-    #endif
     mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
     mutable.replaceMatches(
       for: "[*text direction*]".scalars,

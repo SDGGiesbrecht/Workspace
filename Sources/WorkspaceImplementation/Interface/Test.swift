@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGControlFlow
 import SDGLogic
@@ -59,16 +56,12 @@ extension Workspace {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
-
           try Validate.Build.validate(
             job: options.job,
             against: ContinuousIntegrationJob.testJobs,
             for: options.project,
             output: output
           )
-        #endif
 
         var validationStatus = ValidationStatus()
 
@@ -78,10 +71,7 @@ extension Workspace {
           output: output
         )
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
@@ -91,8 +81,6 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Validate.Build.job(
@@ -129,7 +117,6 @@ extension Workspace {
             )
           }
         }
-      #endif
     }
   }
 }

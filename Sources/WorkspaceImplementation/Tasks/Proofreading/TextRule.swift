@@ -20,13 +20,10 @@ import SDGSwift
 import SDGSwiftSource
 
 internal protocol TextRule: RuleProtocol {
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     static func check(
       file: TextFile,
       in project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
     ) throws
-  #endif
 }

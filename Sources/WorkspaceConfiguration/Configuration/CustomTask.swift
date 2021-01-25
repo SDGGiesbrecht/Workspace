@@ -27,8 +27,6 @@ public struct CustomTask: Decodable, Encodable {
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇩🇪DE) @crossReference(CustomTask.init(url:version:executable:arguments:))
     /// Erstellt eine Sonderaufgabe.
     ///
@@ -70,12 +68,9 @@ public struct CustomTask: Decodable, Encodable {
       self.executable = executable
       self.arguments = arguments
     }
-  #endif
 
   // MARK: - Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(CustomTask.url)
     /// The URL of the Swift package defining the task.
     public var url: URL
@@ -85,7 +80,6 @@ public struct CustomTask: Decodable, Encodable {
       get { return url }
       set { url = newValue }
     }
-  #endif
 
   // @localization(🇩🇪DE)
   // Die Version des Swift‐Pakets, das die Aufgabe bestimmt.

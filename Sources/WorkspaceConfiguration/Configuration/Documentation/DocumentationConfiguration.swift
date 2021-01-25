@@ -195,8 +195,6 @@ public struct DocumentationConfiguration: Codable {
     set { currentVersion = newValue }
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(DocumentationConfiguration.projectWebsite)
     /// The URL of the project website.
@@ -229,7 +227,6 @@ public struct DocumentationConfiguration: Codable {
       get { return repositoryURL }
       set { repositoryURL = newValue }
     }
-  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.primaryAuthor)
@@ -259,10 +256,6 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return [:]
-    #else
       guard let packageURL = configuration.documentation.repositoryURL,
         let version = configuration.documentation.currentVersion
       else {
@@ -280,7 +273,6 @@ public struct DocumentationConfiguration: Codable {
         }
       }
       return result
-    #endif
   })
 
   // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.importingInstructions)
@@ -300,10 +292,6 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return [:]
-    #else
       guard let packageURL = configuration.documentation.repositoryURL,
         let version = configuration.documentation.currentVersion
       else {
@@ -321,7 +309,6 @@ public struct DocumentationConfiguration: Codable {
         }
       }
       return result
-    #endif
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -335,8 +322,6 @@ public struct DocumentationConfiguration: Codable {
     set { about = newValue }
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(DocumentationConfiguration.relatedProjects)
     /// A list of related projects.
@@ -347,7 +332,6 @@ public struct DocumentationConfiguration: Codable {
       get { return relatedProjects }
       set { relatedProjects = newValue }
     }
-  #endif
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.readMe)
@@ -373,8 +357,6 @@ public struct DocumentationConfiguration: Codable {
 
   // MARK: - Installation Instructions
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func localizedToolInstallationInstructions(
       packageURL: URL,
       version: Version,
@@ -619,5 +601,4 @@ public struct DocumentationConfiguration: Codable {
 
       return result.joinedAsLines()
     }
-  #endif
 }

@@ -182,10 +182,6 @@ public struct FileHeaderConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return [:]
-    #else
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
       return configuration.localizationDictionary { localization in
         let projectName = configuration.projectName[localization] ?? packageName
@@ -206,7 +202,6 @@ public struct FileHeaderConfiguration: Codable {
           }
         }
       }
-    #endif
   })
 
   // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)
@@ -228,18 +223,13 @@ public struct FileHeaderConfiguration: Codable {
   public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
     let localizations = configuration.documentation.localizations
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
-    #endif
 
     var header: [StrictString] = [
       "#filename",
       "",
     ]
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       header.append(
         contentsOf: configuration.sequentialLocalizations({ localization in
           let projectName = configuration.projectName[localization] ?? packageName
@@ -251,13 +241,9 @@ public struct FileHeaderConfiguration: Codable {
           }
         })
       )
-    #endif
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       if let site = configuration.documentation.projectWebsite {
         header.append(StrictString(site.absoluteString))
       }
-    #endif
 
     header.append("")
 

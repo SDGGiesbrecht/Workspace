@@ -24,8 +24,6 @@ import SDGSwift
 import WorkspaceLocalizations
 import WorkspaceConfiguration
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     internal func refreshLicence(output: Command.Output) throws {
@@ -70,4 +68,3 @@ import WorkspaceConfiguration
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)
     }
   }
-#endif

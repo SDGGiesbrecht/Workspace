@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGText
@@ -61,8 +58,6 @@ extension Workspace {
       execution: { (_, _, output: Command.Output) throws in
         if let update = try checkForUpdates(output: output) {
           // @exempt(from: tests) Execution path is determined externally.
-          // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-          #if !os(WASI)
             output.print(
               UserFacing<StrictString, InterfaceLocalization>({ localization in
                 var url: URL = Metadata.documentationURL
@@ -86,7 +81,6 @@ extension Workspace {
                 }
               }).resolved()
             )
-          #endif
         } else {
           // @exempt(from: tests) Execution path is determined externally.
           output.print(
@@ -104,10 +98,6 @@ extension Workspace {
     )
 
     internal static func checkForUpdates(output: Command.Output) throws -> Version? {
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if os(WASI)
-        return nil
-      #else
         let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
         if latestRemote ≠ Metadata.latestStableVersion {
           // @exempt(from: tests) Execution path is determined externally.
@@ -116,7 +106,6 @@ extension Workspace {
           // @exempt(from: tests)
           return nil  // Up to date.
         }
-      #endif  // @exempt(from: tests)
     }
   }
 }

@@ -14,18 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGExternalProcess
 
 import WorkspaceImplementation
 
 do {
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
     let repositoryRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
@@ -39,13 +34,8 @@ do {
       ]).get()
       _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"]).get()
     }
-  #endif
-
 } catch {
   print(error)
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     print(error.localizedDescription)
     exit(1)
-  #endif
 }

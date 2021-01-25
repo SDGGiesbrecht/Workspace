@@ -71,17 +71,12 @@ public struct GitHubConfiguration: Codable {
     guard let match = localization._reasonableMatch else {
       return nil
     }
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return nil
-    #else
       switch match {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return StrictString(Resources.contributingTemplate)
       case .deutschDeutschland:
         return StrictString(Resources.mitwirkenVorlage)
       }
-    #endif
   }
 
   private static func developmentNotesHeading(
@@ -124,18 +119,11 @@ public struct GitHubConfiguration: Codable {
     for localization in localizations {
       if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           template.replaceMatches(
             for: "#packageName".scalars,
             with: WorkspaceContext.current.manifest.packageName.scalars
           )
-        #endif
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if os(WASI)
-          template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
-        #else
           if let url = configuration.documentation.repositoryURL {
             template.replaceMatches(
               for: "#cloneScript".scalars,
@@ -145,7 +133,6 @@ public struct GitHubConfiguration: Codable {
           } else {
             template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
           }
-        #endif
 
         let administrators = configuration.gitHub.administrators
         var administratorList: StrictString
@@ -233,8 +220,6 @@ public struct GitHubConfiguration: Codable {
     return result
   })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
     // @crossReference(GitHubConfiguration.pullRequestTemplate)
     /// The pull request template.
@@ -253,5 +238,4 @@ public struct GitHubConfiguration: Codable {
       get { return pullRequestTemplate }
       set { pullRequestTemplate = newValue }
     }
-  #endif
 }

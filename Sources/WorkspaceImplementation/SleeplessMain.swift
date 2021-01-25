@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 // #workaround(Swift 5.3, Web lacks Dispatch.)
 #if !os(WASI)
   import Dispatch
@@ -32,8 +29,6 @@ import WorkspaceProjectConfiguration
 public struct SleeplessMain {
 
   public static func main() {  // @exempt(from: tests)
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       DispatchQueue.global(qos: .utility).sync {
 
         #if os(Windows) || os(Linux) || os(Android)
@@ -55,6 +50,5 @@ public struct SleeplessMain {
           }
         #endif
       }
-    #endif
   }
 }

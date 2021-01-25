@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGExternalProcess
 
@@ -31,15 +28,10 @@ extension CustomTask {
 
   // MARK: - Static Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
-  #endif
 
   // MARK: - Execution
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func execute(output: Command.Output) throws {
       _ = try Package(url: url).execute(
         .version(version),
@@ -49,5 +41,4 @@ extension CustomTask {
         reportProgress: { output.print($0) }
       ).get()
     }
-  #endif
 }

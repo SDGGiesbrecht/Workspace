@@ -25,8 +25,6 @@ import SDGXcode
 import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>(
@@ -100,4 +98,3 @@ import WorkspaceProjectConfiguration
       try scheme.writeChanges(for: self, output: output)
     }
   }
-#endif

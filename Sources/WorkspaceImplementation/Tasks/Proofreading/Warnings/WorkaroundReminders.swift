@@ -51,8 +51,6 @@ internal struct WorkaroundReminders: Warning {
     }
   })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static func message(
       for details: StrictString,
       in project: PackageRepository,
@@ -115,11 +113,8 @@ internal struct WorkaroundReminders: Warning {
         return label + description
       })
     }
-  #endif
 
   private static var dependencyVersionCache: [StrictString: SDGVersioning.Version?] = [:]
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func currentVersion(
       of dependency: StrictString,
       for project: PackageRepository,
@@ -150,5 +145,4 @@ internal struct WorkaroundReminders: Warning {
         }
       #endif  // @exempt(from: tests)
     }
-  #endif
 }

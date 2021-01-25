@@ -26,8 +26,6 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     private static var exampleDeclarationPattern:
@@ -257,4 +255,3 @@ import WorkspaceLocalizations
       }
     }
   }
-#endif

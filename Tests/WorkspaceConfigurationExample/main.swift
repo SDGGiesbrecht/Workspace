@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   // @example(sampleConfiguration)
   import WorkspaceConfiguration
 
@@ -90,4 +88,3 @@
 
   konfiguration.dokumentation.hauptautor = "Max Mustermann"
 // @beispielBeenden
-#endif

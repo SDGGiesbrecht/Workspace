@@ -37,8 +37,6 @@ internal final class XcodeProofreadingReporter: ProofreadingReporter {
     let file = violation.file.contents
     let lines = file.lines
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       let path = violation.file.location.path
 
       let lineIndex = violation.range.lowerBound.line(in: lines)
@@ -51,6 +49,5 @@ internal final class XcodeProofreadingReporter: ProofreadingReporter {
       output.print(
         "\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"
       )
-    #endif
   }
 }

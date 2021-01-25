@@ -31,8 +31,6 @@ import SDGSwift
 import WorkspaceLocalizations
 import WorkspaceConfiguration
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   extension PackageRepository {
 
     internal func refreshContinuousIntegration(output: Command.Output) throws {
@@ -321,4 +319,3 @@ import WorkspaceConfiguration
       delete(url, output: output)
     }
   }
-#endif

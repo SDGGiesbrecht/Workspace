@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGCollections
@@ -38,8 +35,6 @@ internal struct BlockCommentSyntax {
 
   // MARK: - Output
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func comment(contents: String) -> String {
 
       let withEndToken = [contents, end].joinedAsLines()
@@ -82,7 +77,6 @@ internal struct BlockCommentSyntax {
         return false
       }
     }
-  #endif
 
   internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String)
     -> NestingLevel<String.ScalarView>?
@@ -93,8 +87,6 @@ internal struct BlockCommentSyntax {
     )
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal func contentsOfFirstComment(
       in range: Range<String.ScalarView.Index>,
       of string: String
@@ -147,5 +139,4 @@ internal struct BlockCommentSyntax {
         of: string
       )
     }
-  #endif
 }

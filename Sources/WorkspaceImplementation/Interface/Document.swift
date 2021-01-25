@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGText
 import SDGLocalization
@@ -80,8 +77,6 @@ extension Workspace {
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
             outputDirectory: outputDirectory,
@@ -89,7 +84,6 @@ extension Workspace {
             validationStatus: &validationStatus,
             output: output
           )
-        #endif
 
         guard validationStatus.validatedSomething else {
           throw Command.Error(
@@ -110,15 +104,10 @@ extension Workspace {
               })
           )
         }
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
       internal static func executeAsStep(
         outputDirectory: URL,
         options: Options,
@@ -131,6 +120,5 @@ extension Workspace {
           output: output
         )
       }
-    #endif
   }
 }

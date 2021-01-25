@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
   import Foundation
-#endif
 
 import SDGLogic
 import SDGCollections
@@ -46,8 +43,6 @@ extension InterfaceLocalization {
     >,
     String.ScalarView
   >
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func patternWithArguments(
       named name: UserFacing<StrictString, InterfaceLocalization>,
       startingWith scalar: Unicode.Scalar
@@ -62,15 +57,12 @@ extension InterfaceLocalization {
         )
       return arguments + ")".scalars
     }
-  #endif
 
   private static func declarationPattern(
     _ name: UserFacing<StrictString, InterfaceLocalization>
   ) -> DirectivePattern {
     return pattern(named: name, startingWith: "@")
   }
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     private static func declarationPatternWithArguments(
       _ name: UserFacing<StrictString, InterfaceLocalization>
     ) -> DirectivePatternWithArguments {
@@ -82,7 +74,6 @@ extension InterfaceLocalization {
     ) -> DirectivePatternWithArguments {
       return patternWithArguments(named: name, startingWith: "#")
     }
-  #endif
 
   // MARK: - Examples
 
@@ -95,11 +86,8 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let exampleDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(exampleDeclarationName)
-  #endif
 
   private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -123,13 +111,10 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let exampleDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(
         exampleDirectiveName
       )
-  #endif
 
   // MARK: - Documentation Inheritance
 
@@ -142,11 +127,8 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let documentationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(documentationDeclarationName)
-  #endif
 
   private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -157,11 +139,8 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let documentationDirective: DirectivePatternWithArguments =
       directivePatternWithArguments(documentationDirectiveName)
-  #endif
 
   // MARK: - Documentation Generation
 
@@ -176,11 +155,8 @@ extension InterfaceLocalization {
         return "lokalisation"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let localizationDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(localizationDeclarationName)
-  #endif
 
   private static let crossReferenceDeclarationName:
     UserFacing<StrictString, InterfaceLocalization> = UserFacing<
@@ -193,11 +169,8 @@ extension InterfaceLocalization {
         return "querverweis"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let crossReferenceDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(crossReferenceDeclarationName)
-  #endif
 
   private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -210,9 +183,6 @@ extension InterfaceLocalization {
         return "nichtLokalisiert"
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
     internal static let notLocalizedDeclaration: DirectivePatternWithArguments =
       declarationPatternWithArguments(notLocalizedDeclarationName)
-  #endif
 }

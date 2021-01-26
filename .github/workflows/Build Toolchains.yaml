@@ -16,7 +16,7 @@ jobs:
         set -x
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes \
-          clang \
+          clang-7 \
           cmake \
           git \
           icu-devtools \

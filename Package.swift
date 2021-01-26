@@ -843,15 +843,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
-  // #workaround(SDGCommandLine 1.6.1, Web API incomplete.)
-  package.targets = package.targets.filter { target in
-    switch target.name {
-    case "WorkspaceTests":
-      return false
-    default:
-      return true
-    }
-  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {

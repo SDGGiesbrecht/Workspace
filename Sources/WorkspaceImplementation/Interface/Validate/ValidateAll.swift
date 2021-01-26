@@ -85,6 +85,7 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if ¬ProcessInfo.isInContinuousIntegration {
           // @exempt(from: tests)
           try Workspace.Refresh.All.executeAsStep(
@@ -93,6 +94,7 @@ extension Workspace.Validate {
             output: output
           )
         }
+      #endif
 
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
@@ -265,6 +267,7 @@ extension Workspace.Validate {
             }).resolved().formattedAsSectionHeader()
           )
 
+          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           let difference = try options.project.uncommittedChanges().get()
           if ¬difference.isEmpty {
             output.print(difference.separated())
@@ -294,6 +297,7 @@ extension Workspace.Validate {
               })
             )
           }
+          #endif
         }
 
       output.print("Summary".formattedAsSectionHeader())

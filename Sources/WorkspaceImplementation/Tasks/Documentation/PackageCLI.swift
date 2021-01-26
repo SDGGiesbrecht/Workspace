@@ -49,6 +49,7 @@ internal struct PackageCLI {
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
+          #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           if let interface = try? CommandInterface.loadInterface(
             of: tool,
             in: localization.code
@@ -70,6 +71,7 @@ internal struct PackageCLI {
 
             commands[interface.identifier]!.relativePagePath[localization] = path
           }
+          #endif
         }
       }
       self.commands = commands

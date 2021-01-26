@@ -102,12 +102,14 @@ extension Workspace {
             }
 
             #if DEBUG
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
               if job ∈ ContinuousIntegrationJob.simulatorJobs,
                 ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
                   ≠ nil
               {  // Simulators are not available to all CI jobs and must be tested separately.
                 return  // and continue loop.
               }
+            #endif
             #endif
 
             options.project.test(

@@ -185,7 +185,7 @@ import WorkspaceProjectConfiguration
 
     // MARK: - Manifest
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
       internal func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
@@ -199,7 +199,7 @@ import WorkspaceProjectConfiguration
       }
     #endif
 
-    #if !(os(Windows) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
+    #if !(os(Windows) || os(WASI) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
       internal func cachedPackageGraph() throws -> PackageGraph {
         return try cached(in: &manifestCache.packageGraph) {
           return try packageGraph().get()
@@ -208,7 +208,7 @@ import WorkspaceProjectConfiguration
     #endif
 
     internal func packageName() throws -> StrictString {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+      #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
         return "[???]"
       #else
         return StrictString(try cachedManifest().name)
@@ -282,7 +282,7 @@ import WorkspaceProjectConfiguration
       #else
         return try cached(in: &configurationCache.configurationContext) {
 
-          #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+          #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
             let products: [PackageManifest.Product] = []
           #else
             let products = try self.products()
@@ -328,6 +328,8 @@ import WorkspaceProjectConfiguration
 
     internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
+        return WorkspaceConfiguration()
+      #elseif os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         return WorkspaceConfiguration()
       #else
         return try cached(in: &configurationCache.configuration) {
@@ -485,6 +487,8 @@ import WorkspaceProjectConfiguration
     internal func allFiles() throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return []
+      #elseif !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      return []
       #else
         return try cached(in: &fileCache.allFiles) { () -> [URL] in
           let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
@@ -500,6 +504,8 @@ import WorkspaceProjectConfiguration
     internal func trackedFiles(output: Command.Output) throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return []
+      #elseif os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      return []
       #else
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
@@ -569,6 +575,7 @@ import WorkspaceProjectConfiguration
     // MARK: - Actions
 
     internal func delete(_ location: URL, output: Command.Output) {
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
         output.print(
@@ -596,15 +603,19 @@ import WorkspaceProjectConfiguration
           resetFileCache(debugReason: location.lastPathComponent)
         }
       }
+      #endif
     }
 
     // MARK: - Related Projects
 
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     private static let relatedProjectCache = FileManager.default.url(
       in: .cache,
       at: "Related Projects"
     )
+    #endif
 
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     internal static func relatedPackage(
       _ package: SDGSwift.Package,
       output: Command.Output
@@ -659,8 +670,11 @@ import WorkspaceProjectConfiguration
       )
       return repository
     }
+    #endif
 
     internal static func emptyRelatedProjectCache() {
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try? FileManager.default.removeItem(at: relatedProjectCache)
+      #endif
     }
   }

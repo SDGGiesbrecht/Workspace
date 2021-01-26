@@ -31,6 +31,7 @@ internal struct TextFile {
 
   // MARK: - Initialization
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal init(alreadyAt location: URL) throws {
       guard let fileType = FileType(url: location) else {
         unreachable()
@@ -50,6 +51,7 @@ internal struct TextFile {
         isNew: false
       )
     }
+  #endif
 
     internal init(possiblyAt location: URL, executable: Bool = false) throws {
       do {
@@ -73,6 +75,7 @@ internal struct TextFile {
       }
     }
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal init(mockFileWithContents contents: String, fileType: FileType) {
       var url: URL?
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
@@ -86,9 +89,15 @@ internal struct TextFile {
         isNew: true
       )
     }
+  #endif
 
-    private init(location: URL, fileType: FileType, executable: Bool, contents: String, isNew: Bool)
-    {
+    private init(
+      location: URL,
+      fileType: FileType,
+      executable: Bool,
+      contents: String,
+      isNew: Bool
+    ) {
       self.location = location
       self.isExecutable = executable
       self._contents = contents
@@ -229,6 +238,7 @@ internal struct TextFile {
       if hasChanged {
         TextFile.reportWriteOperation(to: location, in: repository, output: output)
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try contents.save(to: location)
         if isExecutable {
           try FileManager.default.setAttributes(
@@ -236,6 +246,7 @@ internal struct TextFile {
             ofItemAtPath: location.path
           )
         }
+        #endif
 
         if location.pathExtension == "swift" {
           repository.resetManifestCache(debugReason: location.lastPathComponent)

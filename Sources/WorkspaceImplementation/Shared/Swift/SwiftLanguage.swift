@@ -216,7 +216,7 @@ internal enum SwiftLanguage {
       for fileURL: URL
     ) throws {
       // #workaround(swift-format 0.50300.0, Cannot build.) @exempt(from: unicode)
-      #if !(os(Windows) || os(Android))
+      #if !(os(Windows) || os(WASI) || os(Android))
         if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
           let formatter = SwiftFormatter(configuration: formatConfiguration)
           var result: String = ""

@@ -18,6 +18,7 @@
 
   import SDGLogic
 
+#if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
   extension ProcessInfo {
 
     internal static let isInContinuousIntegration =
@@ -31,3 +32,4 @@
       ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
       ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
   }
+#endif

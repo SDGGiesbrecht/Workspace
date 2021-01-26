@@ -28,11 +28,14 @@ extension CustomTask {
 
   // MARK: - Static Properties
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
+  #endif
 
   // MARK: - Execution
 
     internal func execute(output: Command.Output) throws {
+      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       _ = try Package(url: url).execute(
         .version(version),
         of: [executable],
@@ -40,5 +43,6 @@ extension CustomTask {
         cacheDirectory: CustomTask.cache,
         reportProgress: { output.print($0) }
       ).get()
+      #endif
     }
 }

@@ -29,6 +29,7 @@ import WorkspaceProjectConfiguration
 public struct SleeplessMain {
 
   public static func main() {  // @exempt(from: tests)
+    #if !PLATFORM_LACKS_DISPATCH
       DispatchQueue.global(qos: .utility).sync {
 
         #if os(Windows) || os(Linux) || os(Android)
@@ -50,5 +51,6 @@ public struct SleeplessMain {
           }
         #endif
       }
+    #endif
   }
 }

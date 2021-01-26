@@ -798,6 +798,12 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
+    // #workaround(Swift 5.3.2, Web lacks Dispatch.)
+    .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.FileManager.)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.2, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
   ])

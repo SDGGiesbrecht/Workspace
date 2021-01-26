@@ -96,6 +96,7 @@ extension Workspace.Validate {
         }
       #endif
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -109,6 +110,7 @@ extension Workspace.Validate {
             }
           }).resolved().formattedAsSectionHeader()
         )
+      #endif
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {

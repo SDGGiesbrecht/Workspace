@@ -118,11 +118,13 @@ extension Workspace {
         validationStatus: inout ValidationStatus,
         output: Command.Output
       ) throws {
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.document(
           outputDirectory: outputDirectory,
           validationStatus: &validationStatus,
           output: output
         )
+        #endif
       }
   }
 }

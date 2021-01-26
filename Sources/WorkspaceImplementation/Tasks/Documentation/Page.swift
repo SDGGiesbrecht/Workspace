@@ -118,7 +118,11 @@ internal class Page {
     copyright: StrictString
   ) {
 
+    #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      var mutable: StrictString = ""
+    #else
       var mutable = Page.template
+    #endif
     mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
     mutable.replaceMatches(
       for: "[*text direction*]".scalars,

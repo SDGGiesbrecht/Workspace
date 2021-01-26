@@ -110,6 +110,12 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git --branch swift-5.3.2-RELEASE --depth 1
         ./swift/utils/update-checkout --tag swift-5.3.2-RELEASE --clone
+    - name: Clean out Swift history
+      shell: bash
+      run: |
+        set -x
+        cd swift-source
+        find . -type d -name .git -prune -exec rm -rf {} \;
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini

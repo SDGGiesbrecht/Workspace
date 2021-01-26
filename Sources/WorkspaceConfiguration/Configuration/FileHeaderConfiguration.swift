@@ -229,7 +229,7 @@ public struct FileHeaderConfiguration: Codable {
     let localizations = configuration.documentation.localizations
     #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
-    #eendif
+    #endif
 
     var header: [StrictString] = [
       "#filename",

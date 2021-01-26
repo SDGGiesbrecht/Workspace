@@ -182,6 +182,9 @@ public struct FileHeaderConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
+    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    return [:]
+    #else
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
       return configuration.localizationDictionary { localization in
         let projectName = configuration.projectName[localization] ?? packageName
@@ -202,6 +205,7 @@ public struct FileHeaderConfiguration: Codable {
           }
         }
       }
+    #endif
   })
 
   // @localization(🇩🇪DE) @crossReference(FileHeaderConfiguration)
@@ -223,13 +227,16 @@ public struct FileHeaderConfiguration: Codable {
   public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
     let localizations = configuration.documentation.localizations
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+    #eendif
 
     var header: [StrictString] = [
       "#filename",
       "",
     ]
 
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       header.append(
         contentsOf: configuration.sequentialLocalizations({ localization in
           let projectName = configuration.projectName[localization] ?? packageName
@@ -244,6 +251,7 @@ public struct FileHeaderConfiguration: Codable {
       if let site = configuration.documentation.projectWebsite {
         header.append(StrictString(site.absoluteString))
       }
+    #endif
 
     header.append("")
 

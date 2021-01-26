@@ -153,7 +153,9 @@ extension PackageRepository {
             )
           }
 
+          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           WorkspaceContext.current = try configurationContext()
+          #endif
           if sdg {
             configuration._applySDGOverrides()
             configuration._validateSDGStandards()

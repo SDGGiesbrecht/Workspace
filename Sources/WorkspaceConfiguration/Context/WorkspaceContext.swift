@@ -25,6 +25,7 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Static Properties
 
+  #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     // @localization(🇩🇪DE) @crossReference(WorkspaceContext.current)
     /// Der Zusammenhang des aktuellen Projekts.
     public static var aktueller: Arbeitsbereichszusammenhang {
@@ -42,6 +43,7 @@ public struct WorkspaceContext: Context {
         _current = newValue
       }
     }
+  #endif
 
   // MARK: - Initialization
 

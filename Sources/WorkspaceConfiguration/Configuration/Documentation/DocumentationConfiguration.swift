@@ -363,6 +363,9 @@ public struct DocumentationConfiguration: Codable {
       localization: ContentLocalization
     ) -> StrictString? {
 
+      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      return nil
+      #else
       let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
 
       guard ¬tools.isEmpty else {
@@ -437,6 +440,7 @@ public struct DocumentationConfiguration: Codable {
         "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
         "```",
       ].joinedAsLines()
+      #endif
     }
 
     private static func localizedLibraryImportingInstructions(
@@ -445,6 +449,9 @@ public struct DocumentationConfiguration: Codable {
       localization: ContentLocalization
     ) -> StrictString? {
 
+      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      return nil
+      #else
       let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }
 
       guard ¬libraries.isEmpty else {
@@ -600,5 +607,6 @@ public struct DocumentationConfiguration: Codable {
       ]
 
       return result.joinedAsLines()
+      #endif
     }
 }

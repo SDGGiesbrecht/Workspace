@@ -332,8 +332,10 @@ import WorkspaceProjectConfiguration
       #else
         return try cached(in: &configurationCache.configuration) {
 
+          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           // Provide the context in case resolution happens internally.
           WorkspaceContext.current = try configurationContext()
+          #endif
 
           let result: WorkspaceConfiguration
           if try isWorkspaceProject() {

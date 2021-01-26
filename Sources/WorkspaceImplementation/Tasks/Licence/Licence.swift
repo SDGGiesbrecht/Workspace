@@ -20,6 +20,7 @@ extension Licence {
 
   // MARK: - Properties
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal var text: StrictString {
       var source: String
       switch self {
@@ -38,4 +39,5 @@ extension Licence {
       let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
       return StrictString(file.body)
     }
+  #endif
 }

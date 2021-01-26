@@ -70,7 +70,9 @@ extension Workspace.Validate {
           output: output
         )
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
+        #endif
       }
     )
 

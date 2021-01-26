@@ -33,11 +33,13 @@ internal class Page {
 
   // MARK: - Static Properties
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     private static let template: StrictString = {
       var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
       result.header = ""
       return StrictString(result.contents)
     }()
+  #endif
 
   private static func watermark(localization: LocalizationIdentifier) -> StrictString {
     let resolved = localization._bestMatch

@@ -115,7 +115,9 @@ extension Workspace {
         )
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.normalize(output: output)
+      #endif
     }
   }
 }

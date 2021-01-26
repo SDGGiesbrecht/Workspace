@@ -80,7 +80,9 @@ extension Workspace.Proofread {
         )
 
         if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
+          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             try validationStatus.reportOutcome(project: options.project, output: output)
+          #endif
         }
       }
     )
@@ -92,9 +94,11 @@ extension Workspace.Proofread {
       output: Command.Output
     ) throws {
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
         }
+      #endif
 
       let section = validationStatus.newSection()
 
@@ -118,6 +122,7 @@ extension Workspace.Proofread {
         reporter = CommandLineProofreadingReporter.default
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if try options.project.proofread(reporter: reporter, output: output) {
           validationStatus.passStep(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -143,6 +148,7 @@ extension Workspace.Proofread {
             })
           )
         }
+      #endif
     }
   }
 }

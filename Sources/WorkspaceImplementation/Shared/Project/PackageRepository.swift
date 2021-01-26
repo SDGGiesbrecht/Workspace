@@ -487,7 +487,7 @@ import WorkspaceProjectConfiguration
     internal func allFiles() throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return []
-      #elseif !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      #elseif PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       return []
       #else
         return try cached(in: &fileCache.allFiles) { () -> [URL] in

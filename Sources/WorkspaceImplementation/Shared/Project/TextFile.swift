@@ -51,7 +51,6 @@ internal struct TextFile {
         isNew: false
       )
     }
-  #endif
 
     internal init(possiblyAt location: URL, executable: Bool = false) throws {
       do {
@@ -75,7 +74,6 @@ internal struct TextFile {
       }
     }
 
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal init(mockFileWithContents contents: String, fileType: FileType) {
       var url: URL?
       FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in

@@ -56,12 +56,14 @@ extension Workspace {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try Validate.Build.validate(
             job: options.job,
             against: ContinuousIntegrationJob.testJobs,
             for: options.project,
             output: output
           )
+        #endif
 
         var validationStatus = ValidationStatus()
 
@@ -83,6 +85,7 @@ extension Workspace {
       output: Command.Output
     ) throws {
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Validate.Build.job(
@@ -121,6 +124,7 @@ extension Workspace {
             )
           }
         }
+      #endif
     }
   }
 }

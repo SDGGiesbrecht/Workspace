@@ -138,7 +138,9 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try options.project.refreshInheritedDocumentation(output: output)
+        #endif
       }
     )
   }

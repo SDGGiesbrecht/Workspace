@@ -122,6 +122,7 @@ extension Workspace.Validate {
         )
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -158,9 +159,11 @@ extension Workspace.Validate {
             output: output
           )
         }
+      #endif
 
       // Document
       if options.job.includes(job: .miscellaneous) {
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
             .serveFromGitHubPagesBranch,
@@ -182,8 +185,10 @@ extension Workspace.Validate {
               output: output
             )
           }
+        #endif
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if options.job.includes(job: .deployment),
           try options.project.configuration(output: output).documentation.api.generate
         {
@@ -245,7 +250,9 @@ extension Workspace.Validate {
             )
           }
         }
+      #endif
 
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         // State
         if ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
@@ -301,6 +308,7 @@ extension Workspace.Validate {
           }
           #endif
         }
+      #endif
 
       output.print("Summary".formattedAsSectionHeader())
 

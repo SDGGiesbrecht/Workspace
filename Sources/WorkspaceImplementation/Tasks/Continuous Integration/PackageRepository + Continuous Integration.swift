@@ -74,11 +74,13 @@ import WorkspaceConfiguration
       }
 
       try adjustForWorkspace(&workflow)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var workflowFile = try TextFile(
         possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
       )
       workflowFile.body = String(workflow.joinedAsLines())
       try workflowFile.writeChanges(for: self, output: output)
+      #endif
     }
 
     private func refreshGitHubWorkflows(output: Command.Output) throws {

@@ -50,6 +50,7 @@ import WorkspaceLocalizations
         for url in try sourceFiles(output: output) {
           purgingAutoreleased {
 
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             if FileType(url: url) ≠ nil,
               let file = try? TextFile(alreadyAt: url)
             {
@@ -96,6 +97,7 @@ import WorkspaceLocalizations
                 list[identifier] = example
               }
             }
+            #endif
           }
         }
 

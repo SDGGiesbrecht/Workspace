@@ -45,7 +45,7 @@ import WorkspaceConfiguration
     // MARK: - Properties
 
     internal func hasTargetsToDocument() throws -> Bool {
-      #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+      #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
         return true
       #else
         return try cachedPackage().products.contains(where: { $0.type.isLibrary })
@@ -84,6 +84,7 @@ import WorkspaceConfiguration
       return result
     }
 
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     private func loadCommandLineInterface(
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
@@ -105,6 +106,7 @@ import WorkspaceConfiguration
         customReplacements: customReplacements
       )
     }
+    #endif
 
     internal func resolvedCopyright(
       documentationStatus: DocumentationStatus,
@@ -149,6 +151,7 @@ import WorkspaceConfiguration
                 ]
               }
             case .project(let url):
+              #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
               let package = try PackageRepository.relatedPackage(
                 SDGSwift.Package(url: url),
                 output: output
@@ -184,6 +187,7 @@ import WorkspaceConfiguration
                     StrictString(description.text),
                   ]
                 }
+              #endif
               #endif
             }
           }
@@ -293,6 +297,7 @@ import WorkspaceConfiguration
       coverageCheckOnly: Bool
     ) throws {
 
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       if ProcessInfo.isInContinuousIntegration {
         DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
           while true {  // @exempt(from: tests)
@@ -301,6 +306,7 @@ import WorkspaceConfiguration
           }
         }
       }
+      #endif
 
       let configuration = try self.configuration(output: output)
       let copyright = try resolvedCopyright(
@@ -362,6 +368,7 @@ import WorkspaceConfiguration
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL) throws {
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
       try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
       var siteCSS = TextFile(mockFileWithContents: Resources.Documentation.site, fileType: .css)
@@ -375,6 +382,7 @@ import WorkspaceConfiguration
       try siteJavaScript.contents.save(
         to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
       )
+      #endif
 
       try preventJekyllInterference(outputDirectory: outputDirectory)
     }

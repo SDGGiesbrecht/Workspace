@@ -108,6 +108,7 @@ import WorkspaceLocalizations
         {
           try purgingAutoreleased {
 
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             let file = try TextFile(alreadyAt: url)
             reporter.reportParsing(
               file: file.location.path(relativeTo: location),
@@ -137,6 +138,7 @@ import WorkspaceLocalizations
                 #endif
               }
             }
+            #endif
           }
         }
       }

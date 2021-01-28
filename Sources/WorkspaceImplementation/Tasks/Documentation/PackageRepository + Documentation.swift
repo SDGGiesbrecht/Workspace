@@ -420,6 +420,7 @@ import WorkspaceConfiguration
     }
 
     private func redirectExistingURLs(outputDirectory: URL) throws {
+      #if !PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE
       if (try? outputDirectory.checkResourceIsReachable()) == true {
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
           try purgingAutoreleased {
@@ -441,10 +442,13 @@ import WorkspaceConfiguration
           }
         }
       }
+      #endif
     }
 
     private func preventJekyllInterference(outputDirectory: URL) throws {
+      #if !PLATFORM_LACKS_FOUNDATION_DATA_WRITE_TO
       try Data().write(to: outputDirectory.appendingPathComponent(".nojekyll"))
+      #endif
     }
 
     // MARK: - Validation
@@ -470,6 +474,7 @@ import WorkspaceConfiguration
         }).resolved().formattedAsSectionHeader()
       )
       do {
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { outputDirectory in
 
           let status = DocumentationStatus(output: output)
@@ -507,6 +512,7 @@ import WorkspaceConfiguration
             )
           }
         }
+        #endif
       } catch {
         // @exempt(from: tests) Only triggered by system or networking errors.
         output.print(error.localizedDescription.formattedAsError())
@@ -540,6 +546,7 @@ import WorkspaceConfiguration
             if let type = FileType(url: url),
               type ∈ Set([.swift, .swiftPackageManifest])
             {
+              #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
               let file = try TextFile(alreadyAt: url)
 
               for match in file.contents.scalars.matches(
@@ -558,6 +565,7 @@ import WorkspaceConfiguration
                   list[identifier] = StrictString(comment)
                 }
               }
+              #endif
             }
           }
         }

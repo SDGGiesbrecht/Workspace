@@ -85,9 +85,11 @@ import WorkspaceConfiguration
         )
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var file = try TextFile(possiblyAt: location)
       file.body = String(readMe)
       try file.writeChanges(for: self, output: output)
+      #endif
     }
 
     internal func refreshReadMe(output: Command.Output) throws {

@@ -45,6 +45,7 @@ import WorkspaceConfiguration
 
       var text = licence.text
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
       let oldContents = file.contents
 
@@ -63,6 +64,7 @@ import WorkspaceConfiguration
 
       file.contents = String(text)
       try file.writeChanges(for: self, output: output)
+      #endif
 
       // Delete alternate licence files to prevent duplicates.
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)

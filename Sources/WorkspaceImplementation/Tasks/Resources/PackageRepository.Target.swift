@@ -61,7 +61,7 @@ import WorkspaceLocalizations
       private let package: PackageRepository
 
       internal var name: String {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+        #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
           return ""
         #else
           return loadedTarget.name
@@ -69,7 +69,7 @@ import WorkspaceLocalizations
       }
 
       private var sourceDirectory: URL {
-        #if os(Windows) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+        #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
           return package.location
         #else
           return loadedTarget.sources.root.asURL
@@ -92,10 +92,12 @@ import WorkspaceLocalizations
           for: resourceFileLocation
         )
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
         resourceFile.body = source
 
         try resourceFile.writeChanges(for: package, output: output)
+        #endif
       }
 
       private func generateSource(
@@ -243,6 +245,7 @@ import WorkspaceLocalizations
         }).joined(separator: "\n") + "\n"
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       private func source(
         for resource: URL,
         named name: StrictString,
@@ -269,6 +272,7 @@ import WorkspaceLocalizations
         declaration += initializer.1
         return declaration
       }
+      #endif
 
       // MARK: - Comparable
 

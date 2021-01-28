@@ -55,7 +55,7 @@ import WorkspaceLocalizations
         )
 
         do {
-          #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
           case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -161,7 +161,7 @@ import WorkspaceLocalizations
           }).resolved().formattedAsSectionHeader()
         )
 
-        #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+        #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         let testCommand: (Command.Output) -> Bool
         switch job {
         case .macOS, .centOS, .ubuntu, .amazonLinux:

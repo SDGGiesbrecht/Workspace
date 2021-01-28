@@ -10,13 +10,13 @@ jobs:
     - name: Check out
       uses: actions/checkout@v1
     - name: Install Swift dependencies
-      # Based on https://github.com/apple/swift#linux
+      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#ubuntu-linux
       shell: bash
       run: |
         set -x
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes \
-          clang \
+          clang-7 \
           cmake \
           git \
           icu-devtools \
@@ -24,7 +24,7 @@ jobs:
           libedit-dev \
           libicu-dev \
           libncurses5-dev \
-          libpython-dev \
+          libpython3-dev \
           libsqlite3-dev \
           libxml2-dev \
           ninja-build \
@@ -36,12 +36,13 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+        sudo snap install sccache --candidate --classic
     - name: Check Android NDK
       shell: bash
       run: |
         set -x
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build
     - name: Fetch ICU source
       shell: bash
@@ -95,7 +96,7 @@ jobs:
         set -x
         rm -rf icu
     - name: Fetch Swift source
-      # Based on https://github.com/apple/swift#getting-sources-for-swift-and-related-projects
+      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#cloning-the-project
       shell: bash
       run: |
         set -x

@@ -55,6 +55,7 @@ import WorkspaceLocalizations
         )
 
         do {
+          #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
           case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -106,6 +107,7 @@ import WorkspaceLocalizations
               })
             )
           }
+          #endif
         } catch {
           // @exempt(from: tests) Unreachable on Linux.
           var description = StrictString(error.localizedDescription)
@@ -159,6 +161,7 @@ import WorkspaceLocalizations
           }).resolved().formattedAsSectionHeader()
         )
 
+        #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         let testCommand: (Command.Output) -> Bool
         switch job {
         case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -225,6 +228,7 @@ import WorkspaceLocalizations
             })
           )
         }
+        #endif
       }
     }
 

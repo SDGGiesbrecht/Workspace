@@ -68,6 +68,7 @@ import WorkspaceProjectConfiguration
       let projectBundle = location.appendingPathComponent(
         "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
       )
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var project = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
       )
@@ -96,5 +97,6 @@ import WorkspaceProjectConfiguration
       )
       scheme.contents = schemeDefinition
       try scheme.writeChanges(for: self, output: output)
+      #endif
     }
   }

@@ -310,9 +310,11 @@ import WorkspaceConfiguration
           "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
           "}",
         ]
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         var sdkFile = try TextFile(possiblyAt: url)
         sdkFile.contents = sdk.joinedAsLines()
         try sdkFile.writeChanges(for: self, output: output)
+        #endif
       }
     }
 

@@ -118,6 +118,7 @@ import WorkspaceLocalizations
             let documentationSyntax = FileType.swiftDocumentationSyntax
             let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex
@@ -252,6 +253,7 @@ import WorkspaceLocalizations
             }
 
             try file.writeChanges(for: self, output: output)
+            #endif
           }
         }
       }

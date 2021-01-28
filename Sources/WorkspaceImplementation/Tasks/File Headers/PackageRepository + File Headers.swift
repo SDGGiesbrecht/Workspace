@@ -51,6 +51,7 @@ import SDGSwift
             type.syntax.hasComments
           {
 
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             var file = try TextFile(alreadyAt: url)
             let oldHeader = file.header
             var header = template
@@ -66,6 +67,7 @@ import SDGSwift
 
             file.header = String(header)
             try file.writeChanges(for: self, output: output)
+            #endif
           }
         }
       }

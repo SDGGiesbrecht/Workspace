@@ -46,6 +46,7 @@ import SDGSwift
         try purgingAutoreleased {
 
           if let syntax = FileType(url: url)?.syntax {
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             var file = try TextFile(alreadyAt: url)
 
             // #workaround(SwiftPM 0.7.0, Cannot build.)
@@ -87,6 +88,7 @@ import SDGSwift
 
             file.contents = normalizedLines.joinedAsLines()
             try file.writeChanges(for: self, output: output)
+            #endif
           }
         }
       }

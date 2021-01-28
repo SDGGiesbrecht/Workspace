@@ -404,6 +404,7 @@ import WorkspaceConfiguration
           }).resolved()
         )
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         FileManager.default
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
@@ -414,6 +415,7 @@ import WorkspaceConfiguration
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}
           }
+        #endif
       }
     }
 
@@ -576,6 +578,7 @@ import WorkspaceConfiguration
             let documentationSyntax = FileType.swiftDocumentationSyntax
             let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
+            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex
@@ -659,6 +662,7 @@ import WorkspaceConfiguration
             }
 
             try file.writeChanges(for: self, output: output)
+            #endif
           }
         }
       }

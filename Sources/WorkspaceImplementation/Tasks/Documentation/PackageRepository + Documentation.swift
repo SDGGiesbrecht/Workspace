@@ -151,7 +151,10 @@ import WorkspaceConfiguration
                 ]
               }
             case .project(let url):
-              #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+              #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+              func dodgeLackOfThrowingCalls() throws {}
+              try dodgeLackOfThrowingCalls()
+              #else
               let package = try PackageRepository.relatedPackage(
                 SDGSwift.Package(url: url),
                 output: output
@@ -546,7 +549,10 @@ import WorkspaceConfiguration
             if let type = FileType(url: url),
               type ∈ Set([.swift, .swiftPackageManifest])
             {
-              #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+              #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+              func dodgeLackOfThrowingCalls() throws {}
+              try dodgeLackOfThrowingCalls()
+              #else
               let file = try TextFile(alreadyAt: url)
 
               for match in file.contents.scalars.matches(
@@ -586,7 +592,10 @@ import WorkspaceConfiguration
             let documentationSyntax = FileType.swiftDocumentationSyntax
             let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            func dodgeLackOfThrowingCalls() throws {}
+            try dodgeLackOfThrowingCalls()
+            #else
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex

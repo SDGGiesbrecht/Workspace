@@ -822,9 +822,9 @@ internal struct PackageInterface {
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
+        // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+        #if !(os(Windows) || os(WASI) || os(Android))
         try purgingAutoreleased {
-          // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-          #if !(os(Windows) || os(WASI) || os(Android))
             let pageURL = api.pageURL(
               in: outputDirectory,
               for: localization,
@@ -849,8 +849,8 @@ internal struct PackageInterface {
               output: output,
               coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: pageURL)
-          #endif
         }
+        #endif
       }
     }
 

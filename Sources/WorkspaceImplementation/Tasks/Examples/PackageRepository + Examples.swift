@@ -118,7 +118,10 @@ import WorkspaceLocalizations
             let documentationSyntax = FileType.swiftDocumentationSyntax
             let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            func dodgeLackOfThrowingCalls() throws {}
+            try dodgeLackOfThrowingCalls()
+            #else
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex

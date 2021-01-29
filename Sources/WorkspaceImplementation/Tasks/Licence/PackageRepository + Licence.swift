@@ -43,9 +43,9 @@ import WorkspaceConfiguration
         )
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var text = licence.text
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
       let oldContents = file.contents
 

@@ -45,7 +45,7 @@ import WorkspaceLocalizations
     internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
-      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+      #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
         var linter: Bool?
       #else
         var linter: SwiftLinter?
@@ -106,9 +106,9 @@ import WorkspaceLocalizations
         where FileType(url: url) ≠ nil
           ∧ FileType(url: url) ≠ .xcodeProject
         {
+          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try purgingAutoreleased {
 
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             let file = try TextFile(alreadyAt: url)
             reporter.reportParsing(
               file: file.location.path(relativeTo: location),
@@ -138,8 +138,8 @@ import WorkspaceLocalizations
                 #endif
               }
             }
-            #endif
           }
+          #endif
         }
       }
 

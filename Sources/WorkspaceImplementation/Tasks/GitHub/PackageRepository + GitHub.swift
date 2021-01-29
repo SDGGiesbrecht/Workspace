@@ -138,10 +138,12 @@ import SDGSwift
       }
 
       delete(depricatedIssueTemplateLocation, output: output)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
         for file in files where file ∉ validFiles {
           delete(file, output: output)
         }
       }
+      #endif
     }
   }

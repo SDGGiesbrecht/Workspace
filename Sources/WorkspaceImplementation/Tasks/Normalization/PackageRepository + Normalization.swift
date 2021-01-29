@@ -46,7 +46,10 @@ import SDGSwift
         try purgingAutoreleased {
 
           if let syntax = FileType(url: url)?.syntax {
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            func dodgeLackOfThrowingCalls() throws {}
+            try dodgeLackOfThrowingCalls()
+            #else
             var file = try TextFile(alreadyAt: url)
 
             // #workaround(SwiftPM 0.7.0, Cannot build.)

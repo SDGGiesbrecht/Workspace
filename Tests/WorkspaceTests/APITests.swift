@@ -646,6 +646,7 @@ class APITests: TestCase {
 
   func testDefaults() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       let commands: [[StrictString]] = [
         ["refresh", "scripts"],
         ["refresh", "resources"],
@@ -668,7 +669,6 @@ class APITests: TestCase {
 
         ["proofread", "generate‐xcode‐project"],
       ]
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "Default").test(
         commands: commands,
         localizations: FastTestLocalization.self,

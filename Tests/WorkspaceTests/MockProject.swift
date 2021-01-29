@@ -86,6 +86,11 @@ extension PackageRepository {
 
     do {
       try purgingAutoreleased {
+        #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        func dodgeLackOfThrowingCalls() throws {}
+        try dodgeLackOfThrowingCalls()
+        #endif
+
         let developer = URL(fileURLWithPath: "/tmp/Developer")
         #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try? FileManager.default.removeItem(at: developer)
@@ -130,9 +135,11 @@ extension PackageRepository {
           }
           #endif
         }
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         let beforeLocation = PackageRepository.beforeDirectory(
           for: location.lastPathComponent
         )
+        #endif
 
         #if !os(Windows)
           // Simulators are not available to all CI jobs and must be tested separately.

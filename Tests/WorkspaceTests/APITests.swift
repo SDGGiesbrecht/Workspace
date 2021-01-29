@@ -76,6 +76,7 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "AllDisabled").test(
         commands: [
           ["refresh"],
@@ -85,6 +86,7 @@ class APITests: TestCase {
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -103,6 +105,7 @@ class APITests: TestCase {
           result["🇮🇱עב"] = "#dates"
           return result
         })
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "AllTasks").test(
         commands: [
           ["refresh"],
@@ -112,6 +115,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -135,6 +139,7 @@ class APITests: TestCase {
         arguments: ["fail"]
       )
       configuration.customProofreadingTasks.append(failing)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "BadStyle").test(
         commands: [
           ["proofread"],
@@ -146,10 +151,12 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testBrokenExample() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "BrokenExample").test(
         commands: [
           ["refresh", "examples"]
@@ -158,10 +165,12 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testBrokenTests() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "BrokenTests").test(
         commands: [
           ["test"]
@@ -169,6 +178,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -240,6 +250,7 @@ class APITests: TestCase {
           return result
         })
       configuration.provideWorkflowScripts = false
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "CheckedInDocumentation").test(
         commands: [
           ["refresh"],
@@ -250,6 +261,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -490,6 +502,7 @@ class APITests: TestCase {
       // Text rules but no syntax rules.
       configuration.proofreading.rules = [.manualWarnings]
 
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
         commands: [
           ["refresh", "continuous‐integration"],
@@ -501,6 +514,7 @@ class APITests: TestCase {
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -523,6 +537,7 @@ class APITests: TestCase {
         arguments: []
       )
       configuration.customProofreadingTasks.append(passing)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "CustomProofread").test(
         commands: [
           ["proofread"],
@@ -535,6 +550,7 @@ class APITests: TestCase {
         withCustomTask: true,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -560,6 +576,7 @@ class APITests: TestCase {
       configuration.licence.manage = true
       configuration.licence.licence = .unlicense
       configuration.fileHeaders.manage = true
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "CustomReadMe").test(
         commands: [
           ["refresh", "read‐me"],
@@ -570,6 +587,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -594,6 +612,7 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "CustomTasks").test(
         commands: [
           ["refresh"],
@@ -604,6 +623,7 @@ class APITests: TestCase {
         withCustomTask: true,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
 
       var aufgabe = Sonderaufgabe(
         ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
@@ -648,11 +668,13 @@ class APITests: TestCase {
 
         ["proofread", "generate‐xcode‐project"],
       ]
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "Default").test(
         commands: commands,
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -682,6 +704,7 @@ class APITests: TestCase {
       konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
       konfiguration.dokumentation.programmierschnittstelle
         .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "Deutsch").test(
         commands: [
           ["auffrischen", "skripte"],
@@ -701,6 +724,7 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testExecutable() {
@@ -711,6 +735,7 @@ class APITests: TestCase {
       configuration.supportedPlatforms.remove(.watchOS)
       configuration.supportedPlatforms.remove(.tvOS)
       configuration.documentation.localizations = ["en"]
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "Executable").test(
         commands: [
           ["refresh", "licence"],
@@ -722,6 +747,7 @@ class APITests: TestCase {
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -740,6 +766,7 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "FailingCustomTasks").test(
         commands: [
           ["refresh"]
@@ -749,6 +776,7 @@ class APITests: TestCase {
         withCustomTask: true,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -772,6 +800,7 @@ class APITests: TestCase {
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "FailingCustomValidation").test(
         commands: [
           ["validate"]
@@ -782,6 +811,7 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testFailingDocumentationCoverage() {
@@ -791,6 +821,7 @@ class APITests: TestCase {
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "FailingDocumentationCoverage").test(
         commands: [
           ["validate", "documentation‐coverage"],
@@ -800,6 +831,7 @@ class APITests: TestCase {
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -825,6 +857,7 @@ class APITests: TestCase {
       } catch {}
     #endif
       // This test may fail if derived data is not in the default location. See above.
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "FailingTests").test(
         commands: [
           ["validate", "build"],
@@ -836,12 +869,14 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testHeaders() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "Headers").test(
         commands: [
           ["refresh", "file‐headers"],
@@ -853,6 +888,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -942,6 +978,7 @@ class APITests: TestCase {
 
   func testInvalidResourceDirectory() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "InvalidResourceDirectory").test(
         commands: [
           ["refresh", "resources"]
@@ -950,10 +987,12 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testInvalidTarget() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "InvalidTarget").test(
         commands: [
           ["refresh", "resources"]
@@ -961,6 +1000,7 @@ class APITests: TestCase {
         localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1031,6 +1071,7 @@ class APITests: TestCase {
 
   func testMissingDocumentation() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "MissingDocumentation").test(
         commands: [
           ["refresh", "inherited‐documentation"]
@@ -1039,10 +1080,12 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testMissingExample() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "MissingExample").test(
         commands: [
           ["refresh", "examples"]
@@ -1051,6 +1094,7 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testMissingReadMeLocalization() {
@@ -1058,6 +1102,7 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.readMe.contents.resolve = { _ in [:] }
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "MissingReadMeLocalization").test(
         commands: [
           ["refresh", "read‐me"]
@@ -1067,6 +1112,7 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testMultipleProducts() {
@@ -1075,6 +1121,7 @@ class APITests: TestCase {
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
       configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "MultipleProducts").test(
         commands: [
           ["refresh", "read‐me"]
@@ -1084,6 +1131,7 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testNoLibraries() {
@@ -1092,6 +1140,7 @@ class APITests: TestCase {
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
       configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "NoLibraries").test(
         commands: [
           ["refresh", "read‐me"]
@@ -1101,12 +1150,14 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testNoLocalizations() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "NoLocalizations").test(
         commands: [
           ["refresh", "read‐me"],
@@ -1117,12 +1168,14 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testNurDeutsch() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "NurDeutsch").test(
         commands: [
           ["auffrischen", "github"],
@@ -1136,12 +1189,14 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testOneLocalization() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "OneLocalization").test(
         commands: [
           ["refresh", "github"]
@@ -1150,6 +1205,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1161,6 +1217,7 @@ class APITests: TestCase {
       configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
       configuration.supportedPlatforms.remove(.windows)
       configuration.supportedPlatforms.remove(.android)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "OneProductMultipleModules").test(
         commands: [
           ["refresh", "read‐me"],
@@ -1171,12 +1228,14 @@ class APITests: TestCase {
         overwriteSpecificationInsteadOfFailing: false
       )
     #endif
+    #endif
   }
 
   func testOnlyBritish() {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "OnlyBritish").test(
         commands: [
           ["refresh", "github"],
@@ -1186,6 +1245,7 @@ class APITests: TestCase {
         localizations: OnlyBritish.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1210,6 +1270,7 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "PartialReadMe").test(
         commands: [
           ["refresh", "read‐me"],
@@ -1220,6 +1281,7 @@ class APITests: TestCase {
         localizations: FastTestLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1294,6 +1356,7 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "SDGLibrary").test(
         commands: [
           ["refresh", "scripts"],
@@ -1322,6 +1385,7 @@ class APITests: TestCase {
         withDependency: true,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1371,6 +1435,7 @@ class APITests: TestCase {
           result["zxx"] = "#dates"
           return result
         })
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       PackageRepository(mock: "SDGTool").test(
         commands: [
           ["refresh", "scripts"],
@@ -1398,6 +1463,7 @@ class APITests: TestCase {
         withDependency: true,
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 

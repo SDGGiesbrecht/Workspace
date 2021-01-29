@@ -664,11 +664,13 @@ import WorkspaceProjectConfiguration
         }
       }
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       // Remove deprecated cache.
       try? FileManager.default.removeItem(
         at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
       )
       return repository
+      #endif
     }
     #endif
 

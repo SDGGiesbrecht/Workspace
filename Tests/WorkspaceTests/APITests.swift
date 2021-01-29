@@ -40,6 +40,7 @@ class APITests: TestCase {
   static let configureGit: Void = {
     if isInGitHubAction {
       #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         _ = try? Git.runCustomSubcommand(
           ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
           versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
@@ -48,6 +49,7 @@ class APITests: TestCase {
           ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
           versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
         ).get()
+      #endif
       #endif
     }
   }()
@@ -65,7 +67,10 @@ class APITests: TestCase {
       configuration.optimizeForTests()
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
+    // #workaround(Swift 5.3, SwiftFormat cannot build.)
+    #if !os(WASI)
       configuration.proofreading.swiftFormatConfiguration = nil
+    #endif
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
@@ -117,7 +122,10 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.rules.insert(.listSeparation)
+    // #workaround(Swift 5.3, SwiftFormat cannot build.)
+    #if !os(WASI)
       configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
+    #endif
       let failing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,
         version: Version(1, 0, 0),
@@ -172,10 +180,12 @@ class APITests: TestCase {
         for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
         with: "\n\n".scalars
       )
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
           .appendingPathComponent("Resources/Tool/English.txt")
       )
+    #endif
       output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
       ]).get()
@@ -184,10 +194,12 @@ class APITests: TestCase {
         for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
         with: "\n\n".scalars
       )
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
           .appendingPathComponent("Resources/Tool/Deutsch.txt")
       )
+    #endif
 
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
@@ -203,8 +215,11 @@ class APITests: TestCase {
       configuration.documentation.api.yearFirstPublished = 2018
       configuration.documentation.api.ignoredDependencies.remove("Swift")
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
+    // #workaround(Swift 5.3, SwiftFormat cannot build.)
+    #if !os(WASI)
       configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] = false
       configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] = false
+    #endif
       configuration.documentation.relatedProjects = [
         .heading(text: [
           "🇬🇧EN": "Heading",
@@ -414,8 +429,11 @@ class APITests: TestCase {
       XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
       configuration.projektname["de"] = "Lokalisiert"
       XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
+  // #workaround(Swift 5.3, SwiftFormat cannot build.)
+  #if !os(WASI)
       configuration.korrektur.swiftFormatKonfiguration = nil
       XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
+  #endif
       configuration.normalise = true
       XCTAssert(configuration.normalise)
       configuration.normalisieren = false
@@ -451,8 +469,10 @@ class APITests: TestCase {
     XCTAssertEqual(context.ladeliste.produkte.first?.art, .bibliotek)
     XCTAssertNotEqual(context.ladeliste.produkte.first?.art, .ausführbareDatei)
     XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     WorkspaceContext.aktueller = context
     _ = WorkspaceContext.aktueller
+    #endif
   }
 
   func testContinuousIntegrationWithoutScripts() {
@@ -565,7 +585,10 @@ class APITests: TestCase {
       configuration.customValidationTasks.append(passing)
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
+  // #workaround(Swift 5.3, SwiftFormat cannot build.)
+  #if !os(WASI)
       configuration.proofreading.swiftFormatKonfiguration = nil
+  #endif
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
@@ -641,10 +664,12 @@ class APITests: TestCase {
         for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
         with: "\n\n".scalars
       )
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try output.save(
         to: PackageRepository.beforeDirectory(for: "Deutsch")
           .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
       )
+    #endif
 
       let konfiguration = ArbeitsbereichKonfiguration()
       konfiguration.optimizeForTests()
@@ -738,7 +763,10 @@ class APITests: TestCase {
       configuration.customValidationTasks.append(failing)
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
+    // #workaround(Swift 5.3, SwiftFormat cannot build.)
+    #if !os(WASI)
       configuration.proofreading.swiftFormatConfiguration = nil
+    #endif
       configuration.testing.prohibitCompilerWarnings = false
       configuration.testing.enforceCoverage = false
       configuration.documentation.api.enforceCoverage = false
@@ -779,6 +807,7 @@ class APITests: TestCase {
       configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
       // Attempt to remove existing derived data so that the build is clean.
       // Otherwise Xcode skips the build stages where the awaited warnings occur.
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       do {
         for url in try FileManager.default.contentsOfDirectory(
           at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
@@ -792,6 +821,7 @@ class APITests: TestCase {
           }
         }
       } catch {}
+    #endif
       // This test may fail if derived data is not in the default location. See above.
       PackageRepository(mock: "FailingTests").test(
         commands: [
@@ -826,6 +856,7 @@ class APITests: TestCase {
 
   func testHelp() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.1, SegFault)
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       testCommand(
         Workspace.command,
         with: ["help"],
@@ -903,6 +934,7 @@ class APITests: TestCase {
         uniqueTestName: "Help (workspace normalize)",
         overwriteSpecificationInsteadOfFailing: false
       )
+    #endif
     #endif
   }
 
@@ -1370,10 +1402,12 @@ class APITests: TestCase {
   func testSelfSpecificScripts() throws {
     #if !os(Android)  // #workaround(Swift 5.3.1, Emulator lacks Git.)
       #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try FileManager.default.do(in: repositoryRoot) {
           _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
+      #endif
       #endif
     #endif
   }

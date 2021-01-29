@@ -344,6 +344,7 @@ extension PackageRepository {
               }
             }
 
+            #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
             testCommand(
               Workspace.command,
               with: command,
@@ -355,6 +356,7 @@ extension PackageRepository {
               file: file,
               line: line
             )
+            #endif
           }
 
           #if !os(Linux)

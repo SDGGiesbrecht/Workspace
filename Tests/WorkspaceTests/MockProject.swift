@@ -41,6 +41,7 @@ import SDGCommandLineTestUtilities
 
 extension PackageRepository {
 
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
   private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
     "Tests/Mock Projects"
   )
@@ -54,9 +55,11 @@ extension PackageRepository {
       mockProject
     )
   }
+  #endif
 
   // MARK: - Initialization
 
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
   init(mock name: String) {
     let temporary: URL
     #if os(macOS)
@@ -67,6 +70,7 @@ extension PackageRepository {
     #endif
     self.init(at: temporary.appendingPathComponent(name))
   }
+  #endif
 
   func test<L>(
     commands: [[StrictString]],
@@ -83,14 +87,17 @@ extension PackageRepository {
     do {
       try purgingAutoreleased {
         let developer = URL(fileURLWithPath: "/tmp/Developer")
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try? FileManager.default.removeItem(at: developer)
         defer { try? FileManager.default.removeItem(at: developer) }
+        #endif
         if withDependency ∨ withCustomTask {
 
           let dependency = developer.appendingPathComponent("Dependency")
           #if os(Android)
             return  // This location is not writable.
           #endif
+          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try FileManager.default.do(in: dependency) {
             var initialize = ["swift", "package", "init"]
             if withCustomTask {
@@ -121,6 +128,7 @@ extension PackageRepository {
             ]).get()
             _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
           }
+          #endif
         }
         let beforeLocation = PackageRepository.beforeDirectory(
           for: location.lastPathComponent
@@ -135,6 +143,7 @@ extension PackageRepository {
         #endif
         _isDuringSpecificationTest = true
 
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try? FileManager.default.removeItem(at: location)
         try FileManager.default.copy(beforeLocation, to: location)
         defer { try? FileManager.default.removeItem(at: location) }
@@ -461,6 +470,7 @@ extension PackageRepository {
             }
           }
         }
+        #endif
       }
     } catch {
       XCTFail("\(error)", file: file, line: line)

@@ -38,6 +38,7 @@ import SDGCommandLineTestUtilities
 class APITests: TestCase {
 
   static let configureGit: Void = {
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
     if isInGitHubAction {
       #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
       #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
@@ -52,6 +53,7 @@ class APITests: TestCase {
       #endif
       #endif
     }
+    #endif
   }()
   override func setUp() {
     super.setUp()

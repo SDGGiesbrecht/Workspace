@@ -115,7 +115,9 @@ jobs:
       run: |
         set -x
         cd swift-source
+        du -hs .
         find . -type d -name .git -prune -exec rm -rf {} \;
+        du -hs .
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini

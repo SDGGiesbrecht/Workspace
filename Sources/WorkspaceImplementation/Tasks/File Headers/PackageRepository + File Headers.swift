@@ -51,7 +51,10 @@ import SDGSwift
             type.syntax.hasComments
           {
 
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            func dodgeLackOfThrowingCalls() throws {}
+            try dodgeLackOfThrowingCalls()
+            #else
             var file = try TextFile(alreadyAt: url)
             let oldHeader = file.header
             var header = template

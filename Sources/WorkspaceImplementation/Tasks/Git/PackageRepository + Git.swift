@@ -94,6 +94,7 @@ import WorkspaceLocalizations
         try PackageRepository.ignoreEntries
         + configuration(output: output).git.additionalGitIgnoreEntries
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
       gitIgnore.body = entries.joinedAsLines()
       try gitIgnore.writeChanges(for: self, output: output)
@@ -117,5 +118,6 @@ import WorkspaceLocalizations
           delete(gitAttributes.location, output: output)
         }
       }
+      #endif
     }
   }

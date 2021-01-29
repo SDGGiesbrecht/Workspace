@@ -39,9 +39,9 @@ import SDGSwift
       }
 
       for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try purgingAutoreleased {
 
-          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           var file = try TextFile(
             possiblyAt: location.appendingPathComponent(
               String(script.fileName(localization: localization))
@@ -55,8 +55,8 @@ import SDGSwift
           file.header = file.header
           file.body = String(try script.source(for: self, output: output))
           try file.writeChanges(for: self, output: output)
-          #endif
         }
+        #endif
       }
     }
   }

@@ -108,6 +108,13 @@ jobs:
       with:
         name: ICU
         path: Android/ICU
+    - name: Clean Android toolchain up
+      shell: bash
+      run: |
+        set -x
+        rm -rf Android/C
+        cd "${GITHUB_WORKSPACE}"
+        du -hs .
     - name: Clean ICU source up
       shell: bash
       run: |

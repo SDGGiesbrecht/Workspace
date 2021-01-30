@@ -855,16 +855,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
-
-  // #warning(Temporary.)
-  let tests = package.targets.first(where: { $0.name == "CrossPlatformTests" })!
-  for excluded in [
-    "WorkspaceTests"
-  ] {
-    let target = package.targets.first(where: { $0.name == excluded })!
-    tests.dependencies.append(contentsOf: target.dependencies)
-    package.targets.removeAll(where: { $0.name == excluded })
-  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {

@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGExternalProcess
 
@@ -34,8 +34,8 @@ extension CustomTask {
 
   // MARK: - Execution
 
-    internal func execute(output: Command.Output) throws {
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+  internal func execute(output: Command.Output) throws {
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       _ = try Package(url: url).execute(
         .version(version),
         of: [executable],
@@ -43,6 +43,6 @@ extension CustomTask {
         cacheDirectory: CustomTask.cache,
         reportProgress: { output.print($0) }
       ).get()
-      #endif
-    }
+    #endif
+  }
 }

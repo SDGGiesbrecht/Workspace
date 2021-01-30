@@ -195,38 +195,38 @@ public struct DocumentationConfiguration: Codable {
     set { currentVersion = newValue }
   }
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(DocumentationConfiguration.projectWebsite)
-    /// The URL of the project website.
-    public var projectWebsite: URL?
-    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.projectWebsite)
-    /// Der einheitliche Ressourcenzeiger der Internetseite des Projekts.
-    public var projektSeite: EinheitlicherRessourcenzeiger? {
-      get { return projectWebsite }
-      set { projectWebsite = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(DocumentationConfiguration.projectWebsite)
+  /// The URL of the project website.
+  public var projectWebsite: URL?
+  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.projectWebsite)
+  /// Der einheitliche Ressourcenzeiger der Internetseite des Projekts.
+  public var projektSeite: EinheitlicherRessourcenzeiger? {
+    get { return projectWebsite }
+    set { projectWebsite = newValue }
+  }
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(DocumentationConfiguration.documentationURL)
-    /// The root URL where Workspace‐generated API documentation is hosted.
-    public var documentationURL: URL?
-    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.documentationURL)
-    /// Der einheitliche Ressourcenzeiger der Wurzel der Seite wo die erstellte Dokumentation veröffentlicht wird.
-    public var dokumentationsRessourcenzeiger: EinheitlicherRessourcenzeiger? {
-      get { return documentationURL }
-      set { documentationURL = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(DocumentationConfiguration.documentationURL)
+  /// The root URL where Workspace‐generated API documentation is hosted.
+  public var documentationURL: URL?
+  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.documentationURL)
+  /// Der einheitliche Ressourcenzeiger der Wurzel der Seite wo die erstellte Dokumentation veröffentlicht wird.
+  public var dokumentationsRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+    get { return documentationURL }
+    set { documentationURL = newValue }
+  }
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(DocumentationConfiguration.repositoryURL)
-    /// The URL of the project repository.
-    public var repositoryURL: URL?
-    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.repositoryURL)
-    /// Der einheitliche Ressourcenzeiger des Projektlagers.
-    public var lagerRessourcenzeiger: EinheitlicherRessourcenzeiger? {
-      get { return repositoryURL }
-      set { repositoryURL = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(DocumentationConfiguration.repositoryURL)
+  /// The URL of the project repository.
+  public var repositoryURL: URL?
+  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.repositoryURL)
+  /// Der einheitliche Ressourcenzeiger des Projektlagers.
+  public var lagerRessourcenzeiger: EinheitlicherRessourcenzeiger? {
+    get { return repositoryURL }
+    set { repositoryURL = newValue }
+  }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.primaryAuthor)
@@ -256,23 +256,23 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-      guard let packageURL = configuration.documentation.repositoryURL,
-        let version = configuration.documentation.currentVersion
-      else {
-        return [:]
-      }
+    guard let packageURL = configuration.documentation.repositoryURL,
+      let version = configuration.documentation.currentVersion
+    else {
+      return [:]
+    }
 
-      var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.knownLocalizations() {
-        if let provided = localization._reasonableMatch {
-          result[localization] = localizedToolInstallationInstructions(
-            packageURL: packageURL,
-            version: version,
-            localization: provided
-          )
-        }
+    var result: [LocalizationIdentifier: StrictString] = [:]
+    for localization in configuration.documentation.knownLocalizations() {
+      if let provided = localization._reasonableMatch {
+        result[localization] = localizedToolInstallationInstructions(
+          packageURL: packageURL,
+          version: version,
+          localization: provided
+        )
       }
-      return result
+    }
+    return result
   })
 
   // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.importingInstructions)
@@ -292,23 +292,23 @@ public struct DocumentationConfiguration: Codable {
     [LocalizationIdentifier: Markdown]
   >(resolve: { (configuration: WorkspaceConfiguration) -> [LocalizationIdentifier: Markdown] in
 
-      guard let packageURL = configuration.documentation.repositoryURL,
-        let version = configuration.documentation.currentVersion
-      else {
-        return [:]
-      }
+    guard let packageURL = configuration.documentation.repositoryURL,
+      let version = configuration.documentation.currentVersion
+    else {
+      return [:]
+    }
 
-      var result: [LocalizationIdentifier: StrictString] = [:]
-      for localization in configuration.documentation.knownLocalizations() {
-        if let provided = localization._reasonableMatch {
-          result[localization] = localizedLibraryImportingInstructions(
-            packageURL: packageURL,
-            version: version,
-            localization: provided
-          )
-        }
+    var result: [LocalizationIdentifier: StrictString] = [:]
+    for localization in configuration.documentation.knownLocalizations() {
+      if let provided = localization._reasonableMatch {
+        result[localization] = localizedLibraryImportingInstructions(
+          packageURL: packageURL,
+          version: version,
+          localization: provided
+        )
       }
-      return result
+    }
+    return result
   })
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -322,16 +322,16 @@ public struct DocumentationConfiguration: Codable {
     set { about = newValue }
   }
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(DocumentationConfiguration.relatedProjects)
-    /// A list of related projects.
-    public var relatedProjects: [RelatedProjectEntry] = []
-    // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
-    /// Eine Liste verwandter Projekte.
-    public var verwandteProjekte: [EintragZuVerwantdenProjekten] {
-      get { return relatedProjects }
-      set { relatedProjects = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(DocumentationConfiguration.relatedProjects)
+  /// A list of related projects.
+  public var relatedProjects: [RelatedProjectEntry] = []
+  // @localization(🇩🇪DE) @crossReference(DocumentationConfiguration.relatedProjects)
+  /// Eine Liste verwandter Projekte.
+  public var verwandteProjekte: [EintragZuVerwantdenProjekten] {
+    get { return relatedProjects }
+    set { relatedProjects = newValue }
+  }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(DocumentationConfiguration.readMe)
@@ -357,15 +357,15 @@ public struct DocumentationConfiguration: Codable {
 
   // MARK: - Installation Instructions
 
-    private static func localizedToolInstallationInstructions(
-      packageURL: URL,
-      version: Version,
-      localization: ContentLocalization
-    ) -> StrictString? {
+  private static func localizedToolInstallationInstructions(
+    packageURL: URL,
+    version: Version,
+    localization: ContentLocalization
+  ) -> StrictString? {
 
-      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       return nil
-      #else
+    #else
       let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
 
       guard ¬tools.isEmpty else {
@@ -440,18 +440,18 @@ public struct DocumentationConfiguration: Codable {
         "curl \u{2D}sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash \u{2D}s \(projectName) \u{22}\(packageURL.absoluteString)\u{22} \(version.string()) \u{22}\(toolNames.first!) help\u{22} \(toolNames.joined(separator: " "))",
         "```",
       ].joinedAsLines()
-      #endif
-    }
+    #endif
+  }
 
-    private static func localizedLibraryImportingInstructions(
-      packageURL: URL,
-      version: Version,
-      localization: ContentLocalization
-    ) -> StrictString? {
+  private static func localizedLibraryImportingInstructions(
+    packageURL: URL,
+    version: Version,
+    localization: ContentLocalization
+  ) -> StrictString? {
 
-      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       return nil
-      #else
+    #else
       let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }
 
       guard ¬libraries.isEmpty else {
@@ -607,6 +607,6 @@ public struct DocumentationConfiguration: Codable {
       ]
 
       return result.joinedAsLines()
-      #endif
-    }
+    #endif
+  }
 }

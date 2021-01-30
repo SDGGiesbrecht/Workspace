@@ -22,24 +22,24 @@ import SDGCommandLine
 
 import SDGSwift
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    internal static let repositorySDGDirectory: StrictString = ".build/SDG"
-    internal static let repositoryWorkspaceCacheDirectory: StrictString =
-      repositorySDGDirectory
-      + "/Workspace"
+  internal static let repositorySDGDirectory: StrictString = ".build/SDG"
+  internal static let repositoryWorkspaceCacheDirectory: StrictString =
+    repositorySDGDirectory
+    + "/Workspace"
 
-    internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
+  internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
 
-      let localization = try project.configuration(output: output)
-        .developmentInterfaceLocalization()
+    let localization = try project.configuration(output: output)
+      .developmentInterfaceLocalization()
 
-      for deprecated in Script.deprecatedFileNames {
-        delete(location.appendingPathComponent(String(deprecated)), output: output)
-      }
+    for deprecated in Script.deprecatedFileNames {
+      delete(location.appendingPathComponent(String(deprecated)), output: output)
+    }
 
-      for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+    for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try purgingAutoreleased {
 
           var file = try TextFile(
@@ -56,7 +56,7 @@ import SDGSwift
           file.body = String(try script.source(for: self, output: output))
           try file.writeChanges(for: self, output: output)
         }
-        #endif
-      }
+      #endif
     }
   }
+}

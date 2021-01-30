@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -25,36 +25,36 @@ import SDGCommandLine
 
 import SDGSwift
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    private static let skippedRelativePaths: [String] = [
-      "LICENSE.md",
-      ".github/ISSUE_TEMPLATE",
-      ".github/PULL_REQUEST_TEMPLATE.md",
-    ]
+  private static let skippedRelativePaths: [String] = [
+    "LICENSE.md",
+    ".github/ISSUE_TEMPLATE",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+  ]
 
-    private var skippedFiles: Set<URL> {
-      return Set(
-        PackageRepository.skippedRelativePaths.map({ location.appendingPathComponent($0) })
-      )
-    }
+  private var skippedFiles: Set<URL> {
+    return Set(
+      PackageRepository.skippedRelativePaths.map({ location.appendingPathComponent($0) })
+    )
+  }
 
-    internal func refreshFileHeaders(output: Command.Output) throws {
+  internal func refreshFileHeaders(output: Command.Output) throws {
 
-      let template = try fileHeader(output: output)
+    let template = try fileHeader(output: output)
 
-      let skippedFiles = self.skippedFiles
-      for url in try sourceFiles(output: output)
-      where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
-        try purgingAutoreleased {
-          if let type = FileType(url: url),
-            type.syntax.hasComments
-          {
+    let skippedFiles = self.skippedFiles
+    for url in try sourceFiles(output: output)
+    where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
+      try purgingAutoreleased {
+        if let type = FileType(url: url),
+          type.syntax.hasComments
+        {
 
-            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             func dodgeLackOfThrowingCalls() throws {}
             try dodgeLackOfThrowingCalls()
-            #else
+          #else
             var file = try TextFile(alreadyAt: url)
             let oldHeader = file.header
             var header = template
@@ -70,9 +70,9 @@ import SDGSwift
 
             file.header = String(header)
             try file.writeChanges(for: self, output: output)
-            #endif
-          }
+          #endif
         }
       }
     }
   }
+}

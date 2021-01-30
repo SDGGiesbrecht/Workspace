@@ -47,21 +47,21 @@ public struct WorkspaceContext: Context {
 
   // MARK: - Initialization
 
-    public init(_location: URL, manifest: PackageManifest) {
-      self.location = _location
-      self.manifest = manifest
-    }
+  public init(_location: URL, manifest: PackageManifest) {
+    self.location = _location
+    self.manifest = manifest
+  }
 
   // MARK: - Properties
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
-    /// The location of the configured repository.
-    public let location: URL
-    // @localization(🇩🇪DE) @crossReference(WorkspaceContext.location)
-    /// Der Standort des konfigurierten Lagers.
-    public var standort: EinheitlicherRessourcenzeiger {
-      return location
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.location)
+  /// The location of the configured repository.
+  public let location: URL
+  // @localization(🇩🇪DE) @crossReference(WorkspaceContext.location)
+  /// Der Standort des konfigurierten Lagers.
+  public var standort: EinheitlicherRessourcenzeiger {
+    return location
+  }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(WorkspaceContext.manifest)
   /// Information from the package manifest.

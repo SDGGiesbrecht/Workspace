@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -28,28 +28,28 @@ import SDGSwift
   import SwiftFormat
 #endif
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    internal func normalize(output: Command.Output) throws {
+  internal func normalize(output: Command.Output) throws {
 
-      // #workaround(SwiftPM 0.7.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
-        var formatter: SwiftFormatter?
-        if let formatConfiguration = try configuration(output: output).proofreading
-          .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-        {
-          formatter = SwiftFormatter(configuration: formatConfiguration)
-        }
-      #endif
+    // #workaround(SwiftPM 0.7.0, Cannot build.)
+    #if !(os(Windows) || os(WASI) || os(Android))
+      var formatter: SwiftFormatter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
+      {
+        formatter = SwiftFormatter(configuration: formatConfiguration)
+      }
+    #endif
 
-      for url in try sourceFiles(output: output) {
-        try purgingAutoreleased {
+    for url in try sourceFiles(output: output) {
+      try purgingAutoreleased {
 
-          if let syntax = FileType(url: url)?.syntax {
-            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        if let syntax = FileType(url: url)?.syntax {
+          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             func dodgeLackOfThrowingCalls() throws {}
             try dodgeLackOfThrowingCalls()
-            #else
+          #else
             var file = try TextFile(alreadyAt: url)
 
             // #workaround(SwiftPM 0.7.0, Cannot build.)
@@ -91,9 +91,9 @@ import SDGSwift
 
             file.contents = normalizedLines.joinedAsLines()
             try file.writeChanges(for: self, output: output)
-            #endif
-          }
+          #endif
         }
       }
     }
   }
+}

@@ -71,12 +71,12 @@ public struct GitHubConfiguration: Codable {
     guard let match = localization._reasonableMatch else {
       return nil
     }
-      switch match {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return StrictString(Resources.contributingTemplate)
-      case .deutschDeutschland:
-        return StrictString(Resources.mitwirkenVorlage)
-      }
+    switch match {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return StrictString(Resources.contributingTemplate)
+    case .deutschDeutschland:
+      return StrictString(Resources.mitwirkenVorlage)
+    }
   }
 
   private static func developmentNotesHeading(
@@ -126,15 +126,15 @@ public struct GitHubConfiguration: Codable {
           )
         #endif
 
-          if let url = configuration.documentation.repositoryURL {
-            template.replaceMatches(
-              for: "#cloneScript".scalars,
-              with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
-                .scalars
-            )
-          } else {
-            template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
-          }
+        if let url = configuration.documentation.repositoryURL {
+          template.replaceMatches(
+            for: "#cloneScript".scalars,
+            with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
+              .scalars
+          )
+        } else {
+          template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
+        }
 
         let administrators = configuration.gitHub.administrators
         var administratorList: StrictString
@@ -222,22 +222,22 @@ public struct GitHubConfiguration: Codable {
     return result
   })
 
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(GitHubConfiguration.pullRequestTemplate)
-    /// The pull request template.
-    ///
-    /// This defaults to a generic template.
-    ///
-    /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
-    public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
-    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
-    /// Eine Abziehungsanforderungsvorlage.
-    ///
-    /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
-    ///
-    /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
-    public var abziehungsanforderungsvorlage: Markdown {
-      get { return pullRequestTemplate }
-      set { pullRequestTemplate = newValue }
-    }
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(GitHubConfiguration.pullRequestTemplate)
+  /// The pull request template.
+  ///
+  /// This defaults to a generic template.
+  ///
+  /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
+  public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
+  // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
+  /// Eine Abziehungsanforderungsvorlage.
+  ///
+  /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
+  ///
+  /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
+  public var abziehungsanforderungsvorlage: Markdown {
+    get { return pullRequestTemplate }
+    set { pullRequestTemplate = newValue }
+  }
 }

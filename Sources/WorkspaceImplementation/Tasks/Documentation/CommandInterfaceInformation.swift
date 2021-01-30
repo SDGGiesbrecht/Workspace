@@ -29,10 +29,10 @@ internal struct CommandInterfaceInformation {
   internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
   internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-    internal func pageURL(
-      in outputDirectory: URL,
-      for localization: LocalizationIdentifier
-    ) -> URL {
-      return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
-    }
+  internal func pageURL(
+    in outputDirectory: URL,
+    for localization: LocalizationIdentifier
+  ) -> URL {
+    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+  }
 }

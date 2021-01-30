@@ -39,30 +39,30 @@ final class Tests: TestCase {
   }
 
   func testGit() throws {
-      #if !PLATFORM_LACKS_GIT
-        #if os(Windows)
-          // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
-          guard
-            let git = ExternalProcess(
-              searching: [],
-              commandName: "git",
-              validate: { _ in true }
-            )
-          else {
-            XCTFail("Failed to locate Git.")
-            return
-          }
-          let version = try git.run(["\u{2D}\u{2D}version"]).get()
-          print(version)
-        // #workaround(Swift 5.3, Segmentation fault.)
-        // print(Version(firstIn: version))
-        #else
-          _ = try Git.runCustomSubcommand(
-            ["\u{2D}\u{2D}version"],
-            versionConstraints: Version(0)..<Version(Int.max)
-          ).get()
-        #endif
+    #if !PLATFORM_LACKS_GIT
+      #if os(Windows)
+        // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
+        guard
+          let git = ExternalProcess(
+            searching: [],
+            commandName: "git",
+            validate: { _ in true }
+          )
+        else {
+          XCTFail("Failed to locate Git.")
+          return
+        }
+        let version = try git.run(["\u{2D}\u{2D}version"]).get()
+        print(version)
+      // #workaround(Swift 5.3, Segmentation fault.)
+      // print(Version(firstIn: version))
+      #else
+        _ = try Git.runCustomSubcommand(
+          ["\u{2D}\u{2D}version"],
+          versionConstraints: Version(0)..<Version(Int.max)
+        ).get()
       #endif
+    #endif
   }
 
   func

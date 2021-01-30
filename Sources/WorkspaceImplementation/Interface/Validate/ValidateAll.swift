@@ -277,35 +277,35 @@ extension Workspace.Validate {
           )
 
           #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
-          let difference = try options.project.uncommittedChanges().get()
-          if ¬difference.isEmpty {
-            output.print(difference.separated())
+            let difference = try options.project.uncommittedChanges().get()
+            if ¬difference.isEmpty {
+              output.print(difference.separated())
 
-            validationStatus.failStep(
-              message: UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return
-                    "The project is out of date. Please validate before committing."
-                    + state.crossReference.resolved(for: localization)
-                case .deutschDeutschland:
-                  return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
-                    + state.crossReference.resolved(for: localization)
-                }
-              })
-            )
-          } else {
-            validationStatus.passStep(
-              message: UserFacing({ localization in  // @exempt(from: tests)
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "The project is up to date."
-                case .deutschDeutschland:
-                  return "Das Projekt ist auf dem neuesten Stand."
-                }
-              })
-            )
-          }
+              validationStatus.failStep(
+                message: UserFacing({ localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return
+                      "The project is out of date. Please validate before committing."
+                      + state.crossReference.resolved(for: localization)
+                  case .deutschDeutschland:
+                    return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
+                      + state.crossReference.resolved(for: localization)
+                  }
+                })
+              )
+            } else {
+              validationStatus.passStep(
+                message: UserFacing({ localization in  // @exempt(from: tests)
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "The project is up to date."
+                  case .deutschDeutschland:
+                    return "Das Projekt ist auf dem neuesten Stand."
+                  }
+                })
+              )
+            }
           #endif
         }
       #endif

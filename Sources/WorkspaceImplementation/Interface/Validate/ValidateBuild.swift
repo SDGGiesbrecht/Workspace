@@ -78,43 +78,43 @@ extension Workspace.Validate {
       }
     )
 
-      internal static func job(
-        _ job: ContinuousIntegrationJob,
-        isRelevantTo project: PackageRepository,
-        andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
-        output: Command.Output
-      ) throws -> Bool {
-        return try job ∈ validJobs
-          ∧ ((try job.isRequired(by: project, output: output))
-            ∧ job.platform == Platform.current)
-      }
+    internal static func job(
+      _ job: ContinuousIntegrationJob,
+      isRelevantTo project: PackageRepository,
+      andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
+      output: Command.Output
+    ) throws -> Bool {
+      return try job ∈ validJobs
+        ∧ ((try job.isRequired(by: project, output: output))
+          ∧ job.platform == Platform.current)
+    }
 
-      internal static func validate(
-        job: ContinuousIntegrationJob?,
-        against validJobs: Set<ContinuousIntegrationJob>,
-        for project: PackageRepository,
-        output: Command.Output
-      ) throws {
-        if let specified = job,
-          ¬(try Build.job(
-            specified,
-            isRelevantTo: project,
-            andAvailableJobs: validJobs,
-            output: output
-          ))
-        {
-          throw Command.Error(
-            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Invalid job."
-              case .deutschDeutschland:
-                return "Ungültige Aufgabe."
-              }
-            })
-          )
-        }
+    internal static func validate(
+      job: ContinuousIntegrationJob?,
+      against validJobs: Set<ContinuousIntegrationJob>,
+      for project: PackageRepository,
+      output: Command.Output
+    ) throws {
+      if let specified = job,
+        ¬(try Build.job(
+          specified,
+          isRelevantTo: project,
+          andAvailableJobs: validJobs,
+          output: output
+        ))
+      {
+        throw Command.Error(
+          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Invalid job."
+            case .deutschDeutschland:
+              return "Ungültige Aufgabe."
+            }
+          })
+        )
       }
+    }
 
     internal static func executeAsStep(
       options: Options,

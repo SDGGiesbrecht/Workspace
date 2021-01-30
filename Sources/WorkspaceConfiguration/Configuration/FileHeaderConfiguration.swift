@@ -183,7 +183,7 @@ public struct FileHeaderConfiguration: Codable {
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
     #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
-    return [:]
+      return [:]
     #else
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
       return configuration.localizationDictionary { localization in

@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGText
@@ -58,29 +58,29 @@ extension Workspace {
       execution: { (_, _, output: Command.Output) throws in
         if let update = try checkForUpdates(output: output) {
           // @exempt(from: tests) Execution path is determined externally.
-            output.print(
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                var url: URL = Metadata.documentationURL
-                switch localization {
-                case .englishUnitedKingdom:  // @exempt(from: tests)
-                  url.appendPathComponent("🇬🇧EN/Installation.html")
-                case .englishUnitedStates:  // @exempt(from: tests)
-                  url.appendPathComponent("🇺🇸EN/Installation.html")
-                case .englishCanada:  // @exempt(from: tests)
-                  url.appendPathComponent("🇨🇦EN/Installation.html")
-                case .deutschDeutschland:  // @exempt(from: tests)
-                  url.appendPathComponent("🇩🇪DE/Installation.html")
-                }
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return
-                    "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
-                case .deutschDeutschland:  // @exempt(from: tests)
-                  return
-                    "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
-                }
-              }).resolved()
-            )
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              var url: URL = Metadata.documentationURL
+              switch localization {
+              case .englishUnitedKingdom:  // @exempt(from: tests)
+                url.appendPathComponent("🇬🇧EN/Installation.html")
+              case .englishUnitedStates:  // @exempt(from: tests)
+                url.appendPathComponent("🇺🇸EN/Installation.html")
+              case .englishCanada:  // @exempt(from: tests)
+                url.appendPathComponent("🇨🇦EN/Installation.html")
+              case .deutschDeutschland:  // @exempt(from: tests)
+                url.appendPathComponent("🇩🇪DE/Installation.html")
+              }
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return
+                  "Workspace \(update.string()) is available.\nFor update instructions, see \(url.absoluteString.in(Underline.underlined))"
+              case .deutschDeutschland:  // @exempt(from: tests)
+                return
+                  "Arbeitsbereich \(update.string()) ist erhältlich.\nFür Aktualisierungsanweisungen, siehe \(url.absoluteString.in(Underline.underlined))"
+              }
+            }).resolved()
+          )
         } else {
           // @exempt(from: tests) Execution path is determined externally.
           output.print(
@@ -99,7 +99,7 @@ extension Workspace {
 
     internal static func checkForUpdates(output: Command.Output) throws -> Version? {
       #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
-      return nil
+        return nil
       #else
         let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
         if latestRemote ≠ Metadata.latestStableVersion {

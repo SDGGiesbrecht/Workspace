@@ -387,27 +387,27 @@ public final class WorkspaceConfiguration: Configuration {
       licence.licence = .apache2_0
     }
 
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-      )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+    )
   }
 
   public func _applySDGOverrides() {
@@ -444,13 +444,13 @@ public final class WorkspaceConfiguration: Configuration {
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
     if openSource {
-        assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+      assert(documentation.projectWebsite ≠ nil, "No project website specified.")
       #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         if needsAPIDocumentation {
           assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
         }
       #endif
-        assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
+      assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")

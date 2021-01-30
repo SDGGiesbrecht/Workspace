@@ -20,10 +20,10 @@ import SDGSwift
 import SDGSwiftSource
 
 internal protocol TextRule: RuleProtocol {
-    static func check(
-      file: TextFile,
-      in project: PackageRepository,
-      status: ProofreadingStatus,
-      output: Command.Output
-    ) throws
+  static func check(
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) throws
 }

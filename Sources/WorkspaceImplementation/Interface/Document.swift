@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGText
 import SDGLocalization
@@ -112,19 +112,19 @@ extension Workspace {
       }
     )
 
-      internal static func executeAsStep(
-        outputDirectory: URL,
-        options: Options,
-        validationStatus: inout ValidationStatus,
-        output: Command.Output
-      ) throws {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+    internal static func executeAsStep(
+      outputDirectory: URL,
+      options: Options,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
+    ) throws {
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.document(
           outputDirectory: outputDirectory,
           validationStatus: &validationStatus,
           output: output
         )
-        #endif
-      }
+      #endif
+    }
   }
 }

@@ -25,50 +25,50 @@ import SDGXcode
 import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
-  extension PackageRepository {
+extension PackageRepository {
 
-    private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Proofread"
-        case .deutschDeutschland:
-          return "Korrektur lesen"
-        }
-      })
-
-    private static let instructions = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return [
-            "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
-            "See " + StrictString(Metadata.packageURL.absoluteString),
-          ].joinedAsLines()
-        case .deutschDeutschland:
-          return [
-            "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
-            "Siehe " + StrictString(Metadata.packageURL.absoluteString),
-          ].joinedAsLines()
-        }
-      })
-
-    private func script() throws -> String {
-      if try isWorkspaceProject() {
-        return "swift run workspace proofread •xcode"  // @exempt(from: tests)
-      } else {
-        return
-          "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
-          + Metadata.latestStableVersion.string()
-          + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
+  private static let proofreadTargetName = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Proofread"
+      case .deutschDeutschland:
+        return "Korrektur lesen"
       }
-    }
+    })
 
-    internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
-      let projectBundle = location.appendingPathComponent(
-        "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
-      )
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+  private static let instructions = UserFacing<StrictString, InterfaceLocalization>(
+    { localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return [
+          "Install Workspace if you wish to receive in‐code reports of style errors for this project.",
+          "See " + StrictString(Metadata.packageURL.absoluteString),
+        ].joinedAsLines()
+      case .deutschDeutschland:
+        return [
+          "Installieren Sie Arbeitsbereich, wenn Sie Gestalltungsfehlermeldungen im Quelltext dieses Projekts sehen wollen.",
+          "Siehe " + StrictString(Metadata.packageURL.absoluteString),
+        ].joinedAsLines()
+      }
+    })
+
+  private func script() throws -> String {
+    if try isWorkspaceProject() {
+      return "swift run workspace proofread •xcode"  // @exempt(from: tests)
+    } else {
+      return
+        "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
+        + Metadata.latestStableVersion.string()
+        + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
+    }
+  }
+
+  internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
+    let projectBundle = location.appendingPathComponent(
+      "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
+    )
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var project = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
       )
@@ -97,6 +97,6 @@ import WorkspaceProjectConfiguration
       )
       scheme.contents = schemeDefinition
       try scheme.writeChanges(for: self, output: output)
-      #endif
-    }
+    #endif
   }
+}

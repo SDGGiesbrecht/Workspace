@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -22,9 +22,9 @@ import SDGText
 
 extension StringFamily {
 
-    internal var isWhitespace: Bool {
-      return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
-    }
+  internal var isWhitespace: Bool {
+    return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
+  }
 
   internal mutating func trimMarginalWhitespace() {
     while scalars.first == " " {

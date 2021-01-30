@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -107,14 +107,14 @@ extension Workspace {
             }
 
             #if DEBUG
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-              if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                  ≠ nil
-              {  // Simulators are not available to all CI jobs and must be tested separately.
-                return  // and continue loop.
-              }
-            #endif
+              #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+                if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                    ≠ nil
+                {  // Simulators are not available to all CI jobs and must be tested separately.
+                  return  // and continue loop.
+                }
+              #endif
             #endif
 
             options.project.test(

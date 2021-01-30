@@ -23,7 +23,7 @@ extension CustomTask {
 
   static func emptyCache() {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-    try? FileManager.default.removeItem(at: cache)
+      try? FileManager.default.removeItem(at: cache)
     #endif
   }
 }

@@ -45,14 +45,14 @@ internal struct DeprecatedTestManifests: TextRule {
     }
   })
 
-    internal static func check(
-      file: TextFile,
-      in project: PackageRepository,
-      status: ProofreadingStatus,
-      output: Command.Output
-    ) {
-      if file.location.lastPathComponent == "XCTestManifests.swift" {
-        reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
-      }
+  internal static func check(
+    file: TextFile,
+    in project: PackageRepository,
+    status: ProofreadingStatus,
+    output: Command.Output
+  ) {
+    if file.location.lastPathComponent == "XCTestManifests.swift" {
+      reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
     }
+  }
 }

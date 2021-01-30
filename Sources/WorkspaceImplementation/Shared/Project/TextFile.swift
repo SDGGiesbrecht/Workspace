@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -89,19 +89,19 @@ internal struct TextFile {
     }
   #endif
 
-    private init(
-      location: URL,
-      fileType: FileType,
-      executable: Bool,
-      contents: String,
-      isNew: Bool
-    ) {
-      self.location = location
-      self.isExecutable = executable
-      self._contents = contents
-      self.hasChanged = isNew
-      self.fileType = fileType
-    }
+  private init(
+    location: URL,
+    fileType: FileType,
+    executable: Bool,
+    contents: String,
+    isNew: Bool
+  ) {
+    self.location = location
+    self.isExecutable = executable
+    self._contents = contents
+    self.hasChanged = isNew
+    self.fileType = fileType
+  }
 
   // MARK: - Properties
 
@@ -114,7 +114,7 @@ internal struct TextFile {
   #endif
 
   private var hasChanged: Bool
-    internal let location: URL
+  internal let location: URL
 
   private var isExecutable: Bool {
     willSet {  // @exempt(from: tests) Unreachable except with corrupt files.
@@ -158,85 +158,85 @@ internal struct TextFile {
 
   // MARK: - File Headers
 
-    internal var headerStart: String.ScalarView.Index {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
+  internal var headerStart: String.ScalarView.Index {
+    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
+      return fileType.syntax.headerStart(file: self)
+    #else
+      return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
         return fileType.syntax.headerStart(file: self)
-      #else
-        return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
-          return fileType.syntax.headerStart(file: self)
-        }
-      #endif
-    }
+      }
+    #endif
+  }
 
-    internal var headerEnd: String.ScalarView.Index {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
+  internal var headerEnd: String.ScalarView.Index {
+    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
+      return fileType.syntax.headerEnd(file: self)
+    #else
+      return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
         return fileType.syntax.headerEnd(file: self)
-      #else
-        return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
-          return fileType.syntax.headerEnd(file: self)
-        }
-      #endif
+      }
+    #endif
+  }
+
+  internal var header: String {
+    get {
+      return fileType.syntax.header(file: self)
     }
-
-    internal var header: String {
-      get {
-        return fileType.syntax.header(file: self)
-      }
-      set {
-        fileType.syntax.insert(header: newValue, into: &self)
-      }
+    set {
+      fileType.syntax.insert(header: newValue, into: &self)
     }
+  }
 
-    internal var body: String {
-      get {
-        return String(contents[headerEnd...])
-      }
-      set {
-        var new = newValue
-        // Remove unnecessary initial spacing
-        while new.hasPrefix("\n") {
-          new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
-        }
-
-        let headerSource = String(contents[headerStart..<headerEnd])
-        if ¬headerSource.hasSuffix("\n") {
-          new = "\n" + new
-        }
-        if ¬headerSource.hasSuffix("\n\n") {
-          new = "\n" + new
-        }
-
-        contents.replaceSubrange(headerEnd..<contents.endIndex, with: new)
+  internal var body: String {
+    get {
+      return String(contents[headerEnd...])
+    }
+    set {
+      var new = newValue
+      // Remove unnecessary initial spacing
+      while new.hasPrefix("\n") {
+        new.scalars.removeFirst()  // @exempt(from: tests) Should not be reachable.
       }
 
+      let headerSource = String(contents[headerStart..<headerEnd])
+      if ¬headerSource.hasSuffix("\n") {
+        new = "\n" + new
+      }
+      if ¬headerSource.hasSuffix("\n\n") {
+        new = "\n" + new
+      }
+
+      contents.replaceSubrange(headerEnd..<contents.endIndex, with: new)
     }
 
-    // MARK: - Writing
+  }
 
-    internal static func reportWriteOperation(
-      to location: URL,
-      in repository: PackageRepository,
-      output: Command.Output
-    ) {
-      output.print(
-        UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
-          switch localization {
-          case .englishUnitedKingdom:
-            return "Writing to ‘\(path)’..."
-          case .englishUnitedStates, .englishCanada:
-            return "Writing to “\(path)”..."
-          case .deutschDeutschland:
-            return "Zu „\(path)“ wird geschrieben ..."
-          }
-        }).resolved(using: location.path(relativeTo: repository.location))
-      )
-    }
+  // MARK: - Writing
 
-    internal func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
-      if hasChanged {
-        TextFile.reportWriteOperation(to: location, in: repository, output: output)
+  internal static func reportWriteOperation(
+    to location: URL,
+    in repository: PackageRepository,
+    output: Command.Output
+  ) {
+    output.print(
+      UserFacingDynamic<StrictString, InterfaceLocalization, String>({ localization, path in
+        switch localization {
+        case .englishUnitedKingdom:
+          return "Writing to ‘\(path)’..."
+        case .englishUnitedStates, .englishCanada:
+          return "Writing to “\(path)”..."
+        case .deutschDeutschland:
+          return "Zu „\(path)“ wird geschrieben ..."
+        }
+      }).resolved(using: location.path(relativeTo: repository.location))
+    )
+  }
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+  internal func writeChanges(for repository: PackageRepository, output: Command.Output) throws {
+    if hasChanged {
+      TextFile.reportWriteOperation(to: location, in: repository, output: output)
+
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try contents.save(to: location)
         if isExecutable {
           try FileManager.default.setAttributes(
@@ -244,13 +244,13 @@ internal struct TextFile {
             ofItemAtPath: location.path
           )
         }
-        #endif
+      #endif
 
-        if location.pathExtension == "swift" {
-          repository.resetManifestCache(debugReason: location.lastPathComponent)
-        } else {
-          repository.resetFileCache(debugReason: location.lastPathComponent)
-        }
+      if location.pathExtension == "swift" {
+        repository.resetManifestCache(debugReason: location.lastPathComponent)
+      } else {
+        repository.resetFileCache(debugReason: location.lastPathComponent)
       }
     }
+  }
 }

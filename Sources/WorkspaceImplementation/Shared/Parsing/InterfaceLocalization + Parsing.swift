@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import Foundation
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -43,37 +43,37 @@ extension InterfaceLocalization {
     >,
     String.ScalarView
   >
-    private static func patternWithArguments(
-      named name: UserFacing<StrictString, InterfaceLocalization>,
-      startingWith scalar: Unicode.Scalar
-    ) -> DirectivePatternWithArguments {
-      let simple = pattern(named: name, startingWith: scalar)
-      let parenthesis = simple + "(".scalars
-      let arguments =
-        parenthesis
-        + RepetitionPattern(
-          ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
-          consumption: .greedy
-        )
-      return arguments + ")".scalars
-    }
+  private static func patternWithArguments(
+    named name: UserFacing<StrictString, InterfaceLocalization>,
+    startingWith scalar: Unicode.Scalar
+  ) -> DirectivePatternWithArguments {
+    let simple = pattern(named: name, startingWith: scalar)
+    let parenthesis = simple + "(".scalars
+    let arguments =
+      parenthesis
+      + RepetitionPattern(
+        ConditionalPattern({ $0 ≠ ")" ∧ $0 ∉ CharacterSet.newlines }),
+        consumption: .greedy
+      )
+    return arguments + ")".scalars
+  }
 
   private static func declarationPattern(
     _ name: UserFacing<StrictString, InterfaceLocalization>
   ) -> DirectivePattern {
     return pattern(named: name, startingWith: "@")
   }
-    private static func declarationPatternWithArguments(
-      _ name: UserFacing<StrictString, InterfaceLocalization>
-    ) -> DirectivePatternWithArguments {
-      return patternWithArguments(named: name, startingWith: "@")
-    }
+  private static func declarationPatternWithArguments(
+    _ name: UserFacing<StrictString, InterfaceLocalization>
+  ) -> DirectivePatternWithArguments {
+    return patternWithArguments(named: name, startingWith: "@")
+  }
 
-    private static func directivePatternWithArguments(
-      _ name: UserFacing<StrictString, InterfaceLocalization>
-    ) -> DirectivePatternWithArguments {
-      return patternWithArguments(named: name, startingWith: "#")
-    }
+  private static func directivePatternWithArguments(
+    _ name: UserFacing<StrictString, InterfaceLocalization>
+  ) -> DirectivePatternWithArguments {
+    return patternWithArguments(named: name, startingWith: "#")
+  }
 
   // MARK: - Examples
 
@@ -86,8 +86,8 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-    internal static let exampleDeclaration: DirectivePatternWithArguments =
-      declarationPatternWithArguments(exampleDeclarationName)
+  internal static let exampleDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(exampleDeclarationName)
 
   private static let endExampleDecarationName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -111,10 +111,10 @@ extension InterfaceLocalization {
         return "beispiel"
       }
     })
-    internal static let exampleDirective: DirectivePatternWithArguments =
-      directivePatternWithArguments(
-        exampleDirectiveName
-      )
+  internal static let exampleDirective: DirectivePatternWithArguments =
+    directivePatternWithArguments(
+      exampleDirectiveName
+    )
 
   // MARK: - Documentation Inheritance
 
@@ -127,8 +127,8 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-    internal static let documentationDeclaration: DirectivePatternWithArguments =
-      declarationPatternWithArguments(documentationDeclarationName)
+  internal static let documentationDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(documentationDeclarationName)
 
   private static let documentationDirectiveName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -139,8 +139,8 @@ extension InterfaceLocalization {
         return "dokumentation"
       }
     })
-    internal static let documentationDirective: DirectivePatternWithArguments =
-      directivePatternWithArguments(documentationDirectiveName)
+  internal static let documentationDirective: DirectivePatternWithArguments =
+    directivePatternWithArguments(documentationDirectiveName)
 
   // MARK: - Documentation Generation
 
@@ -155,8 +155,8 @@ extension InterfaceLocalization {
         return "lokalisation"
       }
     })
-    internal static let localizationDeclaration: DirectivePatternWithArguments =
-      declarationPatternWithArguments(localizationDeclarationName)
+  internal static let localizationDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(localizationDeclarationName)
 
   private static let crossReferenceDeclarationName:
     UserFacing<StrictString, InterfaceLocalization> = UserFacing<
@@ -169,8 +169,8 @@ extension InterfaceLocalization {
         return "querverweis"
       }
     })
-    internal static let crossReferenceDeclaration: DirectivePatternWithArguments =
-      declarationPatternWithArguments(crossReferenceDeclarationName)
+  internal static let crossReferenceDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(crossReferenceDeclarationName)
 
   private static let notLocalizedDeclarationName: UserFacing<StrictString, InterfaceLocalization> =
     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -183,6 +183,6 @@ extension InterfaceLocalization {
         return "nichtLokalisiert"
       }
     })
-    internal static let notLocalizedDeclaration: DirectivePatternWithArguments =
-      declarationPatternWithArguments(notLocalizedDeclarationName)
+  internal static let notLocalizedDeclaration: DirectivePatternWithArguments =
+    declarationPatternWithArguments(notLocalizedDeclarationName)
 }

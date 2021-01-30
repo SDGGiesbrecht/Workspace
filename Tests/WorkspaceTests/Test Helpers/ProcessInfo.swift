@@ -19,7 +19,7 @@ import Foundation
 @testable import WorkspaceImplementation
 
 #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-var isInGitHubAction: Bool {
-  return ProcessInfo.isInGitHubAction
-}
+  var isInGitHubAction: Bool {
+    return ProcessInfo.isInGitHubAction
+  }
 #endif

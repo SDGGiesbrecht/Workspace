@@ -184,6 +184,7 @@ class APITests: TestCase {
 
   func testCheckedInDocumentation() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "en",
       ]).get()
@@ -211,6 +212,7 @@ class APITests: TestCase {
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
           .appendingPathComponent("Resources/Tool/Deutsch.txt")
       )
+    #endif
     #endif
 
       let configuration = WorkspaceConfiguration()
@@ -680,6 +682,7 @@ class APITests: TestCase {
 
   func testDeutsch() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
       ]).get()
@@ -693,6 +696,7 @@ class APITests: TestCase {
         to: PackageRepository.beforeDirectory(for: "Deutsch")
           .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
       )
+    #endif
     #endif
 
       let konfiguration = ArbeitsbereichKonfiguration()

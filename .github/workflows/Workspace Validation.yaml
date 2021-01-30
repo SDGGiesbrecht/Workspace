@@ -17,6 +17,173 @@ name: Workspace Validation
 on: [push, pull_request]
 
 jobs:
+  macOS:
+    name: macOS
+    runs-on: macos-11.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+  Windows:
+    name: Windows
+    runs-on: windows-2019
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Windows‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Visual Studio up
+      shell: bash
+      run: |
+        set -x
+        cd '/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build'
+        echo 'export -p > exported_environment.sh' > nested_bash.sh
+        echo 'vcvarsall.bat x64 && "C:/Program Files/Git/usr/bin/bash" -c ./nested_bash.sh' > export_environment.bat
+        cmd "/c export_environment.bat"
+        set +x
+        source ./exported_environment.sh
+        set -x
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        echo "UniversalCRTSdkDir=${UniversalCRTSdkDir}" >> $GITHUB_ENV
+        echo "UCRTVersion=${UCRTVersion}" >> $GITHUB_ENV
+        echo "VCToolsInstallDir=${VCToolsInstallDir}" >> $GITHUB_ENV
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://swift.org/builds/swift-5.3-release/windows10/swift-5.3-RELEASE/swift-5.3-RELEASE-windows10.exe' \
+          --output '/tmp/swift-5.3-RELEASE-windows10.exe'
+        /tmp/swift-5.3-RELEASE-windows10.exe //passive
+        export SDKROOT="/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
+        echo "SDKROOT=${SDKROOT}" >> $GITHUB_ENV
+        cp "${SDKROOT}/usr/share/ucrt.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+        cp "${SDKROOT}/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
+        cp "${SDKROOT}/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
+        cp "${SDKROOT}/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+        export PATH="/c/Library/icu-67/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        export PATH="/c/Library/Swift-development/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        export PATH="/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        swift --version
+    - name: Install Linux
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG/tmp
+        curl --location \
+          'https://aka.ms/wslubuntu2004' \
+          --output '.build/SDG/tmp/wslubuntu2004'
+        7z x .build/SDG/tmp/wslubuntu2004 -o.build/SDG/Linux/Ubuntu
+        export PATH="$(pwd)/.build/SDG/Linux/Ubuntu:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        ubuntu2004 install --root
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        ubuntu2004 run \
+          apt-get update --assume-yes
+        ubuntu2004 run \
+          UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+          apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+            install --assume-yes \
+              binutils \
+              git \
+              gnupg2 \
+              libc6-dev \
+              libcurl4 \
+              libedit2 \
+              libgcc-9-dev \
+              libpython2.7 \
+              libsqlite3-0 \
+              libstdc++-9-dev \
+              libxml2 \
+              libz3-dev \
+              lld-10 \
+              pkg-config \
+              tzdata \
+              zlib1g-dev
+        ubuntu2004 run \
+          ln -s //usr/bin/lld-link-10 //usr/bin/lld-link
+    - name: Install SwiftPM
+      shell: bash
+      run: |
+        set -x
+        ubuntu2004 run \
+          mkdir -p /tmp
+        ubuntu2004 run \
+          curl --location \
+            'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
+            --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+        ubuntu2004 run \
+          tar --extract --force-local --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        ubuntu2004 run \
+          mkdir -p /
+        ubuntu2004 run \
+          cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/usr //
+        ubuntu2004 run \
+          swift --version
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p
+        ubuntu2004 run \
+          TARGETING_WINDOWS='true' \
+          swift build --destination .github/workflows/Windows/SDK.json \
+            -Xswiftc -use-ld=lld \
+            -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
+            -Xswiftc -resource-dir -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
+            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
+            -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${VCToolsInstallDir}/include"' \
+            -Xcc -isystem -Xcc '"/${VCToolsInstallDir}/include"' \
+            -Xswiftc -L -Xswiftc '"/${VCToolsInstallDir}/lib/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
+            -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um"' \
+            -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64"' \
+            -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
+            -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared"' \
+            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows/x86_64 \
+            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest-development/usr/lib/swift/windows
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        export PATH=$(echo -n $PATH | awk -v RS=: -v ORS=: '!($0 in a) {a[$0]; print $0}')
+        .build/x86_64-unknown-windows-msvc/debug/WindowsTests.exe
   Web:
     name: Web
     runs-on: ubuntu-20.04
@@ -35,3 +202,337 @@ jobs:
         set -x
         export TARGETING_WEB=true
         carton test
+  CentOS:
+    name: CentOS
+    runs-on: ubuntu-20.04
+    container: swift:5.3.2-centos8
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: CentOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-20.04
+    container: swift:5.3.2-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  tvOS:
+    name: tvOS
+    runs-on: macos-11.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐tvos‐simulator
+  iOS:
+    name: iOS
+    runs-on: macos-11.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        xcodebuild -version
+        swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run test‐ios‐simulator
+  Android:
+    name: Android
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Android‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Fetch Android NDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
+        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        sudo rm -rf /usr/lib/clang/10.0.0
+        curl --location \
+          'https://swift.org/builds/swift-5.3-release/ubuntu2004/swift-5.3-RELEASE/swift-5.3-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        sudo mkdir -p /
+        sudo cp -R /tmp/swift-5.3-RELEASE-ubuntu20.04/* /
+        export PATH="/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        swift --version
+    - name: Fetch Android SDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3/Android.sdk.zip' \
+          --output '/tmp/Android.sdk.zip'
+        unzip /tmp/Android.sdk.zip -d /tmp
+        sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo chmod -R a+rwx /Library
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_ANDROID=true
+        export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
+        swift build --triple x86_64-unknown-linux-android \
+          --build-tests --enable-test-discovery \
+          --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
+          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64
+    - name: Copy libraries
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+  Android_II:
+    name: Android II
+    runs-on: macos-11.0
+    needs: Android
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare script
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/WorkspacePackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        arch: x86_64
+        script: .build/SDG/Emulator.sh
+  Amazon_Linux:
+    name: Amazon Linux
+    runs-on: ubuntu-20.04
+    container: swift:5.3.2-amazonlinux2
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job amazon‐linux •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .
+  Miscellaneous:
+    name: Miscellaneous
+    runs-on: ubuntu-20.04
+    container: swift:5.3.2-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

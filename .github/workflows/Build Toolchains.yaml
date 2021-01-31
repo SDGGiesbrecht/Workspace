@@ -14,8 +14,8 @@ jobs:
       shell: bash
       run: |
         set -x
-        du --human-readable --max-depth=1 /
-        du --human-readable --max-depth=1 /usr
+        du --human-readable --max-depth=1 / || true
+        du --human-readable --max-depth=1 /usr || true
         exit 1
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift#linux

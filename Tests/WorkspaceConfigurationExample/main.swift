@@ -18,9 +18,9 @@
 import WorkspaceConfiguration
 
 /*
-   Exernal packages can be imported with this syntax:
-   import [module] // [package], [url], [version], [product]
-   */
+ Exernal packages can be imported with this syntax:
+ import [module] // [package], [url], [version], [product]
+ */
 import SDGControlFlow
 // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 
@@ -55,9 +55,9 @@ configuration.documentation.primaryAuthor = "John Doe"
 import WorkspaceConfiguration
 
 /*
-   Externe Pakete sind mit dieser Syntax einführbar:
-   import [Modul] // [Paket], [Ressourcenzeiger], [Version], [Produkt]
-   */
+ Externe Pakete sind mit dieser Syntax einführbar:
+ import [Modul] // [Paket], [Ressourcenzeiger], [Version], [Produkt]
+ */
 import SDGControlFlow
 // SDGCornerstone, https://github.com/SDGGiesbrecht/SDGCornerstone, 0.10.0, SDGControlFlow
 

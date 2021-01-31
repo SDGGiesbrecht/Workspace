@@ -29,13 +29,10 @@ internal struct CommandInterfaceInformation {
   internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
   internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    internal func pageURL(
-      in outputDirectory: URL,
-      for localization: LocalizationIdentifier
-    ) -> URL {
-      return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
-    }
-  #endif
+  internal func pageURL(
+    in outputDirectory: URL,
+    for localization: LocalizationIdentifier
+  ) -> URL {
+    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+  }
 }

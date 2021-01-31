@@ -387,35 +387,31 @@ public final class WorkspaceConfiguration: Configuration {
       licence.licence = .apache2_0
     }
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
-      )
-      documentation.relatedProjects.append(
-        .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
-      )
-    #endif
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGKeyboardDesign")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGSwift")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGInterface")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCommandLine")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGWeb")!)
+    )
+    documentation.relatedProjects.append(
+      .project(url: URL(string: "https://github.com/SDGGiesbrecht/SDGCornerstone")!)
+    )
   }
 
   public func _applySDGOverrides() {
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       let project = WorkspaceContext.current.manifest.packageName
       let repositoryURL =
         documentation.repositoryURL?.absoluteString
@@ -440,8 +436,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
+    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
       let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
     #endif
 
@@ -449,14 +444,13 @@ public final class WorkspaceConfiguration: Configuration {
     assert(¬documentation.localizations.isEmpty, "No localizations specified.")
 
     if openSource {
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
-        assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+      assert(documentation.projectWebsite ≠ nil, "No project website specified.")
+      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         if needsAPIDocumentation {
           assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
         }
-        assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
       #endif
+      assert(documentation.repositoryURL ≠ nil, "No repository URL specified.")
 
       for localization in documentation.localizations {
         assert(documentation.about ≠ nil, "About not localized for “\(localization)”.")

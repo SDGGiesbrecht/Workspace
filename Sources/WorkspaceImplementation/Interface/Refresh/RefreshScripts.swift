@@ -62,8 +62,7 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try options.project.refreshScripts(project: options.project, output: output)
         #endif
       }

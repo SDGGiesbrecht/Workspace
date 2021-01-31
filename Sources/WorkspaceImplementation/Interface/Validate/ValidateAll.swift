@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGLogic
 import SDGCollections
@@ -88,8 +85,7 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if ¬ProcessInfo.isInContinuousIntegration {
           // @exempt(from: tests)
           try Workspace.Refresh.All.executeAsStep(
@@ -98,7 +94,9 @@ extension Workspace.Validate {
             output: output
           )
         }
+      #endif
 
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -124,8 +122,7 @@ extension Workspace.Validate {
         )
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -166,8 +163,7 @@ extension Workspace.Validate {
 
       // Document
       if options.job.includes(job: .miscellaneous) {
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
             .serveFromGitHubPagesBranch,
@@ -192,8 +188,7 @@ extension Workspace.Validate {
         #endif
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if options.job.includes(job: .deployment),
           try options.project.configuration(output: output).documentation.api.generate
         {
@@ -255,7 +250,9 @@ extension Workspace.Validate {
             )
           }
         }
+      #endif
 
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         // State
         if ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
@@ -279,35 +276,37 @@ extension Workspace.Validate {
             }).resolved().formattedAsSectionHeader()
           )
 
-          let difference = try options.project.uncommittedChanges().get()
-          if ¬difference.isEmpty {
-            output.print(difference.separated())
+          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+            let difference = try options.project.uncommittedChanges().get()
+            if ¬difference.isEmpty {
+              output.print(difference.separated())
 
-            validationStatus.failStep(
-              message: UserFacing({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return
-                    "The project is out of date. Please validate before committing."
-                    + state.crossReference.resolved(for: localization)
-                case .deutschDeutschland:
-                  return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
-                    + state.crossReference.resolved(for: localization)
-                }
-              })
-            )
-          } else {
-            validationStatus.passStep(
-              message: UserFacing({ localization in  // @exempt(from: tests)
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "The project is up to date."
-                case .deutschDeutschland:
-                  return "Das Projekt ist auf dem neuesten Stand."
-                }
-              })
-            )
-          }
+              validationStatus.failStep(
+                message: UserFacing({ localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return
+                      "The project is out of date. Please validate before committing."
+                      + state.crossReference.resolved(for: localization)
+                  case .deutschDeutschland:
+                    return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
+                      + state.crossReference.resolved(for: localization)
+                  }
+                })
+              )
+            } else {
+              validationStatus.passStep(
+                message: UserFacing({ localization in  // @exempt(from: tests)
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return "The project is up to date."
+                  case .deutschDeutschland:
+                    return "Das Projekt ist auf dem neuesten Stand."
+                  }
+                })
+              )
+            }
+          #endif
         }
       #endif
 
@@ -339,8 +338,7 @@ extension Workspace.Validate {
         )
       }
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try validationStatus.reportOutcome(project: options.project, output: output)
       #endif
     }

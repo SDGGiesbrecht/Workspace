@@ -44,14 +44,11 @@ internal struct ManualWarnings: Warning {
     }
   })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    internal static func message(
-      for details: StrictString,
-      in project: PackageRepository,
-      output: Command.Output
-    ) -> UserFacing<StrictString, InterfaceLocalization>? {
-      return UserFacing({ _ in details })
-    }
-  #endif
+  internal static func message(
+    for details: StrictString,
+    in project: PackageRepository,
+    output: Command.Output
+  ) -> UserFacing<StrictString, InterfaceLocalization>? {
+    return UserFacing({ _ in details })
+  }
 }

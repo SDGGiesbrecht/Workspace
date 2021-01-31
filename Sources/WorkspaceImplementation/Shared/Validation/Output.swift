@@ -22,20 +22,17 @@ import SDGSwift
 
 extension Command.Output {
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    internal func succeed(message: StrictString, project: PackageRepository) throws {
-      try listWarnings(for: project)
-      print(message.formattedAsSuccess().separated())
-    }
+  internal func succeed(message: StrictString, project: PackageRepository) throws {
+    try listWarnings(for: project)
+    print(message.formattedAsSuccess().separated())
+  }
 
-    internal func listWarnings(for project: PackageRepository) throws {
-      if let noLocalizationSpecified = PackageRepository.localizationFallbackWarning() {
-        print(noLocalizationSpecified.formattedAsWarning().separated())
-      }
-      if let unsupportedFiles = try FileType.unsupportedTypesWarning(for: project, output: self) {
-        print(unsupportedFiles.formattedAsWarning().separated())
-      }
+  internal func listWarnings(for project: PackageRepository) throws {
+    if let noLocalizationSpecified = PackageRepository.localizationFallbackWarning() {
+      print(noLocalizationSpecified.formattedAsWarning().separated())
     }
-  #endif
+    if let unsupportedFiles = try FileType.unsupportedTypesWarning(for: project, output: self) {
+      print(unsupportedFiles.formattedAsWarning().separated())
+    }
+  }
 }

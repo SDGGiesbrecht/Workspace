@@ -14,38 +14,28 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGExternalProcess
 
 import WorkspaceImplementation
 
 do {
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
+  ProcessInfo.applicationIdentifier = "ca.solideogloria.Workspace.Tests"
 
-    let repositoryRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
-      .deletingLastPathComponent().deletingLastPathComponent()
+  let repositoryRoot = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+    .deletingLastPathComponent().deletingLastPathComponent()
 
-    let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
-    try FileManager.default.do(in: mockProject) {
-      _ = try Shell.default.run(command: [
-        "swift", "package", "generate\u{2D}xcodeproj",
-        "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
-      ]).get()
-      _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"]).get()
-    }
-  #endif
-
+  let mockProject = repositoryRoot.appendingPathComponent("Tests/Mock Projects/After/Default")
+  try FileManager.default.do(in: mockProject) {
+    _ = try Shell.default.run(command: [
+      "swift", "package", "generate\u{2D}xcodeproj",
+      "\u{2D}\u{2D}enable\u{2D}code\u{2D}coverage",
+    ]).get()
+    _ = try Workspace.command.execute(with: ["validate", "test‐coverage", "•job", "ios"]).get()
+  }
 } catch {
   print(error)
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    print(error.localizedDescription)
-    exit(1)
-  #endif
+  print(error.localizedDescription)
+  exit(1)
 }

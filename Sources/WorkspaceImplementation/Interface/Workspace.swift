@@ -46,8 +46,7 @@ public enum Workspace: Tool {
           "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
       }
     })
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
+  #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     internal static let projectOption = Option(
       name: projectName,
       description: projectDescription,
@@ -55,8 +54,7 @@ public enum Workspace: Tool {
     )
   #endif
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if os(WASI)
+  #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     internal static let standardOptions: [AnyOption] = []
   #else
     internal static let standardOptions: [AnyOption] = [projectOption]

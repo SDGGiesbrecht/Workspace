@@ -74,8 +74,7 @@ extension Workspace.Validate {
           )
         }
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
       }
@@ -86,8 +85,7 @@ extension Workspace.Validate {
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.validateDocumentationCoverage(
           validationStatus: &validationStatus,
           output: output

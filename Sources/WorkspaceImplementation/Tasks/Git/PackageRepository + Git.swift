@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGCollections
 import SDGText
@@ -28,77 +25,76 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  extension PackageRepository {
+extension PackageRepository {
 
-    // MARK: - Lists
+  // MARK: - Lists
 
-    private static var ignoreEntriesForMacOS: [String] {
-      return [
-        ".DS_Store"
-      ]
+  private static var ignoreEntriesForMacOS: [String] {
+    return [
+      ".DS_Store"
+    ]
+  }
+
+  private static var ignoreEntriesForLinux: [String] {
+    return [
+      "*~"
+    ]
+  }
+
+  private static var ignoreEntriesForSwiftPackageManager: [String] {
+    return [
+      ".build",
+      "Packages",
+      ".swiftpm",
+    ]
+  }
+
+  private static var ignoreEntriesForWorkspace: [String] {
+    var entries: Set<StrictString> = []
+    for localization in InterfaceLocalization.allCases {
+      entries.insert(Script.validateMacOS.fileName(localization: localization))
+      entries.insert(Script.validateLinux.fileName(localization: localization))
     }
-
-    private static var ignoreEntriesForLinux: [String] {
-      return [
-        "*~"
-      ]
-    }
-
-    private static var ignoreEntriesForSwiftPackageManager: [String] {
-      return [
-        ".build",
-        "Packages",
-        ".swiftpm",
-      ]
-    }
-
-    private static var ignoreEntriesForWorkspace: [String] {
-      var entries: Set<StrictString> = []
-      for localization in InterfaceLocalization.allCases {
-        entries.insert(Script.validateMacOS.fileName(localization: localization))
-        entries.insert(Script.validateLinux.fileName(localization: localization))
-      }
-      return entries.sorted().map { entry in
-        let escaped = entry.replacingMatches(for: " ", with: #"\ "#)
-        let patched: [ExtendedGraphemeCluster] = escaped.clusters.map { cluster in
-          let string = String(cluster)
-          if string.decomposedStringWithCanonicalMapping.scalars
-            .elementsEqual(string.precomposedStringWithCanonicalMapping.scalars)
-          {
-            return cluster
-          } else {
-            return "*"
-          }
+    return entries.sorted().map { entry in
+      let escaped = entry.replacingMatches(for: " ", with: #"\ "#)
+      let patched: [ExtendedGraphemeCluster] = escaped.clusters.map { cluster in
+        let string = String(cluster)
+        if string.decomposedStringWithCanonicalMapping.scalars
+          .elementsEqual(string.precomposedStringWithCanonicalMapping.scalars)
+        {
+          return cluster
+        } else {
+          return "*"
         }
-        return String(patched)
       }
+      return String(patched)
     }
+  }
 
-    private static var ignoreEntriesForXcode: [String] {
-      return [
-        "*.xcodeproj",
-        "IDEWorkspaceChecks.plist",
-        "xcuserdata",
-        "*.profraw",
-      ]
-    }
+  private static var ignoreEntriesForXcode: [String] {
+    return [
+      "*.xcodeproj",
+      "IDEWorkspaceChecks.plist",
+      "xcuserdata",
+      "*.profraw",
+    ]
+  }
 
-    private static var ignoreEntries: [String] {
-      return ignoreEntriesForMacOS
-        + ignoreEntriesForLinux
-        + ignoreEntriesForSwiftPackageManager
-        + ignoreEntriesForWorkspace
-        + ignoreEntriesForXcode
-    }
+  private static var ignoreEntries: [String] {
+    return ignoreEntriesForMacOS
+      + ignoreEntriesForLinux
+      + ignoreEntriesForSwiftPackageManager
+      + ignoreEntriesForWorkspace
+      + ignoreEntriesForXcode
+  }
 
-    internal func refreshGitConfiguration(output: Command.Output) throws {
+  internal func refreshGitConfiguration(output: Command.Output) throws {
 
-      let entries =
-        try PackageRepository.ignoreEntries
-        + configuration(output: output).git.additionalGitIgnoreEntries
+    let entries =
+      try PackageRepository.ignoreEntries
+      + configuration(output: output).git.additionalGitIgnoreEntries
 
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
       gitIgnore.body = entries.joinedAsLines()
       try gitIgnore.writeChanges(for: self, output: output)
@@ -122,6 +118,6 @@ import WorkspaceLocalizations
           delete(gitAttributes.location, output: output)
         }
       }
-    }
+    #endif
   }
-#endif
+}

@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGCommandLine
 
@@ -31,8 +28,7 @@ extension Options {
     return value(for: ContinuousIntegrationJob.option)
   }
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal var project: PackageRepository {
       let url =
         value(for: Workspace.projectOption)

@@ -41,16 +41,15 @@ internal struct PackageCLI {
 
   // MARK: - Initialization
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    internal init(
-      tools: [URL],
-      localizations: [LocalizationIdentifier],
-      customReplacements: [(StrictString, StrictString)]
-    ) {
-      var commands: [StrictString: CommandInterfaceInformation] = [:]
-      for tool in tools {
-        for localization in localizations {
+  internal init(
+    tools: [URL],
+    localizations: [LocalizationIdentifier],
+    customReplacements: [(StrictString, StrictString)]
+  ) {
+    var commands: [StrictString: CommandInterfaceInformation] = [:]
+    for tool in tools {
+      for localization in localizations {
+        #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           if let interface = try? CommandInterface.loadInterface(
             of: tool,
             in: localization.code
@@ -72,11 +71,11 @@ internal struct PackageCLI {
 
             commands[interface.identifier]!.relativePagePath[localization] = path
           }
-        }
+        #endif
       }
-      self.commands = commands
     }
-  #endif
+    self.commands = commands
+  }
 
   // MARK: - Properties
 

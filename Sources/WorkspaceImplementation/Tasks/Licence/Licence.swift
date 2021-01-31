@@ -20,8 +20,7 @@ extension Licence {
 
   // MARK: - Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     internal var text: StrictString {
       var source: String
       switch self {

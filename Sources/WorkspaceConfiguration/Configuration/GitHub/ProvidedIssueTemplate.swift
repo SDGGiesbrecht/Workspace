@@ -165,9 +165,8 @@ internal enum ProvidedIssueTemplate: CaseIterable {
       }
     }
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if !os(WASI)
-      if self == .bugReport {
+    if self == .bugReport {
+      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         let products = WorkspaceContext.current.manifest.products
         contents.append("")
         switch localization {
@@ -225,8 +224,8 @@ internal enum ProvidedIssueTemplate: CaseIterable {
             "<!\u{2D}\u{2D} Oder einen Verweis bereitstellen, zum Nachweis sonstwo. \u{2D}\u{2D}>"
           )
         }
-      }
-    #endif
+      #endif
+    }
 
     switch self {
     case .bugReport, .featureRequest, .documentationCorrection:

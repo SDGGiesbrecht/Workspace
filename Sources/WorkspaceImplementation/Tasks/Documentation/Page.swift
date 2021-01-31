@@ -33,8 +33,7 @@ internal class Page {
 
   // MARK: - Static Properties
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
+  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     private static let template: StrictString = {
       var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
       result.header = ""
@@ -119,8 +118,7 @@ internal class Page {
     copyright: StrictString
   ) {
 
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
+    #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var mutable: StrictString = ""
     #else
       var mutable = Page.template

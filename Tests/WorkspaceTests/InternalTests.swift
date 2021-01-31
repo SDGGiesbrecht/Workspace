@@ -64,26 +64,28 @@ class InternalTests: TestCase {
         options: [],
         execution: { (_, _, output: Command.Output) in
 
-          let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
-          let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
-          let unexpected = relative.filter { path in
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+            let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
+            let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+            let unexpected = relative.filter { path in
 
-            for prefix in expectedPrefixes {
-              if path.hasPrefix(prefix) {
-                return false
+              for prefix in expectedPrefixes {
+                if path.hasPrefix(prefix) {
+                  return false
+                }
               }
+
+              return true
             }
 
-            return true
-          }
-
-          XCTAssert(
-            unexpected.isEmpty,
-            [
-              "Unexpected files are being tracked by Git:",
-              unexpected.joinedAsLines(),
-            ].joinedAsLines()
-          )
+            XCTAssert(
+              unexpected.isEmpty,
+              [
+                "Unexpected files are being tracked by Git:",
+                unexpected.joinedAsLines(),
+              ].joinedAsLines()
+            )
+          #endif
 
         }
       ).execute(with: []).get()

@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -60,8 +57,7 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try Build.validate(
             job: options.job,
             against: ContinuousIntegrationJob.coverageJobs,
@@ -78,8 +74,7 @@ extension Workspace.Validate {
           output: output
         )
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
         #endif
       }
@@ -91,8 +86,7 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-      #if !os(WASI)
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Build.job(
@@ -114,12 +108,14 @@ extension Workspace.Validate {
             }
 
             #if DEBUG
-              if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                  ≠ nil
-              {  // Simulators are not available to all CI jobs and must be tested separately.
-                return  // and continue loop.
-              }
+              #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+                if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                    ≠ nil
+                {  // Simulators are not available to all CI jobs and must be tested separately.
+                  return  // and continue loop.
+                }
+              #endif
             #endif
 
             options.project.test(

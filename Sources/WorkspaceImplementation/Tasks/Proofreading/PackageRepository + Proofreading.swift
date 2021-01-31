@@ -14,10 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGControlFlow
 import SDGLogic
@@ -43,74 +40,74 @@ import SDGSwiftSource
 
 import WorkspaceLocalizations
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  extension PackageRepository {
+extension PackageRepository {
 
-    internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
-      let status = ProofreadingStatus(reporter: reporter, output: output)
+  internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
+    let status = ProofreadingStatus(reporter: reporter, output: output)
 
-      #if os(Windows) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-        var linter: Bool?
-      #else
-        var linter: SwiftLinter?
-        if let formatConfiguration = try configuration(output: output).proofreading
-          .swiftFormatConfiguration
-        {
-          let diagnostics = DiagnosticEngine()
-          diagnostics.addConsumer(status)
-          linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+    #if os(Windows) || os(WASI) || os(Android)
+      var linter: Bool?
+    #else
+      var linter: SwiftLinter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration
+      {
+        let diagnostics = DiagnosticEngine()
+        diagnostics.addConsumer(status)
+        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+      }
+    #endif
+
+    let activeRules = try configuration(output: output).proofreading.rules.sorted()
+    if ¬activeRules.isEmpty ∨ linter ≠ nil {
+
+      var textRules: [TextRule.Type] = []
+      var syntaxRules: [SyntaxRule.Type] = []
+      for rule in activeRules.lazy.map({ $0.parser }) {
+        switch rule {
+        case .text(let textParser):
+          textRules.append(textParser)
+        case .syntax(let syntaxParser):
+          syntaxRules.append(syntaxParser)
+        }
+      }
+
+      let sourceURLs = try sourceFiles(output: output)
+
+      var settings: [URL: Setting] = [
+        location.appendingPathComponent("Package.swift"): .topLevel
+      ]
+      for name in InterfaceLocalization.allCases
+        .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
+      {
+        settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+      }
+      // #workaround(SwiftPM 0.7.0, Cannot build.)
+      #if !(os(Windows) || os(WASI) || os(Android))
+        for target in try cachedPackage().targets {
+          let setting: Setting?
+          switch target.type {
+          case .library, .binary:
+            setting = .library
+          case .executable, .test:
+            setting = .topLevel
+          case .systemModule:  // @exempt(from: tests)
+            setting = nil
+          }
+          if let determined = setting {
+            for source in target.sources.paths {
+              settings[source.asURL] = determined
+            }
+          }
         }
       #endif
 
-      let activeRules = try configuration(output: output).proofreading.rules.sorted()
-      if ¬activeRules.isEmpty ∨ linter ≠ nil {
-
-        var textRules: [TextRule.Type] = []
-        var syntaxRules: [SyntaxRule.Type] = []
-        for rule in activeRules.lazy.map({ $0.parser }) {
-          switch rule {
-          case .text(let textParser):
-            textRules.append(textParser)
-          case .syntax(let syntaxParser):
-            syntaxRules.append(syntaxParser)
-          }
-        }
-
-        let sourceURLs = try sourceFiles(output: output)
-
-        var settings: [URL: Setting] = [
-          location.appendingPathComponent("Package.swift"): .topLevel
-        ]
-        for name in InterfaceLocalization.allCases
-          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
-        {
-          settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
-        }
-        // #workaround(SwiftPM 0.7.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
-          for target in try cachedPackage().targets {
-            let setting: Setting?
-            switch target.type {
-            case .library, .binary:
-              setting = .library
-            case .executable, .test:
-              setting = .topLevel
-            case .systemModule:  // @exempt(from: tests)
-              setting = nil
-            }
-            if let determined = setting {
-              for source in target.sources.paths {
-                settings[source.asURL] = determined
-              }
-            }
-          }
-        #endif
-
-        for url in sourceURLs
-        where FileType(url: url) ≠ nil
-          ∧ FileType(url: url) ≠ .xcodeProject
-        {
+      for url in sourceURLs
+      where FileType(url: url) ≠ nil
+        ∧ FileType(url: url) ≠ .xcodeProject
+      {
+        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try purgingAutoreleased {
 
             let file = try TextFile(alreadyAt: url)
@@ -143,18 +140,18 @@ import WorkspaceLocalizations
               }
             }
           }
-        }
+        #endif
       }
-
-      for task in try configuration(output: output).customProofreadingTasks {
-        do {
-          try task.execute(output: output)
-        } catch {
-          status.failExternalPhase()
-        }
-      }
-
-      return status.passing
     }
+
+    for task in try configuration(output: output).customProofreadingTasks {
+      do {
+        try task.execute(output: output)
+      } catch {
+        status.failExternalPhase()
+      }
+    }
+
+    return status.passing
   }
-#endif
+}

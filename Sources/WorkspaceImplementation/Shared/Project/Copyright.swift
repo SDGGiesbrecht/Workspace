@@ -14,47 +14,41 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  import Foundation
-#endif
+import Foundation
 
 import SDGCollections
 import SDGText
 
 import SDGCalendar
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  internal func copyright(fromText text: String) -> StrictString {
+internal func copyright(fromText text: String) -> StrictString {
 
-    var oldStartDate: String?
-    for symbol in ["©", "(C)", "(c)"] {
-      for space in ["", " "] {
-        if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
-          var numberEnd = range.upperBound
-          text.scalars.advance(
-            &numberEnd,
-            over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits }))
-          )
-          let number = text.scalars[range.upperBound..<numberEnd]
-          if number.count == 4 {
-            oldStartDate = String(number)
-            break
-          }
+  var oldStartDate: String?
+  for symbol in ["©", "(C)", "(c)"] {
+    for space in ["", " "] {
+      if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
+        var numberEnd = range.upperBound
+        text.scalars.advance(
+          &numberEnd,
+          over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits }))
+        )
+        let number = text.scalars[range.upperBound..<numberEnd]
+        if number.count == 4 {
+          oldStartDate = String(number)
+          break
         }
       }
     }
-    let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
-    let copyrightStart = oldStartDate ?? currentYear
-
-    var copyright = "©"
-    if currentYear == copyrightStart {
-      copyright.append(currentYear)
-    } else {
-      copyright.append(copyrightStart + "–" + currentYear)
-    }
-
-    return StrictString(copyright)
   }
-#endif
+  let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
+  let copyrightStart = oldStartDate ?? currentYear
+
+  var copyright = "©"
+  if currentYear == copyrightStart {
+    copyright.append(currentYear)
+  } else {
+    copyright.append(copyrightStart + "–" + currentYear)
+  }
+
+  return StrictString(copyright)
+}

@@ -71,17 +71,12 @@ public struct GitHubConfiguration: Codable {
     guard let match = localization._reasonableMatch else {
       return nil
     }
-    // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-    #if os(WASI)
-      return nil
-    #else
-      switch match {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return StrictString(Resources.contributingTemplate)
-      case .deutschDeutschland:
-        return StrictString(Resources.mitwirkenVorlage)
-      }
-    #endif
+    switch match {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return StrictString(Resources.contributingTemplate)
+    case .deutschDeutschland:
+      return StrictString(Resources.mitwirkenVorlage)
+    }
   }
 
   private static func developmentNotesHeading(
@@ -124,28 +119,22 @@ public struct GitHubConfiguration: Codable {
     for localization in localizations {
       if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if !os(WASI)
+        #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           template.replaceMatches(
             for: "#packageName".scalars,
             with: WorkspaceContext.current.manifest.packageName.scalars
           )
         #endif
 
-        // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-        #if os(WASI)
+        if let url = configuration.documentation.repositoryURL {
+          template.replaceMatches(
+            for: "#cloneScript".scalars,
+            with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
+              .scalars
+          )
+        } else {
           template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
-        #else
-          if let url = configuration.documentation.repositoryURL {
-            template.replaceMatches(
-              for: "#cloneScript".scalars,
-              with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
-                .scalars
-            )
-          } else {
-            template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
-          }
-        #endif
+        }
 
         let administrators = configuration.gitHub.administrators
         var administratorList: StrictString
@@ -233,25 +222,22 @@ public struct GitHubConfiguration: Codable {
     return result
   })
 
-  // #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-  #if !os(WASI)
-    // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-    // @crossReference(GitHubConfiguration.pullRequestTemplate)
-    /// The pull request template.
-    ///
-    /// This defaults to a generic template.
-    ///
-    /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
-    public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
-    // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
-    /// Eine Abziehungsanforderungsvorlage.
-    ///
-    /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
-    ///
-    /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
-    public var abziehungsanforderungsvorlage: Markdown {
-      get { return pullRequestTemplate }
-      set { pullRequestTemplate = newValue }
-    }
-  #endif
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(GitHubConfiguration.pullRequestTemplate)
+  /// The pull request template.
+  ///
+  /// This defaults to a generic template.
+  ///
+  /// A pull request template is a markdown file in a `.github` folder which GitHub uses when someone creates a new pull request.
+  public var pullRequestTemplate: Markdown = StrictString(Resources.pullRequestTemplate)
+  // @localization(🇩🇪DE) @crossReference(GitHubConfiguration.pullRequestTemplate)
+  /// Eine Abziehungsanforderungsvorlage.
+  ///
+  /// Wenn nicht angegeben, wird eine allgemeine Vorlage verwendet.
+  ///
+  /// Eine Abziehungsanforderungsvorlage ist eine Markdown‐Datei in einem `.github`‐Verzeichnis, die GitHub verwendet wenn jemand eine neue Abziehungsanforderung erstellt.
+  public var abziehungsanforderungsvorlage: Markdown {
+    get { return pullRequestTemplate }
+    set { pullRequestTemplate = newValue }
+  }
 }

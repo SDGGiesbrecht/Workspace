@@ -515,7 +515,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(5, 5, 0)
+      from: Version(5, 5, 1)
     ),
   ],
   targets: [
@@ -792,6 +792,29 @@ let package = Package(
   ]
 )
 
+for target in package.targets {
+  var swiftSettings = target.swiftSettings ?? []
+  defer { target.swiftSettings = swiftSettings }
+  swiftSettings.append(contentsOf: [
+
+    // Internal‐only:
+    // #workaround(Swift 5.3.2, Web lacks Dispatch.)
+    .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.Data.write(to:).)
+    .define("PLATFORM_LACKS_FOUNDATION_DATA_WRITE_TO", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.FileManager.)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.Process.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.ProcessInfo.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Web lacks Foundation.URL.resourceIsReachable().)
+    .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.3.2, Android emulator lacks Git.)
+    .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+  ])
+}
+
 import Foundation
 
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
@@ -831,15 +854,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
         return "\(dependency)".contains(impossible)
       })
     })
-  }
-  // #workaround(SDGCommandLine 1.6.1, Web API incomplete.)
-  package.targets = package.targets.filter { target in
-    switch target.name {
-    case "WorkspaceTests":
-      return false
-    default:
-      return true
-    }
   }
 }
 

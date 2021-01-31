@@ -22,6 +22,8 @@ import WorkspaceConfiguration
 extension CustomTask {
 
   static func emptyCache() {
-    try? FileManager.default.removeItem(at: cache)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      try? FileManager.default.removeItem(at: cache)
+    #endif
   }
 }

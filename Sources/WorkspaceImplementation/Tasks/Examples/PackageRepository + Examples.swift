@@ -26,32 +26,31 @@ import SDGSwift
 
 import WorkspaceLocalizations
 
-// #workaround(SDGCornerstone 6.1.0, Web API incomplete.)
-#if !os(WASI)
-  extension PackageRepository {
+extension PackageRepository {
 
-    private static var exampleDeclarationPattern:
+  private static var exampleDeclarationPattern:
+    ConcatenatedPatterns<
       ConcatenatedPatterns<
-        ConcatenatedPatterns<
-          InterfaceLocalization.DirectivePatternWithArguments,
-          RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
-        >,
-        InterfaceLocalization.DirectivePattern
-      >
-    {
+        InterfaceLocalization.DirectivePatternWithArguments,
+        RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
+      >,
+      InterfaceLocalization.DirectivePattern
+    >
+  {
 
-      return InterfaceLocalization.exampleDeclaration
-        + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
-        + InterfaceLocalization.endExampleDeclaration
-    }
+    return InterfaceLocalization.exampleDeclaration
+      + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
+      + InterfaceLocalization.endExampleDeclaration
+  }
 
-    internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
-      return try _withExampleCache {
-        var list: [StrictString: StrictString] = [:]
+  internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
+    return try _withExampleCache {
+      var list: [StrictString: StrictString] = [:]
 
-        for url in try sourceFiles(output: output) {
-          purgingAutoreleased {
+      for url in try sourceFiles(output: output) {
+        purgingAutoreleased {
 
+          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             if FileType(url: url) ≠ nil,
               let file = try? TextFile(alreadyAt: url)
             {
@@ -98,26 +97,31 @@ import WorkspaceLocalizations
                 list[identifier] = example
               }
             }
-          }
+          #endif
         }
-
-        return list
       }
+
+      return list
     }
+  }
 
-    internal func refreshExamples(output: Command.Output) throws {
+  internal func refreshExamples(output: Command.Output) throws {
 
-      files: for url in try sourceFiles(output: output)
-      where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
+    files: for url in try sourceFiles(output: output)
+    where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
 
-        try purgingAutoreleased {
+      try purgingAutoreleased {
 
-          if let type = FileType(url: url),
-            type ∈ Set([.swift, .swiftPackageManifest])
-          {
-            let documentationSyntax = FileType.swiftDocumentationSyntax
-            let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
+        if let type = FileType(url: url),
+          type ∈ Set([.swift, .swiftPackageManifest])
+        {
+          let documentationSyntax = FileType.swiftDocumentationSyntax
+          let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
+          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+            func dodgeLackOfThrowingCalls() throws {}
+            try dodgeLackOfThrowingCalls()
+          #else
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex
@@ -252,9 +256,9 @@ import WorkspaceLocalizations
             }
 
             try file.writeChanges(for: self, output: output)
-          }
+          #endif
         }
       }
     }
   }
-#endif
+}

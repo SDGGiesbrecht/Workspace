@@ -9,6 +9,12 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
+    - name: Make space
+      shell: bash
+      run: |
+        set -x
+        du -h /
+        exit 1
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift#linux
       shell: bash
@@ -36,8 +42,6 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Fetch Android NDK
       shell: bash
       run: |
@@ -52,15 +56,11 @@ jobs:
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Fetch ICU source
       shell: bash
       run: |
         set -x
         git clone https://github.com/unicode-org/icu --branch release-67-1 --depth 1
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build ICU for Linux
       # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToBuildUNIX
       shell: bash
@@ -70,8 +70,6 @@ jobs:
         cd icu4c-build-linux
         ../icu/icu4c/source/runConfigureICU Linux
         make
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Create Android C toolchain
       # Based on https://gist.github.com/DanielSerdyukov/188d47e29150622352f1
       shell: bash
@@ -80,8 +78,6 @@ jobs:
         ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
           --install-dir=${GITHUB_WORKSPACE}/Android/C
         find ${GITHUB_WORKSPACE}/Android/C
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build ICU for Android
       # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToCrossCompileICU
       shell: bash
@@ -101,8 +97,6 @@ jobs:
         make
         make install
         find ${GITHUB_WORKSPACE}/Android/ICU
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Upload ICU
       uses: actions/upload-artifact@v1
       with:
@@ -113,15 +107,11 @@ jobs:
       run: |
         set -x
         rm -rf Android/C
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Clean ICU source up
       shell: bash
       run: |
         set -x
         rm -rf icu
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Fetch Swift source
       # Based on https://github.com/apple/swift#getting-sources-for-swift-and-related-projects
       shell: bash
@@ -131,16 +121,12 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git --branch swift-5.3.3-RELEASE --depth 1
         ./swift/utils/update-checkout --tag swift-5.3.3-RELEASE --clone
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Clean out Swift history
       shell: bash
       run: |
         set -x
         cd swift-source
         find . -type d -name .git -prune -exec rm -rf {} \;
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini
@@ -164,8 +150,6 @@ jobs:
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
       # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml
@@ -186,8 +170,6 @@ jobs:
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D LLVM_HOST_TRIPLE=x86_64-unknown-linux-android
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build standard library for Android
       shell: bash
       run: |
@@ -213,8 +195,6 @@ jobs:
           -D ICU_I18N_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include \
           -D ICU_I18N_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1
         cmake --build Standard_Library --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build Dispatch for Android
       shell: bash
       run: |
@@ -239,8 +219,6 @@ jobs:
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
         cmake --build Dispatch
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build zlib for Android
       # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
       shell: bash
@@ -261,8 +239,6 @@ jobs:
           -D BUILD_TESTING=NO \
           -D CMAKE_POSITION_INDEPENDENT_CODE=YES
         cmake --build zlib --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build cURL for Android
       # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/curl.yml
       shell: bash
@@ -284,8 +260,6 @@ jobs:
           -D BUILD_SHARED_LIBS=NO \
           -D BUILD_TESTING=NO
         cmake --build cURL --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build XML 2 for Android
       # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/libxml2.yml
       shell: bash
@@ -306,8 +280,6 @@ jobs:
           -D BUILD_SHARED_LIBS=NO \
           -D BUILD_TESTING=NO
         cmake --build XML_2 --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build Foundation for Android
       shell: bash
       run: |
@@ -343,8 +315,6 @@ jobs:
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES \
           -D CMAKE_HAVE_LIBC_PTHREAD=YES
         cmake --build Foundation --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Build XCTest for Android
       shell: bash
       run: |
@@ -370,16 +340,12 @@ jobs:
           -D dispatch_DIR=${GITHUB_WORKSPACE}/swift-build/Dispatch/cmake/modules \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
         cmake --build XCTest --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Install Dispatch for Android
       shell: bash
       run: |
         set -x
         cd swift-build
         cmake --build Dispatch --target install
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Embed ICU
       shell: bash
       run: |
@@ -387,8 +353,6 @@ jobs:
         cp Android/ICU/lib/libicui18n.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicuuc.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicudata.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Upload Android SDK
       uses: actions/upload-artifact@v1
       with:
@@ -410,8 +374,6 @@ jobs:
           -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Copy libraries
       shell: bash
       run: |
@@ -419,8 +381,6 @@ jobs:
         cd HelloWorld
         cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
         cp -R ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
-        cd "${GITHUB_WORKSPACE}"
-        du -hs .
     - name: Upload tests
       uses: actions/upload-artifact@v1
       with:

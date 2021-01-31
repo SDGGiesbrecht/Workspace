@@ -45,7 +45,8 @@ extension PackageRepository {
   internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
     let status = ProofreadingStatus(reporter: reporter, output: output)
 
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+    #if os(Windows) || os(WASI) || os(Android)
       var linter: Bool?
     #else
       var linter: SwiftLinter?

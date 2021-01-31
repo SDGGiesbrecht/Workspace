@@ -10,10 +10,11 @@ jobs:
     - name: Check out
       uses: actions/checkout@v1
     - name: Make space
+      # Because GitHub’s host does not have enough memory without clearing other stuff out.
       shell: bash
       run: |
         set -x
-        du -h /
+        du --human-readable --max-depth=1 /
         exit 1
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift#linux

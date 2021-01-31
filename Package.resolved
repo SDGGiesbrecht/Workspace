@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "7f1c22c3dce16c4d7e4b80af76e9c30bac67acd6",
-          "version": "1.6.1"
+          "revision": "015cf3c6e6be19df872a463f38546956f793bfaf",
+          "version": "1.7.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "e2a1a0ca6eda0b43bffb00ea3932ca5200403158",
-          "version": "4.0.1"
+          "revision": "0e852d105b10876405be89999a7e98f9e6e9529e",
+          "version": "5.0.0"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
         "state": {
           "branch": null,
-          "revision": "bfa95d55b535fa178f75484b5e8f82ae3d8517af",
-          "version": "0.0.50200"
+          "revision": "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
+          "version": "0.50302.0"
         }
       },
       {
@@ -70,7 +70,7 @@
         "state": {
           "branch": null,
           "revision": "ef2e9ba657fd0a4e6e25fff05051b328bf27aeaf",
-          "version": "0.50300.0"
+          "version": "0.50302.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "a5eb4046e2330c99005c3fcd647354a98ff83475",
-          "version": "0.50300.0"
+          "revision": "86462d782b5c4546ad1dfeb8e6fc3ca05d6ccd61",
+          "version": "0.50302.0"
         }
       },
       {
@@ -102,11 +102,11 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
         "state": {
           "branch": null,
-          "revision": "f39fc6c12266697b1585589090f0004903974685",
-          "version": "0.1.10"
+          "revision": "8c3dfd42a36d0416345143eae4567d9314c12246",
+          "version": "0.50302.0"
         }
       }
     ]

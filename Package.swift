@@ -492,16 +492,16 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 6, 1)
+      from: Version(1, 7, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(4, 0, 1)
+      from: Version(5, 0, 0)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50302, 0))
     ),
     .package(
       name: "SwiftSyntax",

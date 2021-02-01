@@ -46,7 +46,6 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-        sudo snap install sccache --candidate --classic
     - name: Fetch Android NDK
       shell: bash
       run: |

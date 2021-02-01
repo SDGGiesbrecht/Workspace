@@ -20,7 +20,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -266,7 +266,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -332,7 +332,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
         xcodebuild -version
         swift --version
     - name: Install Workspace
@@ -476,7 +476,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.3.app
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
         xcodebuild -version
         swift --version
     - name: Install Workspace

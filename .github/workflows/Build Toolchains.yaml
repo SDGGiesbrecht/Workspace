@@ -9,6 +9,16 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
+    - name: Make space
+      # Because GitHub’s host does not have enough memory without clearing other stuff out.
+      shell: bash
+      run: |
+        set -x
+        du --human-readable --max-depth=1 / || true
+        du --human-readable --max-depth=1 /usr || true
+        du --human-readable --max-depth=1 /usr/share || true
+        rm -rf /usr/share/dotnet
+        du --human-readable --max-depth=1 /usr/share || true
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#ubuntu-linux
       shell: bash
@@ -37,10 +47,17 @@ jobs:
           tzdata \
           uuid-dev
         sudo snap install sccache --candidate --classic
-    - name: Check Android NDK
+    - name: Fetch Android NDK
       shell: bash
       run: |
         set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
+        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build

@@ -46,6 +46,8 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
+        sudo apt-get remove --assume-yes
+          gcc
     - name: Fetch Android NDK
       shell: bash
       run: |

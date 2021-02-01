@@ -25,6 +25,8 @@ jobs:
       run: |
         set -x
         sudo apt-get update --assume-yes
+        sudo apt-get remove --assume-yes
+          gcc
         sudo apt-get install --assume-yes \
           clang-7 \
           cmake \
@@ -46,8 +48,6 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-        sudo apt-get remove --assume-yes
-          gcc
     - name: Fetch Android NDK
       shell: bash
       run: |

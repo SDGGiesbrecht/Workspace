@@ -25,9 +25,6 @@ jobs:
       run: |
         set -x
         sudo apt-get update --assume-yes
-        sudo apt-get remove --assume-yes \
-          gcc
-        sudo rm -rf /usr/lib/gcc
         sudo apt-get install --assume-yes \
           clang-7 \
           cmake \

@@ -120,6 +120,7 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git --branch swift-5.3.3-RELEASE --depth 1
         ./swift/utils/update-checkout --tag swift-5.3.3-RELEASE --clone
+        sed -i 's/#include <functional>/#include <functional>\\n#include <cstdint>/g' swift-source/indexstore-db/include/IndexStoreDB/Database/IDCode.h
     - name: Clean out Swift history
       shell: bash
       run: |

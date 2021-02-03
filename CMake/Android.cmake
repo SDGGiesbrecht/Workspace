@@ -16,3 +16,8 @@ set(ANDROID_ABI ${CMAKE_ANDROID_ARCH_ABI} CACHE STRING "")
 set(ANDROID_NDK ${CMAKE_ANDROID_NDK} CACHE STRING "")
 set(ANDROID_PLATFORM android-${CMAKE_ANDROID_API} CACHE STRING "")
 set(ANDROID_STL ${CMAKE_ANDROID_STL_TYPE} CACHE STRING "")
+
+
+SET(CMAKE_SYSROOT "${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android")

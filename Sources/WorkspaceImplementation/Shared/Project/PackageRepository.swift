@@ -30,7 +30,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
-// #workaround(SwiftPM 0.7.0, Cannot build.)
+// #workaround(SDGSwift 5.1.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
   import PackageGraph
@@ -80,7 +80,7 @@ extension PackageRepository {
     // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
     // Changes to support files do not require a reset (read‐me, etc.).
     private class ManifestCache {
-      // #workaround(SwiftPM 0.7.0, Cannot build.)
+      // #workaround(SDGSwift 5.1.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
@@ -208,7 +208,7 @@ extension PackageRepository {
   #endif
 
   internal func packageName() throws -> StrictString {
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
       return "[???]"
     #else
       return StrictString(try cachedManifest().name)
@@ -229,7 +229,7 @@ extension PackageRepository {
     return try projectName(in: identifier, output: output)
   }
 
-  // #workaround(SwiftPM 0.7.0, Cannot build.)
+  // #workaround(SDGSwift 5.1.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     internal func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
@@ -282,7 +282,7 @@ extension PackageRepository {
     #else
       return try cached(in: &configurationCache.configurationContext) {
 
-        #if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftPM 0.7.0, Cannot build.)
+        #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
           let products: [PackageManifest.Product] = []
         #else
           let products = try self.products()

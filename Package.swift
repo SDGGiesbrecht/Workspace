@@ -549,7 +549,7 @@ let package = Package(
           package: "SwiftPM",
           // #workaround(SDGSwift 5.1.0, Does not support Windows yet.)
           // #workaround(SDGSwift 5.1.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .lnux])
+          condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(
           name: "SwiftSyntax",

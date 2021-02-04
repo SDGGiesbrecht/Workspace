@@ -83,7 +83,7 @@ extension PackageRepository {
       {
         settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
       }
-      // #workaround(SwiftPM 0.7.0, Cannot build.)
+      // #workaround(SDGSwift 5.1.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         for target in try cachedPackage().targets {
           let setting: Setting?

@@ -275,7 +275,7 @@ extension PackageRepository {
     }
 
     do {
-      // #workaround(SwiftPM 0.7.0, Cannot build.)
+      // #workaround(SDGSwift 5.1.0, Cannot build.)
       #if !(os(Windows) || os(WASI) || os(Android))
         let report: TestCoverageReport
         switch job {

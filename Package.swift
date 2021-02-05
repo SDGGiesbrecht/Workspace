@@ -816,7 +816,6 @@ for target in package.targets {
 }
 
 import Foundation
-
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies = [

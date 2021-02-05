@@ -9,6 +9,16 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
+    - name: Make space
+      # Because GitHub’s host does not have enough memory without clearing other stuff out.
+      shell: bash
+      run: |
+        set -x
+        du --human-readable --max-depth=1 / || true
+        du --human-readable --max-depth=1 /usr || true
+        du --human-readable --max-depth=1 /usr/share || true
+        rm -rf /usr/share/dotnet
+        du --human-readable --max-depth=1 /usr/share || true
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift#linux
       shell: bash
@@ -16,7 +26,7 @@ jobs:
         set -x
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes \
-          clang \
+          clang-7 \
           cmake \
           git \
           icu-devtools \
@@ -36,12 +46,19 @@ jobs:
           systemtap-sdt-dev \
           tzdata \
           uuid-dev
-    - name: Check Android NDK
+    - name: Fetch Android NDK
       shell: bash
       run: |
         set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
+        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
         export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
-        echo "::set-env name=PATH::${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         which ndk-build
     - name: Fetch ICU source
       shell: bash
@@ -101,8 +118,19 @@ jobs:
         set -x
         mkdir swift-source
         cd swift-source
-        git clone https://github.com/apple/swift.git --branch release/5.3 --depth 1
-        ./swift/utils/update-checkout --scheme release/5.3 --clone --skip-history
+        git clone https://github.com/apple/swift.git --branch swift-5.3.3-RELEASE --depth 1
+        ./swift/utils/update-checkout --tag swift-5.3.3-RELEASE --clone
+    - name: Patch Swift source
+      shell: bash
+      run: |
+        set -x
+        sed -i 's/#include <functional>/#include <functional>\n#include <cstdint>/g' swift-source/indexstore-db/include/IndexStoreDB/Database/IDCode.h
+    - name: Clean out Swift history
+      shell: bash
+      run: |
+        set -x
+        cd swift-source
+        find . -type d -name .git -prune -exec rm -rf {} \;
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini

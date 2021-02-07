@@ -18,14 +18,14 @@ import SDGVersioning
 
 import SDGSwiftPackageManager
 
-// #workaround(SwiftPM 0.7.0, Cannot build.)
+// #workaround(SDGSwift 5.1.0, Cannot build.)
 #if !(os(Windows) || os(WASI) || os(Android))
   import PackageModel
 #endif
 
 extension SDGVersioning.Version {
 
-  // #workaround(SwiftPM 0.7.0, Cannot build.)
+  // #workaround(SDGSwift 5.1.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
     internal init(_ version: PackageModel.Version) {
       self.init(version.major, version.minor, version.patch)

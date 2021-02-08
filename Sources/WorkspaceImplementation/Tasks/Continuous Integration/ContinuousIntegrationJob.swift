@@ -42,10 +42,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case deployment
 
   internal static let currentSwiftVersion = Version(5, 3, 3)
-  // #workaround(Swift 5.3.2, Foundation cannot find CoreFoundation in later patches.)
-  private static let windowsSwiftVersion = Version(5, 3, 3)
-  // #workaround(No up‐to‐date toolchain available.)
-  private static let androidSwiftVersion = Version(5, 3, 3)
 
   private static let currentMacOSVersion = Version(11)
   internal static let currentXcodeVersion = Version(12, 4)
@@ -773,7 +769,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-      let version = ContinuousIntegrationJob.windowsSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(
         script(
@@ -876,7 +872,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-      let version = ContinuousIntegrationJob.androidSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
       result.append(contentsOf: [
@@ -946,7 +942,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      let version = ContinuousIntegrationJob.windowsSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         script(

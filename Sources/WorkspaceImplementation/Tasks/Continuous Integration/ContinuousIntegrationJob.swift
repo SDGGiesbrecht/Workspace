@@ -41,11 +41,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  internal static let currentSwiftVersion = Version(5, 3, 2)
+  internal static let currentSwiftVersion = Version(5, 3, 3)
   // #workaround(Swift 5.3.2, Foundation cannot find CoreFoundation in later patches.)
-  private static let windowsSwiftVersion = Version(5, 3, 0)
+  private static let windowsSwiftVersion = Version(5, 3, 3)
   // #workaround(No up‐to‐date toolchain available.)
-  private static let androidSwiftVersion = Version(5, 3, 0)
+  private static let androidSwiftVersion = Version(5, 3, 3)
 
   private static let currentMacOSVersion = Version(11)
   internal static let currentXcodeVersion = Version(12, 4)

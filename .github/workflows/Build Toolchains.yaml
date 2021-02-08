@@ -120,24 +120,6 @@ jobs:
         cd swift-source
         git clone https://github.com/apple/swift.git --depth 1
         ./swift/utils/update-checkout --clone --skip-history
-    - name: Build Swift SDK for Android
-      # Based on https://github.com/apple/swift/blob/main/docs/Android.md#2-building-the-swift-stdlib-for-android
-      shell: bash
-      run: |
-        set -x
-        cd swift-source/swift
-        ./utils/build-script --release --android \
-          --install-destdir ${GITHUB_WORKSPACE}/Android/Swift/Toolchain \
-          --android-ndk ${ANDROID_HOME}/ndk-bundle \
-          --android-arch x86_64 \
-          --android-api-level 29 \
-          --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
-          --android-icu-uc-include ${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
-          --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1 \
-          --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
-          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
-          --install-swift
-        find ${GITHUB_WORKSPACE}/Android/Swift/Toolchain
     - name: Build Swift for Linux
       # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
       # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini
@@ -161,6 +143,24 @@ jobs:
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
         ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version
+    - name: Build Swift SDK for Android
+      # Based on https://github.com/apple/swift/blob/main/docs/Android.md#2-building-the-swift-stdlib-for-android
+      shell: bash
+      run: |
+        set -x
+        cd swift-source/swift
+        ./utils/build-script --release --android \
+          --install-destdir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          --android-ndk ${ANDROID_HOME}/ndk-bundle \
+          --android-arch x86_64 \
+          --android-api-level 29 \
+          --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
+          --android-icu-uc-include ${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
+          --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1 \
+          --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
+          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
+          --install-swift
+        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
       # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml

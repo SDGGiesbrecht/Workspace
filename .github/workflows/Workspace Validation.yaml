@@ -134,8 +134,6 @@ jobs:
           swift build --destination .github/workflows/Windows/SDK.json \
             -Xswiftc -use-ld=lld \
             -Xswiftc -sdk -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \
-            -Xswiftc -I -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \
-            -Xswiftc -L -Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \
             -Xswiftc -Xcc -Xswiftc -isystem -Xswiftc -Xcc -Xswiftc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xcc -isystem -Xcc '"/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt"' \
             -Xswiftc -L -Xswiftc '"/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64"' \

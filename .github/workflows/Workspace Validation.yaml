@@ -57,7 +57,9 @@ jobs:
         cp "${SDKROOT}/usr/share/visualc.modulemap" "${VCToolsInstallDir}/include/module.modulemap"
         cp "${SDKROOT}/usr/share/visualc.apinotes" "${VCToolsInstallDir}/include/visualc.apinotes"
         cp "${SDKROOT}/usr/share/winsdk.modulemap" "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
-        rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include
+        rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFURLSessionInterface
+        rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFXMLInterface
+        rm -rf /c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CoreFoundation
         export PATH="/c/Library/icu-67/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         export PATH="/c/Library/Developer/Toolchains/unknown-Asserts-development.xctoolchain/usr/bin:${PATH}"

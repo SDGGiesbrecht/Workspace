@@ -92,7 +92,7 @@ jobs:
   CentOS:
     name: CentOS
     runs-on: ubuntu-20.04
-    container: swift:5.3.2-centos8
+    container: swift:5.3.3-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -170,7 +170,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-20.04
-    container: swift:5.3.2-focal
+    container: swift:5.3.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -386,7 +386,7 @@ jobs:
   Amazon_Linux:
     name: Amazon Linux
     runs-on: ubuntu-20.04
-    container: swift:5.3.2-amazonlinux2
+    container: swift:5.3.3-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -530,7 +530,7 @@ jobs:
   Miscellaneous:
     name: Miscellaneous
     runs-on: ubuntu-20.04
-    container: swift:5.3.2-focal
+    container: swift:5.3.3-focal
     steps:
     - name: Check out
       uses: actions/checkout@v1

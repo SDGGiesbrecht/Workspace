@@ -41,11 +41,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   case miscellaneous
   case deployment
 
-  internal static let currentSwiftVersion = Version(5, 3, 2)
-  // #workaround(Swift 5.3.2, Foundation cannot find CoreFoundation in later patches.)
-  private static let windowsSwiftVersion = Version(5, 3, 0)
-  // #workaround(No up‐to‐date toolchain available.)
-  private static let androidSwiftVersion = Version(5, 3, 0)
+  internal static let currentSwiftVersion = Version(5, 3, 3)
 
   private static let currentMacOSVersion = Version(11)
   internal static let currentXcodeVersion = Version(12, 4)
@@ -619,6 +615,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     ].joinedAsLines()
   }
 
+  private func remove(_ path: StrictString) -> StrictString {
+    return "rm \u{2D}rf \(path)"
+  }
+
   private func cURL(
     _ url: StrictString,
     andUnzipTo destination: StrictString,
@@ -651,7 +651,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     } else {
       result.append("unzip \(temporaryZip) \u{2D}d /tmp")
       if removeExisting {
-        result.append("rm \u{2D}rf \(destination)")
+        result.append(remove(destination))
       }
       result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
     }
@@ -773,7 +773,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-      let version = ContinuousIntegrationJob.windowsSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(
         script(
@@ -782,6 +782,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           commands: [
             cURLAndExecuteWindowsInstaller(
               "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
+            ),
+            remove(
+              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFURLSessionInterface"
+            ),
+            remove(
+              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFXMLInterface"
+            ),
+            remove(
+              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CoreFoundation"
             ),
             set(
               environmentVariable: "SDKROOT",
@@ -876,7 +885,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           ]
         )
       )
-      let version = ContinuousIntegrationJob.androidSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
       result.append(contentsOf: [
@@ -946,7 +955,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      let version = ContinuousIntegrationJob.windowsSwiftVersion
+      let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(contentsOf: [
         script(

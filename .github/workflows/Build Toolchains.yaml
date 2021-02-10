@@ -18,8 +18,8 @@ jobs:
       uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Create Android C toolchain
       uses: ./.github/Workflow Steps/Create Android C Toolchain
-    - name: Install ICU source
-      uses: ./.github/Workflow Steps/Install ICU Source
+    - name: Fetch ICU source
+      uses: ./.github/Workflow Steps/Fetch ICU Source
     - name: Build ICU for Ubuntu
       uses: ./.github/Workflow Steps/Build ICU for Ubuntu
     - name: Build ICU for Android

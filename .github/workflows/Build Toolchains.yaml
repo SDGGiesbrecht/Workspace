@@ -10,7 +10,7 @@ jobs:
     - name: Check out
       uses: actions/checkout@v1
     - name: Make space
-      uses: ./.github/Workflow Steps/Make Space.yaml
+      uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
       # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#ubuntu-linux
       shell: bash

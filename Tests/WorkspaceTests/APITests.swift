@@ -184,34 +184,34 @@ class APITests: TestCase {
 
   func testCheckedInDocumentation() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "en",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "en",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+            .appendingPathComponent("Resources/Tool/English.txt")
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-              .appendingPathComponent("Resources/Tool/English.txt")
-          )
-        #endif
-        output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
+      #endif
+      output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+            .appendingPathComponent("Resources/Tool/Deutsch.txt")
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-              .appendingPathComponent("Resources/Tool/Deutsch.txt")
-          )
-        #endif
+      #endif
 
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
@@ -680,20 +680,20 @@ class APITests: TestCase {
 
   func testDeutsch() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "Deutsch")
+            .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "Deutsch")
-              .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
-          )
-        #endif
+      #endif
 
       let konfiguration = ArbeitsbereichKonfiguration()
       konfiguration.optimizeForTests()
@@ -894,83 +894,83 @@ class APITests: TestCase {
 
   func testHelp() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.1, SegFault)
-        testCommand(
-          Workspace.command,
-          with: ["help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["proofread", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace proofread)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["validate", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace validate)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["document", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace document)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "continuous‐integration", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh continuous‐integration)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "examples", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh examples)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "inherited‐documentation", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "resources", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh resources)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "scripts", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh scripts)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["normalize", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace normalize)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
+      testCommand(
+        Workspace.command,
+        with: ["help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["proofread", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace proofread)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["validate", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace validate)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["document", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace document)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "continuous‐integration", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh continuous‐integration)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "examples", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh examples)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "inherited‐documentation", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "resources", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh resources)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "scripts", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh scripts)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["normalize", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace normalize)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 

@@ -249,9 +249,9 @@ public struct FileHeaderConfiguration: Codable {
         })
       )
     #endif
-      if let site = configuration.documentation.projectWebsite {
-        header.append(StrictString(site.absoluteString))
-      }
+    if let site = configuration.documentation.projectWebsite {
+      header.append(StrictString(site.absoluteString))
+    }
 
     header.append("")
 

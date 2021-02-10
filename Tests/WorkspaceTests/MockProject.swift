@@ -360,17 +360,17 @@ extension PackageRepository {
                 }
               }
 
-                testCommand(
-                  Workspace.command,
-                  with: command,
-                  localizations: localizations,
-                  uniqueTestName: specificationName,
-                  postprocess: postprocess,
-                  overwriteSpecificationInsteadOfFailing:
-                    overwriteSpecificationInsteadOfFailing,
-                  file: file,
-                  line: line
-                )
+              testCommand(
+                Workspace.command,
+                with: command,
+                localizations: localizations,
+                uniqueTestName: specificationName,
+                postprocess: postprocess,
+                overwriteSpecificationInsteadOfFailing:
+                  overwriteSpecificationInsteadOfFailing,
+                file: file,
+                line: line
+              )
             }
 
             #if !os(Linux)

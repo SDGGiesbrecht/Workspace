@@ -334,8 +334,8 @@ extension PackageRepository {
     #else
       return try cached(in: &configurationCache.configuration) {
 
-          // Provide the context in case resolution happens internally.
-          WorkspaceContext.current = try configurationContext()
+        // Provide the context in case resolution happens internally.
+        WorkspaceContext.current = try configurationContext()
 
         let result: WorkspaceConfiguration
         if try isWorkspaceProject() {

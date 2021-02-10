@@ -46,13 +46,13 @@ public enum Workspace: Tool {
           "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
       }
     })
-    internal static let projectOption = Option(
-      name: projectName,
-      description: projectDescription,
-      type: ArgumentType.path
-    )
+  internal static let projectOption = Option(
+    name: projectName,
+    description: projectDescription,
+    type: ArgumentType.path
+  )
 
-    internal static let standardOptions: [AnyOption] = [projectOption]
+  internal static let standardOptions: [AnyOption] = [projectOption]
 
   private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {

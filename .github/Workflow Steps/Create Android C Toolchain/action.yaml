@@ -1,0 +1,13 @@
+
+name: Create Android C Toolchain
+runs:
+  using: "composite"
+  steps:
+    - name: Create Android C Toolchain
+      # Based on https://gist.github.com/DanielSerdyukov/188d47e29150622352f1
+      shell: bash
+      run: |
+        set -x
+        ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
+          --install-dir=${GITHUB_WORKSPACE}/Android/C
+        find ${GITHUB_WORKSPACE}/Android/C

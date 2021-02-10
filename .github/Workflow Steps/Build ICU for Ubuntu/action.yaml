@@ -1,0 +1,14 @@
+
+name: Build ICU for Ubuntu
+runs:
+  using: "composite"
+  steps:
+    - name: Build ICU for Ubuntu
+      # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToBuildUNIX
+      shell: bash
+      run: |
+        set -x
+        mkdir icu4c-build-linux
+        cd icu4c-build-linux
+        ../icu/icu4c/source/runConfigureICU Linux
+        make

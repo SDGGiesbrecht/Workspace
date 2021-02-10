@@ -1,0 +1,15 @@
+
+name: Make space
+runs:
+  using: "composite"
+  steps:
+    - name: Make space
+      # Because GitHub’s host does not have enough memory without clearing other stuff out.
+      shell: bash
+      run: |
+        set -x
+        du --human-readable --max-depth=1 / || true
+        du --human-readable --max-depth=1 /usr || true
+        du --human-readable --max-depth=1 /usr/share || true
+        rm -rf /usr/share/dotnet
+        du --human-readable --max-depth=1 /usr/share || true

@@ -812,6 +812,8 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.2, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(Swift 5.3.3, Cannot build SwiftFormatConfiguration for web.)
+    .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION", .when(platforms: [.wasi])),
   ])
 }
 
@@ -840,8 +842,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SwiftSyntax",
     "SwiftFormat\u{22}",
     // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
-    "SwiftFormatConfiguration",
+    //"SwiftFormatConfiguration",
   ]
+  #warning("Experiment. ↑")
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
       return (dependency.name ?? dependency.url).contains(impossible)

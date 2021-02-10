@@ -27,7 +27,6 @@
 
 @_exported import SDGSwiftConfiguration
 
-// #workaround(Swift 5.3, SwiftFormat cannot build.)
-#if !os(WASI)
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
   @_exported import SwiftFormatConfiguration
 #endif

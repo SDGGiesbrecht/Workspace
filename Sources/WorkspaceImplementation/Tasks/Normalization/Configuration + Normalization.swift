@@ -14,8 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.3, SwiftFormat cannot build.)
-#if !os(WASI)
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
   import Foundation
 
   import SwiftFormatConfiguration

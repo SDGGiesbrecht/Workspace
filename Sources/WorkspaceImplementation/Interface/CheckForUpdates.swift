@@ -98,7 +98,7 @@ extension Workspace {
     )
 
     internal static func checkForUpdates(output: Command.Output) throws -> Version? {
-      #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      #if PLATFORM_LACKS_FOUNDATION_PROCESS
         return nil
       #else
         let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!

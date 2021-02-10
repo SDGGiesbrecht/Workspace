@@ -41,7 +41,7 @@ class APITests: TestCase {
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       if isInGitHubAction {
         #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
-          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try? Git.runCustomSubcommand(
               ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
               versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
@@ -184,7 +184,6 @@ class APITests: TestCase {
 
   func testCheckedInDocumentation() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         var output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "en",
         ]).get()
@@ -213,7 +212,6 @@ class APITests: TestCase {
               .appendingPathComponent("Resources/Tool/Deutsch.txt")
           )
         #endif
-      #endif
 
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
@@ -485,7 +483,7 @@ class APITests: TestCase {
     XCTAssertEqual(context.ladeliste.produkte.first?.art, .bibliotek)
     XCTAssertNotEqual(context.ladeliste.produkte.first?.art, .ausführbareDatei)
     XCTAssertEqual(context.ladeliste.produkte.first?.module.first, "Module")
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       WorkspaceContext.aktueller = context
       _ = WorkspaceContext.aktueller
     #endif
@@ -682,7 +680,6 @@ class APITests: TestCase {
 
   func testDeutsch() throws {
     #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         var output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "de",
         ]).get()
@@ -697,7 +694,6 @@ class APITests: TestCase {
               .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
           )
         #endif
-      #endif
 
       let konfiguration = ArbeitsbereichKonfiguration()
       konfiguration.optimizeForTests()
@@ -898,7 +894,6 @@ class APITests: TestCase {
 
   func testHelp() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.1, SegFault)
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
         testCommand(
           Workspace.command,
           with: ["help"],
@@ -976,7 +971,6 @@ class APITests: TestCase {
           uniqueTestName: "Help (workspace normalize)",
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     #endif
   }
 

@@ -119,7 +119,7 @@ public struct GitHubConfiguration: Codable {
     for localization in localizations {
       if var template = GitHubConfiguration.contributingTemplate(for: localization) {
 
-        #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+        #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
           template.replaceMatches(
             for: "#packageName".scalars,
             with: WorkspaceContext.current.manifest.packageName.scalars

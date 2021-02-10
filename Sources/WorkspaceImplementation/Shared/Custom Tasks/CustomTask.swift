@@ -35,7 +35,7 @@ extension CustomTask {
   // MARK: - Execution
 
   internal func execute(output: Command.Output) throws {
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       _ = try Package(url: url).execute(
         .version(version),
         of: [executable],

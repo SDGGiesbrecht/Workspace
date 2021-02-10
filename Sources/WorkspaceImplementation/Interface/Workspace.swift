@@ -46,19 +46,13 @@ public enum Workspace: Tool {
           "Die Standort von dem Zielprojekt, wenn es nicht in dem aktuellen Arbeitsverzeichnis ist."
       }
     })
-  #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
     internal static let projectOption = Option(
       name: projectName,
       description: projectDescription,
       type: ArgumentType.path
     )
-  #endif
 
-  #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
-    internal static let standardOptions: [AnyOption] = []
-  #else
     internal static let standardOptions: [AnyOption] = [projectOption]
-  #endif
 
   private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {

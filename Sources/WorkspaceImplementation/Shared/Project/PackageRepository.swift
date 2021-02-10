@@ -329,15 +329,13 @@ extension PackageRepository {
   internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
     #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
       return WorkspaceConfiguration()
-    #elseif os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #elseif PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       return WorkspaceConfiguration()
     #else
       return try cached(in: &configurationCache.configuration) {
 
-        #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
           // Provide the context in case resolution happens internally.
           WorkspaceContext.current = try configurationContext()
-        #endif
 
         let result: WorkspaceConfiguration
         if try isWorkspaceProject() {
@@ -504,7 +502,7 @@ extension PackageRepository {
   internal func trackedFiles(output: Command.Output) throws -> [URL] {
     #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
       return []
-    #elseif os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #elseif PLATFORM_LACKS_FOUNDATION_PROCESS
       return []
     #else
       return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
@@ -615,7 +613,7 @@ extension PackageRepository {
     )
   #endif
 
-  #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     internal static func relatedPackage(
       _ package: SDGSwift.Package,
       output: Command.Output

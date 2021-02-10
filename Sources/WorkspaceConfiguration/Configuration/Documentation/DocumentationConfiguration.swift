@@ -363,7 +363,7 @@ public struct DocumentationConfiguration: Codable {
     localization: ContentLocalization
   ) -> StrictString? {
 
-    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       return nil
     #else
       let tools = WorkspaceContext.current.manifest.products.filter { $0.type == .executable }
@@ -449,7 +449,7 @@ public struct DocumentationConfiguration: Codable {
     localization: ContentLocalization
   ) -> StrictString? {
 
-    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       return nil
     #else
       let libraries = WorkspaceContext.current.manifest.products.filter { $0.type == .library }

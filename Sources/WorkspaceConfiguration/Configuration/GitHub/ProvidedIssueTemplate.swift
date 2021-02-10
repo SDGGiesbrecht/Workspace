@@ -166,7 +166,7 @@ internal enum ProvidedIssueTemplate: CaseIterable {
     }
 
     if self == .bugReport {
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         let products = WorkspaceContext.current.manifest.products
         contents.append("")
         switch localization {

@@ -80,7 +80,7 @@ jobs:
   Swift_Android_Alternate:
     name: Swift (Android) (Alternate)
     runs-on: ubuntu-18.04
-    needs: [ICU_Android, Swift_Ubuntu]
+    needs: [ICU_Android]
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -99,16 +99,8 @@ jobs:
         path: Android/ICU
     - name: Fetch Swift source
       uses: ./.github/Workflow Steps/Fetch Swift Source
-    - name: Download Swift
-      uses: actions/download-artifact@v1
-      with:
-        name: Swift
-        path: Ubuntu/Swift
-    - name: Download ICU
-      uses: actions/download-artifact@v1
-      with:
-        name: ICU
-        path: Android/ICU
+    - name: Build Swift for Ubuntu
+      uses: ./.github/Workflow Steps/Build Swift for Ubuntu
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
       # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml

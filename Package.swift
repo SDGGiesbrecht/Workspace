@@ -842,9 +842,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SwiftSyntax",
     "SwiftFormat\u{22}",
     // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
-    //"SwiftFormatConfiguration",
+    "SwiftFormatConfiguration",
   ]
-  // #warning("Experiment. ↑")
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
       return (dependency.name ?? dependency.url).contains(impossible)

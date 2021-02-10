@@ -312,6 +312,11 @@ jobs:
         cp Android/ICU/lib/libicui18n.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicuuc.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicudata.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
+    - name: Upload Swift SDK for Android
+      uses: actions/upload-artifact@v1
+      with:
+        name: Android_Alternate.sdk
+        path: Android/Swift/Android.sdk
     - name: Test SDK
       shell: bash
       run: |
@@ -342,7 +347,7 @@ jobs:
         path: HelloWorld/.build/x86_64-unknown-linux-android/debug
   Android:
     runs-on: macos-10.15
-    needs: Linux
+    needs: Swift_Android_Alternate
     steps:
     - name: Check out
       uses: actions/checkout@v1

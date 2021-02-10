@@ -13,7 +13,7 @@ jobs:
     - name: Make space
       uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
-      uses: ./.github/Workflow Steps/Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Android NDK
       uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Create Android C toolchain
@@ -38,7 +38,7 @@ jobs:
     - name: Make space
       uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
-      uses: ./.github/Workflow Steps/Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Swift source
       uses: ./.github/Workflow Steps/Fetch Swift Source
     - name: Build Swift for Ubuntu
@@ -58,7 +58,7 @@ jobs:
     - name: Make space
       uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
-      uses: ./.github/Workflow Steps/Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Android NDK
       uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Install Android NDK
@@ -87,7 +87,7 @@ jobs:
     - name: Make space
       uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
-      uses: ./.github/Workflow Steps/Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Android NDK
       uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Install Android NDK

@@ -411,7 +411,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _applySDGOverrides() {
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       let project = WorkspaceContext.current.manifest.packageName
       let repositoryURL =
         documentation.repositoryURL?.absoluteString
@@ -436,7 +436,7 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public func _validateSDGStandards(openSource: Bool = true) {
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       let needsAPIDocumentation = ¬WorkspaceContext.current.manifest.products.isEmpty
     #endif
 
@@ -445,7 +445,7 @@ public final class WorkspaceConfiguration: Configuration {
 
     if openSource {
       assert(documentation.projectWebsite ≠ nil, "No project website specified.")
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if needsAPIDocumentation {
           assert(documentation.documentationURL ≠ nil, "No documentation URL specified.")
         }

@@ -182,7 +182,7 @@ public struct FileHeaderConfiguration: Codable {
   public var copyrightNotice: Lazy<[LocalizationIdentifier: StrictString]> = Lazy<
     [LocalizationIdentifier: StrictString]
   >(resolve: { configuration in
-    #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       return [:]
     #else
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
@@ -227,7 +227,7 @@ public struct FileHeaderConfiguration: Codable {
   public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
 
     let localizations = configuration.documentation.localizations
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
     #endif
 
@@ -236,7 +236,7 @@ public struct FileHeaderConfiguration: Codable {
       "",
     ]
 
-    #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       header.append(
         contentsOf: configuration.sequentialLocalizations({ localization in
           let projectName = configuration.projectName[localization] ?? packageName
@@ -248,10 +248,10 @@ public struct FileHeaderConfiguration: Codable {
           }
         })
       )
-      if let site = configuration.documentation.projectWebsite {
-        header.append(StrictString(site.absoluteString))
-      }
     #endif
+    if let site = configuration.documentation.projectWebsite {
+      header.append(StrictString(site.absoluteString))
+    }
 
     header.append("")
 

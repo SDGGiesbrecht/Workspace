@@ -169,7 +169,7 @@ extension PackageRepository {
               )
             }
 
-            #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
               WorkspaceContext.current = try configurationContext()
             #endif
             if sdg {
@@ -360,19 +360,17 @@ extension PackageRepository {
                 }
               }
 
-              #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
-                testCommand(
-                  Workspace.command,
-                  with: command,
-                  localizations: localizations,
-                  uniqueTestName: specificationName,
-                  postprocess: postprocess,
-                  overwriteSpecificationInsteadOfFailing:
-                    overwriteSpecificationInsteadOfFailing,
-                  file: file,
-                  line: line
-                )
-              #endif
+              testCommand(
+                Workspace.command,
+                with: command,
+                localizations: localizations,
+                uniqueTestName: specificationName,
+                postprocess: postprocess,
+                overwriteSpecificationInsteadOfFailing:
+                  overwriteSpecificationInsteadOfFailing,
+                file: file,
+                line: line
+              )
             }
 
             #if !os(Linux)

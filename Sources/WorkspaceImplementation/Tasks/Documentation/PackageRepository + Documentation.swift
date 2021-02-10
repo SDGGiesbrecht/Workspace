@@ -84,7 +84,7 @@ extension PackageRepository {
     return result
   }
 
-  #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     private func loadCommandLineInterface(
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
@@ -151,7 +151,7 @@ extension PackageRepository {
               ]
             }
           case .project(let url):
-            #if os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+            #if PLATFORM_LACKS_FOUNDATION_PROCESS
               func dodgeLackOfThrowingCalls() throws {}
               try dodgeLackOfThrowingCalls()
             #else

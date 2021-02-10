@@ -276,7 +276,7 @@ extension Workspace.Validate {
             }).resolved().formattedAsSectionHeader()
           )
 
-          #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             let difference = try options.project.uncommittedChanges().get()
             if ¬difference.isEmpty {
               output.print(difference.separated())

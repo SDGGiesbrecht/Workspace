@@ -95,7 +95,7 @@ public struct ReadMeConfiguration: Codable {
         ]
       }
 
-      #if !os(WASI)  // #workaround(SDGSwift 4.0.1, Web API incomplete.)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         readMe += ["# " + WorkspaceContext.current.manifest.packageName.scalars]
       #endif
 

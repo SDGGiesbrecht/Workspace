@@ -820,6 +820,11 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
     .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
   ])
+
+  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+    // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
+  }
 }
 
 import Foundation

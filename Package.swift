@@ -812,6 +812,11 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.2, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(Swift 5.3.3, Cannot build SwiftFormatConfiguration for web.)
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
+      .when(platforms: [.wasi])
+    ),
   ])
 }
 

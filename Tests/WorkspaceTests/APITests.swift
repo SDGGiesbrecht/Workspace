@@ -69,8 +69,7 @@ class APITests: TestCase {
       configuration.optimizeForTests()
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.proofreading.swiftFormatConfiguration = nil
       #endif
       configuration.testing.prohibitCompilerWarnings = false
@@ -128,8 +127,7 @@ class APITests: TestCase {
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.rules.insert(.listSeparation)
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] = true
       #endif
       let failing = CustomTask(
@@ -227,8 +225,7 @@ class APITests: TestCase {
       configuration.documentation.api.yearFirstPublished = 2018
       configuration.documentation.api.ignoredDependencies.remove("Swift")
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] = false
         configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] = false
       #endif
@@ -443,8 +440,7 @@ class APITests: TestCase {
       XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
       configuration.projektname["de"] = "Lokalisiert"
       XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.korrektur.swiftFormatKonfiguration = nil
         XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
       #endif
@@ -605,8 +601,7 @@ class APITests: TestCase {
       configuration.customValidationTasks.append(passing)
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.proofreading.swiftFormatKonfiguration = nil
       #endif
       configuration.testing.prohibitCompilerWarnings = false
@@ -793,8 +788,7 @@ class APITests: TestCase {
       configuration.customValidationTasks.append(failing)
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
-      // #workaround(Swift 5.3, SwiftFormat cannot build.)
-      #if !os(WASI)
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
         configuration.proofreading.swiftFormatConfiguration = nil
       #endif
       configuration.testing.prohibitCompilerWarnings = false

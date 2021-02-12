@@ -5,7 +5,6 @@ runs:
   steps:
     - name: Build Swift SDK for Android
       # Based on https://github.com/apple/swift/blob/main/docs/Android.md#2-building-the-swift-stdlib-for-android
-      # Also based on https://github.com/buttaface/swift-android-sdk/blob/main/README.md#building-the-android-sdks
       shell: bash
       run: |
         set -x
@@ -21,5 +20,4 @@ runs:
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --install-swift
-          --install-libdispatch
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

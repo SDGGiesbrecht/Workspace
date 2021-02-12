@@ -27,8 +27,7 @@ import SDGCommandLine
 import SDGSwift
 import SDGSwiftPackageManager
 
-// #workaround(SDGSwift 5.1.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
   import SwiftFormat
 #endif
@@ -41,8 +40,7 @@ extension PackageRepository {
 
     // MARK: - Initialization
 
-    // #workaround(SDGSwift 5.1.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal init(
         loadedTarget: PackageModel.Target,
         package: PackageRepository
@@ -54,14 +52,13 @@ extension PackageRepository {
 
     // MARK: - Properties
 
-    // #workaround(SDGSwift 5.1.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private let loadedTarget: PackageModel.Target
     #endif
     private let package: PackageRepository
 
     internal var name: String {
-      #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         return ""
       #else
         return loadedTarget.name
@@ -69,7 +66,7 @@ extension PackageRepository {
     }
 
     private var sourceDirectory: URL {
-      #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         return package.location
       #else
         return loadedTarget.sources.root.asURL
@@ -105,8 +102,7 @@ extension PackageRepository {
       of package: PackageRepository
     ) throws -> StrictString {
       let accessControl: String
-      // #workaround(SDGSwift 5.1.0, Cannot build.)
-      #if os(Windows) || os(WASI) || os(Android)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         accessControl = ""
       #else
         switch loadedTarget.type {

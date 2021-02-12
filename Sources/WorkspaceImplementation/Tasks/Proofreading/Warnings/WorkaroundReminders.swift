@@ -120,7 +120,7 @@ internal struct WorkaroundReminders: Warning {
     for project: PackageRepository,
     output: Command.Output
   ) throws -> SDGVersioning.Version? {
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       return nil
     #else
       if let dependency = try project.dependenciesByName()[String(dependency)],

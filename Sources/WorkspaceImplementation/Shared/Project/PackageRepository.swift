@@ -30,8 +30,7 @@ import SDGSwift
 import SDGSwiftPackageManager
 import SDGSwiftConfigurationLoading
 
-// #workaround(SDGSwift 5.1.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
   import PackageGraph
 #endif
@@ -80,8 +79,7 @@ extension PackageRepository {
     // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
     // Changes to support files do not require a reset (read‐me, etc.).
     private class ManifestCache {
-      // #workaround(SDGSwift 5.1.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         fileprivate var manifest: PackageModel.Manifest?
         fileprivate var package: PackageModel.Package?
         fileprivate var windowsPackage: PackageModel.Package?
@@ -185,7 +183,7 @@ extension PackageRepository {
 
   // MARK: - Manifest
 
-  #if !(os(Windows) || os(WASI) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func cachedManifest() throws -> PackageModel.Manifest {
       return try cached(in: &manifestCache.manifest) {
         return try manifest().get()
@@ -199,7 +197,7 @@ extension PackageRepository {
     }
   #endif
 
-  #if !(os(Windows) || os(WASI) || os(Android))  // #workaround(Swift 5.3, SwiftPM won’t compile.)
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func cachedPackageGraph() throws -> PackageGraph {
       return try cached(in: &manifestCache.packageGraph) {
         return try packageGraph().get()
@@ -208,7 +206,7 @@ extension PackageRepository {
   #endif
 
   internal func packageName() throws -> StrictString {
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       return "[???]"
     #else
       return StrictString(try cachedManifest().name)
@@ -229,8 +227,7 @@ extension PackageRepository {
     return try projectName(in: identifier, output: output)
   }
 
-  // #workaround(SDGSwift 5.1.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
         var products: [PackageModel.Product] = []
@@ -282,7 +279,7 @@ extension PackageRepository {
     #else
       return try cached(in: &configurationCache.configurationContext) {
 
-        #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           let products: [PackageManifest.Product] = []
         #else
           let products = try self.products()

@@ -14,8 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SDGSwift 5.1.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
 
   extension ProductType {

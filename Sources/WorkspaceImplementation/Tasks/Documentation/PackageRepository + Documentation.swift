@@ -45,7 +45,7 @@ extension PackageRepository {
   // MARK: - Properties
 
   internal func hasTargetsToDocument() throws -> Bool {
-    #if os(Windows) || os(WASI) || os(Android)  // #workaround(SDGSwift 5.1.0, Cannot build.)
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       return true
     #else
       return try cachedPackage().products.contains(where: { $0.type.isLibrary })

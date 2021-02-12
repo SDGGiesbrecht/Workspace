@@ -1,0 +1,10 @@
+
+name: Fetch ICU Source
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch ICU Source
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/unicode-org/icu --branch release-67-1 --depth 1

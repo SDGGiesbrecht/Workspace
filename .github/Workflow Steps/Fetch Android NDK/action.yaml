@@ -1,0 +1,16 @@
+
+name: Fetch Android NDK
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch Android NDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
+        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle

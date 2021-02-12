@@ -1,0 +1,14 @@
+
+name: Fetch Swift source
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch Swift source
+      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#cloning-the-project
+      shell: bash
+      run: |
+        set -x
+        mkdir swift-source
+        cd swift-source
+        git clone https://github.com/apple/swift.git --depth 1
+        ./swift/utils/update-checkout --clone --skip-history

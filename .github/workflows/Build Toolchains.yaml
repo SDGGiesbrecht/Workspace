@@ -4,146 +4,103 @@ name: Build Toolchains
 on: [push, pull_request]
 
 jobs:
-  Linux:
+  ICU_Android:
+    name: ICU (Android)
     runs-on: ubuntu-18.04
     steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Make space
-      # Because GitHub’s host does not have enough memory without clearing other stuff out.
-      shell: bash
-      run: |
-        set -x
-        du --human-readable --max-depth=1 / || true
-        du --human-readable --max-depth=1 /usr || true
-        du --human-readable --max-depth=1 /usr/share || true
-        rm -rf /usr/share/dotnet
-        du --human-readable --max-depth=1 /usr/share || true
+      uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
-      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#ubuntu-linux
-      shell: bash
-      run: |
-        set -x
-        sudo apt-get update --assume-yes
-        sudo apt-get install --assume-yes \
-          clang-7 \
-          cmake \
-          git \
-          icu-devtools \
-          libcurl4-openssl-dev \
-          libedit-dev \
-          libicu-dev \
-          libncurses5-dev \
-          libpython3-dev \
-          libsqlite3-dev \
-          libxml2-dev \
-          ninja-build \
-          pkg-config \
-          python \
-          python-six \
-          rsync \
-          swig \
-          systemtap-sdt-dev \
-          tzdata \
-          uuid-dev
-        sudo snap install sccache --candidate --classic
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Android NDK
-      shell: bash
-      run: |
-        set -x
-        curl --location \
-          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
-          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
-        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
-        rm -rf ${ANDROID_HOME}/ndk-bundle
-        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
-        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
-        export PATH="${ANDROID_HOME}/ndk-bundle:${PATH}"
-        echo "PATH=${PATH}" >> $GITHUB_ENV
-        which ndk-build
-    - name: Fetch ICU source
-      shell: bash
-      run: |
-        set -x
-        git clone https://github.com/unicode-org/icu --branch release-67-1 --depth 1
-    - name: Build ICU for Linux
-      # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToBuildUNIX
-      shell: bash
-      run: |
-        set -x
-        mkdir icu4c-build-linux
-        cd icu4c-build-linux
-        ../icu/icu4c/source/runConfigureICU Linux
-        make
+      uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Create Android C toolchain
-      # Based on https://gist.github.com/DanielSerdyukov/188d47e29150622352f1
-      shell: bash
-      run: |
-        set -x
-        ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
-          --install-dir=${GITHUB_WORKSPACE}/Android/C
-        find ${GITHUB_WORKSPACE}/Android/C
+      uses: ./.github/Workflow Steps/Create Android C Toolchain
+    - name: Fetch ICU source
+      uses: ./.github/Workflow Steps/Fetch ICU Source
+    - name: Build ICU for Ubuntu
+      uses: ./.github/Workflow Steps/Build ICU for Ubuntu
     - name: Build ICU for Android
-      # Based on https://htmlpreview.github.io/?https://github.com/unicode-org/icu/blob/master/icu4c/readme.html#HowToCrossCompileICU
-      shell: bash
-      run: |
-        set -x
-        mkdir icu4c-build-android
-        cd icu4c-build-android
-        ../icu/icu4c/source/configure \
-          --host=x86_64-unknown-linux-android \
-          --with-cross-build=${GITHUB_WORKSPACE}/icu4c-build-linux \
-          --prefix=${GITHUB_WORKSPACE}/Android/ICU \
-          CC=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang \
-          CXX=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android29-clang++ \
-          RANLIB=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android-ranlib \
-          AR=${GITHUB_WORKSPACE}/Android/C/bin/x86_64-linux-android-ar \
-          --enable-layoutex=no
-        make
-        make install
-        find ${GITHUB_WORKSPACE}/Android/ICU
+      uses: ./.github/Workflow Steps/Build ICU for Android
     - name: Upload ICU
       uses: actions/upload-artifact@v1
       with:
         name: ICU
         path: Android/ICU
-    - name: Clean ICU source up
-      shell: bash
-      run: |
-        set -x
-        rm -rf icu
+  Swift_Ubuntu:
+    name: Swift (Ubuntu)
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
     - name: Fetch Swift source
-      # Based on https://github.com/apple/swift/blob/main/docs/HowToGuides/GettingStarted.md#cloning-the-project
-      shell: bash
-      run: |
-        set -x
-        mkdir swift-source
-        cd swift-source
-        git clone https://github.com/apple/swift.git --depth 1
-        ./swift/utils/update-checkout --clone --skip-history
-    - name: Build Swift for Linux
-      # Based on https://github.com/apple/swift/blob/master/utils/build-toolchain
-      # Also based on https://github.com/apple/swift/blob/master/utils/build-presets.ini
-      shell: bash
-      run: |
-        set -x
-        cd swift-source/swift
-        ./utils/build-script --release \
-          --install-destdir ${GITHUB_WORKSPACE}/Linux/Swift \
-          --install-swift \
-          --install-lldb --lldb \
-          --install-llbuild --llbuild \
-          --install-llvm --llvm-install-components 'IndexStore' \
-          --indexstore-db \
-          --install-swiftpm --swiftpm \
-          --install-xctest --xctest \
-          --install-libicu --libicu \
-          --install-libcxx --libcxx \
-          --install-foundation --foundation \
-          --install-libdispatch --libdispatch
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc --version
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift --version
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift package --version
+      uses: ./.github/Workflow Steps/Fetch Swift Source
+    - name: Build Swift for Ubuntu
+      uses: ./.github/Workflow Steps/Build Swift for Ubuntu
+    - name: Upload Swift for Ubuntu
+      uses: actions/upload-artifact@v1
+      with:
+        name: Swift
+        path: Ubuntu/Swift
+  Swift_Android:
+    name: Swift (Android)
+    runs-on: ubuntu-18.04
+    needs: ICU_Android
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Install Android NDK
+      uses: ./.github/Workflow Steps/Install Android NDK
+    - name: Fetch Swift source
+      uses: ./.github/Workflow Steps/Fetch Swift Source
+    - name: Download ICU
+      uses: actions/download-artifact@v1
+      with:
+        name: ICU
+        path: Android/ICU
+    - name: Build Swift SDK for Android
+      uses: ./.github/Workflow Steps/Build Swift SDK for Android
+    - name: Upload Swift SDK for Android
+      uses: actions/upload-artifact@v1
+      with:
+        name: Android.sdk
+        path: Android/Swift/Android.sdk
+  Swift_Android_Alternate:
+    name: Swift (Android) (Alternate)
+    runs-on: ubuntu-18.04
+    needs: [ICU_Android]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Install Android NDK
+      uses: ./.github/Workflow Steps/Install Android NDK
+    - name: Download ICU
+      uses: actions/download-artifact@v1
+      with:
+        name: ICU
+        path: Android/ICU
+    - name: Fetch Swift source
+      uses: ./.github/Workflow Steps/Fetch Swift Source
+    - name: Build Swift for Ubuntu
+      uses: ./.github/Workflow Steps/Build Swift for Ubuntu
     - name: Prepare LLVM for Android
       # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
       # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml
@@ -160,7 +117,7 @@ jobs:
           -S ${GITHUB_WORKSPACE}/swift-source/llvm-project/llvm \
           -B LLVM \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D LLVM_HOST_TRIPLE=x86_64-unknown-linux-android
@@ -178,11 +135,11 @@ jobs:
           -B Standard_Library \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidStandardLibrary.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D LLVM_DIR=${GITHUB_WORKSPACE}/swift-build/LLVM/lib/cmake/llvm \
-          -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin \
+          -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
           -D ICU_UC_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
           -D ICU_UC_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
@@ -201,11 +158,11 @@ jobs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-libdispatch \
           -B Dispatch \
-          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
@@ -286,11 +243,11 @@ jobs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-foundation \
           -B Foundation \
-          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
@@ -321,11 +278,11 @@ jobs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
           -B XCTest \
-          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swiftc \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Linux/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
@@ -347,16 +304,16 @@ jobs:
         cp Android/ICU/lib/libicui18n.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicuuc.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicudata.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
-    - name: Upload Android SDK
+    - name: Upload Swift SDK for Android
       uses: actions/upload-artifact@v1
       with:
-        name: Android.sdk
+        name: Android_Alternate.sdk
         path: Android/Swift/Android.sdk
     - name: Test SDK
       shell: bash
       run: |
         cd HelloWorld
-        ${GITHUB_WORKSPACE}/Linux/Swift/usr/bin/swift build \
+        ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swift build \
           --build-tests --enable-test-discovery \
           --triple x86_64-unknown-linux-android \
           --sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
@@ -364,8 +321,8 @@ jobs:
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
           -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
           -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/sysroot/usr/include/x86_64-linux-android \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android \
           -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
           -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
     - name: Copy libraries
@@ -382,7 +339,7 @@ jobs:
         path: HelloWorld/.build/x86_64-unknown-linux-android/debug
   Android:
     runs-on: macos-10.15
-    needs: Linux
+    needs: Swift_Android_Alternate
     steps:
     - name: Check out
       uses: actions/checkout@v1

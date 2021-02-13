@@ -121,55 +121,11 @@ jobs:
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D LLVM_HOST_TRIPLE=x86_64-unknown-linux-android
-    - name: Build standard library for Android
-      shell: bash
-      run: |
-        set -x
-        cd swift-build
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S ${GITHUB_WORKSPACE}/swift-source/swift \
-          -B Standard_Library \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -C ${GITHUB_WORKSPACE}/CMake/AndroidStandardLibrary.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
-          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
-          -D CMAKE_BUILD_TYPE=Release \
-          -D LLVM_DIR=${GITHUB_WORKSPACE}/swift-build/LLVM/lib/cmake/llvm \
-          -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-          -D ICU_UC_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
-          -D ICU_UC_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
-          -D ICU_I18N_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include \
-          -D ICU_I18N_LIBRARIES=${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1
-        cmake --build Standard_Library --target install
-    - name: Build Dispatch for Android
-      shell: bash
-      run: |
-        set -x
-        cd swift-build
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-libdispatch \
-          -B Dispatch \
-          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swiftc \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
-          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
-          -D CMAKE_BUILD_TYPE=Release \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
-          -D BUILD_TESTING=NO \
-          -D ENABLE_SWIFT=YES \
-          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
-        cmake --build Dispatch
+    - name: Download incomplete standard build
+      uses: actions/download-artifact@v1
+      with:
+        name: Android.sdk
+        path: Android/Swift/Android.sdk
     - name: Build zlib for Android
       # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
       shell: bash

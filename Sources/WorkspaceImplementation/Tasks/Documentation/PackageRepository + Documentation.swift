@@ -15,8 +15,7 @@
  */
 
 import Foundation
-// #workaround(Swift 5.3, Web lacks Dispatch.)
-#if !os(WASI)
+#if !PLATFORM_LACKS_DISPATCH
   import Dispatch
 #endif
 

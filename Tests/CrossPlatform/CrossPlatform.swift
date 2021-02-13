@@ -24,7 +24,7 @@ import Foundation
   #endif
 #endif
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Dispatch.)
+#if !PLATFORM_LACKS_DISPATCH
   import Dispatch
 #endif
 
@@ -43,7 +43,7 @@ public func helloWorld() {
   #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Dispatch.)
+  #if !PLATFORM_LACKS_DISPATCH
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
   helloC()

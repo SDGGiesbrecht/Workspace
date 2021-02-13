@@ -37,17 +37,12 @@ internal struct TextFile {
         unreachable()
       }
 
-      var contents = try String(from: location)
-
-      // #workaround(SDGSwift 3.0.3, Ensure string is internally UTF‐8 so that indices from SDGSwiftSource work.)
-      contents.makeContiguousUTF8()
-
       let executable = FileManager.default.isExecutableFile(atPath: location.path)
       self.init(
         location: location,
         fileType: fileType,
         executable: executable,
-        contents: contents,
+        contents: try String(from: location),
         isNew: false
       )
     }

@@ -21,5 +21,6 @@ runs:
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --install-swift \
-          --install-libdispatch
+          --install-foundation --foundation \
+          --install-libdispatch --libdispatch
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

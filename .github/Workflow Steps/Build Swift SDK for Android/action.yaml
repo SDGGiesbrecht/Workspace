@@ -22,5 +22,6 @@ runs:
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --install-swift \
           --install-foundation --foundation \
-          --install-libdispatch --libdispatch
+          --install-libdispatch --libdispatch \
+          --install-xctest --xctest
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

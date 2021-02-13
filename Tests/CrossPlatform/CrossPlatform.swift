@@ -19,12 +19,12 @@ import Foundation
   import FoundationNetworking
 #endif
 #if canImport(FoundationXML)
-  #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
+  #if !PLATFORM_LACKS_FOUNDATION_XML
     import FoundationXML
   #endif
 #endif
 
-#if !os(WASI)  // #workaround(Swift 5.3, Web lacks Dispatch.)
+#if !PLATFORM_LACKS_DISPATCH
   import Dispatch
 #endif
 
@@ -37,13 +37,13 @@ import CrossPlatformC
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks FoundationNetworking.)
+  #if canImport(FoundationNetworking)
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3, FoundationXML is broken.)
+  #if !PLATFORM_LACKS_FOUNDATION_XML
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  #if !os(WASI)  // #workaround(Swift 5.3, Web lacks Dispatch.)
+  #if !PLATFORM_LACKS_DISPATCH
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
   helloC()

@@ -29,7 +29,7 @@ import SDGPersistenceTestUtilities
 final class Tests: TestCase {
 
   func testCachePermissions() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       let directory = FileManager.default.url(in: .cache, at: "Directory")
       try? FileManager.default.removeItem(at: directory)
       defer { try? FileManager.default.removeItem(at: directory) }
@@ -79,7 +79,7 @@ final class Tests: TestCase {
     let ignored = testSpecificationDirectory()
       .deletingPathExtension().deletingPathExtension()
       .appendingPathComponent(".build/SDG/Ignored/Text.txt")
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try? FileManager.default.removeItem(at: ignored)
       defer { try? FileManager.default.removeItem(at: ignored) }
       try "text".save(to: ignored)
@@ -87,7 +87,7 @@ final class Tests: TestCase {
   }
 
   func testTemporaryDirectoryPermissions() throws {
-    #if !os(WASI)  // #workaround(Swift 5.3.1, Web lacks FileManager.)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in
         try "text".save(to: directory.appendingPathComponent("Text.txt"))
       }

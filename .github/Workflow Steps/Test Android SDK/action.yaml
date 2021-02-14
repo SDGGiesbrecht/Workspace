@@ -1,0 +1,22 @@
+
+name: Test Android SDK
+runs:
+  using: "composite"
+  steps:
+    - name: Test Android SDK
+      shell: bash
+      run: |
+        set -x
+        cd HelloWorld
+        ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swift build \
+          --build-tests --enable-test-discovery \
+          --triple x86_64-unknown-linux-android \
+          --sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          -Xswiftc -resource-dir -Xswiftc ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android \
+          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android

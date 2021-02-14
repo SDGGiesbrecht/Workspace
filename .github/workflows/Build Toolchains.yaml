@@ -51,7 +51,7 @@ jobs:
   Swift_Android:
     name: Swift (Android)
     runs-on: ubuntu-18.04
-    needs: ICU_Android
+    needs: [ICU_Android, Swift_Ubuntu]
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -77,6 +77,31 @@ jobs:
       with:
         name: Android.sdk
         path: Android/Swift/Android.sdk
+  Swift_Tests_Android:
+    name: Swift Tests (Android)
+    runs-on: ubuntu-18.04
+    needs: [Swift_Ubuntu, Swift_Android]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Download Swift for Ubuntu
+      uses: actions/download-artifact@v1
+      with:
+        name: Swift
+        path: Ubuntu/Swift
+    - name: Download Swift SDK for Android
+      uses: actions/download-artifact@v1
+      with:
+        name: Android.sdk
+        path: Android/Swift/Android.sdk
+    - name: Test SDK
+      uses: ./.github/Workflow Steps/Test Android SDK
   Swift_Android_Alternate:
     name: Swift (Android) (Alternate)
     runs-on: ubuntu-18.04
@@ -310,21 +335,7 @@ jobs:
         name: Android_Alternate.sdk
         path: Android/Swift/Android.sdk
     - name: Test SDK
-      shell: bash
-      run: |
-        cd HelloWorld
-        ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swift build \
-          --build-tests --enable-test-discovery \
-          --triple x86_64-unknown-linux-android \
-          --sdk ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
-          -Xswiftc -resource-dir -Xswiftc ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift \
-          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --gcc-toolchain=${ANDROID_HOME}/ndk-bundle/toolchains/x86_64-4.9/prebuilt/linux-x86_64 \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android \
-          -Xswiftc -I -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android/x86_64 \
-          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/Library/XCTest-development/usr/lib/swift/android
+      uses: ./.github/Workflow Steps/Test Android NDK
     - name: Copy libraries
       shell: bash
       run: |

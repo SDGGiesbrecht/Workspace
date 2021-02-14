@@ -157,7 +157,7 @@ extension PackageRepository {
 
           try FileManager.default.do(in: location) {
             #if os(Android)
-              // #workaround(Swift 5.3.1, Emulator lacks Git.)
+              // #workaround(Swift 5.3.3, Emulator lacks Git.)
               return
             #endif
             _ = try Shell.default.run(command: ["git", "init"]).get()
@@ -458,10 +458,7 @@ extension PackageRepository {
                       line: line
                     )
                   } else {
-                    // #workaround(SDGSwift 3.0.2, Git status does not handle special characters correctly.)
-                    if ¬fileName.contains("Prüfen") {
-                      XCTFail("Unexpected file produced: “\(fileName)”")
-                    }
+                    XCTFail("Unexpected file produced: “\(fileName)”")
                   }
                 } else {
                   if (try? String(from: after)) ≠ nil {

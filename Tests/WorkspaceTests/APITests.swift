@@ -40,7 +40,7 @@ class APITests: TestCase {
   static let configureGit: Void = {
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       if isInGitHubAction {
-        #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+        #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
           #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try? Git.runCustomSubcommand(
               ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
@@ -64,7 +64,7 @@ class APITests: TestCase {
   }
 
   func testAllDisabled() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.provideWorkflowScripts = false
@@ -90,7 +90,7 @@ class APITests: TestCase {
   }
 
   func testAllTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.optIntoAllTasks()
@@ -123,7 +123,7 @@ class APITests: TestCase {
   }
 
   func testBadStyle() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.rules.insert(.listSeparation)
@@ -153,7 +153,7 @@ class APITests: TestCase {
   }
 
   func testBrokenExample() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "BrokenExample").test(
           commands: [
@@ -167,7 +167,7 @@ class APITests: TestCase {
   }
 
   func testBrokenTests() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "BrokenTests").test(
           commands: [
@@ -181,7 +181,7 @@ class APITests: TestCase {
   }
 
   func testCheckedInDocumentation() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "en",
       ]).get()
@@ -263,8 +263,8 @@ class APITests: TestCase {
   }
 
   func testCheckForUpdates() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3, Segmentation fault.)
-      // #workaround(Swift 5.3.1, Emulator lacks Git.)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, Segmentation fault.)
+      // #workaround(Swift 5.3.3, Emulator lacks Git.)
       #if !os(Android)
         _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
       #endif
@@ -272,7 +272,7 @@ class APITests: TestCase {
   }
 
   func testConfiguration() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults(openSource: false)
       XCTAssertFalse(configuration.documentation.readMe.manage)
@@ -486,7 +486,7 @@ class APITests: TestCase {
   }
 
   func testContinuousIntegrationWithoutScripts() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.provideWorkflowScripts = false
       configuration.normalize = true
@@ -515,7 +515,7 @@ class APITests: TestCase {
   }
 
   func testCustomProofread() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.normalize = true
       configuration.proofreading.rules.remove(.calloutCasing)
@@ -551,7 +551,7 @@ class APITests: TestCase {
   }
 
   func testCustomReadMe() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.currentVersion = Version(1, 2, 3)
       configuration.documentation.repositoryURL = URL(
@@ -588,7 +588,7 @@ class APITests: TestCase {
   }
 
   func testCustomTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       let passing = CustomTask(
@@ -640,7 +640,7 @@ class APITests: TestCase {
   }
 
   func testDefaults() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let commands: [[StrictString]] = [
           ["refresh", "scripts"],
@@ -674,7 +674,7 @@ class APITests: TestCase {
   }
 
   func testDeutsch() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       var output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
       ]).get()
@@ -723,7 +723,7 @@ class APITests: TestCase {
   }
 
   func testExecutable() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.supportedPlatforms.remove(.iOS)
@@ -747,7 +747,7 @@ class APITests: TestCase {
   }
 
   func testFailingCustomTasks() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       let failing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,
@@ -776,7 +776,7 @@ class APITests: TestCase {
   }
 
   func testFailingCustomValidation() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       let failing = CustomTask(
@@ -809,7 +809,7 @@ class APITests: TestCase {
   }
 
   func testFailingDocumentationCoverage() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.documentation.localizations = ["zxx"]
@@ -830,7 +830,7 @@ class APITests: TestCase {
   }
 
   func testFailingTests() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
       // Attempt to remove existing derived data so that the build is clean.
@@ -867,7 +867,7 @@ class APITests: TestCase {
   }
 
   func testHeaders() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["🇨🇦EN"]
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
@@ -887,7 +887,7 @@ class APITests: TestCase {
   }
 
   func testHelp() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3.1, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       testCommand(
         Workspace.command,
         with: ["help"],
@@ -969,7 +969,7 @@ class APITests: TestCase {
   }
 
   func testInvalidResourceDirectory() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "InvalidResourceDirectory").test(
           commands: [
@@ -983,7 +983,7 @@ class APITests: TestCase {
   }
 
   func testInvalidTarget() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "InvalidTarget").test(
           commands: [
@@ -997,7 +997,7 @@ class APITests: TestCase {
   }
 
   func testIssueTemplate() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       var vorlage = Themavorlage(
         name: "",
         beschreibung: "",
@@ -1028,7 +1028,7 @@ class APITests: TestCase {
   }
 
   func testLocalizationIdentifier() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       var dictionary: [LocalizationIdentifier: Bool] = [:]
       dictionary[ContentLocalization.englishCanada] = true
       XCTAssertEqual(dictionary["🇨🇦EN"], true)
@@ -1062,7 +1062,7 @@ class APITests: TestCase {
   }
 
   func testMissingDocumentation() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "MissingDocumentation").test(
           commands: [
@@ -1076,7 +1076,7 @@ class APITests: TestCase {
   }
 
   func testMissingExample() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         PackageRepository(mock: "MissingExample").test(
           commands: [
@@ -1090,7 +1090,7 @@ class APITests: TestCase {
   }
 
   func testMissingReadMeLocalization() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.readMe.contents.resolve = { _ in [:] }
@@ -1108,7 +1108,7 @@ class APITests: TestCase {
   }
 
   func testMultipleProducts() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1127,7 +1127,7 @@ class APITests: TestCase {
   }
 
   func testNoLibraries() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1146,7 +1146,7 @@ class APITests: TestCase {
   }
 
   func testNoLocalizations() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
@@ -1164,7 +1164,7 @@ class APITests: TestCase {
   }
 
   func testNurDeutsch() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
@@ -1185,7 +1185,7 @@ class APITests: TestCase {
   }
 
   func testOneLocalization() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
@@ -1202,7 +1202,7 @@ class APITests: TestCase {
   }
 
   func testOneProductMultipleModules() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["en"]
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -1224,7 +1224,7 @@ class APITests: TestCase {
   }
 
   func testOnlyBritish() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.gitHub.manage = true
       #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
@@ -1242,7 +1242,7 @@ class APITests: TestCase {
   }
 
   func testPartialReadMe() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration.optimizeForTests()
       configuration.documentation.currentVersion = Version(0, 1, 0)
@@ -1305,7 +1305,7 @@ class APITests: TestCase {
   }
 
   func testSDGLibrary() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
       configuration.optimizeForTests()
@@ -1382,7 +1382,7 @@ class APITests: TestCase {
   }
 
   func testSDGTool() {
-    #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
       configuration.optimizeForTests()
@@ -1460,8 +1460,8 @@ class APITests: TestCase {
   }
 
   func testSelfSpecificScripts() throws {
-    #if !os(Android)  // #workaround(Swift 5.3.1, Emulator lacks Git.)
-      #if !os(Windows)  // #workaround(Swift 5.3, SegFault)
+    #if !os(Android)  // #workaround(Swift 5.3.3, Emulator lacks Git.)
+      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try FileManager.default.do(in: repositoryRoot) {
             _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()

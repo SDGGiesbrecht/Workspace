@@ -41,7 +41,7 @@ final class Tests: TestCase {
   func testGit() throws {
     #if !PLATFORM_LACKS_GIT
       #if os(Windows)
-        // #workaround(Swift 5.3, The standard way hits a segmentation fault.)
+        // #workaround(Swift 5.3.3, The standard way hits a segmentation fault.)
         guard
           let git = ExternalProcess(
             searching: [],
@@ -54,7 +54,7 @@ final class Tests: TestCase {
         }
         let version = try git.run(["\u{2D}\u{2D}version"]).get()
         print(version)
-      // #workaround(Swift 5.3, Segmentation fault.)
+      // #workaround(Swift 5.3.3, Segmentation fault.)
       // print(Version(firstIn: version))
       #else
         _ = try Git.runCustomSubcommand(

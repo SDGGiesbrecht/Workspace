@@ -1,0 +1,10 @@
+
+name: Fix Permissions for Swift for Ubuntu
+runs:
+  using: "composite"
+  steps:
+    - name: Fix Permissions for Swift for Ubuntu
+      shell: bash
+      run: |
+        set -x
+        chmod -R +rwx ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin

@@ -21,7 +21,7 @@ runs:
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --install-swift \
-          --swift-install-components='license;stdlib;sdk-overlay'
+          --swift-install-components='license;stdlib;sdk-overlay' \
           --install-foundation --foundation \
           --install-libdispatch --libdispatch \
           --install-xctest --xctest

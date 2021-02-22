@@ -9,7 +9,7 @@ runs:
         set -x
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes \
-          curl=6
+          curl=6.5.2-4
         curl --location \
           'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
           --output '/tmp/android-ndk-r21d-linux-x86_64.zip'

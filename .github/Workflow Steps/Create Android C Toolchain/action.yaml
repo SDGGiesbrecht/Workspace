@@ -8,6 +8,9 @@ runs:
       shell: bash
       run: |
         set -x
+        sudo apt-get update --assume-yes
+        sudo apt-get install --assume-yes \
+          curl=6 \
         ${ANDROID_HOME}/ndk-bundle/build/tools/make-standalone-toolchain.sh \
           --install-dir=${GITHUB_WORKSPACE}/Android/C
         find ${GITHUB_WORKSPACE}/Android/C

@@ -10,12 +10,12 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v1
-    - name: Fetch Android NDK
-      uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Make space
       uses: ./.github/Workflow Steps/Make Space
     - name: Install Swift dependencies
       uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Create Android C toolchain
       uses: ./.github/Workflow Steps/Create Android C Toolchain
     - name: Fetch ICU source

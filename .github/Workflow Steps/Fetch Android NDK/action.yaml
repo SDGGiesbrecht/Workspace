@@ -7,6 +7,7 @@ runs:
       shell: bash
       run: |
         set -x
+        sudo apt-cache showpkg curl
         sudo apt-get update --assume-yes
         sudo apt-get install --assume-yes \
           curl=6.5.2-4

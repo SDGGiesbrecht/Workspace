@@ -64,7 +64,17 @@ extension PackageRepository {
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
+              let multiarchitectureLog = try self.build(
+                for: .macOS,
+                allArchitectures: true,
+                reportProgress: { report in
+                  if let relevant = Xcode.abbreviate(output: report) {
+                    output.print(relevant)
+                  }
+                }
+              ).get()
               return ¬SwiftCompiler.warningsOccurred(during: log)
+                ∧ ¬Xcode.warningsOccurred(during: multiarchitectureLog)
             }
           case .windows, .web, .android, .miscellaneous, .deployment:
             unreachable()
@@ -72,6 +82,7 @@ extension PackageRepository {
             buildCommand = { output in
               let log = try self.build(
                 for: job.buildSDK,
+                allArchitectures: true,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
                     output.print(relevant)

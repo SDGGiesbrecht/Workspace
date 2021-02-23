@@ -14,6 +14,7 @@ runs:
           --install-destdir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --android-ndk ${ANDROID_HOME}/ndk-bundle \
           --android-arch x86_64 \
+          --cross-compile-hosts android-x86_64 \
           --android-api-level 29 \
           --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
           --android-icu-uc-include ${GITHUB_WORKSPACE}/Android/ICU/include/unicode \

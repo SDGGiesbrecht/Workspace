@@ -58,14 +58,14 @@ extension PackageRepository {
         #if !PLATFORM_LACKS_FOUNDATION_PROCESS
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
-          case .macOS, .centOS, .ubuntu, .amazonLinux:
+          case .macOS:
             buildCommand = { output in
               let log = try self.build(
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
               let multiarchitectureLog = try self.build(
-                for: .macOS,
+                for: job.buildSDK,
                 allArchitectures: true,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
@@ -78,6 +78,14 @@ extension PackageRepository {
             }
           case .windows, .web, .android, .miscellaneous, .deployment:
             unreachable()
+          case .centOS, .ubuntu, .amazonLinux:
+            buildCommand = { output in
+              let log = try self.build(
+                releaseConfiguration: false,
+                reportProgress: { output.print($0) }
+              ).get()
+              return ¬SwiftCompiler.warningsOccurred(during: log)
+            }
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
               let log = try self.build(

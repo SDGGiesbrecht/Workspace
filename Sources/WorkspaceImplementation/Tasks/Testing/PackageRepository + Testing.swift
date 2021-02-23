@@ -58,7 +58,7 @@ extension PackageRepository {
         #if !PLATFORM_LACKS_FOUNDATION_PROCESS
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
-          case .macOS:
+          case .macOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
               let log = try self.build(
                 releaseConfiguration: false,

@@ -64,6 +64,7 @@ extension PackageRepository {
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
+              // #workaround(Swift 5.3.3, SwiftPM cannot build for alternate architectures.)
               let multiarchitectureLog = try self.build(
                 for: job.buildSDK,
                 allArchitectures: true,

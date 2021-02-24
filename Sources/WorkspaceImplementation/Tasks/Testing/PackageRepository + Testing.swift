@@ -60,11 +60,8 @@ extension PackageRepository {
           switch job {
           case .macOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
+              // Only Xcode can build for alternate architectures so far.
               let log = try self.build(
-                releaseConfiguration: false,
-                reportProgress: { output.print($0) }
-              ).get()
-              let multiarchitectureLog = try self.build(
                 for: job.buildSDK,
                 allArchitectures: true,
                 reportProgress: { report in
@@ -73,8 +70,7 @@ extension PackageRepository {
                   }
                 }
               ).get()
-              return ¬SwiftCompiler.warningsOccurred(during: log)
-                ∧ ¬Xcode.warningsOccurred(during: multiarchitectureLog)
+              return ¬Xcode.warningsOccurred(during: log)
             }
           case .windows, .web, .android, .miscellaneous, .deployment:
             unreachable()

@@ -65,6 +65,11 @@ jobs:
       uses: ./.github/Workflow Steps/Install Android NDK
     - name: Fetch Swift source
       uses: ./.github/Workflow Steps/Fetch Swift Source
+    - name: Download Swift for Ubuntu
+      uses: actions/download-artifact@v1
+      with:
+        name: Swift
+        path: Ubuntu/Swift
     - name: Download ICU
       uses: actions/download-artifact@v1
       with:

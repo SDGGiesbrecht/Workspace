@@ -4,6 +4,7 @@ Erstellung für macOS wird geprüft ... (§1)
 
 [$ swift...]
 
+
 Erstellung für tvOS wird geprüft ... (§2)
 
 [$ xcodebuild...]
@@ -19,7 +20,7 @@ Erstellung für watchOS wird geprüft ... (§4)
 [$ xcodebuild...]
 
 
-✗ Es gibt Übersetzerwarnungen zu macOS. (Siehe [⌘F] „§1“)
+✗ Erstellung für macOS ist fehlgeschlagen. (Siehe [⌘F] „§1“)
 ✗ Erstellung für tvOS ist fehlgeschlagen. (Siehe [⌘F] „§2“)
 ✗ Erstellung für iOS ist fehlgeschlagen. (Siehe [⌘F] „§3“)
 ✗ Erstellung für watchOS ist fehlgeschlagen. (Siehe [⌘F] „§4“)

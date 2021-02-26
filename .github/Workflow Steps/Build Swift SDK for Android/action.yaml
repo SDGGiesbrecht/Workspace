@@ -14,7 +14,6 @@ runs:
           --install-destdir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --android-ndk ${ANDROID_HOME}/ndk-bundle \
           --android-arch x86_64 \
-          --cross-compile-hosts android-x86_64 \
           --android-api-level 29 \
           --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
           --android-icu-uc-include ${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
@@ -22,10 +21,12 @@ runs:
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --build-swift-tools=0 \
-          --native-swift-tools-path ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
           --install-swift \
           --swift-install-components='license;stdlib;sdk-overlay' \
           --install-foundation --foundation \
           --install-libdispatch --libdispatch \
-          --install-xctest --xctest
+          --install-xctest --xctest \
+          --cross-compile-hosts android-x86_64 \
+          --native-swift-tools-path ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
+          --native-clang-tools-path ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

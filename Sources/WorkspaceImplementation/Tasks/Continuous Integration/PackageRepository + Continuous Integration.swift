@@ -83,7 +83,7 @@ extension PackageRepository {
   }
 
   private func refreshGitHubWorkflows(output: Command.Output) throws {
-    for job in try relevantJobs(output: output) {
+    for job in try relevantJobs(output: output) where job ≠ .deployment {
       try refreshGitHubWorkflow(
         name: job.name,
         onConditions: ["on: [push, pull_request]"],

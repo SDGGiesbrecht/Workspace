@@ -1,0 +1,53 @@
+
+
+name: Ubuntu
+
+on: [push, pull_request]
+
+jobs:
+  Ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-20.04
+    container: swift:5.3.3-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

@@ -83,6 +83,14 @@ extension PackageRepository {
   }
 
   private func refreshGitHubWorkflows(output: Command.Output) throws {
+    for job in try relevantJobs(output: output) {
+      try refreshGitHubWorkflow(
+        name: job.name,
+        onConditions: ["on: [push, pull_request]"],
+        jobFilter: { $0 == job },
+        output: output
+      )
+    }
     try refreshGitHubWorkflow(
       name: UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {

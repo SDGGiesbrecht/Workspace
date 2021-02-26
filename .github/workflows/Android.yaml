@@ -1,0 +1,113 @@
+
+
+name: Android
+
+on: [push, pull_request]
+
+jobs:
+  Android:
+    name: Android
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Android‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Fetch Android NDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
+          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
+        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        rm -rf ${ANDROID_HOME}/ndk-bundle
+        sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        sudo rm -rf /usr/lib/clang/10.0.0
+        curl --location \
+          'https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        sudo mkdir -p /
+        sudo cp -R /tmp/swift-5.3.3-RELEASE-ubuntu20.04/* /
+        export PATH="/usr/bin:${PATH}"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
+        swift --version
+    - name: Fetch Android SDK
+      shell: bash
+      run: |
+        set -x
+        curl --location \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3.3/Android.sdk.zip' \
+          --output '/tmp/Android.sdk.zip'
+        unzip /tmp/Android.sdk.zip -d /tmp
+        sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo chmod -R a+rwx /Library
+    - name: Build
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_ANDROID=true
+        export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
+        swift build --triple x86_64-unknown-linux-android \
+          --build-tests --enable-test-discovery \
+          --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
+          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
+          -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64
+    - name: Copy libraries
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        mkdir -p .build/x86_64-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+    - name: Upload tests
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+  Android_II:
+    name: Android II
+    runs-on: macos-11.0
+    needs: Android
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare script
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/WorkspacePackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        arch: x86_64
+        script: .build/SDG/Emulator.sh

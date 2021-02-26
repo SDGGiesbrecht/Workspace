@@ -91,19 +91,7 @@ extension PackageRepository {
         output: output
       )
     }
-    try refreshGitHubWorkflow(
-      name: UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Workspace Validation"
-        case .deutschDeutschland:
-          return "Arbeitsbereichprüfung"
-        }
-      }),
-      onConditions: ["on: [push, pull_request]"],
-      jobFilter: { $0 ≠ .deployment },
-      output: output
-    )
+    try cleanUpDeprecatedWorkflows(output: output)
 
     if try relevantJobs(output: output).contains(.deployment) {
       try refreshGitHubWorkflow(
@@ -150,6 +138,21 @@ extension PackageRepository {
         return line
       }
     }
+  }
+
+  private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {
+    let deprecatedWorkflowName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Workspace Validation"
+      case .deutschDeutschland:
+        return "Arbeitsbereichprüfung"
+      }
+    }).resolved(for: try configuration(output: output).developmentInterfaceLocalization())
+    delete(
+      location.appendingPathComponent(".github/workflows/\(deprecatedWorkflowName).yaml"),
+      output: output
+    )
   }
 
   private func cleanCMakeUp(output: Command.Output) throws {

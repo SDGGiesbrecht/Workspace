@@ -1,0 +1,25 @@
+
+
+name: Netz
+
+on: [push, pull_request]
+
+jobs:
+  Netz:
+    name: Netz
+    runs-on: ubuntu-20.04
+    container: ghcr.io/swiftwasm/carton:0.9.1
+    steps:
+    - name: Holen
+      uses: actions/checkout@v1
+    - name: Arbeitsbereich zwischenspeichern
+      uses: actions/cache@v1
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Testen
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        carton test

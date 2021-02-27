@@ -1,0 +1,86 @@
+# iOS.yaml
+#
+# This source file is part of the SDG open source project.
+# Diese Quelldatei ist Teil des quelloffenen SDG‐Projekt.
+# https://example.github.io/SDG/SDG
+#
+# Copyright ©[Current Date] John Doe and the SDG project contributors.
+# Urheberrecht ©[Current Date] John Doe und die Mitwirkenden des SDG‐Projekts.
+# ©[Current Date]
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: iOS
+
+on: [push, pull_request]
+
+jobs:
+  iOS:
+    name: iOS
+    runs-on: macos-11.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Set Xcode up
+      shell: bash
+      run: |
+        set -x
+        sudo xcode-select -switch /Applications/Xcode_12.4.app
+        xcodebuild -version
+        swift --version
+    - name: Install Workspace
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace version •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" [Current Version] "" workspace
+            .build/SDG/Workspace/workspace version •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        fi
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace refresh •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" [Current Version] "" workspace
+            .build/SDG/Workspace/workspace refresh •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        fi
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        if workspace version > /dev/null 2>&1 ; then
+            echo "Using system install of Workspace..."
+            workspace validate •job ios •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        elif .build/SDG/Workspace/workspace version > /dev/null 2>&1 ; then
+            echo "Using repository cache of Workspace..."
+            .build/SDG/Workspace/workspace validate •job ios •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        else
+            echo "No cached build detected; fetching Workspace..."
+            export OVERRIDE_INSTALLATION_DIRECTORY=.build/SDG
+            curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/raw/update.sh | bash -s Workspace "https://github.com/SDGGiesbrecht/Workspace" [Current Version] "" workspace
+            .build/SDG/Workspace/workspace validate •job ios •language '🇨🇦EN;🇬🇧EN;🇺🇸EN;🇩🇪DE;🇫🇷FR;🇬🇷ΕΛ;🇮🇱עב;zxx' •use‐version [Current Version]
+        fi

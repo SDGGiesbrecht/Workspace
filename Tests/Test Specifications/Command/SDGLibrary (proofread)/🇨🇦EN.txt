@@ -23,9 +23,19 @@ Proofreading source code... (§1)
 .github/ISSUE_TEMPLATE/🇺🇸EN Feature Request.md
 .github/ISSUE_TEMPLATE/🇺🇸EN Question.md
 .github/PULL_REQUEST_TEMPLATE.md
+.github/workflows/Amazon Linux.yaml
+.github/workflows/Android.yaml
+.github/workflows/CentOS.yaml
 .github/workflows/Documentation Deployment.yaml
+.github/workflows/Miscellaneous.yaml
+.github/workflows/Ubuntu.yaml
+.github/workflows/Web.yaml
+.github/workflows/Windows.yaml
 .github/workflows/Windows/SDK.json
-.github/workflows/Workspace Validation.yaml
+.github/workflows/iOS.yaml
+.github/workflows/macOS.yaml
+.github/workflows/tvOS.yaml
+.github/workflows/watchOS.yaml
 .gitignore
 LICENSE.md
 Other/GeneratedData.json

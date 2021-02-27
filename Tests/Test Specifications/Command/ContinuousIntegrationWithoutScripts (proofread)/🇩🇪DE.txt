@@ -5,8 +5,18 @@ Deteien werden normalisiert ...
 
 Quelltext Korrektur wird gelesen ...
 
+.github/workflows/Amazon Linux.yaml
+.github/workflows/Android.yaml
+.github/workflows/CentOS.yaml
+.github/workflows/Miscellaneous.yaml
+.github/workflows/Ubuntu.yaml
+.github/workflows/Web.yaml
+.github/workflows/Windows.yaml
 .github/workflows/Windows/SDK.json
-.github/workflows/Workspace Validation.yaml
+.github/workflows/iOS.yaml
+.github/workflows/macOS.yaml
+.github/workflows/tvOS.yaml
+.github/workflows/watchOS.yaml
 .gitignore
 LICENSE.md
 Package.swift

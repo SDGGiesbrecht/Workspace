@@ -1,0 +1,31 @@
+# Web.yaml
+#
+#
+# ©[Current Date]
+#
+# Licensed under the MIT Licence.
+# See https://opensource.org/licenses/MIT for licence information.
+
+name: Web
+
+on: [push, pull_request]
+
+jobs:
+  Web:
+    name: Web
+    runs-on: ubuntu-20.04
+    container: ghcr.io/swiftwasm/carton:0.9.1
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        carton test

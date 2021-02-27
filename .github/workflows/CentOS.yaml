@@ -1,0 +1,59 @@
+# CentOS.yaml
+#
+# This source file is part of the Workspace open source project.
+# Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
+# https://github.com/SDGGiesbrecht/Workspace#workspace
+#
+# Copyright ©2021 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2021 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: CentOS
+
+on: [push, pull_request]
+
+jobs:
+  CentOS:
+    name: CentOS
+    runs-on: ubuntu-20.04
+    container: swift:5.3.3-centos8
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: CentOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          ncurses-devel \
+          sqlite-devel
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        yum install --assumeyes \
+          curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job centos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

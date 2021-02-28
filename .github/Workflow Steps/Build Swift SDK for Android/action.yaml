@@ -20,13 +20,17 @@ runs:
           --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1 \
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
+          --skip-local-build \
           --build-swift-tools=0 \
+          --skip-build-llvm \
+          --skip-build-cmark \
           --install-swift \
-          --swift-install-components='license;stdlib;sdk-overlay' \
+          --swift-install-components='clang-resource-dir-symlink;license;stdlib;sdk-overlay' \
           --install-foundation --foundation \
           --install-libdispatch --libdispatch \
           --install-xctest --xctest \
           --cross-compile-hosts android-x86_64 \
+          --cross-compile-deps-path ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --native-swift-tools-path ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
           --native-clang-tools-path ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

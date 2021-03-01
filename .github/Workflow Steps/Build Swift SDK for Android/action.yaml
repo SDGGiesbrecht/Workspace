@@ -30,7 +30,6 @@ runs:
           --install-libdispatch --libdispatch \
           --install-xctest --xctest \
           --cross-compile-hosts android-x86_64 \
-          --cross-compile-deps-path ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           --native-swift-tools-path ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
           --native-clang-tools-path ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

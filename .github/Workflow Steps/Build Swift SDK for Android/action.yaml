@@ -22,7 +22,6 @@ runs:
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
           --skip-local-build \
           --build-swift-tools=0 \
-          --skip-build-llvm \
           --skip-build-cmark \
           --install-swift \
           --swift-install-components='clang-resource-dir-symlink;license;stdlib;sdk-overlay' \

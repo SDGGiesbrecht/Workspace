@@ -60,6 +60,7 @@ public struct RepositoryConfiguration: Codable {
     "nojekyll",
     "pep8",
     "pc",
+    "pdf",
     "plist",
     "pins",
     "png",

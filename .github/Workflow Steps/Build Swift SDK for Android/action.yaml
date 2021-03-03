@@ -20,7 +20,6 @@ runs:
           --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1 \
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
           --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
-          --skip-local-build \
           --build-swift-tools=0 \
           --skip-build-llvm \
           --skip-build-cmark \

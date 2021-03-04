@@ -1,0 +1,10 @@
+
+name: Fix Permissions for Swift Ubuntu Artifacts
+runs:
+  using: "composite"
+  steps:
+    - name: Fix Permissions for Swift Ubuntu Artifacts
+      shell: bash
+      run: |
+        set -x
+        chmod -R +rwx ${GITHUB_WORKSPACE}/swift-source/build

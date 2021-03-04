@@ -82,6 +82,8 @@ jobs:
         path: swift-source/build
     - name: Fix permissions for Swift for Ubuntu
       uses: ./.github/Workflow Steps/Fix Permissions for Swift for Ubuntu
+    - name: Fix permissions for Swift Ubuntu Artifacts
+      uses: ./.github/Workflow Steps/Fix Permissions for Swift Ubuntu Artifacts
     - name: Download ICU
       uses: actions/download-artifact@v1
       with:

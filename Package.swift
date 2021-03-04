@@ -547,8 +547,8 @@ let package = Package(
         .product(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SDGSwift 5.1.0, Does not support Windows yet.)
-          // #workaround(SDGSwift 5.1.0, Does not support Andriod yet.)
+          // #workaround(SDGSwift 5.1.1, Does not support Windows yet.)
+          // #workaround(SDGSwift 5.1.1, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(

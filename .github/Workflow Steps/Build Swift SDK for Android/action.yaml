@@ -9,6 +9,7 @@ runs:
       shell: bash
       run: |
         set -x
+        rm -rf ${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/lib/swift/dispatch/module.modulemap
         cd swift-source/swift
         ./utils/build-script --release --android \
           --install-destdir ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \

@@ -138,7 +138,7 @@ jobs:
           -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
-          -D LLVM_DIR=${GITHUB_WORKSPACE}/swift-build/llvm/lib/cmake/llvm \
+          -D LLVM_DIR=${GITHUB_WORKSPACE}/swift-build/LLVM/lib/cmake/llvm \
           -D SWIFT_NATIVE_SWIFT_TOOLS_PATH=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
           -D ICU_UC_INCLUDE_DIRS=${GITHUB_WORKSPACE}/Android/ICU/include/unicode \

@@ -72,6 +72,9 @@ jobs:
         path: Android/ICU
     - name: Build Swift SDK for Android
       uses: ./.github/Workflow Steps/Build Swift SDK for Android
+      # The standard build script currently fails to include core libraries.
+    - name: Build Dispatch for Android
+      uses: ./.github/Workflow Steps/Build Dispatch for Android
     - name: Upload Swift SDK for Android
       uses: actions/upload-artifact@v1
       with:

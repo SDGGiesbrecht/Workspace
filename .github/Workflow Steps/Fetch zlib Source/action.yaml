@@ -1,0 +1,11 @@
+
+name: Build zlib for Android
+runs:
+  using: "composite"
+  steps:
+    - name: Build zlib for Android
+      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/madler/zlib zlib-source --branch v1.2.11 --depth 1

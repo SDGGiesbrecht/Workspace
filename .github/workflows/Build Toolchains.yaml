@@ -42,7 +42,7 @@ jobs:
     - name: Fetch Android NDK
       uses: ./.github/Workflow Steps/Fetch Android NDK
     - name: Fetch zlib source
-      uses: ./.github/Workflow Steps/Fetch ICU Source
+      uses: ./.github/Workflow Steps/Fetch zlib Source
     - name: Build zlib for Android
       uses: ./.github/Workflow Steps/Build zlib for Android
     - name: Upload zlib

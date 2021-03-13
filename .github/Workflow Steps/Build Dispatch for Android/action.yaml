@@ -30,3 +30,4 @@ runs:
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
         cmake --build Dispatch
+        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

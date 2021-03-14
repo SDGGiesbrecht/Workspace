@@ -1,10 +1,9 @@
 
-name: Build zlib for Android
+name: Fetch zlib source
 runs:
   using: "composite"
   steps:
-    - name: Build zlib for Android
-      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
+    - name: Fetch zlib source
       shell: bash
       run: |
         set -x

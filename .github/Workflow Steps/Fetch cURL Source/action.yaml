@@ -1,0 +1,10 @@
+
+name: Fetch cURL source
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch cURL source
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/curl/curl cURL-source --branch curl-7_70_0 --depth 1

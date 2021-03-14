@@ -1,0 +1,10 @@
+
+name: Fetch XML 2 source
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch XML 2 source
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/compnerd/libxml2 xml_2-source --branch cmake --depth 1

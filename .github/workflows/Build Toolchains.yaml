@@ -71,6 +71,27 @@ jobs:
       with:
         name: cURL
         path: Android/cURL
+  XML_2_Android:
+    name: XML 2 (Android)
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Fetch XML 2 source
+      uses: ./.github/Workflow Steps/Fetch XML 2 Source
+    - name: Build XML 2 for Android
+      uses: ./.github/Workflow Steps/Build XML 2 for Android
+    - name: Upload XML 2
+      uses: actions/upload-artifact@v1
+      with:
+        name: XML 2
+        path: Android/XML_2
   Swift_Ubuntu:
     name: Swift (Ubuntu)
     runs-on: ubuntu-18.04
@@ -93,7 +114,7 @@ jobs:
   Swift_Android:
     name: Swift (Android)
     runs-on: ubuntu-18.04
-    needs: ICU_Android
+    needs: [ICU_Android, zlib_Android, cURL_Android, XML_2_Android]
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -122,6 +143,11 @@ jobs:
       with:
         name: cURL
         path: Android/cURL
+    - name: Download XML 2
+      uses: actions/download-artifact@v1
+      with:
+        name: XML 2
+        path: Android/XML_2
     - name: Build Swift SDK for Android
       uses: ./.github/Workflow Steps/Build Swift SDK for Android
       # The standard build script currently fails to include core libraries.
@@ -135,7 +161,7 @@ jobs:
   Swift_Android_Alternate:
     name: Swift (Android) (Alternate)
     runs-on: ubuntu-18.04
-    needs: [ICU_Android]
+    needs: [ICU_Android, zlib_Android, cURL_Android, XML_2_Android]
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -152,6 +178,21 @@ jobs:
       with:
         name: ICU
         path: Android/ICU
+    - name: Download zlib
+      uses: actions/download-artifact@v1
+      with:
+        name: zlib
+        path: Android/zlib
+    - name: Download cURL
+      uses: actions/download-artifact@v1
+      with:
+        name: cURL
+        path: Android/cURL
+    - name: Download XML 2
+      uses: actions/download-artifact@v1
+      with:
+        name: XML 2
+        path: Android/XML_2
     - name: Fetch Swift source
       uses: ./.github/Workflow Steps/Fetch Swift Source
     - name: Build Swift for Ubuntu
@@ -225,67 +266,6 @@ jobs:
           -D ENABLE_SWIFT=YES \
           -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
         cmake --build Dispatch
-    - name: Build zlib for Android
-      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/zlib.yml
-      shell: bash
-      run: |
-        set -x
-        git clone https://github.com/madler/zlib zlib-source --branch v1.2.11 --depth 1
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -G Ninja \
-          -S zlib-source \
-          -B zlib \
-          -D CMAKE_BUILD_TYPE=MinSizeRel \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/zlib/usr \
-          -D BUILD_SHARED_LIBS=NO \
-          -D BUILD_TESTING=NO \
-          -D CMAKE_POSITION_INDEPENDENT_CODE=YES
-        cmake --build zlib --target install
-    - name: Build cURL for Android
-      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/curl.yml
-      shell: bash
-      run: |
-        set -x
-        git clone https://github.com/curl/curl cURL-source --branch curl-7_70_0 --depth 1
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S cURL-source \
-          -B cURL \
-          -C ${GITHUB_WORKSPACE}/CMake/cURL.cmake \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_BUILD_TYPE=MinSizeRel \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/cURL/usr \
-          -D ZLIB_ROOT=${GITHUB_WORKSPACE}/Android/zlib \
-          -D BUILD_SHARED_LIBS=NO \
-          -D BUILD_TESTING=NO
-        cmake --build cURL --target install
-    - name: Build XML 2 for Android
-      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/libxml2.yml
-      shell: bash
-      run: |
-        set -x
-        git clone https://github.com/compnerd/libxml2 xml_2-source --branch cmake --depth 1
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S xml_2-source \
-          -B XML_2 \
-          -C ${GITHUB_WORKSPACE}/CMake/XML_2.cmake \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_BUILD_TYPE=MinSizeRel \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/XML_2/usr \
-          -D BUILD_SHARED_LIBS=NO \
-          -D BUILD_TESTING=NO
-        cmake --build XML_2 --target install
     - name: Build Foundation for Android
       shell: bash
       run: |

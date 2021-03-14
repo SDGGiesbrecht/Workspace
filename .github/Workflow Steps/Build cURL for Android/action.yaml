@@ -1,0 +1,25 @@
+
+name: Build cURL for Android
+runs:
+  using: "composite"
+  steps:
+    - name: Build cURL for Android
+      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/curl.yml
+      shell: bash
+      run: |
+        set -x
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
+        cmake \
+          -G Ninja \
+          -S cURL-source \
+          -B cURL \
+          -C ${GITHUB_WORKSPACE}/CMake/cURL.cmake \
+          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+          -D CMAKE_BUILD_TYPE=MinSizeRel \
+          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/cURL/usr \
+          -D ZLIB_ROOT=${GITHUB_WORKSPACE}/Android/zlib \
+          -D BUILD_SHARED_LIBS=NO \
+          -D BUILD_TESTING=NO
+        cmake --build cURL --target install

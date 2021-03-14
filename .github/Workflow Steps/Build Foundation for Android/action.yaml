@@ -17,11 +17,11 @@ runs:
           -G Ninja \
           -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-foundation \
           -B Foundation \
-          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr/bin/swiftc \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/bin/swiftc \
           -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
           -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
           -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
-          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Ubuntu/Swift/usr \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
           -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
           -D CMAKE_BUILD_TYPE=Release \
           -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \

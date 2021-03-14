@@ -29,6 +29,27 @@ jobs:
       with:
         name: ICU
         path: Android/ICU
+  zlib_Android:
+    name: zlib (Android)
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Fetch zlib source
+      uses: ./.github/Workflow Steps/Fetch zlib Source
+    - name: Build zlib for Android
+      uses: ./.github/Workflow Steps/Build zlib for Android
+    - name: Upload zlib
+      uses: actions/upload-artifact@v1
+      with:
+        name: zlib
+        path: Android/zlib
   Swift_Ubuntu:
     name: Swift (Ubuntu)
     runs-on: ubuntu-18.04
@@ -70,6 +91,11 @@ jobs:
       with:
         name: ICU
         path: Android/ICU
+    - name: Download zlib
+      uses: actions/download-artifact@v1
+      with:
+        name: zlib
+        path: Android/zlib
     - name: Build Swift SDK for Android
       uses: ./.github/Workflow Steps/Build Swift SDK for Android
       # The standard build script currently fails to include core libraries.

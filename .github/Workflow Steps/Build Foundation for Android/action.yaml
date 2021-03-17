@@ -14,6 +14,7 @@ runs:
         export ANDROID_TARGET_ARCHITECTURE=x86_64
         export ANDROID_TARGET_ABI="29"
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/dispatch/module.modulemap
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/CoreFoundation/module.modulemap
         rm -rf ${HOME}/.cache/clang
         cmake \
           -G Ninja \

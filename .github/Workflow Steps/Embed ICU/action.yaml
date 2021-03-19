@@ -1,0 +1,14 @@
+
+name: Embed ICU
+runs:
+  using: "composite"
+  steps:
+    - name: Embed ICU
+      # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
+      # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml
+      shell: bash
+      run: |
+        set -x
+        cp Android/ICU/lib/libicui18n.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicuuc.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicudata.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/

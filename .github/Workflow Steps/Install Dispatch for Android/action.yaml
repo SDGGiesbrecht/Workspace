@@ -9,5 +9,5 @@ runs:
       shell: bash
       run: |
         set -x
-        mkdir swift-build
+        cd swift-build
         cmake --build Dispatch --target install

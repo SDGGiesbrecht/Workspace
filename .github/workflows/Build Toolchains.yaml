@@ -170,6 +170,7 @@ jobs:
     name: 'Hello, World! (Android)'
     runs-on: ubuntu-18.04
     needs: [Swift_Ubuntu, Swift_Android]
+    steps:
     - name: Check out
       uses: actions/checkout@v1
     - name: Make space

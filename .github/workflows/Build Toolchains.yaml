@@ -155,6 +155,8 @@ jobs:
       uses: ./.github/Workflow Steps/Build Dispatch for Android
     - name: Build Foundation for Android
       uses: ./.github/Workflow Steps/Build Foundation for Android
+    - name: Build XCTest for Android
+      uses: ./.github/Workflow Steps/Build XCTest for Android
     - name: Upload Swift SDK for Android
       uses: actions/upload-artifact@v1
       with:

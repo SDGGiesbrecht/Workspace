@@ -1,0 +1,32 @@
+
+name: Build XCTest for Android
+runs:
+  using: "composite"
+  steps:
+    - name: Build XCTest for Android
+      # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
+      # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml
+      shell: bash
+      run: |
+        set -x
+        cd swift-build
+        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
+        export ANDROID_TARGET_ARCHITECTURE=x86_64
+        export ANDROID_TARGET_ABI="29"
+        cmake \
+          -G Ninja \
+          -S ${GITHUB_WORKSPACE}/swift-source/swift-corelibs-xctest \
+          -B XCTest \
+          -D CMAKE_Swift_COMPILER=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/bin/swiftc \
+          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
+          -D CMAKE_Swift_SDK=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk \
+          -C ${GITHUB_WORKSPACE}/CMake/AndroidSwiftFlags.cmake \
+          -D ANDROID_ALTERNATE_TOOLCHAIN=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D CMAKE_TOOLCHAIN_FILE=${ANDROID_HOME}/ndk-bundle/build/cmake/android.toolchain.cmake \
+          -D CMAKE_BUILD_TYPE=Release \
+          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr \
+          -D ENABLE_TESTING=NO \
+          -D Foundation_DIR=${GITHUB_WORKSPACE}/swift-build/Foundation/cmake/modules \
+          -D dispatch_DIR=${GITHUB_WORKSPACE}/swift-build/Dispatch/cmake/modules \
+          -D CMAKE_BUILD_WITH_INSTALL_RPATH=YES
+        cmake --build XCTest --target install

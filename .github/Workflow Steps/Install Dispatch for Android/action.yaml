@@ -1,0 +1,13 @@
+
+name: Install Dispatch for Android
+runs:
+  using: "composite"
+  steps:
+    - name: Install Dispatch for Android
+      # Based on https://github.com/apple/swift/blob/master/docs/AndroidBuild.md#building-swift-sdk-for-android-on-windows
+      # Also based on https://github.com/compnerd/swift-build/blob/master/.ci/vs2019.yml
+      shell: bash
+      run: |
+        set -x
+        cd swift-build
+        cmake --build Dispatch --target install

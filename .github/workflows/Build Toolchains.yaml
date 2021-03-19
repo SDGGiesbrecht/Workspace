@@ -150,6 +150,8 @@ jobs:
         path: Android/XML_2
     - name: Build Swift SDK for Android
       uses: ./.github/Workflow Steps/Build Swift SDK for Android
+    - name: Embed ICU
+      uses: ./.github/Workflow Steps/Embed ICU
       # The standard build script currently fails to include core libraries.
     - name: Build Dispatch for Android
       uses: ./.github/Workflow Steps/Build Dispatch for Android
@@ -157,6 +159,8 @@ jobs:
       uses: ./.github/Workflow Steps/Build Foundation for Android
     - name: Build XCTest for Android
       uses: ./.github/Workflow Steps/Build XCTest for Android
+    - name: Install Dispatch for Android
+      uses: ./.github/Workflow Steps/Install Dispatch for Android
     - name: Upload Swift SDK for Android
       uses: actions/upload-artifact@v1
       with:

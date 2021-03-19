@@ -166,7 +166,7 @@ jobs:
       with:
         name: Android.sdk
         path: Android/Swift/Android.sdk
-  Hello_World_Android
+  Hello_World_Android:
     name: 'Hello, World! (Android)'
     runs-on: ubuntu-18.04
     needs: [Swift_Ubuntu, Swift_Android]

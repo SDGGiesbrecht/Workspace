@@ -7,4 +7,4 @@ runs:
       shell: bash
       run: |
         set -x
-        chmod +rwx Ubuntu/Swift
+        chmod -R a+rwx Ubuntu/Swift

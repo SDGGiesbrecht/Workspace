@@ -184,6 +184,8 @@ jobs:
       with:
         name: Swift
         path: Ubuntu/Swift
+    - name: Repair toolchain permissions
+      uses: ./.github/Workflow Steps/Repair Toolchain Permissions
     - name: Download Android SDK
       uses: actions/download-artifact@v1
       with:

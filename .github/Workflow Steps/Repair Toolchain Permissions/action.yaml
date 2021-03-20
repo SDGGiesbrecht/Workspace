@@ -1,0 +1,10 @@
+
+name: Repair toolchain permissions
+runs:
+  using: "composite"
+  steps:
+    - name: Repair toolchain permissions
+      shell: bash
+      run: |
+        set -x
+        chmod +rwx Ubuntu/Swift

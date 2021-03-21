@@ -200,6 +200,26 @@ jobs:
       with:
         name: Hello_World
         path: HelloWorld/.build/x86_64-unknown-linux-android/debug
+  Android_Emulator:
+    name: Android Emulator
+    runs-on: macos-10.15
+    needs: [Hello_World_Android]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Download tests
+      uses: actions/download-artifact@v1
+      with:
+        name: tests
+        path: .build/x86_64-unknown-linux-android/debug
+    - name: Prepare emulator
+      uses: ./.github/Workflow Steps/Prepare Emulator
+    - name: Test
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 29
+        arch: x86_64
+        script: .build/SDG/Emulator.sh
   Swift_Android_Alternate:
     name: Swift (Android) (Alternate)
     runs-on: ubuntu-18.04

@@ -1,0 +1,21 @@
+
+name: Prepare emulator
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare emulator
+      shell: bash
+      run: |
+        set -x
+        mkdir -p .build/SDG
+        echo '
+        set -e
+        adb -e push . /data/local/tmp/Package
+        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
+        adb -e shell \
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
+          HOME=/data/local/tmp/Home \
+          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
+          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/HelloWorldPackageTests.xctest
+        ' > .build/SDG/Emulator.sh
+        chmod +x .build/SDG/Emulator.sh

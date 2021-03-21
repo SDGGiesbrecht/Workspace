@@ -1,0 +1,12 @@
+
+name: Copy libraries
+runs:
+  using: "composite"
+  steps:
+    - name: Copy libraries
+      shell: bash
+      run: |
+        set -x
+        cd HelloWorld
+        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        cp -R ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug

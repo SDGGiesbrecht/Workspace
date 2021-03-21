@@ -166,6 +166,40 @@ jobs:
       with:
         name: Android.sdk
         path: Android/Swift/Android.sdk
+  Hello_World_Android:
+    name: 'Hello, World! (Android)'
+    runs-on: ubuntu-18.04
+    needs: [Swift_Ubuntu, Swift_Android]
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Make space
+      uses: ./.github/Workflow Steps/Make Space
+    - name: Install Swift dependencies
+      uses: ./.github/Workflow Steps/Install Swift Dependencies
+    - name: Fetch Android NDK
+      uses: ./.github/Workflow Steps/Fetch Android NDK
+    - name: Download Swift for Ubuntu
+      uses: actions/download-artifact@v1
+      with:
+        name: Swift
+        path: Ubuntu/Swift
+    - name: Repair toolchain permissions
+      uses: ./.github/Workflow Steps/Repair Toolchain Permissions
+    - name: Download Android SDK
+      uses: actions/download-artifact@v1
+      with:
+        name: Android.sdk
+        path: Android/Swift/Android.sdk
+    - name: Build test package
+      uses: ./.github/Workflow Steps/Build Test Package
+    - name: Copy libraries
+      uses: ./.github/Workflow Steps/Copy Libraries
+    - name: Upload package products
+      uses: actions/upload-artifact@v1
+      with:
+        name: Hello_World
+        path: HelloWorld/.build/x86_64-unknown-linux-android/debug
   Swift_Android_Alternate:
     name: Swift (Android) (Alternate)
     runs-on: ubuntu-18.04

@@ -214,7 +214,7 @@ jobs:
         path: .build/x86_64-unknown-linux-android/debug
     - name: Prepare emulator
       uses: ./.github/Workflow Steps/Prepare Emulator
-    - name: Test
+    - name: Hello_World
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29

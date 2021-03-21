@@ -210,11 +210,11 @@ jobs:
     - name: Download tests
       uses: actions/download-artifact@v1
       with:
-        name: tests
+        name: Hello_World
         path: .build/x86_64-unknown-linux-android/debug
     - name: Prepare emulator
       uses: ./.github/Workflow Steps/Prepare Emulator
-    - name: Hello_World
+    - name: Test
       uses: reactivecircus/android-emulator-runner@v2
       with:
         api-level: 29

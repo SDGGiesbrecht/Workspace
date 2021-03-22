@@ -7,4 +7,4 @@ runs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/unicode-org/icu --branch release-65-rc --depth 1
+        git clone https://github.com/unicode-org/icu --branch release-65-1 --depth 1

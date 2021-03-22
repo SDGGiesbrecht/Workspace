@@ -7,6 +7,6 @@ runs:
       shell: bash
       run: |
         set -x
-        cp Android/ICU/lib/libicui18n.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
-        cp Android/ICU/lib/libicuuc.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
-        cp Android/ICU/lib/libicudata.so.67 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicui18n.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicuuc.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/ICU/lib/libicudata.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/

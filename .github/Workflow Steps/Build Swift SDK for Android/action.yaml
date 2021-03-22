@@ -15,11 +15,11 @@ runs:
           --android-ndk ${ANDROID_HOME}/ndk-bundle \
           --android-arch x86_64 \
           --android-api-level 29 \
-          --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.67.1 \
+          --android-icu-uc ${GITHUB_WORKSPACE}/Android/ICU/lib/libicuuc.so.65 \
           --android-icu-uc-include ${GITHUB_WORKSPACE}/Android/ICU/include/unicode \
-          --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.67.1 \
+          --android-icu-i18n ${GITHUB_WORKSPACE}/Android/ICU/lib/libicui18n.so.65 \
           --android-icu-i18n-include ${GITHUB_WORKSPACE}/Android/ICU/include \
-          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.67.1 \
+          --android-icu-data ${GITHUB_WORKSPACE}/Android/ICU/lib/libicudata.so.65 \
           --install-swift \
           --install-foundation --foundation \
           --install-libdispatch --libdispatch \

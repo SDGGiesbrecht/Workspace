@@ -165,7 +165,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Android.sdk
-        path: Android/Swift/Android.sdk
+        path: Android/Swift
   Hello_World_Android:
     name: 'Hello, World! (Android)'
     runs-on: ubuntu-18.04
@@ -190,7 +190,7 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: Android.sdk
-        path: Android/Swift/Android.sdk
+        path: Android/Swift
     - name: Build test package
       uses: ./.github/Workflow Steps/Build Test Package
     - name: Copy libraries

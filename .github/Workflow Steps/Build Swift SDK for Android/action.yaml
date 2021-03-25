@@ -25,3 +25,45 @@ runs:
           --install-libdispatch --libdispatch \
           --install-xctest --xctest
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift_static/linux
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftScan
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift/migrator
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift/linux
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftSyntaxParser
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/swift/FrameworkABIBaseline
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/libswiftDemangle.so
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/lib/libsourcekitdInProc.so
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/share/man
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/share/swift/testsuite
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/share/swift/features.json
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/share/swift/diagnostics
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sil-passpipeline-dumper
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/lldb-moduleimport-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sourcekitd-repl
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-remoteast-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swiftc
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/complete-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-dependency-tool
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sil-nm
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-reflection-dump
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sil-opt
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-api-extract
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-api-digester
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-autolink-extract
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-demangle-yamldump
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-symbolgraph-extract
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sourcekitd-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sil-func-extractor
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-llvm-opt
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-ide-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/sil-llvm-gen
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-demangle
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-serialize-diagnostics
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-syntax-parser-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-ast-script
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-syntax-test
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-refactor
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/bin/swift-def-to-yaml-converter
+        rm -rf ${GITHUB_WORKSPACE}Android/Swift/Android.sdk/usr/include/SourceKit
+        find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

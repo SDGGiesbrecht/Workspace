@@ -161,6 +161,8 @@ jobs:
       uses: ./.github/Workflow Steps/Build XCTest for Android
     - name: Install Dispatch for Android
       uses: ./.github/Workflow Steps/Install Dispatch for Android
+    - name: Thin Swift SDK for Android
+      uses: ./.github/Workflow Steps/Thin Swift SDK for Android
     - name: Upload Swift SDK for Android
       uses: actions/upload-artifact@v1
       with:

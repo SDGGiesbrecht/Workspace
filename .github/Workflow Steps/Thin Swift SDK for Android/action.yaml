@@ -8,8 +8,10 @@ runs:
       run: |
         set -x
         mv ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk
+        mkdir -p ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/lib
         cp -R ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/lib/swift ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/linux
+        mkdir -p ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share
         cp -R ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/share/swift ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

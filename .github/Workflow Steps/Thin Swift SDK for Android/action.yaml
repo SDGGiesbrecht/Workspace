@@ -11,6 +11,8 @@ runs:
         mkdir -p ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift
         cp -R ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/lib/swift ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/linux
+        mkdir -p ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include/swift
+        cp -R ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/include/swift ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include/swift
         mkdir -p ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift
         cp -R ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk/usr/share/swift ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Temporary.sdk

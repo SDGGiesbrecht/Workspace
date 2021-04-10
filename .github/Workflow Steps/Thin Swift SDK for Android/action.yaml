@@ -16,12 +16,12 @@ runs:
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/features.json
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/testsuite
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include/SourceKit
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift_static/linux
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libsourcekitdInProc.so
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libswiftDemangle.so
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/FrameworkABIBaseline
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftScan
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftSyntaxParser
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/migrator
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/linux
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftSyntaxParser
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/FrameworkABIBaseline
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libswiftDemangle.so
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libsourcekitdInProc.so
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift_static/linux
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

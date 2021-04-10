@@ -8,6 +8,13 @@ runs:
       run: |
         set -x
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/bin
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/doc
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/emacs
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/man
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/vim
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/diagnostics
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/features.json
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/testsuite
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift_static/linux
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/_InternalSwiftScan
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/migrator
@@ -16,9 +23,5 @@ runs:
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/FrameworkABIBaseline
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libswiftDemangle.so
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libsourcekitdInProc.so
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/man
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/testsuite
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/features.json
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/diagnostics
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include/SourceKit
         find ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk

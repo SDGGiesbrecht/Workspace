@@ -10,3 +10,4 @@ runs:
         cp Android/ICU/lib/libicui18n.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicuuc.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
         cp Android/ICU/lib/libicudata.so.65 Android/Swift/Android.sdk/usr/lib/swift/android/
+        cp Android/zlib/usr/lib/libz.so Android/Swift/Android.sdk/usr/lib/swift/android/

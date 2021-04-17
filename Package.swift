@@ -488,7 +488,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 1, 0)
+      from: Version(7, 2, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -496,7 +496,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(5, 1, 1)
+      from: Version(5, 1, 2)
     ),
     .package(
       name: "SwiftPM",

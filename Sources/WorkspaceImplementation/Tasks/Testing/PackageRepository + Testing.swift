@@ -275,161 +275,158 @@ extension PackageRepository {
     }
 
     do {
-      // #workaround(SDGSwift 5.1.1, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
-        let report: TestCoverageReport
-        switch job {
-        case .macOS, .centOS, .ubuntu, .amazonLinux:
-          guard
-            let fromPackageManager = try codeCoverageReport(
-              ignoreCoveredRegions: true,
-              reportProgress: { output.print($0) }
-            ).get()
-          else {  // @exempt(from: tests) Untestable in Xcode due to interference.
-            failStepWithError(
-              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return
-                    "The package manager has not produced a test coverage report."
-                case .deutschDeutschland:
-                  return
-                    "Der Paketverwalter hat keinen Testabdeckungsbericht erstellt."
-                }
-              }).resolved()
-            )
-            return
-          }
-          report = fromPackageManager  // @exempt(from: tests)
-        case .windows, .web, .android, .miscellaneous, .deployment:
-          unreachable()
-        case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
-          guard
-            let fromXcode = try codeCoverageReport(
-              on: job.testSDK,
-              ignoreCoveredRegions: true,
-              reportProgress: { output.print($0) }
-            ).get()
-          else {
-            failStepWithError(
-              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "Xcode has not produced a test coverage report."
-                case .deutschDeutschland:
-                  return "Xcode erstellte keinen Testabdeckungsbericht erstellt."
-                }
-              }).resolved()
-            )
-            return
-          }
-          report = fromXcode
-        }
-
-        var irrelevantFiles: Set<URL> = []
-        for target in try package().get().targets {
-          switch target.type {
-          case .library, .systemModule, .binary:
-            break  // Coverage matters.
-          case .executable:
-            // Not testable.
-            for path in target.sources.paths {
-              irrelevantFiles.insert(
-                URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
-              )
-            }
-          case .test:
-            // Coverage unimportant.
-            for path in target.sources.paths {
-              irrelevantFiles.insert(
-                URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
-              )
-            }
-          }
-        }
-        let exemptPaths = try configuration(output: output).testing.exemptPaths.map({
-          location.appendingPathComponent($0).resolvingSymlinksInPath()
-        })
-
-        let sameLineTokens = try configuration(output: output).testing.exemptionTokens.map {
-          StrictString($0.token)
-        }
-        let previousLineTokens = try configuration(output: output).testing.exemptionTokens
-          .filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
-
-        var passing = true
-        files: for file in report.files {
-          let resolved = file.file.resolvingSymlinksInPath()
-          if resolved ∈ irrelevantFiles {
-            continue files
-          }
-          for path in exemptPaths where resolved.is(in: path) {
-            continue files
-          }
-
-          CommandLineProofreadingReporter.default.reportParsing(
-            file: file.file.path(relativeTo: location),
-            to: output
-          )
-          try purgingAutoreleased {
-            let sourceFile = try String(from: file.file)
-            regionLoop: for region in file.regions {
-              let convertedRegion = sourceFile.indices(of: region.region)
-              let startLineIndex = convertedRegion.lowerBound.line(in: sourceFile.lines)
-              let startLine = sourceFile.lines[startLineIndex].line
-              for token in sameLineTokens where startLine.contains(token.scalars) {
-                continue regionLoop  // Ignore and move on.
-              }
-              let nextLineIndex = sourceFile.lines.index(after: startLineIndex)
-              if nextLineIndex ≠ sourceFile.lines.endIndex {
-                let nextLine = sourceFile.lines[nextLineIndex].line
-                for token in previousLineTokens where nextLine.contains(token.scalars) {
-                  continue regionLoop  // Ignore and move on.
-                }
-              }
-              // No ignore tokens.
-
-              CommandLineProofreadingReporter.default.report(
-                violation: convertedRegion,
-                in: sourceFile,
-                to: output
-              )
-              passing = false
-            }
-          }
-        }
-
-        if passing {
-          validationStatus.passStep(
+      let report: TestCoverageReport
+      switch job {
+      case .macOS, .centOS, .ubuntu, .amazonLinux:
+        guard
+          let fromPackageManager = try codeCoverageReport(
+            ignoreCoveredRegions: true,
+            reportProgress: { output.print($0) }
+          ).get()
+        else {  // @exempt(from: tests) Untestable in Xcode due to interference.
+          failStepWithError(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
               switch localization {
               case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Test coverage is complete on \(job.englishName)."
+                return
+                  "The package manager has not produced a test coverage report."
               case .deutschDeutschland:
-                return "Testabdeckung auf \(job.deutscherName) ist vollständig."
+                return
+                  "Der Paketverwalter hat keinen Testabdeckungsbericht erstellt."
               }
-            })
+            }).resolved()
           )
-        } else {
-          validationStatus.failStep(
-            message: UserFacing<
-              StrictString,
-              InterfaceLocalization
-            >({ localization in  // @exempt(from: tests)
-              switch localization {
-              case .englishUnitedKingdom,
-                .englishUnitedStates,
-                .englishCanada:  // @exempt(from: tests)
-                return "Test coverage is incomplete on \(job.englishName)."
-                  + section.crossReference.resolved(for: localization)
-              case .deutschDeutschland:
-                return "Testabdeckung auf \(job.deutscherName) ist unvollständig."
-                  + section.crossReference.resolved(for: localization)
-              }
-            })
-          )
+          return
         }
-      #endif
+        report = fromPackageManager  // @exempt(from: tests)
+      case .windows, .web, .android, .miscellaneous, .deployment:
+        unreachable()
+      case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
+        guard
+          let fromXcode = try codeCoverageReport(
+            on: job.testSDK,
+            ignoreCoveredRegions: true,
+            reportProgress: { output.print($0) }
+          ).get()
+        else {
+          failStepWithError(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Xcode has not produced a test coverage report."
+              case .deutschDeutschland:
+                return "Xcode erstellte keinen Testabdeckungsbericht erstellt."
+              }
+            }).resolved()
+          )
+          return
+        }
+        report = fromXcode
+      }
+
+      var irrelevantFiles: Set<URL> = []
+      for target in try package().get().targets {
+        switch target.type {
+        case .library, .systemModule, .binary:
+          break  // Coverage matters.
+        case .executable:
+          // Not testable.
+          for path in target.sources.paths {
+            irrelevantFiles.insert(
+              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
+            )
+          }
+        case .test:
+          // Coverage unimportant.
+          for path in target.sources.paths {
+            irrelevantFiles.insert(
+              URL(fileURLWithPath: path.pathString).resolvingSymlinksInPath()
+            )
+          }
+        }
+      }
+      let exemptPaths = try configuration(output: output).testing.exemptPaths.map({
+        location.appendingPathComponent($0).resolvingSymlinksInPath()
+      })
+
+      let sameLineTokens = try configuration(output: output).testing.exemptionTokens.map {
+        StrictString($0.token)
+      }
+      let previousLineTokens = try configuration(output: output).testing.exemptionTokens
+        .filter({ $0.scope == .previousLine }).map { StrictString($0.token) }
+
+      var passing = true
+      files: for file in report.files {
+        let resolved = file.file.resolvingSymlinksInPath()
+        if resolved ∈ irrelevantFiles {
+          continue files
+        }
+        for path in exemptPaths where resolved.is(in: path) {
+          continue files
+        }
+
+        CommandLineProofreadingReporter.default.reportParsing(
+          file: file.file.path(relativeTo: location),
+          to: output
+        )
+        try purgingAutoreleased {
+          let sourceFile = try String(from: file.file)
+          regionLoop: for region in file.regions {
+            let convertedRegion = sourceFile.indices(of: region.region)
+            let startLineIndex = convertedRegion.lowerBound.line(in: sourceFile.lines)
+            let startLine = sourceFile.lines[startLineIndex].line
+            for token in sameLineTokens where startLine.contains(token.scalars) {
+              continue regionLoop  // Ignore and move on.
+            }
+            let nextLineIndex = sourceFile.lines.index(after: startLineIndex)
+            if nextLineIndex ≠ sourceFile.lines.endIndex {
+              let nextLine = sourceFile.lines[nextLineIndex].line
+              for token in previousLineTokens where nextLine.contains(token.scalars) {
+                continue regionLoop  // Ignore and move on.
+              }
+            }
+            // No ignore tokens.
+
+            CommandLineProofreadingReporter.default.report(
+              violation: convertedRegion,
+              in: sourceFile,
+              to: output
+            )
+            passing = false
+          }
+        }
+      }
+
+      if passing {
+        validationStatus.passStep(
+          message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Test coverage is complete on \(job.englishName)."
+            case .deutschDeutschland:
+              return "Testabdeckung auf \(job.deutscherName) ist vollständig."
+            }
+          })
+        )
+      } else {
+        validationStatus.failStep(
+          message: UserFacing<
+            StrictString,
+            InterfaceLocalization
+          >({ localization in  // @exempt(from: tests)
+            switch localization {
+            case .englishUnitedKingdom,
+              .englishUnitedStates,
+              .englishCanada:  // @exempt(from: tests)
+              return "Test coverage is incomplete on \(job.englishName)."
+                + section.crossReference.resolved(for: localization)
+            case .deutschDeutschland:
+              return "Testabdeckung auf \(job.deutscherName) ist unvollständig."
+                + section.crossReference.resolved(for: localization)
+            }
+          })
+        )
+      }
     } catch {
       // @exempt(from: tests) Unreachable on Linux.
       failStepWithError(message: StrictString(error.localizedDescription))

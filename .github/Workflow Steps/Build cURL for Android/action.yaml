@@ -8,6 +8,7 @@ runs:
       shell: bash
       run: |
         set -x
+        cd curl
         export NDK=${ANDROID_HOME}/ndk-bundle
         export HOST_TAG=linux-x86_64
         export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/$HOST_TAG

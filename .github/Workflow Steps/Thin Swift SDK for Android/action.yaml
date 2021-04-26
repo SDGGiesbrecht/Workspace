@@ -15,7 +15,7 @@ runs:
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/diagnostics
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/features.json
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/share/swift/testsuite
-        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include/SourceKit
+        rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/include
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libsourcekitdInProc.so
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/libswiftDemangle.so
         rm -rf ${GITHUB_WORKSPACE}/Android/Swift/Android.sdk/usr/lib/swift/FrameworkABIBaseline

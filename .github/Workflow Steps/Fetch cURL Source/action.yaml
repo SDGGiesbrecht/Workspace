@@ -7,4 +7,4 @@ runs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/curl/curl cURL-source --branch curl-7_70_0 --depth 1
+        git clone https://github.com/curl/curl --branch curl-7_70_0 --depth 1

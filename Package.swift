@@ -1,4 +1,4 @@
-// swift-tools-version:5.4
+// swift-tools-version:5.3
 
 /*
  Package.swift
@@ -15,6 +15,8 @@
  Licensed under the Apache Licence, Version 2.0.
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
+
+// #warning(Tools version not yet updated.)
 
 import PackageDescription
 

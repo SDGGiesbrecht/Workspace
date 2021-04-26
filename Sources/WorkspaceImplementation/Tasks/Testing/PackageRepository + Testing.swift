@@ -275,8 +275,7 @@ extension PackageRepository {
     }
 
     do {
-      // #workaround(SDGSwift 5.1.1, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         let report: TestCoverageReport
         switch job {
         case .macOS, .centOS, .ubuntu, .amazonLinux:

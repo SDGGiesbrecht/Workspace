@@ -20,8 +20,7 @@ import SDGLocalization
 import SDGCommandLine
 
 import SDGSwift
-// #workaround(SDGSwift 5.1.1, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 import SDGSwiftSource

@@ -547,8 +547,8 @@ let package = Package(
         .product(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SDGSwift 5.1.1, Does not support Windows yet.)
-          // #workaround(SDGSwift 5.1.1, Does not support Andriod yet.)
+          // #workaround(SDGSwift 5.3.4, Does not support Windows yet.)
+          // #workaround(SDGSwift 5.3.4, Does not support Andriod yet.)
           condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(
@@ -814,6 +814,11 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
+      .when(platforms: [.windows, .wasi, .android])
+    ),
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
@@ -821,11 +826,18 @@ for target in package.targets {
     ),
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
     .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
+    // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
+      .when(platforms: [.windows, .wasi, .android])
+    ),
   ])
 
   if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT"))
     swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
+    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
   }
 }
 

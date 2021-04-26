@@ -22,4 +22,5 @@ runs:
         export STRIP=$TOOLCHAIN/bin/x86_64-linux-android-strip
         ./configure --host x86_64-linux-android --with-pic --disable-shared
         make
+        make install
         find .

@@ -20,7 +20,7 @@ runs:
         export LD=$TOOLCHAIN/bin/x86_64-linux-android-ld
         export RANLIB=$TOOLCHAIN/bin/x86_64-linux-android-ranlib
         export STRIP=$TOOLCHAIN/bin/x86_64-linux-android-strip
-        ./configure --host x86_64-linux-android --with-pic --disable-shared
+        ./configure --host x86_64-linux-android --with-pic --disable-shared \
+          --prefix=${GITHUB_WORKSPACE}/Android/cURL
         make
         make install
-        find .

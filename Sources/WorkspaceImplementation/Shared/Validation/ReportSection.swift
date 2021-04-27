@@ -38,7 +38,7 @@ internal struct ReportSection {
   }
 
   internal var anchor: StrictString {
-    return " (" + identifier + ")"
+    return " (\(identifier))"
   }
 
   internal var crossReference: UserFacing<StrictString, InterfaceLocalization> {

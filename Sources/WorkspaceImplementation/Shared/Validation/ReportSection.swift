@@ -47,21 +47,21 @@ internal struct ReportSection {
       switch localization {
       case .englishUnitedKingdom:
         #if os(macOS) || os(WASI)
-          return " (See ⌘F ‘" + identifier + "’)"
+          return " (See ⌘F ‘\(identifier)’)"
         #elseif os(Windows) || os(Linux) || os(Android)
-          return " (See Ctrl + F ‘" + identifier + "’)"
+          return " (See Ctrl + F ‘\(identifier)’)"
         #endif
       case .englishUnitedStates, .englishCanada:
         #if os(macOS) || os(WASI)
-          return " (See ⌘F “" + identifier + "”)"
+          return " (See ⌘F “\(identifier)”)"
         #elseif os(Windows) || os(Linux) || os(Android)
-          return " (See Ctrl + F “" + identifier + "”)"
+          return " (See Ctrl + F “\(identifier)”)"
         #endif
       case .deutschDeutschland:
         #if os(macOS) || os(WASI)
-          return " (Siehe ⌘F „" + identifier + "“)"
+          return " (Siehe ⌘F „\(identifier)“)"
         #elseif os(Windows) || os(Linux) || os(Android)
-          return " (Siehe Strg + F „" + identifier + "“)"
+          return " (Siehe Strg + F „\(identifier)“)"
         #endif
       }
     })

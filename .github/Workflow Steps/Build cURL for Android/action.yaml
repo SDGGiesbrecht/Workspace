@@ -21,6 +21,6 @@ runs:
         export RANLIB=$TOOLCHAIN/bin/x86_64-linux-android-ranlib
         export STRIP=$TOOLCHAIN/bin/x86_64-linux-android-strip
         ./configure --host x86_64-linux-android --with-pic --disable-shared \
-          --prefix=${GITHUB_WORKSPACE}/Android/cURL
+          --prefix=${GITHUB_WORKSPACE}/Android/cURL/usr
         make
         make install

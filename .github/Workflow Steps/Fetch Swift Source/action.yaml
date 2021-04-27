@@ -10,5 +10,5 @@ runs:
         set -x
         mkdir swift-source
         cd swift-source
-        git clone https://github.com/apple/swift.git --depth 1
-        ./swift/utils/update-checkout --clone --skip-history
+        git clone https://github.com/apple/swift.git --branch swift-5.4-RELEASE --depth 1
+        ./swift/utils/update-checkout --tag swift-5.4-RELEASE --clone

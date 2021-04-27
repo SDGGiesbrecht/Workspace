@@ -491,7 +491,7 @@ let package = Package(
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
       // #warning(Depending on branch.)
-      .branch("suffix")
+      .branch("master")
       //from: Version(7, 2, 1)
     ),
     .package(

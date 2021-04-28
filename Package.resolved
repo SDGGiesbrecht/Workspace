@@ -14,8 +14,8 @@
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": "suffix",
-          "revision": "370f461e9a1660093b7849e990238f5b687af481",
+          "branch": "master",
+          "revision": "798303e36be65727c6e508ae66feacfe0448db4c",
           "version": null
         }
       },
@@ -98,15 +98,6 @@
           "branch": null,
           "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
           "version": "0.1.0"
-        }
-      },
-      {
-        "package": "SwiftPM",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
-        "state": {
-          "branch": null,
-          "revision": "86462d782b5c4546ad1dfeb8e6fc3ca05d6ccd61",
-          "version": "0.50302.0"
         }
       },
       {

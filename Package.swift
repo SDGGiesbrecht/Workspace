@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 
 /*
  Package.swift
@@ -500,22 +500,26 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(5, 1, 2)
+      // #warning(Depending on branch.)
+      .branch("swift‐5.4")
+      //from: Version(5, 1, 2)
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50302, 0))
+      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
+      // #warning(Pointing at branch.)
+      .branch("release/5.4")
+      //.exact(Version(0, 50302, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

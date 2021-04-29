@@ -504,10 +504,8 @@ let package = Package(
     ),
     .package(
       name: "SwiftPM",
-      url: "https://github.com/apple/swift\u{2D}package\u{2D}manager",
-      // #warning(Pointing at branch.)
-      .branch("release/5.4")
-      //.exact(Version(0, 50302, 0))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       name: "SwiftSyntax",

@@ -490,9 +490,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      // #warning(Depending on branch.)
-      .branch("master")
-      //from: Version(7, 2, 1)
+      from: Version(7, 2, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",

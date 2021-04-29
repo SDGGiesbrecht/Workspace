@@ -498,8 +498,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Depending on branch.)
-      .branch("swift‐5.4")
+      .branch("master")
       //from: Version(5, 1, 2)
     ),
     .package(

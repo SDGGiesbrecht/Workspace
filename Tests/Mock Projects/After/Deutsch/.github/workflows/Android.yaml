@@ -33,11 +33,11 @@ jobs:
         set -x
         sudo rm -rf /usr/lib/clang/10.0.0
         curl --location \
-          'https://swift.org/builds/swift-5.3.3-release/ubuntu2004/swift-5.3.3-RELEASE/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz'
-        tar --extract --file /tmp/swift-5.3.3-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+          'https://swift.org/builds/swift-5.4-release/ubuntu2004/swift-5.4-RELEASE/swift-5.4-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz'
+        tar --extract --file /tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz --directory /tmp
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.3.3-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.4-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
@@ -46,7 +46,7 @@ jobs:
       run: |
         set -x
         curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.3.3/Android.sdk.zip' \
+          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.4/Android.sdk.zip' \
           --output '/tmp/Android.sdk.zip'
         unzip /tmp/Android.sdk.zip -d /tmp
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk

@@ -457,6 +457,8 @@ Tests/LinuxMain.swift
 
 [$ swift...]
 
+* Build Completed!
+
 $ Dependency fail
 Hello, world!
 

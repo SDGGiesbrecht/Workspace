@@ -19,6 +19,8 @@ Executing custom task: “Dependency”...
 
 [$ swift...]
 
+* Build Completed!
+
 $ Dependency fail
 Hello, world!
 Hello, world!

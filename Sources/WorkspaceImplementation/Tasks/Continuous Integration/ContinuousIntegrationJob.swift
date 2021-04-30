@@ -893,7 +893,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           heading: installSwiftStepName,
           localization: interfaceLocalization,
           commands: [
+            // #workaround(Are these still in the way?)
             "sudo rm \u{2D}rf /usr/lib/clang/10.0.0",
+            "sudo rm \u{2D}rf /usr/lib/python3/dist-packages/lldb",
             cURL(
               "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
               andUntarTo: "/",

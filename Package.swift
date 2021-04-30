@@ -16,8 +16,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #warning(Tools version not yet updated.)
-
 import PackageDescription
 
 // @localization(🇩🇪DE)

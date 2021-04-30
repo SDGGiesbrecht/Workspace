@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": "master",
-          "revision": "b05c86cc7c2f86ff2bc71fb2de324602791695c8",
+          "revision": "39ff7c638b84b4c9c0f2b935537c0ea7195b0342",
           "version": null
         }
       },
@@ -134,15 +134,6 @@
           "branch": null,
           "revision": "8ffa04c0a0592e6f4f9c30926dedd8fa1c5371f9",
           "version": "0.0.1"
-        }
-      },
-      {
-        "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
-        "state": {
-          "branch": null,
-          "revision": "ab6339b6a33b69886b3cf2254d3326eddfe58eb0",
-          "version": "0.2.2"
         }
       },
       {

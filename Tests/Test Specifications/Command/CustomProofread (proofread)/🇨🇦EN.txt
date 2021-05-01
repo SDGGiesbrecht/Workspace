@@ -21,8 +21,6 @@ Tests/LinuxMain.swift
 
 [$ swift...]
 
-* Build Completed!
-
 $ Dependency 
 Hello, world!
 

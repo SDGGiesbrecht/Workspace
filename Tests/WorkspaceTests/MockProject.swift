@@ -311,6 +311,11 @@ extension PackageRepository {
                 )
 
                 // Swift order varies.
+                let completedBuild = "$ swift ".scalars + any + "\n* Build Completed!".scalars
+                output.scalars.replaceMatches(
+                  for: completedBuild + any + "\n\n".scalars,
+                  with: "[$ swift...]\n\n".scalars
+                )
                 output.scalars.replaceMatches(
                   for: "$ swift ".scalars + any + "\n\n".scalars,
                   with: "[$ swift...]\n\n".scalars

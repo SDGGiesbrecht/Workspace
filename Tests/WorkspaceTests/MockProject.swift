@@ -318,11 +318,12 @@ extension PackageRepository {
                 let matches = output.scalars.matches(for: "$ swift ".scalars + any + "\n\n".scalars)
                   .map { (match) -> Range<String.ScalarOffset> in
                     var range = match.range
-                    let remainder = output.scalars[range.upperBound...]
-                    if remainder.hasPrefix("* Build Completed!".scalars),
+                    var remainder = output.scalars[range.upperBound...]
+                    while remainder.hasPrefix("* Build Completed!".scalars),
                       let end = remainder.firstMatch(for: "\n\n".scalars)?.range.upperBound
                     {
                       range = range.lowerBound..<end
+                      remainder = output.scalars[range.upperBound...]
                     }
                     return output.offsets(of: range)
                   }

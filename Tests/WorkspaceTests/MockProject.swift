@@ -311,15 +311,20 @@ extension PackageRepository {
                 )
 
                 // Swift order varies.
-                let completedBuild = "$ swift ".scalars + any + "\n* Build Completed!".scalars
-                output.scalars.replaceMatches(
-                  for: completedBuild + any + "\n\n".scalars,
-                  with: "[$ swift...]\n\n".scalars
-                )
-                output.scalars.replaceMatches(
-                  for: "$ swift ".scalars + any + "\n\n".scalars,
-                  with: "[$ swift...]\n\n".scalars
-                )
+                let matches = output.scalars.matches(for: "$ swift ".scalars + any + "\n\n".scalars)
+                  .map { (match) -> Range<String.ScalarOffset> in
+                    var range = match.range
+                    let remainder = output.scalars[range.upperBound...]
+                    if remainder.hasPrefix("* Build Completed!".scalars),
+                       let end = remainder.firstMatch(for: "\n\n".scalars)?.range.upperBound {
+                      range = range.lowerBound ..< end
+                    }
+                    return output.offsets(of: range)
+                  }
+                for match in matches.reversed() {
+                  let range = output.indices(of: match)
+                  output.scalars.replaceSubrange(range, with: "[$ swift...]\n\n".scalars)
+                }
                 output.scalars.replaceMatches(
                   for: "$ swift ".scalars + any + "\n0".scalars,
                   with: "[$ swift...]\n0".scalars

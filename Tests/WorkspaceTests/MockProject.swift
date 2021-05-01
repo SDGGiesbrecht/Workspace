@@ -310,10 +310,6 @@ extension PackageRepository {
                   with: "[$ git...]\n\n".scalars
                 )
 
-                #warning("Debugging...")
-                print("[Before]")
-                print(output)
-                print("[End Before]")
                 // Swift order varies.
                 let matches = output.scalars.matches(for: "$ swift ".scalars + any + "\n\n".scalars)
                   .map { (match) -> Range<String.ScalarOffset> in
@@ -331,10 +327,6 @@ extension PackageRepository {
                   let range = output.indices(of: match)
                   output.scalars.replaceSubrange(range, with: "[$ swift...]\n\n".scalars)
                 }
-                #warning("Debugging...")
-                print("[After]")
-                print(output)
-                print("[End After]")
                 output.scalars.replaceMatches(
                   for: "$ swift ".scalars + any + "\n0".scalars,
                   with: "[$ swift...]\n0".scalars

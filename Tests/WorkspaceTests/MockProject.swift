@@ -316,8 +316,9 @@ extension PackageRepository {
                     var range = match.range
                     let remainder = output.scalars[range.upperBound...]
                     if remainder.hasPrefix("* Build Completed!".scalars),
-                       let end = remainder.firstMatch(for: "\n\n".scalars)?.range.upperBound {
-                      range = range.lowerBound ..< end
+                       let end = remainder.firstMatch(for: "\n\n".scalars)?.range.upperBound
+                    {
+                      range = range.lowerBound..<end
                     }
                     return output.offsets(of: range)
                   }

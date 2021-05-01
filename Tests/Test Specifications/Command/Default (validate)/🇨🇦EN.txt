@@ -71,7 +71,6 @@ Checking build for watchOS... (§5)
 
 [$ xcodebuild...]
 
-
 Testing on macOS... (§6)
 
 [$ swift...]

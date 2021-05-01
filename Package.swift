@@ -810,8 +810,9 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.URL.resourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
+    // #workaround(Is FoundationXML broken in a native Windows build?)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
-    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.wasi])),
+    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.windows, .wasi])),
     // #workaround(Swift 5.3.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.3.3, SwiftFormat does not compile.)

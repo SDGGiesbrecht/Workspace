@@ -61,9 +61,12 @@ jobs:
         swift build --triple x86_64-unknown-linux-android \
           --build-tests --enable-test-discovery \
           --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
-          -Xcc --sysroot=${ANDROID_HOME}/ndk-bundle/sysroot \
+          -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64
+          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
+          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android \
+          -Xlinker -lz
     - name: Bibliotheken kopieren
       shell: bash
       run: |

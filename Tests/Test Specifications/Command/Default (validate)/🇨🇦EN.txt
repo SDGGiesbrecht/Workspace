@@ -71,7 +71,6 @@ Checking build for watchOS... (§5)
 
 [$ xcodebuild...]
 
-
 Testing on macOS... (§6)
 
 [$ swift...]
@@ -124,7 +123,7 @@ Summary
 ✓ There are no compiler warnings for macOS.
 ✓ There are no compiler warnings for tvOS.
 ✓ There are no compiler warnings for iOS.
-✗ Build failed for watchOS. (See [⌘F] “§5”)
+✓ There are no compiler warnings for watchOS.
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.
 ✗ Documentation coverage is incomplete. (See [⌘F] “§8”)

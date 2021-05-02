@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "b4d041cbb6ace5e93f6e49164400c1c9d3d0bb35",
-          "version": "1.7.2"
+          "revision": "85a3c64a4f9e2eb90c5238fe6e5f28225d4fdf77",
+          "version": "1.7.3"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": null,
-          "revision": "0e223b4caca6e6d394b0b60f1e11b93e6b058c6f",
-          "version": "7.2.1"
+          "revision": "0230b815582cf07933ea45183208e8ca89f6ef95",
+          "version": "7.2.2"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "c23217a36948af2d563291996d49bf67dfe96cdb",
-          "version": "5.1.2"
+          "revision": "fe8f8e2ee3e759dfc22e9cedcaa55ec299c87088",
+          "version": "6.0.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
         "state": {
           "branch": null,
-          "revision": "9564d61b08a5335ae0a36f789a7d71493eacadfc",
-          "version": "0.3.2"
+          "revision": "986d191f94cec88f6350056da59c2e59e83d1229",
+          "version": "0.4.3"
         }
       },
       {
@@ -74,21 +74,30 @@
         }
       },
       {
+        "package": "swift-driver",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
+        "state": {
+          "branch": null,
+          "revision": "6a3ed677d86b5085f601a1784f3d4f9f61067611",
+          "version": "0.50400.0"
+        }
+      },
+      {
         "package": "swift-format",
         "repositoryURL": "https://github.com/apple/swift-format",
         "state": {
           "branch": null,
-          "revision": "12089179aa1668a2478b2b2111d98fa37f3531e3",
-          "version": "0.50300.0"
+          "revision": "9c15831b798d767c9af0927a931de5d557004936",
+          "version": "0.50400.0"
         }
       },
       {
         "package": "llbuild",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-llbuild.git",
+        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
         "state": {
           "branch": null,
-          "revision": "ef2e9ba657fd0a4e6e25fff05051b328bf27aeaf",
-          "version": "0.50302.0"
+          "revision": "53d12bc6e70e4ae6c0dec634fd48ec0cfff17f2d",
+          "version": "0.4.0"
         }
       },
       {
@@ -105,8 +114,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "86462d782b5c4546ad1dfeb8e6fc3ca05d6ccd61",
-          "version": "0.50302.0"
+          "revision": "79af12348d55c730ff2d74ef2b68db914fdc07d4",
+          "version": "0.50400.0"
         }
       },
       {
@@ -114,8 +123,8 @@
         "repositoryURL": "https://github.com/apple/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "844574d683f53d0737a9c6d706c3ef31ed2955eb",
-          "version": "0.50300.0"
+          "revision": "2fff9fc25cdc059379b6bd309377cfab45d8520c",
+          "version": "0.50400.0"
         }
       },
       {
@@ -129,11 +138,20 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
+        "repositoryURL": "https://github.com/apple/swift-tools-support-core.git",
         "state": {
           "branch": null,
-          "revision": "8c3dfd42a36d0416345143eae4567d9314c12246",
-          "version": "0.50302.0"
+          "revision": "ab6339b6a33b69886b3cf2254d3326eddfe58eb0",
+          "version": "0.2.2"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
+          "version": "4.0.6"
         }
       }
     ]

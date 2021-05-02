@@ -20,6 +20,7 @@ import SDGLogic
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   import PackageModel
+  import PackageGraph
   import SwiftSyntax
 
   extension ResolvedTarget {

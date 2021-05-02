@@ -55,7 +55,7 @@ extension Workspace {
 
     private static let swiftFormatLink = "https://github.com/apple/swift\u{2D}format"
     private static let swiftFormatConfigurationLink =
-      "https://github.com/apple/swift\u{2D}format/blob/0.50300.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20"
+      "https://github.com/apple/swift\u{2D}format/blob/0.50400.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20"
     private static let discussion = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {

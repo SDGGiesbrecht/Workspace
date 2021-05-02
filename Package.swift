@@ -488,30 +488,30 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 1)
+      from: Version(7, 2, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 7, 2)
+      from: Version(1, 7, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(5, 1, 2)
+      from: Version(6, 0, 0)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50302, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50300, 0))
+      .exact(Version(0, 50400, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -810,8 +810,9 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.URL.resourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
+    // #workaround(Is FoundationXML broken in a native Windows build?)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
-    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.wasi])),
+    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.windows, .wasi])),
     // #workaround(Swift 5.3.3, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.3.3, SwiftFormat does not compile.)

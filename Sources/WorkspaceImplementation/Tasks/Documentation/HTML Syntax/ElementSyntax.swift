@@ -42,7 +42,7 @@ extension ElementSyntax {
       )
     }
 
-    let constructedContents = inline ? contents : "\n" + contents + "\n"
+    let constructedContents = inline ? contents : "\n\(contents)\n"
 
     let name = TokenSyntax(kind: .elementName(String(element)))
     self = ElementSyntax(

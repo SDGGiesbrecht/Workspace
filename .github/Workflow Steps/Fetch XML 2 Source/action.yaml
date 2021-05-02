@@ -7,4 +7,4 @@ runs:
       shell: bash
       run: |
         set -x
-        git clone https://github.com/compnerd/libxml2 xml_2-source --branch cmake --depth 1
+        git clone https://github.com/GNOME/libxml2 --branch v2.9.10 --depth 1

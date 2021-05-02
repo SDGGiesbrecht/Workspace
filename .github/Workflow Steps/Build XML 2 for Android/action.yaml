@@ -8,17 +8,9 @@ runs:
       shell: bash
       run: |
         set -x
-        export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk-bundle
-        export ANDROID_TARGET_ARCHITECTURE=x86_64
-        export ANDROID_TARGET_ABI="29"
-        cmake \
-          -G Ninja \
-          -S xml_2-source \
-          -B XML_2 \
-          -C ${GITHUB_WORKSPACE}/CMake/XML_2.cmake \
-          -C ${GITHUB_WORKSPACE}/CMake/Android.cmake \
-          -D CMAKE_BUILD_TYPE=MinSizeRel \
-          -D CMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/Android/XML_2/usr \
-          -D BUILD_SHARED_LIBS=NO \
-          -D BUILD_TESTING=NO
-        cmake --build XML_2 --target install
+        cd libxml2
+        export CC=$TOOLCHAIN/bin/x86_64-linux-android29-clang
+        ./configure --host x86_64-linux-android \
+          --prefix=${GITHUB_WORKSPACE}/Android/XML_2/usr
+        make
+        make install

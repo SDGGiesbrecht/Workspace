@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: Build XML 2 for Android
+      # Based on https://github.com/GNOME/libxml2/tree/v2.9.10#readme
       shell: bash
       run: |
         set -x

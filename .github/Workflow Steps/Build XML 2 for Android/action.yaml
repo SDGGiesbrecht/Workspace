@@ -4,12 +4,12 @@ runs:
   using: "composite"
   steps:
     - name: Build XML 2 for Android
-      # Based on https://github.com/compnerd/swift-build/blob/master/.ci/templates/libxml2.yml
       shell: bash
       run: |
         set -x
         cd libxml2
         export CC=$TOOLCHAIN/bin/x86_64-linux-android29-clang
+        ./autogen.sh
         ./configure --host x86_64-linux-android \
           --prefix=${GITHUB_WORKSPACE}/Android/XML_2/usr
         make

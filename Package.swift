@@ -859,6 +859,30 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   }
 }
 
+#if os(Windows)
+  let impossibleDependencies: [String] = [
+    // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
+    "SwiftSyntax"
+  ]
+  package.dependencies.removeAll(where: { dependency in
+    return impossibleDependencies.contains(where: { impossible in
+      return (dependency.name ?? dependency.url).contains(impossible)
+    })
+  })
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+    var swiftSettings = target.swiftSettings ?? []
+    defer { target.swiftSettings = swiftSettings }
+    swiftSettings.append(contentsOf: [
+      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
+    ])
+  }
+#endif
+
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)

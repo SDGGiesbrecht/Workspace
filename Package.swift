@@ -870,7 +870,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   })
   #warning("Debugging...")
-  fatalError("\(package.dependencies)")
+  fatalError("\(package.dependencies.map({ $0.url }))")
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       return impossibleDependencies.contains(where: { impossible in

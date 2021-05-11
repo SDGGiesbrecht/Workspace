@@ -862,15 +862,14 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 #if os(Windows)
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
-    "SwiftSyntax"
+    "SwiftSyntax",
+    "swift\u{2D}format",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
       return (dependency.name ?? dependency.url).contains(impossible)
     })
   })
-  #warning("Debugging...")
-  fatalError("\(package.dependencies.map({ $0.url }))")
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
       return impossibleDependencies.contains(where: { impossible in
@@ -880,7 +879,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     var swiftSettings = target.swiftSettings ?? []
     defer { target.swiftSettings = swiftSettings }
     swiftSettings.append(contentsOf: [
-      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX")
+      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"),
+      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT"),
+      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION"),
     ])
   }
 #endif

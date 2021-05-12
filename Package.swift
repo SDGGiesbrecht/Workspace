@@ -884,6 +884,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
       .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION"),
     ])
   }
+
+  // #workaround(Swift 5.4.0, Unable to build from Windows.)
+  package.targets.removeAll(where: { $0.name.hasPrefix("test") })
 #endif
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {

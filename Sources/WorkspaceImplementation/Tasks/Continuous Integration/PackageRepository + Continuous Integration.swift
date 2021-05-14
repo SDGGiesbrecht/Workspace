@@ -115,7 +115,7 @@ extension PackageRepository {
     }
     try cleanCMakeUp(output: output)
     try refreshWindowsTests(output: output)
-    try refreshWindowsSDK(output: output)
+    try cleanWindowsSDKUp(output: output)
     try cleanAndroidSDKUp(output: output)
   }
 
@@ -303,29 +303,9 @@ extension PackageRepository {
     }
   #endif
 
-  private func refreshWindowsSDK(output: Command.Output) throws {
+  private func cleanWindowsSDKUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")
-    if try ¬relevantJobs(output: output).contains(.windows) {
-      delete(url, output: output)
-    } else {
-      let sdk: [String] = [
-        "{",
-        "  \u{22}version\u{22}: 1,",
-        "  \u{22}sdk\u{22}: \u{22}/mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk\u{22},",
-        "  \u{22}toolchain\u{2D}bin\u{2D}dir\u{22}: \u{22}/usr/bin\u{22},",
-        "  \u{22}target\u{22}: \u{22}x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc\u{22},",
-        "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}dll\u{22},",
-        "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
-        "}",
-      ]
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        var sdkFile = try TextFile(possiblyAt: url)
-        sdkFile.contents = sdk.joinedAsLines()
-        try sdkFile.writeChanges(for: self, output: output)
-      #endif
-    }
+    delete(url, output: output)
   }
 
   private func cleanAndroidSDKUp(output: Command.Output) throws {

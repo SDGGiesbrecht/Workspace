@@ -194,66 +194,7 @@ extension PackageRepository {
       output: Command.Output
     ) throws {
       let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
-      if try ¬relevantJobs(output: output).contains(.windows) {
-        delete(url, output: output)
-      } else {
-
-        let graph = try self.cachedPackageGraph()
-        let testTargets = graph.testTargets()
-
-        var main: [String] = [
-          "import XCTest",
-          "",
-        ]
-        var testClasses: [(name: String, methods: [String])] = []
-        for testTarget in testTargets {
-          main.append("@testable import \(testTarget.name)")
-          testClasses.append(contentsOf: try testTarget.testClasses())
-        }
-        main.append("")
-
-        for testClass in testClasses {
-          main.append(contentsOf: [
-            "extension \(testClass.name) {",
-            "  static let windowsTests: [XCTestCaseEntry] = [",
-            "    testCase([",
-          ])
-          for methodIndex in testClass.methods.indices {
-            let method = testClass.methods[methodIndex]
-            let comma = methodIndex == testClass.methods.indices.last ? "" : ","
-            main.append("      (\u{22}\(method)\u{22}, \(method))\(comma)")
-          }
-          main.append(contentsOf: [
-            "    ])",
-            "  ]",
-            "}",
-            "",
-          ])
-        }
-
-        main.append(contentsOf: [
-          "var tests = [XCTestCaseEntry]()"
-        ])
-        for testClass in testClasses {
-          main.append("tests += \(testClass.name).windowsTests")
-        }
-
-        main.append(contentsOf: [
-          "",
-          "XCTMain(tests)",
-        ])
-
-        var source = main.joinedAsLines()
-        try SwiftLanguage.format(
-          generatedCode: &source,
-          accordingTo: try configuration(output: output),
-          for: url
-        )
-
-        var windowsMain = try TextFile(possiblyAt: url)
-        windowsMain.body = source
-        try windowsMain.writeChanges(for: self, output: output)
-      }
+      delete(url, output: output)
     }
   #endif
 

@@ -500,16 +500,26 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func script(
     heading: UserFacing<StrictString, InterfaceLocalization>,
     localization: InterfaceLocalization,
+    shell: StrictString = "bash",
     commands: [StrictString]
   ) -> StrictString {
     var result: [StrictString] = [
       step(heading, localization: localization),
-      "      shell: bash",
+      "      shell: \(shell)",
       "      run: |",
     ]
+    var commands = commands
+    switch shell {
+    case "bash":
+      commands.prepend("set \u{2D}x")
+    case "cmd":
+      commands.prepend("echo on")
+    default:
+      unreachable()
+    }
     result.append(
-      contentsOf: commands.prepending("set \u{2D}x")
-        .joinedAsLines().lines.map({ "        \(StrictString($0.line))" })
+      contentsOf: commands.joinedAsLines()
+        .lines.map({ "        \(StrictString($0.line))" })
     )
     return result.joinedAsLines()
   }
@@ -568,17 +578,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func cURL(
     from origin: StrictString,
     to destination: StrictString,
-    wsl: Bool = false
+    windows: Bool = false
   ) -> StrictString {
-    var result: StrictString = [
-      "curl \u{2D}\u{2D}location \u{5C}",
-      "  \u{27}\(origin)\u{27} \u{5C}",
-      "  \u{2D}\u{2D}output \u{27}\(destination)\u{27}",
+    let continuation = windows ? "^" : "\u{5C}"
+    let quotation = windows ? "" : "\u{27}"
+    return [
+      "curl \u{2D}\u{2D}location \(continuation)",
+      "  \(quotation)\(origin)\(quotation) \(continuation)",
+      "  \u{2D}\u{2D}output \(quotation)\(destination)\(quotation)",
     ].joinedAsLines()
-    if wsl {
-      result = self.wsl(result)
-    }
-    return result
   }
 
   private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
@@ -608,10 +616,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
   private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
     let installer = StrictString(url.components(separatedBy: "/").last!.contents)
-    let temporaryInstaller: StrictString = "/tmp/\(installer)"
+    let temporaryInstaller: StrictString = "%TEMP%\u{5C}\(installer)"
     return [
-      cURL(from: url, to: temporaryInstaller),
-      "\(temporaryInstaller) //passive",
+      cURL(from: url, to: temporaryInstaller, windows: true),
+      "\(temporaryInstaller) /passive",
     ].joinedAsLines()
   }
 
@@ -662,26 +670,18 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     _ url: StrictString,
     named name: StrictString? = nil,
     andUntarTo destination: StrictString,
-    sudoCopy: Bool = false,
-    wsl: Bool = false
+    sudoCopy: Bool = false
   ) -> StrictString {
     let tarFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName = name ?? tarFileName.truncated(before: ".tar")
     let temporaryTar: StrictString = "/tmp/\(tarFileName)"
     let temporary: StrictString = "/tmp/\(fileName)"
     var result: [StrictString] = []
-    if wsl {
-      result.append(self.wsl(makeDirectory("/tmp")))
-    }
-    result.append(cURL(from: url, to: temporaryTar, wsl: wsl))
-    let forceLocal = wsl ? " \u{2D}\u{2D}force\u{2D}local" : ""
-    var tar: StrictString =
-      "tar \u{2D}\u{2D}extract\(forceLocal) \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
-    if wsl {
-      tar = self.wsl(tar)
-    }
-    result.append(tar)
-    result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy, wsl: wsl))
+    result.append(cURL(from: url, to: temporaryTar))
+    result.append(
+      "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
+    )
+    result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
     return result.joinedAsLines()
   }
 
@@ -754,31 +754,18 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      result.append(
-        script(
-          heading: setVisualStudioUpStepName,
-          localization: interfaceLocalization,
-          commands: [
-            "cd \u{27}/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/VC/Auxiliary/Build\u{27}",
-            "echo \u{27}export \u{2D}p > exported_environment.sh\u{27} > nested_bash.sh",
-            "echo \u{27}vcvarsall.bat x64 &\u{26} \u{22}C:/Program Files/Git/usr/bin/bash\u{22} \u{2D}c ./nested_bash.sh\u{27} > export_environment.bat",
-            "cmd \u{22}/c export_environment.bat\u{22}",
-            "set +x",
-            "source ./exported_environment.sh",
-            "set \u{2D}x",
-            export("PATH"),
-            export("UniversalCRTSdkDir"),
-            export("UCRTVersion"),
-            export("VCToolsInstallDir"),
-          ]
-        )
-      )
+      result.append(contentsOf: [
+        // #workaround(Swift 5.3.3, There is no official action for this yet.)
+        step(setVisualStudioUpStepName, localization: interfaceLocalization),
+        uses("ilammy/msvc-dev-cmd@v1"),
+      ])
       let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
       result.append(
         script(
-          heading: installSwiftStepName,
+          heading: installSwiftAndTestStepName,
           localization: interfaceLocalization,
+          shell: "cmd",
           commands: [
             cURLAndExecuteWindowsInstaller(
               "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
@@ -1000,18 +987,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               wsl: true
             ),
             wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}10 //usr/bin/lld\u{2D}link"),
-          ]
-        ),
-        script(
-          heading: installSwiftPMStepName,
-          localization: interfaceLocalization,
-          commands: [
-            cURL(
-              "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ContinuousIntegrationJob.currentWSLImage)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ContinuousIntegrationJob.currentUbuntuVersion).tar.gz",
-              andUntarTo: "/",
-              wsl: true
-            ),
-            wsl("swift \u{2D}\u{2D}version"),
           ]
         ),
         script(
@@ -1277,6 +1252,16 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Install Swift"
       case .deutschDeutschland:
         return "Swift installieren"
+      }
+    })
+  }
+  private var installSwiftAndTestStepName: UserFacing<StrictString, InterfaceLocalization> {
+    return UserFacing({ (localization) in
+      switch localization {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        return "Install Swift & Test"
+      case .deutschDeutschland:
+        return "Swift installieren u. testen"
       }
     })
   }

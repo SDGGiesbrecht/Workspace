@@ -18,7 +18,6 @@ Proofreading source code... (§1)
 .github/workflows/Ubuntu.yaml
 .github/workflows/Web.yaml
 .github/workflows/Windows.yaml
-.github/workflows/Windows/SDK.json
 .github/workflows/iOS.yaml
 .github/workflows/macOS.yaml
 .github/workflows/tvOS.yaml
@@ -50,7 +49,6 @@ Every symbol in a library should have access control. (accessControl)
 
 Tests/AllTasksTests/AllTasksTests.swift
 Tests/LinuxMain.swift
-Tests/WindowsTests/main.swift
 
 Checking build for macOS... (§2)
 

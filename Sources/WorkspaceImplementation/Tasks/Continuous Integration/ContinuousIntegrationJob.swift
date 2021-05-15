@@ -609,9 +609,14 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   }
   private func copyFile(
     from origin: StrictString,
-    to destination: StrictString
+    to destination: StrictString,
+    windows: Bool = false
   ) -> StrictString {
-    return "cp \u{22}\(origin)\u{22} \u{22}\(destination)\u{22}"
+    if windows {
+      return "copy \(origin) \u{22}\(destination)\u{22}"
+    } else {
+      return "cp \u{22}\(origin)\u{22} \u{22}\(destination)\u{22}"
+    }
   }
 
   private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
@@ -690,8 +695,16 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "\(prefix)chmod \u{2D}R a+rwx \(path)"
   }
 
-  private func set(environmentVariable: StrictString, to value: StrictString) -> StrictString {
-    return "export \(environmentVariable)=\u{22}\(value)\u{22}"
+  private func set(
+    environmentVariable: StrictString,
+    to value: StrictString,
+    windows: Bool = false
+  ) -> StrictString {
+    if windows {
+      return "set \(environmentVariable)=\(value)"
+    } else {
+      return "export \(environmentVariable)=\u{22}\(value)\u{22}"
+    }
   }
   private func export(_ environmentVariable: StrictString) -> StrictString {
     return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
@@ -770,39 +783,37 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             cURLAndExecuteWindowsInstaller(
               "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
             ),
-            remove(
-              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFURLSessionInterface"
-            ),
-            remove(
-              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CFXMLInterface"
-            ),
-            remove(
-              "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/include/CoreFoundation"
-            ),
             set(
               environmentVariable: "SDKROOT",
-              to: "/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk"
-            ),
-            export("SDKROOT"),
-            copyFile(
-              from:
-                "${SDKROOT}/usr/share/ucrt.modulemap",
-              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt/module.modulemap"
+              to:
+                "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk",
+              windows: true
             ),
             copyFile(
               from:
-                "${SDKROOT}/usr/share/visualc.modulemap",
-              to: "${VCToolsInstallDir}/include/module.modulemap"
+                "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
+              to:
+                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap",
+              windows: true
             ),
             copyFile(
               from:
-                "${SDKROOT}/usr/share/visualc.apinotes",
-              to: "${VCToolsInstallDir}/include/visualc.apinotes"
+                "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.modulemap",
+              to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap",
+              windows: true
             ),
             copyFile(
               from:
-                "${SDKROOT}/usr/share/winsdk.modulemap",
-              to: "${UniversalCRTSdkDir}/Include/${UCRTVersion}/um/module.modulemap"
+                "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.apinotes",
+              to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes",
+              windows: true
+            ),
+            copyFile(
+              from:
+                "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}winsdk.modulemap",
+              to:
+                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap",
+              windows: true
             ),
             prependPath("/c/Library/icu\u{2D}67/usr/bin"),
             prependPath(

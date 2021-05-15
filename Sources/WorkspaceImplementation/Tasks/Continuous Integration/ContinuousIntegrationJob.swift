@@ -774,7 +774,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       result.append(contentsOf: [
         // #workaround(Swift 5.3.3, There is no official action for this yet.)
         step(setVisualStudioUpStepName, localization: interfaceLocalization),
-        uses("ilammy/msvc-dev-cmd@v1"),
+        uses("ilammy/msvc\u{2D}dev\u{2D}cmd@v1"),
       ])
       let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)

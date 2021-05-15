@@ -114,7 +114,7 @@ extension PackageRepository {
       )
     }
     try cleanCMakeUp(output: output)
-    try refreshWindowsTests(output: output)
+    try cleanWindowsTestsUp(output: output)
     try cleanWindowsSDKUp(output: output)
     try cleanAndroidSDKUp(output: output)
   }
@@ -162,17 +162,17 @@ extension PackageRepository {
     delete(mainURL, output: output)
   }
 
-  private func refreshWindowsTests(output: Command.Output) throws {
+  private func cleanWindowsTestsUp(output: Command.Output) throws {
     // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
-      try refreshWindowsTestsManifestAdjustments(output: output)
-      try refreshWindowsMain(output: output)
+      try cleanWindowsTestsManifestAdjustmentsUp(output: output)
+      try cleanWindowsMainUp(output: output)
     #endif
   }
 
   // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    private func refreshWindowsTestsManifestAdjustments(output: Command.Output) throws {
+    private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
       let url = location.appendingPathComponent("Package.swift")
       var manifest = try TextFile(possiblyAt: url)
 
@@ -186,57 +186,11 @@ extension PackageRepository {
         manifest.contents.firstMatch(for: startPattern + end)?.range
         ?? manifest.contents[manifest.contents.endIndex...].bounds
 
-      if try ¬relevantJobs(output: output).contains(.windows) {
-        manifest.contents.replaceSubrange(range, with: "")
-      } else {
-        manifest.contents.replaceSubrange(
-          range,
-          with: [
-            start,
-            "import Foundation",
-            "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariable)\u{22}] == \u{22}true\u{22} {",
-            "  var tests: [Target] = []",
-            "  var other: [Target] = []",
-            "  for target in package.targets {",
-            "    if target.type == .test {",
-            "      tests.append(target)",
-            "    } else {",
-            "      other.append(target)",
-            "    }",
-            "  }",
-            "  package.targets = other",
-            "  package.targets.append(",
-            "    contentsOf: tests.map({ test in",
-            "      return .target(",
-            "        name: test.name,",
-            "        dependencies: test.dependencies,",
-            "        path: test.path ?? \u{22}Tests/\u{5C}(test.name)\u{22},",
-            "        exclude: test.exclude,",
-            "        sources: test.sources,",
-            "        publicHeadersPath: test.publicHeadersPath,",
-            "        cSettings: test.cSettings,",
-            "        cxxSettings: test.cxxSettings,",
-            "        swiftSettings: test.swiftSettings,",
-            "        linkerSettings: test.linkerSettings",
-            "      )",
-            "    })",
-            "  )",
-            "  package.targets.append(",
-            "    .target(",
-            "      name: \u{22}WindowsTests\u{22},",
-            "      dependencies: tests.map({ Target.Dependency.target(name: $0.name) }),",
-            "      path: \u{22}Tests/WindowsTests\u{22}",
-            "    )",
-            "  )",
-            "}",
-            end,
-          ].joinedAsLines()
-        )
-      }
+      manifest.contents.replaceSubrange(range, with: "")
       try manifest.writeChanges(for: self, output: output)
     }
 
-    private func refreshWindowsMain(
+    private func cleanWindowsMainUp(
       output: Command.Output
     ) throws {
       let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")

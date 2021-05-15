@@ -524,11 +524,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return result.joinedAsLines()
   }
 
-  private func wsl(_ command: StrictString) -> StrictString {
-    let command = command.replacingMatches(for: "\n", with: "\n  ")
-    return "ubuntu\(ContinuousIntegrationJob.currentWSLImage) run \u{5C}\n  \(command)"
-  }
-
   private func yumInstallation(_ packages: [StrictString]) -> StrictString {
     var installLines: [StrictString] = [
       "yum install \u{2D}\u{2D}assumeyes \u{5C}"
@@ -547,11 +542,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return installLines.joinedAsLines()
   }
 
-  private func aptGet(_ packages: [StrictString], wsl: Bool = false) -> StrictString {
-    var update: StrictString = "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes"
-    if wsl {
-      update = self.wsl(update)
-    }
+  private func aptGet(_ packages: [StrictString]) -> StrictString {
+    let update: StrictString = "apt\u{2D}get update \u{2D}\u{2D}assume\u{2D}yes"
     var installLines: [StrictString] = [
       "UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \u{5C}",
       "apt\u{2D}get \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confdef\u{22} \u{2D}o Dpkg::Options::=\u{22}\u{2D}\u{2D}force\u{2D}confold\u{22} \u{5C}",
@@ -568,10 +560,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return entry
       }
     )
-    var install = installLines.joinedAsLines()
-    if wsl {
-      install = self.wsl(install)
-    }
+    let install = installLines.joinedAsLines()
     return [update, install].joinedAsLines()
   }
 
@@ -595,28 +584,19 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   private func copyDirectory(
     from origin: StrictString,
     to destination: StrictString,
-    sudo: Bool = false,
-    wsl: Bool = false
+    sudo: Bool = false
   ) -> StrictString {
-    var result: [StrictString] = [
+    let result: [StrictString] = [
       makeDirectory(destination, sudo: sudo),
-      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/\(wsl ? "usr" : "*") \(destination)\(wsl ? "/" : "")",
+      "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)",
     ]
-    if wsl {
-      result = result.map { self.wsl($0) }
-    }
     return result.joinedAsLines()
   }
   private func copyFile(
     from origin: StrictString,
-    to destination: StrictString,
-    windows: Bool = false
+    to destination: StrictString
   ) -> StrictString {
-    if windows {
-      return "copy \(origin) \u{22}\(destination)\u{22}"
-    } else {
-      return "cp \u{22}\(origin)\u{22} \u{22}\(destination)\u{22}"
-    }
+    "copy \(origin) \u{22}\(destination)\u{22}"
   }
 
   private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
@@ -637,9 +617,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     andUnzipTo destination: StrictString,
     containerName: StrictString? = nil,
     removeExisting: Bool = false,
-    sudoCopy: Bool = false,
-    localTemporaryDirectory: Bool = false,
-    use7z: Bool = false
+    sudoCopy: Bool = false
   ) -> StrictString {
     let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
     let fileName =
@@ -647,27 +625,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       ?? zipFileName.components(separatedBy: ".")
       .dropLast().lazy.map({ StrictString($0.contents) })
       .joined(separator: ".")
-    var temporaryZip: StrictString = "/tmp/\(zipFileName)"
-    var temporary: StrictString = "/tmp/\(fileName)"
-    if localTemporaryDirectory {
-      let local: StrictString = ".build/SDG"
-      temporaryZip.prepend(contentsOf: local)
-      temporary.prepend(contentsOf: local)
-    }
+    let temporaryZip: StrictString = "/tmp/\(zipFileName)"
+    let temporary: StrictString = "/tmp/\(fileName)"
     var result: [StrictString] = []
-    if localTemporaryDirectory {
-      result.append(makeDirectory(temporaryZip.truncated(before: "/\(zipFileName)")))
-    }
     result.append(cURL(from: url, to: temporaryZip))
-    if use7z {
-      result.append("7z x \(temporaryZip) \u{2D}o\(destination)")
-    } else {
-      result.append("unzip \(temporaryZip) \u{2D}d /tmp")
-      if removeExisting {
-        result.append(remove(destination))
-      }
-      result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
+    result.append("unzip \(temporaryZip) \u{2D}d /tmp")
+    if removeExisting {
+      result.append(remove(destination))
     }
+    result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
     return result.joinedAsLines()
   }
 
@@ -719,11 +685,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         export("PATH"),
       ].joinedAsLines()
     }
-  }
-
-  private func compressPATH() -> StrictString {
-    return
-      "export PATH=$(echo \u{2D}n $PATH | awk \u{2D}v RS=: \u{2D}v ORS=: \u{27}!($0 in a) {a[$0]; print $0}\u{27})"
   }
 
   internal func gitHubWorkflowJob(
@@ -797,27 +758,23 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               from:
                 "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
               to:
-                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap",
-              windows: true
+                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap"
             ),
             copyFile(
               from:
                 "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.modulemap",
-              to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap",
-              windows: true
+              to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap"
             ),
             copyFile(
               from:
                 "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.apinotes",
-              to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes",
-              windows: true
+              to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes"
             ),
             copyFile(
               from:
                 "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}winsdk.modulemap",
               to:
-                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap",
-              windows: true
+                "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap"
             ),
             prependPath("C:\u{5C}Library\u{5C}icu\u{2D}67\u{5C}usr\u{5C}bin", windows: true),
             prependPath(
@@ -1206,17 +1163,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     })
   }
 
-  private var installSwiftPMStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install SwiftPM"
-      case .deutschDeutschland:
-        return "SwiftPM installieren"
-      }
-    })
-  }
-
   private var fetchAndroidSDKStepName: UserFacing<StrictString, InterfaceLocalization> {
     return UserFacing({ (localization) in
       switch localization {
@@ -1224,17 +1170,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Fetch Android SDK"
       case .deutschDeutschland:
         return "Android‐Entwicklungsausrüstung holen"
-      }
-    })
-  }
-
-  private var installLinuxStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install Linux"
-      case .deutschDeutschland:
-        return "Linux installieren"
       }
     })
   }

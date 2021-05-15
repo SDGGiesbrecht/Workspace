@@ -832,6 +832,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             "swift \u{2D}\u{2D}version",
 
             // #workaround(Belongs in a different step.)
+            set(
+              environmentVariable: ContinuousIntegrationJob.windows.environmentVariable,
+              to: "true",
+              windows: true
+            ),
             "swift test ^",
             "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
             "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",

@@ -710,11 +710,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
   }
 
-  private func prependPath(_ entry: StrictString) -> StrictString {
-    return [
-      set(environmentVariable: "PATH", to: "\(entry):${PATH}"),
-      export("PATH"),
-    ].joinedAsLines()
+  private func prependPath(_ entry: StrictString, windows: Bool = false) -> StrictString {
+    if windows {
+      return set(environmentVariable: "Path", to: "\(entry);%Path%", windows: true)
+    } else {
+      return [
+        set(environmentVariable: "PATH", to: "\(entry):${PATH}"),
+        export("PATH"),
+      ].joinedAsLines()
+    }
   }
 
   private func compressPATH() -> StrictString {
@@ -815,13 +819,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                 "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap",
               windows: true
             ),
-            prependPath("/c/Library/icu\u{2D}67/usr/bin"),
+            prependPath("C:\u{5C}Library\u{5C}icu\u{2D}67\u{5C}usr\u{5C}bin", windows: true),
             prependPath(
-              "/c/Library/Developer/Toolchains/unknown\u{2D}Asserts\u{2D}development.xctoolchain/usr/bin"
+              "C:\u{5C}Library\u{5C}Developer\u{5C}Toolchains\u{5C}unknown\u{2D}Asserts\u{2D}development.xctoolchain\u{5C}usr\u{5C}bin",
+              windows: true
             ),
-            prependPath("/c/Library/Swift\u{2D}development/bin"),
+            prependPath("C:\u{5C}Library\u{5C}Swift\u{2D}development\u{5C}bin", windows: true),
             prependPath(
-              "/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/bin"
+              "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}bin",
+              windows: true
             ),
             "swift \u{2D}\u{2D}version",
           ]

@@ -830,6 +830,11 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               windows: true
             ),
             "swift \u{2D}\u{2D}version",
+
+            // #workaround(Belongs in a different step.)
+            "swift test ^",
+            "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
+            "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",
           ]
         )
       )
@@ -961,94 +966,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         )
       )
     case .windows:
-      let version = ContinuousIntegrationJob.currentSwiftVersion
-        .string(droppingEmptyPatch: true)
-      result.append(contentsOf: [
-        script(
-          heading: installLinuxStepName,
-          localization: interfaceLocalization,
-          commands: [
-            cURL(
-              "https://aka.ms/wslubuntu\(ContinuousIntegrationJob.currentWSLImage)",
-              andUnzipTo: ".build/SDG/Linux/Ubuntu",
-              localTemporaryDirectory: true,
-              use7z: true
-            ),
-            prependPath("$(pwd)/.build/SDG/Linux/Ubuntu"),
-            "ubuntu\(ContinuousIntegrationJob.currentWSLImage) install \u{2D}\u{2D}root",
-          ]
-        ),
-        script(
-          heading: installSwiftPMDependenciesStepName,
-          localization: interfaceLocalization,
-          commands: [
-            aptGet(
-              [
-                "binutils",
-                "git",
-                "gnupg2",
-                "libc6\u{2D}dev",
-                "libcurl4",
-                "libedit2",
-                "libgcc\u{2D}9\u{2D}dev",
-                "libpython2.7",
-                "libsqlite3\u{2D}0",
-                "libstdc++\u{2D}9\u{2D}dev",
-                "libxml2",
-                "libz3\u{2D}dev",
-                "lld\u{2D}10",
-                "pkg\u{2D}config",
-                "tzdata",
-                "zlib1g\u{2D}dev",
-              ],
-              wsl: true
-            ),
-            wsl("ln \u{2D}s //usr/bin/lld\u{2D}link\u{2D}10 //usr/bin/lld\u{2D}link"),
-          ]
-        ),
-        script(
-          heading: buildStepName,
-          localization: interfaceLocalization,
-          commands: [
-            "export WSLENV=UniversalCRTSdkDir/p:UCRTVersion:VCToolsInstallDir/p",
-            wsl(
-              [
-                "\(ContinuousIntegrationJob.windows.environmentVariable)=\u{27}true\u{27} \u{5C}",
-                "swift build \u{2D}\u{2D}destination .github/workflows/Windows/SDK.json \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}sdk \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk/usr/lib/swift/windows \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/ucrt\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/ucrt/x64\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/include\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${VCToolsInstallDir}/include\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${VCToolsInstallDir}/lib/x64\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/um\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/lib/${UCRTVersion}/um/x64\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{2D}isystem \u{2D}Xswiftc \u{2D}Xcc \u{2D}Xswiftc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xcc \u{2D}isystem \u{2D}Xcc \u{27}\u{22}/${UniversalCRTSdkDir}/Include/${UCRTVersion}/shared\u{22}\u{27} \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows/x86_64 \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc //mnt/c/Library/Developer/Platforms/Windows.platform/Developer/Library/XCTest\u{2D}development/usr/lib/swift/windows",
-              ].joinedAsLines()
-            ),
-          ]
-        ),
-      ]
-      )
-      result.append(
-        script(
-          heading: testStepName,
-          localization: interfaceLocalization,
-          commands: [
-            compressPATH(),
-            ".build/x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc/debug/WindowsTests.exe",
-          ]
-        )
-      )
+      break
     case .web:
       result.append(
         script(

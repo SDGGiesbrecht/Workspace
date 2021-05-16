@@ -48,11 +48,13 @@ jobs:
         set Path=C:\Library\Swift-development\bin;%Path%
         set Path=C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\bin;%Path%
         echo Path=%Path% >> %GITHUB_ENV%
+        set
         swift --version
     - name: Test
       shell: cmd
       run: |
         echo on
+        set
         set TARGETING_WINDOWS=true
         swift test ^
           -Xswiftc -I -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 ^

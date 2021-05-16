@@ -672,8 +672,12 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       return "export \(environmentVariable)=\u{22}\(value)\u{22}"
     }
   }
-  private func export(_ environmentVariable: StrictString) -> StrictString {
-    return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
+  private func export(_ environmentVariable: StrictString, windows: Bool = false) -> StrictString {
+    if windows {
+      return "echo \(environmentVariable)=%\(environmentVariable)%>>%GITHUB_ENV%"
+    } else {
+      return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
+    }
   }
 
   private func prependPath(_ entry: StrictString, windows: Bool = false) -> StrictString {
@@ -739,9 +743,9 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       ])
       let version = ContinuousIntegrationJob.currentSwiftVersion
         .string(droppingEmptyPatch: true)
-      result.append(
+      result.append(contentsOf: [
         script(
-          heading: installSwiftAndTestStepName,
+          heading: installSwiftStepName,
           localization: interfaceLocalization,
           shell: "cmd",
           commands: [
@@ -754,6 +758,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
                 "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk",
               windows: true
             ),
+            export("SDKROOT", windows: true),
             copyFile(
               from:
                 "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
@@ -786,9 +791,15 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
               "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}bin",
               windows: true
             ),
+            export("Path", windows: true),
             "swift \u{2D}\u{2D}version",
-
-            // #workaround(Belongs in a different step.)
+          ]
+        ),
+        script(
+          heading: testStepName,
+          localization: interfaceLocalization,
+          shell: "cmd",
+          commands: [
             set(
               environmentVariable: ContinuousIntegrationJob.windows.environmentVariable,
               to: "true",
@@ -798,8 +809,8 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
             "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
             "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",
           ]
-        )
-      )
+        ),
+      ])
     case .web:
       break
     case .centOS, .amazonLinux:
@@ -1149,16 +1160,6 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
         return "Install Swift"
       case .deutschDeutschland:
         return "Swift installieren"
-      }
-    })
-  }
-  private var installSwiftAndTestStepName: UserFacing<StrictString, InterfaceLocalization> {
-    return UserFacing({ (localization) in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Install Swift & Test"
-      case .deutschDeutschland:
-        return "Swift installieren u. testen"
       }
     })
   }

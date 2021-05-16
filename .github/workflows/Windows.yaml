@@ -47,6 +47,7 @@ jobs:
         set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%
         set Path=C:\Library\Swift-development\bin;%Path%
         set Path=C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\bin;%Path%
+        echo Path=%PATH% >> %GITHUB_ENV%
         swift --version
     - name: Test
       shell: cmd

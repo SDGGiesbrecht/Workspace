@@ -30,7 +30,7 @@ jobs:
         path: .build/SDG/Workspace
     - name: Set Visual Studio up
       uses: ilammy/msvc-dev-cmd@v1
-    - name: Install Swift & Test
+    - name: Install Swift
       shell: cmd
       run: |
         echo on
@@ -48,6 +48,10 @@ jobs:
         set Path=C:\Library\Swift-development\bin;%Path%
         set Path=C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\bin;%Path%
         swift --version
+    - name: Test
+      shell: cmd
+      run: |
+        echo on
         set TARGETING_WINDOWS=true
         swift test ^
           -Xswiftc -I -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 ^

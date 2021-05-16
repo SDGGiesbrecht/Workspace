@@ -30,7 +30,7 @@ jobs:
         path: .build/SDG/Workspace
     - name: Set Visual Studio up
       uses: ilammy/msvc-dev-cmd@v1
-    - name: Install Swift & Test
+    - name: Install Swift
       shell: cmd
       run: |
         echo on
@@ -39,6 +39,7 @@ jobs:
           --output %TEMP%\swift-5.4-RELEASE-windows10.exe
         %TEMP%\swift-5.4-RELEASE-windows10.exe /passive
         set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk
+        echo SDKROOT=%SDKROOT%>>%GITHUB_ENV%
         copy %SDKROOT%\usr\share\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
         copy %SDKROOT%\usr\share\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
         copy %SDKROOT%\usr\share\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"
@@ -47,7 +48,12 @@ jobs:
         set Path=C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin;%Path%
         set Path=C:\Library\Swift-development\bin;%Path%
         set Path=C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\bin;%Path%
+        echo Path=%Path%>>%GITHUB_ENV%
         swift --version
+    - name: Test
+      shell: cmd
+      run: |
+        echo on
         set TARGETING_WINDOWS=true
         swift test ^
           -Xswiftc -I -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 ^

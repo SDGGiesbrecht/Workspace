@@ -49,6 +49,8 @@ jobs:
         set Path=C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\bin;%Path%
         echo Path=%Path% >> %GITHUB_ENV%
         swift --version
+    - name: Set Visual Studio up
+      uses: ilammy/msvc-dev-cmd@v1
     - name: Test
       shell: cmd
       run: |

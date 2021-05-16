@@ -26,3 +26,7 @@ let package = Package(
             dependencies: ["ContinuousIntegrationWithoutScripts"]),
     ]
 )
+
+// Windows Tests (Generated automatically by Workspace.)
+
+// End Windows Tests

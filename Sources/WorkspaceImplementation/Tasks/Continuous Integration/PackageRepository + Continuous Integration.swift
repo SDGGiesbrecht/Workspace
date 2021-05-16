@@ -114,8 +114,8 @@ extension PackageRepository {
       )
     }
     try cleanCMakeUp(output: output)
-    try refreshWindowsTests(output: output)
-    try refreshWindowsSDK(output: output)
+    try cleanWindowsTestsUp(output: output)
+    try cleanWindowsSDKUp(output: output)
     try cleanAndroidSDKUp(output: output)
   }
 
@@ -162,17 +162,17 @@ extension PackageRepository {
     delete(mainURL, output: output)
   }
 
-  private func refreshWindowsTests(output: Command.Output) throws {
+  private func cleanWindowsTestsUp(output: Command.Output) throws {
     // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
     #if !(os(Windows) || os(WASI) || os(Android))
-      try refreshWindowsTestsManifestAdjustments(output: output)
-      try refreshWindowsMain(output: output)
+      try cleanWindowsTestsManifestAdjustmentsUp(output: output)
+      try cleanWindowsMainUp(output: output)
     #endif
   }
 
   // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
   #if !(os(Windows) || os(WASI) || os(Android))
-    private func refreshWindowsTestsManifestAdjustments(output: Command.Output) throws {
+    private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
       let url = location.appendingPathComponent("Package.swift")
       var manifest = try TextFile(possiblyAt: url)
 
@@ -186,146 +186,21 @@ extension PackageRepository {
         manifest.contents.firstMatch(for: startPattern + end)?.range
         ?? manifest.contents[manifest.contents.endIndex...].bounds
 
-      if try ¬relevantJobs(output: output).contains(.windows) {
-        manifest.contents.replaceSubrange(range, with: "")
-      } else {
-        manifest.contents.replaceSubrange(
-          range,
-          with: [
-            start,
-            "import Foundation",
-            "if ProcessInfo.processInfo.environment[\u{22}\(ContinuousIntegrationJob.windows.environmentVariable)\u{22}] == \u{22}true\u{22} {",
-            "  var tests: [Target] = []",
-            "  var other: [Target] = []",
-            "  for target in package.targets {",
-            "    if target.type == .test {",
-            "      tests.append(target)",
-            "    } else {",
-            "      other.append(target)",
-            "    }",
-            "  }",
-            "  package.targets = other",
-            "  package.targets.append(",
-            "    contentsOf: tests.map({ test in",
-            "      return .target(",
-            "        name: test.name,",
-            "        dependencies: test.dependencies,",
-            "        path: test.path ?? \u{22}Tests/\u{5C}(test.name)\u{22},",
-            "        exclude: test.exclude,",
-            "        sources: test.sources,",
-            "        publicHeadersPath: test.publicHeadersPath,",
-            "        cSettings: test.cSettings,",
-            "        cxxSettings: test.cxxSettings,",
-            "        swiftSettings: test.swiftSettings,",
-            "        linkerSettings: test.linkerSettings",
-            "      )",
-            "    })",
-            "  )",
-            "  package.targets.append(",
-            "    .target(",
-            "      name: \u{22}WindowsTests\u{22},",
-            "      dependencies: tests.map({ Target.Dependency.target(name: $0.name) }),",
-            "      path: \u{22}Tests/WindowsTests\u{22}",
-            "    )",
-            "  )",
-            "}",
-            end,
-          ].joinedAsLines()
-        )
-      }
+      manifest.contents.replaceSubrange(range, with: "")
       try manifest.writeChanges(for: self, output: output)
     }
 
-    private func refreshWindowsMain(
+    private func cleanWindowsMainUp(
       output: Command.Output
     ) throws {
       let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
-      if try ¬relevantJobs(output: output).contains(.windows) {
-        delete(url, output: output)
-      } else {
-
-        let graph = try self.cachedPackageGraph()
-        let testTargets = graph.testTargets()
-
-        var main: [String] = [
-          "import XCTest",
-          "",
-        ]
-        var testClasses: [(name: String, methods: [String])] = []
-        for testTarget in testTargets {
-          main.append("@testable import \(testTarget.name)")
-          testClasses.append(contentsOf: try testTarget.testClasses())
-        }
-        main.append("")
-
-        for testClass in testClasses {
-          main.append(contentsOf: [
-            "extension \(testClass.name) {",
-            "  static let windowsTests: [XCTestCaseEntry] = [",
-            "    testCase([",
-          ])
-          for methodIndex in testClass.methods.indices {
-            let method = testClass.methods[methodIndex]
-            let comma = methodIndex == testClass.methods.indices.last ? "" : ","
-            main.append("      (\u{22}\(method)\u{22}, \(method))\(comma)")
-          }
-          main.append(contentsOf: [
-            "    ])",
-            "  ]",
-            "}",
-            "",
-          ])
-        }
-
-        main.append(contentsOf: [
-          "var tests = [XCTestCaseEntry]()"
-        ])
-        for testClass in testClasses {
-          main.append("tests += \(testClass.name).windowsTests")
-        }
-
-        main.append(contentsOf: [
-          "",
-          "XCTMain(tests)",
-        ])
-
-        var source = main.joinedAsLines()
-        try SwiftLanguage.format(
-          generatedCode: &source,
-          accordingTo: try configuration(output: output),
-          for: url
-        )
-
-        var windowsMain = try TextFile(possiblyAt: url)
-        windowsMain.body = source
-        try windowsMain.writeChanges(for: self, output: output)
-      }
+      delete(url, output: output)
     }
   #endif
 
-  private func refreshWindowsSDK(output: Command.Output) throws {
+  private func cleanWindowsSDKUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")
-    if try ¬relevantJobs(output: output).contains(.windows) {
-      delete(url, output: output)
-    } else {
-      let sdk: [String] = [
-        "{",
-        "  \u{22}version\u{22}: 1,",
-        "  \u{22}sdk\u{22}: \u{22}/mnt/c/Library/Developer/Platforms/Windows.platform/Developer/SDKs/Windows.sdk\u{22},",
-        "  \u{22}toolchain\u{2D}bin\u{2D}dir\u{22}: \u{22}/usr/bin\u{22},",
-        "  \u{22}target\u{22}: \u{22}x86_64\u{2D}unknown\u{2D}windows\u{2D}msvc\u{22},",
-        "  \u{22}dynamic\u{2D}library\u{2D}extension\u{22}: \u{22}dll\u{22},",
-        "  \u{22}extra\u{2D}cc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}swiftc\u{2D}flags\u{22}: [],",
-        "  \u{22}extra\u{2D}cpp\u{2D}flags\u{22}: []",
-        "}",
-      ]
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        var sdkFile = try TextFile(possiblyAt: url)
-        sdkFile.contents = sdk.joinedAsLines()
-        try sdkFile.writeChanges(for: self, output: output)
-      #endif
-    }
+    delete(url, output: output)
   }
 
   private func cleanAndroidSDKUp(output: Command.Output) throws {

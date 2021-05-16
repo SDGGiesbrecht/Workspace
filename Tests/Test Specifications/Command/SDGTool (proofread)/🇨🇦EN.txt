@@ -32,7 +32,6 @@ Proofreading source code... (§1)
 .github/workflows/Ubuntu.yaml
 .github/workflows/Web.yaml
 .github/workflows/Windows.yaml
-.github/workflows/Windows/SDK.json
 .github/workflows/macOS.yaml
 .gitignore
 LICENSE.md
@@ -43,7 +42,6 @@ Sources/Library/SDG.swift
 Sources/tool/main.swift
 Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
-Tests/WindowsTests/main.swift
 Tests/test‐tool/Resources.swift
 Tests/test‐tool/main.swift
 

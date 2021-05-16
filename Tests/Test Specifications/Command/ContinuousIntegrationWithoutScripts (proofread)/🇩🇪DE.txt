@@ -12,7 +12,6 @@ Quelltext Korrektur wird gelesen ...
 .github/workflows/Ubuntu.yaml
 .github/workflows/Web.yaml
 .github/workflows/Windows.yaml
-.github/workflows/Windows/SDK.json
 .github/workflows/iOS.yaml
 .github/workflows/macOS.yaml
 .github/workflows/tvOS.yaml
@@ -25,7 +24,6 @@ Sources/ContinuousIntegrationWithoutScripts/ContinuousIntegrationWithoutScripts.
 Tests/ContinuousIntegrationWithoutScriptsTests/ContinuousIntegrationWithoutScriptsTests.swift
 Tests/ContinuousIntegrationWithoutScriptsTests/XCTestManifests.swift
 Tests/LinuxMain.swift
-Tests/WindowsTests/main.swift
 
 ✓ Quelltext besteht das Korrekturlesen.
 

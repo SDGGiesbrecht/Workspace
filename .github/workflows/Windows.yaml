@@ -39,6 +39,7 @@ jobs:
           --output %TEMP%\swift-5.4-RELEASE-windows10.exe
         %TEMP%\swift-5.4-RELEASE-windows10.exe /passive
         set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk
+        echo SDKROOT=%SDKROOT% >> %GITHUB_ENV%
         copy %SDKROOT%\usr\share\ucrt.modulemap "%UniversalCRTSdkDir%\Include\%UCRTVersion%\ucrt\module.modulemap"
         copy %SDKROOT%\usr\share\visualc.modulemap "%VCToolsInstallDir%\include\module.modulemap"
         copy %SDKROOT%\usr\share\visualc.apinotes "%VCToolsInstallDir%\include\visualc.apinotes"

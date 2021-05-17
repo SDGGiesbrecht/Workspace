@@ -843,23 +843,6 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  fatalError("Debugging...")
-  // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for Windows.)
-  let impossibleDependencies = [
-    "SwiftPM",
-    "SwiftSyntax",
-    "SwiftFormat\u{22}",
-  ]
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        "\(dependency)".contains(impossible)
-      })
-    })
-  }
-}
-
-#if os(Windows)
   let impossibleDependencies: [String] = [
     // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
     "SwiftSyntax",
@@ -888,7 +871,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.4.0, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasPrefix("test") })
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
-#endif
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [

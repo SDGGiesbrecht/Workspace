@@ -820,7 +820,8 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
       .when(platforms: [.windows, .wasi, .android])
     ),
-    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile.)
+    // #workaround(swift-syntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
+    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])

@@ -820,10 +820,11 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
       .when(platforms: [.windows, .wasi, .android])
     ),
-    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile.)
+    // #workaround(swift-syntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.) @exempt(from: unicode)
+    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.wasi])
+      .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
     .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
@@ -833,13 +834,6 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi, .android])
     ),
   ])
-
-  if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-    // #workaround(Swift 5.3.3, Conditional flags fail to be detected for Windows.)
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT"))
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM"))
-    swiftSettings.append(.define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"))
-  }
 }
 
 import Foundation
@@ -860,13 +854,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
         return "\(dependency)".contains(impossible)
       })
     })
-    var swiftSettings = target.swiftSettings ?? []
-    defer { target.swiftSettings = swiftSettings }
-    swiftSettings.append(contentsOf: [
-      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX"),
-      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT"),
-      .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION"),
-    ])
   }
 
   // #workaround(Swift 5.4.0, Unable to build from Windows.)

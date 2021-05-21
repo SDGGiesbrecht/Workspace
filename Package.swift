@@ -548,8 +548,8 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          // #warning(SDGSwift 5.3.4, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          // #workaround(SwiftPM 0.50400.0, Does not support Andriod yet.)
+          condition: .when(platforms: [.macOS, .wasi, .linux])
         ),
         .product(
           name: "SwiftSyntax",
@@ -888,7 +888,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    //"SwiftPM",
+    "SwiftPM",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]

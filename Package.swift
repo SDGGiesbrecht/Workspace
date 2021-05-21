@@ -806,14 +806,14 @@ for target in package.targets {
     // #workaround(Swift 5.4, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
     .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.windows, .wasi])),
-    // #workaround(Swift 5.3.3, Android emulator lacks Git.)
+    // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
       .when(platforms: [.windows, .wasi, .android])
     ),
-    // #workaround(swift-syntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.) @exempt(from: unicode)
+    // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
@@ -832,7 +832,7 @@ for target in package.targets {
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(swift-syntax 0.50400.0, Manifest does not compile.) @exempt(from: unicode)
+    // #workaround(SwiftSyntax 0.50400.0, Manifest does not compile.)
     "SwiftSyntax",
     "swift\u{2D}format",
   ]

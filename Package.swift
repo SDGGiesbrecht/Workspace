@@ -548,25 +548,20 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          // #workaround(SwiftPM 0.50400.0, Does not support Andriod yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux])
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
         ),
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
         ),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
           // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-          // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
@@ -865,7 +860,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM",
+
     // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
+
+    // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
     // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
@@ -888,7 +886,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
+    // #workaround(SwiftPM 0.50400.0, Does not support Andriod yet.)
     "SwiftPM",
+    // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]

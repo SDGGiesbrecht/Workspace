@@ -888,7 +888,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    "SwiftPM",
+    //"SwiftPM",
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]

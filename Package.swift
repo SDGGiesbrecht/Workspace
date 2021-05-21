@@ -553,15 +553,13 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
         ),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
-          // #workaround(SwiftSyntax 0.50300.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),

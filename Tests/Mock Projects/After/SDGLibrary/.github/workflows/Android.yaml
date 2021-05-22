@@ -73,7 +73,7 @@ jobs:
         export TARGETING_ANDROID=true
         export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
         swift build --triple x86_64-unknown-linux-android \
-          --build-tests --enable-test-discovery \
+          --build-tests \
           --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \

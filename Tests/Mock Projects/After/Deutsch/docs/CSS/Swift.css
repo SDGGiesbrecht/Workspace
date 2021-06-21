@@ -6,79 +6,89 @@
 }
 .swift.blockquote {
     display: block;
-    margin: 1.4em 0;
+    margin: 1.6em 0;
     border: 1px solid;
-     border-radius: 0.35294em;
-    padding: 0.35294em 0.94118em;
+     border-radius: 0.23529em;
+    padding: 0.58824em;
 }
 
 /* Colour */
 
 .swift.blockquote {
-    background-color: #F9FAFA;
-    border-color:  #E6E6E6;
+    background-color: #FAFAFA;
+    border-color:  #D6D6D6;
 }
 .swift {
-    color: #000000;
+    color: #262626;
 }
 
 .swift .keyword {
-    color: #AA0D91;
+    color: #AD3DA4;
 }
 
 .swift .punctuation {
-    color: #000000;
+    color: #262626;
 }
 
 .swift .external.identifier {
-    color: #5C2699;
+    color: #804FB8;
 }
 .swift .internal.identifier {
-    color: #3F6E74;
+    color: #3E8087;
 }
 
 .swift .number {
-    color: #1C00CF;
+    color: #2C3CD8;
 }
 
 .swift .string {
-    color: #C41A16;
+    color: #D1302B;
 }
 .swift .string‐punctuation {
-    color: #62270B;
+    color: #7B2B28;
 }
 
 .swift .compilation‐condition {
-    color: #643820;
+    color: #78492A;
 }
 
 .swift .comment {
-    color: #007400;
+    color: #707F8C;
 }
 .swift .comment‐punctuation {
-    color: #003A00;
+    color: #4B5259;
+}
+.swift .comment‐keyword {
+    color: #5C6874;
 }
 .swift .source‐heading {
-    color: #4A5560;
+    color: #5C6874;
+}
+.swift .source‐heading {
+    color: #5C6874;
 }
 .swift .url {
-    color: #0E0EFF;
+    color: #2046F6;
 }
 
 .swift .code {
-    color: #000000;
+    color: #262626;
 }
 
 /* Font */
 
+.swift.blockquote {
+  font-size: 88.235%;
+  line-height: 1.66667;
+  letter-spacing: -0.027em;
+}
+
 .swift {
-    font-family: "SF Mono", Menlo, monospace, "SF Pro Icons";
-    letter-spacing: -0.027em;
-    line-height: 1.26667;
+    font-family: "SF Mono", "SF Mono", Menlo, monospace, "SF Pro Icons";
 }
 
 .swift .text, .swift .source‐heading {
-    font-family: "SF Pro Text", "SF Pro Icons", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    font-family: "Helvetica Neue", "-apple-system", "BlinkMacSystemFont", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     letter-spacing: 0;
 }
 

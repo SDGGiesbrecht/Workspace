@@ -119,7 +119,7 @@ extension ContinuousIntegrationJob {
     case .iOS:
       return .iOS(simulator: false)
     case .watchOS:
-      return .watchOS
+      return .watchOS(simulator: false)
     }
   }
 

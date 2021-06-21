@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "85a3c64a4f9e2eb90c5238fe6e5f28225d4fdf77",
-          "version": "1.7.3"
+          "revision": "59e9ca317ccd0e5c39b85235b8411d303c00ee74",
+          "version": "1.7.4"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": null,
-          "revision": "6347e52b75e365c0945856093321e49b72542446",
-          "version": "6.0.1"
+          "revision": "b93a24d3d79c6be1e8291570611cd79309120b10",
+          "version": "7.0.0"
         }
       },
       {
@@ -60,17 +60,8 @@
         "repositoryURL": "https://github.com/apple/swift-collections",
         "state": {
           "branch": null,
-          "revision": "2d719d75a2065f213e58a5164384a3d2fcf9b59a",
-          "version": "0.0.2"
-        }
-      },
-      {
-        "package": "swift-collections-benchmark",
-        "repositoryURL": "https://github.com/apple/swift-collections-benchmark",
-        "state": {
-          "branch": null,
-          "revision": "665cbb154a55f45bcedd2ab4faf17b1b7ac06de3",
-          "version": "0.0.2"
+          "revision": "d45e63421d3dff834949ac69d3c37691e994bd69",
+          "version": "0.0.3"
         }
       },
       {
@@ -125,15 +116,6 @@
           "branch": null,
           "revision": "2fff9fc25cdc059379b6bd309377cfab45d8520c",
           "version": "0.50400.0"
-        }
-      },
-      {
-        "package": "swift-system",
-        "repositoryURL": "https://github.com/apple/swift-system",
-        "state": {
-          "branch": null,
-          "revision": "8ffa04c0a0592e6f4f9c30926dedd8fa1c5371f9",
-          "version": "0.0.1"
         }
       },
       {

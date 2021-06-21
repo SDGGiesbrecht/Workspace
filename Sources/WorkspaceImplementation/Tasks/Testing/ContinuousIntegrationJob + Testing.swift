@@ -32,11 +32,12 @@ extension ContinuousIntegrationJob {
     .iOS,
     .amazonLinux,
   ]
-  internal static let testJobs: Set<ContinuousIntegrationJob> = coverageJobs
+  internal static let testJobs: Set<ContinuousIntegrationJob> =
+    coverageJobs ∪ [
+    .watchOS
+  ]
   internal static let buildJobs: Set<ContinuousIntegrationJob> =
-    testJobs ∪ [
-      .watchOS
-    ]
+    testJobs ∪ []
 
   // MARK: - Description
 
@@ -125,7 +126,7 @@ extension ContinuousIntegrationJob {
 
   internal var testSDK: Xcode.SDK {
     switch self {  // @exempt(from: tests) Unreachable from Linux.
-    case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .watchOS, .miscellaneous,
+    case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .miscellaneous,
       .deployment:
       unreachable()
     case .tvOS:  // @exempt(from: tests)
@@ -134,6 +135,8 @@ extension ContinuousIntegrationJob {
     case .iOS:  // @exempt(from: tests)
       // @exempt(from: tests) Tested separately.
       return .iOS(simulator: true)
+    case .watchOS:
+      return .watchOS(simulator: true)
     }
   }
 }

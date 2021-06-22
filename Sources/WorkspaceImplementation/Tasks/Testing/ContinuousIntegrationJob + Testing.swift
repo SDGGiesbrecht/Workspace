@@ -34,8 +34,8 @@ extension ContinuousIntegrationJob {
   ]
   internal static let testJobs: Set<ContinuousIntegrationJob> =
     coverageJobs ∪ [
-    .watchOS
-  ]
+      .watchOS
+    ]
   internal static let buildJobs: Set<ContinuousIntegrationJob> =
     testJobs ∪ []
 

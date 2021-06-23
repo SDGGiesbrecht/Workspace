@@ -58,6 +58,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
     .iOS,
     .tvOS,
+    .watchOS
   ]
 
   // MARK: - Properties

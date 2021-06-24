@@ -311,6 +311,10 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
   }
 
   internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
+    if try project.isWorkspaceProject() {
+      return true  // So that handling of cross‐compilation platforms is properly tested.
+    }
+
     switch self {
     case .macOS:
       return try .macOS ∈ project.configuration(output: output).supportedPlatforms

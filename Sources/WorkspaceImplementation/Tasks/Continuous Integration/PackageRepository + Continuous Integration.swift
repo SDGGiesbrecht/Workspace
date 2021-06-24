@@ -40,8 +40,6 @@ extension PackageRepository {
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
     return try ContinuousIntegrationJob.allCases.filter { job in
       return try job.isRequired(by: self, output: output)
-        // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on these platforms.
-        ∨ ((job ∈ Set([.windows, .web, .android])) ∧ isWorkspaceProject())
     }
   }
 

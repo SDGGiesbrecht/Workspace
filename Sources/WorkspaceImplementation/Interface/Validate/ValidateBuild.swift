@@ -85,9 +85,8 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws -> Bool {
       return try job ∈ validJobs
-        ∧ ((try job.isRequired(by: project, output: output)
-          ∨ project.isWorkspaceProject())  // So that simulator is tested.
-          ∧ job.platform == Platform.current)
+        ∧ job.isRequired(by: project, output: output)
+        ∧ job.platform == Platform.current
     }
 
     internal static func validate(

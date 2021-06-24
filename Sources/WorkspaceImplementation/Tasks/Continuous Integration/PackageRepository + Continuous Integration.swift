@@ -40,8 +40,6 @@ extension PackageRepository {
   private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
     return try ContinuousIntegrationJob.allCases.filter { job in
       return try job.isRequired(by: self, output: output)
-        // Simulator is unavailable during normal test.
-        ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
         // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on these platforms.
         ∨ ((job ∈ Set([.windows, .web, .android])) ∧ isWorkspaceProject())
     }
@@ -72,7 +70,6 @@ extension PackageRepository {
       workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
     }
 
-    try adjustForWorkspace(&workflow)
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var workflowFile = try TextFile(
         possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
@@ -117,27 +114,6 @@ extension PackageRepository {
     try cleanWindowsTestsUp(output: output)
     try cleanWindowsSDKUp(output: output)
     try cleanAndroidSDKUp(output: output)
-  }
-
-  private func adjustForWorkspace(_ configuration: inout [StrictString]) throws {
-    if try isWorkspaceProject() {
-      configuration = configuration.map { line in
-        var line = line
-        line.scalars.replaceMatches(
-          for:
-            "swift run workspace validate •job ios •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-            .scalars,
-          with: "swift run test‐ios‐simulator".scalars
-        )
-        line.scalars.replaceMatches(
-          for:
-            "swift run workspace validate •job tvos •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-            .scalars,
-          with: "swift run test‐tvos‐simulator".scalars
-        )
-        return line
-      }
-    }
   }
 
   private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {

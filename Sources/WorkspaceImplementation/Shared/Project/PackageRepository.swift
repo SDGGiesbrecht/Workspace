@@ -334,6 +334,9 @@ extension PackageRepository {
         // Provide the context in case resolution happens internally.
         WorkspaceContext.current = try configurationContext()
 
+        #if PLATFORM_LACKS_FOUNDATION_PROCESS
+          return WorkspaceConfiguration()
+        #else
         let result: WorkspaceConfiguration
         if try isWorkspaceProject() {
           result = WorkspaceProjectConfiguration.configuration
@@ -355,6 +358,7 @@ extension PackageRepository {
         // Force lazy options to resolve under the right context before it changes.
         let encoded = try JSONEncoder().encode(result)
         return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+        #endif
       }
     #endif
   }

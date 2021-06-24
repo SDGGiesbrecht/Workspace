@@ -54,8 +54,7 @@ extension PackageRepository {
     }
 
     var fromDocumentation: StrictString = ""
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       if let documentation = try? PackageAPI.documentation(
         for: package().get()
       ).resolved(localizations: allLocalizations).documentation[

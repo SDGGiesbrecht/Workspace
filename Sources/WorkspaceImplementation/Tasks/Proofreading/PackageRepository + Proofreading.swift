@@ -24,13 +24,11 @@ import SDGCommandLine
 
 import SDGSwift
 import SDGSwiftSource
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftFormat
 #endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
@@ -44,8 +42,7 @@ extension PackageRepository {
   internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
     let status = ProofreadingStatus(reporter: reporter, output: output)
 
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if os(Windows) || os(WASI) || os(Android)
+    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       var linter: Bool?
     #else
       var linter: SwiftLinter?
@@ -121,8 +118,7 @@ extension PackageRepository {
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-                #if !(os(Windows) || os(Android))
+                #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
                   let syntax = try SyntaxParser.parseAndRetry(url)
                   try RuleSyntaxScanner(
                     rules: syntaxRules,

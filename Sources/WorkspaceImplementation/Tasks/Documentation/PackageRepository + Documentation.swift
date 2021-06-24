@@ -174,8 +174,7 @@ extension PackageRepository {
                 "### [\(name)](\(url.absoluteString))",
               ]
 
-              // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-              #if !(os(Windows) || os(WASI) || os(Android))
+              #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
                 if let packageDocumentation = try? PackageAPI.documentation(
                   for: package.package().get()
                 ),
@@ -319,8 +318,7 @@ extension PackageRepository {
     let developmentLocalization = try self.developmentLocalization(output: output)
     let customReplacements = try customFileNameReplacements(output: output)
 
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       let api = try PackageAPI(
         package: cachedPackageGraph(),
         ignoredDependencies: configuration.documentation.api.ignoredDependencies,
@@ -411,8 +409,10 @@ extension PackageRepository {
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
             do {
+              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try Git.clone(package, to: temporary).get()
               _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
+              #endif
               try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}

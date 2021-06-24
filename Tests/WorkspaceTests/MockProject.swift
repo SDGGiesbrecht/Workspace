@@ -66,7 +66,11 @@ extension PackageRepository {
         // Not using FileManager.default.temporaryDirectory because the dynamic URL causes Xcode’s derived data to grow limitlessly over many test iterations.
         temporary = URL(fileURLWithPath: "/tmp")
       #else
-        temporary = FileManager.default.temporaryDirectory
+        if #available(tvOS 10, *) {
+          temporary = FileManager.default.temporaryDirectory
+        } else {
+          temporary = URL(fileURLWithPath: "/tmp")
+        }
       #endif
       self.init(at: temporary.appendingPathComponent(name))
     }
@@ -108,7 +112,9 @@ extension PackageRepository {
               if withCustomTask {
                 initialize += ["\u{2D}\u{2D}type", "executable"]
               }
+              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try Shell.default.run(command: initialize).get()
+              #endif
               if withCustomTask {
                 let manifest = dependency.appendingPathComponent("Package.swift")
                 var manifestContents = try StrictString(from: manifest)
@@ -126,12 +132,14 @@ extension PackageRepository {
                     )
                   )
               }
+              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try Shell.default.run(command: ["git", "init"]).get()
               _ = try Shell.default.run(command: ["git", "add", "."]).get()
               _ = try Shell.default.run(command: [
                 "git", "commit", "\u{2D}m", "Initialized.",
               ]).get()
               _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
+              #endif
             }
           #endif
         }
@@ -160,7 +168,9 @@ extension PackageRepository {
               // #workaround(Swift 5.3.3, Emulator lacks Git.)
               return
             #endif
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             _ = try Shell.default.run(command: ["git", "init"]).get()
+            #endif
             let gitIgnore = location.appendingPathComponent(".gitignore")
             if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
               _ = try? FileManager.default.copy(

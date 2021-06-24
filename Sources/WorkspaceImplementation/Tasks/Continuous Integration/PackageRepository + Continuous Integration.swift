@@ -137,15 +137,10 @@ extension PackageRepository {
   }
 
   private func cleanWindowsTestsUp(output: Command.Output) throws {
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
       try cleanWindowsTestsManifestAdjustmentsUp(output: output)
       try cleanWindowsMainUp(output: output)
-    #endif
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
     private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
       let url = location.appendingPathComponent("Package.swift")
       var manifest = try TextFile(possiblyAt: url)
@@ -170,7 +165,6 @@ extension PackageRepository {
       let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
       delete(url, output: output)
     }
-  #endif
 
   private func cleanWindowsSDKUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")

@@ -410,8 +410,8 @@ extension PackageRepository {
             let package = SDGSwift.Package(url: packageURL)
             do {
               #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              _ = try Git.clone(package, to: temporary).get()
-              _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
+                _ = try Git.clone(package, to: temporary).get()
+                _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
               #endif
               try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)

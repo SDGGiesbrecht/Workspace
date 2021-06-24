@@ -137,34 +137,34 @@ extension PackageRepository {
   }
 
   private func cleanWindowsTestsUp(output: Command.Output) throws {
-      try cleanWindowsTestsManifestAdjustmentsUp(output: output)
-      try cleanWindowsMainUp(output: output)
+    try cleanWindowsTestsManifestAdjustmentsUp(output: output)
+    try cleanWindowsMainUp(output: output)
   }
 
-    private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
-      let url = location.appendingPathComponent("Package.swift")
-      var manifest = try TextFile(possiblyAt: url)
+  private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
+    let url = location.appendingPathComponent("Package.swift")
+    var manifest = try TextFile(possiblyAt: url)
 
-      let start = "// Windows Tests (Generated automatically by Workspace.)"
-      let end = "// End Windows Tests"
-      let startPattern = ConcatenatedPatterns(
-        start,
-        RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
-      )
-      let range =
-        manifest.contents.firstMatch(for: startPattern + end)?.range
-        ?? manifest.contents[manifest.contents.endIndex...].bounds
+    let start = "// Windows Tests (Generated automatically by Workspace.)"
+    let end = "// End Windows Tests"
+    let startPattern = ConcatenatedPatterns(
+      start,
+      RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
+    )
+    let range =
+      manifest.contents.firstMatch(for: startPattern + end)?.range
+      ?? manifest.contents[manifest.contents.endIndex...].bounds
 
-      manifest.contents.replaceSubrange(range, with: "")
-      try manifest.writeChanges(for: self, output: output)
-    }
+    manifest.contents.replaceSubrange(range, with: "")
+    try manifest.writeChanges(for: self, output: output)
+  }
 
-    private func cleanWindowsMainUp(
-      output: Command.Output
-    ) throws {
-      let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
-      delete(url, output: output)
-    }
+  private func cleanWindowsMainUp(
+    output: Command.Output
+  ) throws {
+    let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
+    delete(url, output: output)
+  }
 
   private func cleanWindowsSDKUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")

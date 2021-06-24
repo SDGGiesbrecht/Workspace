@@ -14,17 +14,17 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-  import SDGControlFlow
-  import SDGLogic
-  import SDGMathematics
-  import SDGCollections
+import SDGControlFlow
+import SDGLogic
+import SDGMathematics
+import SDGCollections
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
-  import SDGSwiftSource
+import SDGSwiftSource
 
-  import WorkspaceConfiguration
+import WorkspaceConfiguration
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension APIElement {

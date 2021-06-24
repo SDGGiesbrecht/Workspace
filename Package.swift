@@ -790,7 +790,10 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
-    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])),
+    .define(
+      "PLATFORM_LACKS_FOUNDATION_XML",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])
+    ),
     // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
@@ -805,7 +808,10 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])),
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
     // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",

@@ -113,7 +113,7 @@ extension PackageRepository {
                 initialize += ["\u{2D}\u{2D}type", "executable"]
               }
               #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              _ = try Shell.default.run(command: initialize).get()
+                _ = try Shell.default.run(command: initialize).get()
               #endif
               if withCustomTask {
                 let manifest = dependency.appendingPathComponent("Package.swift")
@@ -133,12 +133,12 @@ extension PackageRepository {
                   )
               }
               #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              _ = try Shell.default.run(command: ["git", "init"]).get()
-              _ = try Shell.default.run(command: ["git", "add", "."]).get()
-              _ = try Shell.default.run(command: [
-                "git", "commit", "\u{2D}m", "Initialized.",
-              ]).get()
-              _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
+                _ = try Shell.default.run(command: ["git", "init"]).get()
+                _ = try Shell.default.run(command: ["git", "add", "."]).get()
+                _ = try Shell.default.run(command: [
+                  "git", "commit", "\u{2D}m", "Initialized.",
+                ]).get()
+                _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
               #endif
             }
           #endif
@@ -169,7 +169,7 @@ extension PackageRepository {
               return
             #endif
             #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-            _ = try Shell.default.run(command: ["git", "init"]).get()
+              _ = try Shell.default.run(command: ["git", "init"]).get()
             #endif
             let gitIgnore = location.appendingPathComponent(".gitignore")
             if (try? gitIgnore.checkResourceIsReachable()) ≠ true {

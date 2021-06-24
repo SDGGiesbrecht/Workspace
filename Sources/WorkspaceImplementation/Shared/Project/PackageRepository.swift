@@ -337,27 +337,27 @@ extension PackageRepository {
         #if PLATFORM_LACKS_FOUNDATION_PROCESS
           return WorkspaceConfiguration()
         #else
-        let result: WorkspaceConfiguration
-        if try isWorkspaceProject() {
-          result = WorkspaceProjectConfiguration.configuration
-        } else {
-          result = try WorkspaceConfiguration.load(
-            configuration: WorkspaceConfiguration.self,
-            named: PackageRepository.workspaceConfigurationNames,
-            from: location,
-            linkingAgainst: "WorkspaceConfiguration",
-            in: "Workspace",
-            from: Metadata.packageURL,
-            at: Metadata.latestStableVersion,
-            minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
-            context: try configurationContext(),
-            reportProgress: { output.print($0) }
-          ).get()
-        }
+          let result: WorkspaceConfiguration
+          if try isWorkspaceProject() {
+            result = WorkspaceProjectConfiguration.configuration
+          } else {
+            result = try WorkspaceConfiguration.load(
+              configuration: WorkspaceConfiguration.self,
+              named: PackageRepository.workspaceConfigurationNames,
+              from: location,
+              linkingAgainst: "WorkspaceConfiguration",
+              in: "Workspace",
+              from: Metadata.packageURL,
+              at: Metadata.latestStableVersion,
+              minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
+              context: try configurationContext(),
+              reportProgress: { output.print($0) }
+            ).get()
+          }
 
-        // Force lazy options to resolve under the right context before it changes.
-        let encoded = try JSONEncoder().encode(result)
-        return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+          // Force lazy options to resolve under the right context before it changes.
+          let encoded = try JSONEncoder().encode(result)
+          return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
         #endif
       }
     #endif

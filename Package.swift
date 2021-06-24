@@ -835,7 +835,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   }
 
   // #workaround(Swift 5.4.0, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name.hasPrefix("test") })
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }
 

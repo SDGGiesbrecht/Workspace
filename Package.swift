@@ -865,6 +865,20 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   }
 }
 
+if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.targets.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.targets.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
@@ -881,4 +895,11 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
       })
     })
   }
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  package.targets.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.targets.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
 }

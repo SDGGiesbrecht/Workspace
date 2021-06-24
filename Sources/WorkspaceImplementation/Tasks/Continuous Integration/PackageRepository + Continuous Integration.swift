@@ -143,20 +143,22 @@ extension PackageRepository {
 
   private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
     let url = location.appendingPathComponent("Package.swift")
-    var manifest = try TextFile(possiblyAt: url)
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      var manifest = try TextFile(possiblyAt: url)
 
-    let start = "// Windows Tests (Generated automatically by Workspace.)"
-    let end = "// End Windows Tests"
-    let startPattern = ConcatenatedPatterns(
-      start,
-      RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
-    )
-    let range =
-      manifest.contents.firstMatch(for: startPattern + end)?.range
-      ?? manifest.contents[manifest.contents.endIndex...].bounds
+      let start = "// Windows Tests (Generated automatically by Workspace.)"
+      let end = "// End Windows Tests"
+      let startPattern = ConcatenatedPatterns(
+        start,
+        RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
+      )
+      let range =
+        manifest.contents.firstMatch(for: startPattern + end)?.range
+        ?? manifest.contents[manifest.contents.endIndex...].bounds
 
-    manifest.contents.replaceSubrange(range, with: "")
-    try manifest.writeChanges(for: self, output: output)
+      manifest.contents.replaceSubrange(range, with: "")
+      try manifest.writeChanges(for: self, output: output)
+    #endif
   }
 
   private func cleanWindowsMainUp(

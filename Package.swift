@@ -707,22 +707,6 @@ let package = Package(
       ]
     ),
     .target(
-      name: "test‐ios‐simulator",
-      dependencies: [
-        "WorkspaceImplementation",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ],
-      path: "Tests/test‐ios‐simulator"
-    ),
-    .target(
-      name: "test‐tvos‐simulator",
-      dependencies: [
-        "WorkspaceImplementation",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ],
-      path: "Tests/test‐tvos‐simulator"
-    ),
-    .target(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",

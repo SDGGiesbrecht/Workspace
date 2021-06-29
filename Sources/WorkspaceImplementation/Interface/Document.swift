@@ -68,6 +68,7 @@ extension Workspace {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -77,7 +78,6 @@ extension Workspace {
       execution: { (_, options: Options, output: Command.Output) throws in
 
         var validationStatus = ValidationStatus()
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
             outputDirectory: outputDirectory,
@@ -85,7 +85,6 @@ extension Workspace {
             validationStatus: &validationStatus,
             output: output
           )
-        #endif
 
         guard validationStatus.validatedSomething else {
           throw Command.Error(
@@ -106,9 +105,7 @@ extension Workspace {
               })
           )
         }
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
@@ -118,13 +115,12 @@ extension Workspace {
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.document(
           outputDirectory: outputDirectory,
           validationStatus: &validationStatus,
           output: output
         )
-      #endif
     }
+    #endif
   }
 }

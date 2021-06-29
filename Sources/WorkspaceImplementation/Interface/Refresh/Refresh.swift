@@ -45,6 +45,7 @@ extension Workspace {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     private static var subcommands: [Command] {
       return [
         All.command,
@@ -67,5 +68,6 @@ extension Workspace {
       subcommands: subcommands,
       defaultSubcommand: All.command
     )
+    #endif
   }
 }

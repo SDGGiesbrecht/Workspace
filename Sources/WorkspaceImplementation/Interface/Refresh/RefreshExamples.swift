@@ -192,6 +192,7 @@ extension Workspace.Refresh {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -211,10 +212,9 @@ extension Workspace.Refresh {
           }).resolved().formattedAsSectionHeader()
         )
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try options.project.refreshExamples(output: output)
-        #endif
       }
     )
+    #endif
   }
 }

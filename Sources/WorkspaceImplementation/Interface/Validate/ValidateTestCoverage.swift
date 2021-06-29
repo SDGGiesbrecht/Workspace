@@ -50,6 +50,7 @@ extension Workspace.Validate {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -57,14 +58,12 @@ extension Workspace.Validate {
       options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
       execution: { (_, options: Options, output: Command.Output) throws in
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try Build.validate(
             job: options.job,
             against: ContinuousIntegrationJob.coverageJobs,
             for: options.project,
             output: output
           )
-        #endif
 
         var validationStatus = ValidationStatus()
 
@@ -74,9 +73,7 @@ extension Workspace.Validate {
           output: output
         )
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
@@ -86,7 +83,6 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Build.job(
@@ -108,14 +104,12 @@ extension Workspace.Validate {
             }
 
             #if DEBUG
-              #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
                 if job ∈ ContinuousIntegrationJob.simulatorJobs,
                   ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
                     ≠ nil
                 {  // Simulators are not available to all CI jobs and must be tested separately.
                   return  // and continue loop.
                 }
-              #endif
             #endif
 
             options.project.test(
@@ -130,7 +124,7 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
     }
+    #endif
   }
 }

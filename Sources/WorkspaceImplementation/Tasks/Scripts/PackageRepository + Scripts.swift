@@ -29,6 +29,7 @@ extension PackageRepository {
     repositorySDGDirectory
     + "/Workspace"
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
 
     let localization = try project.configuration(output: output)
@@ -39,7 +40,6 @@ extension PackageRepository {
     }
 
     for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try purgingAutoreleased {
 
           var file = try TextFile(
@@ -56,7 +56,7 @@ extension PackageRepository {
           file.body = String(try script.source(for: self, output: output))
           try file.writeChanges(for: self, output: output)
         }
-      #endif
     }
   }
+  #endif
 }

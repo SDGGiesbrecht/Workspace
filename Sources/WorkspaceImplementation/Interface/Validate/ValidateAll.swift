@@ -49,6 +49,7 @@ extension Workspace.Validate {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -85,7 +86,6 @@ extension Workspace.Validate {
       output: Command.Output
     ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if ¬ProcessInfo.isInContinuousIntegration {
           // @exempt(from: tests)
           try Workspace.Refresh.All.executeAsStep(
@@ -94,9 +94,7 @@ extension Workspace.Validate {
             output: output
           )
         }
-      #endif
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -110,7 +108,6 @@ extension Workspace.Validate {
             }
           }).resolved().formattedAsSectionHeader()
         )
-      #endif
 
       // Proofread
       if options.job == .miscellaneous ∨ options.job == nil {
@@ -122,7 +119,6 @@ extension Workspace.Validate {
         )
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -159,11 +155,9 @@ extension Workspace.Validate {
             output: output
           )
         }
-      #endif
 
       // Document
       if options.job.includes(job: .miscellaneous) {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
             .serveFromGitHubPagesBranch,
@@ -185,10 +179,8 @@ extension Workspace.Validate {
               output: output
             )
           }
-        #endif
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if options.job.includes(job: .deployment),
           try options.project.configuration(output: output).documentation.api.generate
         {
@@ -250,9 +242,7 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
-
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      
         // State
         if ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
@@ -276,7 +266,6 @@ extension Workspace.Validate {
             }).resolved().formattedAsSectionHeader()
           )
 
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             let difference = try options.project.uncommittedChanges().get()
             if ¬difference.isEmpty {
               output.print(difference.separated())
@@ -306,9 +295,7 @@ extension Workspace.Validate {
                 })
               )
             }
-          #endif
         }
-      #endif
 
       output.print("Summary".formattedAsSectionHeader())
 
@@ -338,10 +325,9 @@ extension Workspace.Validate {
         )
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try validationStatus.reportOutcome(project: options.project, output: output)
-      #endif
     }
+    #endif
   }
 }
 

@@ -185,6 +185,7 @@ internal enum Script: Int, CaseIterable {
       }
     })
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal static func getWorkspace(
     andExecute command: StrictString,
     for project: PackageRepository,
@@ -270,4 +271,5 @@ internal enum Script: Int, CaseIterable {
 
     return lines.joined(separator: "\n")
   }
+  #endif
 }

@@ -39,6 +39,7 @@ import WorkspaceLocalizations
 
 extension PackageRepository {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
     let status = ProofreadingStatus(reporter: reporter, output: output)
 
@@ -79,7 +80,6 @@ extension PackageRepository {
       {
         settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
       }
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         for target in try cachedPackage().targets {
           let setting: Setting?
           switch target.type {
@@ -96,13 +96,11 @@ extension PackageRepository {
             }
           }
         }
-      #endif
 
       for url in sourceURLs
       where FileType(url: url) ≠ nil
         ∧ FileType(url: url) ≠ .xcodeProject
       {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try purgingAutoreleased {
 
             let file = try TextFile(alreadyAt: url)
@@ -134,7 +132,6 @@ extension PackageRepository {
               }
             }
           }
-        #endif
       }
     }
 
@@ -148,4 +145,5 @@ extension PackageRepository {
 
     return status.passing
   }
+  #endif
 }

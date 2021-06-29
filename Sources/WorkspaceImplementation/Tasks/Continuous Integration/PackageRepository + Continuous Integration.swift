@@ -32,6 +32,7 @@ import WorkspaceConfiguration
 
 extension PackageRepository {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshContinuousIntegration(output: Command.Output) throws {
     try refreshGitHubWorkflows(output: output)
     delete(location.appendingPathComponent(".travis.yml"), output: output)
@@ -68,13 +69,11 @@ extension PackageRepository {
       workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
     }
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var workflowFile = try TextFile(
         possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
       )
       workflowFile.body = String(workflow.joinedAsLines())
       try workflowFile.writeChanges(for: self, output: output)
-    #endif
   }
 
   private func refreshGitHubWorkflows(output: Command.Output) throws {
@@ -128,6 +127,7 @@ extension PackageRepository {
       output: output
     )
   }
+  #endif
 
   private func cleanCMakeUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")

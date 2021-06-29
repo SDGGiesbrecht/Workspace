@@ -53,6 +53,7 @@ extension PackageRepository {
       }
     })
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func script() throws -> String {
     if try isWorkspaceProject() {
       return "swift run workspace proofread •xcode"  // @exempt(from: tests)
@@ -68,7 +69,6 @@ extension PackageRepository {
     let projectBundle = location.appendingPathComponent(
       "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
     )
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var project = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
       )
@@ -97,6 +97,6 @@ extension PackageRepository {
       )
       scheme.contents = schemeDefinition
       try scheme.writeChanges(for: self, output: output)
-    #endif
   }
+  #endif
 }

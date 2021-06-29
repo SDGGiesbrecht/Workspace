@@ -43,6 +43,7 @@ extension PackageRepository {
       + InterfaceLocalization.endExampleDeclaration
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
     return try _withExampleCache {
       var list: [StrictString: StrictString] = [:]
@@ -50,7 +51,6 @@ extension PackageRepository {
       for url in try sourceFiles(output: output) {
         purgingAutoreleased {
 
-          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             if FileType(url: url) ≠ nil,
               let file = try? TextFile(alreadyAt: url)
             {
@@ -97,7 +97,6 @@ extension PackageRepository {
                 list[identifier] = example
               }
             }
-          #endif
         }
       }
 
@@ -118,10 +117,6 @@ extension PackageRepository {
           let documentationSyntax = FileType.swiftDocumentationSyntax
           let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-            func dodgeLackOfThrowingCalls() throws {}
-            try dodgeLackOfThrowingCalls()
-          #else
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex
@@ -256,9 +251,9 @@ extension PackageRepository {
             }
 
             try file.writeChanges(for: self, output: output)
-          #endif
         }
       }
     }
   }
+  #endif
 }

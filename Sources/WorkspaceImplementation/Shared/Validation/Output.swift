@@ -22,6 +22,7 @@ import SDGSwift
 
 extension Command.Output {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func succeed(message: StrictString, project: PackageRepository) throws {
     try listWarnings(for: project)
     print(message.formattedAsSuccess().separated())
@@ -35,4 +36,5 @@ extension Command.Output {
       print(unsupportedFiles.formattedAsWarning().separated())
     }
   }
+  #endif
 }

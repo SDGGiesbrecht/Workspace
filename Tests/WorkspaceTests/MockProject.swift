@@ -76,6 +76,7 @@ extension PackageRepository {
     }
   #endif
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   func test<L>(
     commands: [[StrictString]],
     configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
@@ -90,31 +91,21 @@ extension PackageRepository {
 
     do {
       try purgingAutoreleased {
-        #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           func dodgeLackOfThrowingCalls() throws {}
           try dodgeLackOfThrowingCalls()
-        #endif
 
         let developer = URL(fileURLWithPath: "/tmp/Developer")
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try? FileManager.default.removeItem(at: developer)
           defer { try? FileManager.default.removeItem(at: developer) }
-        #endif
         if withDependency ∨ withCustomTask {
 
           let dependency = developer.appendingPathComponent("Dependency")
-          #if os(Android)
-            return  // This location is not writable.
-          #endif
-          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
             try FileManager.default.do(in: dependency) {
               var initialize = ["swift", "package", "init"]
               if withCustomTask {
                 initialize += ["\u{2D}\u{2D}type", "executable"]
               }
-              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
                 _ = try Shell.default.run(command: initialize).get()
-              #endif
               if withCustomTask {
                 let manifest = dependency.appendingPathComponent("Package.swift")
                 var manifestContents = try StrictString(from: manifest)
@@ -132,45 +123,31 @@ extension PackageRepository {
                     )
                   )
               }
-              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
                 _ = try Shell.default.run(command: ["git", "init"]).get()
                 _ = try Shell.default.run(command: ["git", "add", "."]).get()
                 _ = try Shell.default.run(command: [
                   "git", "commit", "\u{2D}m", "Initialized.",
                 ]).get()
                 _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
-              #endif
             }
-          #endif
         }
-        #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
           let beforeLocation = PackageRepository.beforeDirectory(
             for: location.lastPathComponent
           )
-        #endif
 
-        #if !os(Windows)
           // Simulators are not available to all CI jobs and must be tested separately.
           setenv("SIMULATOR_UNAVAILABLE_FOR_TESTING", "YES", 1 /* overwrite */)
           defer {
             unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
           }
-        #endif
         _isDuringSpecificationTest = true
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try? FileManager.default.removeItem(at: location)
           try FileManager.default.copy(beforeLocation, to: location)
           defer { try? FileManager.default.removeItem(at: location) }
 
           try FileManager.default.do(in: location) {
-            #if os(Android)
-              // #workaround(Swift 5.3.3, Emulator lacks Git.)
-              return
-            #endif
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try Shell.default.run(command: ["git", "init"]).get()
-            #endif
             let gitIgnore = location.appendingPathComponent(".gitignore")
             if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
               _ = try? FileManager.default.copy(
@@ -179,9 +156,7 @@ extension PackageRepository {
               )
             }
 
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
               WorkspaceContext.current = try configurationContext()
-            #endif
             if sdg {
               configuration._applySDGOverrides()
               configuration._validateSDGStandards()
@@ -494,10 +469,10 @@ extension PackageRepository {
               }
             }
           }
-        #endif
       }
     } catch {
       XCTFail("\(error)", file: file, line: line)
     }
   }
+  #endif
 }

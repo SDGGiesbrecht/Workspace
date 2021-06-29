@@ -25,7 +25,10 @@ import SDGCommandLine
 import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
-public enum Workspace: Tool {
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+extension Workspace: Tool {}
+#endif
+public enum Workspace {
 
   private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {
@@ -72,6 +75,7 @@ public enum Workspace: Tool {
     }
   })
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   public static let command = Command(
     name: name,
     description: description,
@@ -93,11 +97,14 @@ public enum Workspace: Tool {
       Workspace.CheckForUpdates.command,
     ]
   )
+  #endif
 
   // MARK: - Tool
 
   public static let applicationIdentifier: StrictString = "ca.solideogloria.Workspace"
   public static let version: Version? = Metadata.thisVersion
   public static let packageURL: URL? = Metadata.packageURL
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   public static let rootCommand: Command = command
+  #endif
 }

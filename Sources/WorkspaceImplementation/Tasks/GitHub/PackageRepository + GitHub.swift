@@ -54,22 +54,20 @@ extension PackageRepository {
 
   // MARK: - Refreshment
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshGitHubConfiguration(output: Command.Output) throws {
     try refreshContributingInstructions(output: output)
     try refreshIssueTemplates(output: output)
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
       pullRequestTemplateFile.contents = String(
         try configuration(output: output).gitHub.pullRequestTemplate
       )
       try pullRequestTemplateFile.writeChanges(for: self, output: output)
-    #endif
   }
 
   private func refreshContributingInstructions(output: Command.Output) throws {
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var contributingInstructionsFile = try TextFile(
         possiblyAt: contributingInstructionsLocation
       )
@@ -77,7 +75,6 @@ extension PackageRepository {
         try constructedContributingInstructions(output: output)
       )
       try contributingInstructionsFile.writeChanges(for: self, output: output)
-    #endif
 
     // Remove deprecated.
     delete(depricatedContributingInstructions, output: output)
@@ -128,21 +125,18 @@ extension PackageRepository {
         ]
         fileContents.append(template.content)
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           var issueTemplateFile = try TextFile(possiblyAt: fileLocation)
           issueTemplateFile.contents = String(fileContents.joinedAsLines())
           try issueTemplateFile.writeChanges(for: self, output: output)
-        #endif
       }
     }
 
     delete(depricatedIssueTemplateLocation, output: output)
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
         for file in files where file ∉ validFiles {
           delete(file, output: output)
         }
       }
-    #endif
   }
+  #endif
 }

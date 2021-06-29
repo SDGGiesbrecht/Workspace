@@ -43,6 +43,7 @@ extension Workspace {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -54,5 +55,6 @@ extension Workspace {
       ],
       defaultSubcommand: All.command
     )
+    #endif
   }
 }

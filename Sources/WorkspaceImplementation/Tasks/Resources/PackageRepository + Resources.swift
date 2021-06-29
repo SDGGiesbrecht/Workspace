@@ -120,6 +120,7 @@ extension PackageRepository {
     return target
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshResources(output: Command.Output) throws {
 
     var targets: [Target: [URL]] = [:]
@@ -137,4 +138,5 @@ extension PackageRepository {
       }
     }
   }
+  #endif
 }

@@ -39,6 +39,7 @@ extension PackageRepository {
     )
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshFileHeaders(output: Command.Output) throws {
 
     let template = try fileHeader(output: output)
@@ -51,10 +52,6 @@ extension PackageRepository {
           type.syntax.hasComments
         {
 
-          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-            func dodgeLackOfThrowingCalls() throws {}
-            try dodgeLackOfThrowingCalls()
-          #else
             var file = try TextFile(alreadyAt: url)
             let oldHeader = file.header
             var header = template
@@ -70,9 +67,9 @@ extension PackageRepository {
 
             file.header = String(header)
             try file.writeChanges(for: self, output: output)
-          #endif
         }
       }
     }
   }
+  #endif
 }

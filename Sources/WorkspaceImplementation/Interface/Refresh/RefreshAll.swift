@@ -46,6 +46,7 @@ extension Workspace.Refresh {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -64,7 +65,6 @@ extension Workspace.Refresh {
           try executeAsStep(withArguments: arguments, options: options, output: output)
         }
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           let projectName = try options.project.localizedIsolatedProjectName(output: output)
           var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
@@ -78,7 +78,6 @@ extension Workspace.Refresh {
           }).resolved()
 
           try output.succeed(message: success, project: options.project)
-        #endif
       }
     )
 
@@ -88,7 +87,6 @@ extension Workspace.Refresh {
       output: Command.Output
     ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -172,7 +170,6 @@ extension Workspace.Refresh {
             output: output
           )
         }
-      #endif
 
       // Examples
       try Workspace.Refresh.Examples.command.execute(
@@ -188,7 +185,6 @@ extension Workspace.Refresh {
         output: output
       )
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Normalization
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
@@ -210,7 +206,7 @@ extension Workspace.Refresh {
           )
           try task.execute(output: output)
         }
-      #endif
     }
+    #endif
   }
 }

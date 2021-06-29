@@ -29,6 +29,7 @@ import SDGSwift
 
 extension PackageRepository {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func normalize(output: Command.Output) throws {
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
@@ -44,10 +45,6 @@ extension PackageRepository {
       try purgingAutoreleased {
 
         if let syntax = FileType(url: url)?.syntax {
-          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-            func dodgeLackOfThrowingCalls() throws {}
-            try dodgeLackOfThrowingCalls()
-          #else
             var file = try TextFile(alreadyAt: url)
 
             #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
@@ -88,9 +85,9 @@ extension PackageRepository {
 
             file.contents = normalizedLines.joinedAsLines()
             try file.writeChanges(for: self, output: output)
-          #endif
         }
       }
     }
   }
+  #endif
 }

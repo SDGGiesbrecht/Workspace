@@ -47,6 +47,7 @@ extension Workspace.Validate {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -74,9 +75,7 @@ extension Workspace.Validate {
           )
         }
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
       }
     )
 
@@ -85,12 +84,11 @@ extension Workspace.Validate {
       validationStatus: inout ValidationStatus,
       output: Command.Output
     ) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.validateDocumentationCoverage(
           validationStatus: &validationStatus,
           output: output
         )
-      #endif
     }
+    #endif
   }
 }

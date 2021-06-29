@@ -28,6 +28,7 @@ import WorkspaceConfiguration
 
 extension PackageRepository {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func refreshReadMe(
     at location: URL,
     for localization: LocalizationIdentifier,
@@ -54,7 +55,6 @@ extension PackageRepository {
     }
 
     var fromDocumentation: StrictString = ""
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       if let documentation = try? PackageAPI.documentation(
         for: package().get()
       ).resolved(localizations: allLocalizations).documentation[
@@ -69,7 +69,6 @@ extension PackageRepository {
         }
       }
       readMe.replaceMatches(for: "#packageDocumentation".scalars, with: fromDocumentation)
-    #endif
 
     // Word Elements
 
@@ -84,11 +83,9 @@ extension PackageRepository {
       )
     }
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var file = try TextFile(possiblyAt: location)
       file.body = String(readMe)
       try file.writeChanges(for: self, output: output)
-    #endif
   }
 
   internal func refreshReadMe(output: Command.Output) throws {
@@ -118,4 +115,5 @@ extension PackageRepository {
       }
     }
   }
+  #endif
 }

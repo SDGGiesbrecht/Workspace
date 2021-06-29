@@ -87,6 +87,7 @@ extension Workspace {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -115,9 +116,8 @@ extension Workspace {
         )
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.normalize(output: output)
-      #endif
     }
+    #endif
   }
 }

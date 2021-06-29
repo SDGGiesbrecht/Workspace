@@ -57,6 +57,7 @@ extension PackageRepository {
     return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func customFileNameReplacements(output: Command.Output) throws -> [(
     StrictString, StrictString
   )] {
@@ -83,7 +84,6 @@ extension PackageRepository {
     return result
   }
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS
     private func loadCommandLineInterface(
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
@@ -105,7 +105,6 @@ extension PackageRepository {
         customReplacements: customReplacements
       )
     }
-  #endif
 
   internal func resolvedCopyright(
     documentationStatus: DocumentationStatus,
@@ -150,10 +149,6 @@ extension PackageRepository {
               ]
             }
           case .project(let url):
-            #if PLATFORM_LACKS_FOUNDATION_PROCESS
-              func dodgeLackOfThrowingCalls() throws {}
-              try dodgeLackOfThrowingCalls()
-            #else
               let package = try PackageRepository.relatedPackage(
                 SDGSwift.Package(url: url),
                 output: output
@@ -189,7 +184,6 @@ extension PackageRepository {
                   ]
                 }
               #endif
-            #endif
           }
         }
       }
@@ -199,9 +193,11 @@ extension PackageRepository {
     }
     return result
   }
+  #endif
 
   // MARK: - Documentation
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func document(
     outputDirectory: URL,
     validationStatus: inout ValidationStatus,
@@ -298,7 +294,6 @@ extension PackageRepository {
     coverageCheckOnly: Bool
   ) throws {
 
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       if ProcessInfo.isInContinuousIntegration {
         DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
           while true {  // @exempt(from: tests)
@@ -307,7 +302,6 @@ extension PackageRepository {
           }
         }
       }
-    #endif
 
     let configuration = try self.configuration(output: output)
     let copyright = try resolvedCopyright(
@@ -364,6 +358,7 @@ extension PackageRepository {
       )
     #endif
   }
+  #endif
 
   // Final steps irrelevent to validation.
   private func finalizeSite(outputDirectory: URL) throws {
@@ -387,6 +382,7 @@ extension PackageRepository {
     try preventJekyllInterference(outputDirectory: outputDirectory)
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func retrievePublishedDocumentationIfAvailable(
     outputDirectory: URL,
     output: Command.Output
@@ -404,22 +400,19 @@ extension PackageRepository {
         }).resolved()
       )
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         FileManager.default
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
             do {
-              #if !PLATFORM_LACKS_FOUNDATION_PROCESS
                 _ = try Git.clone(package, to: temporary).get()
                 _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
-              #endif
               try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}
           }
-      #endif
     }
   }
+  #endif
 
   private func redirectExistingURLs(outputDirectory: URL) throws {
     #if !PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE
@@ -455,6 +448,7 @@ extension PackageRepository {
 
   // MARK: - Validation
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func validateDocumentationCoverage(
     validationStatus: inout ValidationStatus,
     output: Command.Output
@@ -476,7 +470,6 @@ extension PackageRepository {
       }).resolved().formattedAsSectionHeader()
     )
     do {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { outputDirectory in
 
           let status = DocumentationStatus(output: output)
@@ -514,7 +507,6 @@ extension PackageRepository {
             )
           }
         }
-      #endif
     } catch {
       // @exempt(from: tests) Only triggered by system or networking errors.
       output.print(error.localizedDescription.formattedAsError())
@@ -532,9 +524,11 @@ extension PackageRepository {
       )
     }
   }
+  #endif
 
   // MARK: - Inheritance
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func documentationDefinitions(
     output: Command.Output
   ) throws -> [StrictString: StrictString] {
@@ -548,10 +542,6 @@ extension PackageRepository {
           if let type = FileType(url: url),
             type ∈ Set([.swift, .swiftPackageManifest])
           {
-            #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-              func dodgeLackOfThrowingCalls() throws {}
-              try dodgeLackOfThrowingCalls()
-            #else
               let file = try TextFile(alreadyAt: url)
 
               for match in file.contents.scalars.matches(
@@ -570,7 +560,6 @@ extension PackageRepository {
                   list[identifier] = StrictString(comment)
                 }
               }
-            #endif
           }
         }
       }
@@ -591,10 +580,6 @@ extension PackageRepository {
           let documentationSyntax = FileType.swiftDocumentationSyntax
           let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
-          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-            func dodgeLackOfThrowingCalls() throws {}
-            try dodgeLackOfThrowingCalls()
-          #else
             var file = try TextFile(alreadyAt: url)
 
             var searchIndex = file.contents.scalars.startIndex
@@ -678,9 +663,9 @@ extension PackageRepository {
             }
 
             try file.writeChanges(for: self, output: output)
-          #endif
         }
       }
     }
   }
+  #endif
 }

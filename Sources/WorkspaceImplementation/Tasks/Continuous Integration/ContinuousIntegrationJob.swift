@@ -310,6 +310,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return "TARGETING_\(environmentVariableName)"
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
     if try project.isWorkspaceProject() {
       return true  // So that handling of cross‐compilation platforms is properly tested.
@@ -345,6 +346,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
           .documentation.api.serveFromGitHubPagesBranch)
     }
   }
+  #endif
 
   internal var platform: Platform {
     switch self {
@@ -380,6 +382,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     return command
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   private func workspaceStep(
     named name: UserFacing<StrictString, InterfaceLocalization>,
     command: StrictString,
@@ -400,6 +403,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
       )
     )
   }
+  #endif
 
   // MARK: - GitHub Actions
 
@@ -696,6 +700,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
     }
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func gitHubWorkflowJob(
     for project: PackageRepository,
     output: Command.Output
@@ -1089,6 +1094,7 @@ internal enum ContinuousIntegrationJob: Int, CaseIterable {
 
     return result
   }
+  #endif
 
   // MARK: - Localized Text
 

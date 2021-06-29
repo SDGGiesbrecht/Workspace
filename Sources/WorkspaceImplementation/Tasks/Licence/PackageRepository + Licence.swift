@@ -26,6 +26,7 @@ import WorkspaceConfiguration
 
 extension PackageRepository {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func refreshLicence(output: Command.Output) throws {
 
     guard let licence = try configuration(output: output).licence.licence else {
@@ -43,7 +44,6 @@ extension PackageRepository {
       )
     }
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var text = licence.text
 
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
@@ -64,9 +64,9 @@ extension PackageRepository {
 
       file.contents = String(text)
       try file.writeChanges(for: self, output: output)
-    #endif
 
     // Delete alternate licence files to prevent duplicates.
     delete(location.appendingPathComponent("LICENSE.txt"), output: output)
   }
+  #endif
 }

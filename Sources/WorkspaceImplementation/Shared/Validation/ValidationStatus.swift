@@ -76,6 +76,7 @@ internal struct ValidationStatus {
     return ¬summary.isEmpty
   }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   internal func reportOutcome(project: PackageRepository, output: Command.Output) throws {
     output.print(summary.joined(separator: "\n").separated())
 
@@ -111,4 +112,5 @@ internal struct ValidationStatus {
       )
     }
   }
+  #endif
 }

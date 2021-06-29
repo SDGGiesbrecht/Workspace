@@ -27,6 +27,7 @@ import WorkspaceProjectConfiguration
 
 public struct SleeplessMain {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   public static func main() {  // @exempt(from: tests)
     #if !PLATFORM_LACKS_DISPATCH
       DispatchQueue.global(qos: .utility).sync {
@@ -52,4 +53,5 @@ public struct SleeplessMain {
       }
     #endif
   }
+  #endif
 }

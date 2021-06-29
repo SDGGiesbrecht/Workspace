@@ -47,6 +47,7 @@ extension Workspace.Proofread {
         }
       })
 
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal static let command = Command(
       name: name,
       description: description,
@@ -70,9 +71,8 @@ extension Workspace.Proofread {
         }).resolved().formattedAsSectionHeader()
       )
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try options.project.refreshProofreadingXcodeProject(output: output)
-      #endif
     }
+    #endif
   }
 }

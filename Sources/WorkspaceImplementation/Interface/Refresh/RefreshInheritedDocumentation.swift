@@ -120,28 +120,28 @@ extension Workspace.Refresh {
       })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal static let command = Command(
-      name: name,
-      description: description,
-      discussion: discussion,
-      directArguments: [],
-      options: Workspace.standardOptions,
-      execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        discussion: discussion,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Refreshing inherited documentation..."
-            case .deutschDeutschland:
-              return "Geerbte Dokumentation wird aufgefrischt ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Refreshing inherited documentation..."
+              case .deutschDeutschland:
+                return "Geerbte Dokumentation wird aufgefrischt ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
 
           try options.project.refreshInheritedDocumentation(output: output)
-      }
-    )
+        }
+      )
     #endif
   }
 }

@@ -89,11 +89,11 @@ extension PackageRepository {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func refreshGitConfiguration(output: Command.Output) throws {
+    internal func refreshGitConfiguration(output: Command.Output) throws {
 
-    let entries =
-      try PackageRepository.ignoreEntries
-      + configuration(output: output).git.additionalGitIgnoreEntries
+      let entries =
+        try PackageRepository.ignoreEntries
+        + configuration(output: output).git.additionalGitIgnoreEntries
 
       var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
       gitIgnore.body = entries.joinedAsLines()
@@ -118,6 +118,6 @@ extension PackageRepository {
           delete(gitAttributes.location, output: output)
         }
       }
-  }
+    }
   #endif
 }

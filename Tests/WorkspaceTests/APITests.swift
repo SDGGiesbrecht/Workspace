@@ -157,15 +157,15 @@ class APITests: TestCase {
   }
 
   func testBrokenExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "BrokenExample").test(
-          commands: [
-            ["refresh", "examples"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      PackageRepository(mock: "BrokenExample").test(
+        commands: [
+          ["refresh", "examples"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testBrokenTests() {
@@ -266,7 +266,7 @@ class APITests: TestCase {
 
   func testCheckForUpdates() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
+      _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
     #endif
   }
 
@@ -639,34 +639,34 @@ class APITests: TestCase {
   }
 
   func testDefaults() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        let commands: [[StrictString]] = [
-          ["refresh", "scripts"],
-          ["refresh", "resources"],
-          ["refresh", "examples"],
-          ["refresh", "inherited‐documentation"],
-          ["normalize"],
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      let commands: [[StrictString]] = [
+        ["refresh", "scripts"],
+        ["refresh", "resources"],
+        ["refresh", "examples"],
+        ["refresh", "inherited‐documentation"],
+        ["normalize"],
 
-          ["proofread"],
-          ["validate", "build"],
-          ["test"],
-          ["validate", "test‐coverage"],
-          ["validate", "documentation‐coverage"],
+        ["proofread"],
+        ["validate", "build"],
+        ["test"],
+        ["validate", "test‐coverage"],
+        ["validate", "documentation‐coverage"],
 
-          ["proofread", "•xcode"],
-          ["validate", "build", "•job", "macos"],
+        ["proofread", "•xcode"],
+        ["validate", "build", "•job", "macos"],
 
-          ["refresh"],
-          ["validate"],
-          ["validate", "•job", "macos"],
+        ["refresh"],
+        ["validate"],
+        ["validate", "•job", "macos"],
 
-          ["proofread", "generate‐xcode‐project"],
-        ]
-        PackageRepository(mock: "Default").test(
-          commands: commands,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
+        ["proofread", "generate‐xcode‐project"],
+      ]
+      PackageRepository(mock: "Default").test(
+        commands: commands,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     #endif
   }
 
@@ -966,27 +966,27 @@ class APITests: TestCase {
   }
 
   func testInvalidResourceDirectory() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "InvalidResourceDirectory").test(
-          commands: [
-            ["refresh", "resources"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      PackageRepository(mock: "InvalidResourceDirectory").test(
+        commands: [
+          ["refresh", "resources"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testInvalidTarget() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "InvalidTarget").test(
-          commands: [
-            ["refresh", "resources"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      PackageRepository(mock: "InvalidTarget").test(
+        commands: [
+          ["refresh", "resources"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testIssueTemplate() {
@@ -1055,27 +1055,27 @@ class APITests: TestCase {
   }
 
   func testMissingDocumentation() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "MissingDocumentation").test(
-          commands: [
-            ["refresh", "inherited‐documentation"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      PackageRepository(mock: "MissingDocumentation").test(
+        commands: [
+          ["refresh", "inherited‐documentation"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testMissingExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "MissingExample").test(
-          commands: [
-            ["refresh", "examples"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      PackageRepository(mock: "MissingExample").test(
+        commands: [
+          ["refresh", "examples"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    #endif
   }
 
   func testMissingReadMeLocalization() {
@@ -1450,10 +1450,10 @@ class APITests: TestCase {
 
   func testSelfSpecificScripts() throws {
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          try FileManager.default.do(in: repositoryRoot) {
-            _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-            _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
-          }
+      try FileManager.default.do(in: repositoryRoot) {
+        _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
+        _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+      }
     #endif
   }
 

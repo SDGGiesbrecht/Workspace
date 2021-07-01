@@ -47,23 +47,23 @@ extension Workspace.Refresh {
       })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions,
-      execution: { arguments, options, output in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { arguments, options, output in
 
-        if options.job == .deployment {
-          // @exempt(from: tests)
-          try executeAsStep(
-            withArguments: arguments,
-            options: options,
-            output: output
-          )
-        } else {
-          try executeAsStep(withArguments: arguments, options: options, output: output)
-        }
+          if options.job == .deployment {
+            // @exempt(from: tests)
+            try executeAsStep(
+              withArguments: arguments,
+              options: options,
+              output: output
+            )
+          } else {
+            try executeAsStep(withArguments: arguments, options: options, output: output)
+          }
 
           let projectName = try options.project.localizedIsolatedProjectName(output: output)
           var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -78,14 +78,14 @@ extension Workspace.Refresh {
           }).resolved()
 
           try output.succeed(message: success, project: options.project)
-      }
-    )
+        }
+      )
 
-    internal static func executeAsStep(
-      withArguments arguments: DirectArguments,
-      options: Options,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        withArguments arguments: DirectArguments,
+        options: Options,
+        output: Command.Output
+      ) throws {
 
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
@@ -171,19 +171,19 @@ extension Workspace.Refresh {
           )
         }
 
-      // Examples
-      try Workspace.Refresh.Examples.command.execute(
-        withArguments: arguments,
-        options: options,
-        output: output
-      )
+        // Examples
+        try Workspace.Refresh.Examples.command.execute(
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
 
-      // Inherited Documentation
-      try Workspace.Refresh.InheritedDocumentation.command.execute(
-        withArguments: arguments,
-        options: options,
-        output: output
-      )
+        // Inherited Documentation
+        try Workspace.Refresh.InheritedDocumentation.command.execute(
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
 
         // Normalization
         if try options.project.configuration(output: output).normalize {
@@ -206,7 +206,7 @@ extension Workspace.Refresh {
           )
           try task.execute(output: output)
         }
-    }
+      }
     #endif
   }
 }

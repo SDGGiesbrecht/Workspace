@@ -58,31 +58,31 @@ extension PackageRepository {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  private func customFileNameReplacements(output: Command.Output) throws -> [(
-    StrictString, StrictString
-  )] {
-    let dictionary = try configuration(output: output).documentation.api.fileNameReplacements
-    var array: [(StrictString, StrictString)] = []
-    for key in dictionary.keys.sorted() {
-      array.append((key, dictionary[key]!))
-    }
-    return array
-  }
-
-  private func platforms(
-    localizations: [LocalizationIdentifier],
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: [StrictString]] {
-    var result: [LocalizationIdentifier: [StrictString]] = [:]
-    for localization in localizations {
-      var list: [StrictString] = []
-      for platform in try configuration(output: output).supportedPlatforms.sorted() {
-        list.append(platform._isolatedName(for: localization._bestMatch))
+    private func customFileNameReplacements(output: Command.Output) throws -> [(
+      StrictString, StrictString
+    )] {
+      let dictionary = try configuration(output: output).documentation.api.fileNameReplacements
+      var array: [(StrictString, StrictString)] = []
+      for key in dictionary.keys.sorted() {
+        array.append((key, dictionary[key]!))
       }
-      result[localization] = list
+      return array
     }
-    return result
-  }
+
+    private func platforms(
+      localizations: [LocalizationIdentifier],
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: [StrictString]] {
+      var result: [LocalizationIdentifier: [StrictString]] = [:]
+      for localization in localizations {
+        var list: [StrictString] = []
+        for platform in try configuration(output: output).supportedPlatforms.sorted() {
+          list.append(platform._isolatedName(for: localization._bestMatch))
+        }
+        result[localization] = list
+      }
+      return result
+    }
 
     private func loadCommandLineInterface(
       output: Command.Output,
@@ -106,49 +106,49 @@ extension PackageRepository {
       )
     }
 
-  internal func resolvedCopyright(
-    documentationStatus: DocumentationStatus,
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier?: StrictString] {
+    internal func resolvedCopyright(
+      documentationStatus: DocumentationStatus,
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier?: StrictString] {
 
-    var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(
-      output: output
-    ).mapKeys { $0 }
-    template[nil] = "#dates"
+      var template: [LocalizationIdentifier?: StrictString] = try documentationCopyright(
+        output: output
+      ).mapKeys { $0 }
+      template[nil] = "#dates"
 
-    let dates: StrictString
-    if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
-      dates = StrictString(
-        WorkspaceImplementation.copyright(fromText: "©\(specified.inEnglishDigits())")
-      )
-    } else {
-      documentationStatus.reportMissingYearFirstPublished()
-      dates = StrictString(WorkspaceImplementation.copyright(fromText: ""))
+      let dates: StrictString
+      if let specified = try configuration(output: output).documentation.api.yearFirstPublished {
+        dates = StrictString(
+          WorkspaceImplementation.copyright(fromText: "©\(specified.inEnglishDigits())")
+        )
+      } else {
+        documentationStatus.reportMissingYearFirstPublished()
+        dates = StrictString(WorkspaceImplementation.copyright(fromText: ""))
+      }
+      template = template.mapValues { $0.replacingMatches(for: "#dates", with: dates) }
+
+      return template
     }
-    template = template.mapValues { $0.replacingMatches(for: "#dates", with: dates) }
 
-    return template
-  }
-
-  private func relatedProjects(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: Markdown] {
-    let relatedProjects = try configuration(output: output).documentation.relatedProjects
-    let localizations = try configuration(output: output).documentation.localizations
-    var result: [LocalizationIdentifier: Markdown] = [:]
-    for localization in localizations {
-      var markdown: [Markdown] = []
-      for entry in relatedProjects {
-        try purgingAutoreleased {
-          switch entry {
-          case .heading(text: let translations):
-            if let text = translations[localization] {
-              markdown += [
-                "",
-                "## \(text)",
-              ]
-            }
-          case .project(let url):
+    private func relatedProjects(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: Markdown] {
+      let relatedProjects = try configuration(output: output).documentation.relatedProjects
+      let localizations = try configuration(output: output).documentation.localizations
+      var result: [LocalizationIdentifier: Markdown] = [:]
+      for localization in localizations {
+        var markdown: [Markdown] = []
+        for entry in relatedProjects {
+          try purgingAutoreleased {
+            switch entry {
+            case .heading(text: let translations):
+              if let text = translations[localization] {
+                markdown += [
+                  "",
+                  "## \(text)",
+                ]
+              }
+            case .project(let url):
               let package = try PackageRepository.relatedPackage(
                 SDGSwift.Package(url: url),
                 output: output
@@ -184,115 +184,115 @@ extension PackageRepository {
                   ]
                 }
               #endif
+            }
           }
         }
+        if ¬markdown.isEmpty {
+          result[localization] = markdown.joinedAsLines()
+        }
       }
-      if ¬markdown.isEmpty {
-        result[localization] = markdown.joinedAsLines()
-      }
+      return result
     }
-    return result
-  }
   #endif
 
   // MARK: - Documentation
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func document(
-    outputDirectory: URL,
-    validationStatus: inout ValidationStatus,
-    output: Command.Output
-  ) throws {
+    internal func document(
+      outputDirectory: URL,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
+    ) throws {
 
-    if try ¬hasTargetsToDocument() {
-      return
-    }
+      if try ¬hasTargetsToDocument() {
+        return
+      }
 
-    let section = validationStatus.newSection()
-    output.print(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Generating documentation..." + section.anchor
-        case .deutschDeutschland:
-          return "Dokumentation wird erstellt ..."
-        }
-      }).resolved().formattedAsSectionHeader()
-    )
-    do {
-      try prepare(outputDirectory: outputDirectory, output: output)
-
-      let status = DocumentationStatus(output: output)
-      try document(
-        outputDirectory: outputDirectory,
-        documentationStatus: status,
-        validationStatus: &validationStatus,
-        output: output,
-        coverageCheckOnly: false
+      let section = validationStatus.newSection()
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Generating documentation..." + section.anchor
+          case .deutschDeutschland:
+            return "Dokumentation wird erstellt ..."
+          }
+        }).resolved().formattedAsSectionHeader()
       )
+      do {
+        try prepare(outputDirectory: outputDirectory, output: output)
 
-      try finalizeSite(outputDirectory: outputDirectory)
-
-      if status.passing {
-        validationStatus.passStep(
-          message: UserFacing({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Generated documentation."
-            case .deutschDeutschland:
-              return "Dokumentation erstellt."
-            }
-          })
+        let status = DocumentationStatus(output: output)
+        try document(
+          outputDirectory: outputDirectory,
+          documentationStatus: status,
+          validationStatus: &validationStatus,
+          output: output,
+          coverageCheckOnly: false
         )
-      } else {
+
+        try finalizeSite(outputDirectory: outputDirectory)
+
+        if status.passing {
+          validationStatus.passStep(
+            message: UserFacing({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Generated documentation."
+              case .deutschDeutschland:
+                return "Dokumentation erstellt."
+              }
+            })
+          )
+        } else {
+          validationStatus.failStep(
+            message: UserFacing({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Generated documentation, but encountered warnings."
+                  + section.crossReference.resolved(for: localization)
+              case .deutschDeutschland:
+                return
+                  "Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst."
+              }
+            })
+          )
+        }
+      } catch {
+        // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
+        output.print(error.localizedDescription.formattedAsError())
         validationStatus.failStep(
           message: UserFacing({ localization in
             switch localization {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Generated documentation, but encountered warnings."
+              return "Failed to generate documentation."
                 + section.crossReference.resolved(for: localization)
             case .deutschDeutschland:
-              return
-                "Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst."
+              return "Dokumentationserstellung ist fehlgeschlagen."
+                + section.crossReference.resolved(for: localization)
             }
           })
         )
       }
-    } catch {
-      // @exempt(from: tests) Unreachable without SwiftSyntax or file system failure.
-      output.print(error.localizedDescription.formattedAsError())
-      validationStatus.failStep(
-        message: UserFacing({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Failed to generate documentation."
-              + section.crossReference.resolved(for: localization)
-          case .deutschDeutschland:
-            return "Dokumentationserstellung ist fehlgeschlagen."
-              + section.crossReference.resolved(for: localization)
-          }
-        })
-      )
     }
-  }
 
-  // Preliminary steps irrelevent to validation.
-  private func prepare(outputDirectory: URL, output: Command.Output) throws {
-    try retrievePublishedDocumentationIfAvailable(
-      outputDirectory: outputDirectory,
-      output: output
-    )
-    try redirectExistingURLs(outputDirectory: outputDirectory)
-  }
+    // Preliminary steps irrelevent to validation.
+    private func prepare(outputDirectory: URL, output: Command.Output) throws {
+      try retrievePublishedDocumentationIfAvailable(
+        outputDirectory: outputDirectory,
+        output: output
+      )
+      try redirectExistingURLs(outputDirectory: outputDirectory)
+    }
 
-  // Steps which participate in validation.
-  private func document(
-    outputDirectory: URL,
-    documentationStatus: DocumentationStatus,
-    validationStatus: inout ValidationStatus,
-    output: Command.Output,
-    coverageCheckOnly: Bool
-  ) throws {
+    // Steps which participate in validation.
+    private func document(
+      outputDirectory: URL,
+      documentationStatus: DocumentationStatus,
+      validationStatus: inout ValidationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
 
       if ProcessInfo.isInContinuousIntegration {
         DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
@@ -303,61 +303,61 @@ extension PackageRepository {
         }
       }
 
-    let configuration = try self.configuration(output: output)
-    let copyright = try resolvedCopyright(
-      documentationStatus: documentationStatus,
-      output: output
-    )
-
-    let developmentLocalization = try self.developmentLocalization(output: output)
-    let customReplacements = try customFileNameReplacements(output: output)
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      let api = try PackageAPI(
-        package: cachedPackageGraph(),
-        ignoredDependencies: configuration.documentation.api.ignoredDependencies,
-        reportProgress: { output.print($0) }
-      )
-      let cli = try loadCommandLineInterface(
-        output: output,
-        customReplacements: customReplacements
-      )
-
-      var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
-      if ¬coverageCheckOnly {
-        relatedProjects = try self.relatedProjects(output: output)
-      }
-
-      // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
-      let localizations = configuration.localizationsOrSystemFallback
-
-      let interface = PackageInterface(
-        localizations: localizations,
-        developmentLocalization: developmentLocalization,
-        api: api,
-        cli: cli,
-        packageURL: configuration.documentation.repositoryURL,
-        version: configuration.documentation.currentVersion,
-        platforms: try platforms(localizations: localizations, output: output),
-        installation: configuration.documentation.installationInstructions
-          .resolve(configuration),
-        importing: configuration.documentation.importingInstructions.resolve(configuration),
-        relatedProjects: relatedProjects,
-        about: configuration.documentation.about,
-        copyright: copyright,
-        customReplacements: customReplacements,
+      let configuration = try self.configuration(output: output)
+      let copyright = try resolvedCopyright(
+        documentationStatus: documentationStatus,
         output: output
       )
 
-      try interface.outputHTML(
-        to: outputDirectory,
-        customReplacements: customReplacements,
-        status: documentationStatus,
-        output: output,
-        coverageCheckOnly: coverageCheckOnly
-      )
-    #endif
-  }
+      let developmentLocalization = try self.developmentLocalization(output: output)
+      let customReplacements = try customFileNameReplacements(output: output)
+
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+        let api = try PackageAPI(
+          package: cachedPackageGraph(),
+          ignoredDependencies: configuration.documentation.api.ignoredDependencies,
+          reportProgress: { output.print($0) }
+        )
+        let cli = try loadCommandLineInterface(
+          output: output,
+          customReplacements: customReplacements
+        )
+
+        var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
+        if ¬coverageCheckOnly {
+          relatedProjects = try self.relatedProjects(output: output)
+        }
+
+        // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
+        let localizations = configuration.localizationsOrSystemFallback
+
+        let interface = PackageInterface(
+          localizations: localizations,
+          developmentLocalization: developmentLocalization,
+          api: api,
+          cli: cli,
+          packageURL: configuration.documentation.repositoryURL,
+          version: configuration.documentation.currentVersion,
+          platforms: try platforms(localizations: localizations, output: output),
+          installation: configuration.documentation.installationInstructions
+            .resolve(configuration),
+          importing: configuration.documentation.importingInstructions.resolve(configuration),
+          relatedProjects: relatedProjects,
+          about: configuration.documentation.about,
+          copyright: copyright,
+          customReplacements: customReplacements,
+          output: output
+        )
+
+        try interface.outputHTML(
+          to: outputDirectory,
+          customReplacements: customReplacements,
+          status: documentationStatus,
+          output: output,
+          coverageCheckOnly: coverageCheckOnly
+        )
+      #endif
+    }
   #endif
 
   // Final steps irrelevent to validation.
@@ -383,35 +383,35 @@ extension PackageRepository {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  private func retrievePublishedDocumentationIfAvailable(
-    outputDirectory: URL,
-    output: Command.Output
-  ) throws {
-    if let packageURL = try configuration(output: output).documentation.repositoryURL {
+    private func retrievePublishedDocumentationIfAvailable(
+      outputDirectory: URL,
+      output: Command.Output
+    ) throws {
+      if let packageURL = try configuration(output: output).documentation.repositoryURL {
 
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Checking for defunct URLs to redirect..."
-          case .deutschDeutschland:
-            return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
-          }
-        }).resolved()
-      )
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Checking for defunct URLs to redirect..."
+            case .deutschDeutschland:
+              return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
+            }
+          }).resolved()
+        )
 
         FileManager.default
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
             do {
-                _ = try Git.clone(package, to: temporary).get()
-                _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
+              _ = try Git.clone(package, to: temporary).get()
+              _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
               try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}
           }
+      }
     }
-  }
   #endif
 
   private func redirectExistingURLs(outputDirectory: URL) throws {
@@ -449,27 +449,27 @@ extension PackageRepository {
   // MARK: - Validation
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func validateDocumentationCoverage(
-    validationStatus: inout ValidationStatus,
-    output: Command.Output
-  ) throws {
+    internal func validateDocumentationCoverage(
+      validationStatus: inout ValidationStatus,
+      output: Command.Output
+    ) throws {
 
-    if try ¬hasTargetsToDocument() {
-      return
-    }
+      if try ¬hasTargetsToDocument() {
+        return
+      }
 
-    let section = validationStatus.newSection()
-    output.print(
-      UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Checking documentation coverage..." + section.anchor
-        case .deutschDeutschland:
-          return "Die Dokumentationsabdeckung wird überprüft ..." + section.anchor
-        }
-      }).resolved().formattedAsSectionHeader()
-    )
-    do {
+      let section = validationStatus.newSection()
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Checking documentation coverage..." + section.anchor
+          case .deutschDeutschland:
+            return "Die Dokumentationsabdeckung wird überprüft ..." + section.anchor
+          }
+        }).resolved().formattedAsSectionHeader()
+      )
+      do {
         try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { outputDirectory in
 
           let status = DocumentationStatus(output: output)
@@ -507,41 +507,41 @@ extension PackageRepository {
             )
           }
         }
-    } catch {
-      // @exempt(from: tests) Only triggered by system or networking errors.
-      output.print(error.localizedDescription.formattedAsError())
-      validationStatus.failStep(
-        message: UserFacing({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Failed to process documentation."
-              + section.crossReference.resolved(for: localization)
-          case .deutschDeutschland:
-            return "Die Dokumentationsverarbeitung ist fehlgeschlagen."
-              + section.crossReference.resolved(for: localization)
-          }
-        })
-      )
+      } catch {
+        // @exempt(from: tests) Only triggered by system or networking errors.
+        output.print(error.localizedDescription.formattedAsError())
+        validationStatus.failStep(
+          message: UserFacing({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Failed to process documentation."
+                + section.crossReference.resolved(for: localization)
+            case .deutschDeutschland:
+              return "Die Dokumentationsverarbeitung ist fehlgeschlagen."
+                + section.crossReference.resolved(for: localization)
+            }
+          })
+        )
+      }
     }
-  }
   #endif
 
   // MARK: - Inheritance
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  private func documentationDefinitions(
-    output: Command.Output
-  ) throws -> [StrictString: StrictString] {
-    return try _withDocumentationCache {
+    private func documentationDefinitions(
+      output: Command.Output
+    ) throws -> [StrictString: StrictString] {
+      return try _withDocumentationCache {
 
-      var list: [StrictString: StrictString] = [:]
+        var list: [StrictString: StrictString] = [:]
 
-      for url in try sourceFiles(output: output) {
-        try purgingAutoreleased {
+        for url in try sourceFiles(output: output) {
+          try purgingAutoreleased {
 
-          if let type = FileType(url: url),
-            type ∈ Set([.swift, .swiftPackageManifest])
-          {
+            if let type = FileType(url: url),
+              type ∈ Set([.swift, .swiftPackageManifest])
+            {
               let file = try TextFile(alreadyAt: url)
 
               for match in file.contents.scalars.matches(
@@ -560,25 +560,25 @@ extension PackageRepository {
                   list[identifier] = StrictString(comment)
                 }
               }
+            }
           }
         }
+
+        return list
       }
-
-      return list
     }
-  }
 
-  internal func refreshInheritedDocumentation(output: Command.Output) throws {
+    internal func refreshInheritedDocumentation(output: Command.Output) throws {
 
-    for url in try sourceFiles(output: output) {
-      try purgingAutoreleased {
+      for url in try sourceFiles(output: output) {
+        try purgingAutoreleased {
 
-        if let type = FileType(url: url),
-          type ∈ Set([.swift, .swiftPackageManifest])
-        {
+          if let type = FileType(url: url),
+            type ∈ Set([.swift, .swiftPackageManifest])
+          {
 
-          let documentationSyntax = FileType.swiftDocumentationSyntax
-          let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
+            let documentationSyntax = FileType.swiftDocumentationSyntax
+            let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
             var file = try TextFile(alreadyAt: url)
 
@@ -663,9 +663,9 @@ extension PackageRepository {
             }
 
             try file.writeChanges(for: self, output: output)
+          }
         }
       }
     }
-  }
   #endif
 }

@@ -44,12 +44,12 @@ extension PackageRepository {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
-    return try _withExampleCache {
-      var list: [StrictString: StrictString] = [:]
+    internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
+      return try _withExampleCache {
+        var list: [StrictString: StrictString] = [:]
 
-      for url in try sourceFiles(output: output) {
-        purgingAutoreleased {
+        for url in try sourceFiles(output: output) {
+          purgingAutoreleased {
 
             if FileType(url: url) ≠ nil,
               let file = try? TextFile(alreadyAt: url)
@@ -97,25 +97,25 @@ extension PackageRepository {
                 list[identifier] = example
               }
             }
+          }
         }
+
+        return list
       }
-
-      return list
     }
-  }
 
-  internal func refreshExamples(output: Command.Output) throws {
+    internal func refreshExamples(output: Command.Output) throws {
 
-    files: for url in try sourceFiles(output: output)
-    where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
+      files: for url in try sourceFiles(output: output)
+      where ¬url.path.hasSuffix("Sources/WorkspaceConfiguration/Documentation/Examples.swift") {
 
-      try purgingAutoreleased {
+        try purgingAutoreleased {
 
-        if let type = FileType(url: url),
-          type ∈ Set([.swift, .swiftPackageManifest])
-        {
-          let documentationSyntax = FileType.swiftDocumentationSyntax
-          let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
+          if let type = FileType(url: url),
+            type ∈ Set([.swift, .swiftPackageManifest])
+          {
+            let documentationSyntax = FileType.swiftDocumentationSyntax
+            let lineDocumentationSyntax = documentationSyntax.lineCommentSyntax!
 
             var file = try TextFile(alreadyAt: url)
 
@@ -251,9 +251,9 @@ extension PackageRepository {
             }
 
             try file.writeChanges(for: self, output: output)
+          }
         }
       }
     }
-  }
   #endif
 }

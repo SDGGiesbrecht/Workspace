@@ -178,9 +178,9 @@ extension PackageRepository {
   // MARK: - Miscellaneous Properties
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func isWorkspaceProject() throws -> Bool {
-    return try packageName() == "Workspace"
-  }
+    internal func isWorkspaceProject() throws -> Bool {
+      return try packageName() == "Workspace"
+    }
   #endif
 
   // MARK: - Manifest
@@ -204,23 +204,23 @@ extension PackageRepository {
       }
     }
 
-  internal func packageName() throws -> StrictString {
+    internal func packageName() throws -> StrictString {
       return StrictString(try cachedManifest().name)
-  }
+    }
 
-  internal func projectName(
-    in localization: LocalizationIdentifier,
-    output: Command.Output
-  ) throws -> StrictString {
-    return try configuration(output: output).projectName[localization] ?? packageName()
-  }
+    internal func projectName(
+      in localization: LocalizationIdentifier,
+      output: Command.Output
+    ) throws -> StrictString {
+      return try configuration(output: output).projectName[localization] ?? packageName()
+    }
 
-  internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
-    let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
-      return LocalizationIdentifier(localization.code)
-    }).resolved()
-    return try projectName(in: identifier, output: output)
-  }
+    internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+      let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+        return LocalizationIdentifier(localization.code)
+      }).resolved()
+      return try projectName(in: identifier, output: output)
+    }
 
     internal func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
@@ -265,27 +265,27 @@ extension PackageRepository {
   // MARK: - Configuration
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func configurationContext() throws -> WorkspaceContext {
+    internal func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
 
-          let products = try self.products()
-            .map { (product: PackageModel.Product) -> PackageManifest.Product in
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-              let type: PackageManifest.Product.ProductType
-              let modules: [String]
-              switch product.type {
-              case .library:
-                type = .library
-                modules = product.targets.map { $0.name }
-              case .executable:
-                type = .executable
-                modules = []
-              case .test:
-                unreachable()
-              }
-
-              return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .test:
+              unreachable()
             }
+
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+          }
 
         let manifest = PackageManifest(
           _packageName: String(try packageName()),
@@ -293,7 +293,7 @@ extension PackageRepository {
         )
         return WorkspaceContext(_location: location, manifest: manifest)
       }
-  }
+    }
   #endif
 
   internal static let workspaceConfigurationNames = UserFacing<
@@ -309,35 +309,35 @@ extension PackageRepository {
     })
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
+    internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
       return try cached(in: &configurationCache.configuration) {
 
         // Provide the context in case resolution happens internally.
         WorkspaceContext.current = try configurationContext()
 
-          let result: WorkspaceConfiguration
-          if try isWorkspaceProject() {
-            result = WorkspaceProjectConfiguration.configuration
-          } else {
-            result = try WorkspaceConfiguration.load(
-              configuration: WorkspaceConfiguration.self,
-              named: PackageRepository.workspaceConfigurationNames,
-              from: location,
-              linkingAgainst: "WorkspaceConfiguration",
-              in: "Workspace",
-              from: Metadata.packageURL,
-              at: Metadata.latestStableVersion,
-              minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
-              context: try configurationContext(),
-              reportProgress: { output.print($0) }
-            ).get()
-          }
+        let result: WorkspaceConfiguration
+        if try isWorkspaceProject() {
+          result = WorkspaceProjectConfiguration.configuration
+        } else {
+          result = try WorkspaceConfiguration.load(
+            configuration: WorkspaceConfiguration.self,
+            named: PackageRepository.workspaceConfigurationNames,
+            from: location,
+            linkingAgainst: "WorkspaceConfiguration",
+            in: "Workspace",
+            from: Metadata.packageURL,
+            at: Metadata.latestStableVersion,
+            minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
+            context: try configurationContext(),
+            reportProgress: { output.print($0) }
+          ).get()
+        }
 
-          // Force lazy options to resolve under the right context before it changes.
-          let encoded = try JSONEncoder().encode(result)
-          return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+        // Force lazy options to resolve under the right context before it changes.
+        let encoded = try JSONEncoder().encode(result)
+        return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       }
-  }
+    }
   #endif
 
   private static var fellBackToUserLocalization = false
@@ -384,60 +384,60 @@ extension PackageRepository {
     }).resolved()
   }
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
-    if let specified = try configuration(output: output).documentation.localizations.first {
-      return specified
-    } else {
-      PackageRepository.fellBackToUserLocalization = true
-      return LocalizationIdentifier(AnyLocalization.resolved())
+    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+      if let specified = try configuration(output: output).documentation.localizations.first {
+        return specified
+      } else {
+        PackageRepository.fellBackToUserLocalization = true
+        return LocalizationIdentifier(AnyLocalization.resolved())
+      }
     }
-  }
 
-  internal func fileHeader(output: Command.Output) throws -> StrictString {
+    internal func fileHeader(output: Command.Output) throws -> StrictString {
       return try cached(in: &configurationCache.fileHeader) {
         return try configuration(output: output).fileHeaders.contents.resolve(
           configuration(output: output)
         )
       }
-  }
+    }
 
-  internal func documentationCopyright(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: StrictString] {
+    internal func documentationCopyright(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: StrictString] {
       return try cached(in: &configurationCache.documentationCopyright) {
         return try configuration(output: output).documentation.api.copyrightNotice.resolve(
           configuration(output: output)
         )
       }
-  }
+    }
 
-  internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+    internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
       return try cached(in: &configurationCache.readMe) {
         return try configuration(output: output).documentation.readMe.contents.resolve(
           configuration(output: output)
         )
       }
-  }
+    }
 
-  internal func contributingInstructions(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: Markdown] {
+    internal func contributingInstructions(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: Markdown] {
       return try cached(in: &configurationCache.contributingInstructions) {
         return try configuration(output: output).gitHub.contributingInstructions.resolve(
           configuration(output: output)
         )
       }
-  }
+    }
 
-  internal func issueTemplates(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
+    internal func issueTemplates(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
       return try cached(in: &configurationCache.issueTemplates) {
         return try configuration(output: output).gitHub.issueTemplates.resolve(
           configuration(output: output)
         )
       }
-  }
+    }
   #endif
 
   // MARK: - Files
@@ -484,7 +484,7 @@ extension PackageRepository {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func sourceFiles(output: Command.Output) throws -> [URL] {
+    internal func sourceFiles(output: Command.Output) throws -> [URL] {
       let configuration = try self.configuration(output: output)
       let ignoredTypes = configuration.repository.ignoredFileTypes
       let ignoredPaths = configuration.repository.ignoredPaths.map {
@@ -501,7 +501,7 @@ extension PackageRepository {
           return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
         }
       }
-  }
+    }
   #endif
 
   internal func _withExampleCache(

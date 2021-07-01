@@ -69,15 +69,15 @@ extension Workspace {
       })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal static let command = Command(
-      name: name,
-      description: description,
-      discussion: discussion,
-      directArguments: [],
-      options: standardOptions,
-      execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        discussion: discussion,
+        directArguments: [],
+        options: standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-        var validationStatus = ValidationStatus()
+          var validationStatus = ValidationStatus()
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
             outputDirectory: outputDirectory,
@@ -86,41 +86,41 @@ extension Workspace {
             output: output
           )
 
-        guard validationStatus.validatedSomething else {
-          throw Command.Error(
-            description:
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return [
-                    "Nothing to document.",
-                    "The package manifest does not define any products.",
-                  ].joinedAsLines()
-                case .deutschDeutschland:
-                  return [
-                    "Nichts zu dokumentieren.",
-                    "Die Paketenladeliste bestimmt keine Produkte.",
-                  ].joinedAsLines()
-                }
-              })
-          )
-        }
+          guard validationStatus.validatedSomething else {
+            throw Command.Error(
+              description:
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return [
+                      "Nothing to document.",
+                      "The package manifest does not define any products.",
+                    ].joinedAsLines()
+                  case .deutschDeutschland:
+                    return [
+                      "Nichts zu dokumentieren.",
+                      "Die Paketenladeliste bestimmt keine Produkte.",
+                    ].joinedAsLines()
+                  }
+                })
+            )
+          }
           try validationStatus.reportOutcome(project: options.project, output: output)
-      }
-    )
+        }
+      )
 
-    internal static func executeAsStep(
-      outputDirectory: URL,
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        outputDirectory: URL,
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
         try options.project.document(
           outputDirectory: outputDirectory,
           validationStatus: &validationStatus,
           output: output
         )
-    }
+      }
     #endif
   }
 }

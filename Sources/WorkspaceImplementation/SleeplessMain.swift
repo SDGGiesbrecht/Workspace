@@ -28,30 +28,30 @@ import WorkspaceProjectConfiguration
 public struct SleeplessMain {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  public static func main() {  // @exempt(from: tests)
-    #if !PLATFORM_LACKS_DISPATCH
-      DispatchQueue.global(qos: .utility).sync {
+    public static func main() {  // @exempt(from: tests)
+      #if !PLATFORM_LACKS_DISPATCH
+        DispatchQueue.global(qos: .utility).sync {
 
-        #if os(Windows) || os(Linux) || os(Android)
-          Workspace.main()
-        #else
-          let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Workspace"
-            case .deutschDeutschland:
-              return "Arbeitsbereich"
-            }
-          })
-          ProcessInfo.processInfo.performActivity(
-            options: [.userInitiated, .idleSystemSleepDisabled],
-            reason: String(reason.resolved())
-          ) {
+          #if os(Windows) || os(Linux) || os(Android)
             Workspace.main()
-          }
-        #endif
-      }
-    #endif
-  }
+          #else
+            let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Workspace"
+              case .deutschDeutschland:
+                return "Arbeitsbereich"
+              }
+            })
+            ProcessInfo.processInfo.performActivity(
+              options: [.userInitiated, .idleSystemSleepDisabled],
+              reason: String(reason.resolved())
+            ) {
+              Workspace.main()
+            }
+          #endif
+        }
+      #endif
+    }
   #endif
 }

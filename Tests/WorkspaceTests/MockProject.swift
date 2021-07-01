@@ -77,35 +77,35 @@ extension PackageRepository {
   #endif
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  func test<L>(
-    commands: [[StrictString]],
-    configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
-    sdg: Bool = false,
-    localizations: L.Type,
-    withDependency: Bool = false,
-    withCustomTask: Bool = false,
-    overwriteSpecificationInsteadOfFailing: Bool,
-    file: StaticString = #filePath,
-    line: UInt = #line
-  ) where L: InputLocalization {
+    func test<L>(
+      commands: [[StrictString]],
+      configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
+      sdg: Bool = false,
+      localizations: L.Type,
+      withDependency: Bool = false,
+      withCustomTask: Bool = false,
+      overwriteSpecificationInsteadOfFailing: Bool,
+      file: StaticString = #filePath,
+      line: UInt = #line
+    ) where L: InputLocalization {
 
-    do {
-      try purgingAutoreleased {
+      do {
+        try purgingAutoreleased {
           func dodgeLackOfThrowingCalls() throws {}
           try dodgeLackOfThrowingCalls()
 
-        let developer = URL(fileURLWithPath: "/tmp/Developer")
+          let developer = URL(fileURLWithPath: "/tmp/Developer")
           try? FileManager.default.removeItem(at: developer)
           defer { try? FileManager.default.removeItem(at: developer) }
-        if withDependency ∨ withCustomTask {
+          if withDependency ∨ withCustomTask {
 
-          let dependency = developer.appendingPathComponent("Dependency")
+            let dependency = developer.appendingPathComponent("Dependency")
             try FileManager.default.do(in: dependency) {
               var initialize = ["swift", "package", "init"]
               if withCustomTask {
                 initialize += ["\u{2D}\u{2D}type", "executable"]
               }
-                _ = try Shell.default.run(command: initialize).get()
+              _ = try Shell.default.run(command: initialize).get()
               if withCustomTask {
                 let manifest = dependency.appendingPathComponent("Package.swift")
                 var manifestContents = try StrictString(from: manifest)
@@ -123,14 +123,14 @@ extension PackageRepository {
                     )
                   )
               }
-                _ = try Shell.default.run(command: ["git", "init"]).get()
-                _ = try Shell.default.run(command: ["git", "add", "."]).get()
-                _ = try Shell.default.run(command: [
-                  "git", "commit", "\u{2D}m", "Initialized.",
-                ]).get()
-                _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
+              _ = try Shell.default.run(command: ["git", "init"]).get()
+              _ = try Shell.default.run(command: ["git", "add", "."]).get()
+              _ = try Shell.default.run(command: [
+                "git", "commit", "\u{2D}m", "Initialized.",
+              ]).get()
+              _ = try Shell.default.run(command: ["git", "tag", "1.0.0"]).get()
             }
-        }
+          }
           let beforeLocation = PackageRepository.beforeDirectory(
             for: location.lastPathComponent
           )
@@ -140,14 +140,14 @@ extension PackageRepository {
           defer {
             unsetenv("SIMULATOR_UNAVAILABLE_FOR_TESTING")
           }
-        _isDuringSpecificationTest = true
+          _isDuringSpecificationTest = true
 
           try? FileManager.default.removeItem(at: location)
           try FileManager.default.copy(beforeLocation, to: location)
           defer { try? FileManager.default.removeItem(at: location) }
 
           try FileManager.default.do(in: location) {
-              _ = try Shell.default.run(command: ["git", "init"]).get()
+            _ = try Shell.default.run(command: ["git", "init"]).get()
             let gitIgnore = location.appendingPathComponent(".gitignore")
             if (try? gitIgnore.checkResourceIsReachable()) ≠ true {
               _ = try? FileManager.default.copy(
@@ -156,7 +156,7 @@ extension PackageRepository {
               )
             }
 
-              WorkspaceContext.current = try configurationContext()
+            WorkspaceContext.current = try configurationContext()
             if sdg {
               configuration._applySDGOverrides()
               configuration._validateSDGStandards()
@@ -469,10 +469,10 @@ extension PackageRepository {
               }
             }
           }
+        }
+      } catch {
+        XCTFail("\(error)", file: file, line: line)
       }
-    } catch {
-      XCTFail("\(error)", file: file, line: line)
     }
-  }
   #endif
 }

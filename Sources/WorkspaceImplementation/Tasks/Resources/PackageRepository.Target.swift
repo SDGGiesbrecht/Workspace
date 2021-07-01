@@ -76,25 +76,25 @@ extension PackageRepository {
     // MARK: - Resources
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal func refresh(
-      resources: [URL],
-      from package: PackageRepository,
-      output: Command.Output
-    ) throws {
-      let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
+      internal func refresh(
+        resources: [URL],
+        from package: PackageRepository,
+        output: Command.Output
+      ) throws {
+        let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
-      var source = String(try generateSource(for: resources, of: package))
-      try SwiftLanguage.format(
-        generatedCode: &source,
-        accordingTo: try package.configuration(output: output),
-        for: resourceFileLocation
-      )
+        var source = String(try generateSource(for: resources, of: package))
+        try SwiftLanguage.format(
+          generatedCode: &source,
+          accordingTo: try package.configuration(output: output),
+          for: resourceFileLocation
+        )
 
         var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
         resourceFile.body = source
 
         try resourceFile.writeChanges(for: package, output: output)
-    }
+      }
     #endif
 
     private func generateSource(

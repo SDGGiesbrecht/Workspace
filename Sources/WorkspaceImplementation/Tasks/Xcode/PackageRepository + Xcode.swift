@@ -54,21 +54,21 @@ extension PackageRepository {
     })
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  private func script() throws -> String {
-    if try isWorkspaceProject() {
-      return "swift run workspace proofread •xcode"  // @exempt(from: tests)
-    } else {
-      return
-        "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
-        + Metadata.latestStableVersion.string()
-        + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
+    private func script() throws -> String {
+      if try isWorkspaceProject() {
+        return "swift run workspace proofread •xcode"  // @exempt(from: tests)
+      } else {
+        return
+          "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
+          + Metadata.latestStableVersion.string()
+          + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
+      }
     }
-  }
 
-  internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
-    let projectBundle = location.appendingPathComponent(
-      "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
-    )
+    internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
+      let projectBundle = location.appendingPathComponent(
+        "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
+      )
       var project = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
       )
@@ -97,6 +97,6 @@ extension PackageRepository {
       )
       scheme.contents = schemeDefinition
       try scheme.writeChanges(for: self, output: output)
-  }
+    }
   #endif
 }

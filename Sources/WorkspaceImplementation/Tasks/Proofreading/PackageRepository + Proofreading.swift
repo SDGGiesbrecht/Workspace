@@ -40,46 +40,46 @@ import WorkspaceLocalizations
 extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
-    let status = ProofreadingStatus(reporter: reporter, output: output)
+    internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
+      let status = ProofreadingStatus(reporter: reporter, output: output)
 
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      var linter: Bool?
-    #else
-      var linter: SwiftLinter?
-      if let formatConfiguration = try configuration(output: output).proofreading
-        .swiftFormatConfiguration
-      {
-        let diagnostics = DiagnosticEngine()
-        diagnostics.addConsumer(status)
-        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
-      }
-    #endif
-
-    let activeRules = try configuration(output: output).proofreading.rules.sorted()
-    if ¬activeRules.isEmpty ∨ linter ≠ nil {
-
-      var textRules: [TextRule.Type] = []
-      var syntaxRules: [SyntaxRule.Type] = []
-      for rule in activeRules.lazy.map({ $0.parser }) {
-        switch rule {
-        case .text(let textParser):
-          textRules.append(textParser)
-        case .syntax(let syntaxParser):
-          syntaxRules.append(syntaxParser)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+        var linter: Bool?
+      #else
+        var linter: SwiftLinter?
+        if let formatConfiguration = try configuration(output: output).proofreading
+          .swiftFormatConfiguration
+        {
+          let diagnostics = DiagnosticEngine()
+          diagnostics.addConsumer(status)
+          linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
         }
-      }
+      #endif
 
-      let sourceURLs = try sourceFiles(output: output)
+      let activeRules = try configuration(output: output).proofreading.rules.sorted()
+      if ¬activeRules.isEmpty ∨ linter ≠ nil {
 
-      var settings: [URL: Setting] = [
-        location.appendingPathComponent("Package.swift"): .topLevel
-      ]
-      for name in InterfaceLocalization.allCases
-        .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
-      {
-        settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
-      }
+        var textRules: [TextRule.Type] = []
+        var syntaxRules: [SyntaxRule.Type] = []
+        for rule in activeRules.lazy.map({ $0.parser }) {
+          switch rule {
+          case .text(let textParser):
+            textRules.append(textParser)
+          case .syntax(let syntaxParser):
+            syntaxRules.append(syntaxParser)
+          }
+        }
+
+        let sourceURLs = try sourceFiles(output: output)
+
+        var settings: [URL: Setting] = [
+          location.appendingPathComponent("Package.swift"): .topLevel
+        ]
+        for name in InterfaceLocalization.allCases
+          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
+        {
+          settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+        }
         for target in try cachedPackage().targets {
           let setting: Setting?
           switch target.type {
@@ -97,10 +97,10 @@ extension PackageRepository {
           }
         }
 
-      for url in sourceURLs
-      where FileType(url: url) ≠ nil
-        ∧ FileType(url: url) ≠ .xcodeProject
-      {
+        for url in sourceURLs
+        where FileType(url: url) ≠ nil
+          ∧ FileType(url: url) ≠ .xcodeProject
+        {
           try purgingAutoreleased {
 
             let file = try TextFile(alreadyAt: url)
@@ -132,18 +132,18 @@ extension PackageRepository {
               }
             }
           }
+        }
       }
-    }
 
-    for task in try configuration(output: output).customProofreadingTasks {
-      do {
-        try task.execute(output: output)
-      } catch {
-        status.failExternalPhase()
+      for task in try configuration(output: output).customProofreadingTasks {
+        do {
+          try task.execute(output: output)
+        } catch {
+          status.failExternalPhase()
+        }
       }
-    }
 
-    return status.passing
-  }
+      return status.passing
+    }
   #endif
 }

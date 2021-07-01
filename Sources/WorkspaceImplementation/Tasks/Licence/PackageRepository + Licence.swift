@@ -27,22 +27,22 @@ import WorkspaceConfiguration
 extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  internal func refreshLicence(output: Command.Output) throws {
+    internal func refreshLicence(output: Command.Output) throws {
 
-    guard let licence = try configuration(output: output).licence.licence else {
-      throw Command.Error(
-        description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishCanada:
-            return "No licence has been selected. (licence.licence)"
-          case .englishUnitedStates:
-            return "No license has been selected. (license.license)"
-          case .deutschDeutschland:
-            return "Keine Lizenz wurde ausgewählt. (lizenz.lizenz)"
-          }
-        })
-      )
-    }
+      guard let licence = try configuration(output: output).licence.licence else {
+        throw Command.Error(
+          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishCanada:
+              return "No licence has been selected. (licence.licence)"
+            case .englishUnitedStates:
+              return "No license has been selected. (license.license)"
+            case .deutschDeutschland:
+              return "Keine Lizenz wurde ausgewählt. (lizenz.lizenz)"
+            }
+          })
+        )
+      }
 
       var text = licence.text
 
@@ -65,8 +65,8 @@ extension PackageRepository {
       file.contents = String(text)
       try file.writeChanges(for: self, output: output)
 
-    // Delete alternate licence files to prevent duplicates.
-    delete(location.appendingPathComponent("LICENSE.txt"), output: output)
-  }
+      // Delete alternate licence files to prevent duplicates.
+      delete(location.appendingPathComponent("LICENSE.txt"), output: output)
+    }
   #endif
 }

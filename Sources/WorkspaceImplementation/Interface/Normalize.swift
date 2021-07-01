@@ -88,36 +88,36 @@ extension Workspace {
       })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal static let command = Command(
-      name: name,
-      description: description,
-      discussion: discussion,
-      directArguments: [],
-      options: standardOptions,
-      execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
-        try executeAsStep(options: options, output: output)
-      }
-    )
+      internal static let command = Command(
+        name: name,
+        description: description,
+        discussion: discussion,
+        directArguments: [],
+        options: standardOptions,
+        execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+          try executeAsStep(options: options, output: output)
+        }
+      )
 
-    internal static func executeAsStep(options: Options, output: Command.Output) throws {
+      internal static func executeAsStep(options: Options, output: Command.Output) throws {
 
-      if ¬options.runAsXcodeBuildPhase {
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom:
-              return "Normalising files..."
-            case .englishUnitedStates, .englishCanada:
-              return "Normalizing files..."
-            case .deutschDeutschland:
-              return "Deteien werden normalisiert ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-      }
+        if ¬options.runAsXcodeBuildPhase {
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:
+                return "Normalising files..."
+              case .englishUnitedStates, .englishCanada:
+                return "Normalizing files..."
+              case .deutschDeutschland:
+                return "Deteien werden normalisiert ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
+        }
 
         try options.project.normalize(output: output)
-    }
+      }
     #endif
   }
 }

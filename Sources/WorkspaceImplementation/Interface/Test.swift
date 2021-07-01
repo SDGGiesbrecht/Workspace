@@ -50,12 +50,12 @@ extension Workspace {
       })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-      execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+        execution: { (_, options: Options, output: Command.Output) throws in
 
           try Validate.Build.validate(
             job: options.job,
@@ -64,23 +64,23 @@ extension Workspace {
             output: output
           )
 
-        var validationStatus = ValidationStatus()
+          var validationStatus = ValidationStatus()
 
-        try executeAsStep(
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
+          try executeAsStep(
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
 
           try validationStatus.reportOutcome(project: options.project, output: output)
-      }
-    )
+        }
+      )
 
-    internal static func executeAsStep(
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
 
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
@@ -103,12 +103,12 @@ extension Workspace {
             }
 
             #if DEBUG
-                if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                    ≠ nil
-                {  // Simulators are not available to all CI jobs and must be tested separately.
-                  return  // and continue loop.
-                }
+              if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                  ≠ nil
+              {  // Simulators are not available to all CI jobs and must be tested separately.
+                return  // and continue loop.
+              }
             #endif
 
             options.project.test(
@@ -118,7 +118,7 @@ extension Workspace {
             )
           }
         }
-    }
+      }
     #endif
   }
 }

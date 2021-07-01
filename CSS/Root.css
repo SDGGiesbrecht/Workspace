@@ -1,0 +1,84 @@
+/* ••••••• Layout ••••••• */
+
+/* Fill viewport */
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+}
+
+/* Remove navigation from print */
+@media print {
+  nav {
+    display: none;
+  }
+}
+
+/* Treat navigation links as block elements */
+nav > a {
+    display: block;
+}
+
+/* Book‐style paragraphs */
+p {
+  text-indent: 3em;
+}
+p {
+  text-align: justify;
+  hyphens: auto;
+}
+
+p {
+  margin-bottom: 0em;
+  margin-top: 0em;
+}
+:not(p) + p {
+  margin-top: 0.5em;
+}
+p + :not(p) {
+  margin-top: 0.5em;
+}
+p:last-child {
+  margin-bottom: 0.5em;
+}
+
+/* ••••••• Colours ••••••• */
+
+/* Standardize colours */
+html {
+  background-color: #FFFFFF;
+  color: #000000;
+}
+
+/* Remove links from print */
+@media print {
+  a {
+    color: inherit;
+  }
+}
+
+/* ••••••• Fonts ••••••• */
+
+html {
+  font-family: serif;
+}
+@media only screen {
+  html {
+    font-family: sans-serif;
+  }
+}
+
+/* ••••••• Semantic Text Formatting ••••••• */
+
+span.foreign, span.fremd { /* <foreign>: Foreign language. */
+  font-style: italic;
+}
+
+/* Remove links from print */
+@media print {
+  a {
+    font-weight: inherit;
+    text-decoration: inherit;
+  }
+}

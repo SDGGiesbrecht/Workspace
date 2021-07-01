@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<!--
+
+ -->
+
+<html dir="ltr" lang="en-GB">
+ <head>
+  <meta charset="utf&#x002D;8">
+  <title>exemptPaths</title>
+  <link rel="stylesheet" href="../../../../CSS/Root.css">
+  <link rel="stylesheet" href="../../../../CSS/Swift.css">
+  <link rel="stylesheet" href="../../../../CSS/Site.css">
+  <script src="../../../../JavaScript/Site.js"></script>
+ </head>
+ <body>
+  <header class="navigation‐bar">
+   <nav class="navigation‐bar">
+    <div class="navigation‐path" dir="ltr">
+
+<a id="current‐language‐icon" onmouseenter="showLanguageSwitch(this)"><span>🇬🇧EN</span></a>
+<div id="language‐switch" onmouseleave="hideLanguageSwitch(this)">
+<a href="../../../../🇺🇸EN/Types/TestingConfiguration/Properties/exemptPaths.html">🇺🇸EN</a>
+<a href="../../../../🇨🇦EN/Types/TestingConfiguration/Properties/exemptPaths.html">🇨🇦EN</a>
+<a href="../../../../🇩🇪DE/Typen/Testeinstellungen/Eigenschaften/ausnahmspfade.html">🇩🇪DE</a>
+</div>
+<a href="../../../../🇬🇧EN/Workspace.html">Workspace</a>
+<a href="../../../../🇬🇧EN/Types/TestingConfiguration.html">TestingConfiguration</a>
+<span>exemptPaths</span>
+
+    </div>
+    <div>
+     <span class="swift blockquote"><span class="punctuation">.</span><span class="external identifier">package</span><span class="punctuation">(</span><span class="external identifier">url</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><a href="https://github.com/SDGGiesbrecht/Workspace"><span class="text">https://github.com/SDGGiesbrecht/Workspace</span></a><span class="punctuation">"</span></span><span class="punctuation">,</span> <span class="punctuation">.</span><span class="external identifier">upToNextMinor</span><span class="punctuation">(</span><span class="external identifier">from</span><span class="punctuation">:</span> <span class="string"><span class="punctuation">"</span><span class="text">0.37.2</span><span class="punctuation">"</span></span><span class="punctuation">)</span><span class="punctuation">)</span></span>
+    </div>
+   </nav>
+  </header>
+  <div class="content‐container">
+   <header class="index">
+    <nav class="index">
+
+<div id="Package‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Package</a>
+<a href="../../../../🇬🇧EN/Workspace.html">
+Workspace
+</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇬🇧EN/Installation.html">Installation</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇬🇧EN/Importing.html">Importing</a>
+</div>
+<div id="executable‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Command Line Tools</a>
+<a href="../../../../🇬🇧EN/Tools/workspace.html">
+workspace
+</a>
+</div>
+<div id="library‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Library Products</a>
+<a href="../../../../🇬🇧EN/Libraries/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+</div>
+<div id="target‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Modules</a>
+<a href="../../../../🇬🇧EN/Modules/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+</div>
+<div id="struct‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Types</a>
+<a href="../../../../🇬🇧EN/Types/APIDocumentationConfiguration.html">
+APIDocumentationConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/ContinuousIntegrationConfiguration.html">
+ContinuousIntegrationConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/CustomTask.html">
+CustomTask
+</a>
+<a href="../../../../🇬🇧EN/Types/DocumentationConfiguration.html">
+DocumentationConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/FileHeaderConfiguration.html">
+FileHeaderConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/GitConfiguration.html">
+GitConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/GitHubConfiguration.html">
+GitHubConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/IssueTemplate.html">
+IssueTemplate
+</a>
+<a href="../../../../🇬🇧EN/Types/Lazy%3cOption%3e.html">
+Lazy&#x003C;Option&#x003E;
+</a>
+<a href="../../../../🇬🇧EN/Types/Licence.html">
+Licence
+</a>
+<a href="../../../../🇬🇧EN/Types/LicenceConfiguration.html">
+LicenceConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/LocalisationIdentifier.html">
+LocalisationIdentifier
+</a>
+<a href="../../../../🇬🇧EN/Types/Markdown.html">
+Markdown
+</a>
+<a href="../../../../🇬🇧EN/Types/PackageManifest.html">
+PackageManifest
+</a>
+<a href="../../../../🇬🇧EN/Types/Platform.html">
+Platform
+</a>
+<a href="../../../../🇬🇧EN/Types/ProofreadingConfiguration.html">
+ProofreadingConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/ProofreadingRule.html">
+ProofreadingRule
+</a>
+<a href="../../../../🇬🇧EN/Types/ReadMeConfiguration.html">
+ReadMeConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/RelatedProjectEntry.html">
+RelatedProjectEntry
+</a>
+<a href="../../../../🇬🇧EN/Types/RepositoryConfiguration.html">
+RepositoryConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/TestCoverageExemptionToken.html">
+TestCoverageExemptionToken
+</a>
+<a href="../../../../🇬🇧EN/Types/TestingConfiguration.html">
+TestingConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/UnicodeRuleScope.html">
+UnicodeRuleScope
+</a>
+<a href="../../../../🇬🇧EN/Types/WorkspaceConfiguration.html">
+WorkspaceConfiguration
+</a>
+<a href="../../../../🇬🇧EN/Types/WorkspaceContext.html">
+WorkspaceContext
+</a>
+</div>
+<div id="extension‐index">
+<a class="heading" onclick="toggleIndexSectionVisibility(this)">Extensions</a>
+<a href="../../../../🇬🇧EN/Extensions/Array.html">
+Array
+</a>
+<a href="../../../../🇬🇧EN/Extensions/Dictionary.html">
+Dictionary
+</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇬🇧EN/Related%20Projects.html">Related Projects</a>
+</div>
+<div>
+<a class="heading" href="../../../../🇬🇧EN/About.html">About</a>
+</div>
+
+    </nav>
+   </header>
+   <main>
+
+<div class="import‐header">
+<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../../../🇬🇧EN/Modules/WorkspaceConfiguration.html"><span class="internal identifier TokenSyntax identifier">WorkspaceConfiguration</span></a></span></span></span></code>
+<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">WorkspaceConfiguration</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">Workspace</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
+</div>
+
+    <div class="main‐text‐column">
+     <div class="title">
+      <div class="symbol‐type">Instance Property</div>
+      
+      <h1>exemptPaths</h1>
+      
+     </div>
+
+<div class="description">
+<p>Paths exempt from test coverage.</p>
+</div>
+<section class="declaration">
+<h2>Declaration</h2>
+<code class="swift blockquote"><span class="VariableDeclSyntax"><span class="ModifierListSyntax"></span><span class="keyword TokenSyntax varKeyword">var</span> <span class="PatternBindingListSyntax"><span class="PatternBindingSyntax"><span class="IdentifierPatternSyntax"><a href="../../../../🇬🇧EN/Types/TestingConfiguration/Properties/exemptPaths.html"><span class="internal identifier TokenSyntax identifier">exemptPaths</span></a></span><span class="TypeAnnotationSyntax"><span class="punctuation TokenSyntax colon">:</span> <span class="SimpleTypeIdentifierSyntax"><span class="external identifier TokenSyntax identifier">Set</span><span class="GenericArgumentClauseSyntax"><span class="punctuation TokenSyntax leftAngle">&#x003C;</span><span class="GenericArgumentListSyntax"><span class="GenericArgumentSyntax"><span class="SimpleTypeIdentifierSyntax"><span class="external identifier TokenSyntax identifier">String</span></span></span></span><span class="punctuation TokenSyntax rightAngle">&#x003E;</span></span></span></span><span class="AccessorBlockSyntax"> <span class="punctuation TokenSyntax leftBrace">{</span> <span class="AccessorListSyntax"><span class="AccessorDeclSyntax"><span class="keyword TokenSyntax contextualKeyword">get</span></span><span class="AccessorDeclSyntax"> <span class="keyword TokenSyntax contextualKeyword">set</span></span></span> <span class="punctuation TokenSyntax rightBrace">}</span></span></span></span></span></code>
+</section>
+<section>
+<h2>Discussion</h2>
+
+<p>The paths must be specified relative to the package root.</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+   </main>
+   <header class="platforms">
+<span>
+macOS
+</span>
+<span>
+CentOS
+</span>
+<span>
+Ubuntu
+</span>
+<span>
+Amazon Linux
+</span>
+   </header>
+  </div>
+  <footer dir="ltr">
+   <span>
+Copyright ©2017–2021 Jeremy David Giesbrecht and the Workspace project contributors. All rights reserved.
+</span>
+   <span dir="ltr" lang="en-GB">Generated with <a href="https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Workspace.html">Workspace</a>. <span lang="la-IT">Soli Deo gloria.</span></span>
+  </footer>
+  <script>contractIndex("struct‐index");</script>
+ </body>
+</html>

@@ -459,6 +459,13 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
       XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
       XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
+      let defaults = WorkspaceConfiguration()
+      defaults.documentation.localizations = ["en", "de", "zxx"]
+      let copyright = defaults.fileHeaders.copyrightNotice.resolve
+      defaults.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
+        return copyright(configuration).mergedByOverwriting(from: ["zxx": "..."])
+      })
+      _ = try? JSONEncoder().encode(defaults)
     #endif
   }
 

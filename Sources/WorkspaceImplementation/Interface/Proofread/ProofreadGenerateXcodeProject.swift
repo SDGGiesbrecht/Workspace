@@ -47,32 +47,32 @@ extension Workspace.Proofread {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions,
-      execution: { (_, options: Options, output: Command.Output) throws in
-        try executeAsStep(options: options, output: output)
-      }
-    )
-
-    internal static func executeAsStep(options: Options, output: Command.Output) throws {
-
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Generating Xcode project..."
-          case .deutschDeutschland:
-            return "Xcode‐Projekt wird erstellt ..."
-          }
-        }).resolved().formattedAsSectionHeader()
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
+          try executeAsStep(options: options, output: output)
+        }
       )
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      internal static func executeAsStep(options: Options, output: Command.Output) throws {
+
+        output.print(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Generating Xcode project..."
+            case .deutschDeutschland:
+              return "Xcode‐Projekt wird erstellt ..."
+            }
+          }).resolved().formattedAsSectionHeader()
+        )
+
         try options.project.refreshProofreadingXcodeProject(output: output)
-      #endif
-    }
+      }
+    #endif
   }
 }

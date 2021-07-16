@@ -35,7 +35,7 @@ extension CustomTask {
   // MARK: - Execution
 
   internal func execute(output: Command.Output) throws {
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
       _ = try Package(url: url).execute(
         .version(version),
         of: [executable],

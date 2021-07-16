@@ -48,81 +48,77 @@ extension Workspace.Validate {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-      execution: { (_, options: Options, output: Command.Output) throws in
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validate(
             job: options.job,
             against: ContinuousIntegrationJob.buildJobs,
             for: options.project,
             output: output
           )
-        #endif
 
-        var validationStatus = ValidationStatus()
+          var validationStatus = ValidationStatus()
 
-        try executeAsStep(
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
+          try executeAsStep(
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
+        }
+      )
+
+      internal static func job(
+        _ job: ContinuousIntegrationJob,
+        isRelevantTo project: PackageRepository,
+        andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
+        output: Command.Output
+      ) throws -> Bool {
+        return try job ∈ validJobs
+          ∧ job.isRequired(by: project, output: output)
+          ∧ job.platform == Platform.current
       }
-    )
 
-    internal static func job(
-      _ job: ContinuousIntegrationJob,
-      isRelevantTo project: PackageRepository,
-      andAvailableJobs validJobs: Set<ContinuousIntegrationJob>,
-      output: Command.Output
-    ) throws -> Bool {
-      return try job ∈ validJobs
-        ∧ ((try job.isRequired(by: project, output: output))
-          ∧ job.platform == Platform.current)
-    }
-
-    internal static func validate(
-      job: ContinuousIntegrationJob?,
-      against validJobs: Set<ContinuousIntegrationJob>,
-      for project: PackageRepository,
-      output: Command.Output
-    ) throws {
-      if let specified = job,
-        ¬(try Build.job(
-          specified,
-          isRelevantTo: project,
-          andAvailableJobs: validJobs,
-          output: output
-        ))
-      {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Invalid job."
-            case .deutschDeutschland:
-              return "Ungültige Aufgabe."
-            }
-          })
-        )
+      internal static func validate(
+        job: ContinuousIntegrationJob?,
+        against validJobs: Set<ContinuousIntegrationJob>,
+        for project: PackageRepository,
+        output: Command.Output
+      ) throws {
+        if let specified = job,
+          ¬(try Build.job(
+            specified,
+            isRelevantTo: project,
+            andAvailableJobs: validJobs,
+            output: output
+          ))
+        {
+          throw Command.Error(
+            description: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Invalid job."
+              case .deutschDeutschland:
+                return "Ungültige Aufgabe."
+              }
+            })
+          )
+        }
       }
-    }
 
-    internal static func executeAsStep(
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         for job in ContinuousIntegrationJob.allCases
         where try options.job.includes(job: job)
           ∧ (try Build.job(
@@ -141,7 +137,7 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
-    }
+      }
+    #endif
   }
 }

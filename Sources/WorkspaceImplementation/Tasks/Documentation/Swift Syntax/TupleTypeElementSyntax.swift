@@ -16,14 +16,12 @@
 
 import SDGSwiftSource
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 import SDGSwiftSource
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension TupleTypeElementSyntax: Parameter {
     internal var firstName: TokenSyntax? {
       return name

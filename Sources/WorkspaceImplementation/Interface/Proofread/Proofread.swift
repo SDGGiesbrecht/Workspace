@@ -27,14 +27,16 @@ import WorkspaceLocalizations
 extension Workspace {
   internal enum Proofread {
 
-    internal static let command = Command(
-      name: Workspace.Proofread.Proofread.name,
-      description: Workspace.Proofread.Proofread.description,
-      subcommands: [
-        Workspace.Proofread.Proofread.command,
-        Workspace.Proofread.GenerateXcodeProject.command,
-      ],
-      defaultSubcommand: Workspace.Proofread.Proofread.command
-    )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: Workspace.Proofread.Proofread.name,
+        description: Workspace.Proofread.Proofread.description,
+        subcommands: [
+          Workspace.Proofread.Proofread.command,
+          Workspace.Proofread.GenerateXcodeProject.command,
+        ],
+        defaultSubcommand: Workspace.Proofread.Proofread.command
+      )
+    #endif
   }
 }

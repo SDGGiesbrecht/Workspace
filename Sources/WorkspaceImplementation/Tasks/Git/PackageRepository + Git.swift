@@ -88,13 +88,13 @@ extension PackageRepository {
       + ignoreEntriesForXcode
   }
 
-  internal func refreshGitConfiguration(output: Command.Output) throws {
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func refreshGitConfiguration(output: Command.Output) throws {
 
-    let entries =
-      try PackageRepository.ignoreEntries
-      + configuration(output: output).git.additionalGitIgnoreEntries
+      let entries =
+        try PackageRepository.ignoreEntries
+        + configuration(output: output).git.additionalGitIgnoreEntries
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
       gitIgnore.body = entries.joinedAsLines()
       try gitIgnore.writeChanges(for: self, output: output)
@@ -118,6 +118,6 @@ extension PackageRepository {
           delete(gitAttributes.location, output: output)
         }
       }
-    #endif
-  }
+    }
+  #endif
 }

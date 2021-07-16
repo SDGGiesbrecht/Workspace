@@ -21,7 +21,7 @@ import SDGLocalization
 
 import SDGCommandLine
 
-#if os(Windows) || os(WASI) || os(Android)  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
+#if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   internal protocol DiagnosticConsumer {}
 #else
   import SwiftSyntax
@@ -51,8 +51,7 @@ internal class ProofreadingStatus: DiagnosticConsumer {
     return false
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     internal func handle(_ diagnostic: Diagnostic) {
       let file = currentFile!
 

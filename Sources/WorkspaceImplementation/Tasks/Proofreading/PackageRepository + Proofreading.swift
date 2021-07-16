@@ -24,13 +24,11 @@ import SDGCommandLine
 
 import SDGSwift
 import SDGSwiftSource
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftFormat
 #endif
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
@@ -41,48 +39,47 @@ import WorkspaceLocalizations
 
 extension PackageRepository {
 
-  internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
-    let status = ProofreadingStatus(reporter: reporter, output: output)
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
+      let status = ProofreadingStatus(reporter: reporter, output: output)
 
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if os(Windows) || os(WASI) || os(Android)
-      var linter: Bool?
-    #else
-      var linter: SwiftLinter?
-      if let formatConfiguration = try configuration(output: output).proofreading
-        .swiftFormatConfiguration
-      {
-        let diagnostics = DiagnosticEngine()
-        diagnostics.addConsumer(status)
-        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
-      }
-    #endif
-
-    let activeRules = try configuration(output: output).proofreading.rules.sorted()
-    if ¬activeRules.isEmpty ∨ linter ≠ nil {
-
-      var textRules: [TextRule.Type] = []
-      var syntaxRules: [SyntaxRule.Type] = []
-      for rule in activeRules.lazy.map({ $0.parser }) {
-        switch rule {
-        case .text(let textParser):
-          textRules.append(textParser)
-        case .syntax(let syntaxParser):
-          syntaxRules.append(syntaxParser)
+      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+        var linter: Bool?
+      #else
+        var linter: SwiftLinter?
+        if let formatConfiguration = try configuration(output: output).proofreading
+          .swiftFormatConfiguration
+        {
+          let diagnostics = DiagnosticEngine()
+          diagnostics.addConsumer(status)
+          linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
         }
-      }
+      #endif
 
-      let sourceURLs = try sourceFiles(output: output)
+      let activeRules = try configuration(output: output).proofreading.rules.sorted()
+      if ¬activeRules.isEmpty ∨ linter ≠ nil {
 
-      var settings: [URL: Setting] = [
-        location.appendingPathComponent("Package.swift"): .topLevel
-      ]
-      for name in InterfaceLocalization.allCases
-        .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
-      {
-        settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
-      }
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        var textRules: [TextRule.Type] = []
+        var syntaxRules: [SyntaxRule.Type] = []
+        for rule in activeRules.lazy.map({ $0.parser }) {
+          switch rule {
+          case .text(let textParser):
+            textRules.append(textParser)
+          case .syntax(let syntaxParser):
+            syntaxRules.append(syntaxParser)
+          }
+        }
+
+        let sourceURLs = try sourceFiles(output: output)
+
+        var settings: [URL: Setting] = [
+          location.appendingPathComponent("Package.swift"): .topLevel
+        ]
+        for name in InterfaceLocalization.allCases
+          .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
+        {
+          settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+        }
         for target in try cachedPackage().targets {
           let setting: Setting?
           switch target.type {
@@ -99,13 +96,11 @@ extension PackageRepository {
             }
           }
         }
-      #endif
 
-      for url in sourceURLs
-      where FileType(url: url) ≠ nil
-        ∧ FileType(url: url) ≠ .xcodeProject
-      {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        for url in sourceURLs
+        where FileType(url: url) ≠ nil
+          ∧ FileType(url: url) ≠ .xcodeProject
+        {
           try purgingAutoreleased {
 
             let file = try TextFile(alreadyAt: url)
@@ -121,8 +116,7 @@ extension PackageRepository {
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-                #if !(os(Windows) || os(Android))
+                #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
                   let syntax = try SyntaxParser.parseAndRetry(url)
                   try RuleSyntaxScanner(
                     rules: syntaxRules,
@@ -138,18 +132,18 @@ extension PackageRepository {
               }
             }
           }
-        #endif
+        }
       }
-    }
 
-    for task in try configuration(output: output).customProofreadingTasks {
-      do {
-        try task.execute(output: output)
-      } catch {
-        status.failExternalPhase()
+      for task in try configuration(output: output).customProofreadingTasks {
+        do {
+          try task.execute(output: output)
+        } catch {
+          status.failExternalPhase()
+        }
       }
-    }
 
-    return status.passing
-  }
+      return status.passing
+    }
+  #endif
 }

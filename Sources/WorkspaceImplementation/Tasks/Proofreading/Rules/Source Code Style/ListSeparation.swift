@@ -49,8 +49,7 @@ internal struct ListSeparation: SyntaxRule {
     }
   })
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     internal static func check(
       _ node: Syntax,
       context: SyntaxContext,

@@ -22,13 +22,11 @@ import SDGCollections
 
 import WorkspaceConfiguration
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.) @exempt(from: unicode)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 import SDGSwiftSource
-// #workaround(swift-format 0.50300.0, Cannot build.) @exempt(from: unicode)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
   import SwiftFormat
 #endif
 
@@ -215,8 +213,7 @@ internal enum SwiftLanguage {
     accordingTo configuration: WorkspaceConfiguration,
     for fileURL: URL
   ) throws {
-    // #workaround(swift-format 0.50300.0, Cannot build.) @exempt(from: unicode)
-    #if !(os(Windows) || os(WASI) || os(Android))
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
       if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
         let formatter = SwiftFormatter(configuration: formatConfiguration)
         var result: String = ""

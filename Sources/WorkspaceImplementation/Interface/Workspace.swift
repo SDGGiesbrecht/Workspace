@@ -25,7 +25,10 @@ import SDGCommandLine
 import WorkspaceLocalizations
 import WorkspaceProjectConfiguration
 
-public enum Workspace: Tool {
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+  extension Workspace: Tool {}
+#endif
+public enum Workspace {
 
   private static let projectName = UserFacing<StrictString, InterfaceLocalization>({ localization in
     switch localization {
@@ -72,32 +75,36 @@ public enum Workspace: Tool {
     }
   })
 
-  public static let command = Command(
-    name: name,
-    description: description,
-    subcommands: [
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    public static let command = Command(
+      name: name,
+      description: description,
+      subcommands: [
 
-      // Primary Workflow
-      Workspace.Refresh.command,
-      Workspace.Validate.command,
-      Workspace.Document.command,
+        // Primary Workflow
+        Workspace.Refresh.command,
+        Workspace.Validate.command,
+        Workspace.Document.command,
 
-      // Xcode Build Phase
-      Workspace.Proofread.command,
+        // Xcode Build Phase
+        Workspace.Proofread.command,
 
-      // Individual Steps
-      Workspace.Normalize.command,
-      Workspace.Test.command,
+        // Individual Steps
+        Workspace.Normalize.command,
+        Workspace.Test.command,
 
-      // Other
-      Workspace.CheckForUpdates.command,
-    ]
-  )
+        // Other
+        Workspace.CheckForUpdates.command,
+      ]
+    )
+  #endif
 
   // MARK: - Tool
 
   public static let applicationIdentifier: StrictString = "ca.solideogloria.Workspace"
   public static let version: Version? = Metadata.thisVersion
   public static let packageURL: URL? = Metadata.packageURL
-  public static let rootCommand: Command = command
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    public static let rootCommand: Command = command
+  #endif
 }

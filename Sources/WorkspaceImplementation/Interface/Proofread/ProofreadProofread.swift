@@ -65,64 +65,60 @@ extension Workspace.Proofread {
       type: ArgumentType.boolean
     )
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions + [runAsXcodeBuildPhase],
-      execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
-        var validationStatus = ValidationStatus()
-        try executeAsStep(
-          normalizingFirst: true,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions + [runAsXcodeBuildPhase],
+        execution: { (_: DirectArguments, options: Options, output: Command.Output) throws in
+          var validationStatus = ValidationStatus()
+          try executeAsStep(
+            normalizingFirst: true,
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
 
-        if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
-          #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+          if ¬options.runAsXcodeBuildPhase {  // Xcode should keep building anyway.
             try validationStatus.reportOutcome(project: options.project, output: output)
-          #endif
+          }
         }
-      }
-    )
+      )
 
-    internal static func executeAsStep(
-      normalizingFirst: Bool,
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        normalizingFirst: Bool,
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
         }
-      #endif
 
-      let section = validationStatus.newSection()
+        let section = validationStatus.newSection()
 
-      if ¬options.runAsXcodeBuildPhase {
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Proofreading source code..." + section.anchor
-            case .deutschDeutschland:
-              return "Quelltext Korrektur wird gelesen ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
-      }
+        if ¬options.runAsXcodeBuildPhase {
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Proofreading source code..." + section.anchor
+              case .deutschDeutschland:
+                return "Quelltext Korrektur wird gelesen ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
+        }
 
-      let reporter: ProofreadingReporter
-      if options.runAsXcodeBuildPhase {
-        reporter = XcodeProofreadingReporter.default
-      } else {
-        reporter = CommandLineProofreadingReporter.default
-      }
+        let reporter: ProofreadingReporter
+        if options.runAsXcodeBuildPhase {
+          reporter = XcodeProofreadingReporter.default
+        } else {
+          reporter = CommandLineProofreadingReporter.default
+        }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if try options.project.proofread(reporter: reporter, output: output) {
           validationStatus.passStep(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -148,7 +144,7 @@ extension Workspace.Proofread {
             })
           )
         }
-      #endif
-    }
+      }
+    #endif
   }
 }

@@ -29,25 +29,22 @@ import SDGSwift
 
 extension PackageRepository {
 
-  internal func normalize(output: Command.Output) throws {
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func normalize(output: Command.Output) throws {
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
-      var formatter: SwiftFormatter?
-      if let formatConfiguration = try configuration(output: output).proofreading
-        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-      {
-        formatter = SwiftFormatter(configuration: formatConfiguration)
-      }
-    #endif
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
+        var formatter: SwiftFormatter?
+        if let formatConfiguration = try configuration(output: output).proofreading
+          .swiftFormatConfiguration?.reducedToMachineResponsibilities()
+        {
+          formatter = SwiftFormatter(configuration: formatConfiguration)
+        }
+      #endif
 
-    for url in try sourceFiles(output: output) {
-      try purgingAutoreleased {
+      for url in try sourceFiles(output: output) {
+        try purgingAutoreleased {
 
-        if let syntax = FileType(url: url)?.syntax {
-          #if PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-            func dodgeLackOfThrowingCalls() throws {}
-            try dodgeLackOfThrowingCalls()
-          #else
+          if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)
 
             #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
@@ -88,9 +85,9 @@ extension PackageRepository {
 
             file.contents = normalizedLines.joinedAsLines()
             try file.writeChanges(for: self, output: output)
-          #endif
+          }
         }
       }
     }
-  }
+  #endif
 }

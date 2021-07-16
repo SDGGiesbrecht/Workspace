@@ -32,128 +32,102 @@ import WorkspaceConfiguration
 
 extension PackageRepository {
 
-  internal func refreshContinuousIntegration(output: Command.Output) throws {
-    try refreshGitHubWorkflows(output: output)
-    delete(location.appendingPathComponent(".travis.yml"), output: output)
-  }
-
-  private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
-    return try ContinuousIntegrationJob.allCases.filter { job in
-      return try job.isRequired(by: self, output: output)
-        // Simulator is unavailable during normal test.
-        ∨ (job ∈ ContinuousIntegrationJob.simulatorJobs ∧ isWorkspaceProject())
-        // Enables testing of the provided continuous integration set‐up, even though Workspace cannot run on these platforms.
-        ∨ ((job ∈ Set([.windows, .web, .android])) ∧ isWorkspaceProject())
-    }
-  }
-
-  private func refreshGitHubWorkflow(
-    name: UserFacing<StrictString, InterfaceLocalization>,
-    onConditions: [StrictString],
-    jobFilter: (ContinuousIntegrationJob) -> Bool,
-    output: Command.Output
-  ) throws {
-    let configuration = try self.configuration(output: output)
-    let interfaceLocalization = configuration.developmentInterfaceLocalization()
-    let resolvedName = name.resolved(for: interfaceLocalization)
-
-    var workflow: [StrictString] = [
-      "name: \(resolvedName)",
-      "",
-    ]
-    workflow.append(contentsOf: onConditions)
-    workflow.append(contentsOf: [
-      "",
-      "jobs:",
-    ])
-
-    for job in try relevantJobs(output: output)
-    where jobFilter(job) {
-      workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func refreshContinuousIntegration(output: Command.Output) throws {
+      try refreshGitHubWorkflows(output: output)
+      delete(location.appendingPathComponent(".travis.yml"), output: output)
     }
 
-    try adjustForWorkspace(&workflow)
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+    private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
+      return try ContinuousIntegrationJob.allCases.filter { job in
+        return try job.isRequired(by: self, output: output)
+      }
+    }
+
+    private func refreshGitHubWorkflow(
+      name: UserFacing<StrictString, InterfaceLocalization>,
+      onConditions: [StrictString],
+      jobFilter: (ContinuousIntegrationJob) -> Bool,
+      output: Command.Output
+    ) throws {
+      let configuration = try self.configuration(output: output)
+      let interfaceLocalization = configuration.developmentInterfaceLocalization()
+      let resolvedName = name.resolved(for: interfaceLocalization)
+
+      var workflow: [StrictString] = [
+        "name: \(resolvedName)",
+        "",
+      ]
+      workflow.append(contentsOf: onConditions)
+      workflow.append(contentsOf: [
+        "",
+        "jobs:",
+      ])
+
+      for job in try relevantJobs(output: output)
+      where jobFilter(job) {
+        workflow.append(contentsOf: try job.gitHubWorkflowJob(for: self, output: output))
+      }
+
       var workflowFile = try TextFile(
         possiblyAt: location.appendingPathComponent(".github/workflows/\(resolvedName).yaml")
       )
       workflowFile.body = String(workflow.joinedAsLines())
       try workflowFile.writeChanges(for: self, output: output)
-    #endif
-  }
+    }
 
-  private func refreshGitHubWorkflows(output: Command.Output) throws {
-    for job in try relevantJobs(output: output) where job ≠ .deployment {
-      try refreshGitHubWorkflow(
-        name: job.name,
-        onConditions: ["on: [push, pull_request]"],
-        jobFilter: { $0 == job },
+    private func refreshGitHubWorkflows(output: Command.Output) throws {
+      for job in try relevantJobs(output: output) where job ≠ .deployment {
+        try refreshGitHubWorkflow(
+          name: job.name,
+          onConditions: ["on: [push, pull_request]"],
+          jobFilter: { $0 == job },
+          output: output
+        )
+      }
+      try cleanUpDeprecatedWorkflows(output: output)
+
+      if try relevantJobs(output: output).contains(.deployment) {
+        try refreshGitHubWorkflow(
+          name: UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Documentation Deployment"
+            case .deutschDeutschland:
+              return "Dokumentationsverteilung"
+            }
+          }),
+          onConditions: [
+            "on:",
+            "  push:",
+            "    branches:",
+            "      \u{2D} master",
+          ],
+          jobFilter: { $0 == .deployment },
+          output: output
+        )
+      }
+      try cleanCMakeUp(output: output)
+      try cleanWindowsTestsUp(output: output)
+      try cleanWindowsSDKUp(output: output)
+      try cleanAndroidSDKUp(output: output)
+    }
+
+    private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {
+      let deprecatedWorkflowName = UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Workspace Validation"
+        case .deutschDeutschland:
+          return "Arbeitsbereichprüfung"
+        }
+      }).resolved(for: try configuration(output: output).developmentInterfaceLocalization())
+      delete(
+        location.appendingPathComponent(".github/workflows/\(deprecatedWorkflowName).yaml"),
         output: output
       )
     }
-    try cleanUpDeprecatedWorkflows(output: output)
-
-    if try relevantJobs(output: output).contains(.deployment) {
-      try refreshGitHubWorkflow(
-        name: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Documentation Deployment"
-          case .deutschDeutschland:
-            return "Dokumentationsverteilung"
-          }
-        }),
-        onConditions: [
-          "on:",
-          "  push:",
-          "    branches:",
-          "      \u{2D} master",
-        ],
-        jobFilter: { $0 == .deployment },
-        output: output
-      )
-    }
-    try cleanCMakeUp(output: output)
-    try cleanWindowsTestsUp(output: output)
-    try cleanWindowsSDKUp(output: output)
-    try cleanAndroidSDKUp(output: output)
-  }
-
-  private func adjustForWorkspace(_ configuration: inout [StrictString]) throws {
-    if try isWorkspaceProject() {
-      configuration = configuration.map { line in
-        var line = line
-        line.scalars.replaceMatches(
-          for:
-            "swift run workspace validate •job ios •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-            .scalars,
-          with: "swift run test‐ios‐simulator".scalars
-        )
-        line.scalars.replaceMatches(
-          for:
-            "swift run workspace validate •job tvos •language \u{27}🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE\u{27}"
-            .scalars,
-          with: "swift run test‐tvos‐simulator".scalars
-        )
-        return line
-      }
-    }
-  }
-
-  private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {
-    let deprecatedWorkflowName = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Workspace Validation"
-      case .deutschDeutschland:
-        return "Arbeitsbereichprüfung"
-      }
-    }).resolved(for: try configuration(output: output).developmentInterfaceLocalization())
-    delete(
-      location.appendingPathComponent(".github/workflows/\(deprecatedWorkflowName).yaml"),
-      output: output
-    )
-  }
+  #endif
 
   private func cleanCMakeUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
@@ -163,17 +137,13 @@ extension PackageRepository {
   }
 
   private func cleanWindowsTestsUp(output: Command.Output) throws {
-    // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-    #if !(os(Windows) || os(WASI) || os(Android))
-      try cleanWindowsTestsManifestAdjustmentsUp(output: output)
-      try cleanWindowsMainUp(output: output)
-    #endif
+    try cleanWindowsTestsManifestAdjustmentsUp(output: output)
+    try cleanWindowsMainUp(output: output)
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
-    private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
-      let url = location.appendingPathComponent("Package.swift")
+  private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
+    let url = location.appendingPathComponent("Package.swift")
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       var manifest = try TextFile(possiblyAt: url)
 
       let start = "// Windows Tests (Generated automatically by Workspace.)"
@@ -188,15 +158,15 @@ extension PackageRepository {
 
       manifest.contents.replaceSubrange(range, with: "")
       try manifest.writeChanges(for: self, output: output)
-    }
+    #endif
+  }
 
-    private func cleanWindowsMainUp(
-      output: Command.Output
-    ) throws {
-      let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
-      delete(url, output: output)
-    }
-  #endif
+  private func cleanWindowsMainUp(
+    output: Command.Output
+  ) throws {
+    let url = location.appendingPathComponent("Tests/WindowsTests/main.swift")
+    delete(url, output: output)
+  }
 
   private func cleanWindowsSDKUp(output: Command.Output) throws {
     let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")

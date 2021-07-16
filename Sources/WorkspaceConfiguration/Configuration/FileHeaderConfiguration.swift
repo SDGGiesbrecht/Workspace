@@ -224,64 +224,66 @@ public struct FileHeaderConfiguration: Codable {
   /// By default, this is assembled from the other documentation and licence options.
   ///
   /// Workspace will replace the dynamic element `#filename` with the name of the particular file.
-  public var contents: Lazy<StrictString> = Lazy<StrictString>(resolve: { configuration in
+  public var contents: Lazy<StrictString> = Lazy<StrictString>(
+    resolve: { configuration in
 
-    let localizations = configuration.documentation.localizations
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-      let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
-    #endif
+      let localizations = configuration.documentation.localizations
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        let packageName = StrictString(WorkspaceContext.current.manifest.packageName)
+      #endif
 
-    var header: [StrictString] = [
-      "#filename",
-      "",
-    ]
-
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-      header.append(
-        contentsOf: configuration.sequentialLocalizations({ localization in
-          let projectName = configuration.projectName[localization] ?? packageName
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "This source file is part of the \(projectName) open source project."
-          case .deutschDeutschland:
-            return "Diese Quelldatei ist Teil des quelloffenen \(projectName)‐Projekt."
-          }
-        })
-      )
-    #endif
-    if let site = configuration.documentation.projectWebsite {
-      header.append(StrictString(site.absoluteString))
-    }
-
-    header.append("")
-
-    let copyrightNotices = configuration.fileHeaders.copyrightNotice.resolve(configuration)
-    var orderedNotices = configuration.sequentialLocalizations(copyrightNotices)
-    if orderedNotices.isEmpty {
-      orderedNotices = ["#dates"]
-    }
-    header.append(contentsOf: orderedNotices)
-
-    if configuration._isSDG {
-      header.append("")
-      header.append(
-        contentsOf: configuration.sequentialLocalizations({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-            .deutschDeutschland:
-            return "Soli Deo gloria."
-          }
-        })
-      )
-    }
-
-    if let licence = configuration.licence.licence {
-      header.append(contentsOf: [
+      var header: [StrictString] = [
+        "#filename",
         "",
-        licence.notice,
-      ])
-    }
+      ]
 
-    return header.joinedAsLines()
-  })
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        header.append(
+          contentsOf: configuration.sequentialLocalizations({ localization in
+            let projectName = configuration.projectName[localization] ?? packageName
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "This source file is part of the \(projectName) open source project."
+            case .deutschDeutschland:
+              return "Diese Quelldatei ist Teil des quelloffenen \(projectName)‐Projekt."
+            }
+          })
+        )
+      #endif
+      if let site = configuration.documentation.projectWebsite {
+        header.append(StrictString(site.absoluteString))
+      }
+
+      header.append("")
+
+      let copyrightNotices = configuration.fileHeaders.copyrightNotice.resolve(configuration)
+      var orderedNotices = configuration.sequentialLocalizations(copyrightNotices)
+      if orderedNotices.isEmpty {
+        orderedNotices = ["#dates"]
+      }
+      header.append(contentsOf: orderedNotices)
+
+      if configuration._isSDG {
+        header.append("")
+        header.append(
+          contentsOf: configuration.sequentialLocalizations({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+              .deutschDeutschland:
+              return "Soli Deo gloria."
+            }
+          })
+        )
+      }
+
+      if let licence = configuration.licence.licence {
+        header.append(contentsOf: [
+          "",
+          licence.notice,
+        ])
+      }
+
+      return header.joinedAsLines()
+    }
+  )
 }

@@ -40,8 +40,14 @@ extension Platform {
         }
       }
       return .ubuntu  // @exempt(from: tests)
+    #elseif os(tvOS)
+      return .tvOS
+    #elseif os(iOS)
+      return .iOS
     #elseif os(Android)
       return .android
+    #elseif os(watchOS)
+      return .watchOS
     #endif
   }()
 }

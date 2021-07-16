@@ -461,6 +461,7 @@ class APITests: TestCase {
       XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
 
       let defaults = WorkspaceConfiguration()
+      _ = try? JSONEncoder().encode(defaults)
       defaults.documentation.localizations = ["en", "de", "zxx"]
       let copyright = defaults.fileHeaders.copyrightNotice.resolve
       defaults.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in

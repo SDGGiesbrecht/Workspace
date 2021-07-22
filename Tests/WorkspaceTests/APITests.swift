@@ -469,16 +469,18 @@ class APITests: TestCase {
       })
       defaults.documentation.repositoryURL = URL(string: "http://example.com")!
       defaults.documentation.currentVersion = Version(1)
-      WorkspaceContext.current = WorkspaceContext(
-        _location: URL(string: "http://www.example.com")!,
-        manifest: PackageManifest(
-          _packageName: "Some Package",
-          products: [
-            PackageManifest.Product(_name: "Library Product", type: .library, modules: ["SomeModule"]),
-            PackageManifest.Product(_name: "Executable Product", type: .executable, modules: ["SomeModule"])
-          ]
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        WorkspaceContext.current = WorkspaceContext(
+          _location: URL(string: "http://www.example.com")!,
+          manifest: PackageManifest(
+            _packageName: "Some Package",
+            products: [
+              PackageManifest.Product(_name: "Library Product", type: .library, modules: ["SomeModule"]),
+              PackageManifest.Product(_name: "Executable Product", type: .executable, modules: ["SomeModule"])
+            ]
+          )
         )
-      )
+      #endif
       _ = try? JSONEncoder().encode(defaults)
     #endif
   }

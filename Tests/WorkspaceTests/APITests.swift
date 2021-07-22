@@ -490,6 +490,47 @@ class APITests: TestCase {
         )
       #endif
       _ = try? JSONEncoder().encode(defaults)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        WorkspaceContext.current = WorkspaceContext(
+          _location: URL(string: "http://www.example.com")!,
+          manifest: PackageManifest(
+            _packageName: "Some Package",
+            products: [
+              PackageManifest.Product(
+                _name: "Library Product",
+                type: .library,
+                modules: ["SomeModule"]
+              ),
+              PackageManifest.Product(
+                _name: "Another Library Product",
+                type: .library,
+                modules: ["SomeOtherModule"]
+              ),
+              PackageManifest.Product(
+                _name: "Executable Product",
+                type: .executable,
+                modules: ["SomeModule"]
+              ),
+              PackageManifest.Product(
+                _name: "Another Executable Product",
+                type: .executable,
+                modules: ["SomeOtherModule"]
+              ),
+            ]
+          )
+        )
+      #endif
+      _ = try? JSONEncoder().encode(defaults)
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+        WorkspaceContext.current = WorkspaceContext(
+          _location: URL(string: "http://www.example.com")!,
+          manifest: PackageManifest(
+            _packageName: "Some Package",
+            products: []
+          )
+        )
+      #endif
+      _ = try? JSONEncoder().encode(defaults)
     #endif
   }
 

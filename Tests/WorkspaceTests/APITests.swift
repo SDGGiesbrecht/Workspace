@@ -475,8 +475,16 @@ class APITests: TestCase {
           manifest: PackageManifest(
             _packageName: "Some Package",
             products: [
-              PackageManifest.Product(_name: "Library Product", type: .library, modules: ["SomeModule"]),
-              PackageManifest.Product(_name: "Executable Product", type: .executable, modules: ["SomeModule"])
+              PackageManifest.Product(
+                _name: "Library Product",
+                type: .library,
+                modules: ["SomeModule"]
+              ),
+              PackageManifest.Product(
+                _name: "Executable Product",
+                type: .executable,
+                modules: ["SomeModule"]
+              ),
             ]
           )
         )

@@ -880,14 +880,14 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 }
 
-//if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 12.5, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name == "arbeitsbereich" })
   package.products.removeAll(where: { $0.name == "workspace" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-//}
+}
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)

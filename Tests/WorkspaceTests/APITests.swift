@@ -472,7 +472,7 @@ class APITests: TestCase {
       defaults.documentation.documentationURL = URL(string: "http://example.com")!
       defaults.documentation.about = [
         "zxx": "...",
-        "de": "..."
+        "de": "...",
       ]
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(

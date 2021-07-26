@@ -102,11 +102,11 @@ extension PackageRepository {
       for localization in try configuration(output: output).documentation.localizations {
         purgingAutoreleased {
           delete(
-            ReadMeConfiguration._readMeLocation(for: location, localization: localization),
+            ReadMeConfiguration.readMeLocation(for: location, localization: localization),
             output: output
           )
           delete(
-            ReadMeConfiguration._relatedProjectsLocation(
+            ReadMeConfiguration.relatedProjectsLocation(
               for: location,
               localization: localization
             ),

@@ -469,6 +469,11 @@ class APITests: TestCase {
       })
       defaults.documentation.repositoryURL = URL(string: "http://example.com")!
       defaults.documentation.currentVersion = Version(1)
+      defaults.documentation.documentationURL = URL(string: "http://example.com")!
+      defaults.documentation.about = [
+        "zxx": "...",
+        "de": "..."
+      ]
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,

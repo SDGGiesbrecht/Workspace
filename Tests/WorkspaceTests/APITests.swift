@@ -476,8 +476,9 @@ class APITests: TestCase {
       ]
       defaults.documentation.relatedProjects = [
         RelatedProjectEntry.heading(text: ["zxx": "..."]),
-        RelatedProjectEntry.project(url: URL(string: "http://example.com")!)
+        RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
       ]
+      defaults.documentation.primaryAuthor = "..."
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -501,6 +502,7 @@ class APITests: TestCase {
       let encoded = try JSONEncoder().encode(defaults)
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       defaults.documentation.currentVersion = Version(0, 1)
+      defaults.documentation.primaryAuthor = nil
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,

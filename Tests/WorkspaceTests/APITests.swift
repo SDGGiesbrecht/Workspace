@@ -270,7 +270,7 @@ class APITests: TestCase {
     #endif
   }
 
-  func testConfiguration() {
+  func testConfiguration() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults(openSource: false)
@@ -474,6 +474,10 @@ class APITests: TestCase {
         "zxx": "...",
         "de": "...",
       ]
+      defaults.documentation.relatedProjects = [
+        RelatedProjectEntry.heading(text: ["zxx": "..."]),
+        RelatedProjectEntry.project(url: URL(string: "http://example.com")!)
+      ]
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -494,7 +498,8 @@ class APITests: TestCase {
           )
         )
       #endif
-      _ = try? JSONEncoder().encode(defaults)
+      let encoded = try JSONEncoder().encode(defaults)
+      _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       defaults.documentation.currentVersion = Version(0, 1)
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
@@ -526,7 +531,7 @@ class APITests: TestCase {
           )
         )
       #endif
-      _ = try? JSONEncoder().encode(defaults)
+      _ = try JSONEncoder().encode(defaults)
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -536,7 +541,7 @@ class APITests: TestCase {
           )
         )
       #endif
-      _ = try? JSONEncoder().encode(defaults)
+      _ = try JSONEncoder().encode(defaults)
     #endif
   }
 

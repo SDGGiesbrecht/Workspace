@@ -490,6 +490,7 @@ class APITests: TestCase {
         )
       #endif
       _ = try? JSONEncoder().encode(defaults)
+      defaults.documentation.currentVersion = Version(0, 1)
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,

@@ -882,7 +882,9 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(Fix coverage.)
   package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceLibrary" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -896,7 +898,9 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(Fix coverage.)
   package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceLibrary" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -928,5 +932,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(Fix coverage.)
   package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceLibrary" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

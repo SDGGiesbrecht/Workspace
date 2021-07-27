@@ -892,7 +892,7 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-  
+
   // #workaround(Fix coverage.)
   package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
@@ -924,7 +924,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-  
+
   // #workaround(Fix coverage.)
   package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })

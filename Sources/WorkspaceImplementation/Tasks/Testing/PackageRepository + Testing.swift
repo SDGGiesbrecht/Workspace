@@ -70,7 +70,7 @@ extension PackageRepository {
             unreachable()
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
-              let log = try self.build(
+              var log = try self.build(
                 for: job.buildSDK,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {

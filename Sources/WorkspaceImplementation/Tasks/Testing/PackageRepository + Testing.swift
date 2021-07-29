@@ -82,8 +82,12 @@ extension PackageRepository {
               // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
               if job == .watchOS {
                 log.lines.removeAll(where: { line in
-                  return line.line.contains("XCTest.framework/XCTest) was built for newer watchOS".scalars)
-                  ∨ line.line.contains("libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars)
+                  return line.line.contains(
+                    "XCTest.framework/XCTest) was built for newer watchOS".scalars
+                  )
+                    ∨ line.line.contains(
+                      "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
+                    )
                 })
               }
 

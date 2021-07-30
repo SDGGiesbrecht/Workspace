@@ -68,16 +68,16 @@ extension Workspace {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      discussion: discussion,
-      directArguments: [],
-      options: standardOptions,
-      execution: { (_, options: Options, output: Command.Output) throws in
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        discussion: discussion,
+        directArguments: [],
+        options: standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-        var validationStatus = ValidationStatus()
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+          var validationStatus = ValidationStatus()
           let outputDirectory = options.project.defaultDocumentationDirectory
           try executeAsStep(
             outputDirectory: outputDirectory,
@@ -85,46 +85,42 @@ extension Workspace {
             validationStatus: &validationStatus,
             output: output
           )
-        #endif
 
-        guard validationStatus.validatedSomething else {
-          throw Command.Error(
-            description:
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return [
-                    "Nothing to document.",
-                    "The package manifest does not define any products.",
-                  ].joinedAsLines()
-                case .deutschDeutschland:
-                  return [
-                    "Nichts zu dokumentieren.",
-                    "Die Paketenladeliste bestimmt keine Produkte.",
-                  ].joinedAsLines()
-                }
-              })
-          )
-        }
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+          guard validationStatus.validatedSomething else {
+            throw Command.Error(
+              description:
+                UserFacing<StrictString, InterfaceLocalization>({ localization in
+                  switch localization {
+                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                    return [
+                      "Nothing to document.",
+                      "The package manifest does not define any products.",
+                    ].joinedAsLines()
+                  case .deutschDeutschland:
+                    return [
+                      "Nichts zu dokumentieren.",
+                      "Die Paketenladeliste bestimmt keine Produkte.",
+                    ].joinedAsLines()
+                  }
+                })
+            )
+          }
           try validationStatus.reportOutcome(project: options.project, output: output)
-        #endif
-      }
-    )
+        }
+      )
 
-    internal static func executeAsStep(
-      outputDirectory: URL,
-      options: Options,
-      validationStatus: inout ValidationStatus,
-      output: Command.Output
-    ) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      internal static func executeAsStep(
+        outputDirectory: URL,
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
         try options.project.document(
           outputDirectory: outputDirectory,
           validationStatus: &validationStatus,
           output: output
         )
-      #endif
-    }
+      }
+    #endif
   }
 }

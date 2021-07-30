@@ -14,18 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
-  import SDGControlFlow
-  import SDGLogic
-  import SDGMathematics
-  import SDGCollections
+import SDGControlFlow
+import SDGLogic
+import SDGMathematics
+import SDGCollections
 
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-  import SDGSwiftSource
+#endif
+import SDGSwiftSource
 
-  import WorkspaceConfiguration
+import WorkspaceConfiguration
 
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension APIElement {
 
     // MARK: - Symbol Types

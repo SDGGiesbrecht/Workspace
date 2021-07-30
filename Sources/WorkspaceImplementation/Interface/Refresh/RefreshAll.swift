@@ -46,25 +46,25 @@ extension Workspace.Refresh {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions,
-      execution: { arguments, options, output in
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { arguments, options, output in
 
-        if options.job == .deployment {
-          // @exempt(from: tests)
-          try executeAsStep(
-            withArguments: arguments,
-            options: options,
-            output: output
-          )
-        } else {
-          try executeAsStep(withArguments: arguments, options: options, output: output)
-        }
+          if options.job == .deployment {
+            // @exempt(from: tests)
+            try executeAsStep(
+              withArguments: arguments,
+              options: options,
+              output: output
+            )
+          } else {
+            try executeAsStep(withArguments: arguments, options: options, output: output)
+          }
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           let projectName = try options.project.localizedIsolatedProjectName(output: output)
           var success = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {
@@ -78,17 +78,15 @@ extension Workspace.Refresh {
           }).resolved()
 
           try output.succeed(message: success, project: options.project)
-        #endif
-      }
-    )
+        }
+      )
 
-    internal static func executeAsStep(
-      withArguments arguments: DirectArguments,
-      options: Options,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        withArguments arguments: DirectArguments,
+        options: Options,
+        output: Command.Output
+      ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -172,23 +170,21 @@ extension Workspace.Refresh {
             output: output
           )
         }
-      #endif
 
-      // Examples
-      try Workspace.Refresh.Examples.command.execute(
-        withArguments: arguments,
-        options: options,
-        output: output
-      )
+        // Examples
+        try Workspace.Refresh.Examples.command.execute(
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
 
-      // Inherited Documentation
-      try Workspace.Refresh.InheritedDocumentation.command.execute(
-        withArguments: arguments,
-        options: options,
-        output: output
-      )
+        // Inherited Documentation
+        try Workspace.Refresh.InheritedDocumentation.command.execute(
+          withArguments: arguments,
+          options: options,
+          output: output
+        )
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Normalization
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
@@ -210,7 +206,7 @@ extension Workspace.Refresh {
           )
           try task.execute(output: output)
         }
-      #endif
-    }
+      }
+    #endif
   }
 }

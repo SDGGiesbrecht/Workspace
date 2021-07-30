@@ -22,8 +22,7 @@ import SDGCollections
 
 import SDGCommandLine
 
-// #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-#if !(os(Windows) || os(WASI) || os(Android))
+#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
 #endif
 import SDGSwiftSource
@@ -209,8 +208,7 @@ internal struct PackageInterface {
     return result
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private static func generateIndices(
       for package: PackageAPI,
       tools: PackageCLI,
@@ -251,8 +249,7 @@ internal struct PackageInterface {
     }
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private static func generateIndex(
       for package: PackageAPI,
       tools: PackageCLI,
@@ -608,8 +605,7 @@ internal struct PackageInterface {
 
   // MARK: - Initialization
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     internal init(
       localizations: [LocalizationIdentifier],
       developmentLocalization: LocalizationIdentifier,
@@ -689,8 +685,7 @@ internal struct PackageInterface {
 
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private let packageAPI: PackageAPI
     private let api: APIElement
   #endif
@@ -822,8 +817,7 @@ internal struct PackageInterface {
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
-      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         try purgingAutoreleased {
           let pageURL = api.pageURL(
             in: outputDirectory,
@@ -868,8 +862,7 @@ internal struct PackageInterface {
       for tool in cli.commands.values {
         try purgingAutoreleased {
           let location = tool.pageURL(in: outputDirectory, for: localization)
-          // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-          #if !(os(Windows) || os(WASI) || os(Android))
+          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
             try CommandPage(
               localization: localization,
               allLocalizations: localizations,
@@ -908,8 +901,7 @@ internal struct PackageInterface {
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
-      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         for library in api.libraries.lazy.map({ APIElement.library($0) })
         where library.exists(in: localization) {
           try purgingAutoreleased {
@@ -950,8 +942,7 @@ internal struct PackageInterface {
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
-      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         for module in api.modules.lazy.map({ APIElement.module($0) })
         where module.exists(in: localization) {
           try purgingAutoreleased {
@@ -992,8 +983,7 @@ internal struct PackageInterface {
     coverageCheckOnly: Bool
   ) throws {
     for localization in localizations {
-      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         for symbol in [
           packageAPI.types.map({ APIElement.type($0) }),
           packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
@@ -1105,8 +1095,7 @@ internal struct PackageInterface {
     }
   }
 
-  // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-  #if !(os(Windows) || os(WASI) || os(Android))
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     private func outputNestedSymbols(
       of parent: APIElement,
       namespace: [APIElement],
@@ -1204,8 +1193,7 @@ internal struct PackageInterface {
           var nestedPagePath = parent.relativePagePath[otherLocalization]!
           nestedPagePath.removeLast(5)  // .html
           nestedPagePath += "/"
-          // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-          #if !(os(Windows) || os(WASI) || os(Android))
+          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
             nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
           #endif
           nestedPagePath += "/"
@@ -1227,8 +1215,7 @@ internal struct PackageInterface {
         var navigation = namespace
         navigation.append(information)
 
-        // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           try CommandPage(
             localization: localization,
             allLocalizations: localizations,
@@ -1283,8 +1270,7 @@ internal struct PackageInterface {
           )
         }
         documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-        // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-        #if !(os(Windows) || os(WASI) || os(Android))
+        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
           let documentation = parsed.api().first!.documentation.last?.documentationComment
 
@@ -1382,8 +1368,7 @@ internal struct PackageInterface {
         String(localization._directoryName)
       )
       let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-      // #workaround(SwiftSyntax 0.50300.0, Cannot build.)
-      #if !(os(Windows) || os(WASI) || os(Android))
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
         let pageURL = api.pageURL(
           in: outputDirectory,
           for: localization,

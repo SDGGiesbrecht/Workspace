@@ -707,22 +707,6 @@ let package = Package(
       ]
     ),
     .target(
-      name: "test‐ios‐simulator",
-      dependencies: [
-        "WorkspaceImplementation",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ],
-      path: "Tests/test‐ios‐simulator"
-    ),
-    .target(
-      name: "test‐tvos‐simulator",
-      dependencies: [
-        "WorkspaceImplementation",
-        .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-      ],
-      path: "Tests/test‐tvos‐simulator"
-    ),
-    .target(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",
@@ -799,20 +783,23 @@ for target in package.targets {
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi])),
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.URL.resourceIsReachable().)
     .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
-    .define("PLATFORM_LACKS_FOUNDATION_XML", .when(platforms: [.windows, .wasi])),
+    .define(
+      "PLATFORM_LACKS_FOUNDATION_XML",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])
+    ),
     // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
-      .when(platforms: [.windows, .wasi, .android])
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
@@ -821,11 +808,14 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    .define("PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM", .when(platforms: [.windows, .wasi, .android])),
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
     // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
-      .when(platforms: [.windows, .wasi, .android])
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
 }
@@ -851,7 +841,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   }
 
   // #workaround(Swift 5.4.0, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name.hasPrefix("test") })
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }
 
@@ -882,6 +871,38 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   }
 }
 
+if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.products.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+
+  // #workaround(Fix coverage.)
+  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.products.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+
+  // #workaround(Fix coverage.)
+  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
+}
+
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
@@ -898,4 +919,20 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
       })
     })
   }
+}
+
+if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
+  package.products.removeAll(where: { $0.name == "workspace" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
+  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+
+  // #workaround(Fix coverage.)
+  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
+  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

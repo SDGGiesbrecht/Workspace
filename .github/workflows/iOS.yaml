@@ -44,4 +44,4 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run test‐ios‐simulator
+        swift run workspace validate •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

@@ -77,29 +77,29 @@ extension Workspace.Refresh {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      discussion: discussion,
-      directArguments: [],
-      options: Workspace.standardOptions,
-      execution: { (_, options: Options, output: Command.Output) throws in
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        discussion: discussion,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Refreshing continuous integration configuration..."
-            case .deutschDeutschland:
-              return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
-            }
-          }).resolved().formattedAsSectionHeader()
-        )
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Refreshing continuous integration configuration..."
+              case .deutschDeutschland:
+                return "Konfiguration für fortlaufende Einbindung wird aufgefrischt ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try options.project.refreshContinuousIntegration(output: output)
-        #endif
-      }
-    )
+        }
+      )
+    #endif
   }
 }

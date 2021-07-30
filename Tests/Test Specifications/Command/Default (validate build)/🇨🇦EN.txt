@@ -19,7 +19,9 @@ Checking build for watchOS... (§4)
 ✓ There are no compiler warnings for macOS.
 ✓ There are no compiler warnings for tvOS.
 ✓ There are no compiler warnings for iOS.
-✗ There are compiler warnings for watchOS. (See [⌘F] “§4”)
+✓ There are no compiler warnings for watchOS.
 
-“Default” fails validation.
-2
+
+“Default” passes validation.
+
+0

@@ -49,43 +49,43 @@ extension Workspace.Validate {
         }
       })
 
-    internal static let command = Command(
-      name: name,
-      description: description,
-      directArguments: [],
-      options: Workspace.standardOptions + [
-        ContinuousIntegrationJob.option
-      ],
-      execution: { arguments, options, output in
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions + [
+          ContinuousIntegrationJob.option
+        ],
+        execution: { arguments, options, output in
 
-        var validationStatus = ValidationStatus()
+          var validationStatus = ValidationStatus()
 
-        if options.job == .deployment {
-          try executeAsStep(
-            validationStatus: &validationStatus,
-            arguments: arguments,
-            options: options,
-            output: output
-          )
-        } else {
-          try executeAsStep(
-            validationStatus: &validationStatus,
-            arguments: arguments,
-            options: options,
-            output: output
-          )
+          if options.job == .deployment {
+            try executeAsStep(
+              validationStatus: &validationStatus,
+              arguments: arguments,
+              options: options,
+              output: output
+            )
+          } else {
+            try executeAsStep(
+              validationStatus: &validationStatus,
+              arguments: arguments,
+              options: options,
+              output: output
+            )
+          }
         }
-      }
-    )
+      )
 
-    internal static func executeAsStep(
-      validationStatus: inout ValidationStatus,
-      arguments: DirectArguments,
-      options: Options,
-      output: Command.Output
-    ) throws {
+      internal static func executeAsStep(
+        validationStatus: inout ValidationStatus,
+        arguments: DirectArguments,
+        options: Options,
+        output: Command.Output
+      ) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if ¬ProcessInfo.isInContinuousIntegration {
           // @exempt(from: tests)
           try Workspace.Refresh.All.executeAsStep(
@@ -94,9 +94,7 @@ extension Workspace.Validate {
             output: output
           )
         }
-      #endif
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -110,19 +108,17 @@ extension Workspace.Validate {
             }
           }).resolved().formattedAsSectionHeader()
         )
-      #endif
 
-      // Proofread
-      if options.job == .miscellaneous ∨ options.job == nil {
-        try Workspace.Proofread.Proofread.executeAsStep(
-          normalizingFirst: false,
-          options: options,
-          validationStatus: &validationStatus,
-          output: output
-        )
-      }
+        // Proofread
+        if options.job == .miscellaneous ∨ options.job == nil {
+          try Workspace.Proofread.Proofread.executeAsStep(
+            normalizingFirst: false,
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
+        }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -159,11 +155,9 @@ extension Workspace.Validate {
             output: output
           )
         }
-      #endif
 
-      // Document
-      if options.job.includes(job: .miscellaneous) {
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        // Document
+        if options.job.includes(job: .miscellaneous) {
           if try ¬options.project.configuration(output: output).documentation.api.generate
             ∨ options.project.configuration(output: output).documentation.api
             .serveFromGitHubPagesBranch,
@@ -185,10 +179,8 @@ extension Workspace.Validate {
               output: output
             )
           }
-        #endif
-      }
+        }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if options.job.includes(job: .deployment),
           try options.project.configuration(output: output).documentation.api.generate
         {
@@ -250,9 +242,7 @@ extension Workspace.Validate {
             )
           }
         }
-      #endif
 
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         // State
         if ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
@@ -276,72 +266,68 @@ extension Workspace.Validate {
             }).resolved().formattedAsSectionHeader()
           )
 
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-            let difference = try options.project.uncommittedChanges().get()
-            if ¬difference.isEmpty {
-              output.print(difference.separated())
+          let difference = try options.project.uncommittedChanges().get()
+          if ¬difference.isEmpty {
+            output.print(difference.separated())
 
-              validationStatus.failStep(
-                message: UserFacing({ localization in
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return
-                      "The project is out of date. Please validate before committing."
-                      + state.crossReference.resolved(for: localization)
-                  case .deutschDeutschland:
-                    return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
-                      + state.crossReference.resolved(for: localization)
-                  }
-                })
-              )
-            } else {
-              validationStatus.passStep(
-                message: UserFacing({ localization in  // @exempt(from: tests)
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "The project is up to date."
-                  case .deutschDeutschland:
-                    return "Das Projekt ist auf dem neuesten Stand."
-                  }
-                })
-              )
-            }
-          #endif
+            validationStatus.failStep(
+              message: UserFacing({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return
+                    "The project is out of date. Please validate before committing."
+                    + state.crossReference.resolved(for: localization)
+                case .deutschDeutschland:
+                  return "Das Projektstand ist veraltet. Bitte prüfen vor übergeben."
+                    + state.crossReference.resolved(for: localization)
+                }
+              })
+            )
+          } else {
+            validationStatus.passStep(
+              message: UserFacing({ localization in  // @exempt(from: tests)
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "The project is up to date."
+                case .deutschDeutschland:
+                  return "Das Projekt ist auf dem neuesten Stand."
+                }
+              })
+            )
+          }
         }
-      #endif
 
-      output.print("Summary".formattedAsSectionHeader())
+        output.print("Summary".formattedAsSectionHeader())
 
-      // Workspace
-      if ¬_isDuringSpecificationTest,
-        let update = try Workspace.CheckForUpdates.checkForUpdates(output: output)
-      {
-        // @exempt(from: tests) Determined externally.
-        output.print(
-          UserFacing<
-            StrictString,
-            InterfaceLocalization
-          >({ localization in  // @exempt(from: tests)
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return [
-                "This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date.",
-                "\(update.string()) is available.",
-              ].joinedAsLines()
-            case .deutschDeutschland:
-              return [
-                "Diese Prüfung hat Abreitsbereich \(Metadata.latestStableVersion.string()) verwendet, das nicht auf dem neuesten Stand ist.",
-                "\(update.string()) ist erhältlich.",
-              ].joinedAsLines()
-            }
-          }).resolved().formattedAsWarning().separated()
-        )
-      }
+        // Workspace
+        if ¬_isDuringSpecificationTest,
+          let update = try Workspace.CheckForUpdates.checkForUpdates(output: output)
+        {
+          // @exempt(from: tests) Determined externally.
+          output.print(
+            UserFacing<
+              StrictString,
+              InterfaceLocalization
+            >({ localization in  // @exempt(from: tests)
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return [
+                  "This validation used Workspace \(Metadata.latestStableVersion.string()), which is no longer up to date.",
+                  "\(update.string()) is available.",
+                ].joinedAsLines()
+              case .deutschDeutschland:
+                return [
+                  "Diese Prüfung hat Abreitsbereich \(Metadata.latestStableVersion.string()) verwendet, das nicht auf dem neuesten Stand ist.",
+                  "\(update.string()) ist erhältlich.",
+                ].joinedAsLines()
+              }
+            }).resolved().formattedAsWarning().separated()
+          )
+        }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try validationStatus.reportOutcome(project: options.project, output: output)
-      #endif
-    }
+      }
+    #endif
   }
 }
 

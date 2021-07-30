@@ -161,35 +161,6 @@ public struct ReadMeConfiguration: Codable {
 
   // MARK: - Useful components.
 
-  private static let documentationDirectoryName = "Documentation"
-  public static func _documentationDirectory(for project: URL) -> URL {
-    return project.appendingPathComponent(documentationDirectoryName)
-  }
-
-  private static func _locationOfDocumentationFile(
-    named name: StrictString,
-    for localization: LocalizationIdentifier,
-    in project: URL
-  ) -> URL {
-    let icon = ContentLocalization.icon(for: localization.code) ?? "[\(localization.code)]"
-    let fileName: StrictString = icon + " " + name + ".md"
-    return _documentationDirectory(for: project).appendingPathComponent(String(fileName))
-  }
-
-  public static func _readMeLocation(
-    for project: URL,
-    localization: LocalizationIdentifier
-  ) -> URL {
-    let name: StrictString
-    switch localization._bestMatch {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      name = "Read Me"
-    case .deutschDeutschland:
-      name = "Lies mich"
-    }
-    return _locationOfDocumentationFile(named: name, for: localization, in: project)
-  }
-
   // @localization(🇩🇪DE) @crossReference(ReadMeConfiguration.apiLink(for:in:))
   /// Baut Verweise zur Programmierschnittstellendokumentation auf, die von der Konfiguration hergeleitet sind.
   ///
@@ -239,21 +210,5 @@ public struct ReadMeConfiguration: Codable {
       )
       + ")"
     return link
-  }
-
-  // MARK: - Related Projects
-
-  public static func _relatedProjectsLocation(
-    for project: URL,
-    localization: LocalizationIdentifier
-  ) -> URL {
-    let name: StrictString
-    switch localization._bestMatch {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      name = "Related Projects"
-    case .deutschDeutschland:
-      name = "Verwandte Projekte"
-    }
-    return _locationOfDocumentationFile(named: name, for: localization, in: project)
   }
 }

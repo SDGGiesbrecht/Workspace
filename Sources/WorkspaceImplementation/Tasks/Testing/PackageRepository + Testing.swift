@@ -70,7 +70,7 @@ extension PackageRepository {
             unreachable()
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
-              let log = try self.build(
+              var log = try self.build(
                 for: job.buildSDK,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
@@ -78,6 +78,21 @@ extension PackageRepository {
                   }
                 }
               ).get()
+
+              // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
+              if job == .watchOS {
+                let filtered = log.lines.filter { line in
+                  return
+                    ¬(line.line.contains(
+                      "XCTest.framework/XCTest) was built for newer watchOS".scalars
+                    )
+                    ∨ line.line.contains(
+                      "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
+                    ))
+                }
+                log.lines = LineView<String>(filtered)
+              }
+
               return ¬Xcode.warningsOccurred(during: log)
             }
           }

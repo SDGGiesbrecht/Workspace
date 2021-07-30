@@ -177,9 +177,11 @@ extension PackageRepository {
 
   // MARK: - Miscellaneous Properties
 
-  internal func isWorkspaceProject() throws -> Bool {
-    return try packageName() == "Workspace"
-  }
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func isWorkspaceProject() throws -> Bool {
+      return try packageName() == "Workspace"
+    }
+  #endif
 
   // MARK: - Manifest
 
@@ -195,39 +197,31 @@ extension PackageRepository {
         return try package().get()
       }
     }
-  #endif
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func cachedPackageGraph() throws -> PackageGraph {
       return try cached(in: &manifestCache.packageGraph) {
         return try packageGraph().get()
       }
     }
-  #endif
 
-  internal func packageName() throws -> StrictString {
-    #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      return "[???]"
-    #else
+    internal func packageName() throws -> StrictString {
       return StrictString(try cachedManifest().name)
-    #endif
-  }
+    }
 
-  internal func projectName(in localization: LocalizationIdentifier, output: Command.Output)
-    throws
-    -> StrictString
-  {
-    return try configuration(output: output).projectName[localization] ?? packageName()
-  }
+    internal func projectName(
+      in localization: LocalizationIdentifier,
+      output: Command.Output
+    ) throws -> StrictString {
+      return try configuration(output: output).projectName[localization] ?? packageName()
+    }
 
-  internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
-    let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
-      return LocalizationIdentifier(localization.code)
-    }).resolved()
-    return try projectName(in: identifier, output: output)
-  }
+    internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+      let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+        return LocalizationIdentifier(localization.code)
+      }).resolved()
+      return try projectName(in: identifier, output: output)
+    }
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
         var products: [PackageModel.Product] = []
@@ -270,37 +264,28 @@ extension PackageRepository {
 
   // MARK: - Configuration
 
-  internal func configurationContext() throws -> WorkspaceContext {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return WorkspaceContext(
-        _location: location,
-        manifest: PackageManifest(_packageName: String(try packageName()), products: [])
-      )
-    #else
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
 
-        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          let products: [PackageManifest.Product] = []
-        #else
-          let products = try self.products()
-            .map { (product: PackageModel.Product) -> PackageManifest.Product in
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-              let type: PackageManifest.Product.ProductType
-              let modules: [String]
-              switch product.type {
-              case .library:
-                type = .library
-                modules = product.targets.map { $0.name }
-              case .executable:
-                type = .executable
-                modules = []
-              case .test:
-                unreachable()
-              }
-
-              return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .test:
+              unreachable()
             }
-        #endif
+
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+          }
 
         let manifest = PackageManifest(
           _packageName: String(try packageName()),
@@ -308,8 +293,8 @@ extension PackageRepository {
         )
         return WorkspaceContext(_location: location, manifest: manifest)
       }
-    #endif
-  }
+    }
+  #endif
 
   internal static let workspaceConfigurationNames = UserFacing<
     StrictString, InterfaceLocalization
@@ -323,12 +308,8 @@ extension PackageRepository {
       }
     })
 
-  internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return WorkspaceConfiguration()
-    #elseif PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      return WorkspaceConfiguration()
-    #else
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
       return try cached(in: &configurationCache.configuration) {
 
         // Provide the context in case resolution happens internally.
@@ -356,8 +337,8 @@ extension PackageRepository {
         let encoded = try JSONEncoder().encode(result)
         return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       }
-    #endif
-  }
+    }
+  #endif
 
   private static var fellBackToUserLocalization = false
   internal static func resetLocalizationFallback() {
@@ -402,80 +383,62 @@ extension PackageRepository {
       }
     }).resolved()
   }
-  internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
-    if let specified = try configuration(output: output).documentation.localizations.first {
-      return specified
-    } else {
-      PackageRepository.fellBackToUserLocalization = true
-      return LocalizationIdentifier(AnyLocalization.resolved())
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+      if let specified = try configuration(output: output).documentation.localizations.first {
+        return specified
+      } else {
+        PackageRepository.fellBackToUserLocalization = true
+        return LocalizationIdentifier(AnyLocalization.resolved())
+      }
     }
-  }
 
-  internal func fileHeader(output: Command.Output) throws -> StrictString {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return ""
-    #else
+    internal func fileHeader(output: Command.Output) throws -> StrictString {
       return try cached(in: &configurationCache.fileHeader) {
         return try configuration(output: output).fileHeaders.contents.resolve(
           configuration(output: output)
         )
       }
-    #endif
-  }
+    }
 
-  internal func documentationCopyright(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: StrictString] {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return [:]
-    #else
+    internal func documentationCopyright(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: StrictString] {
       return try cached(in: &configurationCache.documentationCopyright) {
         return try configuration(output: output).documentation.api.copyrightNotice.resolve(
           configuration(output: output)
         )
       }
-    #endif
-  }
+    }
 
-  internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return [:]
-    #else
+    internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
       return try cached(in: &configurationCache.readMe) {
         return try configuration(output: output).documentation.readMe.contents.resolve(
           configuration(output: output)
         )
       }
-    #endif
-  }
+    }
 
-  internal func contributingInstructions(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: Markdown] {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return [:]
-    #else
+    internal func contributingInstructions(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: Markdown] {
       return try cached(in: &configurationCache.contributingInstructions) {
         return try configuration(output: output).gitHub.contributingInstructions.resolve(
           configuration(output: output)
         )
       }
-    #endif
-  }
+    }
 
-  internal func issueTemplates(
-    output: Command.Output
-  ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return [:]
-    #else
+    internal func issueTemplates(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
       return try cached(in: &configurationCache.issueTemplates) {
         return try configuration(output: output).gitHub.issueTemplates.resolve(
           configuration(output: output)
         )
       }
-    #endif
-  }
+    }
+  #endif
 
   // MARK: - Files
 
@@ -520,10 +483,8 @@ extension PackageRepository {
     #endif
   }
 
-  internal func sourceFiles(output: Command.Output) throws -> [URL] {
-    #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      return []
-    #else
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    internal func sourceFiles(output: Command.Output) throws -> [URL] {
       let configuration = try self.configuration(output: output)
       let ignoredTypes = configuration.repository.ignoredFileTypes
       let ignoredPaths = configuration.repository.ignoredPaths.map {
@@ -540,8 +501,8 @@ extension PackageRepository {
           return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
         }
       }
-    #endif
-  }
+    }
+  #endif
 
   internal func _withExampleCache(
     _ operation: () throws -> [StrictString: StrictString]

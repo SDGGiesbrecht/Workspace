@@ -28,6 +28,13 @@ import SDGXCTestUtilities
 #endif
 class APITests: TestCase {
 
+  override func setUp() {
+    WorkspaceContext.current = WorkspaceContext(
+      _location: URL(string: "http://www.example.com")!,
+      manifest: PackageManifest(_packageName: "Uninitialized", products: [])
+    )
+  }
+
   func testArray() {
     XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
   }

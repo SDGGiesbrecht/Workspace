@@ -29,10 +29,12 @@ import SDGXCTestUtilities
 class APITests: TestCase {
 
   override func setUp() {
-    WorkspaceContext.current = WorkspaceContext(
-      _location: URL(string: "http://www.example.com")!,
-      manifest: PackageManifest(_packageName: "Uninitialized", products: [])
-    )
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      WorkspaceContext.current = WorkspaceContext(
+        _location: URL(string: "http://www.example.com")!,
+        manifest: PackageManifest(_packageName: "Uninitialized", products: [])
+      )
+    #endif
   }
 
   func testArray() {

@@ -18,6 +18,8 @@ import Foundation
 
 import WorkspaceConfiguration
 
+import WorkspaceProjectConfiguration
+
 import XCTest
 
 import SDGXCTestUtilities
@@ -339,6 +341,12 @@ class APITests: TestCase {
       #endif
       _ = try JSONEncoder().encode(defaults)
     #endif
+  }
+
+  func testWorkspaceProjectConfiguration() throws {
+    let configuration = WorkspaceProjectConfiguration.configuration
+    let encoded = try JSONEncoder().encode(configuration)
+    _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
   }
 
   func testWorkspaceContext() {

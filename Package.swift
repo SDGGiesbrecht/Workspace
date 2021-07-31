@@ -687,6 +687,7 @@ let package = Package(
       name: "WorkspaceConfigurationTests",
       dependencies: [
         "WorkspaceConfiguration",
+        "WorkspaceProjectConfiguration",
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
       ]
     ),
@@ -887,7 +888,6 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
@@ -901,7 +901,6 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
@@ -933,7 +932,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

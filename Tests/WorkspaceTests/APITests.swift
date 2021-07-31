@@ -703,23 +703,6 @@ class APITests: TestCase {
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif
-
-      var aufgabe = Sonderaufgabe(
-        ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
-        version: Version(1, 0),
-        ausführbareDatei: "werkzeug"
-      )
-      aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
-      XCTAssertEqual(
-        aufgabe.ressourcenzeiger,
-        EinheitlicherRessourcenzeiger(string: "other.tld")!
-      )
-      aufgabe.version = Version(2, 0)
-      XCTAssertEqual(aufgabe.version, Version(2, 0))
-      aufgabe.ausführbareDatei = "andere"
-      XCTAssertEqual(aufgabe.ausführbareDatei, "andere")
-      aufgabe.argumente = ["eins", "zwei"]
-      XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
     #endif
   }
 

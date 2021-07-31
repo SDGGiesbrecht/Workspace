@@ -41,6 +41,25 @@ class APITests: TestCase {
     XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
   }
 
+  func testCustomTask() {
+    var aufgabe = Sonderaufgabe(
+      ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+      version: Version(1, 0),
+      ausführbareDatei: "werkzeug"
+    )
+    aufgabe.ressourcenzeiger = EinheitlicherRessourcenzeiger(string: "other.tld")!
+    XCTAssertEqual(
+      aufgabe.ressourcenzeiger,
+      EinheitlicherRessourcenzeiger(string: "other.tld")!
+    )
+    aufgabe.version = Version(2, 0)
+    XCTAssertEqual(aufgabe.version, Version(2, 0))
+    aufgabe.ausführbareDatei = "andere"
+    XCTAssertEqual(aufgabe.ausführbareDatei, "andere")
+    aufgabe.argumente = ["eins", "zwei"]
+    XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
+  }
+
   func testWorkspaceConfiguration() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()
@@ -233,6 +252,7 @@ class APITests: TestCase {
 
       let defaults = WorkspaceConfiguration()
       _ = try? JSONEncoder().encode(defaults)
+
       defaults.documentation.localizations = ["en", "de", "zxx"]
       let copyright = defaults.fileHeaders.copyrightNotice.resolve
       defaults.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
@@ -250,6 +270,7 @@ class APITests: TestCase {
         RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
       ]
       defaults.documentation.primaryAuthor = "..."
+      defaults.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -272,6 +293,7 @@ class APITests: TestCase {
       #endif
       let encoded = try JSONEncoder().encode(defaults)
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+
       defaults.documentation.currentVersion = Version(0, 1)
       defaults.documentation.primaryAuthor = nil
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
@@ -305,6 +327,7 @@ class APITests: TestCase {
         )
       #endif
       _ = try JSONEncoder().encode(defaults)
+
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,

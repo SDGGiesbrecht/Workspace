@@ -61,6 +61,28 @@ class APITests: TestCase {
     aufgabe.argumente = ["eins", "zwei"]
     XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
   }
+  
+  func testRelatedProject() {
+    var project = RelatedProjectEntry.projekt(
+      ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!
+    )
+    project = RelatedProjectEntry.überschrift(text: [:])
+    _ = project
+  }
+  
+  func testTestCoverageExemptionToken() {
+    var zeichen = Testabdeckungsausnahmszeichen("...", geltungsbereich: .selbeZeile)
+    zeichen.zeichen = ""
+    XCTAssertEqual(zeichen.zeichen, "")
+    zeichen.geltungsbereich = .vorstehendeZeile
+    XCTAssertEqual(zeichen.geltungsbereich, .vorstehendeZeile)
+  }
+
+  func testUnicodeRuleScope() {
+    XCTAssertEqual(GeltungsbereichUnicodeRegel.maschinenkennzeichungen, .machineIdentifiers)
+    XCTAssertEqual(GeltungsbereichUnicodeRegel.menschlicheSprache, .humanLanguage)
+    XCTAssertEqual(GeltungsbereichUnicodeRegel.uneindeutig, .ambiguous)
+  }
 
   func testWorkspaceConfiguration() throws {
     #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -376,19 +398,5 @@ class APITests: TestCase {
       WorkspaceContext.aktueller = context
       _ = WorkspaceContext.aktueller
     #endif
-  }
-
-  func testTestCoverageExemptionToken() {
-    var zeichen = Testabdeckungsausnahmszeichen("...", geltungsbereich: .selbeZeile)
-    zeichen.zeichen = ""
-    XCTAssertEqual(zeichen.zeichen, "")
-    zeichen.geltungsbereich = .vorstehendeZeile
-    XCTAssertEqual(zeichen.geltungsbereich, .vorstehendeZeile)
-  }
-
-  func testUnicodeRuleScope() {
-    XCTAssertEqual(GeltungsbereichUnicodeRegel.maschinenkennzeichungen, .machineIdentifiers)
-    XCTAssertEqual(GeltungsbereichUnicodeRegel.menschlicheSprache, .humanLanguage)
-    XCTAssertEqual(GeltungsbereichUnicodeRegel.uneindeutig, .ambiguous)
   }
 }

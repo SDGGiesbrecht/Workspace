@@ -1353,14 +1353,6 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
   }
 
-  func testRelatedProject() {
-    var project = RelatedProjectEntry.projekt(
-      ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!
-    )
-    project = RelatedProjectEntry.überschrift(text: [:])
-    _ = project
-  }
-
   func testSDGLibrary() {
     #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       let configuration = WorkspaceConfiguration()

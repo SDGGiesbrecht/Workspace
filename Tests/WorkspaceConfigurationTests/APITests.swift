@@ -255,24 +255,25 @@ class APITests: TestCase {
       let defaults = WorkspaceConfiguration()
       _ = try? JSONEncoder().encode(defaults)
 
-      defaults.documentation.localizations = ["en", "de", "zxx"]
-      let copyright = defaults.fileHeaders.copyrightNotice.resolve
-      defaults.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
+      let filledIn = WorkspaceConfiguration()
+      filledIn.documentation.localizations = ["en", "de", "zxx"]
+      let copyright = filledIn.fileHeaders.copyrightNotice.resolve
+      filledIn.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
         return copyright(configuration).mergedByOverwriting(from: ["zxx": "..."])
       })
-      defaults.documentation.repositoryURL = URL(string: "http://example.com")!
-      defaults.documentation.currentVersion = Version(1)
-      defaults.documentation.documentationURL = URL(string: "http://example.com")!
-      defaults.documentation.about = [
+      filledIn.documentation.repositoryURL = URL(string: "http://example.com")!
+      filledIn.documentation.currentVersion = Version(1)
+      filledIn.documentation.documentationURL = URL(string: "http://example.com")!
+      filledIn.documentation.about = [
         "zxx": "...",
         "de": "...",
       ]
-      defaults.documentation.relatedProjects = [
+      filledIn.documentation.relatedProjects = [
         RelatedProjectEntry.heading(text: ["zxx": "..."]),
         RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
       ]
-      defaults.documentation.primaryAuthor = "..."
-      defaults.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+      filledIn.documentation.primaryAuthor = "..."
+      filledIn.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -293,11 +294,12 @@ class APITests: TestCase {
           )
         )
       #endif
-      let encoded = try JSONEncoder().encode(defaults)
+      let encoded = try JSONEncoder().encode(filledIn)
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
 
-      defaults.documentation.currentVersion = Version(0, 1)
-      defaults.documentation.primaryAuthor = nil
+      let manyProducts = WorkspaceConfiguration()
+      manyProducts.documentation.currentVersion = Version(0, 1)
+      manyProducts.documentation.primaryAuthor = nil
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -328,8 +330,9 @@ class APITests: TestCase {
           )
         )
       #endif
-      _ = try JSONEncoder().encode(defaults)
+      _ = try JSONEncoder().encode(manyProducts)
 
+      let noProducts = WorkspaceConfiguration()
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,
@@ -339,7 +342,7 @@ class APITests: TestCase {
           )
         )
       #endif
-      _ = try JSONEncoder().encode(defaults)
+      _ = try JSONEncoder().encode(noProducts)
     #endif
   }
 

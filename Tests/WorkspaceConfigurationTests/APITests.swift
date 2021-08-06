@@ -33,6 +33,7 @@ import SDGLocalizationTestUtilities
 class APITests: TestCase {
 
   override func setUp() {
+    super.setUp()
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
       WorkspaceContext.current = WorkspaceContext(
         _location: URL(string: "http://www.example.com")!,

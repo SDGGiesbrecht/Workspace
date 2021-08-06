@@ -320,6 +320,7 @@ class APITests: TestCase {
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
 
       let manyProducts = WorkspaceConfiguration()
+      manyProducts.documentation.localizations = ["en", "de", "zxx"]
       manyProducts.documentation.repositoryURL = URL(string: "http://example.com")!
       manyProducts.documentation.currentVersion = Version(0, 1)
       manyProducts.documentation.primaryAuthor = nil

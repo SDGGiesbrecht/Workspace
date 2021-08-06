@@ -688,7 +688,9 @@ let package = Package(
       dependencies: [
         "WorkspaceConfiguration",
         "WorkspaceProjectConfiguration",
+        "WorkspaceLocalizations",
         .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
       ]
     ),
     .testTarget(

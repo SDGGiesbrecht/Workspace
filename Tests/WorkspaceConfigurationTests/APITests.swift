@@ -17,12 +17,14 @@
 import Foundation
 
 import WorkspaceConfiguration
+import WorkspaceLocalizations
 
 import WorkspaceProjectConfiguration
 
 import XCTest
 
 import SDGXCTestUtilities
+import SDGLocalizationTestUtilities
 
 #if os(watchOS)
   // #workaround(SDGCornerstone 7.2.3, Real TestCase unavailable.)
@@ -81,6 +83,69 @@ class APITests: TestCase {
       vorlage.beauftragte = ["..."]
       XCTAssertEqual(vorlage.beauftragte, ["..."])
     #endif
+  }
+  
+  func testLazyOption() {
+    var lazy = Lazy(resolve: { _ in false })
+    lazy.auswerten = { _ in true }
+    XCTAssert(lazy.auswerten(WorkspaceConfiguration()))
+  }
+
+  func testLicence() {
+    XCTAssertEqual(Lizenz.urheberrecht, Licence.copyright)
+  }
+
+  func testLocalizationIdentifier() {
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
+      var dictionary: [LocalizationIdentifier: Bool] = [:]
+      dictionary[ContentLocalization.englishCanada] = true
+      XCTAssertEqual(dictionary["🇨🇦EN"], true)
+      dictionary["🇬🇧EN"] = false
+      XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
+
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("en"),
+        localizations: ContentLocalization.self,
+        uniqueTestName: "English",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("cmn"),
+        localizations: ContentLocalization.self,
+        uniqueTestName: "Mandarin",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCustomStringConvertibleConformance(
+        of: LocalizationIdentifier("zxx"),
+        localizations: ContentLocalization.self,
+        uniqueTestName: "Unknown",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+
+      var identifier = LocalizationIdentifier("zxx")
+      identifier.kennzeichen = "de"
+      XCTAssertEqual(identifier.kennzeichen, "de")
+      _ = identifier.symbol
+    #endif
+  }
+  
+  func testProofreadingRule() {
+    XCTAssertEqual(Korrekturregel.überholteTestlisten, .deprecatedTestManifests)
+    XCTAssertEqual(Korrekturregel.warnungenVonHand, .manualWarnings)
+    XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
+    XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
+    XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen, .compatibilityCharacters)
+    XCTAssertEqual(Korrekturregel.überschrifte, .marks)
+    XCTAssertEqual(Korrekturregel.syntaxhervorhebung, .syntaxColoring)
+    XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
+    XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
+    XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)
+    XCTAssertEqual(Korrekturregel.überholteTestlisten.klasse, .überholung)
+    XCTAssertEqual(Korrekturregel.warnungenVonHand.klasse, .absichtlich)
+    XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen.klasse, .funktionalität)
+    XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
+    XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
+    XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
   }
   
   func testRelatedProject() {

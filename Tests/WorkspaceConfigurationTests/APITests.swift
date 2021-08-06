@@ -62,6 +62,27 @@ class APITests: TestCase {
     XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
   }
   
+  func testIssueTemplate() {
+    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
+      var vorlage = Themavorlage(
+        name: "",
+        beschreibung: "",
+        inhalt: "",
+        etiketten: []
+      )
+      vorlage.beschreibung = "..."
+      XCTAssertEqual(vorlage.beschreibung, "...")
+      vorlage.titel = "..."
+      XCTAssertEqual(vorlage.titel, "...")
+      vorlage.inhalt = "..."
+      XCTAssertEqual(vorlage.inhalt, "...")
+      vorlage.etiketten = ["..."]
+      XCTAssertEqual(vorlage.etiketten, ["..."])
+      vorlage.beauftragte = ["..."]
+      XCTAssertEqual(vorlage.beauftragte, ["..."])
+    #endif
+  }
+  
   func testRelatedProject() {
     var project = RelatedProjectEntry.projekt(
       ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!
@@ -296,6 +317,8 @@ class APITests: TestCase {
       ]
       filledIn.documentation.primaryAuthor = "..."
       filledIn.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+      filledIn.gitHub.developmentNotes = "..."
+      filledIn.gitHub.administrators = ["A", "B", "C"]
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         WorkspaceContext.current = WorkspaceContext(
           _location: URL(string: "http://www.example.com")!,

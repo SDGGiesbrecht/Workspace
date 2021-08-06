@@ -1057,27 +1057,6 @@ class APITests: TestCase {
     #endif
   }
 
-  func testIssueTemplate() {
-    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-      var vorlage = Themavorlage(
-        name: "",
-        beschreibung: "",
-        inhalt: "",
-        etiketten: []
-      )
-      vorlage.beschreibung = "..."
-      XCTAssertEqual(vorlage.beschreibung, "...")
-      vorlage.titel = "..."
-      XCTAssertEqual(vorlage.titel, "...")
-      vorlage.inhalt = "..."
-      XCTAssertEqual(vorlage.inhalt, "...")
-      vorlage.etiketten = ["..."]
-      XCTAssertEqual(vorlage.etiketten, ["..."])
-      vorlage.beauftragte = ["..."]
-      XCTAssertEqual(vorlage.beauftragte, ["..."])
-    #endif
-  }
-
   func testLazyOption() {
     var lazy = Lazy(resolve: { _ in false })
     lazy.auswerten = { _ in true }

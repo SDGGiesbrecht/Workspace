@@ -298,6 +298,7 @@ class APITests: TestCase {
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
 
       let manyProducts = WorkspaceConfiguration()
+      manyProducts.documentation.repositoryURL = URL(string: "http://example.com")!
       manyProducts.documentation.currentVersion = Version(0, 1)
       manyProducts.documentation.primaryAuthor = nil
       #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO

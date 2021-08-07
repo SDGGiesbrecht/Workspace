@@ -44,6 +44,7 @@ class APITests: TestCase {
 
   func testArray() {
     XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
+    XCTAssertEqual([].joinedAsLines(), "")
   }
 
   func testCustomTask() {

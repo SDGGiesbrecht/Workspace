@@ -65,7 +65,7 @@ class APITests: TestCase {
     aufgabe.argumente = ["eins", "zwei"]
     XCTAssertEqual(aufgabe.argumente, ["eins", "zwei"])
   }
-  
+
   func testIssueTemplate() {
     #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
       var vorlage = Themavorlage(
@@ -86,7 +86,7 @@ class APITests: TestCase {
       XCTAssertEqual(vorlage.beauftragte, ["..."])
     #endif
   }
-  
+
   func testLazyOption() {
     var lazy = Lazy(resolve: { _ in false })
     lazy.auswerten = { _ in true }
@@ -130,7 +130,7 @@ class APITests: TestCase {
       _ = identifier.symbol
     #endif
   }
-  
+
   func testProofreadingRule() {
     XCTAssertEqual(Korrekturregel.überholteTestlisten, .deprecatedTestManifests)
     XCTAssertEqual(Korrekturregel.warnungenVonHand, .manualWarnings)
@@ -149,7 +149,7 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
   }
-  
+
   func testRelatedProject() {
     var project = RelatedProjectEntry.projekt(
       ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "seite.de")!
@@ -157,7 +157,7 @@ class APITests: TestCase {
     project = RelatedProjectEntry.überschrift(text: [:])
     _ = project
   }
-  
+
   func testTestCoverageExemptionToken() {
     var zeichen = Testabdeckungsausnahmszeichen("...", geltungsbereich: .selbeZeile)
     zeichen.zeichen = ""

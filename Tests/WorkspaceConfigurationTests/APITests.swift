@@ -87,14 +87,29 @@ class APITests: TestCase {
     #endif
   }
 
-  func testLazyOption() {
+  func testLazyOption() throws {
+    let configuration = WorkspaceConfiguration()
     var lazy = Lazy(resolve: { _ in false })
     lazy.auswerten = { _ in true }
-    XCTAssert(lazy.auswerten(WorkspaceConfiguration()))
+    XCTAssert(lazy.auswerten(configuration))
+    let encoded = try JSONEncoder().encode(lazy)
+    let decoded = try JSONDecoder().decode(Lazy<Bool>.self, from: encoded)
+    _ = decoded.resolve(configuration)
   }
 
-  func testLicence() {
+  func testLicence() throws {
     XCTAssertEqual(Lizenz.urheberrecht, Licence.copyright)
+    for licence in [
+      Licence.apache2_0,
+      Licence.mit,
+      Licence.gnuGeneralPublic3_0,
+      Licence.unlicense,
+      Licence.copyright
+    ] {
+      let configuaration = WorkspaceConfiguration()
+      configuaration.licence.licence = licence
+      _ = try JSONEncoder().encode(configuaration)
+    }
   }
 
   func testLocalizationIdentifier() {

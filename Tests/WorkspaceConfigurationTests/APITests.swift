@@ -104,7 +104,7 @@ class APITests: TestCase {
       Licence.mit,
       Licence.gnuGeneralPublic3_0,
       Licence.unlicense,
-      Licence.copyright
+      Licence.copyright,
     ] {
       let configuaration = WorkspaceConfiguration()
       configuaration.licence.licence = licence

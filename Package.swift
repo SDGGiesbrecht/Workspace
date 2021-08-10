@@ -684,6 +684,16 @@ let package = Package(
     // Tests
 
     .testTarget(
+      name: "WorkspaceConfigurationTests",
+      dependencies: [
+        "WorkspaceConfiguration",
+        "WorkspaceProjectConfiguration",
+        "WorkspaceLocalizations",
+        .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+        .product(name: "SDGLocalizationTestUtilities", package: "SDGCornerstone"),
+      ]
+    ),
+    .testTarget(
       name: "WorkspaceTests",
       dependencies: [
         "WorkspaceLocalizations",
@@ -880,9 +890,6 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
@@ -896,9 +903,6 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
@@ -930,9 +934,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 
   // #workaround(Fix coverage.)
-  package.products.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfiguration" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceProjectConfiguration" })
   package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
   package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

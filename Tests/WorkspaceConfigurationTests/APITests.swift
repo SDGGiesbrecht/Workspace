@@ -140,6 +140,7 @@ class APITests: TestCase {
       )
 
       var identifier = LocalizationIdentifier("zxx")
+      _ = identifier._iconOrCode
       identifier.kennzeichen = "de"
       XCTAssertEqual(identifier.kennzeichen, "de")
       _ = identifier.symbol

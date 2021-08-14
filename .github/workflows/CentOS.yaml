@@ -20,7 +20,7 @@ jobs:
   CentOS:
     name: CentOS
     runs-on: ubuntu-20.04
-    container: swift:5.4.0-centos8
+    container: swift:5.4.2-centos8
     steps:
     - name: Check out
       uses: actions/checkout@v1

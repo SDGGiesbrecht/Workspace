@@ -827,6 +827,11 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
+    // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
   ])
 }
 

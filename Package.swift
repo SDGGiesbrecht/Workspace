@@ -888,10 +888,6 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -901,10 +897,6 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -932,8 +924,4 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

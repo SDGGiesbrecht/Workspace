@@ -14,86 +14,88 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-internal struct StyleViolation {
+  internal struct StyleViolation {
 
-  // MARK: - Static Properties
+    // MARK: - Static Properties
 
-  private static let exemptionMarkers: [StrictString] = {
-    var result: Set<StrictString> = Set(
-      InterfaceLocalization.allCases.map({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "@exempt(from: _)"
-        case .deutschDeutschland:
-          return "@ausnahme(zu: _)"
-        }
-      })
-    )
-    return result.map { $0.truncated(before: "_") }
-  }()
+    private static let exemptionMarkers: [StrictString] = {
+      var result: Set<StrictString> = Set(
+        InterfaceLocalization.allCases.map({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "@exempt(from: _)"
+          case .deutschDeutschland:
+            return "@ausnahme(zu: _)"
+          }
+        })
+      )
+      return result.map { $0.truncated(before: "_") }
+    }()
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  /// This initializer validates the violation, returning `nil` if it is under an exemption.
-  internal init?(
-    in file: TextFile,
-    at location: Range<String.ScalarView.Index>,
-    replacementSuggestion: StrictString? = nil,
-    noticeOnly: Bool = false,
-    ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
-    message: UserFacing<StrictString, InterfaceLocalization>
-  ) {
+    /// This initializer validates the violation, returning `nil` if it is under an exemption.
+    internal init?(
+      in file: TextFile,
+      at location: Range<String.ScalarView.Index>,
+      replacementSuggestion: StrictString? = nil,
+      noticeOnly: Bool = false,
+      ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
+      message: UserFacing<StrictString, InterfaceLocalization>
+    ) {
 
-    let fileLines = file.contents.lines
-    let lineIndex = location.lowerBound.line(in: fileLines)
-    let line = fileLines[lineIndex].line
-    for exemptionMarker in StyleViolation.exemptionMarkers {
-      if line.contains(exemptionMarker) {
-        for localization in InterfaceLocalization.allCases {
-          if line.contains(
-            StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))")
-          ) {
-            return nil
+      let fileLines = file.contents.lines
+      let lineIndex = location.lowerBound.line(in: fileLines)
+      let line = fileLines[lineIndex].line
+      for exemptionMarker in StyleViolation.exemptionMarkers {
+        if line.contains(exemptionMarker) {
+          for localization in InterfaceLocalization.allCases {
+            if line.contains(
+              StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))")
+            ) {
+              return nil
+            }
           }
         }
       }
+
+      self.file = file
+      self.noticeOnly = noticeOnly
+      self.ruleIdentifier = ruleIdentifier
+      self.message = message
+
+      // Normalize to cluster boundaries
+      let clusterRange = location.clusters(in: file.contents.clusters)
+      self.range = clusterRange
+      if let scalarReplacement = replacementSuggestion {
+        let modifiedScalarRange = clusterRange.scalars(in: file.contents.scalars)
+        let clusterReplacement =
+          StrictString(
+            file.contents.scalars[modifiedScalarRange.lowerBound..<location.lowerBound]
+          )
+          + scalarReplacement
+          + StrictString(
+            file.contents.scalars[location.upperBound..<modifiedScalarRange.upperBound]
+          )
+        self.replacementSuggestion = clusterReplacement
+      } else {
+        self.replacementSuggestion = nil
+      }
     }
 
-    self.file = file
-    self.noticeOnly = noticeOnly
-    self.ruleIdentifier = ruleIdentifier
-    self.message = message
+    // MARK: - Properties
 
-    // Normalize to cluster boundaries
-    let clusterRange = location.clusters(in: file.contents.clusters)
-    self.range = clusterRange
-    if let scalarReplacement = replacementSuggestion {
-      let modifiedScalarRange = clusterRange.scalars(in: file.contents.scalars)
-      let clusterReplacement =
-        StrictString(
-          file.contents.scalars[modifiedScalarRange.lowerBound..<location.lowerBound]
-        )
-        + scalarReplacement
-        + StrictString(
-          file.contents.scalars[location.upperBound..<modifiedScalarRange.upperBound]
-        )
-      self.replacementSuggestion = clusterReplacement
-    } else {
-      self.replacementSuggestion = nil
-    }
+    internal let file: TextFile
+    internal let range: Range<String.ClusterView.Index>
+    internal let replacementSuggestion: StrictString?
+    internal let ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>
+    internal let message: UserFacing<StrictString, InterfaceLocalization>
+    internal let noticeOnly: Bool
   }
-
-  // MARK: - Properties
-
-  internal let file: TextFile
-  internal let range: Range<String.ClusterView.Index>
-  internal let replacementSuggestion: StrictString?
-  internal let ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>
-  internal let message: UserFacing<StrictString, InterfaceLocalization>
-  internal let noticeOnly: Bool
-}
+#endif

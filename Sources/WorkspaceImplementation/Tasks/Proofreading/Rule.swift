@@ -14,9 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftSource
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGSwiftSource
 
-internal enum Rule {
-  case text(TextRule.Type)
-  case syntax(SyntaxRule.Type)
-}
+  internal enum Rule {
+    case text(TextRule.Type)
+    case syntax(SyntaxRule.Type)
+  }
+#endif

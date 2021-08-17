@@ -14,56 +14,58 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-internal struct ReportSection {
+  internal struct ReportSection {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init(number: Int) {
-    self.number = number
+    internal init(number: Int) {
+      self.number = number
+    }
+
+    // MARK: - Properties
+
+    private let number: Int
+
+    // MARK: - Usage
+
+    private var identifier: StrictString {
+      return "§" + number.inDigits()
+    }
+
+    internal var anchor: StrictString {
+      return " (\(identifier))"
+    }
+
+    internal var crossReference: UserFacing<StrictString, InterfaceLocalization> {
+      let identifier = self.identifier
+      return UserFacing({ localization in
+        switch localization {
+        case .englishUnitedKingdom:
+          #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
+            return " (See ⌘F ‘\(identifier)’)"
+          #elseif os(Windows) || os(Linux) || os(Android)
+            return " (See Ctrl + F ‘\(identifier)’)"
+          #endif
+        case .englishUnitedStates, .englishCanada:
+          #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
+            return " (See ⌘F “\(identifier)”)"
+          #elseif os(Windows) || os(Linux) || os(Android)
+            return " (See Ctrl + F “\(identifier)”)"
+          #endif
+        case .deutschDeutschland:
+          #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
+            return " (Siehe ⌘F „\(identifier)“)"
+          #elseif os(Windows) || os(Linux) || os(Android)
+            return " (Siehe Strg + F „\(identifier)“)"
+          #endif
+        }
+      })
+    }
   }
-
-  // MARK: - Properties
-
-  private let number: Int
-
-  // MARK: - Usage
-
-  private var identifier: StrictString {
-    return "§" + number.inDigits()
-  }
-
-  internal var anchor: StrictString {
-    return " (\(identifier))"
-  }
-
-  internal var crossReference: UserFacing<StrictString, InterfaceLocalization> {
-    let identifier = self.identifier
-    return UserFacing({ localization in
-      switch localization {
-      case .englishUnitedKingdom:
-        #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
-          return " (See ⌘F ‘\(identifier)’)"
-        #elseif os(Windows) || os(Linux) || os(Android)
-          return " (See Ctrl + F ‘\(identifier)’)"
-        #endif
-      case .englishUnitedStates, .englishCanada:
-        #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
-          return " (See ⌘F “\(identifier)”)"
-        #elseif os(Windows) || os(Linux) || os(Android)
-          return " (See Ctrl + F “\(identifier)”)"
-        #endif
-      case .deutschDeutschland:
-        #if os(macOS) || os(WASI) || os(tvOS) || os(iOS) || os(watchOS)
-          return " (Siehe ⌘F „\(identifier)“)"
-        #elseif os(Windows) || os(Linux) || os(Android)
-          return " (Siehe Strg + F „\(identifier)“)"
-        #endif
-      }
-    })
-  }
-}
+#endif

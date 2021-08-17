@@ -14,32 +14,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-extension Options {
+  extension Options {
 
-  // MARK: - General
+    // MARK: - General
 
-  internal var job: ContinuousIntegrationJob? {
-    return value(for: ContinuousIntegrationJob.option)
-  }
-
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-    internal var project: PackageRepository {
-      let url =
-        value(for: Workspace.projectOption)
-        ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-      return PackageRepository(at: url)
+    internal var job: ContinuousIntegrationJob? {
+      return value(for: ContinuousIntegrationJob.option)
     }
-  #endif
 
-  // MARK: - Proofreading
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      internal var project: PackageRepository {
+        let url =
+          value(for: Workspace.projectOption)
+          ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+        return PackageRepository(at: url)
+      }
+    #endif
 
-  internal var runAsXcodeBuildPhase: Bool {
-    return value(for: Workspace.Proofread.Proofread.runAsXcodeBuildPhase)
+    // MARK: - Proofreading
+
+    internal var runAsXcodeBuildPhase: Bool {
+      return value(for: Workspace.Proofread.Proofread.runAsXcodeBuildPhase)
+    }
   }
-}
+#endif

@@ -14,59 +14,61 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Refresh {
+  extension Workspace.Refresh {
 
-  internal enum Git {
+    internal enum Git {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "git"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "regenerates the project’s Git configuration files."
-        case .deutschDeutschland:
-          return "erstellt die Git‐Konfiguration des Projekts neu."
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
+          .deutschDeutschland:
+          return "git"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "regenerates the project’s Git configuration files."
+          case .deutschDeutschland:
+            return "erstellt die Git‐Konfiguration des Projekts neu."
+          }
+        })
 
-          output.print(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Refreshing Git configuration..."
-              case .deutschDeutschland:
-                return "Git‐Konfiguration wird aufgefrischt ..."
-              }
-            }).resolved().formattedAsSectionHeader()
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          try options.project.refreshGitConfiguration(output: output)
-        }
-      )
-    #endif
+            output.print(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "Refreshing Git configuration..."
+                case .deutschDeutschland:
+                  return "Git‐Konfiguration wird aufgefrischt ..."
+                }
+              }).resolved().formattedAsSectionHeader()
+            )
+
+            try options.project.refreshGitConfiguration(output: output)
+          }
+        )
+      #endif
+    }
   }
-}
+#endif

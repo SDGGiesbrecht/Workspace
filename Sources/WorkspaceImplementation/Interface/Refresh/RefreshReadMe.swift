@@ -14,61 +14,63 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Refresh {
+  extension Workspace.Refresh {
 
-  internal enum ReadMe {
+    internal enum ReadMe {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "read‐me"
-      case .deutschDeutschland:
-        return "lies‐mich"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "regenerates the project’s read‐me file."
+          return "read‐me"
         case .deutschDeutschland:
-          return "erstellt die Lies‐mich‐Datei des Projekts neu."
+          return "lies‐mich"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "regenerates the project’s read‐me file."
+          case .deutschDeutschland:
+            return "erstellt die Lies‐mich‐Datei des Projekts neu."
+          }
+        })
 
-          output.print(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Refreshing read‐me..."
-              case .deutschDeutschland:
-                return "Lies‐mich wird aufgefrischt ..."
-              }
-            }).resolved().formattedAsSectionHeader()
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          try options.project.refreshReadMe(output: output)
-          try output.listWarnings(for: options.project)
-        }
-      )
-    #endif
+            output.print(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "Refreshing read‐me..."
+                case .deutschDeutschland:
+                  return "Lies‐mich wird aufgefrischt ..."
+                }
+              }).resolved().formattedAsSectionHeader()
+            )
+
+            try options.project.refreshReadMe(output: output)
+            try output.listWarnings(for: options.project)
+          }
+        )
+      #endif
+    }
   }
-}
+#endif

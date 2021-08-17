@@ -14,35 +14,37 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGExternalProcess
+  import SDGExternalProcess
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceConfiguration
+  import WorkspaceConfiguration
 
-extension CustomTask {
+  extension CustomTask {
 
-  // MARK: - Static Properties
+    // MARK: - Static Properties
 
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-    internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
-  #endif
-
-  // MARK: - Execution
-
-  internal func execute(output: Command.Output) throws {
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      _ = try Package(url: url).execute(
-        .version(version),
-        of: [executable],
-        with: arguments,
-        cacheDirectory: CustomTask.cache,
-        reportProgress: { output.print($0) }
-      ).get()
+    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+      internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
     #endif
+
+    // MARK: - Execution
+
+    internal func execute(output: Command.Output) throws {
+      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
+        _ = try Package(url: url).execute(
+          .version(version),
+          of: [executable],
+          with: arguments,
+          cacheDirectory: CustomTask.cache,
+          reportProgress: { output.print($0) }
+        ).get()
+      #endif
+    }
   }
-}
+#endif

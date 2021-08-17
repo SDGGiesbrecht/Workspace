@@ -14,66 +14,68 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Refresh {
+  extension Workspace.Refresh {
 
-  internal enum Licence {
+    internal enum Licence {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishCanada:
-        return "licence"
-      case .englishUnitedStates:
-        return "license"
-      case .deutschDeutschland:
-        return "lizenz"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishCanada:
-          return "regenerates the project’s licence file."
+          return "licence"
         case .englishUnitedStates:
-          return "regenerates the project’s license file."
+          return "license"
         case .deutschDeutschland:
-          return "erstellt die Lizenzdatei der Projekt neu."
+          return "lizenz"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishCanada:
+            return "regenerates the project’s licence file."
+          case .englishUnitedStates:
+            return "regenerates the project’s license file."
+          case .deutschDeutschland:
+            return "erstellt die Lizenzdatei der Projekt neu."
+          }
+        })
 
-          output.print(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishCanada:
-                return "Refreshing licence..."
-              case .englishUnitedStates:
-                return "Refreshing license..."
-              case .deutschDeutschland:
-                return "Lizenz wird aufgefrischt ..."
-              }
-            }).resolved().formattedAsSectionHeader()
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          try options.project.refreshLicence(output: output)
-        }
-      )
-    #endif
+            output.print(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishCanada:
+                  return "Refreshing licence..."
+                case .englishUnitedStates:
+                  return "Refreshing license..."
+                case .deutschDeutschland:
+                  return "Lizenz wird aufgefrischt ..."
+                }
+              }).resolved().formattedAsSectionHeader()
+            )
+
+            try options.project.refreshLicence(output: output)
+          }
+        )
+      #endif
+    }
   }
-}
+#endif

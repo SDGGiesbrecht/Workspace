@@ -14,60 +14,62 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-import SDGText
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGLogic
+  import SDGText
 
-import SDGHTML
+  import SDGHTML
 
-extension ElementSyntax {
+  extension ElementSyntax {
 
-  internal init(
-    _ element: StrictString,
-    attributes: [StrictString: StrictString] = [:],
-    contents: StrictString,
-    inline: Bool
-  ) {
+    internal init(
+      _ element: StrictString,
+      attributes: [StrictString: StrictString] = [:],
+      contents: StrictString,
+      inline: Bool
+    ) {
 
-    var constructedAttributes: [AttributeSyntax] = []
-    for key in attributes.keys.sorted() {
-      let name = String(key)
-      let value = HTML.escapeTextForAttribute(attributes[key]!)
-      constructedAttributes.append(
-        AttributeSyntax(
-          name: TokenSyntax(kind: .attributeName(name)),
-          value: AttributeValueSyntax(
-            value: TokenSyntax(kind: .attributeText(String(value)))
+      var constructedAttributes: [AttributeSyntax] = []
+      for key in attributes.keys.sorted() {
+        let name = String(key)
+        let value = HTML.escapeTextForAttribute(attributes[key]!)
+        constructedAttributes.append(
+          AttributeSyntax(
+            name: TokenSyntax(kind: .attributeName(name)),
+            value: AttributeValueSyntax(
+              value: TokenSyntax(kind: .attributeText(String(value)))
+            )
           )
+        )
+      }
+
+      let constructedContents = inline ? contents : "\n\(contents)\n"
+
+      let name = TokenSyntax(kind: .elementName(String(element)))
+      self = ElementSyntax(
+        openingTag: OpeningTagSyntax(
+          name: name,
+          attributes: AttributesSyntax(
+            attributes: ListSyntax(entries: constructedAttributes)
+          )
+        ),
+        continuation: ElementContinuationSyntax(
+          content: ListSyntax(entries: [
+            ContentSyntax(
+              kind: .text(
+                TextSyntax(
+                  text: TokenSyntax(kind: .text(String(constructedContents)))
+                )
+              )
+            )
+          ]),
+          closingTag: ClosingTagSyntax(name: name)
         )
       )
     }
 
-    let constructedContents = inline ? contents : "\n\(contents)\n"
-
-    let name = TokenSyntax(kind: .elementName(String(element)))
-    self = ElementSyntax(
-      openingTag: OpeningTagSyntax(
-        name: name,
-        attributes: AttributesSyntax(
-          attributes: ListSyntax(entries: constructedAttributes)
-        )
-      ),
-      continuation: ElementContinuationSyntax(
-        content: ListSyntax(entries: [
-          ContentSyntax(
-            kind: .text(
-              TextSyntax(
-                text: TokenSyntax(kind: .text(String(constructedContents)))
-              )
-            )
-          )
-        ]),
-        closingTag: ClosingTagSyntax(name: name)
-      )
-    )
+    internal func normalizedSource() -> StrictString {
+      return StrictString(source())
+    }
   }
-
-  internal func normalizedSource() -> StrictString {
-    return StrictString(source())
-  }
-}
+#endif

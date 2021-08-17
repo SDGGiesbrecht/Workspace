@@ -14,10 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCommandLine
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGCommandLine
 
-internal protocol ProofreadingReporter {
+  internal protocol ProofreadingReporter {
 
-  func reportParsing(file: String, to output: Command.Output)
-  func report(violation: StyleViolation, to output: Command.Output)
-}
+    func reportParsing(file: String, to output: Command.Output)
+    func report(violation: StyleViolation, to output: Command.Output)
+  }
+#endif

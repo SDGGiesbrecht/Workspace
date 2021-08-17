@@ -14,47 +14,49 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGLogic
-import SDGCollections
-import SDGText
+  import SDGLogic
+  import SDGCollections
+  import SDGText
 
-extension StringFamily {
+  extension StringFamily {
 
-  internal var isWhitespace: Bool {
-    return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
-  }
-
-  internal mutating func trimMarginalWhitespace() {
-    while scalars.first == " " {
-      scalars.removeFirst()
+    internal var isWhitespace: Bool {
+      return ¬scalars.contains(where: { $0 ∉ CharacterSet.whitespaces })
     }
-    while scalars.last == " " {
-      scalars.removeLast()
-    }
-  }
 
-  internal func strippingCommonIndentation() -> Self {
-    var smallestIndent = Int.max
-    let lines = self.lines.map { $0.line }
-    for line in lines {
-      if let firstCharacter = line.firstMatch(for: ConditionalPattern({ $0 ≠ " " }))?.range
-        .lowerBound
-      {
-        smallestIndent.decrease(
-          to: line.distance(from: line.startIndex, to: firstCharacter)
-        )
+    internal mutating func trimMarginalWhitespace() {
+      while scalars.first == " " {
+        scalars.removeFirst()
+      }
+      while scalars.last == " " {
+        scalars.removeLast()
       }
     }
-    let stripped: [Self] = lines.map { line in
-      if line.count < smallestIndent {
-        // Empty line.
-        return ""
-      } else {
-        return Self(Self.ScalarView(line.dropFirst(smallestIndent)))
+
+    internal func strippingCommonIndentation() -> Self {
+      var smallestIndent = Int.max
+      let lines = self.lines.map { $0.line }
+      for line in lines {
+        if let firstCharacter = line.firstMatch(for: ConditionalPattern({ $0 ≠ " " }))?.range
+          .lowerBound
+        {
+          smallestIndent.decrease(
+            to: line.distance(from: line.startIndex, to: firstCharacter)
+          )
+        }
       }
+      let stripped: [Self] = lines.map { line in
+        if line.count < smallestIndent {
+          // Empty line.
+          return ""
+        } else {
+          return Self(Self.ScalarView(line.dropFirst(smallestIndent)))
+        }
+      }
+      return stripped.joinedAsLines()
     }
-    return stripped.joinedAsLines()
   }
-}
+#endif

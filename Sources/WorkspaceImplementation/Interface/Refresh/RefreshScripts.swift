@@ -14,58 +14,60 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Refresh {
+  extension Workspace.Refresh {
 
-  internal enum Scripts {
+    internal enum Scripts {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "scripts"
-      case .deutschDeutschland:
-        return "skripte"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "regenerates the project’s refresh and validation scripts."
+          return "scripts"
         case .deutschDeutschland:
-          return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
+          return "skripte"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "regenerates the project’s refresh and validation scripts."
+          case .deutschDeutschland:
+            return "erstellt die Auffrisch‐ und Überprüfungskripte neu."
+          }
+        })
 
-          output.print(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Refreshing scripts..."
-              case .deutschDeutschland:
-                return "Skripte werden aufgefrischt ..."
-              }
-            }).resolved().formattedAsSectionHeader()
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          try options.project.refreshScripts(project: options.project, output: output)
-        }
-      )
-    #endif
+            output.print(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "Refreshing scripts..."
+                case .deutschDeutschland:
+                  return "Skripte werden aufgefrischt ..."
+                }
+              }).resolved().formattedAsSectionHeader()
+            )
+
+            try options.project.refreshScripts(project: options.project, output: output)
+          }
+        )
+      #endif
+    }
   }
-}
+#endif

@@ -14,44 +14,46 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-internal struct MissingImplementation: TextRule {
+  internal struct MissingImplementation: TextRule {
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
-    { localization in
+    internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "missingImplementation"
+        case .deutschDeutschland:
+          return "fehlendeImplementierung"
+        }
+      })
+
+    private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "missingImplementation"
+        return "Missing implementation."
       case .deutschDeutschland:
-        return "fehlendeImplementierung"
+        return "Fehlende Implementierung."
       }
     })
 
-  private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Missing implementation."
-    case .deutschDeutschland:
-      return "Fehlende Implementierung."
-    }
-  })
-
-  internal static func check(
-    file: TextFile,
-    in project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
-    for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
-      reportViolation(in: file, at: match.range, message: message, status: status)
+    internal static func check(
+      file: TextFile,
+      in project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
+      for match in file.contents.scalars.matches(for: "\u{6E}otImplementedYet".scalars) {
+        reportViolation(in: file, at: match.range, message: message, status: status)
+      }
     }
   }
-}
+#endif

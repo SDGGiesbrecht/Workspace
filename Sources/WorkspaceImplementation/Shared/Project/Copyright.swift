@@ -14,41 +14,43 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGCollections
-import SDGText
+  import SDGCollections
+  import SDGText
 
-import SDGCalendar
+  import SDGCalendar
 
-internal func copyright(fromText text: String) -> StrictString {
+  internal func copyright(fromText text: String) -> StrictString {
 
-  var oldStartDate: String?
-  for symbol in ["©", "(C)", "(c)"] {
-    for space in ["", " "] {
-      if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
-        var numberEnd = range.upperBound
-        text.scalars.advance(
-          &numberEnd,
-          over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits }))
-        )
-        let number = text.scalars[range.upperBound..<numberEnd]
-        if number.count == 4 {
-          oldStartDate = String(number)
-          break
+    var oldStartDate: String?
+    for symbol in ["©", "(C)", "(c)"] {
+      for space in ["", " "] {
+        if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
+          var numberEnd = range.upperBound
+          text.scalars.advance(
+            &numberEnd,
+            over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.decimalDigits }))
+          )
+          let number = text.scalars[range.upperBound..<numberEnd]
+          if number.count == 4 {
+            oldStartDate = String(number)
+            break
+          }
         }
       }
     }
-  }
-  let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
-  let copyrightStart = oldStartDate ?? currentYear
+    let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
+    let copyrightStart = oldStartDate ?? currentYear
 
-  var copyright = "©"
-  if currentYear == copyrightStart {
-    copyright.append(currentYear)
-  } else {
-    copyright.append(copyrightStart + "–" + currentYear)
-  }
+    var copyright = "©"
+    if currentYear == copyrightStart {
+      copyright.append(currentYear)
+    } else {
+      copyright.append(copyrightStart + "–" + currentYear)
+    }
 
-  return StrictString(copyright)
-}
+    return StrictString(copyright)
+  }
+#endif

@@ -14,12 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwift
-@testable import WorkspaceImplementation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGSwift
+  @testable import WorkspaceImplementation
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  static func resetRelatedProjectCache() {
-    emptyRelatedProjectCache()
+    static func resetRelatedProjectCache() {
+      emptyRelatedProjectCache()
+    }
   }
-}
+#endif

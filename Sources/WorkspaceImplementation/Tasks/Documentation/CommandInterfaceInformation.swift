@@ -14,25 +14,27 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGExportedCommandLineInterface
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGExportedCommandLineInterface
 
-import WorkspaceConfiguration
+  import WorkspaceConfiguration
 
-internal struct CommandInterfaceInformation {
+  internal struct CommandInterfaceInformation {
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  internal init() {}
+    internal init() {}
 
-  // MARK: - Properties
+    // MARK: - Properties
 
-  internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
-  internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
+    internal var interfaces: [LocalizationIdentifier: CommandInterface] = [:]
+    internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
 
-  internal func pageURL(
-    in outputDirectory: URL,
-    for localization: LocalizationIdentifier
-  ) -> URL {
-    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+    internal func pageURL(
+      in outputDirectory: URL,
+      for localization: LocalizationIdentifier
+    ) -> URL {
+      return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+    }
   }
-}
+#endif

@@ -14,22 +14,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGLogic
+  import SDGLogic
 
-#if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-  extension ProcessInfo {
+  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+    extension ProcessInfo {
 
-    internal static let isInContinuousIntegration =
-      ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
-      ∨ isInGitHubAction  // @exempt(from: tests)
+      internal static let isInContinuousIntegration =
+        ProcessInfo.processInfo.environment["CONTINUOUS_INTEGRATION"] ≠ nil
+        ∨ isInGitHubAction  // @exempt(from: tests)
 
-    internal static let isInGitHubAction =
-      ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
+      internal static let isInGitHubAction =
+        ProcessInfo.processInfo.environment["GITHUB_ACTIONS"] ≠ nil
 
-    internal static let isPullRequest =
-      ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
-      ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
-  }
+      internal static let isPullRequest =
+        ProcessInfo.processInfo.environment["PULL_REQUEST"] ≠ nil
+        ∨ ProcessInfo.processInfo.environment["GITHUB_EVENT_NAME"] == "pull_request"
+    }
+  #endif
 #endif

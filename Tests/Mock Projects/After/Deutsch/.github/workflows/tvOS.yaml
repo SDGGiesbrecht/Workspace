@@ -7,7 +7,7 @@ on: [push, pull_request]
 jobs:
   tvOS:
     name: tvOS
-    runs-on: macos-11.0
+    runs-on: macos-11
     steps:
     - name: Holen
       uses: actions/checkout@v1

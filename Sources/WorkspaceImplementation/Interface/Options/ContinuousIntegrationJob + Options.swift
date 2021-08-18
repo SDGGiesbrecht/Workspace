@@ -24,15 +24,15 @@
 
   extension ContinuousIntegrationJob {
 
-    private static let optionName = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "job"
-      case .deutschDeutschland:
-        return "aufgabe"
-      }
-    })
+    private static let optionName = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "job"
+        case .deutschDeutschland:
+          return "aufgabe"
+        }
+      })
 
     private static let optionDescription = UserFacing<StrictString, InterfaceLocalization>(
       { localization in

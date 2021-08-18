@@ -353,15 +353,15 @@
                       }
                     })
 
-                  let aliasMessage = UserFacing<StrictString, InterfaceLocalization>({
-                    localization in
-                    switch localization {
-                    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                      return "(Create an alias if necessary.)"
-                    case .deutschDeutschland:
-                      return "(Wenn nötig, ein Alias erstellen.)"
-                    }
-                  })
+                  let aliasMessage = UserFacing<StrictString, InterfaceLocalization>(
+                    { localization in
+                      switch localization {
+                      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                        return "(Create an alias if necessary.)"
+                      case .deutschDeutschland:
+                        return "(Wenn nötig, ein Alias erstellen.)"
+                      }
+                    })
 
                   var result =
                     obsoleteMessage.resolved(for: localization) + " "

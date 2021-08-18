@@ -31,15 +31,15 @@
   #endif
   public enum Workspace {
 
-    private static let projectName = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "project"
-      case .deutschDeutschland:
-        return "projekt"
-      }
-    })
+    private static let projectName = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "project"
+        case .deutschDeutschland:
+          return "projekt"
+        }
+      })
     private static let projectDescription = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {
@@ -68,15 +68,15 @@
       }
     })
 
-    private static let description = UserFacing<StrictString, InterfaceLocalization>({
-      localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "automates management of Swift projects."
-      case .deutschDeutschland:
-        return "automatisiert die Verwaltung von Swift‐Projekten."
-      }
-    })
+    private static let description = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "automates management of Swift projects."
+        case .deutschDeutschland:
+          return "automatisiert die Verwaltung von Swift‐Projekten."
+        }
+      })
 
     #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       public static let command = Command(

@@ -29,4 +29,12 @@ extension SDGVersioning.Version {
       self.init(version.major, version.minor, version.patch)
     }
   #endif
+
+  internal func stringDroppingEmptyMinor() -> String {
+    var result = string(droppingEmptyPatch: true)
+    if result.hasSuffix(".0") {
+      result.removeLast(2)
+    }
+    return result
+  }
 }

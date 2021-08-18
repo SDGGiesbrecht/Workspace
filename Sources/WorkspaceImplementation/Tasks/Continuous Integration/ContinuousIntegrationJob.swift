@@ -413,7 +413,7 @@
       switch platform {
       case .macOS:
         return
-          "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))"
+          "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())"
       case .windows:
         return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
       case .web, .centOS, .ubuntu, .android, .amazonLinux:
@@ -1016,7 +1016,7 @@
 
             "  Android_II:",
             "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
-            "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.string(droppingEmptyPatch: true))",
+            "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())",
             "    needs: Android",
             steps(),
             step(checkOutStepName, localization: interfaceLocalization),

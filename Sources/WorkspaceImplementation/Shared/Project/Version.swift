@@ -15,28 +15,28 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGVersioning
+  import SDGVersioning
 
-import SDGSwiftPackageManager
-
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  import PackageModel
-#endif
-
-extension SDGVersioning.Version {
+  import SDGSwiftPackageManager
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    internal init(_ version: PackageModel.Version) {
-      self.init(version.major, version.minor, version.patch)
-    }
+    import PackageModel
   #endif
 
-  internal func stringDroppingEmptyMinor() -> String {
-    var result = string(droppingEmptyPatch: true)
-    if result.hasSuffix(".0") {
-      result.removeLast(2)
+  extension SDGVersioning.Version {
+
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+      internal init(_ version: PackageModel.Version) {
+        self.init(version.major, version.minor, version.patch)
+      }
+    #endif
+
+    internal func stringDroppingEmptyMinor() -> String {
+      var result = string(droppingEmptyPatch: true)
+      if result.hasSuffix(".0") {
+        result.removeLast(2)
+      }
+      return result
     }
-    return result
   }
-}
 #endif

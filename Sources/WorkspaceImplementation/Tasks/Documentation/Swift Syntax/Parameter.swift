@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import SDGLogic
 
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
@@ -53,3 +54,4 @@ extension Parameter {
     #endif
   }
 }
+#endif

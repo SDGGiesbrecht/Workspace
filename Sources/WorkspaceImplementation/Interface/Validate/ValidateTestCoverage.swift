@@ -14,117 +14,119 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
-import SDGText
-import SDGLocalization
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Validate {
+  extension Workspace.Validate {
 
-  internal enum TestCoverage {
+    internal enum TestCoverage {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "test‐coverage"
-      case .deutschDeutschland:
-        return "testabdeckung"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return
-            "validates test coverage, checking that every code path is reached by the project’s tests."
+          return "test‐coverage"
         case .deutschDeutschland:
-          return "prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird."
+          return "testabdeckung"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return
+              "validates test coverage, checking that every code path is reached by the project’s tests."
+          case .deutschDeutschland:
+            return "prüft die Testabdeckung, dass jede Quellweg durch Teste erreicht wird."
+          }
+        })
 
-          try Build.validate(
-            job: options.job,
-            against: ContinuousIntegrationJob.coverageJobs,
-            for: options.project,
-            output: output
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          var validationStatus = ValidationStatus()
+            try Build.validate(
+              job: options.job,
+              against: ContinuousIntegrationJob.coverageJobs,
+              for: options.project,
+              output: output
+            )
 
-          try executeAsStep(
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
+            var validationStatus = ValidationStatus()
 
-          try validationStatus.reportOutcome(project: options.project, output: output)
-        }
-      )
+            try executeAsStep(
+              options: options,
+              validationStatus: &validationStatus,
+              output: output
+            )
 
-      internal static func executeAsStep(
-        options: Options,
-        validationStatus: inout ValidationStatus,
-        output: Command.Output
-      ) throws {
+            try validationStatus.reportOutcome(project: options.project, output: output)
+          }
+        )
 
-        for job in ContinuousIntegrationJob.allCases
-        where try options.job.includes(job: job)
-          ∧ (try Build.job(
-            job,
-            isRelevantTo: options.project,
-            andAvailableJobs: ContinuousIntegrationJob.coverageJobs,
-            output: output
-          ))
-        {
-          try purgingAutoreleased {
+        internal static func executeAsStep(
+          options: Options,
+          validationStatus: inout ValidationStatus,
+          output: Command.Output
+        ) throws {
 
-            if try options.project.configuration(output: output).continuousIntegration
-              .skipSimulatorOutsideContinuousIntegration,
-              options.job == nil,  // Not in continuous integration.
-              job ∈ ContinuousIntegrationJob.simulatorJobs
-            {
-              // @exempt(from: tests) Tested separately.
-              return  // and continue loop.
-            }
+          for job in ContinuousIntegrationJob.allCases
+          where try options.job.includes(job: job)
+            ∧ (try Build.job(
+              job,
+              isRelevantTo: options.project,
+              andAvailableJobs: ContinuousIntegrationJob.coverageJobs,
+              output: output
+            ))
+          {
+            try purgingAutoreleased {
 
-            #if DEBUG
-              if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                  ≠ nil
-              {  // Simulators are not available to all CI jobs and must be tested separately.
+              if try options.project.configuration(output: output).continuousIntegration
+                .skipSimulatorOutsideContinuousIntegration,
+                options.job == nil,  // Not in continuous integration.
+                job ∈ ContinuousIntegrationJob.simulatorJobs
+              {
+                // @exempt(from: tests) Tested separately.
                 return  // and continue loop.
               }
-            #endif
 
-            options.project.test(
-              on: job,
-              validationStatus: &validationStatus,
-              output: output
-            )
-            try options.project.validateCodeCoverage(
-              on: job,
-              validationStatus: &validationStatus,
-              output: output
-            )
+              #if DEBUG
+                if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                    ≠ nil
+                {  // Simulators are not available to all CI jobs and must be tested separately.
+                  return  // and continue loop.
+                }
+              #endif
+
+              options.project.test(
+                on: job,
+                validationStatus: &validationStatus,
+                output: output
+              )
+              try options.project.validateCodeCoverage(
+                on: job,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            }
           }
         }
-      }
-    #endif
+      #endif
+    }
   }
-}
+#endif

@@ -14,94 +14,96 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
-@testable import WorkspaceImplementation
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
+  @testable import WorkspaceImplementation
 
-import XCTest
+  import XCTest
 
-import SDGXCTestUtilities
+  import SDGXCTestUtilities
 
-class InternalTests: TestCase {
+  class InternalTests: TestCase {
 
-  func testGitIgnoreCoverage() throws {
-    let expectedPrefixes = [
+    func testGitIgnoreCoverage() throws {
+      let expectedPrefixes = [
 
-      // Swift Package Manager
-      "Package.swift",
-      "Sources",
-      "Tests",
-      "Package.resolved",
+        // Swift Package Manager
+        "Package.swift",
+        "Sources",
+        "Tests",
+        "Package.resolved",
 
-      // Workspace
-      "Workspace.swift",
-      String(Script.refreshMacOS.fileName(localization: .englishCanada)),
-      String(Script.refreshLinux.fileName(localization: .englishCanada)),
-      "Resources",
+        // Workspace
+        "Workspace.swift",
+        String(Script.refreshMacOS.fileName(localization: .englishCanada)),
+        String(Script.refreshLinux.fileName(localization: .englishCanada)),
+        "Resources",
 
-      // Git
-      ".gitignore",
+        // Git
+        ".gitignore",
 
-      // GitHub
-      "README.md",
-      "LICENSE.md",
-      ".github",
-    ]
+        // GitHub
+        "README.md",
+        "LICENSE.md",
+        ".github",
+      ]
 
-    // #workaround(Swift 5.3.3, Emulator lacks Git.)
-    #if !os(Android)
-      _ = try Command(
-        name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-        description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-        directArguments: [],
-        options: [],
-        execution: { (_, _, output: Command.Output) in
+      // #workaround(Swift 5.3.3, Emulator lacks Git.)
+      #if !os(Android)
+        _ = try Command(
+          name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+          directArguments: [],
+          options: [],
+          execution: { (_, _, output: Command.Output) in
 
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-            let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
-            let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
-            let unexpected = relative.filter { path in
+            #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+              let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
+              let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+              let unexpected = relative.filter { path in
 
-              for prefix in expectedPrefixes {
-                if path.hasPrefix(prefix) {
-                  return false
+                for prefix in expectedPrefixes {
+                  if path.hasPrefix(prefix) {
+                    return false
+                  }
                 }
+
+                return true
               }
 
-              return true
-            }
+              XCTAssert(
+                unexpected.isEmpty,
+                [
+                  "Unexpected files are being tracked by Git:",
+                  unexpected.joinedAsLines(),
+                ].joinedAsLines()
+              )
+            #endif
 
-            XCTAssert(
-              unexpected.isEmpty,
-              [
-                "Unexpected files are being tracked by Git:",
-                unexpected.joinedAsLines(),
-              ].joinedAsLines()
-            )
-          #endif
+          }
+        ).execute(with: []).get()
+      #endif
+    }
 
+    func testPlatform() {
+      for platform in Platform.allCases {
+        for localization in ContentLocalization.allCases {
+          _ = platform._isolatedName(for: localization)
         }
-      ).execute(with: []).get()
-    #endif
-  }
-
-  func testPlatform() {
-    for platform in Platform.allCases {
-      for localization in ContentLocalization.allCases {
-        _ = platform._isolatedName(for: localization)
       }
     }
-  }
 
-  func testXcodeProjectFormat() {
-    // .gitignore interferes with testing this reliably in a mock project.
-    _ = FileType.xcodeProject.syntax
+    func testXcodeProjectFormat() {
+      // .gitignore interferes with testing this reliably in a mock project.
+      _ = FileType.xcodeProject.syntax
+    }
   }
-}
+#endif

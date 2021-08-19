@@ -14,21 +14,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGExportedCommandLineInterface
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGExportedCommandLineInterface
 
-extension CommandInterface {
+  extension CommandInterface {
 
-  internal mutating func sentenceCaseDescriptions() {
-    if let first = description.first,
-      first.properties.isLowercase
-    {
-      description.scalars.removeFirst()
-      description.scalars.prepend(
-        contentsOf: first.properties.titlecaseMapping.scalars
-      )
-    }
-    for index in subcommands.indices {
-      subcommands[index].sentenceCaseDescriptions()
+    internal mutating func sentenceCaseDescriptions() {
+      if let first = description.first,
+        first.properties.isLowercase
+      {
+        description.scalars.removeFirst()
+        description.scalars.prepend(
+          contentsOf: first.properties.titlecaseMapping.scalars
+        )
+      }
+      for index in subcommands.indices {
+        subcommands[index].sentenceCaseDescriptions()
+      }
     }
   }
-}
+#endif

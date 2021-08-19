@@ -83,7 +83,7 @@ jobs:
         path: .build/x86_64-unknown-linux-android/debug
   Android_II:
     name: Android II
-    runs-on: macos-11.0
+    runs-on: macos-11
     needs: Android
     steps:
     - name: Holen

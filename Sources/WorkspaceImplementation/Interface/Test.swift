@@ -14,111 +14,113 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
-import SDGText
-import SDGLocalization
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace {
+  extension Workspace {
 
-  internal enum Test {
+    internal enum Test {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "test"
-      case .deutschDeutschland:
-        return "testen"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "runs the project’s test targets."
+          return "test"
         case .deutschDeutschland:
-          return "führt die Teste des Projekts aus."
+          return "testen"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "runs the project’s test targets."
+          case .deutschDeutschland:
+            return "führt die Teste des Projekts aus."
+          }
+        })
 
-          try Validate.Build.validate(
-            job: options.job,
-            against: ContinuousIntegrationJob.testJobs,
-            for: options.project,
-            output: output
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          var validationStatus = ValidationStatus()
+            try Validate.Build.validate(
+              job: options.job,
+              against: ContinuousIntegrationJob.testJobs,
+              for: options.project,
+              output: output
+            )
 
-          try executeAsStep(
-            options: options,
-            validationStatus: &validationStatus,
-            output: output
-          )
+            var validationStatus = ValidationStatus()
 
-          try validationStatus.reportOutcome(project: options.project, output: output)
-        }
-      )
-
-      internal static func executeAsStep(
-        options: Options,
-        validationStatus: inout ValidationStatus,
-        output: Command.Output
-      ) throws {
-
-        for job in ContinuousIntegrationJob.allCases
-        where try options.job.includes(job: job)
-          ∧ (try Validate.Build.job(
-            job,
-            isRelevantTo: options.project,
-            andAvailableJobs: ContinuousIntegrationJob.testJobs,
-            output: output
-          ))
-        {
-          try purgingAutoreleased {
-
-            if try options.project.configuration(output: output).continuousIntegration
-              .skipSimulatorOutsideContinuousIntegration,
-              options.job == nil,  // Not in continuous integration.
-              job ∈ ContinuousIntegrationJob.simulatorJobs
-            {
-              // @exempt(from: tests) Tested separately.
-              return  // and continue loop.
-            }
-
-            #if DEBUG
-              if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                  ≠ nil
-              {  // Simulators are not available to all CI jobs and must be tested separately.
-                return  // and continue loop.
-              }
-            #endif
-
-            options.project.test(
-              on: job,
+            try executeAsStep(
+              options: options,
               validationStatus: &validationStatus,
               output: output
             )
+
+            try validationStatus.reportOutcome(project: options.project, output: output)
+          }
+        )
+
+        internal static func executeAsStep(
+          options: Options,
+          validationStatus: inout ValidationStatus,
+          output: Command.Output
+        ) throws {
+
+          for job in ContinuousIntegrationJob.allCases
+          where try options.job.includes(job: job)
+            ∧ (try Validate.Build.job(
+              job,
+              isRelevantTo: options.project,
+              andAvailableJobs: ContinuousIntegrationJob.testJobs,
+              output: output
+            ))
+          {
+            try purgingAutoreleased {
+
+              if try options.project.configuration(output: output).continuousIntegration
+                .skipSimulatorOutsideContinuousIntegration,
+                options.job == nil,  // Not in continuous integration.
+                job ∈ ContinuousIntegrationJob.simulatorJobs
+              {
+                // @exempt(from: tests) Tested separately.
+                return  // and continue loop.
+              }
+
+              #if DEBUG
+                if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                    ≠ nil
+                {  // Simulators are not available to all CI jobs and must be tested separately.
+                  return  // and continue loop.
+                }
+              #endif
+
+              options.project.test(
+                on: job,
+                validationStatus: &validationStatus,
+                output: output
+              )
+            }
           }
         }
-      }
-    #endif
+      #endif
+    }
   }
-}
+#endif

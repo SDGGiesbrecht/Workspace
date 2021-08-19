@@ -14,45 +14,47 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-internal struct DeprecatedTestManifests: TextRule {
-  // Deprecated in 0.25.0 (2019‐11‐03)
+  internal struct DeprecatedTestManifests: TextRule {
+    // Deprecated in 0.25.0 (2019‐11‐03)
 
-  internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
-    { localization in
+    internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
+      { localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "deprecatedTestManifests"
+        case .deutschDeutschland:
+          return "überholteTestlisten"
+        }
+      })
+
+    private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "deprecatedTestManifests"
+        return "Test manifests are no longer necessary."
       case .deutschDeutschland:
-        return "überholteTestlisten"
+        return "Testlisten werden nicht mehr benötigt."
       }
     })
 
-  private static let message = UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-    switch localization {
-    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-      return "Test manifests are no longer necessary."
-    case .deutschDeutschland:
-      return "Testlisten werden nicht mehr benötigt."
-    }
-  })
-
-  internal static func check(
-    file: TextFile,
-    in project: PackageRepository,
-    status: ProofreadingStatus,
-    output: Command.Output
-  ) {
-    if file.location.lastPathComponent == "XCTestManifests.swift" {
-      reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
+    internal static func check(
+      file: TextFile,
+      in project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
+      if file.location.lastPathComponent == "XCTestManifests.swift" {
+        reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
+      }
     }
   }
-}
+#endif

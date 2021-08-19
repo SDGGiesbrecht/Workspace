@@ -14,65 +14,67 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Proofread {
+  extension Workspace.Proofread {
 
-  internal enum GenerateXcodeProject {
+    internal enum GenerateXcodeProject {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "generate‐xcode‐project"
-      case .deutschDeutschland:
-        return "xcode‐projekt‐erstellen"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "generates an Xcode project that can display proofreading results inline."
+          return "generate‐xcode‐project"
         case .deutschDeutschland:
-          return
-            "erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt."
+          return "xcode‐projekt‐erstellen"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
-          try executeAsStep(options: options, output: output)
-        }
-      )
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "generates an Xcode project that can display proofreading results inline."
+          case .deutschDeutschland:
+            return
+              "erstellt ein Xcode‐Projekt, das Eregebnisse vom Korrekturlesen in den Dateien zeigt."
+          }
+        })
 
-      internal static func executeAsStep(options: Options, output: Command.Output) throws {
-
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Generating Xcode project..."
-            case .deutschDeutschland:
-              return "Xcode‐Projekt wird erstellt ..."
-            }
-          }).resolved().formattedAsSectionHeader()
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
+            try executeAsStep(options: options, output: output)
+          }
         )
 
-        try options.project.refreshProofreadingXcodeProject(output: output)
-      }
-    #endif
+        internal static func executeAsStep(options: Options, output: Command.Output) throws {
+
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Generating Xcode project..."
+              case .deutschDeutschland:
+                return "Xcode‐Projekt wird erstellt ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
+
+          try options.project.refreshProofreadingXcodeProject(output: output)
+        }
+      #endif
+    }
   }
-}
+#endif

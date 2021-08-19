@@ -14,54 +14,56 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
 
-internal enum IndexSectionIdentifier {
+  internal enum IndexSectionIdentifier {
 
-  // MARK: - Cases
+    // MARK: - Cases
 
-  case package
-  case tools
-  case libraries
-  case modules
-  case types
-  case extensions
-  case protocols
-  case functions
-  case variables
-  case operators
-  case precedenceGroups
+    case package
+    case tools
+    case libraries
+    case modules
+    case types
+    case extensions
+    case protocols
+    case functions
+    case variables
+    case operators
+    case precedenceGroups
 
-  // MARK: - Use
+    // MARK: - Use
 
-  private var htmlIdentifierPrefix: StrictString {
-    switch self {
-    case .package:
-      return "Package"
-    case .tools:
-      return "executable"
-    case .libraries:
-      return "library"
-    case .modules:
-      return "target"
-    case .types:
-      return "struct"
-    case .extensions:
-      return "extension"
-    case .protocols:
-      return "protocol"
-    case .functions:
-      return "func"
-    case .variables:
-      return "var"
-    case .operators:
-      return "operator"
-    case .precedenceGroups:
-      return "precedencegroup"
+    private var htmlIdentifierPrefix: StrictString {
+      switch self {
+      case .package:
+        return "Package"
+      case .tools:
+        return "executable"
+      case .libraries:
+        return "library"
+      case .modules:
+        return "target"
+      case .types:
+        return "struct"
+      case .extensions:
+        return "extension"
+      case .protocols:
+        return "protocol"
+      case .functions:
+        return "func"
+      case .variables:
+        return "var"
+      case .operators:
+        return "operator"
+      case .precedenceGroups:
+        return "precedencegroup"
+      }
+    }
+
+    internal var htmlIdentifier: StrictString {
+      return htmlIdentifierPrefix + "‐index"
     }
   }
-
-  internal var htmlIdentifier: StrictString {
-    return htmlIdentifierPrefix + "‐index"
-  }
-}
+#endif

@@ -827,6 +827,11 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
+    // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
+    .define(
+      "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
   ])
 }
 
@@ -888,10 +893,6 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -901,10 +902,6 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -932,8 +929,4 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
-
-  // #workaround(Fix coverage.)
-  package.targets.removeAll(where: { $0.name == "WorkspaceImplementation" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTests" })
 }

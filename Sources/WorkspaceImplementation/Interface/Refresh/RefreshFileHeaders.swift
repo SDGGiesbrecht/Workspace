@@ -14,58 +14,60 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace.Refresh {
+  extension Workspace.Refresh {
 
-  internal enum FileHeaders {
+    internal enum FileHeaders {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "file‐headers"
-      case .deutschDeutschland:
-        return "dateivorspänne"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "re‐applies the project file header to each of the project’s files."
+          return "file‐headers"
         case .deutschDeutschland:
-          return "wendet die Dateivorspann des Projekts zu jeder Datei neu an."
+          return "dateivorspänne"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        directArguments: [],
-        options: Workspace.standardOptions,
-        execution: { (_, options: Options, output: Command.Output) throws in
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "re‐applies the project file header to each of the project’s files."
+          case .deutschDeutschland:
+            return "wendet die Dateivorspann des Projekts zu jeder Datei neu an."
+          }
+        })
 
-          output.print(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Refreshing file headers..."
-              case .deutschDeutschland:
-                return "Dateivorspänne werden aufgefrischt ..."
-              }
-            }).resolved().formattedAsSectionHeader()
-          )
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          directArguments: [],
+          options: Workspace.standardOptions,
+          execution: { (_, options: Options, output: Command.Output) throws in
 
-          try options.project.refreshFileHeaders(output: output)
-        }
-      )
-    #endif
+            output.print(
+              UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "Refreshing file headers..."
+                case .deutschDeutschland:
+                  return "Dateivorspänne werden aufgefrischt ..."
+                }
+              }).resolved().formattedAsSectionHeader()
+            )
+
+            try options.project.refreshFileHeaders(output: output)
+          }
+        )
+      #endif
+    }
   }
-}
+#endif

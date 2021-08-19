@@ -14,40 +14,42 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WorkspaceConfiguration
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import WorkspaceConfiguration
 
-import SDGExternalProcess
+  import SDGExternalProcess
 
-extension Platform {
+  extension Platform {
 
-  // MARK: - Static Properties
+    // MARK: - Static Properties
 
-  internal static let current: Platform = {
-    #if os(macOS)
-      return .macOS
-    #elseif os(Windows)
-      return .windows
-    #elseif os(WASI)
-      return .web
-    #elseif os(Linux)
-      if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"])
-        .get()
-      {
-        if systemInformation.contains("ID=\u{22}centos\u{22}") {
-          return .centOS  // @exempt(from: tests)
-        } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
-          return .amazonLinux  // @exempt(from: tests)
+    internal static let current: Platform = {
+      #if os(macOS)
+        return .macOS
+      #elseif os(Windows)
+        return .windows
+      #elseif os(WASI)
+        return .web
+      #elseif os(Linux)
+        if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"])
+          .get()
+        {
+          if systemInformation.contains("ID=\u{22}centos\u{22}") {
+            return .centOS  // @exempt(from: tests)
+          } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
+            return .amazonLinux  // @exempt(from: tests)
+          }
         }
-      }
-      return .ubuntu  // @exempt(from: tests)
-    #elseif os(tvOS)
-      return .tvOS
-    #elseif os(iOS)
-      return .iOS
-    #elseif os(Android)
-      return .android
-    #elseif os(watchOS)
-      return .watchOS
-    #endif
-  }()
-}
+        return .ubuntu  // @exempt(from: tests)
+      #elseif os(tvOS)
+        return .tvOS
+      #elseif os(iOS)
+        return .iOS
+      #elseif os(Android)
+        return .android
+      #elseif os(watchOS)
+        return .watchOS
+      #endif
+    }()
+  }
+#endif

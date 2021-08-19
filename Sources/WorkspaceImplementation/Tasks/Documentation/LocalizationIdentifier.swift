@@ -14,30 +14,32 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGLogic
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-extension LocalizationIdentifier {
+  extension LocalizationIdentifier {
 
-  internal var textDirection: TextDirection? {
-    guard let supported = ContentLocalization(reasonableMatchFor: code) else {
-      return nil
+    internal var textDirection: TextDirection? {
+      guard let supported = ContentLocalization(reasonableMatchFor: code) else {
+        return nil
+      }
+      return supported.textDirection
     }
-    return supported.textDirection
-  }
 
-  internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
-    let localizationDirectory = String(
-      file.path(relativeTo: outputDirectory)
-        .prefix(upTo: "/")?.contents ?? ""
-    )
-    let identifier = LocalizationIdentifier(localizationDirectory)
-    if identifier.icon ≠ nil {
-      return AnyLocalization(code: identifier.code)
-    } else {
-      return AnyLocalization(code: "und")
+    internal static func localization(of file: URL, in outputDirectory: URL) -> AnyLocalization {
+      let localizationDirectory = String(
+        file.path(relativeTo: outputDirectory)
+          .prefix(upTo: "/")?.contents ?? ""
+      )
+      let identifier = LocalizationIdentifier(localizationDirectory)
+      if identifier.icon ≠ nil {
+        return AnyLocalization(code: identifier.code)
+      } else {
+        return AnyLocalization(code: "und")
+      }
     }
   }
-}
+#endif

@@ -14,47 +14,49 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension Workspace {
-  internal enum Validate {
+  extension Workspace {
+    internal enum Validate {
 
-    private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "validate"
-      case .deutschDeutschland:
-        return "prüfen"
-      }
-    })
-
-    private static let description = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
+      private static let name = UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "validates the project against a thorough battery of tests."
+          return "validate"
         case .deutschDeutschland:
-          return "prüft das Projekt gegen eine gründliche Reihe von Teste."
+          return "prüfen"
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static let command = Command(
-        name: name,
-        description: description,
-        subcommands: [
-          All.command,
-          Build.command,
-          TestCoverage.command,
-          DocumentationCoverage.command,
-        ],
-        defaultSubcommand: All.command
-      )
-    #endif
+      private static let description = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "validates the project against a thorough battery of tests."
+          case .deutschDeutschland:
+            return "prüft das Projekt gegen eine gründliche Reihe von Teste."
+          }
+        })
+
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal static let command = Command(
+          name: name,
+          description: description,
+          subcommands: [
+            All.command,
+            Build.command,
+            TestCoverage.command,
+            DocumentationCoverage.command,
+          ],
+          defaultSubcommand: All.command
+        )
+      #endif
+    }
   }
-}
+#endif

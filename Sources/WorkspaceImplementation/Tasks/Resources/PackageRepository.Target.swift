@@ -14,286 +14,289 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
-import SDGText
-import SDGLocalization
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGSwiftPackageManager
+  import SDGSwift
+  import SDGSwiftPackageManager
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-  import PackageModel
-  import SwiftFormat
-#endif
+  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+    import PackageModel
+    import SwiftFormat
+  #endif
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  internal struct Target: Comparable, Hashable {
+    internal struct Target: Comparable, Hashable {
 
-    // MARK: - Initialization
+      // MARK: - Initialization
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal init(
-        loadedTarget: PackageModel.Target,
-        package: PackageRepository
-      ) {
-        self.loadedTarget = loadedTarget
-        self.package = package
-      }
-    #endif
-
-    // MARK: - Properties
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      private let loadedTarget: PackageModel.Target
-    #endif
-    private let package: PackageRepository
-
-    internal var name: String {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return ""
-      #else
-        return loadedTarget.name
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal init(
+          loadedTarget: PackageModel.Target,
+          package: PackageRepository
+        ) {
+          self.loadedTarget = loadedTarget
+          self.package = package
+        }
       #endif
-    }
 
-    private var sourceDirectory: URL {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return package.location
-      #else
-        return loadedTarget.sources.root.asURL
-      #endif  // @exempt(from: tests)
-    }
+      // MARK: - Properties
 
-    // MARK: - Resources
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        private let loadedTarget: PackageModel.Target
+      #endif
+      private let package: PackageRepository
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func refresh(
-        resources: [URL],
-        from package: PackageRepository,
-        output: Command.Output
-      ) throws {
-        let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
+      internal var name: String {
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          return ""
+        #else
+          return loadedTarget.name
+        #endif
+      }
 
-        var source = String(try generateSource(for: resources, of: package))
-        try SwiftLanguage.format(
-          generatedCode: &source,
-          accordingTo: try package.configuration(output: output),
-          for: resourceFileLocation
+      private var sourceDirectory: URL {
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          return package.location
+        #else
+          return loadedTarget.sources.root.asURL
+        #endif  // @exempt(from: tests)
+      }
+
+      // MARK: - Resources
+
+      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+        internal func refresh(
+          resources: [URL],
+          from package: PackageRepository,
+          output: Command.Output
+        ) throws {
+          let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
+
+          var source = String(try generateSource(for: resources, of: package))
+          try SwiftLanguage.format(
+            generatedCode: &source,
+            accordingTo: try package.configuration(output: output),
+            for: resourceFileLocation
+          )
+
+          var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
+          resourceFile.body = source
+
+          try resourceFile.writeChanges(for: package, output: output)
+        }
+      #endif
+
+      private func generateSource(
+        for resources: [URL],
+        of package: PackageRepository
+      ) throws -> StrictString {
+        let accessControl: String
+        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
+          accessControl = ""
+        #else
+          switch loadedTarget.type {
+          case .library, .systemModule, .binary:
+            accessControl = "internal "
+          case .executable, .test:
+            accessControl = ""
+          }
+        #endif
+
+        var source: StrictString = "import Foundation\n\n"
+
+        let enumName = PackageRepository.Target.resourceNamespace.resolved(
+          for: InterfaceLocalization.fallbackLocalization
+        )
+        source += "\(accessControl)enum " + enumName + " {}\n"
+
+        var registeredAliases: Set<StrictString> = [enumName]
+        for alias in InterfaceLocalization.allCases.map({
+          PackageRepository.Target.resourceNamespace.resolved(for: $0)
+        }) where alias ∉ registeredAliases {
+          registeredAliases.insert(alias)
+          source += "\(accessControl)typealias "
+          source += alias
+          source += " = "
+          source += enumName
+          source += "\n"
+        }
+
+        source.append(contentsOf: "\n")
+
+        source.append(contentsOf: "extension Resources {\n".scalars)
+
+        source.append(
+          contentsOf: (try namespaceTreeSource(
+            for: resources,
+            of: package,
+            accessControl: accessControl
+          )) + "\n"
         )
 
-        var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
-        resourceFile.body = source
-
-        try resourceFile.writeChanges(for: package, output: output)
-      }
-    #endif
-
-    private func generateSource(
-      for resources: [URL],
-      of package: PackageRepository
-    ) throws -> StrictString {
-      let accessControl: String
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        accessControl = ""
-      #else
-        switch loadedTarget.type {
-        case .library, .systemModule, .binary:
-          accessControl = "internal "
-        case .executable, .test:
-          accessControl = ""
-        }
-      #endif
-
-      var source: StrictString = "import Foundation\n\n"
-
-      let enumName = PackageRepository.Target.resourceNamespace.resolved(
-        for: InterfaceLocalization.fallbackLocalization
-      )
-      source += "\(accessControl)enum " + enumName + " {}\n"
-
-      var registeredAliases: Set<StrictString> = [enumName]
-      for alias in InterfaceLocalization.allCases.map({
-        PackageRepository.Target.resourceNamespace.resolved(for: $0)
-      }) where alias ∉ registeredAliases {
-        registeredAliases.insert(alias)
-        source += "\(accessControl)typealias "
-        source += alias
-        source += " = "
-        source += enumName
-        source += "\n"
+        source.append(contentsOf: "}\n".scalars)
+        return source
       }
 
-      source.append(contentsOf: "\n")
+      private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>(
+        { localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Resources"
+          case .deutschDeutschland:
+            return "Ressourcen"
+          }
+        })
 
-      source.append(contentsOf: "extension Resources {\n".scalars)
-
-      source.append(
-        contentsOf: (try namespaceTreeSource(
-          for: resources,
-          of: package,
+      private func namespaceTreeSource(
+        for resources: [URL],
+        of package: PackageRepository,
+        accessControl: String
+      ) throws -> StrictString {
+        return try source(
+          for: namespaceTree(for: resources, of: package),
           accessControl: accessControl
-        )) + "\n"
-      )
-
-      source.append(contentsOf: "}\n".scalars)
-      return source
-    }
-
-    private static let resourceNamespace = UserFacing<StrictString, InterfaceLocalization>(
-      { localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Resources"
-        case .deutschDeutschland:
-          return "Ressourcen"
-        }
-      })
-
-    private func namespaceTreeSource(
-      for resources: [URL],
-      of package: PackageRepository,
-      accessControl: String
-    ) throws -> StrictString {
-      return try source(
-        for: namespaceTree(for: resources, of: package),
-        accessControl: accessControl
-      )
-    }
-
-    private func namespaceTree(
-      for resources: [URL],
-      of package: PackageRepository
-    ) -> [StrictString: Any] {
-      var tree: [StrictString: Any] = [:]
-      for resource in resources {
-        let pathComponentsArray = resource.path(relativeTo: package.location).components(
-          separatedBy: "/"
-        ).dropFirst(2).map({ String($0.contents) })
-        let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
-        add(components: pathComponents, to: &tree, for: resource)
+        )
       }
-      return tree
-    }
 
-    private func add(
-      components: ArraySlice<String>,
-      to tree: inout [StrictString: Any],
-      for resource: URL
-    ) {
-      if ¬components.isEmpty {
-        if components.count == 1 {
-          tree[variableName(for: components.first!)] = resource
-        } else {
-          let name = SwiftLanguage.identifier(
-            for: StrictString(components.first!),
-            casing: .type
-          )
-          var branch = tree[name] as? [StrictString: Any] ?? [:]
-          add(components: components.dropFirst(), to: &branch, for: resource)
-          tree[name] = branch
+      private func namespaceTree(
+        for resources: [URL],
+        of package: PackageRepository
+      ) -> [StrictString: Any] {
+        var tree: [StrictString: Any] = [:]
+        for resource in resources {
+          let pathComponentsArray = resource.path(relativeTo: package.location).components(
+            separatedBy: "/"
+          ).dropFirst(2).map({ String($0.contents) })
+          let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
+          add(components: pathComponents, to: &tree, for: resource)
         }
+        return tree
       }
-    }
 
-    private func variableName(for fileName: String) -> StrictString {
-      let nameOnly = URL(fileURLWithPath: "/" + fileName)
-        .deletingPathExtension().lastPathComponent
-      return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
-    }
-
-    private func source(
-      for namespaceTree: [StrictString: Any],
-      accessControl: String
-    ) throws -> StrictString {
-      var result: StrictString = ""
-      for name in namespaceTree.keys.sorted() {
-        try purgingAutoreleased {
-          let value = namespaceTree[name]
-
-          if let resource = value as? URL {
-            #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-              try result.append(
-                contentsOf: source(for: resource, named: name, accessControl: accessControl) + "\n"
-              )
-            #endif
-          } else if let namespace = value as? [StrictString: Any] {
-            result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
-            result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
-            result.append(contentsOf: "}\n")
+      private func add(
+        components: ArraySlice<String>,
+        to tree: inout [StrictString: Any],
+        for resource: URL
+      ) {
+        if ¬components.isEmpty {
+          if components.count == 1 {
+            tree[variableName(for: components.first!)] = resource
           } else {
-            unreachable()
+            let name = SwiftLanguage.identifier(
+              for: StrictString(components.first!),
+              casing: .type
+            )
+            var branch = tree[name] as? [StrictString: Any] ?? [:]
+            add(components: components.dropFirst(), to: &branch, for: resource)
+            tree[name] = branch
           }
         }
       }
 
-      if result.scalars.last == "\n" {
-        result.scalars.removeLast()
+      private func variableName(for fileName: String) -> StrictString {
+        let nameOnly = URL(fileURLWithPath: "/" + fileName)
+          .deletingPathExtension().lastPathComponent
+        return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
       }
-      return result.lines.map({ (lineInformation) in
-        return "  " + StrictString(lineInformation.line)
-      }).joined(separator: "\n") + "\n"
-    }
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       private func source(
-        for resource: URL,
-        named name: StrictString,
+        for namespaceTree: [StrictString: Any],
         accessControl: String
       ) throws -> StrictString {
-        let fileExtension = resource.pathExtension
-        let initializer: (StrictString, StrictString)
-        switch fileExtension {
-        case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
-          initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
-        default:
-          initializer = ("", "")
+        var result: StrictString = ""
+        for name in namespaceTree.keys.sorted() {
+          try purgingAutoreleased {
+            let value = namespaceTree[name]
+
+            if let resource = value as? URL {
+              #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+                try result.append(
+                  contentsOf: source(for: resource, named: name, accessControl: accessControl)
+                    + "\n"
+                )
+              #endif
+            } else if let namespace = value as? [StrictString: Any] {
+              result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
+              result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
+              result.append(contentsOf: "}\n")
+            } else {
+              unreachable()
+            }
+          }
         }
 
-        let data = try Data(from: resource)
-        let string = data.base64EncodedString()
-        var declaration: StrictString = "\(accessControl)static let "
-        declaration += name
-        declaration += " = "
-        declaration += initializer.0
-        declaration += "Data(base64Encoded: \u{22}"
-        declaration += string.scalars
-        declaration += "\u{22})!"
-        declaration += initializer.1
-        return declaration
+        if result.scalars.last == "\n" {
+          result.scalars.removeLast()
+        }
+        return result.lines.map({ (lineInformation) in
+          return "  " + StrictString(lineInformation.line)
+        }).joined(separator: "\n") + "\n"
       }
-    #endif
 
-    // MARK: - Comparable
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        private func source(
+          for resource: URL,
+          named name: StrictString,
+          accessControl: String
+        ) throws -> StrictString {
+          let fileExtension = resource.pathExtension
+          let initializer: (StrictString, StrictString)
+          switch fileExtension {
+          case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
+            initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
+          default:
+            initializer = ("", "")
+          }
 
-    internal static func < (
-      lhs: PackageRepository.Target,
-      rhs: PackageRepository.Target
-    ) -> Bool {
-      return (lhs.name, lhs.sourceDirectory) < (rhs.name, rhs.sourceDirectory)
-    }
+          let data = try Data(from: resource)
+          let string = data.base64EncodedString()
+          var declaration: StrictString = "\(accessControl)static let "
+          declaration += name
+          declaration += " = "
+          declaration += initializer.0
+          declaration += "Data(base64Encoded: \u{22}"
+          declaration += string.scalars
+          declaration += "\u{22})!"
+          declaration += initializer.1
+          return declaration
+        }
+      #endif
 
-    // MARK: - Equatable
+      // MARK: - Comparable
 
-    internal static func == (
-      lhs: PackageRepository.Target,
-      rhs: PackageRepository.Target
-    ) -> Bool {
-      return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
-    }
+      internal static func < (
+        lhs: PackageRepository.Target,
+        rhs: PackageRepository.Target
+      ) -> Bool {
+        return (lhs.name, lhs.sourceDirectory) < (rhs.name, rhs.sourceDirectory)
+      }
 
-    // MARK: - Hashable
+      // MARK: - Equatable
 
-    internal func hash(into hasher: inout Hasher) {
-      hasher.combine(name)
+      internal static func == (
+        lhs: PackageRepository.Target,
+        rhs: PackageRepository.Target
+      ) -> Bool {
+        return (lhs.name, lhs.sourceDirectory) == (rhs.name, rhs.sourceDirectory)
+      }
+
+      // MARK: - Hashable
+
+      internal func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
+      }
     }
   }
-}
+#endif

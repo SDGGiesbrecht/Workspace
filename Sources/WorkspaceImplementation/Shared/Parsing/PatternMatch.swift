@@ -14,29 +14,31 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCollections
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGCollections
+  import SDGText
+  import SDGLocalization
 
-extension PatternMatch
-where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
+  extension PatternMatch
+  where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
 
-  internal func declarationArgument() -> StrictString {
-    guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
-      let closingParenthesis = contents.lastMatch(for: ")".scalars)
-    else {
-      unreachable()
+    internal func declarationArgument() -> StrictString {
+      guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
+        let closingParenthesis = contents.lastMatch(for: ")".scalars)
+      else {
+        unreachable()
+      }
+
+      var argument = StrictString(
+        contents[openingParenthesis.range.upperBound..<closingParenthesis.range.lowerBound]
+      )
+      argument.trimMarginalWhitespace()
+
+      return argument
     }
 
-    var argument = StrictString(
-      contents[openingParenthesis.range.upperBound..<closingParenthesis.range.lowerBound]
-    )
-    argument.trimMarginalWhitespace()
-
-    return argument
+    internal func directiveArgument() -> StrictString {
+      return declarationArgument()
+    }
   }
-
-  internal func directiveArgument() -> StrictString {
-    return declarationArgument()
-  }
-}
+#endif

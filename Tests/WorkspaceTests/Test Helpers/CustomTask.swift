@@ -14,16 +14,18 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import WorkspaceConfiguration
-@testable import WorkspaceImplementation
+  import WorkspaceConfiguration
+  @testable import WorkspaceImplementation
 
-extension CustomTask {
+  extension CustomTask {
 
-  static func emptyCache() {
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      try? FileManager.default.removeItem(at: cache)
-    #endif
+    static func emptyCache() {
+      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
+        try? FileManager.default.removeItem(at: cache)
+      #endif
+    }
   }
-}
+#endif

@@ -14,10 +14,12 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-extension SwiftLanguage {
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  extension SwiftLanguage {
 
-  internal enum Casing {
-    case type
-    case variable
+    internal enum Casing {
+      case type
+      case variable
+    }
   }
-}
+#endif

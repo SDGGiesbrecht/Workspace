@@ -517,12 +517,6 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
       from: Version(5, 5, 2)
     ),
-
-    // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
-    .package(
-      url: "https://github.com/apple/swift-tools-support-core.git",
-      .exact(Version(0, 2, 2))
-    )
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -720,8 +714,6 @@ let package = Package(
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
-        // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
-        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
       ]
     ),
     .target(
@@ -938,3 +930,19 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
 }
+
+// #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
+package.dependencies.append(
+  .package(
+    url: "https://github.com/apple/swift-tools-support-core.git",
+    .exact(Version(0, 2, 2))
+  )
+)
+let lastTests = package.targets.lastIndex(where: { $0.type == .test })!
+package.targets[lastTests].dependencies.append(
+  .product(
+    name: "SwiftToolsSupport\u{2D}auto",
+    package: "swift\u{2D}tools\u{2D}support\u{2D}core",
+    condition: .when(platforms: [])
+  )
+)

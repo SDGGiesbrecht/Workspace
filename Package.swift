@@ -517,6 +517,12 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
       from: Version(5, 5, 2)
     ),
+
+    // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
+    .package(
+      url: "https://github.com/apple/swift-tools-support-core.git",
+      .exact(Version(0, 2, 2))
+    )
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
@@ -714,6 +720,8 @@ let package = Package(
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
+        // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
+        .product(name: "SwiftToolsSupport\u{2D}auto", package: "swift\u{2D}tools\u{2D}support\u{2D}core")
       ]
     ),
     .target(

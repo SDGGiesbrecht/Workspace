@@ -932,7 +932,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
 }
 
 // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {} else {
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+} else {
   package.dependencies.append(
     contentsOf: [
       .package(
@@ -955,17 +956,17 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {} else {
       .product(
         name: "ArgumentParser",
         package: "swift\u{2D}argument\u{2D}parser",
-        condition: .when(platforms: [])
+        condition: .when(platforms: [.macOS])
       ),
       .product(
         name: "OrderedCollections",
         package: "swift\u{2D}collections",
-        condition: .when(platforms: [])
+        condition: .when(platforms: [.macOS])
       ),
       .product(
         name: "SwiftToolsSupport\u{2D}auto",
         package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-        condition: .when(platforms: [])
+        condition: .when(platforms: [.macOS])
       ),
     ]
   )

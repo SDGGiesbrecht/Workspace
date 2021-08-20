@@ -934,17 +934,30 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
 // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {} else {
   package.dependencies.append(
-    .package(
-      url: "https://github.com/apple/swift-tools-support-core.git",
-      .exact(Version(0, 2, 2))
-    )
+    contentsOf: [
+      .package(
+        url: "https://github.com/apple/swift-argument-parser.git",
+        .exact(Version(0, 4, 3))
+      ),
+      .package(
+        url: "https://github.com/apple/swift-tools-support-core.git",
+        .exact(Version(0, 2, 2))
+      ),
+    ]
   )
   let lastTests = package.targets.lastIndex(where: { $0.type == .test })!
   package.targets[lastTests].dependencies.append(
-    .product(
-      name: "SwiftToolsSupport\u{2D}auto",
-      package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-      condition: .when(platforms: [])
-    )
+    contentsOf: [
+      .product(
+        name: "ArgumentParser",
+        package: "swift\u{2D}argument\u{2D}parser",
+        condition: .when(platforms: [])
+      ),
+      .product(
+        name: "SwiftToolsSupport\u{2D}auto",
+        package: "swift\u{2D}tools\u{2D}support\u{2D}core",
+        condition: .when(platforms: [])
+      ),
+    ]
   )
 }

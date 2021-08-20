@@ -936,7 +936,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 } else {
   package.dependencies.append(
     .package(
-      url: "https://github.com/apple/swift-tools-support-core.git",
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
       .exact(Version(0, 2, 2))
     )
   )

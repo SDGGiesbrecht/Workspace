@@ -488,7 +488,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 3)
+      from: Version(7, 2, 4)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -935,39 +935,17 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 } else {
   package.dependencies.append(
-    contentsOf: [
-      .package(
-        url: "https://github.com/apple/swift-argument-parser.git",
-        .exact(Version(0, 4, 3))
-      ),
-      .package(
-        url: "https://github.com/apple/swift-collections",
-        .exact(Version(0, 0, 3))
-      ),
-      .package(
-        url: "https://github.com/apple/swift-tools-support-core.git",
-        .exact(Version(0, 2, 2))
-      ),
-    ]
+    .package(
+      url: "https://github.com/apple/swift-tools-support-core.git",
+      .exact(Version(0, 2, 2))
+    )
   )
   let lastTests = package.targets.lastIndex(where: { $0.type == .test })!
   package.targets[lastTests].dependencies.append(
-    contentsOf: [
-      .product(
-        name: "ArgumentParser",
-        package: "swift\u{2D}argument\u{2D}parser",
-        condition: .when(platforms: [.macOS])
-      ),
-      .product(
-        name: "OrderedCollections",
-        package: "swift\u{2D}collections",
-        condition: .when(platforms: [.macOS])
-      ),
-      .product(
-        name: "SwiftToolsSupport\u{2D}auto",
-        package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-        condition: .when(platforms: [.macOS])
-      ),
-    ]
+    .product(
+      name: "SwiftToolsSupport\u{2D}auto",
+      package: "swift\u{2D}tools\u{2D}support\u{2D}core",
+      condition: .when(platforms: [.macOS])
+    )
   )
 }

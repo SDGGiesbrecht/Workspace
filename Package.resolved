@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/apple/swift-collections",
         "state": {
           "branch": null,
-          "revision": "0959ba76a1d4a98fd11163aa83fd49c25b93bfae",
-          "version": "0.0.5"
+          "revision": "d45e63421d3dff834949ac69d3c37691e994bd69",
+          "version": "0.0.3"
         }
       },
       {

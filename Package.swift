@@ -940,6 +940,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {} else {
         .exact(Version(0, 4, 3))
       ),
       .package(
+        url: "https://github.com/apple/swift-collections",
+        .exact(Version(0, 0, 3))
+      ),
+      .package(
         url: "https://github.com/apple/swift-tools-support-core.git",
         .exact(Version(0, 2, 2))
       ),
@@ -951,6 +955,11 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {} else {
       .product(
         name: "ArgumentParser",
         package: "swift\u{2D}argument\u{2D}parser",
+        condition: .when(platforms: [])
+      ),
+      .product(
+        name: "OrderedCollections",
+        package: "swift\u{2D}collections",
         condition: .when(platforms: [])
       ),
       .product(

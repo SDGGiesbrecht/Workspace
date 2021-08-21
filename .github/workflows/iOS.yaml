@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   iOS:
     name: iOS
-    runs-on: macos-11
+    runs-on: macos-11.0
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -44,4 +44,4 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run workspace validate •job ios •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run test‐ios‐simulator

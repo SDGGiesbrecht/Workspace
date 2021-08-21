@@ -488,7 +488,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 3)
+      from: Version(7, 2, 4)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -929,4 +929,23 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
   package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
   package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+}
+
+// #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+} else {
+  package.dependencies.append(
+    .package(
+      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
+      .exact(Version(0, 2, 2))
+    )
+  )
+  let lastTests = package.targets.lastIndex(where: { $0.type == .test })!
+  package.targets[lastTests].dependencies.append(
+    .product(
+      name: "SwiftToolsSupport\u{2D}auto",
+      package: "swift\u{2D}tools\u{2D}support\u{2D}core",
+      condition: .when(platforms: [.macOS])
+    )
+  )
 }

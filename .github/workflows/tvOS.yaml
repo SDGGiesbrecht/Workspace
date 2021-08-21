@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   tvOS:
     name: tvOS
-    runs-on: macos-11.0
+    runs-on: macos-11
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -44,4 +44,4 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run test‐tvos‐simulator
+        swift run workspace validate •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

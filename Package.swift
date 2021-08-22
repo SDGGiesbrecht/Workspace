@@ -940,7 +940,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       .exact(Version(0, 2, 2))
     )
   )
-  let lastTests = package.targets.lastIndex(where: { $0.type == .test })!
+  let lastTests = package.targets.lastIndex(where: { $0.name == "WorkspaceImplementation" })!
   package.targets[lastTests].dependencies.append(
     .product(
       name: "SwiftToolsSupport\u{2D}auto",

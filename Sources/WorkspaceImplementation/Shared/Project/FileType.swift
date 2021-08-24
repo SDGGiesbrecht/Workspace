@@ -36,72 +36,70 @@
     internal static func resetUnsupportedFileTypes() {
       unsupportedFileTypesEncountered = [:]
     }
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal static func unsupportedTypesWarning(
-        for project: PackageRepository,
-        output: Command.Output
-      ) throws -> StrictString? {
+    internal static func unsupportedTypesWarning(
+      for project: PackageRepository,
+      output: Command.Output
+    ) throws -> StrictString? {
 
-        let expected = try project.configuration(output: output).repository.ignoredFileTypes
-        let unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
-          return key ∉ expected
-        }
-
-        if unexpectedTypes.isEmpty {
-          return nil
-        } else {
-          defer { unsupportedFileTypesEncountered = [:] }  // Reset between tests.
-
-          var warning: [StrictString] = [
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "Workspace encountered unsupported file types:"
-              case .deutschDeutschland:
-                return "Arbeitsbereich traf auf unbekannten Dateiformate:"
-              }
-            }).resolved()
-          ]
-
-          warning.append("")
-
-          let types = unexpectedTypes.keys.sorted().map { key in
-            return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))"
-              as StrictString
-          }
-          warning.append(contentsOf: types)
-
-          warning.append("")
-
-          warning.append(
-            UserFacing<StrictString, InterfaceLocalization>({ localization in
-              switch localization {
-              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return [
-                  "All such files were skipped.",
-                  "If these are standard file types, please report them at",
-                  StrictString(
-                    Metadata.issuesURL.absoluteString.in(Underline.underlined)
-                  ),
-                  "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.",
-                ].joinedAsLines()
-              case .deutschDeutschland:
-                return [
-                  "Solche Dateien wurden übersprungen.",
-                  "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
-                  StrictString(
-                    Metadata.issuesURL.absoluteString.in(Underline.underlined)
-                  ),
-                  "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.",
-                ].joinedAsLines()
-              }
-            }).resolved()
-          )
-
-          return warning.joinedAsLines()
-        }
+      let expected = try project.configuration(output: output).repository.ignoredFileTypes
+      let unexpectedTypes = unsupportedFileTypesEncountered.filter { key, _ in
+        return key ∉ expected
       }
-    #endif
+
+      if unexpectedTypes.isEmpty {
+        return nil
+      } else {
+        defer { unsupportedFileTypesEncountered = [:] }  // Reset between tests.
+
+        var warning: [StrictString] = [
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Workspace encountered unsupported file types:"
+            case .deutschDeutschland:
+              return "Arbeitsbereich traf auf unbekannten Dateiformate:"
+            }
+          }).resolved()
+        ]
+
+        warning.append("")
+
+        let types = unexpectedTypes.keys.sorted().map { key in
+          return "\(key) (\(unexpectedTypes[key]!.path(relativeTo: project.location)))"
+            as StrictString
+        }
+        warning.append(contentsOf: types)
+
+        warning.append("")
+
+        warning.append(
+          UserFacing<StrictString, InterfaceLocalization>({ localization in
+            switch localization {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return [
+                "All such files were skipped.",
+                "If these are standard file types, please report them at",
+                StrictString(
+                  Metadata.issuesURL.absoluteString.in(Underline.underlined)
+                ),
+                "To silence this warning for non‐standard file types, configure “repository.ignoredFileTypes”.",
+              ].joinedAsLines()
+            case .deutschDeutschland:
+              return [
+                "Solche Dateien wurden übersprungen.",
+                "Falls sie Standarddateiformate sind, bitte melden Sie sie hier:",
+                StrictString(
+                  Metadata.issuesURL.absoluteString.in(Underline.underlined)
+                ),
+                "Um diese Warnung für ungenormten Dateiformate abzudämpfen, „lager.ausgelasseneDateiformate“ konfigurieren.",
+              ].joinedAsLines()
+            }
+          }).resolved()
+        )
+
+        return warning.joinedAsLines()
+      }
+    }
 
     // MARK: - Initialization
 

@@ -14,15 +14,13 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGCommandLine
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGCommandLine
 
-import SDGSwift
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
+  import SDGSwift
   import SwiftSyntax
-#endif
-import SDGSwiftSource
+  import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   internal class RuleSyntaxScanner: SyntaxScanner {
 
     // MARK: - Initialization

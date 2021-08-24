@@ -14,34 +14,34 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
-import SDGText
-import SDGExternalProcess
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
+  import SDGText
+  import SDGExternalProcess
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGHTML
-import SDGWeb
+  import SDGSwift
+  import SDGHTML
+  import SDGWeb
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
-import WorkspaceProjectConfiguration
-@testable import WorkspaceImplementation
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
+  import WorkspaceProjectConfiguration
+  @testable import WorkspaceImplementation
 
-import XCTest
+  import XCTest
 
-import SDGPersistenceTestUtilities
+  import SDGPersistenceTestUtilities
 
-import SDGCommandLineTestUtilities
+  import SDGCommandLineTestUtilities
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
       "Tests/Mock Projects"
     )
@@ -55,11 +55,9 @@ extension PackageRepository {
         mockProject
       )
     }
-  #endif
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     init(mock name: String) {
       let temporary: URL
       #if os(macOS)
@@ -74,9 +72,7 @@ extension PackageRepository {
       #endif
       self.init(at: temporary.appendingPathComponent(name))
     }
-  #endif
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     func test<L>(
       commands: [[StrictString]],
       configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
@@ -474,5 +470,5 @@ extension PackageRepository {
         XCTFail("\(error)", file: file, line: line)
       }
     }
-  #endif
-}
+  }
+#endif

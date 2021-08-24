@@ -43,22 +43,18 @@
   class APITests: TestCase {
 
     static let configureGit: Void = {
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-        if isInGitHubAction {
-          #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-              _ = try? Git.runCustomSubcommand(
-                ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-                versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-              ).get()
-              _ = try? Git.runCustomSubcommand(
-                ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-                versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-              ).get()
-            #endif
-          #endif
-        }
-      #endif
+      if isInGitHubAction {
+        #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+          _ = try? Git.runCustomSubcommand(
+            ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+          ).get()
+        #endif
+      }
     }()
     override func setUp() {
       super.setUp()
@@ -74,23 +70,19 @@
         configuration.optimizeForTests()
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-          configuration.proofreading.swiftFormatConfiguration = nil
-        #endif
+        configuration.proofreading.swiftFormatConfiguration = nil
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "AllDisabled").test(
-            commands: [
-              ["refresh"],
-              ["validate"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "AllDisabled").test(
+          commands: [
+            ["refresh"],
+            ["validate"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -109,17 +101,15 @@
             result["🇮🇱עב"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "AllTasks").test(
-            commands: [
-              ["refresh"],
-              ["validate"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "AllTasks").test(
+          commands: [
+            ["refresh"],
+            ["validate"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -128,10 +118,8 @@
         let configuration = WorkspaceConfiguration()
         configuration.normalize = true
         configuration.proofreading.rules.insert(.listSeparation)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-          configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] =
-            true
-        #endif
+        configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] =
+          true
         let failing = CustomTask(
           url: URL(string: "file:///tmp/Developer/Dependency")!,
           version: Version(1, 0, 0),
@@ -139,44 +127,38 @@
           arguments: ["fail"]
         )
         configuration.customProofreadingTasks.append(failing)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "BadStyle").test(
-            commands: [
-              ["proofread"],
-              ["proofread", "•xcode"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            withCustomTask: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
-      #endif
-    }
-
-    func testBrokenExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "BrokenExample").test(
+        PackageRepository(mock: "BadStyle").test(
           commands: [
-            ["refresh", "examples"]
+            ["proofread"],
+            ["proofread", "•xcode"],
           ],
+          configuration: configuration,
           localizations: InterfaceLocalization.self,
+          withCustomTask: true,
           overwriteSpecificationInsteadOfFailing: false
         )
       #endif
     }
 
+    func testBrokenExample() {
+      PackageRepository(mock: "BrokenExample").test(
+        commands: [
+          ["refresh", "examples"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
+
     func testBrokenTests() {
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "BrokenTests").test(
-            commands: [
-              ["test"]
-            ],
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "BrokenTests").test(
+          commands: [
+            ["test"]
+          ],
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -190,12 +172,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-              .appendingPathComponent("Resources/Tool/English.txt")
-          )
-        #endif
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+            .appendingPathComponent("Resources/Tool/English.txt")
+        )
         output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "de",
         ]).get()
@@ -204,12 +184,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-              .appendingPathComponent("Resources/Tool/Deutsch.txt")
-          )
-        #endif
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+            .appendingPathComponent("Resources/Tool/Deutsch.txt")
+        )
 
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
@@ -225,12 +203,10 @@
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
         configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-          configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
-            false
-          configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
-            false
-        #endif
+        configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
+          false
+        configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
+          false
         configuration.documentation.relatedProjects = [
           .heading(text: [
             "🇬🇧EN": "Heading",
@@ -249,25 +225,21 @@
             return result
           })
         configuration.provideWorkflowScripts = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "CheckedInDocumentation").test(
-            commands: [
-              ["refresh"],
-              ["validate", "•job", "miscellaneous"],
-              ["validate", "•job", "deployment"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "CheckedInDocumentation").test(
+          commands: [
+            ["refresh"],
+            ["validate", "•job", "miscellaneous"],
+            ["validate", "•job", "deployment"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
     func testCheckForUpdates() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
-      #endif
+      _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
     }
 
     func testContinuousIntegrationWithoutScripts() {
@@ -283,19 +255,17 @@
         // Text rules but no syntax rules.
         configuration.proofreading.rules = [.manualWarnings]
 
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
-            commands: [
-              ["refresh", "continuous‐integration"],
-              ["refresh", "licence"],
-              ["refresh", "file‐headers"],
-              ["proofread"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
+          commands: [
+            ["refresh", "continuous‐integration"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"],
+            ["proofread"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -318,20 +288,18 @@
           arguments: []
         )
         configuration.customProofreadingTasks.append(passing)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "CustomProofread").test(
-            commands: [
-              ["proofread"],
-              ["proofread", "•xcode"],
-              ["refresh", "licence"],
-              ["refresh", "file‐headers"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            withCustomTask: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "CustomProofread").test(
+          commands: [
+            ["proofread"],
+            ["proofread", "•xcode"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          withCustomTask: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -357,18 +325,16 @@
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "CustomReadMe").test(
-            commands: [
-              ["refresh", "read‐me"],
-              ["refresh", "licence"],
-              ["refresh", "file‐headers"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "CustomReadMe").test(
+          commands: [
+            ["refresh", "read‐me"],
+            ["refresh", "licence"],
+            ["refresh", "file‐headers"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -386,57 +352,51 @@
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-          configuration.proofreading.swiftFormatKonfiguration = nil
-        #endif
+        configuration.proofreading.swiftFormatKonfiguration = nil
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "CustomTasks").test(
-            commands: [
-              ["refresh"],
-              ["validate"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            withCustomTask: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "CustomTasks").test(
+          commands: [
+            ["refresh"],
+            ["validate"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          withCustomTask: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
     func testDefaults() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        let commands: [[StrictString]] = [
-          ["refresh", "scripts"],
-          ["refresh", "resources"],
-          ["refresh", "examples"],
-          ["refresh", "inherited‐documentation"],
-          ["normalize"],
+      let commands: [[StrictString]] = [
+        ["refresh", "scripts"],
+        ["refresh", "resources"],
+        ["refresh", "examples"],
+        ["refresh", "inherited‐documentation"],
+        ["normalize"],
 
-          ["proofread"],
-          ["validate", "build"],
-          ["test"],
-          ["validate", "test‐coverage"],
-          ["validate", "documentation‐coverage"],
+        ["proofread"],
+        ["validate", "build"],
+        ["test"],
+        ["validate", "test‐coverage"],
+        ["validate", "documentation‐coverage"],
 
-          ["proofread", "•xcode"],
-          ["validate", "build", "•job", "macos"],
+        ["proofread", "•xcode"],
+        ["validate", "build", "•job", "macos"],
 
-          ["refresh"],
-          ["validate"],
-          ["validate", "•job", "macos"],
+        ["refresh"],
+        ["validate"],
+        ["validate", "•job", "macos"],
 
-          ["proofread", "generate‐xcode‐project"],
-        ]
-        PackageRepository(mock: "Default").test(
-          commands: commands,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+        ["proofread", "generate‐xcode‐project"],
+      ]
+      PackageRepository(mock: "Default").test(
+        commands: commands,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testDeutsch() throws {
@@ -449,12 +409,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          try output.save(
-            to: PackageRepository.beforeDirectory(for: "Deutsch")
-              .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
-          )
-        #endif
+        try output.save(
+          to: PackageRepository.beforeDirectory(for: "Deutsch")
+            .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+        )
 
         let konfiguration = ArbeitsbereichKonfiguration()
         konfiguration.optimizeForTests()
@@ -465,26 +423,24 @@
         konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
         konfiguration.dokumentation.programmierschnittstelle
           .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "Deutsch").test(
-            commands: [
-              ["auffrischen", "skripte"],
-              ["auffrischen", "git"],
-              ["auffrischen", "fortlaufende‐einbindung"],
-              ["auffrischen", "ressourcen"],
-              ["normalisieren"],
-              ["prüfen", "erstellung"],
-              ["prüfen", "testabdeckung"],
-              ["prüfen", "dokumentationsabdeckung"],
-              ["dokumentieren"],
+        PackageRepository(mock: "Deutsch").test(
+          commands: [
+            ["auffrischen", "skripte"],
+            ["auffrischen", "git"],
+            ["auffrischen", "fortlaufende‐einbindung"],
+            ["auffrischen", "ressourcen"],
+            ["normalisieren"],
+            ["prüfen", "erstellung"],
+            ["prüfen", "testabdeckung"],
+            ["prüfen", "dokumentationsabdeckung"],
+            ["dokumentieren"],
 
-              ["korrekturlesen", "xcode‐projekt‐erstellen"],
-            ],
-            configuration: konfiguration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+            ["korrekturlesen", "xcode‐projekt‐erstellen"],
+          ],
+          configuration: konfiguration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -496,19 +452,17 @@
         configuration.supportedPlatforms.remove(.watchOS)
         configuration.supportedPlatforms.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "Executable").test(
-            commands: [
-              ["refresh", "licence"],
-              ["refresh", "read‐me"],
-              ["document"],
-              ["validate", "documentation‐coverage"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "Executable").test(
+          commands: [
+            ["refresh", "licence"],
+            ["refresh", "read‐me"],
+            ["document"],
+            ["validate", "documentation‐coverage"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -527,17 +481,15 @@
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "FailingCustomTasks").test(
-            commands: [
-              ["refresh"]
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            withCustomTask: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "FailingCustomTasks").test(
+          commands: [
+            ["refresh"]
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          withCustomTask: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -554,23 +506,19 @@
         configuration.customValidationTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-          configuration.proofreading.swiftFormatConfiguration = nil
-        #endif
+        configuration.proofreading.swiftFormatConfiguration = nil
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "FailingCustomValidation").test(
-            commands: [
-              ["validate"]
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            withCustomTask: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "FailingCustomValidation").test(
+          commands: [
+            ["validate"]
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          withCustomTask: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -581,17 +529,15 @@
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.repositoryURL = URL(string: "http://example.com")!
         configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "FailingDocumentationCoverage").test(
-            commands: [
-              ["validate", "documentation‐coverage"],
-              ["document"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "FailingDocumentationCoverage").test(
+          commands: [
+            ["validate", "documentation‐coverage"],
+            ["document"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -601,34 +547,30 @@
         configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          do {
-            for url in try FileManager.default.contentsOfDirectory(
-              at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
-                "Library/Developer/Xcode/DerivedData"
-              ),
-              includingPropertiesForKeys: nil,
-              options: []
-            ) {
-              if url.lastPathComponent.contains("FailingTests") {
-                try? FileManager.default.removeItem(at: url)
-              }
+        do {
+          for url in try FileManager.default.contentsOfDirectory(
+            at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
+              "Library/Developer/Xcode/DerivedData"
+            ),
+            includingPropertiesForKeys: nil,
+            options: []
+          ) {
+            if url.lastPathComponent.contains("FailingTests") {
+              try? FileManager.default.removeItem(at: url)
             }
-          } catch {}
-        #endif
+          }
+        } catch {}
         // This test may fail if derived data is not in the default location. See above.
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "FailingTests").test(
-            commands: [
-              ["validate", "build"],
-              ["validate", "test‐coverage"],
-              ["validate", "build", "•job", "miscellaneous"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "FailingTests").test(
+          commands: [
+            ["validate", "build"],
+            ["validate", "test‐coverage"],
+            ["validate", "build", "•job", "miscellaneous"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -636,150 +578,138 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["🇨🇦EN"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "Headers").test(
-            commands: [
-              ["refresh", "file‐headers"],
-              ["refresh", "examples"],
-              ["refresh", "inherited‐documentation"],
-              ["test"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "Headers").test(
+          commands: [
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
+            ["test"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
     func testHelp() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        testCommand(
-          Workspace.command,
-          with: ["help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["proofread", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace proofread)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["validate", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace validate)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["document", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace document)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "continuous‐integration", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh continuous‐integration)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "examples", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh examples)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "inherited‐documentation", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh inherited‐documentation)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "resources", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh resources)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["refresh", "scripts", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace refresh scripts)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-        testCommand(
-          Workspace.command,
-          with: ["normalize", "help"],
-          localizations: InterfaceLocalization.self,
-          uniqueTestName: "Help (workspace normalize)",
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      testCommand(
+        Workspace.command,
+        with: ["help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["proofread", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace proofread)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["validate", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace validate)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["document", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace document)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "continuous‐integration", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh continuous‐integration)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "examples", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh examples)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "inherited‐documentation", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh inherited‐documentation)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "resources", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh resources)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["refresh", "scripts", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace refresh scripts)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
+      testCommand(
+        Workspace.command,
+        with: ["normalize", "help"],
+        localizations: InterfaceLocalization.self,
+        uniqueTestName: "Help (workspace normalize)",
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testInvalidResourceDirectory() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "InvalidResourceDirectory").test(
-          commands: [
-            ["refresh", "resources"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "InvalidResourceDirectory").test(
+        commands: [
+          ["refresh", "resources"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testInvalidTarget() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "InvalidTarget").test(
-          commands: [
-            ["refresh", "resources"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "InvalidTarget").test(
+        commands: [
+          ["refresh", "resources"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testMissingDocumentation() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "MissingDocumentation").test(
-          commands: [
-            ["refresh", "inherited‐documentation"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "MissingDocumentation").test(
+        commands: [
+          ["refresh", "inherited‐documentation"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testMissingExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        PackageRepository(mock: "MissingExample").test(
-          commands: [
-            ["refresh", "examples"]
-          ],
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "MissingExample").test(
+        commands: [
+          ["refresh", "examples"]
+        ],
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testMissingReadMeLocalization() {
@@ -787,16 +717,14 @@
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "MissingReadMeLocalization").test(
-            commands: [
-              ["refresh", "read‐me"]
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "MissingReadMeLocalization").test(
+          commands: [
+            ["refresh", "read‐me"]
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -806,16 +734,14 @@
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "MultipleProducts").test(
-            commands: [
-              ["refresh", "read‐me"]
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "MultipleProducts").test(
+          commands: [
+            ["refresh", "read‐me"]
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -825,16 +751,14 @@
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "NoLibraries").test(
-            commands: [
-              ["refresh", "read‐me"]
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "NoLibraries").test(
+          commands: [
+            ["refresh", "read‐me"]
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -842,17 +766,15 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "NoLocalizations").test(
-            commands: [
-              ["refresh", "read‐me"],
-              ["validate", "documentation‐coverage"],
-            ],
-            configuration: configuration,
-            localizations: InterfaceLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "NoLocalizations").test(
+          commands: [
+            ["refresh", "read‐me"],
+            ["validate", "documentation‐coverage"],
+          ],
+          configuration: configuration,
+          localizations: InterfaceLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -860,20 +782,18 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "NurDeutsch").test(
-            commands: [
-              ["auffrischen", "github"],
-              ["normalisieren"],
-              ["korrekturlesen"],
-              ["prüfen", "erstellung"],
-              ["testen"],
-            ],
-            configuration: configuration,
-            localizations: NurDeutsch.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "NurDeutsch").test(
+          commands: [
+            ["auffrischen", "github"],
+            ["normalisieren"],
+            ["korrekturlesen"],
+            ["prüfen", "erstellung"],
+            ["testen"],
+          ],
+          configuration: configuration,
+          localizations: NurDeutsch.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -881,16 +801,14 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "OneLocalization").test(
-            commands: [
-              ["refresh", "github"]
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "OneLocalization").test(
+          commands: [
+            ["refresh", "github"]
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -902,17 +820,15 @@
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         configuration.supportedPlatforms.remove(.windows)
         configuration.supportedPlatforms.remove(.android)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "OneProductMultipleModules").test(
-            commands: [
-              ["refresh", "read‐me"],
-              ["refresh", "continuous‐integration"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "OneProductMultipleModules").test(
+          commands: [
+            ["refresh", "read‐me"],
+            ["refresh", "continuous‐integration"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -920,17 +836,15 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "OnlyBritish").test(
-            commands: [
-              ["refresh", "github"],
-              ["normalize"],
-            ],
-            configuration: configuration,
-            localizations: OnlyBritish.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "OnlyBritish").test(
+          commands: [
+            ["refresh", "github"],
+            ["normalize"],
+          ],
+          configuration: configuration,
+          localizations: OnlyBritish.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -955,18 +869,16 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "PartialReadMe").test(
-            commands: [
-              ["refresh", "read‐me"],
-              ["refresh", "github"],
-              ["document"],
-            ],
-            configuration: configuration,
-            localizations: FastTestLocalization.self,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+        PackageRepository(mock: "PartialReadMe").test(
+          commands: [
+            ["refresh", "read‐me"],
+            ["refresh", "github"],
+            ["document"],
+          ],
+          configuration: configuration,
+          localizations: FastTestLocalization.self,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -1014,36 +926,34 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "SDGLibrary").test(
-            commands: [
-              ["refresh", "scripts"],
-              ["refresh", "git"],
-              ["refresh", "read‐me"],
-              ["refresh", "licence"],
-              ["refresh", "github"],
-              ["refresh", "continuous‐integration"],
-              ["refresh", "resources"],
-              ["refresh", "file‐headers"],
-              ["refresh", "examples"],
-              ["refresh", "inherited‐documentation"],
-              ["normalize"],
-              ["proofread"],
-              ["validate", "build"],
-              ["test"],
-              ["validate", "test‐coverage"],
-              ["validate", "documentation‐coverage"],
+        PackageRepository(mock: "SDGLibrary").test(
+          commands: [
+            ["refresh", "scripts"],
+            ["refresh", "git"],
+            ["refresh", "read‐me"],
+            ["refresh", "licence"],
+            ["refresh", "github"],
+            ["refresh", "continuous‐integration"],
+            ["refresh", "resources"],
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
+            ["normalize"],
+            ["proofread"],
+            ["validate", "build"],
+            ["test"],
+            ["validate", "test‐coverage"],
+            ["validate", "documentation‐coverage"],
 
-              ["proofread", "•xcode"],
-              ["validate"],
-            ],
-            configuration: configuration,
-            sdg: true,
-            localizations: FastTestLocalization.self,
-            withDependency: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+            ["proofread", "•xcode"],
+            ["validate"],
+          ],
+          configuration: configuration,
+          sdg: true,
+          localizations: FastTestLocalization.self,
+          withDependency: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
@@ -1093,45 +1003,41 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          PackageRepository(mock: "SDGTool").test(
-            commands: [
-              ["refresh", "scripts"],
-              ["refresh", "git"],
-              ["refresh", "read‐me"],
-              ["refresh", "licence"],
-              ["refresh", "github"],
-              ["refresh", "continuous‐integration"],
-              ["refresh", "resources"],
-              ["refresh", "file‐headers"],
-              ["refresh", "examples"],
-              ["refresh", "inherited‐documentation"],
-              ["normalize"],
-              ["proofread"],
-              ["validate", "build"],
-              ["test"],
-              ["validate", "test‐coverage"],
-              ["validate", "documentation‐coverage"],
+        PackageRepository(mock: "SDGTool").test(
+          commands: [
+            ["refresh", "scripts"],
+            ["refresh", "git"],
+            ["refresh", "read‐me"],
+            ["refresh", "licence"],
+            ["refresh", "github"],
+            ["refresh", "continuous‐integration"],
+            ["refresh", "resources"],
+            ["refresh", "file‐headers"],
+            ["refresh", "examples"],
+            ["refresh", "inherited‐documentation"],
+            ["normalize"],
+            ["proofread"],
+            ["validate", "build"],
+            ["test"],
+            ["validate", "test‐coverage"],
+            ["validate", "documentation‐coverage"],
 
-              ["proofread", "•xcode"],
-            ],
-            configuration: configuration,
-            sdg: true,
-            localizations: FastTestLocalization.self,
-            withDependency: true,
-            overwriteSpecificationInsteadOfFailing: false
-          )
-        #endif
+            ["proofread", "•xcode"],
+          ],
+          configuration: configuration,
+          sdg: true,
+          localizations: FastTestLocalization.self,
+          withDependency: true,
+          overwriteSpecificationInsteadOfFailing: false
+        )
       #endif
     }
 
     func testSelfSpecificScripts() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        try FileManager.default.do(in: repositoryRoot) {
-          _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
-          _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
-        }
-      #endif
+      try FileManager.default.do(in: repositoryRoot) {
+        _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
+        _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
+      }
     }
   }
 #endif

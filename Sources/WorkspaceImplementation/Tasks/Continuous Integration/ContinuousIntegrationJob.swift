@@ -311,44 +311,41 @@
       return "TARGETING_\(environmentVariableName)"
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool
-      {
-        if try project.isWorkspaceProject() {
-          return true  // So that handling of cross‐compilation platforms is properly tested.
-        }
-
-        switch self {
-        case .macOS:
-          return try .macOS ∈ project.configuration(output: output).supportedPlatforms
-        case .windows:
-          return try .windows ∈ project.configuration(output: output).supportedPlatforms
-        case .web:
-          return try .web ∈ project.configuration(output: output).supportedPlatforms
-        case .centOS:
-          return try .centOS ∈ project.configuration(output: output).supportedPlatforms
-        case .ubuntu:
-          return try .ubuntu ∈ project.configuration(output: output).supportedPlatforms
-        case .tvOS:
-          return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
-        case .iOS:
-          return try .iOS ∈ project.configuration(output: output).supportedPlatforms
-        case .android:
-          return try .android ∈ project.configuration(output: output).supportedPlatforms
-        case .watchOS:
-          return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
-        case .amazonLinux:
-          return try .amazonLinux ∈ project.configuration(output: output).supportedPlatforms
-        case .miscellaneous:
-          return true
-        case .deployment:
-          return try project.configuration(output: output).documentation.api.generate
-            ∧ project.hasTargetsToDocument()
-            ∧ (try project.configuration(output: output)
-              .documentation.api.serveFromGitHubPagesBranch)
-        }
+    internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool {
+      if try project.isWorkspaceProject() {
+        return true  // So that handling of cross‐compilation platforms is properly tested.
       }
-    #endif
+
+      switch self {
+      case .macOS:
+        return try .macOS ∈ project.configuration(output: output).supportedPlatforms
+      case .windows:
+        return try .windows ∈ project.configuration(output: output).supportedPlatforms
+      case .web:
+        return try .web ∈ project.configuration(output: output).supportedPlatforms
+      case .centOS:
+        return try .centOS ∈ project.configuration(output: output).supportedPlatforms
+      case .ubuntu:
+        return try .ubuntu ∈ project.configuration(output: output).supportedPlatforms
+      case .tvOS:
+        return try .tvOS ∈ project.configuration(output: output).supportedPlatforms
+      case .iOS:
+        return try .iOS ∈ project.configuration(output: output).supportedPlatforms
+      case .android:
+        return try .android ∈ project.configuration(output: output).supportedPlatforms
+      case .watchOS:
+        return try .watchOS ∈ project.configuration(output: output).supportedPlatforms
+      case .amazonLinux:
+        return try .amazonLinux ∈ project.configuration(output: output).supportedPlatforms
+      case .miscellaneous:
+        return true
+      case .deployment:
+        return try project.configuration(output: output).documentation.api.generate
+          ∧ project.hasTargetsToDocument()
+          ∧ (try project.configuration(output: output)
+            .documentation.api.serveFromGitHubPagesBranch)
+      }
+    }
 
     internal var platform: Platform {
       switch self {
@@ -384,28 +381,26 @@
       return command
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      private func workspaceStep(
-        named name: UserFacing<StrictString, InterfaceLocalization>,
-        command: StrictString,
-        localization: InterfaceLocalization,
-        configuration: WorkspaceConfiguration,
-        project: PackageRepository,
-        output: Command.Output
-      ) throws -> StrictString {
-        return script(
-          heading: name,
-          localization: localization,
-          commands: try Script.getWorkspace(
-            andExecute: appendLanguage(to: command, configuration: configuration),
-            for: project,
-            useSystemCache: false,
-            forwardingArguments: false,
-            output: output
-          )
+    private func workspaceStep(
+      named name: UserFacing<StrictString, InterfaceLocalization>,
+      command: StrictString,
+      localization: InterfaceLocalization,
+      configuration: WorkspaceConfiguration,
+      project: PackageRepository,
+      output: Command.Output
+    ) throws -> StrictString {
+      return script(
+        heading: name,
+        localization: localization,
+        commands: try Script.getWorkspace(
+          andExecute: appendLanguage(to: command, configuration: configuration),
+          for: project,
+          useSystemCache: false,
+          forwardingArguments: false,
+          output: output
         )
-      }
-    #endif
+      )
+    }
 
     // MARK: - GitHub Actions
 
@@ -703,401 +698,399 @@
       }
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func gitHubWorkflowJob(
-        for project: PackageRepository,
-        output: Command.Output
-      ) throws -> [StrictString] {
-        let configuration = try project.configuration(output: output)
-        let interfaceLocalization = configuration.developmentInterfaceLocalization()
+    internal func gitHubWorkflowJob(
+      for project: PackageRepository,
+      output: Command.Output
+    ) throws -> [StrictString] {
+      let configuration = try project.configuration(output: output)
+      let interfaceLocalization = configuration.developmentInterfaceLocalization()
 
-        let jobName = name.resolved(for: interfaceLocalization)
-        var result: [StrictString] = [
-          "  \(jobName.replacingMatches(for: " ", with: "_")):",
-          "    name: \(jobName)",
-          runsOn(gitHubActionMachine),
-        ]
-        if let container = dockerImage {
-          result += [
-            "    container: \(container)"
-          ]
-        }
+      let jobName = name.resolved(for: interfaceLocalization)
+      var result: [StrictString] = [
+        "  \(jobName.replacingMatches(for: " ", with: "_")):",
+        "    name: \(jobName)",
+        runsOn(gitHubActionMachine),
+      ]
+      if let container = dockerImage {
         result += [
+          "    container: \(container)"
+        ]
+      }
+      result += [
+        steps(),
+        step(checkOutStepName, localization: interfaceLocalization),
+        checkOut(),
+        step(cacheWorkspaceStepName, localization: interfaceLocalization),
+        cache(),
+      ]
+
+      switch platform {
+      case .macOS:
+        var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+          .string(droppingEmptyPatch: true)
+        if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
+          xcodeVersion.removeLast(2)
+        }
+        result.append(
+          script(
+            heading: setXcodeUpStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "sudo xcode\u{2D}select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
+              "xcodebuild \u{2D}version",
+              "swift \u{2D}\u{2D}version",
+            ]
+          )
+        )
+      case .windows:
+        result.append(contentsOf: [
+          // #workaround(Swift 5.3.3, There is no official action for this yet.)
+          step(setVisualStudioUpStepName, localization: interfaceLocalization),
+          uses("ilammy/msvc\u{2D}dev\u{2D}cmd@v1"),
+        ])
+        let version = ContinuousIntegrationJob.currentSwiftVersion
+          .string(droppingEmptyPatch: true)
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftStepName,
+            localization: interfaceLocalization,
+            shell: "cmd",
+            commands: [
+              cURLAndExecuteWindowsInstaller(
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
+              ),
+              set(
+                environmentVariable: "SDKROOT",
+                to:
+                  "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk",
+                windows: true
+              ),
+              export("SDKROOT", windows: true),
+              copyFile(
+                from:
+                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
+                to:
+                  "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.modulemap",
+                to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap"
+              ),
+              copyFile(
+                from:
+                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.apinotes",
+                to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes"
+              ),
+              copyFile(
+                from:
+                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}winsdk.modulemap",
+                to:
+                  "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap"
+              ),
+              prependPath("C:\u{5C}Library\u{5C}icu\u{2D}67\u{5C}usr\u{5C}bin", windows: true),
+              prependPath(
+                "C:\u{5C}Library\u{5C}Developer\u{5C}Toolchains\u{5C}unknown\u{2D}Asserts\u{2D}development.xctoolchain\u{5C}usr\u{5C}bin",
+                windows: true
+              ),
+              prependPath("C:\u{5C}Library\u{5C}Swift\u{2D}development\u{5C}bin", windows: true),
+              prependPath(
+                "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}bin",
+                windows: true
+              ),
+              export("Path", windows: true),
+              "swift \u{2D}\u{2D}version",
+            ]
+          ),
+          script(
+            heading: testStepName,
+            localization: interfaceLocalization,
+            shell: "cmd",
+            commands: [
+              set(
+                environmentVariable: ContinuousIntegrationJob.windows.environmentVariable,
+                to: "true",
+                windows: true
+              ),
+              "swift test ^",
+              "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
+              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",
+            ]
+          ),
+        ])
+      case .web:
+        break
+      case .centOS, .amazonLinux:
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
+            ]
+          ),
+          script(
+            heading: installWorkspaceDependencies,
+            localization: interfaceLocalization,
+            commands: [
+              yumInstallation(["curl"])
+            ]
+          ),
+        ])
+      case .ubuntu:
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(["libncurses\u{2D}dev", "libsqlite3\u{2D}dev"])
+            ]
+          ),
+          script(
+            heading: installWorkspaceDependencies,
+            localization: interfaceLocalization,
+            commands: [
+              aptGet(["curl"])
+            ]
+          ),
+        ])
+      case .tvOS, .iOS, .watchOS:
+        unreachable()
+      case .android:
+        result.append(
+          script(
+            heading: fetchAndroidNDKStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d\u{2D}linux\u{2D}x86_64.zip",
+                andUnzipTo:
+                  "${ANDROID_HOME}/ndk\u{2D}bundle",
+                containerName:
+                  "android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
+                removeExisting: true,
+                sudoCopy: true
+              )
+            ]
+          )
+        )
+        let version = ContinuousIntegrationJob.currentSwiftVersion
+          .string(droppingEmptyPatch: true)
+        let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftStepName,
+            localization: interfaceLocalization,
+            commands: [
+              // #workaround(Are these still in the way?)
+              "sudo rm \u{2D}rf /usr/lib/clang/10.0.0",
+              "sudo rm \u{2D}rf /usr/lib/python3/dist\u{2D}packages/lldb",
+              cURL(
+                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
+                andUntarTo: "/",
+                sudoCopy: true
+              ),
+              prependPath("/usr/bin"),
+              "swift \u{2D}\u{2D}version",
+            ]
+          ),
+          script(
+            heading: fetchAndroidSDKStepName,
+            localization: interfaceLocalization,
+            commands: [
+              cURL(
+                "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
+                andUnzipTo:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
+                sudoCopy: true
+              ),
+              grantPermissions(to: "/Library"),
+            ]
+          ),
+        ])
+      }
+
+      switch platform {
+      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
+        if ¬(try project.isWorkspaceProject()) {
+          result.append(
+            try workspaceStep(
+              named: installWorkspaceStepName,
+              command: "version",
+              localization: interfaceLocalization,
+              configuration: configuration,
+              project: project,
+              output: output
+            )
+          )
+        }
+        result.append(
+          try workspaceStep(
+            named: refreshStepName,
+            command: "refresh",
+            localization: interfaceLocalization,
+            configuration: configuration,
+            project: project,
+            output: output
+          )
+        )
+        let mainStepName = self == .deployment ? documentStepName : validateStepName
+        result.append(
+          try workspaceStep(
+            named: mainStepName,
+            command: "validate •job \(argumentName.resolved(for: .englishCanada))",
+            localization: interfaceLocalization,
+            configuration: configuration,
+            project: project,
+            output: output
+          )
+        )
+      case .windows:
+        break
+      case .web:
+        result.append(
+          script(
+            heading: testStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "export \(ContinuousIntegrationJob.web.environmentVariable)=true",
+              "carton test",
+            ]
+          )
+        )
+      case .android:
+        result.append(
+          script(
+            heading: buildStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
+              "export CC=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin/clang",
+              "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android \u{5C}",
+              "  \u{2D}\u{2D}build\u{2D}tests \u{5C}",
+              "  \u{2D}\u{2D}sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}sysroot=${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64 \u{5C}",
+              "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include \u{5C}",
+              "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}",
+              "  \u{2D}Xlinker \u{2D}lz",
+            ]
+          )
+        )
+        let productsDirectory: StrictString =
+          ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+        result.append(
+          script(
+            heading: copyLibrariesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              copyDirectory(
+                from:
+                  "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
+                to: productsDirectory
+              ),
+              copyDirectory(
+                from:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
+                to: productsDirectory
+              ),
+            ]
+          )
+        )
+        result.append(contentsOf: [
+          step(uploadTestsStepName, localization: interfaceLocalization),
+          uses(
+            "actions/upload\u{2D}artifact@v1",
+            with: [
+              "name": "tests",
+              "path": "\(productsDirectory)",
+            ]
+          ),
+
+          "  Android_II:",
+          "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
+          "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())",
+          "    needs: Android",
           steps(),
           step(checkOutStepName, localization: interfaceLocalization),
           checkOut(),
-          step(cacheWorkspaceStepName, localization: interfaceLocalization),
-          cache(),
-        ]
-
-        switch platform {
-        case .macOS:
-          var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
-            .string(droppingEmptyPatch: true)
-          if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
-            xcodeVersion.removeLast(2)
-          }
-          result.append(
-            script(
-              heading: setXcodeUpStepName,
-              localization: interfaceLocalization,
-              commands: [
-                "sudo xcode\u{2D}select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
-                "xcodebuild \u{2D}version",
-                "swift \u{2D}\u{2D}version",
-              ]
-            )
-          )
-        case .windows:
-          result.append(contentsOf: [
-            // #workaround(Swift 5.3.3, There is no official action for this yet.)
-            step(setVisualStudioUpStepName, localization: interfaceLocalization),
-            uses("ilammy/msvc\u{2D}dev\u{2D}cmd@v1"),
-          ])
-          let version = ContinuousIntegrationJob.currentSwiftVersion
-            .string(droppingEmptyPatch: true)
-          result.append(contentsOf: [
-            script(
-              heading: installSwiftStepName,
-              localization: interfaceLocalization,
-              shell: "cmd",
-              commands: [
-                cURLAndExecuteWindowsInstaller(
-                  "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
-                ),
-                set(
-                  environmentVariable: "SDKROOT",
-                  to:
-                    "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk",
-                  windows: true
-                ),
-                export("SDKROOT", windows: true),
-                copyFile(
-                  from:
-                    "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
-                  to:
-                    "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap"
-                ),
-                copyFile(
-                  from:
-                    "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.modulemap",
-                  to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap"
-                ),
-                copyFile(
-                  from:
-                    "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.apinotes",
-                  to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes"
-                ),
-                copyFile(
-                  from:
-                    "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}winsdk.modulemap",
-                  to:
-                    "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap"
-                ),
-                prependPath("C:\u{5C}Library\u{5C}icu\u{2D}67\u{5C}usr\u{5C}bin", windows: true),
-                prependPath(
-                  "C:\u{5C}Library\u{5C}Developer\u{5C}Toolchains\u{5C}unknown\u{2D}Asserts\u{2D}development.xctoolchain\u{5C}usr\u{5C}bin",
-                  windows: true
-                ),
-                prependPath("C:\u{5C}Library\u{5C}Swift\u{2D}development\u{5C}bin", windows: true),
-                prependPath(
-                  "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}bin",
-                  windows: true
-                ),
-                export("Path", windows: true),
-                "swift \u{2D}\u{2D}version",
-              ]
-            ),
-            script(
-              heading: testStepName,
-              localization: interfaceLocalization,
-              shell: "cmd",
-              commands: [
-                set(
-                  environmentVariable: ContinuousIntegrationJob.windows.environmentVariable,
-                  to: "true",
-                  windows: true
-                ),
-                "swift test ^",
-                "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
-                "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",
-              ]
-            ),
-          ])
-        case .web:
-          break
-        case .centOS, .amazonLinux:
-          result.append(contentsOf: [
-            script(
-              heading: installSwiftPMDependenciesStepName,
-              localization: interfaceLocalization,
-              commands: [
-                yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
-              ]
-            ),
-            script(
-              heading: installWorkspaceDependencies,
-              localization: interfaceLocalization,
-              commands: [
-                yumInstallation(["curl"])
-              ]
-            ),
-          ])
-        case .ubuntu:
-          result.append(contentsOf: [
-            script(
-              heading: installSwiftPMDependenciesStepName,
-              localization: interfaceLocalization,
-              commands: [
-                aptGet(["libncurses\u{2D}dev", "libsqlite3\u{2D}dev"])
-              ]
-            ),
-            script(
-              heading: installWorkspaceDependencies,
-              localization: interfaceLocalization,
-              commands: [
-                aptGet(["curl"])
-              ]
-            ),
-          ])
-        case .tvOS, .iOS, .watchOS:
-          unreachable()
-        case .android:
-          result.append(
-            script(
-              heading: fetchAndroidNDKStepName,
-              localization: interfaceLocalization,
-              commands: [
-                cURL(
-                  "https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d\u{2D}linux\u{2D}x86_64.zip",
-                  andUnzipTo:
-                    "${ANDROID_HOME}/ndk\u{2D}bundle",
-                  containerName:
-                    "android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
-                  removeExisting: true,
-                  sudoCopy: true
-                )
-              ]
-            )
-          )
-          let version = ContinuousIntegrationJob.currentSwiftVersion
-            .string(droppingEmptyPatch: true)
-          let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
-          result.append(contentsOf: [
-            script(
-              heading: installSwiftStepName,
-              localization: interfaceLocalization,
-              commands: [
-                // #workaround(Are these still in the way?)
-                "sudo rm \u{2D}rf /usr/lib/clang/10.0.0",
-                "sudo rm \u{2D}rf /usr/lib/python3/dist\u{2D}packages/lldb",
-                cURL(
-                  "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
-                  andUntarTo: "/",
-                  sudoCopy: true
-                ),
-                prependPath("/usr/bin"),
-                "swift \u{2D}\u{2D}version",
-              ]
-            ),
-            script(
-              heading: fetchAndroidSDKStepName,
-              localization: interfaceLocalization,
-              commands: [
-                cURL(
-                  "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
-                  andUnzipTo:
-                    "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
-                  sudoCopy: true
-                ),
-                grantPermissions(to: "/Library"),
-              ]
-            ),
-          ])
-        }
-
-        switch platform {
-        case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
-          if ¬(try project.isWorkspaceProject()) {
-            result.append(
-              try workspaceStep(
-                named: installWorkspaceStepName,
-                command: "version",
-                localization: interfaceLocalization,
-                configuration: configuration,
-                project: project,
-                output: output
-              )
-            )
-          }
-          result.append(
-            try workspaceStep(
-              named: refreshStepName,
-              command: "refresh",
-              localization: interfaceLocalization,
-              configuration: configuration,
-              project: project,
-              output: output
-            )
-          )
-          let mainStepName = self == .deployment ? documentStepName : validateStepName
-          result.append(
-            try workspaceStep(
-              named: mainStepName,
-              command: "validate •job \(argumentName.resolved(for: .englishCanada))",
-              localization: interfaceLocalization,
-              configuration: configuration,
-              project: project,
-              output: output
-            )
-          )
-        case .windows:
-          break
-        case .web:
-          result.append(
-            script(
-              heading: testStepName,
-              localization: interfaceLocalization,
-              commands: [
-                "export \(ContinuousIntegrationJob.web.environmentVariable)=true",
-                "carton test",
-              ]
-            )
-          )
-        case .android:
-          result.append(
-            script(
-              heading: buildStepName,
-              localization: interfaceLocalization,
-              commands: [
-                "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
-                "export CC=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin/clang",
-                "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android \u{5C}",
-                "  \u{2D}\u{2D}build\u{2D}tests \u{5C}",
-                "  \u{2D}\u{2D}sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
-                "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}sysroot=${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64 \u{5C}",
-                "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include \u{5C}",
-                "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}",
-                "  \u{2D}Xlinker \u{2D}lz",
-              ]
-            )
-          )
-          let productsDirectory: StrictString =
-            ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
-          result.append(
-            script(
-              heading: copyLibrariesStepName,
-              localization: interfaceLocalization,
-              commands: [
-                copyDirectory(
-                  from:
-                    "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
-                  to: productsDirectory
-                ),
-                copyDirectory(
-                  from:
-                    "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
-                  to: productsDirectory
-                ),
-              ]
-            )
-          )
-          result.append(contentsOf: [
-            step(uploadTestsStepName, localization: interfaceLocalization),
-            uses(
-              "actions/upload\u{2D}artifact@v1",
-              with: [
-                "name": "tests",
-                "path": "\(productsDirectory)",
-              ]
-            ),
-
-            "  Android_II:",
-            "    name: \(androidIIJobName.resolved(for: interfaceLocalization))",
-            "    runs\u{2D}on: macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())",
-            "    needs: Android",
-            steps(),
-            step(checkOutStepName, localization: interfaceLocalization),
-            checkOut(),
-            step(downloadTestsStepName, localization: interfaceLocalization),
-            uses(
-              "actions/download\u{2D}artifact@v1",
-              with: [
-                "name": "tests",
-                "path": "\(productsDirectory)",
-              ]
-            ),
-            script(
-              heading: prepareScriptStepName,
-              localization: interfaceLocalization,
-              commands: [
-                makeDirectory(".build/SDG"),
-                "echo \u{27}",
-                "set \u{2D}e",
-                "adb \u{2D}e push . /data/local/tmp/Package",
-                "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-                "adb \u{2D}e shell \u{5C}",
-                "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}",
-                "  HOME=/data/local/tmp/Home \u{5C}",
-                "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
-                "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
-                "\u{27} > .build/SDG/Emulator.sh",
-                "chmod +x .build/SDG/Emulator.sh",
-              ]
-            ),
-            // #workaround(Swift 5.3.3, There is no official action for this yet.)
-            step(testStepName, localization: interfaceLocalization),
-            uses(
-              "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",
-              with: [
-                "api\u{2D}level": "29",
-                "arch": "x86_64",
-                "script": ".build/SDG/Emulator.sh",
-              ]
-            ),
-          ])
-        }
-
-        switch platform {
-        case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
-          break
-        case .centOS, .ubuntu, .amazonLinux:
-          result.append(
-            script(
-              heading: grantCachPermissionsStepName,
-              localization: interfaceLocalization,
-              commands: [
-                grantPermissions(to: ".", sudo: false)
-              ]
-            )
-          )
-        }
-
-        if self == .deployment {
-          result.append(contentsOf: [
-            script(
-              heading: deployStepName,
-              localization: interfaceLocalization,
-              commands: [
-                "cd docs",
-                "git init",
-                "git config user.name \u{22}${GITHUB_ACTOR}\u{22}",
-                "git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
-                "git add .",
-                "git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
-                "git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
-              ]
-            ),
-            "      env:",
-            "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
-          ])
-        }
-
-        return result
+          step(downloadTestsStepName, localization: interfaceLocalization),
+          uses(
+            "actions/download\u{2D}artifact@v1",
+            with: [
+              "name": "tests",
+              "path": "\(productsDirectory)",
+            ]
+          ),
+          script(
+            heading: prepareScriptStepName,
+            localization: interfaceLocalization,
+            commands: [
+              makeDirectory(".build/SDG"),
+              "echo \u{27}",
+              "set \u{2D}e",
+              "adb \u{2D}e push . /data/local/tmp/Package",
+              "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
+              "adb \u{2D}e shell \u{5C}",
+              "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}",
+              "  HOME=/data/local/tmp/Home \u{5C}",
+              "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
+              "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
+              "\u{27} > .build/SDG/Emulator.sh",
+              "chmod +x .build/SDG/Emulator.sh",
+            ]
+          ),
+          // #workaround(Swift 5.3.3, There is no official action for this yet.)
+          step(testStepName, localization: interfaceLocalization),
+          uses(
+            "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",
+            with: [
+              "api\u{2D}level": "29",
+              "arch": "x86_64",
+              "script": ".build/SDG/Emulator.sh",
+            ]
+          ),
+        ])
       }
-    #endif
+
+      switch platform {
+      case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
+        break
+      case .centOS, .ubuntu, .amazonLinux:
+        result.append(
+          script(
+            heading: grantCachPermissionsStepName,
+            localization: interfaceLocalization,
+            commands: [
+              grantPermissions(to: ".", sudo: false)
+            ]
+          )
+        )
+      }
+
+      if self == .deployment {
+        result.append(contentsOf: [
+          script(
+            heading: deployStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "cd docs",
+              "git init",
+              "git config user.name \u{22}${GITHUB_ACTOR}\u{22}",
+              "git config user.email \u{22}${GITHUB_ACTOR}@users.noreply.github.com\u{22}",
+              "git add .",
+              "git commit \u{2D}m \u{22}\(deployCommitMessage.resolved(for: interfaceLocalization))\u{22}",
+              "git push \u{2D}\u{2D}force https://x\u{2D}access\u{2D}token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git master:gh\u{2D}pages",
+            ]
+          ),
+          "      env:",
+          "        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}",
+        ])
+      }
+
+      return result
+    }
 
     // MARK: - Localized Text
 

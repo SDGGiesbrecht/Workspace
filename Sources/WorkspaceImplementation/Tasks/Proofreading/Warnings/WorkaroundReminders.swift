@@ -121,30 +121,26 @@
       for project: PackageRepository,
       output: Command.Output
     ) throws -> SDGVersioning.Version? {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return nil
-      #else
-        if let dependency = try project.dependenciesByName()[String(dependency)],
-          let version = dependency.manifest.version
-        {
-          return Version(version)
-        } else {
-          return cached(
-            in: &dependencyVersionCache[dependency],
+      if let dependency = try project.dependenciesByName()[String(dependency)],
+        let version = dependency.manifest.version
+      {
+        return Version(version)
+      } else {
+        return cached(
+          in: &dependencyVersionCache[dependency],
+          {
+            if let shellOutput = try? Shell.default.run(
+              command: String(dependency).components(separatedBy: " ")
+            ).get(),
+              let version = Version(firstIn: shellOutput)
             {
-              if let shellOutput = try? Shell.default.run(
-                command: String(dependency).components(separatedBy: " ")
-              ).get(),
-                let version = Version(firstIn: shellOutput)
-              {
-                return version
-              } else {
-                return nil
-              }
+              return version
+            } else {
+              return nil
             }
-          )  // @exempt(from: tests) Meaningless coverage region.
-        }
-      #endif  // @exempt(from: tests)
+          }
+        )  // @exempt(from: tests) Meaningless coverage region.
+      }
     }
   }
 #endif

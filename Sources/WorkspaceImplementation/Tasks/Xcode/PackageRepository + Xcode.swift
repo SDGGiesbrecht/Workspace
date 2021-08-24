@@ -54,51 +54,49 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      private func script() throws -> String {
-        if try isWorkspaceProject() {
-          return "swift run workspace proofread •xcode"  // @exempt(from: tests)
-        } else {
-          return
-            "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
-            + Metadata.latestStableVersion.string()
-            + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
-        }
+    private func script() throws -> String {
+      if try isWorkspaceProject() {
+        return "swift run workspace proofread •xcode"  // @exempt(from: tests)
+      } else {
+        return
+          "export PATH=\u{5C}\u{22}$HOME/.SDG/Registry:$PATH\u{5C}\u{22} ; if which workspace > /dev/null ; then workspace proofread •xcode •use‐version "
+          + Metadata.latestStableVersion.string()
+          + " ; else echo \u{5C}\u{22}warning: \(PackageRepository.instructions.resolved())\u{5C}\u{22} ; fi"
       }
+    }
 
-      internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
-        let projectBundle = location.appendingPathComponent(
-          "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
-        )
-        var project = try TextFile(
-          possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
-        )
-        var projectDefinition = try! String(file: Resources.Xcode.proofreadProject, origin: nil)
-        let encoding: String = String(projectDefinition.prefix(through: "\n")!.contents)
-        projectDefinition.drop(through: "*/\n\n")
-        projectDefinition.prepend(contentsOf: encoding)
-        projectDefinition.replaceMatches(
-          for: "[*target*]",
-          with: String(PackageRepository.proofreadTargetName.resolved())
-        )
-        projectDefinition.replaceMatches(for: "[*script*]", with: try script())
-        project.contents = projectDefinition
-        try project.writeChanges(for: self, output: output)
+    internal func refreshProofreadingXcodeProject(output: Command.Output) throws {
+      let projectBundle = location.appendingPathComponent(
+        "\(PackageRepository.proofreadTargetName.resolved()).xcodeproj"
+      )
+      var project = try TextFile(
+        possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
+      )
+      var projectDefinition = try! String(file: Resources.Xcode.proofreadProject, origin: nil)
+      let encoding: String = String(projectDefinition.prefix(through: "\n")!.contents)
+      projectDefinition.drop(through: "*/\n\n")
+      projectDefinition.prepend(contentsOf: encoding)
+      projectDefinition.replaceMatches(
+        for: "[*target*]",
+        with: String(PackageRepository.proofreadTargetName.resolved())
+      )
+      projectDefinition.replaceMatches(for: "[*script*]", with: try script())
+      project.contents = projectDefinition
+      try project.writeChanges(for: self, output: output)
 
-        var scheme = try TextFile(
-          possiblyAt: projectBundle.appendingPathComponent(
-            "xcshareddata/xcschemes/\(PackageRepository.proofreadTargetName.resolved()).xcscheme"
-          )
+      var scheme = try TextFile(
+        possiblyAt: projectBundle.appendingPathComponent(
+          "xcshareddata/xcschemes/\(PackageRepository.proofreadTargetName.resolved()).xcscheme"
         )
-        var schemeDefinition = Resources.Xcode.proofreadScheme
-        schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
-        schemeDefinition.replaceMatches(
-          for: "[*project*]",
-          with: projectBundle.lastPathComponent
-        )
-        scheme.contents = schemeDefinition
-        try scheme.writeChanges(for: self, output: output)
-      }
-    #endif
+      )
+      var schemeDefinition = Resources.Xcode.proofreadScheme
+      schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
+      schemeDefinition.replaceMatches(
+        for: "[*project*]",
+        with: projectBundle.lastPathComponent
+      )
+      scheme.contents = schemeDefinition
+      try scheme.writeChanges(for: self, output: output)
+    }
   }
 #endif

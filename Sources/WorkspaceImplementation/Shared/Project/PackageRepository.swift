@@ -31,10 +31,8 @@
   import SDGSwiftPackageManager
   import SDGSwiftConfigurationLoading
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-    import PackageModel
-    import PackageGraph
-  #endif
+  import PackageModel
+  import PackageGraph
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -80,15 +78,13 @@
       // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
       // Changes to support files do not require a reset (read‐me, etc.).
       private class ManifestCache {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          fileprivate var manifest: PackageModel.Manifest?
-          fileprivate var package: PackageModel.Package?
-          fileprivate var windowsPackage: PackageModel.Package?
-          fileprivate var packageGraph: PackageGraph?
-          fileprivate var windowsPackageGraph: PackageGraph?
-          fileprivate var products: [PackageModel.Product]?
-          fileprivate var dependenciesByName: [String: ResolvedPackage]?
-        #endif
+        fileprivate var manifest: PackageModel.Manifest?
+        fileprivate var package: PackageModel.Package?
+        fileprivate var windowsPackage: PackageModel.Package?
+        fileprivate var packageGraph: PackageGraph?
+        fileprivate var windowsPackageGraph: PackageGraph?
+        fileprivate var products: [PackageModel.Product]?
+        fileprivate var dependenciesByName: [String: ResolvedPackage]?
       }
       private static var manifestCaches: [URL: ManifestCache] = [:]
       private var manifestCache: ManifestCache {
@@ -178,124 +174,118 @@
 
     // MARK: - Miscellaneous Properties
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func isWorkspaceProject() throws -> Bool {
-        return try packageName() == "Workspace"
-      }
-    #endif
+    internal func isWorkspaceProject() throws -> Bool {
+      return try packageName() == "Workspace"
+    }
 
     // MARK: - Manifest
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func cachedManifest() throws -> PackageModel.Manifest {
-        return try cached(in: &manifestCache.manifest) {
-          return try manifest().get()
-        }
+    internal func cachedManifest() throws -> PackageModel.Manifest {
+      return try cached(in: &manifestCache.manifest) {
+        return try manifest().get()
       }
+    }
 
-      internal func cachedPackage() throws -> PackageModel.Package {
-        return try cached(in: &manifestCache.package) {
-          return try package().get()
-        }
+    internal func cachedPackage() throws -> PackageModel.Package {
+      return try cached(in: &manifestCache.package) {
+        return try package().get()
       }
+    }
 
-      internal func cachedPackageGraph() throws -> PackageGraph {
-        return try cached(in: &manifestCache.packageGraph) {
-          return try packageGraph().get()
-        }
+    internal func cachedPackageGraph() throws -> PackageGraph {
+      return try cached(in: &manifestCache.packageGraph) {
+        return try packageGraph().get()
       }
+    }
 
-      internal func packageName() throws -> StrictString {
-        return StrictString(try cachedManifest().name)
-      }
+    internal func packageName() throws -> StrictString {
+      return StrictString(try cachedManifest().name)
+    }
 
-      internal func projectName(
-        in localization: LocalizationIdentifier,
-        output: Command.Output
-      ) throws -> StrictString {
-        return try configuration(output: output).projectName[localization] ?? packageName()
-      }
+    internal func projectName(
+      in localization: LocalizationIdentifier,
+      output: Command.Output
+    ) throws -> StrictString {
+      return try configuration(output: output).projectName[localization] ?? packageName()
+    }
 
-      internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
-        let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
-          return LocalizationIdentifier(localization.code)
-        }).resolved()
-        return try projectName(in: identifier, output: output)
-      }
+    internal func localizedIsolatedProjectName(output: Command.Output) throws -> StrictString {
+      let identifier = UserFacing<LocalizationIdentifier, InterfaceLocalization>({ localization in
+        return LocalizationIdentifier(localization.code)
+      }).resolved()
+      return try projectName(in: identifier, output: output)
+    }
 
-      internal func products() throws -> [PackageModel.Product] {
-        return try cached(in: &manifestCache.products) {
-          var products: [PackageModel.Product] = []
+    internal func products() throws -> [PackageModel.Product] {
+      return try cached(in: &manifestCache.products) {
+        var products: [PackageModel.Product] = []
 
-          // Filter out tools which have not been declared as products.
-          let declaredTools: Set<String> = Set(
-            try cachedManifest().products.lazy.map({ $0.name })
-          )
+        // Filter out tools which have not been declared as products.
+        let declaredTools: Set<String> = Set(
+          try cachedManifest().products.lazy.map({ $0.name })
+        )
 
-          for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
-            switch product.type {
-            case .library:
+        for product in try cachedPackage().products where ¬product.name.hasPrefix("_") {
+          switch product.type {
+          case .library:
+            products.append(product)
+          case .executable:
+            if product.name ∈ declaredTools {
               products.append(product)
-            case .executable:
-              if product.name ∈ declaredTools {
-                products.append(product)
-              } else {
-                continue  // skip
-              }
-            case .test:
+            } else {
               continue  // skip
             }
+          case .test:
+            continue  // skip
           }
-          return products
         }
+        return products
       }
+    }
 
-      internal func dependenciesByName() throws -> [String: ResolvedPackage] {
-        return try cached(in: &manifestCache.dependenciesByName) {
-          let graph = try cachedPackageGraph()
+    internal func dependenciesByName() throws -> [String: ResolvedPackage] {
+      return try cached(in: &manifestCache.dependenciesByName) {
+        let graph = try cachedPackageGraph()
 
-          var result: [String: ResolvedPackage] = [:]
-          for dependency in graph.packages {
-            result[dependency.name] = dependency
-          }
-          return result
+        var result: [String: ResolvedPackage] = [:]
+        for dependency in graph.packages {
+          result[dependency.name] = dependency
         }
+        return result
       }
-    #endif
+    }
 
     // MARK: - Configuration
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func configurationContext() throws -> WorkspaceContext {
-        return try cached(in: &configurationCache.configurationContext) {
+    internal func configurationContext() throws -> WorkspaceContext {
+      return try cached(in: &configurationCache.configurationContext) {
 
-          let products = try self.products()
-            .map { (product: PackageModel.Product) -> PackageManifest.Product in
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
-              let type: PackageManifest.Product.ProductType
-              let modules: [String]
-              switch product.type {
-              case .library:
-                type = .library
-                modules = product.targets.map { $0.name }
-              case .executable:
-                type = .executable
-                modules = []
-              case .test:
-                unreachable()
-              }
-
-              return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .test:
+              unreachable()
             }
 
-          let manifest = PackageManifest(
-            _packageName: String(try packageName()),
-            products: products
-          )
-          return WorkspaceContext(_location: location, manifest: manifest)
-        }
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+          }
+
+        let manifest = PackageManifest(
+          _packageName: String(try packageName()),
+          products: products
+        )
+        return WorkspaceContext(_location: location, manifest: manifest)
       }
-    #endif
+    }
 
     internal static let workspaceConfigurationNames = UserFacing<
       StrictString, InterfaceLocalization
@@ -309,37 +299,35 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
-        return try cached(in: &configurationCache.configuration) {
+    internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
+      return try cached(in: &configurationCache.configuration) {
 
-          // Provide the context in case resolution happens internally.
-          WorkspaceContext.current = try configurationContext()
+        // Provide the context in case resolution happens internally.
+        WorkspaceContext.current = try configurationContext()
 
-          let result: WorkspaceConfiguration
-          if try isWorkspaceProject() {
-            result = WorkspaceProjectConfiguration.configuration
-          } else {
-            result = try WorkspaceConfiguration.load(
-              configuration: WorkspaceConfiguration.self,
-              named: PackageRepository.workspaceConfigurationNames,
-              from: location,
-              linkingAgainst: "WorkspaceConfiguration",
-              in: "Workspace",
-              from: Metadata.packageURL,
-              at: Metadata.latestStableVersion,
-              minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
-              context: try configurationContext(),
-              reportProgress: { output.print($0) }
-            ).get()
-          }
-
-          // Force lazy options to resolve under the right context before it changes.
-          let encoded = try JSONEncoder().encode(result)
-          return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+        let result: WorkspaceConfiguration
+        if try isWorkspaceProject() {
+          result = WorkspaceProjectConfiguration.configuration
+        } else {
+          result = try WorkspaceConfiguration.load(
+            configuration: WorkspaceConfiguration.self,
+            named: PackageRepository.workspaceConfigurationNames,
+            from: location,
+            linkingAgainst: "WorkspaceConfiguration",
+            in: "Workspace",
+            from: Metadata.packageURL,
+            at: Metadata.latestStableVersion,
+            minimumMacOSVersion: PackageRepository.macOSDeploymentVersion,
+            context: try configurationContext(),
+            reportProgress: { output.print($0) }
+          ).get()
         }
+
+        // Force lazy options to resolve under the right context before it changes.
+        let encoded = try JSONEncoder().encode(result)
+        return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       }
-    #endif
+    }
 
     private static var fellBackToUserLocalization = false
     internal static func resetLocalizationFallback() {
@@ -384,71 +372,65 @@
         }
       }).resolved()
     }
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier
-      {
-        if let specified = try configuration(output: output).documentation.localizations.first {
-          return specified
-        } else {
-          PackageRepository.fellBackToUserLocalization = true
-          return LocalizationIdentifier(AnyLocalization.resolved())
-        }
+    internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier {
+      if let specified = try configuration(output: output).documentation.localizations.first {
+        return specified
+      } else {
+        PackageRepository.fellBackToUserLocalization = true
+        return LocalizationIdentifier(AnyLocalization.resolved())
       }
+    }
 
-      internal func fileHeader(output: Command.Output) throws -> StrictString {
-        return try cached(in: &configurationCache.fileHeader) {
-          return try configuration(output: output).fileHeaders.contents.resolve(
-            configuration(output: output)
-          )
-        }
+    internal func fileHeader(output: Command.Output) throws -> StrictString {
+      return try cached(in: &configurationCache.fileHeader) {
+        return try configuration(output: output).fileHeaders.contents.resolve(
+          configuration(output: output)
+        )
       }
+    }
 
-      internal func documentationCopyright(
-        output: Command.Output
-      ) throws -> [LocalizationIdentifier: StrictString] {
-        return try cached(in: &configurationCache.documentationCopyright) {
-          return try configuration(output: output).documentation.api.copyrightNotice.resolve(
-            configuration(output: output)
-          )
-        }
+    internal func documentationCopyright(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: StrictString] {
+      return try cached(in: &configurationCache.documentationCopyright) {
+        return try configuration(output: output).documentation.api.copyrightNotice.resolve(
+          configuration(output: output)
+        )
       }
+    }
 
-      internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString]
-      {
-        return try cached(in: &configurationCache.readMe) {
-          return try configuration(output: output).documentation.readMe.contents.resolve(
-            configuration(output: output)
-          )
-        }
+    internal func readMe(output: Command.Output) throws -> [LocalizationIdentifier: StrictString] {
+      return try cached(in: &configurationCache.readMe) {
+        return try configuration(output: output).documentation.readMe.contents.resolve(
+          configuration(output: output)
+        )
       }
+    }
 
-      internal func contributingInstructions(
-        output: Command.Output
-      ) throws -> [LocalizationIdentifier: Markdown] {
-        return try cached(in: &configurationCache.contributingInstructions) {
-          return try configuration(output: output).gitHub.contributingInstructions.resolve(
-            configuration(output: output)
-          )
-        }
+    internal func contributingInstructions(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: Markdown] {
+      return try cached(in: &configurationCache.contributingInstructions) {
+        return try configuration(output: output).gitHub.contributingInstructions.resolve(
+          configuration(output: output)
+        )
       }
+    }
 
-      internal func issueTemplates(
-        output: Command.Output
-      ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
-        return try cached(in: &configurationCache.issueTemplates) {
-          return try configuration(output: output).gitHub.issueTemplates.resolve(
-            configuration(output: output)
-          )
-        }
+    internal func issueTemplates(
+      output: Command.Output
+    ) throws -> [LocalizationIdentifier: [IssueTemplate]] {
+      return try cached(in: &configurationCache.issueTemplates) {
+        return try configuration(output: output).gitHub.issueTemplates.resolve(
+          configuration(output: output)
+        )
       }
-    #endif
+    }
 
     // MARK: - Files
 
     internal func allFiles() throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return []
-      #elseif PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         return []
       #else
         return try cached(in: &fileCache.allFiles) { () -> [URL] in
@@ -464,8 +446,6 @@
 
     internal func trackedFiles(output: Command.Output) throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return []
-      #elseif PLATFORM_LACKS_FOUNDATION_PROCESS
         return []
       #else
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
@@ -486,26 +466,24 @@
       #endif
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func sourceFiles(output: Command.Output) throws -> [URL] {
-        let configuration = try self.configuration(output: output)
-        let ignoredTypes = configuration.repository.ignoredFileTypes
-        let ignoredPaths = configuration.repository.ignoredPaths.map {
-          location.appendingPathComponent($0)
-        }
+    internal func sourceFiles(output: Command.Output) throws -> [URL] {
+      let configuration = try self.configuration(output: output)
+      let ignoredTypes = configuration.repository.ignoredFileTypes
+      let ignoredPaths = configuration.repository.ignoredPaths.map {
+        location.appendingPathComponent($0)
+      }
 
-        return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
-          return try trackedFiles(output: output).filter { url in
-            for path in ignoredPaths {
-              if url.is(in: path) {
-                return false
-              }
+      return try cached(in: &fileCache.sourceFiles) { () -> [URL] in
+        return try trackedFiles(output: output).filter { url in
+          for path in ignoredPaths {
+            if url.is(in: path) {
+              return false
             }
-            return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
           }
+          return url.pathExtension ∉ ignoredTypes ∧ url.lastPathComponent ∉ ignoredTypes
         }
       }
-    #endif
+    }
 
     internal func _withExampleCache(
       _ operation: () throws -> [StrictString: StrictString]
@@ -534,109 +512,99 @@
     // MARK: - Actions
 
     internal func delete(_ location: URL, output: Command.Output) {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
+      if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
-          output.print(
-            UserFacingDynamic<
-              StrictString,
-              InterfaceLocalization,
-              String
-            >({ localization, path in
-              switch localization {
-              case .englishUnitedKingdom:
-                return "Deleting ‘\(path)’..."
-              case .englishUnitedStates, .englishCanada:
-                return "Deleting “\(path)”..."
-              case .deutschDeutschland:
-                return "„\(path)“ wird gelöscht ..."
-              }
-            }).resolved(using: location.path(relativeTo: self.location))
-          )
+        output.print(
+          UserFacingDynamic<
+            StrictString,
+            InterfaceLocalization,
+            String
+          >({ localization, path in
+            switch localization {
+            case .englishUnitedKingdom:
+              return "Deleting ‘\(path)’..."
+            case .englishUnitedStates, .englishCanada:
+              return "Deleting “\(path)”..."
+            case .deutschDeutschland:
+              return "„\(path)“ wird gelöscht ..."
+            }
+          }).resolved(using: location.path(relativeTo: self.location))
+        )
 
-          try? FileManager.default.removeItem(at: location)
-          if location.pathExtension == "swift" {
-            // @exempt(from: tests) Nothing deletes Swift files yet.
-            resetManifestCache(debugReason: location.lastPathComponent)
-          } else {
-            resetFileCache(debugReason: location.lastPathComponent)
-          }
+        try? FileManager.default.removeItem(at: location)
+        if location.pathExtension == "swift" {
+          // @exempt(from: tests) Nothing deletes Swift files yet.
+          resetManifestCache(debugReason: location.lastPathComponent)
+        } else {
+          resetFileCache(debugReason: location.lastPathComponent)
         }
-      #endif
+      }
     }
 
     // MARK: - Related Projects
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      private static let relatedProjectCache = FileManager.default.url(
-        in: .cache,
-        at: "Related Projects"
+    private static let relatedProjectCache = FileManager.default.url(
+      in: .cache,
+      at: "Related Projects"
+    )
+
+    internal static func relatedPackage(
+      _ package: SDGSwift.Package,
+      output: Command.Output
+    ) throws -> PackageRepository {
+      let directoryName = StrictString(package.url.lastPathComponent)
+      let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
+
+      let commit = try package.latestCommitIdentifier().get()
+
+      let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(
+        String(directoryName)
       )
-    #endif
 
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-      internal static func relatedPackage(
-        _ package: SDGSwift.Package,
-        output: Command.Output
-      ) throws -> PackageRepository {
-        let directoryName = StrictString(package.url.lastPathComponent)
-        let cache = relatedProjectCache.appendingPathComponent(String(directoryName))
+      let repository: PackageRepository
+      if (try? repositoryLocation.checkResourceIsReachable()) == true {
+        repository = PackageRepository(at: repositoryLocation)
+      } else {
+        try? FileManager.default.removeItem(at: cache)  // Remove older commits.
+        do {
 
-        let commit = try package.latestCommitIdentifier().get()
-
-        let repositoryLocation = cache.appendingPathComponent(commit).appendingPathComponent(
-          String(directoryName)
-        )
-
-        let repository: PackageRepository
-        if (try? repositoryLocation.checkResourceIsReachable()) == true {
-          repository = PackageRepository(at: repositoryLocation)
-        } else {
-          try? FileManager.default.removeItem(at: cache)  // Remove older commits.
-          do {
-
-            output.print(
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom:  // @exempt(from: tests)
-                  // Exemption because it is too time consuming to rebuild cache for each localization.
-                  return "Fetching ‘\(package.url.lastPathComponent)’..."
-                case .englishUnitedStates, .englishCanada:
-                  return "Fetching “\(package.url.lastPathComponent)”..."
-                case .deutschDeutschland:  // @exempt(from: tests)
-                  return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
-                }
-              }).resolved()
-            )
-
-            repository = try PackageRepository.clone(
-              package,
-              to: repositoryLocation,
-              at: .development,
-              shallow: true
-            ).get()
-          } catch {
-            // Clean up if there is a failure.
-            try? FileManager.default.removeItem(at: cache)
-
-            throw error
-          }
-        }
-
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-          // Remove deprecated cache.
-          try? FileManager.default.removeItem(
-            at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom:  // @exempt(from: tests)
+                // Exemption because it is too time consuming to rebuild cache for each localization.
+                return "Fetching ‘\(package.url.lastPathComponent)’..."
+              case .englishUnitedStates, .englishCanada:
+                return "Fetching “\(package.url.lastPathComponent)”..."
+              case .deutschDeutschland:  // @exempt(from: tests)
+                return "„\(package.url.lastPathComponent)“ wird abgerufen ..."
+              }
+            }).resolved()
           )
-          return repository
-        #endif
+
+          repository = try PackageRepository.clone(
+            package,
+            to: repositoryLocation,
+            at: .development,
+            shallow: true
+          ).get()
+        } catch {
+          // Clean up if there is a failure.
+          try? FileManager.default.removeItem(at: cache)
+
+          throw error
+        }
       }
-    #endif
+
+      // Remove deprecated cache.
+      try? FileManager.default.removeItem(
+        at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
+      )
+      return repository
+    }
 
     internal static func emptyRelatedProjectCache() {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        try? FileManager.default.removeItem(at: relatedProjectCache)
-      #endif
+      try? FileManager.default.removeItem(at: relatedProjectCache)
     }
   }
 #endif

@@ -46,30 +46,28 @@
       }
     })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let token = node as? ExtendedTokenSyntax,
-          token.kind == .callout,
-          token.text.lowercased() == "parameter"
-        {
+      if let token = node as? ExtendedTokenSyntax,
+        token.kind == .callout,
+        token.text.lowercased() == "parameter"
+      {
 
-          reportViolation(
-            in: file,
-            at: token.range(in: context),
-            message: message,
-            status: status
-          )
-        }
+        reportViolation(
+          in: file,
+          at: token.range(in: context),
+          message: message,
+          status: status
+        )
       }
-    #endif
+    }
   }
 #endif

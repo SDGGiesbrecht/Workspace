@@ -14,21 +14,21 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGSwiftSource
+  import SDGSwift
+  import SDGSwiftSource
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     private func refreshReadMe(
       at location: URL,
       for localization: LocalizationIdentifier,
@@ -115,5 +115,5 @@ extension PackageRepository {
         }
       }
     }
-  #endif
-}
+  }
+#endif

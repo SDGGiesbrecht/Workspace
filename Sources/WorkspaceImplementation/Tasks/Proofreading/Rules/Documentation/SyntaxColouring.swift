@@ -49,33 +49,31 @@
       }
     })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let codeDelimiter = node as? ExtendedTokenSyntax,
-          codeDelimiter.kind == .codeDelimiter,
-          let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
-          codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
-        {
+      if let codeDelimiter = node as? ExtendedTokenSyntax,
+        codeDelimiter.kind == .codeDelimiter,
+        let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
+        codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
+      {
 
-          if codeBlock.language == nil {
-            reportViolation(
-              in: file,
-              at: codeDelimiter.range(in: context),
-              message: message,
-              status: status
-            )
-          }
+        if codeBlock.language == nil {
+          reportViolation(
+            in: file,
+            at: codeDelimiter.range(in: context),
+            message: message,
+            status: status
+          )
         }
       }
-    #endif
+    }
   }
 #endif

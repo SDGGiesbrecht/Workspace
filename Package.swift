@@ -788,16 +788,10 @@ for target in package.targets {
     // Internal‐only:
     // #workaround(Swift 5.3.3, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.Data.write(to:).)
-    .define("PLATFORM_LACKS_FOUNDATION_DATA_WRITE_TO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS", .when(platforms: [.wasi, .tvOS, .iOS, .watchOS])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.ProcessInfo.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.URL.resourceIsReachable().)
-    .define("PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
     .define(
@@ -806,26 +800,11 @@ for target in package.targets {
     ),
     // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
-    .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])
-    ),
-    // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
-    // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
-    .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
     .define(

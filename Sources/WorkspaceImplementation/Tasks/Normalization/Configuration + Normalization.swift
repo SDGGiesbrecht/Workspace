@@ -15,25 +15,23 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-    import Foundation
+  import Foundation
 
-    import SwiftFormatConfiguration
+  import SwiftFormatConfiguration
 
-    extension Configuration {
+  extension Configuration {
 
-      internal func reducedToMachineResponsibilities() -> Configuration {
-        /*
+    internal func reducedToMachineResponsibilities() -> Configuration {
+      /*
      Machines should be responsible for:
      • Text wrapping, because it is a matter of display and should not be hard‐coded in the first place.
      • Indentation, for the same reason, and also because various tools tear it back and forth.
 
      For other rules, while it is helpful to have a safety net to catch oversights, human beings deserve the opportunity to learn from their mistakes. Automatically cleaning up after them is an insult to humanity and encourages laziness. Writing something right the first time is faster than writing it wrong and then tasking a machine to fix it.
      */
-        var copy = self
-        copy.rules = [:]
-        return copy
-      }
+      var copy = self
+      copy.rules = [:]
+      return copy
     }
-  #endif
+  }
 #endif

@@ -14,19 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func refreshLicence(output: Command.Output) throws {
 
       guard let licence = try configuration(output: output).licence.licence else {
@@ -68,5 +68,5 @@ extension PackageRepository {
       // Delete alternate licence files to prevent duplicates.
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)
     }
-  #endif
-}
+  }
+#endif

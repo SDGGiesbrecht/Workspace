@@ -23,9 +23,7 @@
 
   import SDGCommandLine
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    import SwiftSyntax
-  #endif
+  import SwiftSyntax
   import SDGSwiftSource
   import SDGHTML
 
@@ -209,33 +207,31 @@
       return result
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      private static func generateIndices(
-        for package: PackageAPI,
-        tools: PackageCLI,
-        installation: [LocalizationIdentifier: StrictString],
-        importing: [LocalizationIdentifier: StrictString],
-        relatedProjects: [LocalizationIdentifier: StrictString],
-        about: [LocalizationIdentifier: StrictString],
-        localizations: [LocalizationIdentifier]
-      ) -> [LocalizationIdentifier: StrictString] {
-        var result: [LocalizationIdentifier: StrictString] = [:]
-        for localization in localizations {
-          purgingAutoreleased {
-            result[localization] = generateIndex(
-              for: package,
-              tools: tools,
-              hasInstallation: installation[localization] ≠ nil,
-              hasImporting: importing[localization] ≠ nil,
-              hasRelatedProjects: relatedProjects[localization] ≠ nil,
-              hasAbout: about[localization] ≠ nil,
-              localization: localization
-            )
-          }
+    private static func generateIndices(
+      for package: PackageAPI,
+      tools: PackageCLI,
+      installation: [LocalizationIdentifier: StrictString],
+      importing: [LocalizationIdentifier: StrictString],
+      relatedProjects: [LocalizationIdentifier: StrictString],
+      about: [LocalizationIdentifier: StrictString],
+      localizations: [LocalizationIdentifier]
+    ) -> [LocalizationIdentifier: StrictString] {
+      var result: [LocalizationIdentifier: StrictString] = [:]
+      for localization in localizations {
+        purgingAutoreleased {
+          result[localization] = generateIndex(
+            for: package,
+            tools: tools,
+            hasInstallation: installation[localization] ≠ nil,
+            hasImporting: importing[localization] ≠ nil,
+            hasRelatedProjects: relatedProjects[localization] ≠ nil,
+            hasAbout: about[localization] ≠ nil,
+            localization: localization
+          )
         }
-        return result
       }
-    #endif
+      return result
+    }
 
     private static func packageHeader(localization: LocalizationIdentifier) -> StrictString {
       if let match = localization._reasonableMatch {
@@ -250,221 +246,219 @@
       }
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      private static func generateIndex(
-        for package: PackageAPI,
-        tools: PackageCLI,
-        hasInstallation: Bool,
-        hasImporting: Bool,
-        hasRelatedProjects: Bool,
-        hasAbout: Bool,
-        localization: LocalizationIdentifier
-      ) -> StrictString {
-        var result: [StrictString] = []
+    private static func generateIndex(
+      for package: PackageAPI,
+      tools: PackageCLI,
+      hasInstallation: Bool,
+      hasImporting: Bool,
+      hasRelatedProjects: Bool,
+      hasAbout: Bool,
+      localization: LocalizationIdentifier
+    ) -> StrictString {
+      var result: [StrictString] = []
 
-        result.append(
-          generateIndexSection(
-            named: packageHeader(localization: localization),
-            identifier: .package,
-            contents: [
-              ElementSyntax(
-                "a",
-                attributes: [
-                  "href":
-                    "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
-                ],
-                contents: HTML.escapeTextForCharacterData(
-                  StrictString(package.name.source())
-                ),
-                inline: false
-              ).normalizedSource()
-            ].joinedAsLines()
-          )
-        )
-
-        if hasInstallation {
-          result.append(
-            generateLoneIndexEntry(
-              named: installation(localization: localization),
-              target: installationLocation(localization: localization)
-            )
-          )
-        }
-        if hasImporting {
-          result.append(
-            generateLoneIndexEntry(
-              named: importing(localization: localization),
-              target: importingLocation(localization: localization)
-            )
-          )
-        }
-
-        if ¬tools.commands.isEmpty {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.toolsHeader(localization: localization),
-              identifier: .tools,
-              tools: tools,
-              localization: localization
-            )
-          )
-        }
-
-        if ¬package.libraries.lazy
-          .filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.librariesHeader(localization: localization),
-              identifier: .libraries,
-              apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.modules.lazy.filter({
-          localization ∉ APIElement.module($0).skippedLocalizations
-        }).isEmpty {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.modulesHeader(localization: localization),
-              identifier: .modules,
-              apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations })
-          .isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.typesHeader(localization: localization),
-              identifier: .types,
-              apiEntries: package.types.lazy.map({ APIElement.type($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.uniqueExtensions
-          .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.extensionsHeader(localization: localization),
-              identifier: .extensions,
-              apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.protocols.lazy.filter({
-          localization ∉ APIElement.protocol($0).skippedLocalizations
-        }).isEmpty {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.protocolsHeader(localization: localization),
-              identifier: .protocols,
-              apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.functions.lazy.filter({
-          localization ∉ APIElement.function($0).skippedLocalizations
-        }).isEmpty {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.functionsHeader(localization: localization),
-              identifier: .functions,
-              apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.globalVariables
-          .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.variablesHeader(localization: localization),
-              identifier: .variables,
-              apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.operators
-          .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.operatorsHeader(localization: localization),
-              identifier: .operators,
-              apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
-              localization: localization
-            )
-          )
-        }
-        if ¬package.precedenceGroups
-          .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty
-        {
-          result.append(
-            generateIndexSection(
-              named: SymbolPage.precedenceGroupsHeader(localization: localization),
-              identifier: .precedenceGroups,
-              apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
-              localization: localization
-            )
-          )
-        }
-        if hasRelatedProjects {
-          result.append(
-            generateLoneIndexEntry(
-              named: relatedProjects(localization: localization),
-              target: relatedProjectsLocation(localization: localization)
-            )
-          )
-        }
-        if hasAbout {
-          result.append(
-            generateLoneIndexEntry(
-              named: about(localization: localization),
-              target: aboutLocation(localization: localization)
-            )
-          )
-        }
-
-        return result.joinedAsLines()
-      }
-
-      private static func generateIndexSection(
-        named name: StrictString,
-        identifier: IndexSectionIdentifier,
-        apiEntries: [APIElement],
-        localization: LocalizationIdentifier
-      ) -> StrictString {
-        var entries: [StrictString] = []
-        for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
-          entries.append(
+      result.append(
+        generateIndexSection(
+          named: packageHeader(localization: localization),
+          identifier: .package,
+          contents: [
             ElementSyntax(
               "a",
               attributes: [
                 "href":
-                  "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                  "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
               ],
-              contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
+              contents: HTML.escapeTextForCharacterData(
+                StrictString(package.name.source())
+              ),
               inline: false
             ).normalizedSource()
+          ].joinedAsLines()
+        )
+      )
+
+      if hasInstallation {
+        result.append(
+          generateLoneIndexEntry(
+            named: installation(localization: localization),
+            target: installationLocation(localization: localization)
           )
-        }
-        return generateIndexSection(
-          named: name,
-          identifier: identifier,
-          contents: entries.joinedAsLines()
         )
       }
-    #endif
+      if hasImporting {
+        result.append(
+          generateLoneIndexEntry(
+            named: importing(localization: localization),
+            target: importingLocation(localization: localization)
+          )
+        )
+      }
+
+      if ¬tools.commands.isEmpty {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.toolsHeader(localization: localization),
+            identifier: .tools,
+            tools: tools,
+            localization: localization
+          )
+        )
+      }
+
+      if ¬package.libraries.lazy
+        .filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.librariesHeader(localization: localization),
+            identifier: .libraries,
+            apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.modules.lazy.filter({
+        localization ∉ APIElement.module($0).skippedLocalizations
+      }).isEmpty {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.modulesHeader(localization: localization),
+            identifier: .modules,
+            apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations })
+        .isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.typesHeader(localization: localization),
+            identifier: .types,
+            apiEntries: package.types.lazy.map({ APIElement.type($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.uniqueExtensions
+        .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.extensionsHeader(localization: localization),
+            identifier: .extensions,
+            apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.protocols.lazy.filter({
+        localization ∉ APIElement.protocol($0).skippedLocalizations
+      }).isEmpty {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.protocolsHeader(localization: localization),
+            identifier: .protocols,
+            apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.functions.lazy.filter({
+        localization ∉ APIElement.function($0).skippedLocalizations
+      }).isEmpty {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.functionsHeader(localization: localization),
+            identifier: .functions,
+            apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.globalVariables
+        .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.variablesHeader(localization: localization),
+            identifier: .variables,
+            apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.operators
+        .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.operatorsHeader(localization: localization),
+            identifier: .operators,
+            apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
+            localization: localization
+          )
+        )
+      }
+      if ¬package.precedenceGroups
+        .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty
+      {
+        result.append(
+          generateIndexSection(
+            named: SymbolPage.precedenceGroupsHeader(localization: localization),
+            identifier: .precedenceGroups,
+            apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
+            localization: localization
+          )
+        )
+      }
+      if hasRelatedProjects {
+        result.append(
+          generateLoneIndexEntry(
+            named: relatedProjects(localization: localization),
+            target: relatedProjectsLocation(localization: localization)
+          )
+        )
+      }
+      if hasAbout {
+        result.append(
+          generateLoneIndexEntry(
+            named: about(localization: localization),
+            target: aboutLocation(localization: localization)
+          )
+        )
+      }
+
+      return result.joinedAsLines()
+    }
+
+    private static func generateIndexSection(
+      named name: StrictString,
+      identifier: IndexSectionIdentifier,
+      apiEntries: [APIElement],
+      localization: LocalizationIdentifier
+    ) -> StrictString {
+      var entries: [StrictString] = []
+      for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
+        entries.append(
+          ElementSyntax(
+            "a",
+            attributes: [
+              "href":
+                "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+            ],
+            contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
+            inline: false
+          ).normalizedSource()
+        )
+      }
+      return generateIndexSection(
+        named: name,
+        identifier: identifier,
+        contents: entries.joinedAsLines()
+      )
+    }
 
     private static func generateIndexSection(
       named name: StrictString,
@@ -606,90 +600,86 @@
 
     // MARK: - Initialization
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      internal init(
-        localizations: [LocalizationIdentifier],
-        developmentLocalization: LocalizationIdentifier,
-        api: PackageAPI,
-        cli: PackageCLI,
-        packageURL: URL?,
-        version: Version?,
-        platforms: [LocalizationIdentifier: [StrictString]],
-        installation: [LocalizationIdentifier: StrictString],
-        importing: [LocalizationIdentifier: StrictString],
-        relatedProjects: [LocalizationIdentifier: StrictString],
-        about: [LocalizationIdentifier: StrictString],
-        copyright: [LocalizationIdentifier?: StrictString],
-        customReplacements: [(StrictString, StrictString)],
-        output: Command.Output
-      ) {
+    internal init(
+      localizations: [LocalizationIdentifier],
+      developmentLocalization: LocalizationIdentifier,
+      api: PackageAPI,
+      cli: PackageCLI,
+      packageURL: URL?,
+      version: Version?,
+      platforms: [LocalizationIdentifier: [StrictString]],
+      installation: [LocalizationIdentifier: StrictString],
+      importing: [LocalizationIdentifier: StrictString],
+      relatedProjects: [LocalizationIdentifier: StrictString],
+      about: [LocalizationIdentifier: StrictString],
+      copyright: [LocalizationIdentifier?: StrictString],
+      customReplacements: [(StrictString, StrictString)],
+      output: Command.Output
+    ) {
 
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Processing API..."
-            case .deutschDeutschland:
-              return "Die Programmierschnitstelle wird verarbeitet ..."
-            }
-          }).resolved()
-        )
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Processing API..."
+          case .deutschDeutschland:
+            return "Die Programmierschnitstelle wird verarbeitet ..."
+          }
+        }).resolved()
+      )
 
-        self.localizations = localizations
-        self.developmentLocalization = developmentLocalization
-        self.packageAPI = api
-        self.api = APIElement.package(api)
-        self.cli = cli
-        api.computeMergedAPI()
+      self.localizations = localizations
+      self.developmentLocalization = developmentLocalization
+      self.packageAPI = api
+      self.api = APIElement.package(api)
+      self.cli = cli
+      api.computeMergedAPI()
 
-        self.packageImport = PackageInterface.specify(package: packageURL, version: version)
-        self.installation = installation
-        self.importing = importing
-        self.relatedProjects = relatedProjects
-        self.about = about
-        self.copyrightNotices = copyright
+      self.packageImport = PackageInterface.specify(package: packageURL, version: version)
+      self.installation = installation
+      self.importing = importing
+      self.relatedProjects = relatedProjects
+      self.about = about
+      self.copyrightNotices = copyright
 
-        self.packageIdentifiers = api.identifierList()
+      self.packageIdentifiers = api.identifierList()
 
-        APIElement.package(api).determine(
-          localizations: localizations,
+      APIElement.package(api).determine(
+        localizations: localizations,
+        customReplacements: customReplacements
+      )
+      var paths: [LocalizationIdentifier: [String: String]] = [:]
+      for localization in localizations {
+        paths[localization] = APIElement.package(api).determinePaths(
+          for: localization,
           customReplacements: customReplacements
         )
-        var paths: [LocalizationIdentifier: [String: String]] = [:]
-        for localization in localizations {
-          paths[localization] = APIElement.package(api).determinePaths(
-            for: localization,
-            customReplacements: customReplacements
-          )
-        }
-        APIElement.package(api).determineLocalizedPaths(localizations: localizations)
-        self.symbolLinks = paths.mapValues { localization in
-          localization.mapValues { link in
-            return HTML.percentEncodeURLPath(link)
-          }
-        }
-
-        self.indices = PackageInterface.generateIndices(
-          for: api,
-          tools: cli,
-          installation: installation,
-          importing: importing,
-          relatedProjects: relatedProjects,
-          about: about,
-          localizations: localizations
-        )
-        self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
       }
-    #endif
+      APIElement.package(api).determineLocalizedPaths(localizations: localizations)
+      self.symbolLinks = paths.mapValues { localization in
+        localization.mapValues { link in
+          return HTML.percentEncodeURLPath(link)
+        }
+      }
+
+      self.indices = PackageInterface.generateIndices(
+        for: api,
+        tools: cli,
+        installation: installation,
+        importing: importing,
+        relatedProjects: relatedProjects,
+        about: about,
+        localizations: localizations
+      )
+      self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
+    }
 
     // MARK: - Properties
 
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      private let packageAPI: PackageAPI
-      private let api: APIElement
-    #endif
+    private let packageAPI: PackageAPI
+    private let api: APIElement
     private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
@@ -818,34 +808,32 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          try purgingAutoreleased {
-            let pageURL = api.pageURL(
-              in: outputDirectory,
-              for: localization,
-              customReplacements: customReplacements
-            )
-            try SymbolPage(
-              localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: "../",
-              navigationPath: [api],
-              packageImport: packageImport,
-              index: indices[localization]!,
-              sectionIdentifier: .package,
-              platforms: platforms[localization]!,
-              symbol: api,
-              package: packageAPI,
-              tools: cli,
-              copyright: copyright(for: localization, status: status),
-              packageIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks[localization]!,
-              status: status,
-              output: output,
-              coverageCheckOnly: coverageCheckOnly
-            )?.contents.save(to: pageURL)
-          }
-        #endif
+        try purgingAutoreleased {
+          let pageURL = api.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
+          try SymbolPage(
+            localization: localization,
+            allLocalizations: localizations,
+            pathToSiteRoot: "../",
+            navigationPath: [api],
+            packageImport: packageImport,
+            index: indices[localization]!,
+            sectionIdentifier: .package,
+            platforms: platforms[localization]!,
+            symbol: api,
+            package: packageAPI,
+            tools: cli,
+            copyright: copyright(for: localization, status: status),
+            packageIdentifiers: packageIdentifiers,
+            symbolLinks: symbolLinks[localization]!,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly
+          )?.contents.save(to: pageURL)
+        }
       }
     }
 
@@ -863,22 +851,20 @@
         for tool in cli.commands.values {
           try purgingAutoreleased {
             let location = tool.pageURL(in: outputDirectory, for: localization)
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-              try CommandPage(
-                localization: localization,
-                allLocalizations: localizations,
-                pathToSiteRoot: "../../",
-                package: api,
-                navigationPath: [tool],
-                packageImport: packageImport,
-                index: indices[localization]!,
-                platforms: platforms[localization]!,
-                command: tool,
-                copyright: copyright(for: localization, status: status),
-                customReplacements: customReplacements,
-                output: output
-              ).contents.save(to: location)
-            #endif
+            try CommandPage(
+              localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: "../../",
+              package: api,
+              navigationPath: [tool],
+              packageImport: packageImport,
+              index: indices[localization]!,
+              platforms: platforms[localization]!,
+              command: tool,
+              copyright: copyright(for: localization, status: status),
+              customReplacements: customReplacements,
+              output: output
+            ).contents.save(to: location)
 
             try outputNestedCommands(
               of: tool,
@@ -902,36 +888,34 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          for library in api.libraries.lazy.map({ APIElement.library($0) })
-          where library.exists(in: localization) {
-            try purgingAutoreleased {
-              let location = library.pageURL(
-                in: outputDirectory,
-                for: localization,
-                customReplacements: customReplacements
-              )
-              try SymbolPage(
-                localization: localization,
-                allLocalizations: localizations,
-                pathToSiteRoot: "../../",
-                navigationPath: [api, library],
-                packageImport: packageImport,
-                index: indices[localization]!,
-                sectionIdentifier: .libraries,
-                platforms: platforms[localization]!,
-                symbol: library,
-                package: packageAPI,
-                copyright: copyright(for: localization, status: status),
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks[localization]!,
-                status: status,
-                output: output,
-                coverageCheckOnly: coverageCheckOnly
-              )?.contents.save(to: location)
-            }
+        for library in api.libraries.lazy.map({ APIElement.library($0) })
+        where library.exists(in: localization) {
+          try purgingAutoreleased {
+            let location = library.pageURL(
+              in: outputDirectory,
+              for: localization,
+              customReplacements: customReplacements
+            )
+            try SymbolPage(
+              localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: "../../",
+              navigationPath: [api, library],
+              packageImport: packageImport,
+              index: indices[localization]!,
+              sectionIdentifier: .libraries,
+              platforms: platforms[localization]!,
+              symbol: library,
+              package: packageAPI,
+              copyright: copyright(for: localization, status: status),
+              packageIdentifiers: packageIdentifiers,
+              symbolLinks: symbolLinks[localization]!,
+              status: status,
+              output: output,
+              coverageCheckOnly: coverageCheckOnly
+            )?.contents.save(to: location)
           }
-        #endif
+        }
       }
     }
 
@@ -943,36 +927,34 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          for module in api.modules.lazy.map({ APIElement.module($0) })
-          where module.exists(in: localization) {
-            try purgingAutoreleased {
-              let location = module.pageURL(
-                in: outputDirectory,
-                for: localization,
-                customReplacements: customReplacements
-              )
-              try SymbolPage(
-                localization: localization,
-                allLocalizations: localizations,
-                pathToSiteRoot: "../../",
-                navigationPath: [api, module],
-                packageImport: packageImport,
-                index: indices[localization]!,
-                sectionIdentifier: .modules,
-                platforms: platforms[localization]!,
-                symbol: module,
-                package: packageAPI,
-                copyright: copyright(for: localization, status: status),
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks[localization]!,
-                status: status,
-                output: output,
-                coverageCheckOnly: coverageCheckOnly
-              )?.contents.save(to: location)
-            }
+        for module in api.modules.lazy.map({ APIElement.module($0) })
+        where module.exists(in: localization) {
+          try purgingAutoreleased {
+            let location = module.pageURL(
+              in: outputDirectory,
+              for: localization,
+              customReplacements: customReplacements
+            )
+            try SymbolPage(
+              localization: localization,
+              allLocalizations: localizations,
+              pathToSiteRoot: "../../",
+              navigationPath: [api, module],
+              packageImport: packageImport,
+              index: indices[localization]!,
+              sectionIdentifier: .modules,
+              platforms: platforms[localization]!,
+              symbol: module,
+              package: packageAPI,
+              copyright: copyright(for: localization, status: status),
+              packageIdentifiers: packageIdentifiers,
+              symbolLinks: symbolLinks[localization]!,
+              status: status,
+              output: output,
+              coverageCheckOnly: coverageCheckOnly
+            )?.contents.save(to: location)
           }
-        #endif
+        }
       }
     }
 
@@ -984,157 +966,49 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          for symbol in [
-            packageAPI.types.map({ APIElement.type($0) }),
-            packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
-            packageAPI.protocols.map({ APIElement.protocol($0) }),
-            packageAPI.functions.map({ APIElement.function($0) }),
-            packageAPI.globalVariables.map({ APIElement.variable($0) }),
-            packageAPI.operators.map({ APIElement.operator($0) }),
-            packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
-          ].joined()
-          where symbol.exists(in: localization) {
-            try purgingAutoreleased {
-              let location = symbol.pageURL(
-                in: outputDirectory,
-                for: localization,
-                customReplacements: customReplacements
-              )
-              let section: IndexSectionIdentifier
-              switch symbol {
-              case .package, .library, .module, .case, .initializer, .subscript, .conformance:
-                unreachable()
-              case .type:
-                section = .types
-              case .extension:
-                section = .extensions
-              case .protocol:
-                section = .protocols
-              case .function:
-                section = .functions
-              case .variable:
-                section = .variables
-              case .operator:
-                section = .operators
-              case .precedence:
-                section = .precedenceGroups
-              }
-              try SymbolPage(
-                localization: localization,
-                allLocalizations: localizations,
-                pathToSiteRoot: "../../",
-                navigationPath: [api, symbol],
-                packageImport: packageImport,
-                index: indices[localization]!,
-                sectionIdentifier: section,
-                platforms: platforms[localization]!,
-                symbol: symbol,
-                package: packageAPI,
-                copyright: copyright(for: localization, status: status),
-                packageIdentifiers: packageIdentifiers,
-                symbolLinks: symbolLinks[localization]!,
-                status: status,
-                output: output,
-                coverageCheckOnly: coverageCheckOnly
-              )?.contents.save(to: location)
-
-              switch symbol {
-              case .package, .library, .module, .case, .initializer, .variable, .subscript,
-                .function, .operator, .precedence, .conformance:
-                break
-              case .extension:
-                break  // Iterated separately below.
-              case .type, .protocol:
-                try outputNestedSymbols(
-                  of: symbol,
-                  namespace: [symbol],
-                  sectionIdentifier: section,
-                  to: outputDirectory,
-                  localization: localization,
-                  customReplacements: customReplacements,
-                  status: status,
-                  output: output,
-                  coverageCheckOnly: coverageCheckOnly
-                )
-              }
-            }
-          }
-
-          for `extension` in packageAPI.allExtensions {
-            let apiElement = APIElement.extension(`extension`)
-
-            var namespace = apiElement
-            var section: IndexSectionIdentifier = .extensions
-            for type in packageAPI.types where `extension`.isExtension(of: type) {
-              namespace = APIElement.type(type)
-              section = .types
-              break
-            }
-            if namespace == apiElement /* Still not resolved. */ {
-              for `protocol` in packageAPI.protocols
-              where `extension`.isExtension(of: `protocol`) {
-                namespace = APIElement.protocol(`protocol`)
-                section = .protocols
-                break
-              }
-            }
-
-            try outputNestedSymbols(
-              of: apiElement,
-              namespace: [namespace],
-              sectionIdentifier: section,
-              to: outputDirectory,
-              localization: localization,
-              customReplacements: customReplacements,
-              status: status,
-              output: output,
-              coverageCheckOnly: coverageCheckOnly
-            )
-          }
-        #endif
-      }
-    }
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      private func outputNestedSymbols(
-        of parent: APIElement,
-        namespace: [APIElement],
-        sectionIdentifier: IndexSectionIdentifier,
-        to outputDirectory: URL,
-        localization: LocalizationIdentifier,
-        customReplacements: [(StrictString, StrictString)],
-        status: DocumentationStatus,
-        output: Command.Output,
-        coverageCheckOnly: Bool
-      ) throws {
-
-        for symbol in [parent.children, parent.localizedChildren].joined()
-        where symbol.receivesPage ∧ symbol.exists(in: localization) {
+        for symbol in [
+          packageAPI.types.map({ APIElement.type($0) }),
+          packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
+          packageAPI.protocols.map({ APIElement.protocol($0) }),
+          packageAPI.functions.map({ APIElement.function($0) }),
+          packageAPI.globalVariables.map({ APIElement.variable($0) }),
+          packageAPI.operators.map({ APIElement.operator($0) }),
+          packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
+        ].joined()
+        where symbol.exists(in: localization) {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
               customReplacements: customReplacements
             )
-
-            var modifiedRoot: StrictString = "../../"
-            for _ in namespace.indices {
-              modifiedRoot += "../../".scalars
+            let section: IndexSectionIdentifier
+            switch symbol {
+            case .package, .library, .module, .case, .initializer, .subscript, .conformance:
+              unreachable()
+            case .type:
+              section = .types
+            case .extension:
+              section = .extensions
+            case .protocol:
+              section = .protocols
+            case .function:
+              section = .functions
+            case .variable:
+              section = .variables
+            case .operator:
+              section = .operators
+            case .precedence:
+              section = .precedenceGroups
             }
-
-            var navigation: [APIElement] = [api]
-            navigation += namespace as [APIElement]
-            navigation += [symbol]
-
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
-              pathToSiteRoot: modifiedRoot,
-              navigationPath: navigation,
+              pathToSiteRoot: "../../",
+              navigationPath: [api, symbol],
               packageImport: packageImport,
               index: indices[localization]!,
-              sectionIdentifier: sectionIdentifier,
+              sectionIdentifier: section,
               platforms: platforms[localization]!,
               symbol: symbol,
               package: packageAPI,
@@ -1150,11 +1024,13 @@
             case .package, .library, .module, .case, .initializer, .variable, .subscript,
               .function, .operator, .precedence, .conformance:
               break
-            case .type, .protocol, .extension:
+            case .extension:
+              break  // Iterated separately below.
+            case .type, .protocol:
               try outputNestedSymbols(
                 of: symbol,
-                namespace: namespace + [symbol],
-                sectionIdentifier: sectionIdentifier,
+                namespace: [symbol],
+                sectionIdentifier: section,
                 to: outputDirectory,
                 localization: localization,
                 customReplacements: customReplacements,
@@ -1165,8 +1041,110 @@
             }
           }
         }
+
+        for `extension` in packageAPI.allExtensions {
+          let apiElement = APIElement.extension(`extension`)
+
+          var namespace = apiElement
+          var section: IndexSectionIdentifier = .extensions
+          for type in packageAPI.types where `extension`.isExtension(of: type) {
+            namespace = APIElement.type(type)
+            section = .types
+            break
+          }
+          if namespace == apiElement /* Still not resolved. */ {
+            for `protocol` in packageAPI.protocols
+            where `extension`.isExtension(of: `protocol`) {
+              namespace = APIElement.protocol(`protocol`)
+              section = .protocols
+              break
+            }
+          }
+
+          try outputNestedSymbols(
+            of: apiElement,
+            namespace: [namespace],
+            sectionIdentifier: section,
+            to: outputDirectory,
+            localization: localization,
+            customReplacements: customReplacements,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly
+          )
+        }
       }
-    #endif
+    }
+
+    private func outputNestedSymbols(
+      of parent: APIElement,
+      namespace: [APIElement],
+      sectionIdentifier: IndexSectionIdentifier,
+      to outputDirectory: URL,
+      localization: LocalizationIdentifier,
+      customReplacements: [(StrictString, StrictString)],
+      status: DocumentationStatus,
+      output: Command.Output,
+      coverageCheckOnly: Bool
+    ) throws {
+
+      for symbol in [parent.children, parent.localizedChildren].joined()
+      where symbol.receivesPage ∧ symbol.exists(in: localization) {
+        try purgingAutoreleased {
+          let location = symbol.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements
+          )
+
+          var modifiedRoot: StrictString = "../../"
+          for _ in namespace.indices {
+            modifiedRoot += "../../".scalars
+          }
+
+          var navigation: [APIElement] = [api]
+          navigation += namespace as [APIElement]
+          navigation += [symbol]
+
+          try SymbolPage(
+            localization: localization,
+            allLocalizations: localizations,
+            pathToSiteRoot: modifiedRoot,
+            navigationPath: navigation,
+            packageImport: packageImport,
+            index: indices[localization]!,
+            sectionIdentifier: sectionIdentifier,
+            platforms: platforms[localization]!,
+            symbol: symbol,
+            package: packageAPI,
+            copyright: copyright(for: localization, status: status),
+            packageIdentifiers: packageIdentifiers,
+            symbolLinks: symbolLinks[localization]!,
+            status: status,
+            output: output,
+            coverageCheckOnly: coverageCheckOnly
+          )?.contents.save(to: location)
+
+          switch symbol {
+          case .package, .library, .module, .case, .initializer, .variable, .subscript,
+            .function, .operator, .precedence, .conformance:
+            break
+          case .type, .protocol, .extension:
+            try outputNestedSymbols(
+              of: symbol,
+              namespace: namespace + [symbol],
+              sectionIdentifier: sectionIdentifier,
+              to: outputDirectory,
+              localization: localization,
+              customReplacements: customReplacements,
+              status: status,
+              output: output,
+              coverageCheckOnly: coverageCheckOnly
+            )
+          }
+        }
+      }
+    }
 
     private func outputNestedCommands(
       of parent: CommandInterfaceInformation,
@@ -1194,9 +1172,7 @@
             var nestedPagePath = parent.relativePagePath[otherLocalization]!
             nestedPagePath.removeLast(5)  // .html
             nestedPagePath += "/"
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-              nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
-            #endif
+            nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
             nestedPagePath += "/"
             nestedPagePath += Page.sanitize(
               fileName: localized.name,
@@ -1216,22 +1192,20 @@
           var navigation = namespace
           navigation.append(information)
 
-          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-            try CommandPage(
-              localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: modifiedRoot,
-              package: api,
-              navigationPath: navigation,
-              packageImport: packageImport,
-              index: indices[localization]!,
-              platforms: platforms[localization]!,
-              command: information,
-              copyright: copyright(for: localization, status: status),
-              customReplacements: customReplacements,
-              output: output
-            ).contents.save(to: location)
-          #endif
+          try CommandPage(
+            localization: localization,
+            allLocalizations: localizations,
+            pathToSiteRoot: modifiedRoot,
+            package: api,
+            navigationPath: navigation,
+            packageImport: packageImport,
+            index: indices[localization]!,
+            platforms: platforms[localization]!,
+            command: information,
+            copyright: copyright(for: localization, status: status),
+            customReplacements: customReplacements,
+            output: output
+          ).contents.save(to: location)
 
           try outputNestedCommands(
             of: information,
@@ -1271,56 +1245,54 @@
             )
           }
           documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-            let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
-            let documentation = parsed.api().first!.documentation.last?.documentationComment
+          let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
+          let documentation = parsed.api().first!.documentation.last?.documentationComment
 
-            var pageContent = ""
-            for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
-              pageContent.append("\n")
-              pageContent.append(
-                contentsOf: paragraph.renderedHTML(
-                  localization: localization.code,
-                  symbolLinks: symbolLinks[localization]!
-                    .mapValues({ String(pathToSiteRoot) + $0 })
-                )
+          var pageContent = ""
+          for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
+            pageContent.append("\n")
+            pageContent.append(
+              contentsOf: paragraph.renderedHTML(
+                localization: localization.code,
+                symbolLinks: symbolLinks[localization]!
+                  .mapValues({ String(pathToSiteRoot) + $0 })
               )
-            }
+            )
+          }
 
-            let page = Page(
+          let page = Page(
+            localization: localization,
+            pathToSiteRoot: pathToSiteRoot,
+            navigationPath: SymbolPage.generateNavigationPath(
               localization: localization,
               pathToSiteRoot: pathToSiteRoot,
-              navigationPath: SymbolPage.generateNavigationPath(
-                localization: localization,
-                pathToSiteRoot: pathToSiteRoot,
-                allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
-                  .map({ localization in
-                    return (localization: localization, path: location(localization))
-                  }),
-                navigationPath: [
-                  (
-                    label: StrictString(api.name.source()),
-                    path: api.relativePagePath[localization]!
-                  ),
-                  (label: pageTitle, path: pagePath),
-                ]
-              ),
-              packageImport: packageImport,
-              index: indices[localization]!,
-              sectionIdentifier: nil,
-              platforms: platforms[localization]!,
-              symbolImports: "",
-              symbolType: nil,
-              compilationConditions: nil,
-              constraints: nil,
-              title: HTML.escapeTextForCharacterData(pageTitle),
-              content: StrictString(pageContent),
-              extensions: "",
-              copyright: copyright(for: localization, status: status)
-            )
-            let url = outputDirectory.appendingPathComponent(String(location(localization)))
-            try page.contents.save(to: url)
-          #endif
+              allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
+                .map({ localization in
+                  return (localization: localization, path: location(localization))
+                }),
+              navigationPath: [
+                (
+                  label: StrictString(api.name.source()),
+                  path: api.relativePagePath[localization]!
+                ),
+                (label: pageTitle, path: pagePath),
+              ]
+            ),
+            packageImport: packageImport,
+            index: indices[localization]!,
+            sectionIdentifier: nil,
+            platforms: platforms[localization]!,
+            symbolImports: "",
+            symbolType: nil,
+            compilationConditions: nil,
+            constraints: nil,
+            title: HTML.escapeTextForCharacterData(pageTitle),
+            content: StrictString(pageContent),
+            extensions: "",
+            copyright: copyright(for: localization, status: status)
+          )
+          let url = outputDirectory.appendingPathComponent(String(location(localization)))
+          try page.contents.save(to: url)
         }
       }
     }
@@ -1331,59 +1303,53 @@
     ) throws {
       // Out of directories.
       var handled = Set<URL>()
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-          try purgingAutoreleased {
-            var directory = url.deletingLastPathComponent()
-            while directory ∉ handled,
-              directory.is(in: outputDirectory)
-            {
-              defer {
-                handled.insert(directory)
-                directory = directory.deletingLastPathComponent()
-              }
+      for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+        try purgingAutoreleased {
+          var directory = url.deletingLastPathComponent()
+          while directory ∉ handled,
+            directory.is(in: outputDirectory)
+          {
+            defer {
+              handled.insert(directory)
+              directory = directory.deletingLastPathComponent()
+            }
 
-              let redirect = directory.appendingPathComponent("index.html")
-              if (try? redirect.checkResourceIsReachable()) ≠ true {
-                // Do not overwrite if there is a file name clash.
-                try DocumentSyntax.redirect(
-                  language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
-                  target: URL(fileURLWithPath: "../index.html")
-                ).source().save(to: redirect)
-              }
+            let redirect = directory.appendingPathComponent("index.html")
+            if (try? redirect.checkResourceIsReachable()) ≠ true {
+              // Do not overwrite if there is a file name clash.
+              try DocumentSyntax.redirect(
+                language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
+                target: URL(fileURLWithPath: "../index.html")
+              ).source().save(to: redirect)
             }
           }
         }
-      #endif
+      }
 
       // To home page.
       let root = outputDirectory.appendingPathComponent("index.html")
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        try DocumentSyntax.redirect(
-          language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
-          target: URL(
-            fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html"
-          )
-        ).source().save(to: root)
-      #endif
+      try DocumentSyntax.redirect(
+        language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
+        target: URL(
+          fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html"
+        )
+      ).source().save(to: root)
       for localization in localizations {
         let localizationDirectory = outputDirectory.appendingPathComponent(
           String(localization._directoryName)
         )
         let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-          let pageURL = api.pageURL(
-            in: outputDirectory,
-            for: localization,
-            customReplacements: customReplacements
-          )
-          if redirectURL ≠ pageURL {
-            try DocumentSyntax.redirect(
-              language: AnyLocalization(code: localization.code),
-              target: URL(fileURLWithPath: pageURL.lastPathComponent)
-            ).source().save(to: redirectURL)
-          }
-        #endif
+        let pageURL = api.pageURL(
+          in: outputDirectory,
+          for: localization,
+          customReplacements: customReplacements
+        )
+        if redirectURL ≠ pageURL {
+          try DocumentSyntax.redirect(
+            language: AnyLocalization(code: localization.code),
+            target: URL(fileURLWithPath: pageURL.lastPathComponent)
+          ).source().save(to: redirectURL)
+        }
       }
     }
   }

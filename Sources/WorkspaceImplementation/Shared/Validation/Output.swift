@@ -14,15 +14,15 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-extension Command.Output {
+  extension Command.Output {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)
       print(message.formattedAsSuccess().separated())
@@ -36,5 +36,5 @@ extension Command.Output {
         print(unsupportedFiles.formattedAsWarning().separated())
       }
     }
-  #endif
-}
+  }
+#endif

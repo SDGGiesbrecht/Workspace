@@ -40,38 +40,36 @@
       )
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-      internal func refreshFileHeaders(output: Command.Output) throws {
+    internal func refreshFileHeaders(output: Command.Output) throws {
 
-        let template = try fileHeader(output: output)
+      let template = try fileHeader(output: output)
 
-        let skippedFiles = self.skippedFiles
-        for url in try sourceFiles(output: output)
-        where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
-          try purgingAutoreleased {
-            if let type = FileType(url: url),
-              type.syntax.hasComments
-            {
+      let skippedFiles = self.skippedFiles
+      for url in try sourceFiles(output: output)
+      where ¬skippedFiles.contains(where: { url.is(in: $0) }) {
+        try purgingAutoreleased {
+          if let type = FileType(url: url),
+            type.syntax.hasComments
+          {
 
-              var file = try TextFile(alreadyAt: url)
-              let oldHeader = file.header
-              var header = template
+            var file = try TextFile(alreadyAt: url)
+            let oldHeader = file.header
+            var header = template
 
-              header = header.replacingMatches(
-                for: "#filename",
-                with: StrictString(url.lastPathComponent)
-              )
-              header = header.replacingMatches(
-                for: "#dates",
-                with: copyright(fromText: oldHeader)
-              )
+            header = header.replacingMatches(
+              for: "#filename",
+              with: StrictString(url.lastPathComponent)
+            )
+            header = header.replacingMatches(
+              for: "#dates",
+              with: copyright(fromText: oldHeader)
+            )
 
-              file.header = String(header)
-              try file.writeChanges(for: self, output: output)
-            }
+            file.header = String(header)
+            try file.writeChanges(for: self, output: output)
           }
         }
       }
-    #endif
+    }
   }
 #endif

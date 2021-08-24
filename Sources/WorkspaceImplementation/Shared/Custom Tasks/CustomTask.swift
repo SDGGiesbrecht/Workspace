@@ -29,22 +29,18 @@
 
     // MARK: - Static Properties
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
-    #endif
+    internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
 
     // MARK: - Execution
 
     internal func execute(output: Command.Output) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
-        _ = try Package(url: url).execute(
-          .version(version),
-          of: [executable],
-          with: arguments,
-          cacheDirectory: CustomTask.cache,
-          reportProgress: { output.print($0) }
-        ).get()
-      #endif
+      _ = try Package(url: url).execute(
+        .version(version),
+        of: [executable],
+        with: arguments,
+        cacheDirectory: CustomTask.cache,
+        reportProgress: { output.print($0) }
+      ).get()
     }
   }
 #endif

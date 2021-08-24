@@ -21,9 +21,7 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    import SwiftSyntax
-  #endif
+  import SwiftSyntax
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -50,33 +48,31 @@
       }
     })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-      internal static func check(
-        _ node: Syntax,
-        context: SyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let signature = node.as(ClosureSignatureSyntax.self),
-          let closure = signature.parent?.as(ClosureExprSyntax.self),
-          closure.signature?.indexInParent == signature.indexInParent,
-          let leadingTrivia = signature.leadingTrivia
-        {  // Only nil if the signature does not really exist.
+      if let signature = node.as(ClosureSignatureSyntax.self),
+        let closure = signature.parent?.as(ClosureExprSyntax.self),
+        closure.signature?.indexInParent == signature.indexInParent,
+        let leadingTrivia = signature.leadingTrivia
+      {  // Only nil if the signature does not really exist.
 
-          if leadingTrivia.contains(where: { $0.isNewline }) {
-            reportViolation(
-              in: file,
-              at: signature.syntaxRange(in: context),
-              message: message,
-              status: status
-            )
-          }
+        if leadingTrivia.contains(where: { $0.isNewline }) {
+          reportViolation(
+            in: file,
+            at: signature.syntaxRange(in: context),
+            message: message,
+            status: status
+          )
         }
       }
-    #endif
+    }
   }
 #endif

@@ -51,31 +51,29 @@
           }
         })
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        internal static let command = Command(
-          name: name,
-          description: description,
-          directArguments: [],
-          options: Workspace.standardOptions,
-          execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishCanada:
-                  return "Refreshing licence..."
-                case .englishUnitedStates:
-                  return "Refreshing license..."
-                case .deutschDeutschland:
-                  return "Lizenz wird aufgefrischt ..."
-                }
-              }).resolved().formattedAsSectionHeader()
-            )
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishCanada:
+                return "Refreshing licence..."
+              case .englishUnitedStates:
+                return "Refreshing license..."
+              case .deutschDeutschland:
+                return "Lizenz wird aufgefrischt ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
 
-            try options.project.refreshLicence(output: output)
-          }
-        )
-      #endif
+          try options.project.refreshLicence(output: output)
+        }
+      )
     }
   }
 #endif

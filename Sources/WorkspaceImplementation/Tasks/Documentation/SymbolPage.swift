@@ -14,21 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGLogic
-import SDGCollections
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
-import SDGSwiftSource
-import SDGHTML
+  import SDGSwiftSource
+  import SDGHTML
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   internal class SymbolPage: Page {
 
     // MARK: - Initialization

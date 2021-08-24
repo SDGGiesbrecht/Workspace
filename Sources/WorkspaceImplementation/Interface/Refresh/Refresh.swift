@@ -46,30 +46,28 @@
           }
         })
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        private static var subcommands: [Command] {
-          return [
-            All.command,
-            Scripts.command,
-            Git.command,
-            ReadMe.command,
-            Licence.command,
-            GitHub.command,
-            ContinuousIntegration.command,
-            Resources.command,
-            FileHeaders.command,
-            Examples.command,
-            InheritedDocumentation.command,
-          ]
-        }
+      private static var subcommands: [Command] {
+        return [
+          All.command,
+          Scripts.command,
+          Git.command,
+          ReadMe.command,
+          Licence.command,
+          GitHub.command,
+          ContinuousIntegration.command,
+          Resources.command,
+          FileHeaders.command,
+          Examples.command,
+          InheritedDocumentation.command,
+        ]
+      }
 
-        internal static let command = Command(
-          name: name,
-          description: description,
-          subcommands: subcommands,
-          defaultSubcommand: All.command
-        )
-      #endif
+      internal static let command = Command(
+        name: name,
+        description: description,
+        subcommands: subcommands,
+        defaultSubcommand: All.command
+      )
     }
   }
 #endif

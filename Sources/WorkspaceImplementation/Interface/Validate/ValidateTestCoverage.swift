@@ -51,82 +51,80 @@
           }
         })
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        internal static let command = Command(
-          name: name,
-          description: description,
-          directArguments: [],
-          options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
-          execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions + [ContinuousIntegrationJob.option],
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-            try Build.validate(
-              job: options.job,
-              against: ContinuousIntegrationJob.coverageJobs,
-              for: options.project,
-              output: output
-            )
+          try Build.validate(
+            job: options.job,
+            against: ContinuousIntegrationJob.coverageJobs,
+            for: options.project,
+            output: output
+          )
 
-            var validationStatus = ValidationStatus()
+          var validationStatus = ValidationStatus()
 
-            try executeAsStep(
-              options: options,
+          try executeAsStep(
+            options: options,
+            validationStatus: &validationStatus,
+            output: output
+          )
+
+          try validationStatus.reportOutcome(project: options.project, output: output)
+        }
+      )
+
+      internal static func executeAsStep(
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
+
+        for job in ContinuousIntegrationJob.allCases
+        where try options.job.includes(job: job)
+          ∧ (try Build.job(
+            job,
+            isRelevantTo: options.project,
+            andAvailableJobs: ContinuousIntegrationJob.coverageJobs,
+            output: output
+          ))
+        {
+          try purgingAutoreleased {
+
+            if try options.project.configuration(output: output).continuousIntegration
+              .skipSimulatorOutsideContinuousIntegration,
+              options.job == nil,  // Not in continuous integration.
+              job ∈ ContinuousIntegrationJob.simulatorJobs
+            {
+              // @exempt(from: tests) Tested separately.
+              return  // and continue loop.
+            }
+
+            #if DEBUG
+              if job ∈ ContinuousIntegrationJob.simulatorJobs,
+                ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
+                  ≠ nil
+              {  // Simulators are not available to all CI jobs and must be tested separately.
+                return  // and continue loop.
+              }
+            #endif
+
+            options.project.test(
+              on: job,
               validationStatus: &validationStatus,
               output: output
             )
-
-            try validationStatus.reportOutcome(project: options.project, output: output)
-          }
-        )
-
-        internal static func executeAsStep(
-          options: Options,
-          validationStatus: inout ValidationStatus,
-          output: Command.Output
-        ) throws {
-
-          for job in ContinuousIntegrationJob.allCases
-          where try options.job.includes(job: job)
-            ∧ (try Build.job(
-              job,
-              isRelevantTo: options.project,
-              andAvailableJobs: ContinuousIntegrationJob.coverageJobs,
+            try options.project.validateCodeCoverage(
+              on: job,
+              validationStatus: &validationStatus,
               output: output
-            ))
-          {
-            try purgingAutoreleased {
-
-              if try options.project.configuration(output: output).continuousIntegration
-                .skipSimulatorOutsideContinuousIntegration,
-                options.job == nil,  // Not in continuous integration.
-                job ∈ ContinuousIntegrationJob.simulatorJobs
-              {
-                // @exempt(from: tests) Tested separately.
-                return  // and continue loop.
-              }
-
-              #if DEBUG
-                if job ∈ ContinuousIntegrationJob.simulatorJobs,
-                  ProcessInfo.processInfo.environment["SIMULATOR_UNAVAILABLE_FOR_TESTING"]
-                    ≠ nil
-                {  // Simulators are not available to all CI jobs and must be tested separately.
-                  return  // and continue loop.
-                }
-              #endif
-
-              options.project.test(
-                on: job,
-                validationStatus: &validationStatus,
-                output: output
-              )
-              try options.project.validateCodeCoverage(
-                on: job,
-                validationStatus: &validationStatus,
-                output: output
-              )
-            }
+            )
           }
         }
-      #endif
+      }
     }
   }
 #endif

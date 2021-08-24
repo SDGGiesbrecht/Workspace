@@ -21,25 +21,23 @@
 
     // MARK: - Properties
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-      internal var text: StrictString {
-        var source: String
-        switch self {
-        case .apache2_0:
-          source = Resources.Licences.apache2_0
-        case .mit:
-          source = Resources.Licences.mit
-        case .gnuGeneralPublic3_0:
-          source = Resources.Licences.gnuGeneralPublic3_0
-        case .unlicense:
-          source = Resources.Licences.unlicense
-        case .copyright:
-          source = Resources.Licences.copyright
-        }
-
-        let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
-        return StrictString(file.body)
+    internal var text: StrictString {
+      var source: String
+      switch self {
+      case .apache2_0:
+        source = Resources.Licences.apache2_0
+      case .mit:
+        source = Resources.Licences.mit
+      case .gnuGeneralPublic3_0:
+        source = Resources.Licences.gnuGeneralPublic3_0
+      case .unlicense:
+        source = Resources.Licences.unlicense
+      case .copyright:
+        source = Resources.Licences.copyright
       }
-    #endif
+
+      let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)
+      return StrictString(file.body)
+    }
   }
 #endif

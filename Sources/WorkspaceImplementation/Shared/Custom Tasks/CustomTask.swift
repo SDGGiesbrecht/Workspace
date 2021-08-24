@@ -29,9 +29,7 @@
 
     // MARK: - Static Properties
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       internal static let cache = FileManager.default.url(in: .cache, at: "Custom Tasks")
-    #endif
 
     // MARK: - Execution
 

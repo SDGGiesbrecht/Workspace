@@ -190,12 +190,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
               .appendingPathComponent("Resources/Tool/English.txt")
           )
-        #endif
         output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "de",
         ]).get()
@@ -204,12 +202,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try output.save(
             to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
               .appendingPathComponent("Resources/Tool/Deutsch.txt")
           )
-        #endif
 
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
@@ -449,12 +445,10 @@
           for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
           with: "\n\n".scalars
         )
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try output.save(
             to: PackageRepository.beforeDirectory(for: "Deutsch")
               .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
           )
-        #endif
 
         let konfiguration = ArbeitsbereichKonfiguration()
         konfiguration.optimizeForTests()
@@ -601,7 +595,6 @@
         configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
         // Attempt to remove existing derived data so that the build is clean.
         // Otherwise Xcode skips the build stages where the awaited warnings occur.
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           do {
             for url in try FileManager.default.contentsOfDirectory(
               at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
@@ -615,7 +608,6 @@
               }
             }
           } catch {}
-        #endif
         // This test may fail if derived data is not in the default location. See above.
         #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "FailingTests").test(

@@ -145,7 +145,6 @@
 
     private func cleanWindowsTestsManifestAdjustmentsUp(output: Command.Output) throws {
       let url = location.appendingPathComponent("Package.swift")
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         var manifest = try TextFile(possiblyAt: url)
 
         let start = "// Windows Tests (Generated automatically by Workspace.)"
@@ -160,7 +159,6 @@
 
         manifest.contents.replaceSubrange(range, with: "")
         try manifest.writeChanges(for: self, output: output)
-      #endif
     }
 
     private func cleanWindowsMainUp(

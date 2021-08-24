@@ -59,7 +59,6 @@ extension PackageRepository {
 
   // MARK: - Initialization
 
-  #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
     init(mock name: String) {
       let temporary: URL
       #if os(macOS)
@@ -74,7 +73,6 @@ extension PackageRepository {
       #endif
       self.init(at: temporary.appendingPathComponent(name))
     }
-  #endif
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     func test<L>(

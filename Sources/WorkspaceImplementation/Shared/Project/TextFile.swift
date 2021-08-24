@@ -32,7 +32,6 @@
 
     // MARK: - Initialization
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       internal init(alreadyAt location: URL) throws {
         guard let fileType = FileType(url: location) else {
           unreachable()
@@ -83,7 +82,6 @@
           isNew: true
         )
       }
-    #endif
 
     private init(
       location: URL,
@@ -232,7 +230,6 @@
       if hasChanged {
         TextFile.reportWriteOperation(to: location, in: repository, output: output)
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           try contents.save(to: location)
           if isExecutable {
             try FileManager.default.setAttributes(
@@ -240,7 +237,6 @@
               ofItemAtPath: location.path
             )
           }
-        #endif
 
         if location.pathExtension == "swift" {
           repository.resetManifestCache(debugReason: location.lastPathComponent)

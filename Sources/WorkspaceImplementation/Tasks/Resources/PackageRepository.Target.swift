@@ -221,12 +221,10 @@
             let value = namespaceTree[name]
 
             if let resource = value as? URL {
-              #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
                 try result.append(
                   contentsOf: source(for: resource, named: name, accessControl: accessControl)
                     + "\n"
                 )
-              #endif
             } else if let namespace = value as? [StrictString: Any] {
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
@@ -245,7 +243,6 @@
         }).joined(separator: "\n") + "\n"
       }
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         private func source(
           for resource: URL,
           named name: StrictString,
@@ -272,7 +269,6 @@
           declaration += initializer.1
           return declaration
         }
-      #endif
 
       // MARK: - Comparable
 

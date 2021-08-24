@@ -448,8 +448,6 @@
     internal func allFiles() throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return []
-      #elseif PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
-        return []
       #else
         return try cached(in: &fileCache.allFiles) { () -> [URL] in
           let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
@@ -534,7 +532,6 @@
     // MARK: - Actions
 
     internal func delete(_ location: URL, output: Command.Output) {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         if FileManager.default.fileExists(atPath: location.path, isDirectory: nil) {
 
           output.print(
@@ -562,17 +559,14 @@
             resetFileCache(debugReason: location.lastPathComponent)
           }
         }
-      #endif
     }
 
     // MARK: - Related Projects
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       private static let relatedProjectCache = FileManager.default.url(
         in: .cache,
         at: "Related Projects"
       )
-    #endif
 
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS
       internal static func relatedPackage(
@@ -623,20 +617,16 @@
           }
         }
 
-        #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
           // Remove deprecated cache.
           try? FileManager.default.removeItem(
             at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
           )
           return repository
-        #endif
       }
     #endif
 
     internal static func emptyRelatedProjectCache() {
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try? FileManager.default.removeItem(at: relatedProjectCache)
-      #endif
     }
   }
 #endif

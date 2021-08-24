@@ -29,14 +29,12 @@
       return value(for: ContinuousIntegrationJob.option)
     }
 
-    #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       internal var project: PackageRepository {
         let url =
           value(for: Workspace.projectOption)
           ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         return PackageRepository(at: url)
       }
-    #endif
 
     // MARK: - Proofreading
 

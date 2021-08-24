@@ -1331,7 +1331,6 @@
     ) throws {
       // Out of directories.
       var handled = Set<URL>()
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
           try purgingAutoreleased {
             var directory = url.deletingLastPathComponent()
@@ -1354,18 +1353,15 @@
             }
           }
         }
-      #endif
 
       // To home page.
       let root = outputDirectory.appendingPathComponent("index.html")
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try DocumentSyntax.redirect(
           language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
           target: URL(
             fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html"
           )
         ).source().save(to: root)
-      #endif
       for localization in localizations {
         let localizationDirectory = outputDirectory.appendingPathComponent(
           String(localization._directoryName)

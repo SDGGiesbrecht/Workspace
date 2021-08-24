@@ -362,7 +362,6 @@
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL) throws {
 
-      #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
         try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
         try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
         var siteCSS = TextFile(mockFileWithContents: Resources.Documentation.site, fileType: .css)
@@ -376,7 +375,6 @@
         try siteJavaScript.contents.save(
           to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
         )
-      #endif
 
       try preventJekyllInterference(outputDirectory: outputDirectory)
     }

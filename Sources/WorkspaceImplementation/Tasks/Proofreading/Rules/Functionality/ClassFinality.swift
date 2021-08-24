@@ -23,7 +23,7 @@
   import SDGCommandLine
 
   import SDGSwift
-    import SwiftSyntax
+  import SwiftSyntax
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -51,34 +51,34 @@
         }
       })
 
-      // MARK: - SyntaxRule
+    // MARK: - SyntaxRule
 
-      internal static func check(
-        _ node: Syntax,
-        context: SyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        switch setting {
-        case .library:
-          if let classModifiers = node.as(ClassDeclSyntax.self)?.modifiers,
-            let `public` = classModifiers.first(where: { $0.name.text == "public" }),
-            ¬classModifiers.contains(where: { $0.name.text == "final" })
-          {
-            reportViolation(
-              in: file,
-              at: `public`.syntaxRange(in: context),
-              message: message,
-              status: status
-            )
-          }
-        case .topLevel, .unknown:
-          break
+      switch setting {
+      case .library:
+        if let classModifiers = node.as(ClassDeclSyntax.self)?.modifiers,
+          let `public` = classModifiers.first(where: { $0.name.text == "public" }),
+          ¬classModifiers.contains(where: { $0.name.text == "final" })
+        {
+          reportViolation(
+            in: file,
+            at: `public`.syntaxRange(in: context),
+            message: message,
+            status: status
+          )
         }
+      case .topLevel, .unknown:
+        break
       }
+    }
   }
 #endif

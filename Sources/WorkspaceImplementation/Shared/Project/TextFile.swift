@@ -32,56 +32,56 @@
 
     // MARK: - Initialization
 
-      internal init(alreadyAt location: URL) throws {
+    internal init(alreadyAt location: URL) throws {
+      guard let fileType = FileType(url: location) else {
+        unreachable()
+      }
+
+      let executable = FileManager.default.isExecutableFile(atPath: location.path)
+      self.init(
+        location: location,
+        fileType: fileType,
+        executable: executable,
+        contents: try String(from: location),
+        isNew: false
+      )
+    }
+
+    internal init(possiblyAt location: URL, executable: Bool = false) throws {
+      do {
+        self = try TextFile(alreadyAt: location)
+        if isExecutable ≠ executable {
+          // @exempt(from: tests) Unreachable except with corrupt files.
+          isExecutable = executable
+          hasChanged = true
+        }
+      } catch {
         guard let fileType = FileType(url: location) else {
           unreachable()
         }
-
-        let executable = FileManager.default.isExecutableFile(atPath: location.path)
-        self.init(
+        self = TextFile(
           location: location,
           fileType: fileType,
           executable: executable,
-          contents: try String(from: location),
-          isNew: false
-        )
-      }
-
-      internal init(possiblyAt location: URL, executable: Bool = false) throws {
-        do {
-          self = try TextFile(alreadyAt: location)
-          if isExecutable ≠ executable {
-            // @exempt(from: tests) Unreachable except with corrupt files.
-            isExecutable = executable
-            hasChanged = true
-          }
-        } catch {
-          guard let fileType = FileType(url: location) else {
-            unreachable()
-          }
-          self = TextFile(
-            location: location,
-            fileType: fileType,
-            executable: executable,
-            contents: "",
-            isNew: true
-          )
-        }
-      }
-
-      internal init(mockFileWithContents contents: String, fileType: FileType) {
-        var url: URL?
-        FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
-          url = temporary
-        }
-        self.init(
-          location: url!,
-          fileType: fileType,
-          executable: false,
-          contents: contents,
+          contents: "",
           isNew: true
         )
       }
+    }
+
+    internal init(mockFileWithContents contents: String, fileType: FileType) {
+      var url: URL?
+      FileManager.default.withTemporaryDirectory(appropriateFor: nil) { temporary in
+        url = temporary
+      }
+      self.init(
+        location: url!,
+        fileType: fileType,
+        executable: false,
+        contents: contents,
+        isNew: true
+      )
+    }
 
     private init(
       location: URL,
@@ -230,13 +230,13 @@
       if hasChanged {
         TextFile.reportWriteOperation(to: location, in: repository, output: output)
 
-          try contents.save(to: location)
-          if isExecutable {
-            try FileManager.default.setAttributes(
-              [.posixPermissions: NSNumber(value: 0o777)],
-              ofItemAtPath: location.path
-            )
-          }
+        try contents.save(to: location)
+        if isExecutable {
+          try FileManager.default.setAttributes(
+            [.posixPermissions: NSNumber(value: 0o777)],
+            ofItemAtPath: location.path
+          )
+        }
 
         if location.pathExtension == "swift" {
           repository.resetManifestCache(debugReason: location.lastPathComponent)

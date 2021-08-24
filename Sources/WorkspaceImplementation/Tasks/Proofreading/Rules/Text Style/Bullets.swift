@@ -47,30 +47,30 @@
       }
     })
 
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let token = node as? ExtendedTokenSyntax,
-          token.kind == .bullet,
-          token.text ≠ "\u{2D}",
-          ¬token.text.contains(".")
-        {
+      if let token = node as? ExtendedTokenSyntax,
+        token.kind == .bullet,
+        token.text ≠ "\u{2D}",
+        ¬token.text.contains(".")
+      {
 
-          reportViolation(
-            in: file,
-            at: token.range(in: context),
-            replacementSuggestion: "\u{2D}",
-            message: message,
-            status: status
-          )
-        }
+        reportViolation(
+          in: file,
+          at: token.range(in: context),
+          replacementSuggestion: "\u{2D}",
+          message: message,
+          status: status
+        )
       }
+    }
   }
 #endif

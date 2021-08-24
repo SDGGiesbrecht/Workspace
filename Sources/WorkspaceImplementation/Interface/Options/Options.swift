@@ -29,12 +29,12 @@
       return value(for: ContinuousIntegrationJob.option)
     }
 
-      internal var project: PackageRepository {
-        let url =
-          value(for: Workspace.projectOption)
-          ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        return PackageRepository(at: url)
-      }
+    internal var project: PackageRepository {
+      let url =
+        value(for: Workspace.projectOption)
+        ?? URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+      return PackageRepository(at: url)
+    }
 
     // MARK: - Proofreading
 

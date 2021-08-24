@@ -15,11 +15,11 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
   import SwiftSyntax
-import SDGSwiftSource
+  import SDGSwiftSource
 
   internal class RuleSyntaxScanner: SyntaxScanner {
 

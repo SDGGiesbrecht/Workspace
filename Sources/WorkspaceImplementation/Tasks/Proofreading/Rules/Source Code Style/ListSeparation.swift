@@ -22,7 +22,7 @@
   import SDGCommandLine
 
   import SDGSwift
-    import SwiftSyntax
+  import SwiftSyntax
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -48,29 +48,29 @@
       }
     })
 
-      internal static func check(
-        _ node: Syntax,
-        context: SyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
-          let comma = entry.trailingComma,
-          entry.indexInParent == entry.parent?.children.last?.indexInParent
-        {
+      if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
+        let comma = entry.trailingComma,
+        entry.indexInParent == entry.parent?.children.last?.indexInParent
+      {
 
-          reportViolation(
-            in: file,
-            at: comma.syntaxRange(in: context),
-            replacementSuggestion: "",
-            message: message,
-            status: status
-          )
-        }
+        reportViolation(
+          in: file,
+          at: comma.syntaxRange(in: context),
+          replacementSuggestion: "",
+          message: message,
+          status: status
+        )
       }
+    }
   }
 #endif

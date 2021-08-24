@@ -15,27 +15,27 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import Foundation
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
   import SwiftFormat
 
-extension PackageRepository {
+  extension PackageRepository {
 
     internal func normalize(output: Command.Output) throws {
 
-        var formatter: SwiftFormatter?
-        if let formatConfiguration = try configuration(output: output).proofreading
-          .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-        {
-          formatter = SwiftFormatter(configuration: formatConfiguration)
-        }
+      var formatter: SwiftFormatter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
+      {
+        formatter = SwiftFormatter(configuration: formatConfiguration)
+      }
 
       for url in try sourceFiles(output: output) {
         try purgingAutoreleased {
@@ -43,18 +43,18 @@ extension PackageRepository {
           if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)
 
-              if let formatter = formatter,
-                file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
-              {
-                let source = file.contents
-                var result: String = ""
-                try formatter.format(
-                  source: source,
-                  assumingFileURL: file.location,
-                  to: &result
-                )
-                file.contents = result
-              }
+            if let formatter = formatter,
+              file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
+            {
+              let source = file.contents
+              var result: String = ""
+              try formatter.format(
+                source: source,
+                assumingFileURL: file.location,
+                to: &result
+              )
+              file.contents = result
+            }
 
             let lines = file.contents.lines.map({ String($0.line) })
             let normalizedLines = lines.map { (line: String) -> String in
@@ -83,5 +83,5 @@ extension PackageRepository {
         }
       }
     }
-}
+  }
 #endif

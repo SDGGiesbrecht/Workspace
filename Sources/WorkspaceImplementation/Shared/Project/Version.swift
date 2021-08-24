@@ -19,13 +19,13 @@
 
   import SDGSwiftPackageManager
 
-    import PackageModel
+  import PackageModel
 
   extension SDGVersioning.Version {
 
-      internal init(_ version: PackageModel.Version) {
-        self.init(version.major, version.minor, version.patch)
-      }
+    internal init(_ version: PackageModel.Version) {
+      self.init(version.major, version.minor, version.patch)
+    }
 
     internal func stringDroppingEmptyMinor() -> String {
       var result = string(droppingEmptyPatch: true)

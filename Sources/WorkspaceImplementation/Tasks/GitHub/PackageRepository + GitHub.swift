@@ -55,90 +55,90 @@
 
     // MARK: - Refreshment
 
-      internal func refreshGitHubConfiguration(output: Command.Output) throws {
-        try refreshContributingInstructions(output: output)
-        try refreshIssueTemplates(output: output)
+    internal func refreshGitHubConfiguration(output: Command.Output) throws {
+      try refreshContributingInstructions(output: output)
+      try refreshIssueTemplates(output: output)
 
-        var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
-        pullRequestTemplateFile.contents = String(
-          try configuration(output: output).gitHub.pullRequestTemplate
-        )
-        try pullRequestTemplateFile.writeChanges(for: self, output: output)
-      }
+      var pullRequestTemplateFile = try TextFile(possiblyAt: pullRequestTemplateLocation)
+      pullRequestTemplateFile.contents = String(
+        try configuration(output: output).gitHub.pullRequestTemplate
+      )
+      try pullRequestTemplateFile.writeChanges(for: self, output: output)
+    }
 
-      private func refreshContributingInstructions(output: Command.Output) throws {
+    private func refreshContributingInstructions(output: Command.Output) throws {
 
-        var contributingInstructionsFile = try TextFile(
-          possiblyAt: contributingInstructionsLocation
-        )
-        contributingInstructionsFile.body = String(
-          try constructedContributingInstructions(output: output)
-        )
-        try contributingInstructionsFile.writeChanges(for: self, output: output)
+      var contributingInstructionsFile = try TextFile(
+        possiblyAt: contributingInstructionsLocation
+      )
+      contributingInstructionsFile.body = String(
+        try constructedContributingInstructions(output: output)
+      )
+      try contributingInstructionsFile.writeChanges(for: self, output: output)
 
-        // Remove deprecated.
-        delete(depricatedContributingInstructions, output: output)
-      }
+      // Remove deprecated.
+      delete(depricatedContributingInstructions, output: output)
+    }
 
-      private func constructedContributingInstructions(
-        output: Command.Output
-      ) throws -> StrictString {
-        let configuration = try self.configuration(output: output)
-        let entries = try contributingInstructions(output: output)
-        if entries.count == 1 {  // No separation of localizations needed.
-          for (_, entry) in entries {
-            return entry
-          }
-        }
-
-        var file: [StrictString] = []
-        for localization in configuration.documentation.localizations {
-          if let entry = entries[localization] {
-            file.append("<details>")
-            file.append("<summary>\(localization._iconOrCode)</summary>")
-            file.append(entry)
-            file.append("</details>")
-          }
-        }
-
-        return file.joinedAsLines()
-      }
-
-      private func refreshIssueTemplates(output: Command.Output) throws {
-        var validFiles: Set<URL> = []
-        let templateSet = try issueTemplates(output: output)
-        for localization in templateSet.keys.sorted(by: { $0._iconOrCode < $1._iconOrCode }) {
-          let templates = templateSet[localization]!
-          for template in templates {
-            let modifiedName: StrictString = "\(localization._iconOrCode) \(template.name)"
-            let fileLocation = issueTemplateLocation(for: modifiedName)
-            validFiles.insert(fileLocation)
-
-            var fileContents: [StrictString] = [
-              "\u{2D}\u{2D}\u{2D}",
-              "name: \u{27}\(modifiedName)\u{27}",
-              "about: \u{27}\(template.description)\u{27}",
-              "title: \u{27}\(template.title ?? "")\u{27}",
-              "labels: \u{27}\(template.labels.joined(separator: ", "))\u{27}",
-              "assignees: \u{27}\(template.assignees.joined(separator: ", "))\u{27}",
-              "",
-              "\u{2D}\u{2D}\u{2D}",
-              "",
-            ]
-            fileContents.append(template.content)
-
-            var issueTemplateFile = try TextFile(possiblyAt: fileLocation)
-            issueTemplateFile.contents = String(fileContents.joinedAsLines())
-            try issueTemplateFile.writeChanges(for: self, output: output)
-          }
-        }
-
-        delete(depricatedIssueTemplateLocation, output: output)
-        if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
-          for file in files where file ∉ validFiles {
-            delete(file, output: output)
-          }
+    private func constructedContributingInstructions(
+      output: Command.Output
+    ) throws -> StrictString {
+      let configuration = try self.configuration(output: output)
+      let entries = try contributingInstructions(output: output)
+      if entries.count == 1 {  // No separation of localizations needed.
+        for (_, entry) in entries {
+          return entry
         }
       }
+
+      var file: [StrictString] = []
+      for localization in configuration.documentation.localizations {
+        if let entry = entries[localization] {
+          file.append("<details>")
+          file.append("<summary>\(localization._iconOrCode)</summary>")
+          file.append(entry)
+          file.append("</details>")
+        }
+      }
+
+      return file.joinedAsLines()
+    }
+
+    private func refreshIssueTemplates(output: Command.Output) throws {
+      var validFiles: Set<URL> = []
+      let templateSet = try issueTemplates(output: output)
+      for localization in templateSet.keys.sorted(by: { $0._iconOrCode < $1._iconOrCode }) {
+        let templates = templateSet[localization]!
+        for template in templates {
+          let modifiedName: StrictString = "\(localization._iconOrCode) \(template.name)"
+          let fileLocation = issueTemplateLocation(for: modifiedName)
+          validFiles.insert(fileLocation)
+
+          var fileContents: [StrictString] = [
+            "\u{2D}\u{2D}\u{2D}",
+            "name: \u{27}\(modifiedName)\u{27}",
+            "about: \u{27}\(template.description)\u{27}",
+            "title: \u{27}\(template.title ?? "")\u{27}",
+            "labels: \u{27}\(template.labels.joined(separator: ", "))\u{27}",
+            "assignees: \u{27}\(template.assignees.joined(separator: ", "))\u{27}",
+            "",
+            "\u{2D}\u{2D}\u{2D}",
+            "",
+          ]
+          fileContents.append(template.content)
+
+          var issueTemplateFile = try TextFile(possiblyAt: fileLocation)
+          issueTemplateFile.contents = String(fileContents.joinedAsLines())
+          try issueTemplateFile.writeChanges(for: self, output: output)
+        }
+      }
+
+      delete(depricatedIssueTemplateLocation, output: output)
+      if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
+        for file in files where file ∉ validFiles {
+          delete(file, output: output)
+        }
+      }
+    }
   }
 #endif

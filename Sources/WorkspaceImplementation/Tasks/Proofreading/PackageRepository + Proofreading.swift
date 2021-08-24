@@ -15,36 +15,36 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import Foundation
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGSwiftSource
+  import SDGSwift
+  import SDGSwiftSource
   import SwiftSyntax
 
   import SwiftFormat
   import SwiftFormatConfiguration
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-extension PackageRepository {
+  extension PackageRepository {
 
     internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
-        var linter: SwiftLinter?
-        if let formatConfiguration = try configuration(output: output).proofreading
-          .swiftFormatConfiguration
-        {
-          let diagnostics = DiagnosticEngine()
-          diagnostics.addConsumer(status)
-          linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
-        }
+      var linter: SwiftLinter?
+      if let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration
+      {
+        let diagnostics = DiagnosticEngine()
+        diagnostics.addConsumer(status)
+        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+      }
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
       if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -106,17 +106,17 @@ extension PackageRepository {
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                  let syntax = try SyntaxParser.parseAndRetry(url)
-                  try RuleSyntaxScanner(
-                    rules: syntaxRules,
-                    file: file,
-                    setting: settings[url] ?? .unknown,
-                    project: self,
-                    status: status,
-                    output: output
-                  ).scan(syntax)
+                let syntax = try SyntaxParser.parseAndRetry(url)
+                try RuleSyntaxScanner(
+                  rules: syntaxRules,
+                  file: file,
+                  setting: settings[url] ?? .unknown,
+                  project: self,
+                  status: status,
+                  output: output
+                ).scan(syntax)
 
-                  try linter?.lint(syntax: syntax, assumingFileURL: url)
+                try linter?.lint(syntax: syntax, assumingFileURL: url)
               }
             }
           }
@@ -133,5 +133,5 @@ extension PackageRepository {
 
       return status.passing
     }
-}
+  }
 #endif

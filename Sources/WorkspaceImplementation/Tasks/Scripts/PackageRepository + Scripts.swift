@@ -15,20 +15,20 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGControlFlow
-import SDGLogic
-import SDGText
+  import SDGControlFlow
+  import SDGLogic
+  import SDGText
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-extension PackageRepository {
+  extension PackageRepository {
 
-  internal static let repositorySDGDirectory: StrictString = ".build/SDG"
-  internal static let repositoryWorkspaceCacheDirectory: StrictString =
-    repositorySDGDirectory
-    + "/Workspace"
+    internal static let repositorySDGDirectory: StrictString = ".build/SDG"
+    internal static let repositoryWorkspaceCacheDirectory: StrictString =
+      repositorySDGDirectory
+      + "/Workspace"
 
     internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
 
@@ -58,5 +58,5 @@ extension PackageRepository {
         }
       }
     }
-}
+  }
 #endif

@@ -35,9 +35,9 @@
     // MARK: - Structure
 
     private func targets() throws -> [Target] {
-        return try cachedPackage().targets.lazy.map { loaded in
-          return Target(loadedTarget: loaded, package: self)
-        }
+      return try cachedPackage().targets.lazy.map { loaded in
+        return Target(loadedTarget: loaded, package: self)
+      }
     }
     private func targetsByName() throws -> [String: Target] {
       var byName: [String: Target] = [:]
@@ -117,22 +117,22 @@
       return target
     }
 
-      internal func refreshResources(output: Command.Output) throws {
+    internal func refreshResources(output: Command.Output) throws {
 
-        var targets: [Target: [URL]] = [:]
-        for resource in try resourceFiles(output: output) {
-          let intendedTarget = try target(for: resource, output: output)
-          targets[intendedTarget, default: []].append(resource)
-        }
+      var targets: [Target: [URL]] = [:]
+      for resource in try resourceFiles(output: output) {
+        let intendedTarget = try target(for: resource, output: output)
+        targets[intendedTarget, default: []].append(resource)
+      }
 
-        for (target, resources) in targets.keys.sorted()
-          .map({ ($0, targets[$0]!) })
-        {  // So that output order is consistent.
+      for (target, resources) in targets.keys.sorted()
+        .map({ ($0, targets[$0]!) })
+      {  // So that output order is consistent.
 
-          try purgingAutoreleased {
-            try target.refresh(resources: resources, from: self, output: output)
-          }
+        try purgingAutoreleased {
+          try target.refresh(resources: resources, from: self, output: output)
         }
       }
+    }
   }
 #endif

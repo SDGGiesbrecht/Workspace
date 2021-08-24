@@ -16,7 +16,7 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SwiftSyntax
-import SDGSwiftSource
+  import SDGSwiftSource
 
   extension FunctionParameterSyntax: Parameter {
     internal var optionalType: TypeSyntax? {

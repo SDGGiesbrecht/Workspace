@@ -15,19 +15,19 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGSwiftSource
+  import SDGSwift
+  import SDGSwiftSource
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-extension PackageRepository {
+  extension PackageRepository {
 
     private func refreshReadMe(
       at location: URL,
@@ -115,5 +115,5 @@ extension PackageRepository {
         }
       }
     }
-}
+  }
 #endif

@@ -15,10 +15,10 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import Foundation
+  import Foundation
 
   import SwiftSyntax
-import SDGSwiftSource
+  import SDGSwiftSource
 
   extension SyntaxProtocol {
 

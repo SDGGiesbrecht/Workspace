@@ -44,17 +44,17 @@
           }
         })
 
-        internal static let command = Command(
-          name: name,
-          description: description,
-          subcommands: [
-            All.command,
-            Build.command,
-            TestCoverage.command,
-            DocumentationCoverage.command,
-          ],
-          defaultSubcommand: All.command
-        )
+      internal static let command = Command(
+        name: name,
+        description: description,
+        subcommands: [
+          All.command,
+          Build.command,
+          TestCoverage.command,
+          DocumentationCoverage.command,
+        ],
+        defaultSubcommand: All.command
+      )
     }
   }
 #endif

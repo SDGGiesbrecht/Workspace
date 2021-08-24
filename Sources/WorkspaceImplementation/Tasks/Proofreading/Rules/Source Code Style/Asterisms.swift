@@ -47,29 +47,29 @@
       }
     })
 
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let token = node as? ExtendedTokenSyntax,
-          token.kind == .asterism,
-          token.text ≠ "***"
-        {
+      if let token = node as? ExtendedTokenSyntax,
+        token.kind == .asterism,
+        token.text ≠ "***"
+      {
 
-          reportViolation(
-            in: file,
-            at: token.range(in: context),
-            replacementSuggestion: "***",
-            message: message,
-            status: status
-          )
-        }
+        reportViolation(
+          in: file,
+          at: token.range(in: context),
+          replacementSuggestion: "***",
+          message: message,
+          status: status
+        )
       }
+    }
   }
 #endif

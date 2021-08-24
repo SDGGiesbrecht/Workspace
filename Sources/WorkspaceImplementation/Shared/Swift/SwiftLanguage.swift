@@ -23,9 +23,9 @@
 
   import WorkspaceConfiguration
 
-    import SwiftSyntax
+  import SwiftSyntax
   import SDGSwiftSource
-    import SwiftFormat
+  import SwiftFormat
 
   internal enum SwiftLanguage {
 
@@ -210,12 +210,12 @@
       accordingTo configuration: WorkspaceConfiguration,
       for fileURL: URL
     ) throws {
-        if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
-          let formatter = SwiftFormatter(configuration: formatConfiguration)
-          var result: String = ""
-          try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
-          code = result
-        }
+      if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
+        let formatter = SwiftFormatter(configuration: formatConfiguration)
+        var result: String = ""
+        try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
+        code = result
+      }
     }
   }
 #endif

@@ -15,10 +15,10 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGSwiftSource
+  import SDGSwiftSource
 
   import SwiftSyntax
-import SDGSwiftSource
+  import SDGSwiftSource
 
   extension TupleTypeElementSyntax: Parameter {
     internal var firstName: TokenSyntax? {

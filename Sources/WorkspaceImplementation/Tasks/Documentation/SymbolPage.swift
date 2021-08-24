@@ -15,17 +15,17 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGLogic
-import SDGCollections
+  import SDGLogic
+  import SDGCollections
 
-import SDGCommandLine
+  import SDGCommandLine
 
   import SwiftSyntax
-import SDGSwiftSource
-import SDGHTML
+  import SDGSwiftSource
+  import SDGHTML
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
   internal class SymbolPage: Page {
 

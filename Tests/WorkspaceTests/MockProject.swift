@@ -15,32 +15,32 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import Foundation
+  import Foundation
 
-import SDGControlFlow
-import SDGLogic
-import SDGCollections
-import SDGText
-import SDGExternalProcess
+  import SDGControlFlow
+  import SDGLogic
+  import SDGCollections
+  import SDGText
+  import SDGExternalProcess
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
-import SDGHTML
-import SDGWeb
+  import SDGSwift
+  import SDGHTML
+  import SDGWeb
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
-import WorkspaceProjectConfiguration
-@testable import WorkspaceImplementation
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
+  import WorkspaceProjectConfiguration
+  @testable import WorkspaceImplementation
 
-import XCTest
+  import XCTest
 
-import SDGPersistenceTestUtilities
+  import SDGPersistenceTestUtilities
 
-import SDGCommandLineTestUtilities
+  import SDGCommandLineTestUtilities
 
-extension PackageRepository {
+  extension PackageRepository {
 
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
       "Tests/Mock Projects"
@@ -56,7 +56,7 @@ extension PackageRepository {
       )
     }
 
-  // MARK: - Initialization
+    // MARK: - Initialization
 
     init(mock name: String) {
       let temporary: URL
@@ -470,5 +470,5 @@ extension PackageRepository {
         XCTFail("\(error)", file: file, line: line)
       }
     }
-}
+  }
 #endif

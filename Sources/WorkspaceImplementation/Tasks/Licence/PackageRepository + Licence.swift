@@ -15,17 +15,17 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGText
-import SDGLocalization
+  import SDGText
+  import SDGLocalization
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-import WorkspaceLocalizations
-import WorkspaceConfiguration
+  import WorkspaceLocalizations
+  import WorkspaceConfiguration
 
-extension PackageRepository {
+  extension PackageRepository {
 
     internal func refreshLicence(output: Command.Output) throws {
 
@@ -68,5 +68,5 @@ extension PackageRepository {
       // Delete alternate licence files to prevent duplicates.
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)
     }
-}
+  }
 #endif

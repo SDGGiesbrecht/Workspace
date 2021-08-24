@@ -15,10 +15,10 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGLogic
+  import SDGLogic
 
   import SwiftSyntax
-import SDGSwiftSource
+  import SDGSwiftSource
 
   extension TypeSyntax {
 

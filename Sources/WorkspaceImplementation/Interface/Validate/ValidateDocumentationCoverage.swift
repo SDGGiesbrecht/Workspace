@@ -48,47 +48,47 @@
           }
         })
 
-        internal static let command = Command(
-          name: name,
-          description: description,
-          directArguments: [],
-          options: Workspace.standardOptions,
-          execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-            var validationStatus = ValidationStatus()
-            try executeAsStep(
-              options: options,
-              validationStatus: &validationStatus,
-              output: output
-            )
-
-            if ¬validationStatus.validatedSomething {
-              validationStatus.passStep(
-                message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                  switch localization {
-                  case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                    return "No library products to document."
-                  case .deutschDeutschland:
-                    return "Keine Biblioteksprodukte zum Dokumentieren."
-                  }
-                })
-              )
-            }
-
-            try validationStatus.reportOutcome(project: options.project, output: output)
-          }
-        )
-
-        internal static func executeAsStep(
-          options: Options,
-          validationStatus: inout ValidationStatus,
-          output: Command.Output
-        ) throws {
-          try options.project.validateDocumentationCoverage(
+          var validationStatus = ValidationStatus()
+          try executeAsStep(
+            options: options,
             validationStatus: &validationStatus,
             output: output
           )
+
+          if ¬validationStatus.validatedSomething {
+            validationStatus.passStep(
+              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+                switch localization {
+                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                  return "No library products to document."
+                case .deutschDeutschland:
+                  return "Keine Biblioteksprodukte zum Dokumentieren."
+                }
+              })
+            )
+          }
+
+          try validationStatus.reportOutcome(project: options.project, output: output)
         }
+      )
+
+      internal static func executeAsStep(
+        options: Options,
+        validationStatus: inout ValidationStatus,
+        output: Command.Output
+      ) throws {
+        try options.project.validateDocumentationCoverage(
+          validationStatus: &validationStatus,
+          output: output
+        )
+      }
     }
   }
 #endif

@@ -28,8 +28,8 @@
   import SDGSwift
   import SDGSwiftPackageManager
 
-    import PackageModel
-    import SwiftFormat
+  import PackageModel
+  import SwiftFormat
 
   import WorkspaceLocalizations
 
@@ -39,60 +39,60 @@
 
       // MARK: - Initialization
 
-        internal init(
-          loadedTarget: PackageModel.Target,
-          package: PackageRepository
-        ) {
-          self.loadedTarget = loadedTarget
-          self.package = package
-        }
+      internal init(
+        loadedTarget: PackageModel.Target,
+        package: PackageRepository
+      ) {
+        self.loadedTarget = loadedTarget
+        self.package = package
+      }
 
       // MARK: - Properties
 
-        private let loadedTarget: PackageModel.Target
+      private let loadedTarget: PackageModel.Target
       private let package: PackageRepository
 
       internal var name: String {
-          return loadedTarget.name
+        return loadedTarget.name
       }
 
       private var sourceDirectory: URL {
-          return loadedTarget.sources.root.asURL
+        return loadedTarget.sources.root.asURL
       }
 
       // MARK: - Resources
 
-        internal func refresh(
-          resources: [URL],
-          from package: PackageRepository,
-          output: Command.Output
-        ) throws {
-          let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
+      internal func refresh(
+        resources: [URL],
+        from package: PackageRepository,
+        output: Command.Output
+      ) throws {
+        let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
-          var source = String(try generateSource(for: resources, of: package))
-          try SwiftLanguage.format(
-            generatedCode: &source,
-            accordingTo: try package.configuration(output: output),
-            for: resourceFileLocation
-          )
+        var source = String(try generateSource(for: resources, of: package))
+        try SwiftLanguage.format(
+          generatedCode: &source,
+          accordingTo: try package.configuration(output: output),
+          for: resourceFileLocation
+        )
 
-          var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
-          resourceFile.body = source
+        var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
+        resourceFile.body = source
 
-          try resourceFile.writeChanges(for: package, output: output)
-        }
+        try resourceFile.writeChanges(for: package, output: output)
+      }
 
       private func generateSource(
         for resources: [URL],
         of package: PackageRepository
       ) throws -> StrictString {
         let accessControl: String
-          switch loadedTarget.type {
-          case .library, .systemModule, .binary:
-            accessControl = "internal "
-          case .executable, .test:
-            accessControl = ""
-          }
+        switch loadedTarget.type {
+        case .library, .systemModule, .binary:
+          accessControl = "internal "
+        case .executable, .test:
+          accessControl = ""
+        }
 
         var source: StrictString = "import Foundation\n\n"
 
@@ -201,10 +201,10 @@
             let value = namespaceTree[name]
 
             if let resource = value as? URL {
-                try result.append(
-                  contentsOf: source(for: resource, named: name, accessControl: accessControl)
-                    + "\n"
-                )
+              try result.append(
+                contentsOf: source(for: resource, named: name, accessControl: accessControl)
+                  + "\n"
+              )
             } else if let namespace = value as? [StrictString: Any] {
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
@@ -223,32 +223,32 @@
         }).joined(separator: "\n") + "\n"
       }
 
-        private func source(
-          for resource: URL,
-          named name: StrictString,
-          accessControl: String
-        ) throws -> StrictString {
-          let fileExtension = resource.pathExtension
-          let initializer: (StrictString, StrictString)
-          switch fileExtension {
-          case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
-            initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
-          default:
-            initializer = ("", "")
-          }
-
-          let data = try Data(from: resource)
-          let string = data.base64EncodedString()
-          var declaration: StrictString = "\(accessControl)static let "
-          declaration += name
-          declaration += " = "
-          declaration += initializer.0
-          declaration += "Data(base64Encoded: \u{22}"
-          declaration += string.scalars
-          declaration += "\u{22})!"
-          declaration += initializer.1
-          return declaration
+      private func source(
+        for resource: URL,
+        named name: StrictString,
+        accessControl: String
+      ) throws -> StrictString {
+        let fileExtension = resource.pathExtension
+        let initializer: (StrictString, StrictString)
+        switch fileExtension {
+        case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
+          initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
+        default:
+          initializer = ("", "")
         }
+
+        let data = try Data(from: resource)
+        let string = data.base64EncodedString()
+        var declaration: StrictString = "\(accessControl)static let "
+        declaration += name
+        declaration += " = "
+        declaration += initializer.0
+        declaration += "Data(base64Encoded: \u{22}"
+        declaration += string.scalars
+        declaration += "\u{22})!"
+        declaration += initializer.1
+        return declaration
+      }
 
       // MARK: - Comparable
 

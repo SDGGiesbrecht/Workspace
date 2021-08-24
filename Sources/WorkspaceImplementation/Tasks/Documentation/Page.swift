@@ -34,11 +34,11 @@
 
     // MARK: - Static Properties
 
-      private static let template: StrictString = {
-        var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
-        result.header = ""
-        return StrictString(result.contents)
-      }()
+    private static let template: StrictString = {
+      var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
+      result.header = ""
+      return StrictString(result.contents)
+    }()
 
     private static func watermark(localization: LocalizationIdentifier) -> StrictString {
       let resolved = localization._bestMatch
@@ -117,7 +117,7 @@
       copyright: StrictString
     ) {
 
-        var mutable = Page.template
+      var mutable = Page.template
       mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
       mutable.replaceMatches(
         for: "[*text direction*]".scalars,

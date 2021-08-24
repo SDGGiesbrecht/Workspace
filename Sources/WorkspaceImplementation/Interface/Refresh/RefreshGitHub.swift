@@ -46,27 +46,27 @@
           }
         })
 
-        internal static let command = Command(
-          name: name,
-          description: description,
-          directArguments: [],
-          options: Workspace.standardOptions,
-          execution: { (_, options: Options, output: Command.Output) throws in
+      internal static let command = Command(
+        name: name,
+        description: description,
+        directArguments: [],
+        options: Workspace.standardOptions,
+        execution: { (_, options: Options, output: Command.Output) throws in
 
-            output.print(
-              UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "Refreshing GitHub configuration..."
-                case .deutschDeutschland:
-                  return "GitHub‐Konfiguration wird aufgefrischt ..."
-                }
-              }).resolved().formattedAsSectionHeader()
-            )
+          output.print(
+            UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Refreshing GitHub configuration..."
+              case .deutschDeutschland:
+                return "GitHub‐Konfiguration wird aufgefrischt ..."
+              }
+            }).resolved().formattedAsSectionHeader()
+          )
 
-            try options.project.refreshGitHubConfiguration(output: output)
-          }
-        )
+          try options.project.refreshGitHubConfiguration(output: output)
+        }
+      )
     }
   }
 #endif

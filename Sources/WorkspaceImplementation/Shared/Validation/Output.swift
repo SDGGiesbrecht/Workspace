@@ -15,13 +15,13 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-import SDGText
+  import SDGText
 
-import SDGCommandLine
+  import SDGCommandLine
 
-import SDGSwift
+  import SDGSwift
 
-extension Command.Output {
+  extension Command.Output {
 
     internal func succeed(message: StrictString, project: PackageRepository) throws {
       try listWarnings(for: project)
@@ -36,5 +36,5 @@ extension Command.Output {
         print(unsupportedFiles.formattedAsWarning().separated())
       }
     }
-}
+  }
 #endif

@@ -99,14 +99,14 @@
       )
 
       internal static func checkForUpdates(output: Command.Output) throws -> Version? {
-          let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
-          if latestRemote ≠ Metadata.latestStableVersion {
-            // @exempt(from: tests) Execution path is determined externally.
-            return latestRemote
-          } else {  // @exempt(from: tests) Execution path is determined externally.
-            // @exempt(from: tests)
-            return nil  // Up to date.
-          }
+        let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
+        if latestRemote ≠ Metadata.latestStableVersion {
+          // @exempt(from: tests) Execution path is determined externally.
+          return latestRemote
+        } else {  // @exempt(from: tests) Execution path is determined externally.
+          // @exempt(from: tests)
+          return nil  // Up to date.
+        }
       }
     }
   }

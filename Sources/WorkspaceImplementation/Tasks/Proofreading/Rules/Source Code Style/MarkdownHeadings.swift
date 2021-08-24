@@ -47,28 +47,28 @@
       }
     })
 
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
 
-        if let token = node as? ExtendedTokenSyntax,
-          token.kind == .headingDelimiter,
-          ¬token.text.contains("#")
-        {
+      if let token = node as? ExtendedTokenSyntax,
+        token.kind == .headingDelimiter,
+        ¬token.text.contains("#")
+      {
 
-          reportViolation(
-            in: file,
-            at: token.range(in: context),
-            message: message,
-            status: status
-          )
-        }
+        reportViolation(
+          in: file,
+          at: token.range(in: context),
+          message: message,
+          status: status
+        )
       }
+    }
   }
 #endif

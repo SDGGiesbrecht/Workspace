@@ -19,7 +19,7 @@
 
   @testable import WorkspaceImplementation
 
-    var isInGitHubAction: Bool {
-      return ProcessInfo.isInGitHubAction
-    }
+  var isInGitHubAction: Bool {
+    return ProcessInfo.isInGitHubAction
+  }
 #endif

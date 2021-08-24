@@ -18,84 +18,84 @@
   import SDGCommandLine
 
   import SDGSwift
-    import SwiftSyntax
+  import SwiftSyntax
   import SDGSwiftSource
 
   internal protocol SyntaxRule: RuleProtocol {
-      static func check(
-        _ node: Syntax,
-        context: SyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      )
-      static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      )
-      static func check(
-        _ node: Trivia,
-        context: TriviaContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      )
-      static func check(
-        _ node: TriviaPiece,
-        context: TriviaPieceContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      )
+    static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: Trivia,
+      context: TriviaContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
+    static func check(
+      _ node: TriviaPiece,
+      context: TriviaPieceContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    )
   }
 
   extension SyntaxRule {
-      internal static func check(
-        _ node: Syntax,
-        context: SyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {}
-      internal static func check(
-        _ node: ExtendedSyntax,
-        context: ExtendedSyntaxContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {}
-      internal static func check(
-        _ node: Trivia,
-        context: TriviaContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {}
-      internal static func check(
-        _ node: TriviaPiece,
-        context: TriviaPieceContext,
-        file: TextFile,
-        setting: Setting,
-        project: PackageRepository,
-        status: ProofreadingStatus,
-        output: Command.Output
-      ) {}
+    internal static func check(
+      _ node: Syntax,
+      context: SyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    internal static func check(
+      _ node: ExtendedSyntax,
+      context: ExtendedSyntaxContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    internal static func check(
+      _ node: Trivia,
+      context: TriviaContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
+    internal static func check(
+      _ node: TriviaPiece,
+      context: TriviaPieceContext,
+      file: TextFile,
+      setting: Setting,
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {}
   }
 #endif

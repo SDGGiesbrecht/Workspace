@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import WorkspaceImplementation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import WorkspaceImplementation
 
-SleeplessMain.main()
+  SleeplessMain.main()
+#endif

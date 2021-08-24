@@ -14,17 +14,19 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-let repositoryRoot: URL = {
-  if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
-    // @exempt(from: tests)
-    return URL(fileURLWithPath: overridden)
-  } else {
-    var result = URL(fileURLWithPath: #filePath)
-    for _ in 1...3 {
-      result.deleteLastPathComponent()
+  let repositoryRoot: URL = {
+    if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
+      // @exempt(from: tests)
+      return URL(fileURLWithPath: overridden)
+    } else {
+      var result = URL(fileURLWithPath: #filePath)
+      for _ in 1...3 {
+        result.deleteLastPathComponent()
+      }
+      return result
     }
-    return result
-  }
-}()
+  }()
+#endif

@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import SDGControlFlow
 import SDGLogic
 import SDGMathematics
@@ -883,3 +884,4 @@ import WorkspaceConfiguration
       return Array(parameterList.lazy.map({ $0.parameterNames() }).joined())
     }
   }
+#endif

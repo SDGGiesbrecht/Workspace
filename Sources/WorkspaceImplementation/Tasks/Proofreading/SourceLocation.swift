@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SwiftSyntax
 
   extension SourceLocation {
@@ -26,3 +27,4 @@
       return utf8(in: source).scalar(in: source.scalars)
     }
   }
+#endif

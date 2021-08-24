@@ -463,8 +463,6 @@
     internal func trackedFiles(output: Command.Output) throws -> [URL] {
       #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
         return []
-      #elseif PLATFORM_LACKS_FOUNDATION_PROCESS
-        return []
       #else
         return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
@@ -568,7 +566,6 @@
         at: "Related Projects"
       )
 
-    #if !PLATFORM_LACKS_FOUNDATION_PROCESS
       internal static func relatedPackage(
         _ package: SDGSwift.Package,
         output: Command.Output
@@ -623,7 +620,6 @@
           )
           return repository
       }
-    #endif
 
     internal static func emptyRelatedProjectCache() {
         try? FileManager.default.removeItem(at: relatedProjectCache)

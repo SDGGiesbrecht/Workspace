@@ -50,7 +50,6 @@
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             if let interface = try? CommandInterface.loadInterface(
               of: tool,
               in: localization.code
@@ -72,7 +71,6 @@
 
               commands[interface.identifier]!.relativePagePath[localization] = path
             }
-          #endif
         }
       }
       self.commands = commands

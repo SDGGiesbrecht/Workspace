@@ -56,7 +56,6 @@
         )
 
         do {
-          #if !PLATFORM_LACKS_FOUNDATION_PROCESS
             let buildCommand: (Command.Output) throws -> Bool
             switch job {
             case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -123,7 +122,6 @@
                 })
               )
             }
-          #endif
         } catch {
           // @exempt(from: tests) Unreachable on Linux.
           var description = StrictString(error.localizedDescription)
@@ -177,7 +175,6 @@
           }).resolved().formattedAsSectionHeader()
         )
 
-        #if !PLATFORM_LACKS_FOUNDATION_PROCESS
           let testCommand: (Command.Output) -> Bool
           switch job {
           case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -244,7 +241,6 @@
               })
             )
           }
-        #endif
       }
     }
 

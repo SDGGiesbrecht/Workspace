@@ -34,7 +34,6 @@
     // MARK: - Execution
 
     internal func execute(output: Command.Output) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS
         _ = try Package(url: url).execute(
           .version(version),
           of: [executable],
@@ -42,7 +41,6 @@
           cacheDirectory: CustomTask.cache,
           reportProgress: { output.print($0) }
         ).get()
-      #endif
     }
   }
 #endif

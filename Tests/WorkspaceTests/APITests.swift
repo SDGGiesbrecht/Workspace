@@ -45,7 +45,6 @@
     static let configureGit: Void = {
         if isInGitHubAction {
           #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-            #if !PLATFORM_LACKS_FOUNDATION_PROCESS
               _ = try? Git.runCustomSubcommand(
                 ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
                 versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
@@ -54,7 +53,6 @@
                 ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
                 versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
               ).get()
-            #endif
           #endif
         }
     }()

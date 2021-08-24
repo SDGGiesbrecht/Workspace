@@ -99,9 +99,6 @@
       )
 
       internal static func checkForUpdates(output: Command.Output) throws -> Version? {
-        #if PLATFORM_LACKS_FOUNDATION_PROCESS
-          return nil
-        #else
           let latestRemote = try Package(url: Metadata.packageURL).versions().get().sorted().last!
           if latestRemote ≠ Metadata.latestStableVersion {
             // @exempt(from: tests) Execution path is determined externally.
@@ -110,7 +107,6 @@
             // @exempt(from: tests)
             return nil  // Up to date.
           }
-        #endif  // @exempt(from: tests)
       }
     }
   }

@@ -28,10 +28,8 @@
   import SDGSwift
   import SDGSwiftPackageManager
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     import PackageModel
     import SwiftFormat
-  #endif
 
   import WorkspaceLocalizations
 
@@ -41,7 +39,6 @@
 
       // MARK: - Initialization
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         internal init(
           loadedTarget: PackageModel.Target,
           package: PackageRepository
@@ -49,34 +46,22 @@
           self.loadedTarget = loadedTarget
           self.package = package
         }
-      #endif
 
       // MARK: - Properties
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         private let loadedTarget: PackageModel.Target
-      #endif
       private let package: PackageRepository
 
       internal var name: String {
-        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          return ""
-        #else
           return loadedTarget.name
-        #endif
       }
 
       private var sourceDirectory: URL {
-        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          return package.location
-        #else
           return loadedTarget.sources.root.asURL
-        #endif  // @exempt(from: tests)
       }
 
       // MARK: - Resources
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         internal func refresh(
           resources: [URL],
           from package: PackageRepository,
@@ -96,23 +81,18 @@
 
           try resourceFile.writeChanges(for: package, output: output)
         }
-      #endif
 
       private func generateSource(
         for resources: [URL],
         of package: PackageRepository
       ) throws -> StrictString {
         let accessControl: String
-        #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-          accessControl = ""
-        #else
           switch loadedTarget.type {
           case .library, .systemModule, .binary:
             accessControl = "internal "
           case .executable, .test:
             accessControl = ""
           }
-        #endif
 
         var source: StrictString = "import Foundation\n\n"
 

@@ -29,7 +29,6 @@ extension PackageRepository {
     repositorySDGDirectory
     + "/Workspace"
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func refreshScripts(project: PackageRepository, output: Command.Output) throws {
 
       let localization = try project.configuration(output: output)
@@ -58,5 +57,4 @@ extension PackageRepository {
         }
       }
     }
-  #endif
 }

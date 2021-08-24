@@ -36,7 +36,6 @@
     internal static func resetUnsupportedFileTypes() {
       unsupportedFileTypesEncountered = [:]
     }
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal static func unsupportedTypesWarning(
         for project: PackageRepository,
         output: Command.Output
@@ -101,7 +100,6 @@
           return warning.joinedAsLines()
         }
       }
-    #endif
 
     // MARK: - Initialization
 

@@ -27,7 +27,6 @@ import SDGSwift
 
 extension PackageRepository {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func normalize(output: Command.Output) throws {
 
         var formatter: SwiftFormatter?
@@ -83,5 +82,4 @@ extension PackageRepository {
         }
       }
     }
-  #endif
 }

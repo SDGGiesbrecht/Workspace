@@ -40,7 +40,6 @@
       )
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func refreshFileHeaders(output: Command.Output) throws {
 
         let template = try fileHeader(output: output)
@@ -72,6 +71,5 @@
           }
         }
       }
-    #endif
   }
 #endif

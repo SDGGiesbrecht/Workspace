@@ -287,7 +287,6 @@
       }
 
       do {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           let report: TestCoverageReport
           switch job {
           case .macOS, .centOS, .ubuntu, .amazonLinux:
@@ -440,7 +439,6 @@
               })
             )
           }
-        #endif
       } catch {
         // @exempt(from: tests) Unreachable on Linux.
         failStepWithError(message: StrictString(error.localizedDescription))

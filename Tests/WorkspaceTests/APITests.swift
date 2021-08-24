@@ -74,7 +74,6 @@
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "AllDisabled").test(
             commands: [
               ["refresh"],
@@ -84,7 +83,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -103,7 +101,6 @@
             result["🇮🇱עב"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "AllTasks").test(
             commands: [
               ["refresh"],
@@ -113,7 +110,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -131,7 +127,6 @@
           arguments: ["fail"]
         )
         configuration.customProofreadingTasks.append(failing)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "BadStyle").test(
             commands: [
               ["proofread"],
@@ -142,12 +137,10 @@
             withCustomTask: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
     func testBrokenExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         PackageRepository(mock: "BrokenExample").test(
           commands: [
             ["refresh", "examples"]
@@ -155,12 +148,10 @@
           localizations: InterfaceLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testBrokenTests() {
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "BrokenTests").test(
             commands: [
               ["test"]
@@ -168,7 +159,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -235,7 +225,6 @@
             return result
           })
         configuration.provideWorkflowScripts = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "CheckedInDocumentation").test(
             commands: [
               ["refresh"],
@@ -246,14 +235,11 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
     func testCheckForUpdates() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         _ = try Workspace.command.execute(with: ["check‐for‐updates"]).get()
-      #endif
     }
 
     func testContinuousIntegrationWithoutScripts() {
@@ -269,7 +255,6 @@
         // Text rules but no syntax rules.
         configuration.proofreading.rules = [.manualWarnings]
 
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
             commands: [
               ["refresh", "continuous‐integration"],
@@ -281,7 +266,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -304,7 +288,6 @@
           arguments: []
         )
         configuration.customProofreadingTasks.append(passing)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "CustomProofread").test(
             commands: [
               ["proofread"],
@@ -317,7 +300,6 @@
             withCustomTask: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -343,7 +325,6 @@
         configuration.licence.manage = true
         configuration.licence.licence = .unlicense
         configuration.fileHeaders.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "CustomReadMe").test(
             commands: [
               ["refresh", "read‐me"],
@@ -354,7 +335,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -376,7 +356,6 @@
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "CustomTasks").test(
             commands: [
               ["refresh"],
@@ -387,12 +366,10 @@
             withCustomTask: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
     func testDefaults() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         let commands: [[StrictString]] = [
           ["refresh", "scripts"],
           ["refresh", "resources"],
@@ -420,7 +397,6 @@
           localizations: FastTestLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testDeutsch() throws {
@@ -447,7 +423,6 @@
         konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
         konfiguration.dokumentation.programmierschnittstelle
           .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "Deutsch").test(
             commands: [
               ["auffrischen", "skripte"],
@@ -466,7 +441,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -478,7 +452,6 @@
         configuration.supportedPlatforms.remove(.watchOS)
         configuration.supportedPlatforms.remove(.tvOS)
         configuration.documentation.localizations = ["en"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "Executable").test(
             commands: [
               ["refresh", "licence"],
@@ -490,7 +463,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -509,7 +481,6 @@
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "FailingCustomTasks").test(
             commands: [
               ["refresh"]
@@ -519,7 +490,6 @@
             withCustomTask: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -540,7 +510,6 @@
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "FailingCustomValidation").test(
             commands: [
               ["validate"]
@@ -550,7 +519,6 @@
             withCustomTask: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -561,7 +529,6 @@
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.repositoryURL = URL(string: "http://example.com")!
         configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "FailingDocumentationCoverage").test(
             commands: [
               ["validate", "documentation‐coverage"],
@@ -571,7 +538,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -595,7 +561,6 @@
             }
           } catch {}
         // This test may fail if derived data is not in the default location. See above.
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "FailingTests").test(
             commands: [
               ["validate", "build"],
@@ -606,7 +571,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -614,7 +578,6 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["🇨🇦EN"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "Headers").test(
             commands: [
               ["refresh", "file‐headers"],
@@ -626,12 +589,10 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
     func testHelp() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         testCommand(
           Workspace.command,
           with: ["help"],
@@ -709,11 +670,9 @@
           uniqueTestName: "Help (workspace normalize)",
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testInvalidResourceDirectory() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         PackageRepository(mock: "InvalidResourceDirectory").test(
           commands: [
             ["refresh", "resources"]
@@ -721,11 +680,9 @@
           localizations: InterfaceLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testInvalidTarget() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         PackageRepository(mock: "InvalidTarget").test(
           commands: [
             ["refresh", "resources"]
@@ -733,11 +690,9 @@
           localizations: InterfaceLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testMissingDocumentation() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         PackageRepository(mock: "MissingDocumentation").test(
           commands: [
             ["refresh", "inherited‐documentation"]
@@ -745,11 +700,9 @@
           localizations: InterfaceLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testMissingExample() {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         PackageRepository(mock: "MissingExample").test(
           commands: [
             ["refresh", "examples"]
@@ -757,7 +710,6 @@
           localizations: InterfaceLocalization.self,
           overwriteSpecificationInsteadOfFailing: false
         )
-      #endif
     }
 
     func testMissingReadMeLocalization() {
@@ -765,7 +717,6 @@
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["zxx"]
         configuration.documentation.readMe.contents.resolve = { _ in [:] }
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "MissingReadMeLocalization").test(
             commands: [
               ["refresh", "read‐me"]
@@ -774,7 +725,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -784,7 +734,6 @@
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "MultipleProducts").test(
             commands: [
               ["refresh", "read‐me"]
@@ -793,7 +742,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -803,7 +751,6 @@
         configuration.documentation.localizations = ["en"]
         configuration.documentation.currentVersion = Version(1, 0, 0)
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "NoLibraries").test(
             commands: [
               ["refresh", "read‐me"]
@@ -812,7 +759,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -820,7 +766,6 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "NoLocalizations").test(
             commands: [
               ["refresh", "read‐me"],
@@ -830,7 +775,6 @@
             localizations: InterfaceLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -838,7 +782,6 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "NurDeutsch").test(
             commands: [
               ["auffrischen", "github"],
@@ -851,7 +794,6 @@
             localizations: NurDeutsch.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -859,7 +801,6 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.documentation.localizations = ["en"]
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "OneLocalization").test(
             commands: [
               ["refresh", "github"]
@@ -868,7 +809,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -880,7 +820,6 @@
         configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
         configuration.supportedPlatforms.remove(.windows)
         configuration.supportedPlatforms.remove(.android)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "OneProductMultipleModules").test(
             commands: [
               ["refresh", "read‐me"],
@@ -890,7 +829,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -898,7 +836,6 @@
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.gitHub.manage = true
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "OnlyBritish").test(
             commands: [
               ["refresh", "github"],
@@ -908,7 +845,6 @@
             localizations: OnlyBritish.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -933,7 +869,6 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "PartialReadMe").test(
             commands: [
               ["refresh", "read‐me"],
@@ -944,7 +879,6 @@
             localizations: FastTestLocalization.self,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -992,7 +926,6 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "SDGLibrary").test(
             commands: [
               ["refresh", "scripts"],
@@ -1021,7 +954,6 @@
             withDependency: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
@@ -1071,7 +1003,6 @@
             result["zxx"] = "#dates"
             return result
           })
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           PackageRepository(mock: "SDGTool").test(
             commands: [
               ["refresh", "scripts"],
@@ -1099,17 +1030,14 @@
             withDependency: true,
             overwriteSpecificationInsteadOfFailing: false
           )
-        #endif
       #endif
     }
 
     func testSelfSpecificScripts() throws {
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         try FileManager.default.do(in: repositoryRoot) {
           _ = try Workspace.command.execute(with: ["refresh", "scripts"]).get()
           _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
         }
-      #endif
     }
   }
 #endif

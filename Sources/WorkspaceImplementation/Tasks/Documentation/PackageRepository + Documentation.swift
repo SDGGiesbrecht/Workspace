@@ -43,11 +43,7 @@
     // MARK: - Properties
 
     internal func hasTargetsToDocument() throws -> Bool {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return true
-      #else
         return try cachedPackage().products.contains(where: { $0.type.isLibrary })
-      #endif
     }
 
     // MARK: - Configuration
@@ -56,7 +52,6 @@
       return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private func customFileNameReplacements(output: Command.Output) throws -> [(
         StrictString, StrictString
       )] {
@@ -192,11 +187,9 @@
         }
         return result
       }
-    #endif
 
     // MARK: - Documentation
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func document(
         outputDirectory: URL,
         validationStatus: inout ValidationStatus,
@@ -357,7 +350,6 @@
           )
         #endif
       }
-    #endif
 
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL) throws {
@@ -379,7 +371,6 @@
       try preventJekyllInterference(outputDirectory: outputDirectory)
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private func retrievePublishedDocumentationIfAvailable(
         outputDirectory: URL,
         output: Command.Output
@@ -409,7 +400,6 @@
             }
         }
       }
-    #endif
 
     private func redirectExistingURLs(outputDirectory: URL) throws {
         if (try? outputDirectory.checkResourceIsReachable()) == true {
@@ -441,7 +431,6 @@
 
     // MARK: - Validation
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func validateDocumentationCoverage(
         validationStatus: inout ValidationStatus,
         output: Command.Output
@@ -517,11 +506,9 @@
           )
         }
       }
-    #endif
 
     // MARK: - Inheritance
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private func documentationDefinitions(
         output: Command.Output
       ) throws -> [StrictString: StrictString] {
@@ -660,6 +647,5 @@
           }
         }
       }
-    #endif
   }
 #endif

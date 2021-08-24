@@ -121,9 +121,6 @@
       for project: PackageRepository,
       output: Command.Output
     ) throws -> SDGVersioning.Version? {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return nil
-      #else
         if let dependency = try project.dependenciesByName()[String(dependency)],
           let version = dependency.manifest.version
         {
@@ -144,7 +141,6 @@
             }
           )  // @exempt(from: tests) Meaningless coverage region.
         }
-      #endif  // @exempt(from: tests)
     }
   }
 #endif

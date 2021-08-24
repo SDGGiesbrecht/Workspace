@@ -35,13 +35,9 @@
     // MARK: - Structure
 
     private func targets() throws -> [Target] {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
-        return []
-      #else
         return try cachedPackage().targets.lazy.map { loaded in
           return Target(loadedTarget: loaded, package: self)
         }
-      #endif
     }
     private func targetsByName() throws -> [String: Target] {
       var byName: [String: Target] = [:]
@@ -121,7 +117,6 @@
       return target
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func refreshResources(output: Command.Output) throws {
 
         var targets: [Target: [URL]] = [:]
@@ -139,6 +134,5 @@
           }
         }
       }
-    #endif
   }
 #endif

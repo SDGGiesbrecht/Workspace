@@ -31,10 +31,8 @@
   import SDGSwiftPackageManager
   import SDGSwiftConfigurationLoading
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     import PackageModel
     import PackageGraph
-  #endif
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -80,7 +78,6 @@
       // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
       // Changes to support files do not require a reset (read‐me, etc.).
       private class ManifestCache {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
           fileprivate var manifest: PackageModel.Manifest?
           fileprivate var package: PackageModel.Package?
           fileprivate var windowsPackage: PackageModel.Package?
@@ -88,7 +85,6 @@
           fileprivate var windowsPackageGraph: PackageGraph?
           fileprivate var products: [PackageModel.Product]?
           fileprivate var dependenciesByName: [String: ResolvedPackage]?
-        #endif
       }
       private static var manifestCaches: [URL: ManifestCache] = [:]
       private var manifestCache: ManifestCache {
@@ -178,15 +174,12 @@
 
     // MARK: - Miscellaneous Properties
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func isWorkspaceProject() throws -> Bool {
         return try packageName() == "Workspace"
       }
-    #endif
 
     // MARK: - Manifest
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func cachedManifest() throws -> PackageModel.Manifest {
         return try cached(in: &manifestCache.manifest) {
           return try manifest().get()
@@ -261,11 +254,9 @@
           return result
         }
       }
-    #endif
 
     // MARK: - Configuration
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func configurationContext() throws -> WorkspaceContext {
         return try cached(in: &configurationCache.configurationContext) {
 
@@ -295,7 +286,6 @@
           return WorkspaceContext(_location: location, manifest: manifest)
         }
       }
-    #endif
 
     internal static let workspaceConfigurationNames = UserFacing<
       StrictString, InterfaceLocalization
@@ -309,7 +299,6 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
         return try cached(in: &configurationCache.configuration) {
 
@@ -339,7 +328,6 @@
           return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
         }
       }
-    #endif
 
     private static var fellBackToUserLocalization = false
     internal static func resetLocalizationFallback() {
@@ -384,7 +372,6 @@
         }
       }).resolved()
     }
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func developmentLocalization(output: Command.Output) throws -> LocalizationIdentifier
       {
         if let specified = try configuration(output: output).documentation.localizations.first {
@@ -441,7 +428,6 @@
           )
         }
       }
-    #endif
 
     // MARK: - Files
 
@@ -482,7 +468,6 @@
       #endif
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func sourceFiles(output: Command.Output) throws -> [URL] {
         let configuration = try self.configuration(output: output)
         let ignoredTypes = configuration.repository.ignoredFileTypes
@@ -501,7 +486,6 @@
           }
         }
       }
-    #endif
 
     internal func _withExampleCache(
       _ operation: () throws -> [StrictString: StrictString]

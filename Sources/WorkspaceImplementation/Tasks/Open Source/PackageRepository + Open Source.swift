@@ -28,7 +28,6 @@ import WorkspaceConfiguration
 
 extension PackageRepository {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     private func refreshReadMe(
       at location: URL,
       for localization: LocalizationIdentifier,
@@ -115,5 +114,4 @@ extension PackageRepository {
         }
       }
     }
-  #endif
 }

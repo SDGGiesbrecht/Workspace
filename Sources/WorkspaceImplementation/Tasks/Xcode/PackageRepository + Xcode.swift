@@ -54,7 +54,6 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private func script() throws -> String {
         if try isWorkspaceProject() {
           return "swift run workspace proofread •xcode"  // @exempt(from: tests)
@@ -99,6 +98,5 @@
         scheme.contents = schemeDefinition
         try scheme.writeChanges(for: self, output: output)
       }
-    #endif
   }
 #endif

@@ -19,17 +19,13 @@
 
   import SDGSwiftPackageManager
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     import PackageModel
-  #endif
 
   extension SDGVersioning.Version {
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal init(_ version: PackageModel.Version) {
         self.init(version.major, version.minor, version.patch)
       }
-    #endif
 
     internal func stringDroppingEmptyMinor() -> String {
       var result = string(droppingEmptyPatch: true)

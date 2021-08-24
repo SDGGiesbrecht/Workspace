@@ -89,7 +89,6 @@
         + ignoreEntriesForXcode
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func refreshGitConfiguration(output: Command.Output) throws {
 
         let entries =
@@ -120,6 +119,5 @@
           }
         }
       }
-    #endif
   }
 #endif

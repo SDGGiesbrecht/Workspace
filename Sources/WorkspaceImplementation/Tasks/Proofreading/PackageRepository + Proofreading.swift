@@ -37,7 +37,6 @@ import WorkspaceLocalizations
 
 extension PackageRepository {
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
@@ -143,5 +142,4 @@ extension PackageRepository {
 
       return status.passing
     }
-  #endif
 }

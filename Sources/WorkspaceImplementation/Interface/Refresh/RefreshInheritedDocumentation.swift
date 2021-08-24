@@ -120,7 +120,6 @@
           }
         })
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         internal static let command = Command(
           name: name,
           description: description,
@@ -143,7 +142,6 @@
             try options.project.refreshInheritedDocumentation(output: output)
           }
         )
-      #endif
     }
   }
 #endif

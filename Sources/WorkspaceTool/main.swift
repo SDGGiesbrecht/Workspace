@@ -16,6 +16,4 @@
 
 import WorkspaceImplementation
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
   SleeplessMain.main()
-#endif

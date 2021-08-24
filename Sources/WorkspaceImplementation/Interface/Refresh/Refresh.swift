@@ -46,7 +46,6 @@
           }
         })
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         private static var subcommands: [Command] {
           return [
             All.command,
@@ -69,7 +68,6 @@
           subcommands: subcommands,
           defaultSubcommand: All.command
         )
-      #endif
     }
   }
 #endif

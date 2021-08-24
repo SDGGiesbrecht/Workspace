@@ -72,7 +72,6 @@ extension PackageRepository {
       self.init(at: temporary.appendingPathComponent(name))
     }
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     func test<L>(
       commands: [[StrictString]],
       configuration: WorkspaceConfiguration = WorkspaceConfiguration(),
@@ -470,5 +469,4 @@ extension PackageRepository {
         XCTFail("\(error)", file: file, line: line)
       }
     }
-  #endif
 }

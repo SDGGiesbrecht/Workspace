@@ -806,11 +806,6 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])
     ),
-    // #workaround(Swift 5.3.3, SwiftPM does not compile.)
-    .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
     // #workaround(Swift 5.3.3, SwiftSyntax does not compile.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX",

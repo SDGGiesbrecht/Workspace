@@ -23,17 +23,14 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     import PackageModel
     import SwiftFormat
-  #endif
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
 
   extension PackageRepository {
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func refreshContinuousIntegration(output: Command.Output) throws {
         try refreshGitHubWorkflows(output: output)
         delete(location.appendingPathComponent(".travis.yml"), output: output)
@@ -129,7 +126,6 @@
           output: output
         )
       }
-    #endif
 
     private func cleanCMakeUp(output: Command.Output) throws {
       let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")

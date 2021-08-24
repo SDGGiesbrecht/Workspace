@@ -28,7 +28,6 @@
   extension Workspace {
     internal enum Proofread {
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
         internal static let command = Command(
           name: Workspace.Proofread.Proofread.name,
           description: Workspace.Proofread.Proofread.description,
@@ -38,7 +37,6 @@
           ],
           defaultSubcommand: Workspace.Proofread.Proofread.command
         )
-      #endif
     }
   }
 #endif

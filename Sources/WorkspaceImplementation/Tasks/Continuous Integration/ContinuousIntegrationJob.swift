@@ -311,7 +311,6 @@
       return "TARGETING_\(environmentVariableName)"
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func isRequired(by project: PackageRepository, output: Command.Output) throws -> Bool
       {
         if try project.isWorkspaceProject() {
@@ -348,7 +347,6 @@
               .documentation.api.serveFromGitHubPagesBranch)
         }
       }
-    #endif
 
     internal var platform: Platform {
       switch self {
@@ -384,7 +382,6 @@
       return command
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       private func workspaceStep(
         named name: UserFacing<StrictString, InterfaceLocalization>,
         command: StrictString,
@@ -405,7 +402,6 @@
           )
         )
       }
-    #endif
 
     // MARK: - GitHub Actions
 
@@ -703,7 +699,6 @@
       }
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func gitHubWorkflowJob(
         for project: PackageRepository,
         output: Command.Output
@@ -1097,7 +1092,6 @@
 
         return result
       }
-    #endif
 
     // MARK: - Localized Text
 

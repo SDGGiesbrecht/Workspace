@@ -186,7 +186,6 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal static func getWorkspace(
         andExecute command: StrictString,
         for project: PackageRepository,
@@ -276,6 +275,5 @@
 
         return lines.joined(separator: "\n")
       }
-    #endif
   }
 #endif

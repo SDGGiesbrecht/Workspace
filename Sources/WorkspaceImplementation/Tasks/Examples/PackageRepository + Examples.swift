@@ -44,7 +44,6 @@
         + InterfaceLocalization.endExampleDeclaration
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
       internal func examples(output: Command.Output) throws -> [StrictString: StrictString] {
         return try _withExampleCache {
           var list: [StrictString: StrictString] = [:]
@@ -256,6 +255,5 @@
           }
         }
       }
-    #endif
   }
 #endif

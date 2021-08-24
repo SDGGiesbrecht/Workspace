@@ -16,9 +16,7 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import Foundation
-  #if !PLATFORM_LACKS_DISPATCH
     import Dispatch
-  #endif
 
   import SDGControlFlow
   import SDGLogic

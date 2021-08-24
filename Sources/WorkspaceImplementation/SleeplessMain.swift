@@ -14,10 +14,9 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import Foundation
-#if !PLATFORM_LACKS_DISPATCH
   import Dispatch
-#endif
 
 import SDGText
 import SDGLocalization
@@ -29,7 +28,6 @@ public struct SleeplessMain {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     public static func main() {  // @exempt(from: tests)
-      #if !PLATFORM_LACKS_DISPATCH
         DispatchQueue.global(qos: .utility).sync {
 
           #if os(Windows) || os(Linux) || os(Android)
@@ -51,7 +49,7 @@ public struct SleeplessMain {
             }
           #endif
         }
-      #endif
     }
   #endif
 }
+#endif

@@ -440,9 +440,7 @@
     }
 
     private func preventJekyllInterference(outputDirectory: URL) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_DATA_WRITE_TO
         try Data().write(to: outputDirectory.appendingPathComponent(".nojekyll"))
-      #endif
     }
 
     // MARK: - Validation

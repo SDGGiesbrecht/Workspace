@@ -788,8 +788,6 @@ for target in package.targets {
     // Internal‐only:
     // #workaround(Swift 5.3.3, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.Data.write(to:).)
-    .define("PLATFORM_LACKS_FOUNDATION_DATA_WRITE_TO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)

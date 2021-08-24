@@ -800,11 +800,6 @@ for target in package.targets {
     ),
     // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(Swift 5.3.3, SwiftFormat does not compile.)
-    .define(
-      "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
-    ),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(

@@ -23,23 +23,19 @@ import SDGCollections
 import SDGCommandLine
 
 import SDGSwift
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
   import SwiftFormat
-#endif
 
 extension PackageRepository {
 
   #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_PM
     internal func normalize(output: Command.Output) throws {
 
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
         var formatter: SwiftFormatter?
         if let formatConfiguration = try configuration(output: output).proofreading
           .swiftFormatConfiguration?.reducedToMachineResponsibilities()
         {
           formatter = SwiftFormatter(configuration: formatConfiguration)
         }
-      #endif
 
       for url in try sourceFiles(output: output) {
         try purgingAutoreleased {
@@ -47,7 +43,6 @@ extension PackageRepository {
           if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)
 
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT
               if let formatter = formatter,
                 file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
               {
@@ -60,7 +55,6 @@ extension PackageRepository {
                 )
                 file.contents = result
               }
-            #endif
 
             let lines = file.contents.lines.map({ String($0.line) })
             let normalizedLines = lines.map { (line: String) -> String in

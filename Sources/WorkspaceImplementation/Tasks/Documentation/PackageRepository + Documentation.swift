@@ -412,7 +412,6 @@
     #endif
 
     private func redirectExistingURLs(outputDirectory: URL) throws {
-      #if !PLATFORM_LACKS_FOUNDATION_URL_CHECK_RESOURCE_IS_REACHABLE
         if (try? outputDirectory.checkResourceIsReachable()) == true {
           for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
             try purgingAutoreleased {
@@ -434,7 +433,6 @@
             }
           }
         }
-      #endif
     }
 
     private func preventJekyllInterference(outputDirectory: URL) throws {

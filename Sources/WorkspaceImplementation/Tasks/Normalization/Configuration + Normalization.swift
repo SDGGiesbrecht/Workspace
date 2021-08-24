@@ -15,7 +15,6 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
     import Foundation
 
     import SwiftFormatConfiguration
@@ -35,5 +34,4 @@
         return copy
       }
     }
-  #endif
 #endif

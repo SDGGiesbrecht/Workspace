@@ -31,9 +31,7 @@ import SDGSwiftSource
 #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftFormat
 #endif
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
   import SwiftFormatConfiguration
-#endif
 
 import WorkspaceLocalizations
 

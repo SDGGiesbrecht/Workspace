@@ -70,9 +70,7 @@
         configuration.optimizeForTests()
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
           configuration.proofreading.swiftFormatConfiguration = nil
-        #endif
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
@@ -124,10 +122,8 @@
         let configuration = WorkspaceConfiguration()
         configuration.normalize = true
         configuration.proofreading.rules.insert(.listSeparation)
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
           configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] =
             true
-        #endif
         let failing = CustomTask(
           url: URL(string: "file:///tmp/Developer/Dependency")!,
           version: Version(1, 0, 0),
@@ -217,12 +213,10 @@
         configuration.documentation.api.yearFirstPublished = 2018
         configuration.documentation.api.ignoredDependencies.remove("Swift")
         configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
           configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
             false
           configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
             false
-        #endif
         configuration.documentation.relatedProjects = [
           .heading(text: [
             "🇬🇧EN": "Heading",
@@ -378,9 +372,7 @@
         configuration.customValidationTasks.append(passing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
           configuration.proofreading.swiftFormatKonfiguration = nil
-        #endif
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false
@@ -544,9 +536,7 @@
         configuration.customValidationTasks.append(failing)
         configuration.provideWorkflowScripts = false
         configuration.proofreading.rules = []
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
           configuration.proofreading.swiftFormatConfiguration = nil
-        #endif
         configuration.testing.prohibitCompilerWarnings = false
         configuration.testing.enforceCoverage = false
         configuration.documentation.api.enforceCoverage = false

@@ -22,11 +22,7 @@
 
   import SDGCommandLine
 
-  #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-    internal protocol DiagnosticConsumer {}
-  #else
     import SwiftSyntax
-  #endif
 
   import WorkspaceLocalizations
 
@@ -52,7 +48,6 @@
       return false
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal func handle(_ diagnostic: Diagnostic) {
         let file = currentFile!
 
@@ -115,7 +110,6 @@
           report(violation: notExempt)
         }
       }
-    #endif
 
     internal func finalize() {}
 

@@ -19,16 +19,13 @@ import SDGCollections
 
 import SDGCommandLine
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 import SDGHTML
 
 import WorkspaceLocalizations
 import WorkspaceConfiguration
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   internal class SymbolPage: Page {
 
     // MARK: - Initialization
@@ -2201,4 +2198,3 @@ import WorkspaceConfiguration
       )
     }
   }
-#endif

@@ -24,13 +24,9 @@ import SDGCommandLine
 
 import SDGSwift
 import SDGSwiftSource
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftFormat
-#endif
   import SwiftFormatConfiguration
 
 import WorkspaceLocalizations
@@ -40,9 +36,6 @@ extension PackageRepository {
     internal func proofread(reporter: ProofreadingReporter, output: Command.Output) throws -> Bool {
       let status = ProofreadingStatus(reporter: reporter, output: output)
 
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-        var linter: Bool?
-      #else
         var linter: SwiftLinter?
         if let formatConfiguration = try configuration(output: output).proofreading
           .swiftFormatConfiguration
@@ -51,7 +44,6 @@ extension PackageRepository {
           diagnostics.addConsumer(status)
           linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
         }
-      #endif
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
       if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -113,7 +105,6 @@ extension PackageRepository {
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
                   let syntax = try SyntaxParser.parseAndRetry(url)
                   try RuleSyntaxScanner(
                     rules: syntaxRules,
@@ -125,7 +116,6 @@ extension PackageRepository {
                   ).scan(syntax)
 
                   try linter?.lint(syntax: syntax, assumingFileURL: url)
-                #endif
               }
             }
           }

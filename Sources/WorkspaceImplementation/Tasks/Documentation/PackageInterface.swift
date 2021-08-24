@@ -23,9 +23,7 @@
 
   import SDGCommandLine
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
   import SDGHTML
 
@@ -209,7 +207,6 @@
       return result
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       private static func generateIndices(
         for package: PackageAPI,
         tools: PackageCLI,
@@ -235,7 +232,6 @@
         }
         return result
       }
-    #endif
 
     private static func packageHeader(localization: LocalizationIdentifier) -> StrictString {
       if let match = localization._reasonableMatch {
@@ -250,7 +246,6 @@
       }
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       private static func generateIndex(
         for package: PackageAPI,
         tools: PackageCLI,
@@ -464,7 +459,6 @@
           contents: entries.joinedAsLines()
         )
       }
-    #endif
 
     private static func generateIndexSection(
       named name: StrictString,
@@ -606,7 +600,6 @@
 
     // MARK: - Initialization
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal init(
         localizations: [LocalizationIdentifier],
         developmentLocalization: LocalizationIdentifier,
@@ -680,16 +673,13 @@
         )
         self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
       }
-    #endif
 
     // MARK: - Properties
 
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       private let packageAPI: PackageAPI
       private let api: APIElement
-    #endif
     private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
@@ -818,7 +808,6 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           try purgingAutoreleased {
             let pageURL = api.pageURL(
               in: outputDirectory,
@@ -845,7 +834,6 @@
               coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: pageURL)
           }
-        #endif
       }
     }
 
@@ -863,7 +851,6 @@
         for tool in cli.commands.values {
           try purgingAutoreleased {
             let location = tool.pageURL(in: outputDirectory, for: localization)
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
               try CommandPage(
                 localization: localization,
                 allLocalizations: localizations,
@@ -878,7 +865,6 @@
                 customReplacements: customReplacements,
                 output: output
               ).contents.save(to: location)
-            #endif
 
             try outputNestedCommands(
               of: tool,
@@ -902,7 +888,6 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           for library in api.libraries.lazy.map({ APIElement.library($0) })
           where library.exists(in: localization) {
             try purgingAutoreleased {
@@ -931,7 +916,6 @@
               )?.contents.save(to: location)
             }
           }
-        #endif
       }
     }
 
@@ -943,7 +927,6 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           for module in api.modules.lazy.map({ APIElement.module($0) })
           where module.exists(in: localization) {
             try purgingAutoreleased {
@@ -972,7 +955,6 @@
               )?.contents.save(to: location)
             }
           }
-        #endif
       }
     }
 
@@ -984,7 +966,6 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           for symbol in [
             packageAPI.types.map({ APIElement.type($0) }),
             packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
@@ -1092,11 +1073,9 @@
               coverageCheckOnly: coverageCheckOnly
             )
           }
-        #endif
       }
     }
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       private func outputNestedSymbols(
         of parent: APIElement,
         namespace: [APIElement],
@@ -1166,7 +1145,6 @@
           }
         }
       }
-    #endif
 
     private func outputNestedCommands(
       of parent: CommandInterfaceInformation,
@@ -1194,9 +1172,7 @@
             var nestedPagePath = parent.relativePagePath[otherLocalization]!
             nestedPagePath.removeLast(5)  // .html
             nestedPagePath += "/"
-            #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
               nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
-            #endif
             nestedPagePath += "/"
             nestedPagePath += Page.sanitize(
               fileName: localized.name,
@@ -1216,7 +1192,6 @@
           var navigation = namespace
           navigation.append(information)
 
-          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
             try CommandPage(
               localization: localization,
               allLocalizations: localizations,
@@ -1231,7 +1206,6 @@
               customReplacements: customReplacements,
               output: output
             ).contents.save(to: location)
-          #endif
 
           try outputNestedCommands(
             of: information,
@@ -1271,7 +1245,6 @@
             )
           }
           documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-          #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
             let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
             let documentation = parsed.api().first!.documentation.last?.documentationComment
 
@@ -1320,7 +1293,6 @@
             )
             let url = outputDirectory.appendingPathComponent(String(location(localization)))
             try page.contents.save(to: url)
-          #endif
         }
       }
     }
@@ -1367,7 +1339,6 @@
           String(localization._directoryName)
         )
         let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           let pageURL = api.pageURL(
             in: outputDirectory,
             for: localization,
@@ -1379,7 +1350,6 @@
               target: URL(fileURLWithPath: pageURL.lastPathComponent)
             ).source().save(to: redirectURL)
           }
-        #endif
       }
     }
   }

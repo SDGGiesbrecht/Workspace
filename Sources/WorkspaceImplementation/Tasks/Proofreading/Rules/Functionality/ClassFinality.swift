@@ -23,9 +23,7 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -52,8 +50,6 @@
             "Öffentliche (public) Klassen sollen als offen (open), entgültig (final), oder ausdrückliche Ausnahme markiert."
         }
       })
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
 
       // MARK: - SyntaxRule
 
@@ -84,6 +80,5 @@
           break
         }
       }
-    #endif
   }
 #endif

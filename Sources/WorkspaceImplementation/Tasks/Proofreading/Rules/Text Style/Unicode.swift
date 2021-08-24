@@ -22,9 +22,7 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -41,7 +39,6 @@
         }
       })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       private enum EitherTokenKind {
         case syntax(TokenKind)
         case extended(ExtendedTokenKind)
@@ -586,6 +583,5 @@
           output: output
         )
       }
-    #endif
   }
 #endif

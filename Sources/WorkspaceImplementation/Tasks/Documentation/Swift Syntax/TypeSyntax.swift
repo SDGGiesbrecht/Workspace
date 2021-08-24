@@ -16,12 +16,9 @@
 
 import SDGLogic
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension TypeSyntax {
 
     internal func parameterNames() -> [String] {
@@ -72,4 +69,3 @@ import SDGSwiftSource
       }
     }
   }
-#endif

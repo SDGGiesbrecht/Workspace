@@ -16,12 +16,9 @@
 
 import Foundation
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension SyntaxProtocol {
 
     internal func asSyntax() -> Syntax {
@@ -37,4 +34,3 @@ import SDGSwiftSource
       #endif
     }
   }
-#endif

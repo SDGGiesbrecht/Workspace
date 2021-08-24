@@ -26,9 +26,7 @@
 
   import WorkspaceLocalizations
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   internal struct AccessControl: SyntaxRule {
@@ -66,8 +64,6 @@
     private static let highLevels: Set<String> = ["open", "public", "internal"]
     private static let lowLevels: Set<String> = ["fileprivate", "private"]
     private static let allLevels = highLevels ∪ lowLevels
-
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
 
       private static func checkLibrary(
         _ node: Syntax,
@@ -172,6 +168,5 @@
           break
         }
       }
-    #endif
   }
 #endif

@@ -49,7 +49,6 @@
       }
     })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal static func check(
         _ node: ExtendedSyntax,
         context: ExtendedSyntaxContext,
@@ -76,6 +75,5 @@
           }
         }
       }
-    #endif
   }
 #endif

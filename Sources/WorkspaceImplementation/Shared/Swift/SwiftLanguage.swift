@@ -23,9 +23,7 @@
 
   import WorkspaceConfiguration
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
     import SwiftFormat
 

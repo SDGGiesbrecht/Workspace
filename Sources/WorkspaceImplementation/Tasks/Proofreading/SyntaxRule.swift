@@ -18,13 +18,10 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   internal protocol SyntaxRule: RuleProtocol {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       static func check(
         _ node: Syntax,
         context: SyntaxContext,
@@ -61,11 +58,9 @@
         status: ProofreadingStatus,
         output: Command.Output
       )
-    #endif
   }
 
   extension SyntaxRule {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal static func check(
         _ node: Syntax,
         context: SyntaxContext,
@@ -102,6 +97,5 @@
         status: ProofreadingStatus,
         output: Command.Output
       ) {}
-    #endif
   }
 #endif

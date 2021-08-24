@@ -17,25 +17,18 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGLogic
 
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   internal protocol Parameter {
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       var firstName: TokenSyntax? { get }
       var secondName: TokenSyntax? { get }
       var optionalType: TypeSyntax? { get }
-    #endif
   }
 
   extension Parameter {
 
     internal func parameterNames() -> [String] {
-      #if PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
-        return []
-      #else
         var result: [String] = []
         if let second = secondName?.text,
           ¬second.isEmpty
@@ -51,7 +44,6 @@
           result.append(contentsOf: type.parameterNames())
         }
         return result
-      #endif
     }
   }
 #endif

@@ -21,9 +21,7 @@
   import SDGCommandLine
 
   import SDGSwift
-  #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
     import SwiftSyntax
-  #endif
   import SDGSwiftSource
 
   import WorkspaceLocalizations
@@ -50,7 +48,6 @@
       }
     })
 
-    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
       internal static func check(
         _ node: Syntax,
         context: SyntaxContext,
@@ -77,6 +74,5 @@
           }
         }
       }
-    #endif
   }
 #endif

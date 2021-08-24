@@ -17,12 +17,9 @@
 import SDGCommandLine
 
 import SDGSwift
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   internal class RuleSyntaxScanner: SyntaxScanner {
 
     // MARK: - Initialization
@@ -115,4 +112,3 @@ import SDGSwiftSource
       return true
     }
   }
-#endif

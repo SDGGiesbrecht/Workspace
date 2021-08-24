@@ -163,7 +163,6 @@
                   "### [\(name)](\(url.absoluteString))",
                 ]
 
-                #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
                   if let packageDocumentation = try? PackageAPI.documentation(
                     for: package.package().get()
                   ),
@@ -177,7 +176,6 @@
                       StrictString(description.text),
                     ]
                   }
-                #endif
               }
             }
           }
@@ -304,7 +302,6 @@
         let developmentLocalization = try self.developmentLocalization(output: output)
         let customReplacements = try customFileNameReplacements(output: output)
 
-        #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
           let api = try PackageAPI(
             package: cachedPackageGraph(),
             ignoredDependencies: configuration.documentation.api.ignoredDependencies,
@@ -348,7 +345,6 @@
             output: output,
             coverageCheckOnly: coverageCheckOnly
           )
-        #endif
       }
 
     // Final steps irrelevent to validation.

@@ -16,12 +16,9 @@
 
 import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension TupleTypeElementSyntax: Parameter {
     internal var firstName: TokenSyntax? {
       return name
@@ -30,4 +27,3 @@ import SDGSwiftSource
       return type
     }
   }
-#endif

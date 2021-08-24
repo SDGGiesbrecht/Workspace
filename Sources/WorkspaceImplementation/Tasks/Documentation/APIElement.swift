@@ -19,14 +19,11 @@ import SDGLogic
 import SDGMathematics
 import SDGCollections
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   import SwiftSyntax
-#endif
 import SDGSwiftSource
 
 import WorkspaceConfiguration
 
-#if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_SYNTAX
   extension APIElement {
 
     // MARK: - Symbol Types
@@ -886,4 +883,3 @@ import WorkspaceConfiguration
       return Array(parameterList.lazy.map({ $0.parameterNames() }).joined())
     }
   }
-#endif

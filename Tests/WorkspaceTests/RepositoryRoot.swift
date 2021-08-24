@@ -16,7 +16,6 @@
 
 import Foundation
 
-#if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
   let repositoryRoot: URL = {
     if let overridden = ProcessInfo.processInfo.environment["SWIFTPM_PACKAGE_ROOT"] {
       // @exempt(from: tests)
@@ -29,4 +28,3 @@ import Foundation
       return result
     }
   }()
-#endif

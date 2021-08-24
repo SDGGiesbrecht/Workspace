@@ -41,7 +41,6 @@ import SDGCommandLineTestUtilities
 
 extension PackageRepository {
 
-  #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
     private static let mockProjectsDirectory = repositoryRoot.appendingPathComponent(
       "Tests/Mock Projects"
     )
@@ -55,7 +54,6 @@ extension PackageRepository {
         mockProject
       )
     }
-  #endif
 
   // MARK: - Initialization
 

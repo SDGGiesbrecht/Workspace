@@ -43,7 +43,6 @@
   class APITests: TestCase {
 
     static let configureGit: Void = {
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
         if isInGitHubAction {
           #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
             #if !PLATFORM_LACKS_FOUNDATION_PROCESS
@@ -58,7 +57,6 @@
             #endif
           #endif
         }
-      #endif
     }()
     override func setUp() {
       super.setUp()

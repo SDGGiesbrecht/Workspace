@@ -32,11 +32,10 @@
       .tvOS,
       .iOS,
       .amazonLinux,
+      .watchOS,
     ]
     internal static let testJobs: Set<ContinuousIntegrationJob> =
-      coverageJobs ∪ [
-        .watchOS
-      ]
+      coverageJobs ∪ []
     internal static let buildJobs: Set<ContinuousIntegrationJob> =
       testJobs ∪ []
 

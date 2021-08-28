@@ -25,7 +25,8 @@
   import WorkspaceLocalizations
 
   internal struct DeprecatedTestManifests: TextRule {
-    // Deprecated in 0.25.0 (2019‐11‐03)
+    // XCTestManifests deprecated in 0.25.0 (2019‐11‐03)
+    // LinuxMain deprecated in 0.37.5 (????‐??‐??)
 
     internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
@@ -53,6 +54,9 @@
       output: Command.Output
     ) {
       if file.location.lastPathComponent == "XCTestManifests.swift" {
+        reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
+      }
+      if file.location.lastPathComponent == "LinuxMain.swift" {
         reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
       }
     }

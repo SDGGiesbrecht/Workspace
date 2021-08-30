@@ -7,4 +7,5 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/Default/Sources/Default/Default.swift:2:7: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 [Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:4:3: warning: Executables and tests should not contain access control. (accessControl)
+[Temporary]/Default/Tests/LinuxMain.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 0

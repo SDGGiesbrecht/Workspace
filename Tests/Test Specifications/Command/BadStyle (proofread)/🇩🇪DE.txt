@@ -438,6 +438,17 @@ Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLower
   public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
+Zeile 1
+Testlisten werden nicht mehr benötigt. (überholteTestlisten)
+import XCTest
+
+import BadStyleTests
+
+var tests = [XCTestCaseEntry]()
+tests += BadStyleTests.__allTests()
+
+XCTMain(tests)
+
 
 $ Dependency fail
 Hello, world!

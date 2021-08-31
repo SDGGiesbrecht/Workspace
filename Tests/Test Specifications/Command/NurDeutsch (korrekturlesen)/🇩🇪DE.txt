@@ -40,6 +40,16 @@ Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle
   var text = "Hello, World!"
 
 Tests/LinuxMain.swift
+Zeile 1
+Testlisten werden nicht mehr benötigt. (überholteTestlisten)
+import XCTest
+
+import NurDeutschTests
+
+var tests = [XCTestCaseEntry]()
+tests += NurDeutschTests.allTests()
+XCTMain(tests)
+
 Tests/NurDeutschTests/NurDeutschTests.swift
 Tests/NurDeutschTests/XCTestManifests.swift
 Zeile 1

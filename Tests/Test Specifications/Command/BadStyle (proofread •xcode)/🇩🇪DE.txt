@@ -89,6 +89,7 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:3: warning: Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:15: warning: Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
+[Temporary]/BadStyle/Tests/LinuxMain.swift:1:1: warning: Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 
 $ Dependency fail
 Hello, world!

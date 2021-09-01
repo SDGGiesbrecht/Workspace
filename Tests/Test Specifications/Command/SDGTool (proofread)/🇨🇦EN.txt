@@ -40,7 +40,6 @@ README.md
 Sources/Library/Resources.swift
 Sources/Library/SDG.swift
 Sources/tool/main.swift
-Tests/LinuxMain.swift
 Tests/SDGTests/SDGTests.swift
 Tests/test‐tool/Resources.swift
 Tests/test‐tool/main.swift

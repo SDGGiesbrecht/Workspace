@@ -438,6 +438,17 @@ Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLower
   public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
+Line 1
+Test manifests are no longer necessary. (deprecatedTestManifests)
+import XCTest
+
+import BadStyleTests
+
+var tests = [XCTestCaseEntry]()
+tests += BadStyleTests.__allTests()
+
+XCTMain(tests)
+
 
 $ Dependency fail
 Hello, world!

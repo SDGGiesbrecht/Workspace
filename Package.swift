@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 
 /*
  Package.swift
@@ -520,7 +520,10 @@ let package = Package(
   ],
   targets: [
     // The executable. (Multiple products duplicate this with localized names.)
-    .target(name: "WorkspaceTool", dependencies: [.target(name: "WorkspaceImplementation")]),
+    .executableTarget(
+      name: "WorkspaceTool",
+      dependencies: [.target(name: "WorkspaceImplementation")]
+    ),
     // The umbrella library. (Shared by the various localized executables.)
     .target(
       name: "WorkspaceImplementation",
@@ -724,7 +727,7 @@ let package = Package(
       ],
       path: "Tests/CrossPlatform"
     ),
-    .target(
+    .executableTarget(
       name: "cross‐platform‐tool",
       dependencies: ["CrossPlatform"],
       path: "Tests/cross‐platform‐tool"
@@ -746,7 +749,7 @@ let package = Package(
       path: "Tests/CrossPlatformC"
     ),
 
-    .target(
+    .executableTarget(
       name: "WorkspaceConfigurationExample",
       dependencies: [
         "WorkspaceConfiguration",

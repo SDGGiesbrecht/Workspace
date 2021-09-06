@@ -789,8 +789,8 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #warning(Swift 5.4.2, Web lacks DispatchQueue.)
-    .define("PLATFORM_LACKS_DISPATCH_DISPATCH_QUEUE", .when(platforms: [.wasi])),
+    // #warning(Swift 5.3.3, Web lacks Dispatch.)
+    //.define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)

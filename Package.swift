@@ -803,10 +803,10 @@ for target in package.targets {
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
-    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
+    // #warning(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.windows, .wasi])
+      .when(platforms: [.windows, /*.wasi*/])
     ),
     // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
     .define(
@@ -842,8 +842,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM",
+    // #warning(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
+    //"SwiftPM",
 
     // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
 

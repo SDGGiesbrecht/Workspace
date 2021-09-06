@@ -796,12 +796,11 @@ for target in package.targets {
     // #warning(Swift 5.4.2, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, FoundationXML is broken on Windows.)
-    // #warning(Swift 5.3.3, FoundationXML is broken on web.)
+    // #workaround(Swift 5.4.2, FoundationXML is broken on web.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
-      .when(platforms: [.windows, /*.wasi,*/ .tvOS, .iOS, .watchOS])
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])
     ),
-    // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)

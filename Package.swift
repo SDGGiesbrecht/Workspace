@@ -559,7 +559,12 @@ let package = Package(
           package: "SwiftSyntax",
           condition: .when(platforms: [.macOS, .windows, .linux, .android])
         ),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not support web yet.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",

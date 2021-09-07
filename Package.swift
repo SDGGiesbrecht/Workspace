@@ -552,7 +552,7 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .linux, .android])
         ),
         .product(
           name: "SwiftSyntax",
@@ -563,7 +563,7 @@ let package = Package(
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux, .android])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),

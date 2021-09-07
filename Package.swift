@@ -557,7 +557,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux, .android])
         ),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(
@@ -803,10 +803,10 @@ for target in package.targets {
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
-    // #warning(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
+    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.windows, /*.wasi*/])
+      .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
     .define(

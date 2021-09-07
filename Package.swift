@@ -875,21 +875,15 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on tvOS.) @exempt(from: unicode)
-  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
-  package.products.removeAll(where: { $0.name == "workspace" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
-  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name.first!.isLowercase })
+  package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on iOS.) @exempt(from: unicode)
-  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
-  package.products.removeAll(where: { $0.name == "workspace" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
-  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name.first!.isLowercase })
+  package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -911,12 +905,9 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 12.5, Tool targets don’t work on watchOS.) @exempt(from: unicode)
-  package.products.removeAll(where: { $0.name == "arbeitsbereich" })
-  package.products.removeAll(where: { $0.name == "workspace" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceTool" })
-  package.targets.removeAll(where: { $0.name == "cross‐platform‐tool" })
-  package.targets.removeAll(where: { $0.name == "WorkspaceConfigurationExample" })
+  // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  package.products.removeAll(where: { $0.name.first!.isLowercase })
+  package.targets.removeAll(where: { $0.type == .executable })
 }
 
 // #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)

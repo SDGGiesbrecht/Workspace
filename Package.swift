@@ -562,7 +562,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.4.2, Does not support web yet.)
+          // #workaround(Swift 5.4.2, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
@@ -808,7 +808,7 @@ for target in package.targets {
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
-    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
+    // #workaround(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])

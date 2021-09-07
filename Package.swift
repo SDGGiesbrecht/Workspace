@@ -552,18 +552,23 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .linux, .android])
         ),
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux, .android])
         ),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux, .android])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
@@ -672,7 +677,12 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
       ]
     ),
 
@@ -723,7 +733,12 @@ let package = Package(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
       ],
       path: "Tests/CrossPlatform"
     ),
@@ -789,22 +804,21 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.3.3, Web lacks Dispatch.)
+    // #workaround(Swift 5.4.2, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.4.2, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.3.3, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.4.2, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.4, FoundationXML is broken on Windows.)
-    // #workaround(Swift 5.3.3, FoundationXML is broken on web.)
+    // #workaround(Swift 5.4.2, FoundationXML is broken on Windows.)
+    // #workaround(Swift 5.4.2, FoundationXML is broken on web.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])
     ),
-    // #workaround(Swift 5.4, Android emulator lacks Git.)
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
-    // #workaround(Swift 5.3.3, SwiftFormatConfiguration does not compile for web.)
+    // #workaround(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])
@@ -843,16 +857,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.3.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM",
-
-    // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
-
-    // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-    "SwiftSyntax",
-    "SwiftFormat\u{22}",
-    // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
-    "SwiftFormatConfiguration",
+    // #workaround(Swift 5.4.2, Web toolchain rejects manifest due to dynamic library.)
+    "SwiftPM"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in

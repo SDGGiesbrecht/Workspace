@@ -858,7 +858,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.4.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM",
+    "SwiftPM"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in

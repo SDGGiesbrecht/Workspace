@@ -793,7 +793,7 @@ for target in package.targets {
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #warning(Swift 5.4.2, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.4.2, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.4.2, FoundationXML is broken on web.)

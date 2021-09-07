@@ -677,7 +677,12 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
       ]
     ),
 
@@ -728,7 +733,12 @@ let package = Package(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",
-        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(
+          name: "SwiftFormatConfiguration",
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.4.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        ),
       ],
       path: "Tests/CrossPlatform"
     ),

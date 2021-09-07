@@ -847,8 +847,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
     // #workaround(Swift 5.3.2, Conditional dependencies fail to skip for web.)
 
-    // #workaround(SwiftSyntax 0.50300.0, Does not support web yet.)
-    "SwiftSyntax",
+    // #warning(SwiftSyntax 0.50300.0, Does not support web yet.)
+    //"SwiftSyntax",
     "SwiftFormat\u{22}",
     // #workaround(Swift 5.3.2, Excluding only web causes manifest to crash.)
     "SwiftFormatConfiguration",

@@ -552,7 +552,8 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          // #workaround(SwiftPM 0.50400.0, Does not support Android yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntax",

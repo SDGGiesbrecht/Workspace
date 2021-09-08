@@ -888,11 +888,10 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #warning(Swift 5.4, Conditional dependencies fail to skip for Android.)
-  /*
+  // #warning(Swift 5.4.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
     // #workaround(SwiftPM 0.50400.0, Does not support Andriod yet.)
-    "SwiftPM",
+    //"SwiftPM",
     // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
@@ -904,7 +903,6 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
       })
     })
   }
-  */
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {

@@ -887,11 +887,11 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
+  // #warning(Swift 5.3, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
     // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
     "SwiftSyntax",
-    "SwiftFormat\u{22}",
+    //"SwiftFormat\u{22}",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

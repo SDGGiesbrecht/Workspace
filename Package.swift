@@ -552,12 +552,12 @@ let package = Package(
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux, .android])
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [.macOS, .windows, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(
           name: "SwiftFormatConfiguration",
@@ -568,7 +568,7 @@ let package = Package(
         .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .windows, .linux, .android])
+          condition: .when(platforms: [.macOS, .windows, .linux])
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
@@ -887,10 +887,8 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.4, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.3, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    // #workaround(SwiftPM 0.50400.0, Does not support Andriod yet.)
-    "SwiftPM",
     // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",

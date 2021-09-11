@@ -557,7 +557,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [.macOS, .windows, .linux])
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftFormatConfiguration",
@@ -565,12 +565,11 @@ let package = Package(
           // #workaround(Swift 5.4.2, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
-        // #warning(Debugging...)
-        /*.product(
+        .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .windows, .linux])
-        ),*/
+          condition: .when(platforms: [.macOS, .linux])
+        ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
       ]

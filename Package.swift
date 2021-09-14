@@ -887,7 +887,7 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #warning(Swift 5.4.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.4.2, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
     // #workaround(SwiftSyntax 0.50400.0, Does not support Android yet.)
     "SwiftSyntax",

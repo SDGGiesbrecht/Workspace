@@ -99,11 +99,11 @@
 
     // MARK: - Properties
 
-      private class Cache {
-        fileprivate var headerStart: String.ScalarView.Index?
-        fileprivate var headerEnd: String.ScalarView.Index?
-      }
-      private var cache = Cache()
+    private class Cache {
+      fileprivate var headerStart: String.ScalarView.Index?
+      fileprivate var headerEnd: String.ScalarView.Index?
+    }
+    private var cache = Cache()
 
     private var hasChanged: Bool
     internal let location: URL
@@ -120,7 +120,7 @@
 
     private var _contents: String {
       willSet {
-          cache = Cache()
+        cache = Cache()
       }
     }
     internal var contents: String {
@@ -149,15 +149,15 @@
     // MARK: - File Headers
 
     internal var headerStart: String.ScalarView.Index {
-        return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
-          return fileType.syntax.headerStart(file: self)
-        }
+      return cached(in: &cache.headerStart) { () -> String.ScalarView.Index in
+        return fileType.syntax.headerStart(file: self)
+      }
     }
 
     internal var headerEnd: String.ScalarView.Index {
-        return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
-          return fileType.syntax.headerEnd(file: self)
-        }
+      return cached(in: &cache.headerEnd) { () -> String.ScalarView.Index in
+        return fileType.syntax.headerEnd(file: self)
+      }
     }
 
     internal var header: String {

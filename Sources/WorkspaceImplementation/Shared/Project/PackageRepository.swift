@@ -44,28 +44,24 @@
 
     // MARK: - Cache
 
-    #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      // This needs to be reset if any files are added, renamed, or deleted.
-      private class FileCache {
-        fileprivate var allFiles: [URL]?
-        fileprivate var trackedFiles: [URL]?
-        fileprivate var sourceFiles: [URL]?
+    // This needs to be reset if any files are added, renamed, or deleted.
+    private class FileCache {
+      fileprivate var allFiles: [URL]?
+      fileprivate var trackedFiles: [URL]?
+      fileprivate var sourceFiles: [URL]?
 
-        fileprivate var examples: [StrictString: StrictString]?
-        fileprivate var documentation: [StrictString: StrictString]?
+      fileprivate var examples: [StrictString: StrictString]?
+      fileprivate var documentation: [StrictString: StrictString]?
+    }
+    private static var fileCaches: [URL: FileCache] = [:]
+    private var fileCache: FileCache {
+      return cached(in: &PackageRepository.fileCaches[location]) {
+        return FileCache()
       }
-      private static var fileCaches: [URL: FileCache] = [:]
-      private var fileCache: FileCache {
-        return cached(in: &PackageRepository.fileCaches[location]) {
-          return FileCache()
-        }
-      }
-    #endif
+    }
 
     internal func resetFileCache(debugReason: String) {
-      #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        PackageRepository.fileCaches[location] = FileCache()
-      #endif
+      PackageRepository.fileCaches[location] = FileCache()
       #if DEBUG
         print(
           "(Debug notice: File cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
@@ -73,32 +69,28 @@
       #endif
     }
 
-    #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      // This only needs to be reset if a Swift source file is added, renamed, or removed.
-      // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
-      // Changes to support files do not require a reset (read‐me, etc.).
-      private class ManifestCache {
-        fileprivate var manifest: PackageModel.Manifest?
-        fileprivate var package: PackageModel.Package?
-        fileprivate var windowsPackage: PackageModel.Package?
-        fileprivate var packageGraph: PackageGraph?
-        fileprivate var windowsPackageGraph: PackageGraph?
-        fileprivate var products: [PackageModel.Product]?
-        fileprivate var dependenciesByName: [String: ResolvedPackage]?
+    // This only needs to be reset if a Swift source file is added, renamed, or removed.
+    // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
+    // Changes to support files do not require a reset (read‐me, etc.).
+    private class ManifestCache {
+      fileprivate var manifest: PackageModel.Manifest?
+      fileprivate var package: PackageModel.Package?
+      fileprivate var windowsPackage: PackageModel.Package?
+      fileprivate var packageGraph: PackageGraph?
+      fileprivate var windowsPackageGraph: PackageGraph?
+      fileprivate var products: [PackageModel.Product]?
+      fileprivate var dependenciesByName: [String: ResolvedPackage]?
+    }
+    private static var manifestCaches: [URL: ManifestCache] = [:]
+    private var manifestCache: ManifestCache {
+      return cached(in: &PackageRepository.manifestCaches[location]) {
+        return ManifestCache()
       }
-      private static var manifestCaches: [URL: ManifestCache] = [:]
-      private var manifestCache: ManifestCache {
-        return cached(in: &PackageRepository.manifestCaches[location]) {
-          return ManifestCache()
-        }
-      }
-    #endif
+    }
 
     internal func resetManifestCache(debugReason: String) {
       resetFileCache(debugReason: debugReason)
-      #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        PackageRepository.manifestCaches[location] = ManifestCache()
-      #endif
+      PackageRepository.manifestCaches[location] = ManifestCache()
       #if DEBUG
         print(
           "(Debug notice: Manifest cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
@@ -106,33 +98,29 @@
       #endif
     }
 
-    #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-      // These do not need to be reset during the execution of any command. (They do between tests.)
-      private class ConfigurationCache {
-        // Nothing modifies the package, product or module names or adds removes entries.
-        fileprivate var configurationContext: WorkspaceContext?
+    // These do not need to be reset during the execution of any command. (They do between tests.)
+    private class ConfigurationCache {
+      // Nothing modifies the package, product or module names or adds removes entries.
+      fileprivate var configurationContext: WorkspaceContext?
 
-        // Nothing modifies the configuration.
-        fileprivate var configuration: WorkspaceConfiguration?
-        fileprivate var fileHeader: StrictString?
-        fileprivate var documentationCopyright: [LocalizationIdentifier: StrictString]?
-        fileprivate var readMe: [LocalizationIdentifier: StrictString]?
-        fileprivate var contributingInstructions: [LocalizationIdentifier: Markdown]?
-        fileprivate var issueTemplates: [LocalizationIdentifier: [IssueTemplate]]?
+      // Nothing modifies the configuration.
+      fileprivate var configuration: WorkspaceConfiguration?
+      fileprivate var fileHeader: StrictString?
+      fileprivate var documentationCopyright: [LocalizationIdentifier: StrictString]?
+      fileprivate var readMe: [LocalizationIdentifier: StrictString]?
+      fileprivate var contributingInstructions: [LocalizationIdentifier: Markdown]?
+      fileprivate var issueTemplates: [LocalizationIdentifier: [IssueTemplate]]?
+    }
+    private static var configurationCaches: [URL: ConfigurationCache] = [:]
+    private var configurationCache: ConfigurationCache {
+      return cached(in: &PackageRepository.configurationCaches[location]) {
+        return ConfigurationCache()
       }
-      private static var configurationCaches: [URL: ConfigurationCache] = [:]
-      private var configurationCache: ConfigurationCache {
-        return cached(in: &PackageRepository.configurationCaches[location]) {
-          return ConfigurationCache()
-        }
-      }
-    #endif
+    }
 
     internal func resetConfigurationCache(debugReason: String) {
       resetManifestCache(debugReason: "testing")
-      #if !os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        PackageRepository.configurationCaches[location] = ConfigurationCache()
-      #endif
+      PackageRepository.configurationCaches[location] = ConfigurationCache()
       #if DEBUG
         print(
           "(Debug notice: Configuration cache reset for “\(location.lastPathComponent)” because of “\(debugReason)”)"
@@ -430,40 +418,32 @@
     // MARK: - Files
 
     internal func allFiles() throws -> [URL] {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return []
-      #else
-        return try cached(in: &fileCache.allFiles) { () -> [URL] in
-          let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
-            // Skip irrelevant operating system files.
-            return url.lastPathComponent ≠ ".DS_Store"
-              ∧ ¬url.lastPathComponent.hasSuffix("~")
-          }
-          return files.sorted()
+      return try cached(in: &fileCache.allFiles) { () -> [URL] in
+        let files = try FileManager.default.deepFileEnumeration(in: location).filter { url in
+          // Skip irrelevant operating system files.
+          return url.lastPathComponent ≠ ".DS_Store"
+            ∧ ¬url.lastPathComponent.hasSuffix("~")
         }
-      #endif
+        return files.sorted()
+      }
     }
 
     internal func trackedFiles(output: Command.Output) throws -> [URL] {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return []
-      #else
-        return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
+      return try cached(in: &fileCache.trackedFiles) { () -> [URL] in
 
-          var ignoredURLs: [URL] = try ignoredFiles().get()
-          ignoredURLs.append(location.appendingPathComponent(".git"))
+        var ignoredURLs: [URL] = try ignoredFiles().get()
+        ignoredURLs.append(location.appendingPathComponent(".git"))
 
-          let result = try allFiles().filter { url in
-            for ignoredURL in ignoredURLs {
-              if url.is(in: ignoredURL) {
-                return false
-              }
+        let result = try allFiles().filter { url in
+          for ignoredURL in ignoredURLs {
+            if url.is(in: ignoredURL) {
+              return false
             }
-            return true
           }
-          return result
+          return true
         }
-      #endif
+        return result
+      }
     }
 
     internal func sourceFiles(output: Command.Output) throws -> [URL] {
@@ -488,25 +468,17 @@
     internal func _withExampleCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return [:]
-      #else
-        return try cached(in: &fileCache.examples) {
-          return try operation()
-        }
-      #endif
+      return try cached(in: &fileCache.examples) {
+        return try operation()
+      }
     }
 
     internal func _withDocumentationCache(
       _ operation: () throws -> [StrictString: StrictString]
     ) rethrows -> [StrictString: StrictString] {
-      #if os(Windows)  // #workaround(Swift 5.3.2, Declaration may not be in a Comdat!)
-        return [:]
-      #else
-        return try cached(in: &fileCache.documentation) {
-          return try operation()
-        }
-      #endif
+      return try cached(in: &fileCache.documentation) {
+        return try operation()
+      }
     }
 
     // MARK: - Actions

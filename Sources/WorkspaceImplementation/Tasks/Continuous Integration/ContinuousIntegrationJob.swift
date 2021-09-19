@@ -744,7 +744,6 @@
         )
       case .windows:
         result.append(contentsOf: [
-          // #workaround(Swift 5.3.3, There is no official action for this yet.)
           step(setVisualStudioUpStepName, localization: interfaceLocalization),
           uses("ilammy/msvc\u{2D}dev\u{2D}cmd@v1"),
         ])
@@ -1041,7 +1040,6 @@
               "chmod +x .build/SDG/Emulator.sh",
             ]
           ),
-          // #workaround(Swift 5.3.3, There is no official action for this yet.)
           step(testStepName, localization: interfaceLocalization),
           uses(
             "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",

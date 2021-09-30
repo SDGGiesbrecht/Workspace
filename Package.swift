@@ -492,26 +492,26 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 7, 5)
+      from: Version(1, 7, 6)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(7, 0, 2)
+      from: Version(8, 0, 0)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 1))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

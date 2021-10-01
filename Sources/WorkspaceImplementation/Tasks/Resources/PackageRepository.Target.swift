@@ -35,6 +35,7 @@
 
   extension PackageRepository {
 
+    @available(macOS 10.15, *)
     internal struct Target: Comparable, Hashable {
 
       // MARK: - Initialization
@@ -90,7 +91,7 @@
         switch loadedTarget.type {
         case .library, .systemModule, .binary:
           accessControl = "internal "
-        case .executable, .test:
+        case .executable, .plugin, .test:
           accessControl = ""
         }
 

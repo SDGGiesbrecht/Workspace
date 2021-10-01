@@ -340,10 +340,11 @@
       case .miscellaneous:
         return true
       case .deployment:
-        return try project.configuration(output: output).documentation.api.generate
-          ∧ project.hasTargetsToDocument()
-          ∧ (try project.configuration(output: output)
-            .documentation.api.serveFromGitHubPagesBranch)
+        let shouldGenerate = try project.configuration(output: output).documentation.api.generate
+        let hasTargets = project.hasTargetsToDocument()
+        let served = try project.configuration(output: output)
+          .documentation.api.serveFromGitHubPagesBranch
+        return shouldGenerate ∧ hasTargets ∧ served
       }
     }
 

@@ -303,7 +303,7 @@
         }
         let products = try self.products()
           .map { (product: PackageModel.Product) -> PackageManifest.Product in
-            
+
             let type: PackageManifest.Product.ProductType
             let modules: [String]
             switch product.type {
@@ -316,10 +316,10 @@
             case .plugin, .test:
               unreachable()
             }
-            
+
             return PackageManifest.Product(_name: product.name, type: type, modules: modules)
           }
-        
+
         let manifest = PackageManifest(
           _packageName: String(try packageName()),
           products: products

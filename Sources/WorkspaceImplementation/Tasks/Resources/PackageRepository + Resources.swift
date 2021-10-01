@@ -129,11 +129,11 @@
         let intendedTarget = try target(for: resource, output: output)
         targets[intendedTarget, default: []].append(resource)
       }
-      
+
       for (target, resources) in targets.keys.sorted()
         .map({ ($0, targets[$0]!) })
       {  // So that output order is consistent.
-        
+
         try purgingAutoreleased {
           try target.refresh(resources: resources, from: self, output: output)
         }

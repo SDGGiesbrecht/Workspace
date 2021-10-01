@@ -123,7 +123,7 @@
     ) throws -> SDGVersioning.Version? {
       if #available(macOS 10.15, *) {
         if let dependency = try project.dependenciesByName()[String(dependency)],
-           let version = dependency.manifest.version
+          let version = dependency.manifest.version
         {
           return Version(version)
         }
@@ -134,7 +134,7 @@
           if let shellOutput = try? Shell.default.run(
             command: String(dependency).components(separatedBy: " ")
           ).get(),
-          let version = Version(firstIn: shellOutput)
+            let version = Version(firstIn: shellOutput)
           {
             return version
           } else {

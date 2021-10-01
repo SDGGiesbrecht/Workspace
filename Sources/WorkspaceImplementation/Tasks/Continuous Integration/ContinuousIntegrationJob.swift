@@ -341,7 +341,7 @@
         return true
       case .deployment:
         let shouldGenerate = try project.configuration(output: output).documentation.api.generate
-        let hasTargets = project.hasTargetsToDocument()
+        let hasTargets = try project.hasTargetsToDocument()
         let served = try project.configuration(output: output)
           .documentation.api.serveFromGitHubPagesBranch
         return shouldGenerate ∧ hasTargets ∧ served

@@ -233,11 +233,10 @@
     }
 
     internal func packageName() throws -> StrictString {
-      if #available(macOS 10.15, *) {
-        return StrictString(try cachedManifest().name)
-      } else {
+      guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()
       }
+      return StrictString(try cachedManifest().name)
     }
 
     internal func projectName(
@@ -299,35 +298,33 @@
 
     internal func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
-
-        if #available(macOS 10.15, *) {
-          let products = try self.products()
-            .map { (product: PackageModel.Product) -> PackageManifest.Product in
-
-              let type: PackageManifest.Product.ProductType
-              let modules: [String]
-              switch product.type {
-              case .library:
-                type = .library
-                modules = product.targets.map { $0.name }
-              case .executable:
-                type = .executable
-                modules = []
-              case .plugin, .test:
-                unreachable()
-              }
-
-              return PackageManifest.Product(_name: product.name, type: type, modules: modules)
-            }
-
-          let manifest = PackageManifest(
-            _packageName: String(try packageName()),
-            products: products
-          )
-          return WorkspaceContext(_location: location, manifest: manifest)
-        } else {
+        guard #available(macOS 10.15, *) else {
           throw SwiftPMUnavailableError()
         }
+        let products = try self.products()
+          .map { (product: PackageModel.Product) -> PackageManifest.Product in
+            
+            let type: PackageManifest.Product.ProductType
+            let modules: [String]
+            switch product.type {
+            case .library:
+              type = .library
+              modules = product.targets.map { $0.name }
+            case .executable:
+              type = .executable
+              modules = []
+            case .plugin, .test:
+              unreachable()
+            }
+            
+            return PackageManifest.Product(_name: product.name, type: type, modules: modules)
+          }
+        
+        let manifest = PackageManifest(
+          _packageName: String(try packageName()),
+          products: products
+        )
+        return WorkspaceContext(_location: location, manifest: manifest)
       }
     }
 

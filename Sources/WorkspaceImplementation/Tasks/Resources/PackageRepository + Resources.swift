@@ -121,23 +121,22 @@
     }
 
     internal func refreshResources(output: Command.Output) throws {
-      if #available(macOS 10.15, *) {
-        var targets: [Target: [URL]] = [:]
-        for resource in try resourceFiles(output: output) {
-          let intendedTarget = try target(for: resource, output: output)
-          targets[intendedTarget, default: []].append(resource)
-        }
-        
-        for (target, resources) in targets.keys.sorted()
-          .map({ ($0, targets[$0]!) })
-        {  // So that output order is consistent.
-          
-          try purgingAutoreleased {
-            try target.refresh(resources: resources, from: self, output: output)
-          }
-        }
-      } else {
+      guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()
+      }
+      var targets: [Target: [URL]] = [:]
+      for resource in try resourceFiles(output: output) {
+        let intendedTarget = try target(for: resource, output: output)
+        targets[intendedTarget, default: []].append(resource)
+      }
+      
+      for (target, resources) in targets.keys.sorted()
+        .map({ ($0, targets[$0]!) })
+      {  // So that output order is consistent.
+        
+        try purgingAutoreleased {
+          try target.refresh(resources: resources, from: self, output: output)
+        }
       }
     }
   }

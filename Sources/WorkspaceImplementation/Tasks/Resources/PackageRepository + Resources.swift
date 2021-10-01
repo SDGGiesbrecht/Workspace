@@ -34,15 +34,13 @@
 
     // MARK: - Structure
 
+    @available(macOS 10.15, *)
     private func targets() throws -> [Target] {
-      if #available(macOS 10.15, *) {
-        return try cachedPackage().targets.lazy.map { loaded in
-          return Target(loadedTarget: loaded, package: self)
-        }
-      } else {
-        throw SwiftPMUnavailableError()
+      return try cachedPackage().targets.lazy.map { loaded in
+        return Target(loadedTarget: loaded, package: self)
       }
     }
+    @available(macOS 10.15, *)
     private func targetsByName() throws -> [String: Target] {
       var byName: [String: Target] = [:]
       for target in try targets() {
@@ -85,6 +83,7 @@
       return result
     }
 
+    @available(macOS 10.15, *)
     private func target(for resource: URL, output: Command.Output) throws -> Target {
       let path = resource.path(relativeTo: location).dropping(through: "/")
       guard let targetName = path.prefix(upTo: "/")?.contents else {
@@ -122,20 +121,23 @@
     }
 
     internal func refreshResources(output: Command.Output) throws {
-
-      var targets: [Target: [URL]] = [:]
-      for resource in try resourceFiles(output: output) {
-        let intendedTarget = try target(for: resource, output: output)
-        targets[intendedTarget, default: []].append(resource)
-      }
-
-      for (target, resources) in targets.keys.sorted()
-        .map({ ($0, targets[$0]!) })
-      {  // So that output order is consistent.
-
-        try purgingAutoreleased {
-          try target.refresh(resources: resources, from: self, output: output)
+      if #available(macOS 10.15, *) {
+        var targets: [Target: [URL]] = [:]
+        for resource in try resourceFiles(output: output) {
+          let intendedTarget = try target(for: resource, output: output)
+          targets[intendedTarget, default: []].append(resource)
         }
+        
+        for (target, resources) in targets.keys.sorted()
+          .map({ ($0, targets[$0]!) })
+        {  // So that output order is consistent.
+          
+          try purgingAutoreleased {
+            try target.refresh(resources: resources, from: self, output: output)
+          }
+        }
+      } else {
+        throw SwiftPMUnavailableError()
       }
     }
   }

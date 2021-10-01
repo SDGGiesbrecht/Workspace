@@ -70,12 +70,15 @@
         {
           settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
         }
+        guard #available(macOS 10.15, *) else {
+          throw SwiftPMUnavailableError()
+        }
         for target in try cachedPackage().targets {
           let setting: Setting?
           switch target.type {
           case .library, .binary:
             setting = .library
-          case .executable, .test:
+          case .executable, .plugin, .test:
             setting = .topLevel
           case .systemModule:  // @exempt(from: tests)
             setting = nil

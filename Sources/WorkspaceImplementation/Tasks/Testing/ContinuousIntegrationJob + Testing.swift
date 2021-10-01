@@ -103,7 +103,7 @@
 
     // MARK: - SDK
 
-    internal var buildSDK: Xcode.SDK {
+    internal var buildPlatform: Xcode.Platform {
       switch self {  // @exempt(from: tests) Unreachable from Linux.
       case .macOS,  // @exempt(from: tests)
         .windows,
@@ -124,7 +124,7 @@
       }
     }
 
-    internal var testSDK: Xcode.SDK {
+    internal var testPlatform: Xcode.Platform {
       switch self {  // @exempt(from: tests) Unreachable from Linux.
       case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .miscellaneous,
         .deployment:

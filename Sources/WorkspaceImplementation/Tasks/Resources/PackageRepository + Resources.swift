@@ -35,8 +35,12 @@
     // MARK: - Structure
 
     private func targets() throws -> [Target] {
-      return try cachedPackage().targets.lazy.map { loaded in
-        return Target(loadedTarget: loaded, package: self)
+      if #available(macOS 10.15, *) {
+        return try cachedPackage().targets.lazy.map { loaded in
+          return Target(loadedTarget: loaded, package: self)
+        }
+      } else {
+        throw SwiftPMUnavailableError()
       }
     }
     private func targetsByName() throws -> [String: Target] {

@@ -55,6 +55,9 @@
       }
 
       var fromDocumentation: StrictString = ""
+      guard #available(macOS 10.15, *) else {
+        throw SwiftPMUnavailableError()
+      }
       if let documentation = try? PackageAPI.documentation(
         for: package().get()
       ).resolved(localizations: allLocalizations).documentation[

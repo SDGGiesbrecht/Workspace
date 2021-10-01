@@ -71,7 +71,7 @@
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
               var log = try self.build(
-                for: job.buildSDK,
+                for: job.buildPlatform,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
                     output.print(relevant)
@@ -192,7 +192,7 @@
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           testCommand = { output in
             switch self.test(
-              on: job.testSDK,
+              on: job.testPlatform,
               reportProgress: { report in
                 if let relevant = Xcode.abbreviate(output: report) {
                   output.print(relevant)
@@ -316,7 +316,7 @@
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           guard
             let fromXcode = try codeCoverageReport(
-              on: job.testSDK,
+              on: job.testPlatform,
               ignoreCoveredRegions: true,
               reportProgress: { output.print($0) }
             ).get()
@@ -337,11 +337,14 @@
         }
 
         var irrelevantFiles: Set<URL> = []
+        guard #available(macOS 10.15, *) else {
+          throw SwiftPMUnavailableError()
+        }
         for target in try package().get().targets {
           switch target.type {
           case .library, .systemModule, .binary:
             break  // Coverage matters.
-          case .executable:
+          case .executable, .plugin:
             // Not testable.
             for path in target.sources.paths {
               irrelevantFiles.insert(

@@ -121,26 +121,27 @@
       for project: PackageRepository,
       output: Command.Output
     ) throws -> SDGVersioning.Version? {
-      if let dependency = try project.dependenciesByName()[String(dependency)],
-        let version = dependency.manifest.version
-      {
-        return Version(version)
-      } else {
-        return cached(
-          in: &dependencyVersionCache[dependency],
-          {
-            if let shellOutput = try? Shell.default.run(
-              command: String(dependency).components(separatedBy: " ")
-            ).get(),
-              let version = Version(firstIn: shellOutput)
-            {
-              return version
-            } else {
-              return nil
-            }
-          }
-        )  // @exempt(from: tests) Meaningless coverage region.
+      if #available(macOS 10.15, *) {
+        if let dependency = try project.dependenciesByName()[String(dependency)],
+           let version = dependency.manifest.version
+        {
+          return Version(version)
+        }
       }
+      return cached(
+        in: &dependencyVersionCache[dependency],
+        {
+          if let shellOutput = try? Shell.default.run(
+            command: String(dependency).components(separatedBy: " ")
+          ).get(),
+          let version = Version(firstIn: shellOutput)
+          {
+            return version
+          } else {
+            return nil
+          }
+        }
+      )  // @exempt(from: tests) Meaningless coverage region.
     }
   }
 #endif

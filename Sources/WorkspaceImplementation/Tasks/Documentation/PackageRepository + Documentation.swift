@@ -43,6 +43,9 @@
     // MARK: - Properties
 
     internal func hasTargetsToDocument() throws -> Bool {
+      guard #available(macOS 10.15, *) else {
+        throw SwiftPMUnavailableError()
+      }
       return try cachedPackage().products.contains(where: { $0.type.isLibrary })
     }
 
@@ -163,6 +166,9 @@
                 "### [\(name)](\(url.absoluteString))",
               ]
 
+              guard #available(macOS 10.15, *) else {
+                throw SwiftPMUnavailableError()
+              }
               if let packageDocumentation = try? PackageAPI.documentation(
                 for: package.package().get()
               ),
@@ -302,6 +308,9 @@
       let developmentLocalization = try self.developmentLocalization(output: output)
       let customReplacements = try customFileNameReplacements(output: output)
 
+      guard #available(macOS 10.15, *) else {
+        throw SwiftPMUnavailableError()
+      }
       let api = try PackageAPI(
         package: cachedPackageGraph(),
         ignoredDependencies: configuration.documentation.api.ignoredDependencies,

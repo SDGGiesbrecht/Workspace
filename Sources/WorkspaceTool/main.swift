@@ -17,9 +17,5 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import WorkspaceImplementation
 
-  // #warning(Debugging...)
-  print("Started?")
-  #if false
   SleeplessMain.main()
-  #endif
 #endif

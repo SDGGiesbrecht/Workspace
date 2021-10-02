@@ -128,6 +128,9 @@
           )
         }
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // Licence
         if try options.project.configuration(output: output).licence.manage {
           try Workspace.Refresh.Licence.command.execute(
@@ -155,9 +158,6 @@
           )
         }
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,

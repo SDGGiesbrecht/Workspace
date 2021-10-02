@@ -128,19 +128,22 @@
           )
         }
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // Licence
         if try options.project.configuration(output: output).licence.manage {
+          // #warning(Debugging...)
+          print(#function)
+          #if false
           try Workspace.Refresh.Licence.command.execute(
             withArguments: arguments,
             options: options,
             output: output
           )
+          #endif
         }
-        #endif
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // GitHub
         if try options.project.configuration(output: output).gitHub.manage {
           try Workspace.Refresh.GitHub.command.execute(
@@ -159,16 +162,12 @@
           )
         }
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
           options: options,
           output: output
         )
-        #endif
 
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
@@ -214,6 +213,7 @@
           )
           try task.execute(output: output)
         }
+        #endif
       }
     }
   }

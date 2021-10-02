@@ -128,9 +128,6 @@
           )
         }
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // Licence
         if try options.project.configuration(output: output).licence.manage {
           try Workspace.Refresh.Licence.command.execute(
@@ -140,6 +137,9 @@
           )
         }
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // GitHub
         if try options.project.configuration(output: output).gitHub.manage {
           try Workspace.Refresh.GitHub.command.execute(

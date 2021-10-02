@@ -30,11 +30,7 @@
       DispatchQueue.global(qos: .utility).sync {
 
         #if os(Windows) || os(Linux) || os(Android)
-          // #warning(Debugging...)
-          print(#function)
-          #if false
-            Workspace.main()
-          #endif
+          Workspace.main()
         #else
           let reason = UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

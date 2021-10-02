@@ -159,6 +159,9 @@
           )
         }
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
@@ -210,6 +213,7 @@
           )
           try task.execute(output: output)
         }
+        #endif
       }
     }
   }

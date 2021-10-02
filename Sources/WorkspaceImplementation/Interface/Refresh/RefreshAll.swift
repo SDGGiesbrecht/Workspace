@@ -86,9 +86,6 @@
         options: Options,
         output: Command.Output
       ) throws {
-        // #warning(Debugging...)
-        print(#function)
-        #if false
 
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
@@ -158,12 +155,16 @@
           )
         }
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
           options: options,
           output: output
         )
+        #endif
 
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
@@ -209,7 +210,6 @@
           )
           try task.execute(output: output)
         }
-        #endif
       }
     }
   }

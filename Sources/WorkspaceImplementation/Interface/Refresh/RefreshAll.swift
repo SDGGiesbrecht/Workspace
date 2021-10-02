@@ -164,7 +164,6 @@
           options: options,
           output: output
         )
-        #endif
 
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
@@ -210,6 +209,7 @@
           )
           try task.execute(output: output)
         }
+        #endif
       }
     }
   }

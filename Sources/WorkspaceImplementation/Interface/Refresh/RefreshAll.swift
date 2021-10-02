@@ -53,9 +53,6 @@
         directArguments: [],
         options: Workspace.standardOptions,
         execution: { arguments, options, output in
-          // #warning(Debugging...)
-          print(#function)
-          #if false
 
           if options.job == .deployment {
             // @exempt(from: tests)
@@ -81,7 +78,6 @@
           }).resolved()
 
           try output.succeed(message: success, project: options.project)
-          #endif
         }
       )
 
@@ -90,6 +86,9 @@
         options: Options,
         output: Command.Output
       ) throws {
+        // #warning(Debugging...)
+        print(#function)
+        #if false
 
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
@@ -210,6 +209,7 @@
           )
           try task.execute(output: output)
         }
+        #endif
       }
     }
   }

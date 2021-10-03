@@ -29,6 +29,9 @@
 
     internal func refreshLicence(output: Command.Output) throws {
 
+      // #warning(Debugging...)
+      print(#function)
+      #if false
       guard let licence = try configuration(output: output).licence.licence else {
         throw Command.Error(
           description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -67,6 +70,7 @@
 
       // Delete alternate licence files to prevent duplicates.
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)
+      #endif
     }
   }
 #endif

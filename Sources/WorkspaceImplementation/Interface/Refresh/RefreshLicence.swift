@@ -71,11 +71,7 @@
             }).resolved().formattedAsSectionHeader()
           )
 
-          // #warning(Debugging...)
-          print(#function)
-          #if false
           try options.project.refreshLicence(output: output)
-          #endif
         }
       )
     }

@@ -29,9 +29,6 @@
 
     internal func refreshLicence(output: Command.Output) throws {
 
-      // #warning(Debugging...)
-      print(#function)
-      #if false
       guard let licence = try configuration(output: output).licence.licence else {
         throw Command.Error(
           description: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -57,6 +54,9 @@
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output
       )
+      // #warning(Debugging...)
+      print(#function)
+      #if false
       var authors: StrictString = "the \(projectName) project contributors"
       if let configuredAuthor = try configuration(output: output).documentation.primaryAuthor {
         authors = configuredAuthor + " and " + authors

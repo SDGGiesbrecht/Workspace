@@ -130,15 +130,11 @@
 
         // Licence
         if try options.project.configuration(output: output).licence.manage {
-          // #warning(Debugging...)
-          print(#function)
-          #if false
           try Workspace.Refresh.Licence.command.execute(
             withArguments: arguments,
             options: options,
             output: output
           )
-          #endif
         }
 
         // #warning(Debugging...)

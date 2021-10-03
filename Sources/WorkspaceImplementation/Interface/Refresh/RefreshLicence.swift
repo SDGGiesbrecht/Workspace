@@ -58,9 +58,6 @@
         options: Workspace.standardOptions,
         execution: { (_, options: Options, output: Command.Output) throws in
 
-          // #warning(Debugging...)
-          print(#function)
-          #if false
           output.print(
             UserFacing<StrictString, InterfaceLocalization>({ localization in
               switch localization {
@@ -74,6 +71,9 @@
             }).resolved().formattedAsSectionHeader()
           )
 
+          // #warning(Debugging...)
+          print(#function)
+          #if false
           try options.project.refreshLicence(output: output)
           #endif
         }

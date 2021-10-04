@@ -49,10 +49,10 @@
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
       let oldContents = file.contents
 
+      let copyright = WorkspaceImplementation.copyright(fromText: oldContents)
       // #warning(Debugging...)
       print(#function)
       #if false
-      let copyright = WorkspaceImplementation.copyright(fromText: oldContents)
       let projectName = try self.projectName(
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output

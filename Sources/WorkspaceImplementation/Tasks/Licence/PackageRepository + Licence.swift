@@ -46,6 +46,9 @@
 
       var text = licence.text
 
+      // #warning(Debugging...)
+      print(#function)
+      #if false
       var file = try TextFile(possiblyAt: location.appendingPathComponent("LICENSE.md"))
       let oldContents = file.contents
 
@@ -54,6 +57,7 @@
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output
       )
+      #endif
       // #warning(Debugging...)
       print(#function)
       #if false

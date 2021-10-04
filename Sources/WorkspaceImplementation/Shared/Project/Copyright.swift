@@ -24,6 +24,9 @@
 
   internal func copyright(fromText text: String) -> StrictString {
 
+    // #warning(Debugging...)
+    print(#function)
+    #if false
     var oldStartDate: String?
     for symbol in ["©", "(C)", "(c)"] {
       for space in ["", " "] {
@@ -43,13 +46,18 @@
     }
     let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
     let copyrightStart = oldStartDate ?? currentYear
+    #endif
 
     var copyright = "©"
+    // #warning(Debugging...)
+    print(#function)
+    #if false
     if currentYear == copyrightStart {
       copyright.append(currentYear)
     } else {
       copyright.append(copyrightStart + "–" + currentYear)
     }
+    #endif
 
     return StrictString(copyright)
   }

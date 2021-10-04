@@ -45,8 +45,12 @@
         #endif
       }
     }
+    // #warning(Debugging...)
+    print(#function)
+    #if false
     let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
     let copyrightStart = oldStartDate ?? currentYear
+    #endif
 
     var copyright = "©"
     // #warning(Debugging...)

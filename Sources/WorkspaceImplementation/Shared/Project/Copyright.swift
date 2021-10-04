@@ -27,9 +27,6 @@
     var oldStartDate: String?
     for symbol in ["©", "(C)", "(c)"] {
       for space in ["", " "] {
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         if let range = text.scalars.firstMatch(for: (symbol + space).scalars)?.range {
           var numberEnd = range.upperBound
           text.scalars.advance(
@@ -42,7 +39,6 @@
             break
           }
         }
-        #endif
       }
     }
     // #warning(Debugging...)

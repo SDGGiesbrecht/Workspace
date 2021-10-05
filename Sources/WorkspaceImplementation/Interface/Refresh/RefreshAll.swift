@@ -155,9 +155,6 @@
           )
         }
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
@@ -165,6 +162,9 @@
           output: output
         )
 
+        // #warning(Debugging...)
+        print(#function)
+        #if false
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
           try Workspace.Refresh.FileHeaders.command.execute(

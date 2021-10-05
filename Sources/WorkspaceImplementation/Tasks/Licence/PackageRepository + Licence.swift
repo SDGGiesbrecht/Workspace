@@ -50,14 +50,10 @@
       let oldContents = file.contents
 
       let copyright = WorkspaceImplementation.copyright(fromText: oldContents)
-      // #warning(Debugging...)
-      print(#function)
-      #if false
       let projectName = try self.projectName(
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output
       )
-      #endif
       // #warning(Debugging...)
       print(#function)
       #if false

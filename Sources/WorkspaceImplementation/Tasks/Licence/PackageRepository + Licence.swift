@@ -54,9 +54,6 @@
         in: LocalizationIdentifier(InterfaceLocalization.englishUnitedStates.code),
         output: output
       )
-      // #warning(Debugging...)
-      print(#function)
-      #if false
       var authors: StrictString = "the \(projectName) project contributors"
       if let configuredAuthor = try configuration(output: output).documentation.primaryAuthor {
         authors = configuredAuthor + " and " + authors
@@ -70,7 +67,6 @@
 
       // Delete alternate licence files to prevent duplicates.
       delete(location.appendingPathComponent("LICENSE.txt"), output: output)
-      #endif
     }
   }
 #endif

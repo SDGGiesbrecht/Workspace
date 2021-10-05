@@ -41,7 +41,7 @@
         }
       }
     }
-    let a = CalendarDate.gregorianNow()
+    let a = Calendar.init(identifier: .gregorian).component(.year, from: Date())
     // #warning(Debugging...)
     print(#function)
     #if false

@@ -42,10 +42,10 @@
       }
     }
     let a = CalendarDate.gregorianNow()
-    let b = a.gregorianYear
     // #warning(Debugging...)
     print(#function)
     #if false
+    let b = a.gregorianYear
     let c = b.inEnglishDigits()
     let currentYear = String(c)
     //let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())

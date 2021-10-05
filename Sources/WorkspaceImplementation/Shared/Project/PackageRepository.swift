@@ -243,6 +243,14 @@
       in localization: LocalizationIdentifier,
       output: Command.Output
     ) throws -> StrictString {
+      // #warning(Debugging...)
+      print(#function)
+      let a = try configuration(output: output)
+      print(a)
+      let b = a.projectName[localization]
+      print(b)
+      let c = b ?? packageName()
+      print(c)
       return try configuration(output: output).projectName[localization] ?? packageName()
     }
 

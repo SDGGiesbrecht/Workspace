@@ -47,15 +47,11 @@
     let copyrightStart = oldStartDate ?? currentYear
 
     var copyright = "©"
-    // #warning(Debugging...)
-    print(#function)
-    #if false
     if currentYear == copyrightStart {
       copyright.append(currentYear)
     } else {
       copyright.append(copyrightStart + "–" + currentYear)
     }
-    #endif
 
     return StrictString(copyright)
   }

@@ -162,9 +162,6 @@
           output: output
         )
 
-        // #warning(Debugging...)
-        print(#function)
-        #if false
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
           try Workspace.Refresh.FileHeaders.command.execute(
@@ -209,7 +206,6 @@
           )
           try task.execute(output: output)
         }
-        #endif
       }
     }
   }

@@ -362,6 +362,7 @@
         } else {
           // #warning(Debugging...)
           print("Not workspace:")
+          do {
           result = try WorkspaceConfiguration.load(
             configuration: WorkspaceConfiguration.self,
             named: PackageRepository.workspaceConfigurationNames,
@@ -374,6 +375,11 @@
             context: try configurationContext(),
             reportProgress: { output.print($0) }
           ).get()
+          } catch {
+            // #warning(Debugging...)
+            print("Threw:", error)
+            throw error
+          }
           // #warning(Debugging...)
           print(result)
         }

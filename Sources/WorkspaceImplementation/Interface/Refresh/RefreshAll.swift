@@ -87,7 +87,11 @@
         output: Command.Output
       ) throws {
 
+        // #warning(Debugging...)
+        print(#function)
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
+        // #warning(Debugging...)
+        print(projectName)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
             switch localization {

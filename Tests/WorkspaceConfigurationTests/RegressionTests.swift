@@ -33,5 +33,10 @@ class RegressionTests: TestCase {
     encodeAndDecode(instance: english)
     let dictionary: [LocalizationIdentifier: StrictString] = [english: "..."]
     encodeAndDecode(instance: dictionary)
+    struct Container: Codable {
+      let dictionary: [LocalizationIdentifier: StrictString]
+    }
+    let container = Container(dictionary: dictionary)
+    encodeAndDecode(instance: container)
   }
 }

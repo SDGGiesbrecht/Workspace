@@ -341,28 +341,15 @@
       })
 
     internal func configuration(output: Command.Output) throws -> WorkspaceConfiguration {
-      // #warning(Debugging...)
-      print(#function)
       return try cached(in: &configurationCache.configuration) {
 
-        // #warning(Debugging...)
-        print("Not cached...")
         // Provide the context in case resolution happens internally.
         WorkspaceContext.current = try configurationContext()
-        // #warning(Debugging...)
-        print("Context:", WorkspaceContext.current)
 
         let result: WorkspaceConfiguration
         if try isWorkspaceProject() {
-          // #warning(Debugging...)
-          print("Workspace:")
           result = WorkspaceProjectConfiguration.configuration
-          // #warning(Debugging...)
-          print(result)
         } else {
-          // #warning(Debugging...)
-          print("Not workspace:")
-          do {
           result = try WorkspaceConfiguration.load(
             configuration: WorkspaceConfiguration.self,
             named: PackageRepository.workspaceConfigurationNames,
@@ -375,23 +362,10 @@
             context: try configurationContext(),
             reportProgress: { output.print($0) }
           ).get()
-          } catch {
-            // #warning(Debugging...)
-            print("Threw:", error)
-            throw error
-          }
-          // #warning(Debugging...)
-          print(result)
         }
 
-        // #warning(Debugging...)
-        print(result)
         // Force lazy options to resolve under the right context before it changes.
         let encoded = try JSONEncoder().encode(result)
-        // #warning(Debugging...)
-        print("Encoded:", encoded)
-        // #warning(Debugging...)
-        print("Decoded:", try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded))
         return try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
       }
     }

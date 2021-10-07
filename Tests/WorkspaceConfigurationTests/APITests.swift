@@ -53,10 +53,14 @@ class APITests: TestCase {
     struct Context: Codable {
       var dictionary: [Key: Value] = [:]
     }
-    let encoded = try JSONEncoder().encode([Context()])
+    let encoded = try JSONEncoder().encode([Context(dictionary: [Key(string: "..."): Value(string: "...")])])
     print(String(data: encoded, encoding: .utf8))
     let decoded = try JSONDecoder().decode([Context].self, from: encoded)
     print(decoded)
+    let emptyEncoded = try JSONEncoder().encode([Context()])
+    print(String(data: emptyEncoded, encoding: .utf8))
+    let emptyDecoded = try JSONDecoder().decode([Context].self, from: emptyEncoded)
+    print(emptyDecoded)
   }
 
   func testArray() {

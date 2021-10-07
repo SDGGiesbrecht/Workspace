@@ -42,6 +42,17 @@ class APITests: TestCase {
     #endif
   }
 
+  // #warning(Debugging...)
+  func testAAA() throws {
+    struct Thing: Codable {
+      var dictionary: [LocalizationIdentifier: StrictString] = [:]
+    }
+    let encoded = try JSONEncoder().encode([Thing()])
+    print(String(data: encoded, encoding: .utf8))
+    let decoded = try JSONDecoder().decode([Thing].self, from: encoded)
+    print(decoded)
+  }
+
   func testArray() {
     XCTAssertEqual(["a", "b"].verbundenAlsZeile(), "a\nb")
     XCTAssertEqual([].joinedAsLines(), "")

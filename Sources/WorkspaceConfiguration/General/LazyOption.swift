@@ -68,7 +68,14 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
-    try container.encode(resolve(WorkspaceConfiguration.registered))
+    // #workaround(Swift 5.5, Dodges a bug in Codable.)
+    if Option.self == [LocalizationIdentifier: Markdown].self,
+      let resolved = resolve(WorkspaceConfiguration.registered) as? [LocalizationIdentifier: Markdown],
+      resolved.isEmpty {
+      try container.encode([] as [String])
+    } else {
+      try container.encode(resolve(WorkspaceConfiguration.registered))
+    }
   }
 
   public init(from decoder: Decoder) throws {

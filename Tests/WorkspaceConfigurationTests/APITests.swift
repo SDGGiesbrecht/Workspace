@@ -423,8 +423,6 @@ class APITests: TestCase {
         )
       #endif
       let encoded = try JSONEncoder().encode(filledIn)
-      // #warning(Debugging...)
-      print("encoded:", String(data: encoded, encoding: .utf8))
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
 
       let manyProducts = WorkspaceConfiguration()

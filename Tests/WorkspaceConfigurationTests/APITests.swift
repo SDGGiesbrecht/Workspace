@@ -44,12 +44,18 @@ class APITests: TestCase {
 
   // #warning(Debugging...)
   func testAAA() throws {
-    struct Thing: Codable {
-      var dictionary: [LocalizationIdentifier: StrictString] = [:]
+    struct Key: Codable, Hashable {
+      var string: String
     }
-    let encoded = try JSONEncoder().encode([Thing()])
+    struct Value: Codable {
+      var string: String
+    }
+    struct Context: Codable {
+      var dictionary: [Key: Value] = [:]
+    }
+    let encoded = try JSONEncoder().encode([Context()])
     print(String(data: encoded, encoding: .utf8))
-    let decoded = try JSONDecoder().decode([Thing].self, from: encoded)
+    let decoded = try JSONDecoder().decode([Context].self, from: encoded)
     print(decoded)
   }
 

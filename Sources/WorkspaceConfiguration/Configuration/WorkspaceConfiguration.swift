@@ -530,20 +530,12 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public override func encode(to encoder: Encoder) throws {
-    // #warning(Debugging....)
-    print(#function)
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
     // #workaround(Swift 5.5, Dodges a bug in Codable.)
     if projectName.isEmpty {
-      // #warning(Debugging....)
-      print("Dodging...")
-      print(projectName)
       try container.encode([] as [String], forKey: .projectName)
     } else {
-      // #warning(Debugging....)
-      print("Failed to dodge...")
-      print(projectName)
       try container.encode(projectName, forKey: .projectName)
     }
     try container.encode(supportedPlatforms, forKey: .supportedPlatforms)

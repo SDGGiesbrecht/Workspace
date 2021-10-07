@@ -536,8 +536,12 @@ public final class WorkspaceConfiguration: Configuration {
     if projectName.isEmpty {
       // #warning(Debugging....)
       print("Dodging...")
+      print(projectName)
       try container.encode([] as [String], forKey: .projectName)
     } else {
+      // #warning(Debugging....)
+      print("Failed to dodge...")
+      print(projectName)
       try container.encode(projectName, forKey: .projectName)
     }
     try container.encode(supportedPlatforms, forKey: .supportedPlatforms)

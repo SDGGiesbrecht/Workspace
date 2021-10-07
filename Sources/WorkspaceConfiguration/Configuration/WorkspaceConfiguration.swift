@@ -534,6 +534,8 @@ public final class WorkspaceConfiguration: Configuration {
     try container.encode(provideWorkflowScripts, forKey: .provideWorkflowScripts)
     // #workaround(Swift 5.5, Dodges a bug in Codable.)
     if projectName.isEmpty {
+      // #warning(Debugging....)
+      print("Dodging...")
       try container.encode([] as [String], forKey: .projectName)
     } else {
       try container.encode(projectName, forKey: .projectName)

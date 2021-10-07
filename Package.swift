@@ -498,7 +498,9 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(8, 0, 1)
+      // #warning(Branch.)
+      .branch("debugging")
+      //from: Version(8, 0, 1)
     ),
     .package(
       name: "SwiftPM",

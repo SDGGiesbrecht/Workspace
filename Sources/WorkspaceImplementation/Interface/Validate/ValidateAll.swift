@@ -109,6 +109,8 @@
           }).resolved().formattedAsSectionHeader()
         )
 
+        // #warning(Debugging...)
+        print("Proofread")
         // Proofread
         if options.job == .miscellaneous ∨ options.job == nil {
           try Workspace.Proofread.Proofread.executeAsStep(
@@ -119,6 +121,8 @@
           )
         }
 
+        // #warning(Debugging...)
+        print("Build")
         // Build
         if try options.project.configuration(output: output).testing.prohibitCompilerWarnings {
           try Workspace.Validate.Build.executeAsStep(
@@ -128,6 +132,8 @@
           )
         }
 
+        // #warning(Debugging...)
+        print("Test")
         // Test
         if try options.project.configuration(output: output).testing.enforceCoverage {
           if let job = options.job,
@@ -156,6 +162,8 @@
           )
         }
 
+        // #warning(Debugging...)
+        print("Document")
         // Document
         if options.job.includes(job: .miscellaneous) {
           if try ¬options.project.configuration(output: output).documentation.api.generate
@@ -192,6 +200,8 @@
           )
         }
 
+        // #warning(Debugging...)
+        print("Custom")
         // Custom
         for task in try options.project.configuration(output: output).customValidationTasks {
           let state = validationStatus.newSection()
@@ -243,6 +253,8 @@
           }
         }
 
+        // #warning(Debugging...)
+        print("State")
         // State
         if ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
@@ -299,6 +311,8 @@
 
         output.print("Summary".formattedAsSectionHeader())
 
+        // #warning(Debugging...)
+        print("Workspace")
         // Workspace
         if ¬_isDuringSpecificationTest,
           let update = try Workspace.CheckForUpdates.checkForUpdates(output: output)

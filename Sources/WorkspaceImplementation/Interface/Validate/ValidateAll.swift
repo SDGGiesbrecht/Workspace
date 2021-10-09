@@ -136,6 +136,8 @@
         print("Test")
         // Test
         if try options.project.configuration(output: output).testing.enforceCoverage {
+          // #warning(Debugging...)
+          print("Checking coverage...")
           if let job = options.job,
             job ∉ ContinuousIntegrationJob.coverageJobs
           {
@@ -154,6 +156,8 @@
             )
           }
         } else {
+          // #warning(Debugging...)
+          print("Just testing...")
           // Coverage irrelevant.
           try Workspace.Test.executeAsStep(
             options: options,

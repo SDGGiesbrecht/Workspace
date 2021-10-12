@@ -59,6 +59,7 @@ public let configuration: WorkspaceConfiguration = {
 
   // Optimizations
   configuration.documentation.api.ignoredDependencies = [
+
     // CommonMark
     "CCommonMark",
 

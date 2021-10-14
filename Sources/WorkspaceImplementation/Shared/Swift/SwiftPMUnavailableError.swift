@@ -19,9 +19,9 @@ import SDGLocalization
 
 import WorkspaceLocalizations
 
-struct SwiftPMUnavailableError: PresentableError {
+internal struct SwiftPMUnavailableError: PresentableError {
 
-  func presentableDescription() -> StrictString {
+  internal func presentableDescription() -> StrictString {
     return UserFacing<StrictString, InterfaceLocalization>({ localization in
       switch localization {
       case .englishUnitedStates, .englishUnitedKingdom, .englishCanada:

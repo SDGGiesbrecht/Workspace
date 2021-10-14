@@ -8,7 +8,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-20.04
-    container: swift:5.4.0-focal
+    container: swift:5.5.0-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1

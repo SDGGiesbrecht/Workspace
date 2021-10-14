@@ -78,25 +78,13 @@
             .joined(separator: " ")
           dependency.trimMarginalWhitespace()
 
-          if dependency == "Swift" {
-            var newDetails = details
-            let script: StrictString = "swift \u{2D}\u{2D}version"
-            newDetails.replaceSubrange(
-              versionCheckRange,
-              with: "\(script) \(problemVersion.string())".scalars
-            )
-            if try message(for: newDetails, in: project, output: output) == nil {
+          if let current = try currentVersion(
+            of: dependency,
+            for: project,
+            output: output
+          ) {
+            if current ≤ problemVersion {
               return nil
-            }
-          } else {
-            if let current = try currentVersion(
-              of: dependency,
-              for: project,
-              output: output
-            ) {
-              if current ≤ problemVersion {
-                return nil
-              }
             }
           }
         }
@@ -131,14 +119,18 @@
       return cached(
         in: &dependencyVersionCache[dependency],
         {
-          if let shellOutput = try? Shell.default.run(
-            command: String(dependency).components(separatedBy: " ")
-          ).get(),
-            let version = Version(firstIn: shellOutput)
-          {
-            return version
+          if dependency == "Swift" {
+            return SwiftCompiler.version(forConstraints: Version(0, 0, 0) ..< Version(1000, 0, 0))
           } else {
-            return nil
+            if let shellOutput = try? Shell.default.run(
+              command: String(dependency).components(separatedBy: " ")
+            ).get(),
+               let version = Version(firstIn: shellOutput)
+            {
+              return version
+            } else {
+              return nil
+            }
           }
         }
       )  // @exempt(from: tests) Meaningless coverage region.

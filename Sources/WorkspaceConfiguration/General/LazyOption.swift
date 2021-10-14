@@ -70,8 +70,10 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
     var container = encoder.singleValueContainer()
     // #workaround(Swift 5.5, Dodges a bug in Codable.)
     if Option.self == [LocalizationIdentifier: Markdown].self,
-      let resolved = resolve(WorkspaceConfiguration.registered) as? [LocalizationIdentifier: Markdown],
-      resolved.isEmpty {
+      let resolved = resolve(WorkspaceConfiguration.registered)
+        as? [LocalizationIdentifier: Markdown],
+      resolved.isEmpty
+    {
       try container.encode([] as [String])
     } else {
       try container.encode(resolve(WorkspaceConfiguration.registered))

@@ -728,11 +728,8 @@
 
       switch platform {
       case .macOS:
-        var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
           .string(droppingEmptyPatch: true)
-        if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
-          xcodeVersion.removeLast(2)
-        }
         result.append(
           script(
             heading: setXcodeUpStepName,

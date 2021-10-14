@@ -122,7 +122,7 @@
 
     internal func refreshResources(output: Command.Output) throws {
       guard #available(macOS 10.15, *) else {
-        throw SwiftPMUnavailableError()
+        throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       var targets: [Target: [URL]] = [:]
       for resource in try resourceFiles(output: output) {

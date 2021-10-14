@@ -71,7 +71,7 @@
           settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
         }
         guard #available(macOS 10.15, *) else {
-          throw SwiftPMUnavailableError()
+          throw SwiftPMUnavailableError()  // @exempt(from: tests)
         }
         for target in try cachedPackage().targets {
           let setting: Setting?

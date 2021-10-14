@@ -56,7 +56,7 @@
 
       var fromDocumentation: StrictString = ""
       guard #available(macOS 10.15, *) else {
-        throw SwiftPMUnavailableError()
+        throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       if let documentation = try? PackageAPI.documentation(
         for: package().get()

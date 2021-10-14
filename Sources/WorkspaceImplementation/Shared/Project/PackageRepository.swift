@@ -234,7 +234,7 @@
 
     internal func packageName() throws -> StrictString {
       guard #available(macOS 10.15, *) else {
-        throw SwiftPMUnavailableError()
+        throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       return StrictString(try cachedManifest().name)
     }
@@ -299,7 +299,7 @@
     internal func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
         guard #available(macOS 10.15, *) else {
-          throw SwiftPMUnavailableError()
+          throw SwiftPMUnavailableError()  // @exempt(from: tests)
         }
         let products = try self.products()
           .map { (product: PackageModel.Product) -> PackageManifest.Product in

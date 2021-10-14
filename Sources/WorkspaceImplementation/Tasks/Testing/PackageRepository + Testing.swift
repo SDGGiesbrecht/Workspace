@@ -338,7 +338,7 @@
 
         var irrelevantFiles: Set<URL> = []
         guard #available(macOS 10.15, *) else {
-          throw SwiftPMUnavailableError()
+          throw SwiftPMUnavailableError()  // @exempt(from: tests)
         }
         for target in try package().get().targets {
           switch target.type {

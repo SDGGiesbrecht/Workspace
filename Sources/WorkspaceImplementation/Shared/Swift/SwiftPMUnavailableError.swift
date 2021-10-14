@@ -23,6 +23,7 @@
   internal struct SwiftPMUnavailableError: PresentableError {
 
     internal func presentableDescription() -> StrictString {
+      // @exempt(from: tests)
       return UserFacing<StrictString, InterfaceLocalization>({ localization in
         switch localization {
         case .englishUnitedStates, .englishUnitedKingdom, .englishCanada:

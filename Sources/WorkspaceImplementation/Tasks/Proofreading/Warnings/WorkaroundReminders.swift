@@ -120,12 +120,12 @@
         in: &dependencyVersionCache[dependency],
         {
           if dependency == "Swift" {
-            return SwiftCompiler.version(forConstraints: Version(0, 0, 0) ..< Version(1000, 0, 0))
+            return SwiftCompiler.version(forConstraints: Version(0, 0, 0)..<Version(1000, 0, 0))
           } else {
             if let shellOutput = try? Shell.default.run(
               command: String(dependency).components(separatedBy: " ")
             ).get(),
-               let version = Version(firstIn: shellOutput)
+              let version = Version(firstIn: shellOutput)
             {
               return version
             } else {

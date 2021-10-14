@@ -14,21 +14,23 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
-import SDGLocalization
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
+  import SDGLocalization
 
-import WorkspaceLocalizations
+  import WorkspaceLocalizations
 
-internal struct SwiftPMUnavailableError: PresentableError {
+  internal struct SwiftPMUnavailableError: PresentableError {
 
-  internal func presentableDescription() -> StrictString {
-    return UserFacing<StrictString, InterfaceLocalization>({ localization in
-      switch localization {
-      case .englishUnitedStates, .englishUnitedKingdom, .englishCanada:
-        return "SwiftPM is unavailable; the platform is too old."
-      case .deutschDeutschland:
-        return "SwiftPM ist nicht verfügbar; die Schicht ist zu alt."
-      }
-    }).resolved()
+    internal func presentableDescription() -> StrictString {
+      return UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedStates, .englishUnitedKingdom, .englishCanada:
+          return "SwiftPM is unavailable; the platform is too old."
+        case .deutschDeutschland:
+          return "SwiftPM ist nicht verfügbar; die Schicht ist zu alt."
+        }
+      }).resolved()
+    }
   }
-}
+#endif

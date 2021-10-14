@@ -613,6 +613,11 @@ public struct DocumentationConfiguration: Codable {
   // MARK: - Encodable
 
   // #workaround(Swift 5.5, Dodges a bug in Codable.)
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Encodes the configuration.
+  ///
+  /// - Parameters:
+  ///   - encoder: The encoder.
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(localizations, forKey: .localizations)

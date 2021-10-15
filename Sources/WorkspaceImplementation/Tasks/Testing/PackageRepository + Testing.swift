@@ -79,19 +79,22 @@
                 }
               ).get()
 
-              // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
-              if job == .watchOS {
-                let filtered = log.lines.filter { line in
-                  return
-                    ¬(line.line.contains(
-                      "XCTest.framework/XCTest) was built for newer watchOS".scalars
-                    )
-                    ∨ line.line.contains(
-                      "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
-                    ))
-                }
-                log.lines = LineView<String>(filtered)
+              let filtered = log.lines.filter { line in
+                return
+                  ¬(
+                  // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
+                  line.line.contains(
+                    "XCTest.framework/XCTest) was built for newer watchOS".scalars
+                  )
+                  ∨ line.line.contains(
+                    "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
+                  )
+                  // #workaround(Xcode 13.0, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
+                  ∨ line.line.contains(
+                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
+                  ))
               }
+              log.lines = LineView<String>(filtered)
 
               return ¬Xcode.warningsOccurred(during: log)
             }

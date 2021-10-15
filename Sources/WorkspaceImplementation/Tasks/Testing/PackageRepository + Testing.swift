@@ -96,6 +96,12 @@
               }
               log.lines = LineView<String>(filtered)
 
+              // #warning("Debugging...")
+              if try isWorkspaceProject() {
+                print("Begin filtered log")
+                print(log)
+                print("End filtered log")
+              }
               return ¬Xcode.warningsOccurred(during: log)
             }
           }

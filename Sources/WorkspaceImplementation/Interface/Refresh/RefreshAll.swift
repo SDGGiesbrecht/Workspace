@@ -87,6 +87,8 @@
         output: Command.Output
       ) throws {
 
+        #warning("Debugging.")
+        print("Starting...")
         let projectName = try options.project.localizedIsolatedProjectName(output: output)
         output.print(
           UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -101,6 +103,8 @@
           }).resolved().formattedAsSectionHeader()
         )
 
+        #warning("Debugging.")
+        print("Scripts")
         // Scripts
         if try options.project.configuration(output: output).provideWorkflowScripts {
           try Workspace.Refresh.Scripts.command.execute(
@@ -110,6 +114,8 @@
           )
         }
 
+        #warning("Debugging.")
+        print("Git...")
         // Git
         if try options.project.configuration(output: output).git.manage {
           try Workspace.Refresh.Git.command.execute(
@@ -119,6 +125,8 @@
           )
         }
 
+#warning("Debugging.")
+print("Read‐Me...")
         // Read‐Me
         if try options.project.configuration(output: output).documentation.readMe.manage {
           try Workspace.Refresh.ReadMe.command.execute(
@@ -128,6 +136,8 @@
           )
         }
 
+#warning("Debugging.")
+print("Licence...")
         // Licence
         if try options.project.configuration(output: output).licence.manage {
           try Workspace.Refresh.Licence.command.execute(
@@ -137,6 +147,8 @@
           )
         }
 
+#warning("Debugging.")
+print("GitHub...")
         // GitHub
         if try options.project.configuration(output: output).gitHub.manage {
           try Workspace.Refresh.GitHub.command.execute(
@@ -146,6 +158,8 @@
           )
         }
 
+#warning("Debugging.")
+print("Continuous Integration...")
         // Continuous Integration
         if try options.project.configuration(output: output).continuousIntegration.manage {
           try Workspace.Refresh.ContinuousIntegration.command.execute(
@@ -155,6 +169,8 @@
           )
         }
 
+#warning("Debugging.")
+print("Resources...")
         // Resources
         try Workspace.Refresh.Resources.command.execute(
           withArguments: arguments,
@@ -162,6 +178,8 @@
           output: output
         )
 
+#warning("Debugging.")
+print("File Headers...")
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {
           try Workspace.Refresh.FileHeaders.command.execute(
@@ -171,6 +189,8 @@
           )
         }
 
+#warning("Debugging.")
+print("Examples...")
         // Examples
         try Workspace.Refresh.Examples.command.execute(
           withArguments: arguments,
@@ -178,6 +198,8 @@
           output: output
         )
 
+#warning("Debugging.")
+print("Inherited Documentation...")
         // Inherited Documentation
         try Workspace.Refresh.InheritedDocumentation.command.execute(
           withArguments: arguments,
@@ -185,11 +207,15 @@
           output: output
         )
 
+#warning("Debugging.")
+print("Normalization...")
         // Normalization
         if try options.project.configuration(output: output).normalize {
           try Workspace.Normalize.executeAsStep(options: options, output: output)
         }
 
+#warning("Debugging.")
+print("Custom...")
         // Custom
         for task in try options.project.configuration(output: output).customRefreshmentTasks {
           output.print(

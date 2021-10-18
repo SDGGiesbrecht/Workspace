@@ -557,6 +557,8 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   public required init(from decoder: Decoder) throws {
+    // #warning(Debugging...)
+    do {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     provideWorkflowScripts = try container.decode(Bool.self, forKey: .provideWorkflowScripts)
     projectName = try container.decode(
@@ -597,6 +599,11 @@ public final class WorkspaceConfiguration: Configuration {
 
     // Because “registered” must be non‐nil:
     WorkspaceConfiguration.registered = self
+    } catch {
+      // #warning(Debugging...)
+      print(error)
+      throw error
+    }
   }
 
   // MARK: - Configuration

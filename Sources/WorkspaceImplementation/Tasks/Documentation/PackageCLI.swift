@@ -15,6 +15,9 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  // #warning(Debugging...)
+  import Foundation
+
   import SDGCollections
 
   import SDGExportedCommandLineInterface
@@ -57,7 +60,14 @@
               in: localization.code
             ).get()
           } catch {
+            print("Here.")
             print(error)
+            var url = tool
+            while url.pathComponents.count > 1 {
+              defer { url.deleteLastPathComponent() }
+              print(url.path)
+              print(FileManager.default.fileExists(atPath: url.path))
+            }
           }
           if let interface = try? CommandInterface.loadInterface(
             of: tool,

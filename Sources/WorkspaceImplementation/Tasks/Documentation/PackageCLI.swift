@@ -50,8 +50,7 @@
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
-          do {  // #warning(Debugging...) (Should be “try?”)
-          if let interface = try CommandInterface.loadInterface(
+          if let interface = try? CommandInterface.loadInterface(
             of: tool,
             in: localization.code
           ).get() {
@@ -71,10 +70,6 @@
             let path = directory + "/" + filename + ".html"
 
             commands[interface.identifier]!.relativePagePath[localization] = path
-          }
-          } catch {
-            // #warning(Debugging...)
-            print(error)
           }
         }
       }

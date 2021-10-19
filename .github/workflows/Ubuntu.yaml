@@ -58,6 +58,10 @@ jobs:
       run: |
         set -x
         swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Debugging...
+      shell: bash
+      run: |
+        find .build
     - name: Grant permission to cache
       shell: bash
       run: |

@@ -62,14 +62,13 @@
           } catch {
             print("Here.")
             print(error)
-            var url = tool
-            while url.pathComponents.count > 1 {
-              defer { url.deleteLastPathComponent() }
-              print(url.path)
-              print(FileManager.default.fileExists(atPath: url.path))
-            }
-            for neighbour in (try? FileManager.default.contentsOfDirectory(atPath: tool.deletingLastPathComponent().path)) ?? [] {
+            let parent = tool.deletingLastPathComponent()
+            for neighbour in (try? FileManager.default.contentsOfDirectory(atPath: parent.path)) ?? [] {
               print(neighbour)
+            }
+            let product = parent.appendingPathComponent("executable.product")
+            for productFile in (try? FileManager.default.contentsOfDirectory(atPath: product.path)) ?? [] {
+              print(productFile)
             }
           }
           if let interface = try? CommandInterface.loadInterface(

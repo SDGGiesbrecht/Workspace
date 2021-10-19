@@ -50,6 +50,15 @@
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
+          // #warning(Debugging...)
+          do {
+            _ = try CommandInterface.loadInterface(
+              of: tool,
+              in: localization.code
+            ).get()
+          } catch {
+            print(error)
+          }
           if let interface = try? CommandInterface.loadInterface(
             of: tool,
             in: localization.code

@@ -52,17 +52,14 @@ jobs:
       shell: bash
       run: |
         set -x
-        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Validate
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift build
     - name: Debugging...
       if: always()
       shell: bash
       run: |
-        find .build
+        set -x
+        swift build --show-bin-path
+        find .build/x86_64-unknown-linux-gnu/debug
     - name: Grant permission to cache
       shell: bash
       run: |

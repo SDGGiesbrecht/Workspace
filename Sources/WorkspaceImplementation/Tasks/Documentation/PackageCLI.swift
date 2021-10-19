@@ -59,9 +59,6 @@
               of: tool,
               in: localization.code
             ).get()
-            for neighbour in try FileManager.default.contentsOfDirectory(atPath: tool.deletingLastPathComponent().path) {
-              print(neighbour)
-            }
           } catch {
             print("Here.")
             print(error)
@@ -70,6 +67,9 @@
               defer { url.deleteLastPathComponent() }
               print(url.path)
               print(FileManager.default.fileExists(atPath: url.path))
+            }
+            for neighbour in (try? FileManager.default.contentsOfDirectory(atPath: tool.deletingLastPathComponent().path)) ?? [] {
+              print(neighbour)
             }
           }
           if let interface = try? CommandInterface.loadInterface(

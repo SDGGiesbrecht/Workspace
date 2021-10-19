@@ -59,6 +59,7 @@ jobs:
         set -x
         swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Debugging...
+      if: always()
       shell: bash
       run: |
         find .build

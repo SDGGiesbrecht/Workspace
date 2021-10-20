@@ -1,5 +1,5 @@
 open class Simple<T> : Hashable {
-    public static func == (lhs: Simple, rhs: Simple) -> Bool { return false }
+    public static func == (lhs: Simple<T>, rhs: Simple<T>) -> Bool { return false }
     public func hash(into hasher: inout Hasher) {}
 }
 public struct Metatype<T> {}

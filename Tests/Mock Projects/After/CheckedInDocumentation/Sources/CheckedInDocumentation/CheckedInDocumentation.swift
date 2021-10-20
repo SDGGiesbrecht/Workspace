@@ -230,30 +230,32 @@ public func demonstrateParameters(
   tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
 ) {}
 
-// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
-/// ...
-///
-/// - Parameters:
-///     - composition: A composition parameter.
-///     - nestedInComposition: A nested parameter.
-///     - array: An array parameter.
-///     - nestedInArray: A nested parameter.
-///     - dictionary: A dictionary parameter.
-///     - nestedInDictionaryKey: A nested parameter.
-///     - nestedInDictionaryValue: A nested parameter.
-///     - function: A function parameter.
-///     - nestedInFunction: A nested parameter.
-///     - attributed: An attributed parameter.
-///     - nestedInAttributed: A nested parameter.
-public func demonstrateMoreParameters(
-  composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
-  array: [Simple<(_ nestedInArray: Bool) -> Void>],
-  dictionary: [Simple<(_ nestedInDictionaryKey: Bool) -> Void>: Simple<
-    (_ nestedInDictionaryValue: Bool) -> Void
-  >],
-  function: (_ nestedInFunction: Bool) -> Void,
-  attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
-) {}
+#if !os(Linux)  // Compiler bug in Swift 5.5.
+  // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
+  /// ...
+  ///
+  /// - Parameters:
+  ///     - composition: A composition parameter.
+  ///     - nestedInComposition: A nested parameter.
+  ///     - array: An array parameter.
+  ///     - nestedInArray: A nested parameter.
+  ///     - dictionary: A dictionary parameter.
+  ///     - nestedInDictionaryKey: A nested parameter.
+  ///     - nestedInDictionaryValue: A nested parameter.
+  ///     - function: A function parameter.
+  ///     - nestedInFunction: A nested parameter.
+  ///     - attributed: An attributed parameter.
+  ///     - nestedInAttributed: A nested parameter.
+  public func demonstrateMoreParameters(
+    composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
+    array: [Simple<(_ nestedInArray: Bool) -> Void>],
+    dictionary: [Simple<(_ nestedInDictionaryKey: Bool) -> Void>: Simple<
+      (_ nestedInDictionaryValue: Bool) -> Void
+    >],
+    function: (_ nestedInFunction: Bool) -> Void,
+    attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
+  ) {}
+#endif
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// An intermediate protocol.

@@ -483,7 +483,8 @@ let package = Package(
     /// Workspace.
     .executable(name: "workspace", targets: ["WorkspaceTool"]),
     /// Arbeitsbereich.
-    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
+    // // #warning(Debugging)
+    //.executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
   ],
   dependencies: [
     .package(

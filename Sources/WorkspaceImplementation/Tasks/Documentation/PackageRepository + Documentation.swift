@@ -94,7 +94,9 @@
           return true
         }
       }).lazy.map({ $0.name })
-      build(releaseConfiguration: false)
+      // #warning(Debugging. Should not care whether succeeded.)
+      let log = try? build(releaseConfiguration: false).get()
+      print(log)
       let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
       return PackageCLI(
         tools: toolLocations,

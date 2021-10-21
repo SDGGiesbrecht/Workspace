@@ -20,7 +20,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_12.5.app
+        sudo xcode-select -switch /Applications/Xcode_13.0.app
         xcodebuild -version
         swift --version
     - name: Install Workspace

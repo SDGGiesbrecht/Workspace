@@ -488,30 +488,30 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(7, 2, 4)
+      from: Version(7, 2, 5)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 7, 5)
+      from: Version(1, 7, 6)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(7, 0, 2)
+      from: Version(8, 0, 1)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 2))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 0))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50400, 0))
+      .exact(Version(0, 50500, 0))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -790,13 +790,18 @@ let package = Package(
         "Resources",
         "Sources",
         "Tests",
-        "Validate (Linux).sh",
         "Validate (macOS).command",
       ],
       sources: ["Workspace.swift"]
     ),
   ]
 )
+
+// #workaround(Needs a better way to silence the warning; maybe a build script?)
+#if os(Linux)
+  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
+    .exclude.append("Validate (Linux).sh")
+#endif
 
 for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
@@ -906,23 +911,4 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 12.5.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
-}
-
-// #workaround(swift-tools-support-core 0.2.2, Version 0.2.3 is broken.) @exempt(from: unicode)
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-} else {
-  package.dependencies.append(
-    .package(
-      url: "https://github.com/apple/swift\u{2D}tools\u{2D}support\u{2D}core.git",
-      .exact(Version(0, 2, 2))
-    )
-  )
-  let lastTests = package.targets.lastIndex(where: { $0.name == "WorkspaceImplementation" })!
-  package.targets[lastTests].dependencies.append(
-    .product(
-      name: "SwiftToolsSupport\u{2D}auto",
-      package: "swift\u{2D}tools\u{2D}support\u{2D}core",
-      condition: .when(platforms: [.macOS])
-    )
-  )
 }

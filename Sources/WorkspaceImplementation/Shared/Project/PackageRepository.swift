@@ -73,13 +73,56 @@
     // Modifications to file contents do not require a reset (except Package.swift, which is never altered by Workspace).
     // Changes to support files do not require a reset (read‐me, etc.).
     private class ManifestCache {
-      fileprivate var manifest: PackageModel.Manifest?
-      fileprivate var package: PackageModel.Package?
-      fileprivate var windowsPackage: PackageModel.Package?
-      fileprivate var packageGraph: PackageGraph?
-      fileprivate var windowsPackageGraph: PackageGraph?
-      fileprivate var products: [PackageModel.Product]?
-      fileprivate var dependenciesByName: [String: ResolvedPackage]?
+      private var _manifest: Any?
+      @available(macOS 10.15, *)
+      fileprivate var manifest: PackageModel.Manifest? {
+        get {
+          return _manifest as? PackageModel.Manifest
+        }
+        set {
+          _manifest = newValue
+        }
+      }
+      private var _package: Any?
+      @available(macOS 10.15, *)
+      fileprivate var package: PackageModel.Package? {
+        get {
+          return _package as? PackageModel.Package
+        }
+        set {
+          _package = newValue
+        }
+      }
+      private var _packageGraph: Any?
+      @available(macOS 10.15, *)
+      fileprivate var packageGraph: PackageGraph? {
+        get {
+          return _packageGraph as? PackageGraph
+        }
+        set {
+          _packageGraph = newValue
+        }
+      }
+      private var _products: Any?
+      @available(macOS 10.15, *)
+      fileprivate var products: [PackageModel.Product]? {
+        get {
+          return _products as? [PackageModel.Product]
+        }
+        set {
+          _products = newValue
+        }
+      }
+      private var _dependenciesByName: Any?
+      @available(macOS 10.15, *)
+      fileprivate var dependenciesByName: [String: ResolvedPackage]? {
+        get {
+          return _dependenciesByName as? [String: ResolvedPackage]
+        }
+        set {
+          _dependenciesByName = newValue
+        }
+      }
     }
     private static var manifestCaches: [URL: ManifestCache] = [:]
     private var manifestCache: ManifestCache {
@@ -168,18 +211,21 @@
 
     // MARK: - Manifest
 
+    @available(macOS 10.15, *)
     internal func cachedManifest() throws -> PackageModel.Manifest {
       return try cached(in: &manifestCache.manifest) {
         return try manifest().get()
       }
     }
 
+    @available(macOS 10.15, *)
     internal func cachedPackage() throws -> PackageModel.Package {
       return try cached(in: &manifestCache.package) {
         return try package().get()
       }
     }
 
+    @available(macOS 10.15, *)
     internal func cachedPackageGraph() throws -> PackageGraph {
       return try cached(in: &manifestCache.packageGraph) {
         return try packageGraph().get()
@@ -187,6 +233,9 @@
     }
 
     internal func packageName() throws -> StrictString {
+      guard #available(macOS 10.15, *) else {
+        throw SwiftPMUnavailableError()  // @exempt(from: tests)
+      }
       return StrictString(try cachedManifest().name)
     }
 
@@ -204,6 +253,7 @@
       return try projectName(in: identifier, output: output)
     }
 
+    @available(macOS 10.15, *)
     internal func products() throws -> [PackageModel.Product] {
       return try cached(in: &manifestCache.products) {
         var products: [PackageModel.Product] = []
@@ -223,7 +273,7 @@
             } else {
               continue  // skip
             }
-          case .test:
+          case .plugin, .test:
             continue  // skip
           }
         }
@@ -231,13 +281,14 @@
       }
     }
 
+    @available(macOS 10.15, *)
     internal func dependenciesByName() throws -> [String: ResolvedPackage] {
       return try cached(in: &manifestCache.dependenciesByName) {
         let graph = try cachedPackageGraph()
 
         var result: [String: ResolvedPackage] = [:]
         for dependency in graph.packages {
-          result[dependency.name] = dependency
+          result[dependency.manifestName] = dependency
         }
         return result
       }
@@ -247,7 +298,9 @@
 
     internal func configurationContext() throws -> WorkspaceContext {
       return try cached(in: &configurationCache.configurationContext) {
-
+        guard #available(macOS 10.15, *) else {
+          throw SwiftPMUnavailableError()  // @exempt(from: tests)
+        }
         let products = try self.products()
           .map { (product: PackageModel.Product) -> PackageManifest.Product in
 
@@ -260,7 +313,7 @@
             case .executable:
               type = .executable
               modules = []
-            case .test:
+            case .plugin, .test:
               unreachable()
             }
 

@@ -34,11 +34,13 @@
 
     // MARK: - Structure
 
+    @available(macOS 10.15, *)
     private func targets() throws -> [Target] {
       return try cachedPackage().targets.lazy.map { loaded in
         return Target(loadedTarget: loaded, package: self)
       }
     }
+    @available(macOS 10.15, *)
     private func targetsByName() throws -> [String: Target] {
       var byName: [String: Target] = [:]
       for target in try targets() {
@@ -81,6 +83,7 @@
       return result
     }
 
+    @available(macOS 10.15, *)
     private func target(for resource: URL, output: Command.Output) throws -> Target {
       let path = resource.path(relativeTo: location).dropping(through: "/")
       guard let targetName = path.prefix(upTo: "/")?.contents else {
@@ -118,7 +121,9 @@
     }
 
     internal func refreshResources(output: Command.Output) throws {
-
+      guard #available(macOS 10.15, *) else {
+        throw SwiftPMUnavailableError()  // @exempt(from: tests)
+      }
       var targets: [Target: [URL]] = [:]
       for resource in try resourceFiles(output: output) {
         let intendedTarget = try target(for: resource, output: output)

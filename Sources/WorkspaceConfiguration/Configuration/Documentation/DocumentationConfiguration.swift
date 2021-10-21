@@ -609,4 +609,32 @@ public struct DocumentationConfiguration: Codable {
       return result.joinedAsLines()
     #endif
   }
+
+  // MARK: - Encodable
+
+  // #workaround(Swift 5.5, Dodges a bug in Codable.)
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
+  /// Encodes the configuration.
+  ///
+  /// - Parameters:
+  ///   - encoder: The encoder.
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(localizations, forKey: .localizations)
+    try container.encode(currentVersion, forKey: .currentVersion)
+    try container.encode(projectWebsite, forKey: .projectWebsite)
+    try container.encode(documentationURL, forKey: .documentationURL)
+    try container.encode(repositoryURL, forKey: .repositoryURL)
+    try container.encode(primaryAuthor, forKey: .primaryAuthor)
+    try container.encode(installationInstructions, forKey: .installationInstructions)
+    try container.encode(importingInstructions, forKey: .importingInstructions)
+    if about.isEmpty {
+      try container.encode([] as [String], forKey: .about)
+    } else {
+      try container.encode(about, forKey: .about)
+    }
+    try container.encode(relatedProjects, forKey: .relatedProjects)
+    try container.encode(readMe, forKey: .readMe)
+    try container.encode(api, forKey: .api)
+  }
 }

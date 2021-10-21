@@ -229,6 +229,7 @@ public func demonstrateParameters(
     tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
     ) {}
 
+#if !os(Linux)  // Compiler bug in Swift 5.5.
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// ...
 ///
@@ -251,6 +252,7 @@ public func demonstrateMoreParameters(
     function: (_ nestedInFunction: Bool) -> Void,
     attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
     ) {}
+#endif
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// An intermediate protocol.

@@ -60,10 +60,21 @@
           switch job {
           case .macOS, .centOS, .ubuntu, .amazonLinux:
             buildCommand = { output in
-              let log = try self.build(
+              var log = try self.build(
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
+
+              let filtered = log.lines.filter { line in
+                return
+                  ¬(
+                  // #workaround(Xcode 13.0, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
+                  line.line.contains(
+                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
+                  ))
+              }
+              log.lines = LineView<String>(filtered)
+
               return ¬SwiftCompiler.warningsOccurred(during: log)
             }
           case .windows, .web, .android, .miscellaneous, .deployment:
@@ -71,7 +82,7 @@
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
               var log = try self.build(
-                for: job.buildSDK,
+                for: job.buildPlatform,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
                     output.print(relevant)
@@ -79,19 +90,18 @@
                 }
               ).get()
 
-              // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
-              if job == .watchOS {
-                let filtered = log.lines.filter { line in
-                  return
-                    ¬(line.line.contains(
-                      "XCTest.framework/XCTest) was built for newer watchOS".scalars
-                    )
-                    ∨ line.line.contains(
-                      "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
-                    ))
-                }
-                log.lines = LineView<String>(filtered)
+              let filtered = log.lines.filter { line in
+                return
+                  ¬(
+                  // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
+                  line.line.contains(
+                    "XCTest.framework/XCTest) was built for newer watchOS".scalars
+                  )
+                  ∨ line.line.contains(
+                    "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
+                  ))
               }
+              log.lines = LineView<String>(filtered)
 
               return ¬Xcode.warningsOccurred(during: log)
             }
@@ -192,7 +202,7 @@
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           testCommand = { output in
             switch self.test(
-              on: job.testSDK,
+              on: job.testPlatform,
               reportProgress: { report in
                 if let relevant = Xcode.abbreviate(output: report) {
                   output.print(relevant)
@@ -316,7 +326,7 @@
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           guard
             let fromXcode = try codeCoverageReport(
-              on: job.testSDK,
+              on: job.testPlatform,
               ignoreCoveredRegions: true,
               reportProgress: { output.print($0) }
             ).get()
@@ -337,11 +347,14 @@
         }
 
         var irrelevantFiles: Set<URL> = []
+        guard #available(macOS 10.15, *) else {
+          throw SwiftPMUnavailableError()  // @exempt(from: tests)
+        }
         for target in try package().get().targets {
           switch target.type {
           case .library, .systemModule, .binary:
             break  // Coverage matters.
-          case .executable:
+          case .executable, .plugin:
             // Not testable.
             for path in target.sources.paths {
               irrelevantFiles.insert(

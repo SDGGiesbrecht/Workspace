@@ -78,25 +78,13 @@
             .joined(separator: " ")
           dependency.trimMarginalWhitespace()
 
-          if dependency == "Swift" {
-            var newDetails = details
-            let script: StrictString = "swift \u{2D}\u{2D}version"
-            newDetails.replaceSubrange(
-              versionCheckRange,
-              with: "\(script) \(problemVersion.string())".scalars
-            )
-            if try message(for: newDetails, in: project, output: output) == nil {
+          if let current = try currentVersion(
+            of: dependency,
+            for: project,
+            output: output
+          ) {
+            if current ≤ problemVersion {
               return nil
-            }
-          } else {
-            if let current = try currentVersion(
-              of: dependency,
-              for: project,
-              output: output
-            ) {
-              if current ≤ problemVersion {
-                return nil
-              }
             }
           }
         }
@@ -121,14 +109,19 @@
       for project: PackageRepository,
       output: Command.Output
     ) throws -> SDGVersioning.Version? {
-      if let dependency = try project.dependenciesByName()[String(dependency)],
-        let version = dependency.manifest.version
-      {
-        return Version(version)
-      } else {
-        return cached(
-          in: &dependencyVersionCache[dependency],
-          {
+      if #available(macOS 10.15, *) {
+        if let dependency = try project.dependenciesByName()[String(dependency)],
+          let version = dependency.manifest.version
+        {
+          return Version(version)
+        }
+      }
+      return cached(
+        in: &dependencyVersionCache[dependency],
+        {
+          if dependency == "Swift" {
+            return SwiftCompiler.version(forConstraints: Version(0, 0, 0)..<Version(1000, 0, 0))
+          } else {
             if let shellOutput = try? Shell.default.run(
               command: String(dependency).components(separatedBy: " ")
             ).get(),
@@ -139,8 +132,8 @@
               return nil
             }
           }
-        )  // @exempt(from: tests) Meaningless coverage region.
-      }
+        }
+      )  // @exempt(from: tests) Meaningless coverage region.
     }
   }
 #endif

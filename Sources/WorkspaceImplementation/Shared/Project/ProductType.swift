@@ -17,6 +17,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import PackageModel
 
+  @available(macOS 10.15, *)
   extension ProductType {
 
     internal var isLibrary: Bool {

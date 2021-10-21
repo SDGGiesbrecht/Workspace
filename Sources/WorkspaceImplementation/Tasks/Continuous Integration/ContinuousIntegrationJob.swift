@@ -42,10 +42,11 @@
     case miscellaneous
     case deployment
 
-    internal static let currentSwiftVersion = Version(5, 4, 0)
+    internal static let currentSwiftVersion = Version(5, 5, 0)
+    internal static let androidSwiftVersion = Version(5, 4, 0)
 
     private static let currentMacOSVersion = Version(11)
-    internal static let currentXcodeVersion = Version(12, 5)
+    internal static let currentXcodeVersion = Version(13, 0)
     private static let currentWindowsVersion = "10"
     private static let currentVisualStudioVersion = "2019"
     private static let currentWSLImage = "2004"
@@ -340,10 +341,11 @@
       case .miscellaneous:
         return true
       case .deployment:
-        return try project.configuration(output: output).documentation.api.generate
-          ∧ project.hasTargetsToDocument()
-          ∧ (try project.configuration(output: output)
-            .documentation.api.serveFromGitHubPagesBranch)
+        let shouldGenerate = try project.configuration(output: output).documentation.api.generate
+        let hasTargets = try project.hasTargetsToDocument()
+        let served = try project.configuration(output: output)
+          .documentation.api.serveFromGitHubPagesBranch
+        return shouldGenerate ∧ hasTargets ∧ served
       }
     }
 
@@ -726,11 +728,8 @@
 
       switch platform {
       case .macOS:
-        var xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
+        let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
           .string(droppingEmptyPatch: true)
-        if xcodeVersion.hasSuffix(".0") {  // @exempt(from: tests)
-          xcodeVersion.removeLast(2)
-        }
         result.append(
           script(
             heading: setXcodeUpStepName,
@@ -873,7 +872,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.androidSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [

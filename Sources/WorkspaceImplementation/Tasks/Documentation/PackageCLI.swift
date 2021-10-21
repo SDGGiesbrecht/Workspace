@@ -15,9 +15,6 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-  // #warning(Debugging...)
-  import Foundation
-
   import SDGCollections
 
   import SDGExportedCommandLineInterface
@@ -53,24 +50,6 @@
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
-          // #warning(Debugging...)
-          do {
-            _ = try CommandInterface.loadInterface(
-              of: tool,
-              in: localization.code
-            ).get()
-          } catch {
-            print("Here.")
-            print(error)
-            let parent = tool.deletingLastPathComponent()
-            for neighbour in (try? FileManager.default.contentsOfDirectory(atPath: parent.path)) ?? [] {
-              print(neighbour)
-            }
-            let product = parent.appendingPathComponent("executable.product")
-            for productFile in (try? FileManager.default.contentsOfDirectory(atPath: product.path)) ?? [] {
-              print(productFile)
-            }
-          }
           if let interface = try? CommandInterface.loadInterface(
             of: tool,
             in: localization.code

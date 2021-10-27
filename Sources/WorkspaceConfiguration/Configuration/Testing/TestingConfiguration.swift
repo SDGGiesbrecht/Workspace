@@ -106,7 +106,7 @@ public struct TestingConfiguration: Codable {
   /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
   /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
   /// TestCoverageExemptionToken("test", scope: .sameLine),
-  /// TestCoverageExemptionToken("fail", scope: .sameLine),
+  /// TestCoverageExemptionToken("fail", scope: .previousLine),
   /// ```
   public var ausnahmensZeichen: Menge<Testabdeckungsausnahmszeichen> {
     get { return exemptionTokens }
@@ -132,7 +132,7 @@ public struct TestingConfiguration: Codable {
   /// TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
   /// TestCoverageExemptionToken("unreachable", scope: .previousLine),
   /// TestCoverageExemptionToken("test", scope: .sameLine),
-  /// TestCoverageExemptionToken("fail", scope: .sameLine),
+  /// TestCoverageExemptionToken("fail", scope: .previousLine),
   /// ```
   public var exemptionTokens: Set<TestCoverageExemptionToken> = [
     // @example(testCoverageExemptionTokens)
@@ -148,7 +148,7 @@ public struct TestingConfiguration: Codable {
     TestCoverageExemptionToken("primitiveMethod", scope: .previousLine),
     TestCoverageExemptionToken("unreachable", scope: .previousLine),
     TestCoverageExemptionToken("test", scope: .sameLine),
-    TestCoverageExemptionToken("fail", scope: .sameLine),
+    TestCoverageExemptionToken("fail", scope: .previousLine),
     // @endExample
     // @beispiel(testabdeckungsausnahmen)
     Testabdeckungsausnahmszeichen("@ausnahme(zu: teste)", geltungsbereich: .selbeZeile),

@@ -8,7 +8,7 @@ jobs:
   Sonstiges:
     name: Sonstiges
     runs-on: ubuntu-20.04
-    container: swift:5.5.0-focal
+    container: swift:5.5.1-focal
     steps:
     - name: Holen
       uses: actions/checkout@v1

@@ -46,7 +46,7 @@
     internal static let androidSwiftVersion = Version(5, 4, 0)
 
     private static let currentMacOSVersion = Version(11)
-    internal static let currentXcodeVersion = Version(13, 0)
+    internal static let currentXcodeVersion = Version(13, 1)
     private static let currentWindowsVersion = "10"
     private static let currentVisualStudioVersion = "2019"
     private static let currentWSLImage = "2004"

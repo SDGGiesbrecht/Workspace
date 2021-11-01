@@ -21,7 +21,7 @@ jobs:
   Amazon_Linux:
     name: Amazon Linux
     runs-on: ubuntu-20.04
-    container: swift:5.5.0-amazonlinux2
+    container: swift:5.5.1-amazonlinux2
     steps:
     - name: Check out
       uses: actions/checkout@v1

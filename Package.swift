@@ -797,7 +797,7 @@ let package = Package(
   ]
 )
 
-// #workaround(Needs a better way to silence the warning; maybe a build script?)
+// #workaround(Swift 5.4.2, Needs a better way to silence the warning; maybe a build script?)
 #if os(Linux)
   package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
     .exclude.append("Validate (Linux).sh")

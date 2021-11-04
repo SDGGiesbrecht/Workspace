@@ -838,24 +838,6 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50400.0, Manifest does not compile.)
-    "SwiftSyntax",
-    "swift\u{2D}format",
-  ]
-  package.dependencies.removeAll(where: { dependency in
-    return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
-    })
-  })
-  for target in package.targets {
-    target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
-    })
-  }
-
   // #workaround(Swift 5.4.2, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }

@@ -554,11 +554,11 @@ let package = Package(
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
-        /*.product(
+        .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),*/
+          condition: .when(platforms: [.macOS/*, .linux*/])
+        ),
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",

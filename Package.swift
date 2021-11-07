@@ -839,20 +839,18 @@ for target in package.targets {
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50400.0, Manifest does not compile.)
+    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
     "SwiftSyntax",
-    "swift\u{2D}format",
+    "SwiftFormat",
   ]
-  package.dependencies.removeAll(where: { dependency in
-    return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
-    })
-  })
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in
-      return impossibleDependencies.contains(where: { impossible in
-        return "\(dependency)".contains(impossible)
-      })
+      switch dependency {
+      case .productItem(let name, _, _):
+        return impossibleDependencies.contains(name)
+      default:
+        return false
+      }
     })
   }
 

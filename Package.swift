@@ -557,7 +557,7 @@ let package = Package(
         .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
-          condition: .when(platforms: [/*.macOS,*/ .linux])
+          condition: .when(platforms: [.macOS/*, .linux*/])
         ),
         .product(
           name: "SwiftFormatConfiguration",

@@ -554,22 +554,22 @@ let package = Package(
           // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
-        /*.product(
+        .product(
           name: "SwiftSyntax",
           package: "SwiftSyntax",
           condition: .when(platforms: [.macOS, .linux])
-        ),*/
+        ),
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
           // #workaround(Swift 5.4.2, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
-        /*.product(
+        .product(
           name: "SwiftFormat",
           package: "swift\u{2D}format",
           condition: .when(platforms: [.macOS, .linux])
-        ),*/
+        ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
       ]

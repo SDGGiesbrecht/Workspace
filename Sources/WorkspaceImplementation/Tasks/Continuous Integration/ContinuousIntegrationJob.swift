@@ -43,7 +43,7 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 5, 1)
-    internal static let androidSwiftVersion = Version(5, 4, 0)
+    internal static let androidSwiftVersion = Version(5, 5, 0)
 
     private static let currentMacOSVersion = Version(11)
     internal static let currentXcodeVersion = Version(13, 1)
@@ -54,7 +54,7 @@
     private static let currentCentOSVersion = "8"
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
-    private static let currentAnroidNDKVersion = "21"
+    private static let currentAnroidNDKVersion = "23b"
     private static let currentAmazonLinuxVerison = "2"
 
     internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -580,9 +580,10 @@
       let continuation = windows ? "^" : "\u{5C}"
       let quotation = windows ? "" : "\u{27}"
       return [
-        "curl \u{2D}\u{2D}location \(continuation)",
+        "curl \(continuation)",
         "  \(quotation)\(origin)\(quotation) \(continuation)",
-        "  \u{2D}\u{2D}output \(quotation)\(destination)\(quotation)",
+        "  \u{2D}\u{2D}output \(quotation)\(destination)\(quotation) \(continuation)",
+        "  \u{2D}\u{2D}location",
       ].joinedAsLines()
     }
 
@@ -861,11 +862,11 @@
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d\u{2D}linux\u{2D}x86_64.zip",
+                "https://dl.google.com/android/repository/android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)\u{2D}linux.zip",
                 andUnzipTo:
                   "${ANDROID_HOME}/ndk\u{2D}bundle",
                 containerName:
-                  "android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)d",
+                  "android\u{2D}ndk\u{2D}r\(ContinuousIntegrationJob.currentAnroidNDKVersion)",
                 removeExisting: true,
                 sudoCopy: true
               )
@@ -897,8 +898,8 @@
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%90\(version)/Android.sdk.zip",
-                andUnzipTo:
+                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64-24\u{2D}sdk.tar.xz",
+                andUntarTo:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),

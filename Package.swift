@@ -815,11 +815,14 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.5, FoundationXML is broken on Android.)
+    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
     // #workaround(Swift 5.4.2, FoundationXML is broken on Windows.)
     // #workaround(Swift 5.4.2, FoundationXML is broken on web.)
+    // #workaround(Swift 5.5, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
-      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .watchOS])
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)

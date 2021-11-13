@@ -15,11 +15,13 @@
  */
 
 import Foundation
-#if canImport(FoundationNetworking)
-  import FoundationNetworking
+#if !PLATFORM_LACKS_FOUNDATION_NETWORKING
+  #if canImport(FoundationNetworking)
+    import FoundationNetworking
+  #endif
 #endif
-#if canImport(FoundationXML)
-  #if !PLATFORM_LACKS_FOUNDATION_XML
+#if !PLATFORM_LACKS_FOUNDATION_XML
+  #if canImport(FoundationXML)
     import FoundationXML
   #endif
 #endif
@@ -37,7 +39,7 @@ import CrossPlatformC
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if canImport(FoundationNetworking)
+  #if !PLATFORM_LACKS_FOUNDATION_NETWORKING
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   #endif
   #if !PLATFORM_LACKS_FOUNDATION_XML

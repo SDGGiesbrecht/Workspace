@@ -631,16 +631,12 @@
     private func cURL(
       _ url: StrictString,
       andUnzipTo destination: StrictString,
-      containerName: StrictString? = nil,
+      containerName: StrictString,
       removeExisting: Bool = false,
       sudoCopy: Bool = false
     ) -> StrictString {
       let zipFileName = StrictString(url.components(separatedBy: "/").last!.contents)
-      let fileName =
-        containerName
-        ?? zipFileName.components(separatedBy: ".")
-        .dropLast().lazy.map({ StrictString($0.contents) })
-        .joined(separator: ".")
+      let fileName = containerName
       let temporaryZip: StrictString = "/tmp/\(zipFileName)"
       let temporary: StrictString = "/tmp/\(fileName)"
       var result: [StrictString] = []
@@ -1303,17 +1299,6 @@
           return "Download tests"
         case .deutschDeutschland:
           return "Teste herunterladen"
-        }
-      })
-    }
-
-    private var prepareScriptStepName: UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Prepare script"
-        case .deutschDeutschland:
-          return "Skript vorbereiten"
         }
       })
     }

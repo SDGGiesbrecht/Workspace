@@ -932,20 +932,20 @@
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64-24\u{2D}sdk.tar.xz",
+                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk.tar.xz",
                 andUntarTo:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
               ),
               grantPermissions(to: "/Library"),
               editStreamInPlace(
-                replacing: "/home/butta/android-ndk-r23",
-                with: "${ANDROID_HOME}/ndk-bundle",
+                replacing: "/home/butta/android\u{2D}ndk\u{2D}r23",
+                with: "${ANDROID_HOME}/ndk\u{2D}bundle",
                 in:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
               ),
               editStreamInPlace(
-                replacing: "/home/butta/swift-\(version)-android-x86_64-24-sdk",
+                replacing: "/home/butta/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk",
                 with: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 in:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
@@ -1017,10 +1017,10 @@
               "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
               "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android \u{5C}",
               "  \u{2D}\u{2D}build\u{2D}tests \u{5C}",
-              "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \u{5C}",
+              "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
               "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}target=x86_64-linux-android24 \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}target=x86_64\u{2D}linux\u{2D}android24 \u{5C}",
               "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
               "  \u{2D}Xcc \u{2D}fPIC \u{5C}",
               "  \u{2D}Xcc \u{2D}lstdc++",
@@ -1080,9 +1080,9 @@
               "arch": "x86_64",
               "script": [
                 "|",
-                "adb -e push . /data/local/tmp/Package",
-                "adb -e shell 'chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug'",
-                "adb -e shell 'LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/\(try project.packageName())PackageTests.xctest'",
+                "adb \u{2D}e push . /data/local/tmp/Package",
+                "adb \u{2D}e shell \u{27}chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug\u{27}",
+                "adb \u{2D}e shell \u{27}LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest\u{27}",
               ].joined(separator: "\n          "),
             ]
           ),

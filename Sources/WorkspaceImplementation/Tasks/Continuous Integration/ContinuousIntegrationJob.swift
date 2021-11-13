@@ -945,7 +945,8 @@
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
               ),
               editStreamInPlace(
-                replacing: "/home/butta/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk",
+                replacing:
+                  "/home/butta/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk",
                 with: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 in:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"

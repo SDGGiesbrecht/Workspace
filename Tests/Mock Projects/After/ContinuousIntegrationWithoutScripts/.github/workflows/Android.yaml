@@ -26,25 +26,30 @@ jobs:
       shell: bash
       run: |
         set -x
-        curl --location \
-          'https://dl.google.com/android/repository/android-ndk-r21d-linux-x86_64.zip' \
-          --output '/tmp/android-ndk-r21d-linux-x86_64.zip'
-        unzip /tmp/android-ndk-r21d-linux-x86_64.zip -d /tmp
+        curl \
+          'https://dl.google.com/android/repository/android-ndk-r23b-linux.zip' \
+          --output '/tmp/android-ndk-r23b-linux.zip' \
+          --location
+        unzip /tmp/android-ndk-r23b-linux.zip -d /tmp
         rm -rf ${ANDROID_HOME}/ndk-bundle
         sudo mkdir -p ${ANDROID_HOME}/ndk-bundle
-        sudo cp -R /tmp/android-ndk-r21d/* ${ANDROID_HOME}/ndk-bundle
+        sudo cp -R /tmp/android-ndk-r23b/* ${ANDROID_HOME}/ndk-bundle
     - name: Install Swift
       shell: bash
       run: |
         set -x
         sudo rm -rf /usr/lib/clang/10.0.0
         sudo rm -rf /usr/lib/python3/dist-packages/lldb
-        curl --location \
-          'https://swift.org/builds/swift-5.4-release/ubuntu2004/swift-5.4-RELEASE/swift-5.4-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz'
-        tar --extract --file /tmp/swift-5.4-RELEASE-ubuntu20.04.tar.gz --directory /tmp
+        curl \
+          'https://swift.org/builds/swift-5.5-release/ubuntu2004/swift-5.5-RELEASE/swift-5.5-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.5-RELEASE-ubuntu20.04.tar.gz' \
+          --location
+        tar --extract \
+          --file /tmp/swift-5.5-RELEASE-ubuntu20.04.tar.gz \
+          --directory /tmp \
+          --verbose
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.4-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.5-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
@@ -52,36 +57,50 @@ jobs:
       shell: bash
       run: |
         set -x
-        curl --location \
-          'https://github.com/SDGGiesbrecht/Workspace/releases/download/experimental%E2%80%90swift%E2%80%905.4/Android.sdk.zip' \
-          --output '/tmp/Android.sdk.zip'
-        unzip /tmp/Android.sdk.zip -d /tmp
+        curl \
+          'https://github.com/buttaface/swift-android-sdk/releases/download/5.5/swift-5.5-android-x86_64-24-sdk.tar.xz' \
+          --output '/tmp/swift-5.5-android-x86_64-24-sdk.tar.xz' \
+          --location
+        tar --extract \
+          --file /tmp/swift-5.5-android-x86_64-24-sdk.tar.xz \
+          --directory /tmp \
+          --verbose
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        sudo cp -R /tmp/Android.sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/swift-5.5-android-x86_64-24-sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
+        sed --in-place \
+          "s%/home/butta/android-ndk-r23%${ANDROID_HOME}/ndk-bundle%" \
+          /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
+        sed --in-place \
+          "s%/home/butta/swift-5.5-android-x86_64-24-sdk%/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk%" \
+          /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap
+        ln \
+          /usr/lib/clang/10.0.0 \
+          /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/clang \
+          --symbolic \
+          --force
     - name: Build
       shell: bash
       run: |
         set -x
         export TARGETING_ANDROID=true
-        export CC=${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang
         swift build --triple x86_64-unknown-linux-android \
           --build-tests \
-          --sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \
+          --sdk ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --sysroot=${ANDROID_HOME}/ndk-bundle/platforms/android-29/arch-x86_64 \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include \
-          -Xcc -I${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/x86_64-linux-android \
-          -Xlinker -lz
+          -Xswiftc -Xclang-linker -Xswiftc --target=x86_64-linux-android24 \
+          -Xswiftc -use-ld=lld \
+          -Xcc -fPIC \
+          -Xcc -lstdc++
     - name: Copy libraries
       shell: bash
       run: |
         set -x
         mkdir -p .build/x86_64-unknown-linux-android/debug
-        cp -R ${ANDROID_HOME}/ndk-bundle/sources/cxx-stl/llvm-libc++/libs/x86_64/* .build/x86_64-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/*.so .build/x86_64-unknown-linux-android/debug
         mkdir -p .build/x86_64-unknown-linux-android/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/* .build/x86_64-unknown-linux-android/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/*.so .build/x86_64-unknown-linux-android/debug
     - name: Upload tests
       uses: actions/upload-artifact@v1
       with:
@@ -99,25 +118,12 @@ jobs:
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug
-    - name: Prepare script
-      shell: bash
-      run: |
-        set -x
-        mkdir -p .build/SDG
-        echo '
-        set -e
-        adb -e push . /data/local/tmp/Package
-        adb -e shell chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug
-        adb -e shell \
-          LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug \
-          HOME=/data/local/tmp/Home \
-          SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \
-          /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/ContinuousIntegrationWithoutScriptsPackageTests.xctest
-        ' > .build/SDG/Emulator.sh
-        chmod +x .build/SDG/Emulator.sh
     - name: Test
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: 24
         arch: x86_64
-        script: .build/SDG/Emulator.sh
+        script: |
+          adb -e push . /data/local/tmp/Package
+          adb -e shell 'chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug'
+          adb -e shell 'LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/ContinuousIntegrationWithoutScriptsPackageTests.xctest'

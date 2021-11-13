@@ -590,22 +590,29 @@
     private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
       return "\(sudo ? "sudo " : "")mkdir \u{2D}p \(directory)"
     }
-    private func copyDirectory(
+    private func copyFile(
+      from origin: StrictString,
+      to destination: StrictString
+    ) -> StrictString {
+      "copy \(origin) \u{22}\(destination)\u{22}"
+    }
+    private func copyFiles(
       from origin: StrictString,
       to destination: StrictString,
       sudo: Bool = false
     ) -> StrictString {
       let result: [StrictString] = [
         makeDirectory(destination, sudo: sudo),
-        "\(sudo ? "sudo " : "")cp \u{2D}R \(origin)/* \(destination)",
+        "\(sudo ? "sudo " : "")cp \u{2D}R \(origin) \(destination)",
       ]
       return result.joinedAsLines()
     }
-    private func copyFile(
+    private func copyDirectory(
       from origin: StrictString,
-      to destination: StrictString
+      to destination: StrictString,
+      sudo: Bool = false
     ) -> StrictString {
-      "copy \(origin) \u{22}\(destination)\u{22}"
+      return copyFiles(from: "\(origin)/*", to: destination, sudo: sudo)
     }
 
     private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
@@ -658,8 +665,12 @@
       let temporary: StrictString = "/tmp/\(fileName)"
       var result: [StrictString] = []
       result.append(cURL(from: url, to: temporaryTar))
-      result.append(
-        "tar \u{2D}\u{2D}extract \u{2D}\u{2D}file \(temporaryTar) \u{2D}\u{2D}directory /tmp"
+      result.append(contentsOf: [
+        "tar \u{2D}\u{2D}extract \u{5C}",
+        "  \u{2D}\u{2D}file \(temporaryTar) \u{5C}",
+        "  \u{2D}\u{2D}directory /tmp \u{5C}",
+        "  \u{2D}\u{2D}verbose",
+      ]
       )
       result.append(copyDirectory(from: temporary, to: destination, sudo: sudoCopy))
       return result.joinedAsLines()
@@ -668,6 +679,29 @@
     private func grantPermissions(to path: StrictString, sudo: Bool = true) -> StrictString {
       let prefix = sudo ? "sudo " : ""
       return "\(prefix)chmod \u{2D}R a+rwx \(path)"
+    }
+
+    private func editStreamInPlace(
+      replacing searchTerm: String,
+      with replacement: String,
+      in file: String
+    ) -> StrictString {
+      return [
+        "sed \u{2D}\u{2D}in\u{2D}place \u{5C}",
+        "  \u{22}s%\(searchTerm)%\(replacement)%\u{22} \u{5C}",
+        "  \(file)",
+      ].joinedAsLines()
+    }
+
+    private func createSymlink(pointingAt destination: String, from origin: String) -> StrictString
+    {
+      return [
+        "ln \u{5C}",
+        "  \(destination) \u{5C}",
+        "  \(origin) \u{5C}",
+        "  \u{2D}\u{2D}symbolic \u{5C}",
+        "  \u{2D}\u{2D}force",
+      ].joinedAsLines()
     }
 
     private func set(
@@ -904,6 +938,23 @@
                 sudoCopy: true
               ),
               grantPermissions(to: "/Library"),
+              editStreamInPlace(
+                replacing: "/home/butta/android-ndk-r23",
+                with: "${ANDROID_HOME}/ndk-bundle",
+                in:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
+              ),
+              editStreamInPlace(
+                replacing: "/home/butta/swift-\(version)-android-x86_64-24-sdk",
+                with: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
+                in:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
+              ),
+              createSymlink(
+                pointingAt: "/usr/lib/clang/10.0.0",
+                from:
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/clang"
+              ),
             ]
           ),
         ])
@@ -964,16 +1015,15 @@
             localization: interfaceLocalization,
             commands: [
               "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
-              "export CC=${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin/clang",
               "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android \u{5C}",
               "  \u{2D}\u{2D}build\u{2D}tests \u{5C}",
-              "  \u{2D}\u{2D}sdk /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk \u{5C}",
+              "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
               "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}sysroot=${ANDROID_HOME}/ndk\u{2D}bundle/platforms/android\u{2D}29/arch\u{2D}x86_64 \u{5C}",
-              "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include \u{5C}",
-              "  \u{2D}Xcc \u{2D}I${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot/usr/include/x86_64\u{2D}linux\u{2D}android \u{5C}",
-              "  \u{2D}Xlinker \u{2D}lz",
+              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}target=x86_64-linux-android24 \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
+              "  \u{2D}Xcc \u{2D}fPIC \u{5C}",
+              "  \u{2D}Xcc \u{2D}lstdc++",
             ]
           )
         )
@@ -984,14 +1034,14 @@
             heading: copyLibrariesStepName,
             localization: interfaceLocalization,
             commands: [
-              copyDirectory(
+              copyFiles(
                 from:
-                  "${ANDROID_HOME}/ndk\u{2D}bundle/sources/cxx\u{2D}stl/llvm\u{2D}libc++/libs/x86_64",
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/*.so",
                 to: productsDirectory
               ),
-              copyDirectory(
+              copyFiles(
                 from:
-                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android",
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/*.so",
                 to: productsDirectory
               ),
             ]
@@ -1022,31 +1072,18 @@
               "path": "\(productsDirectory)",
             ]
           ),
-          script(
-            heading: prepareScriptStepName,
-            localization: interfaceLocalization,
-            commands: [
-              makeDirectory(".build/SDG"),
-              "echo \u{27}",
-              "set \u{2D}e",
-              "adb \u{2D}e push . /data/local/tmp/Package",
-              "adb \u{2D}e shell chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug",
-              "adb \u{2D}e shell \u{5C}",
-              "  LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug \u{5C}",
-              "  HOME=/data/local/tmp/Home \u{5C}",
-              "  SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package \u{5C}",
-              "  /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest",
-              "\u{27} > .build/SDG/Emulator.sh",
-              "chmod +x .build/SDG/Emulator.sh",
-            ]
-          ),
           step(testStepName, localization: interfaceLocalization),
           uses(
             "reactivecircus/android\u{2D}emulator\u{2D}runner@v2",
             with: [
-              "api\u{2D}level": "29",
+              "api\u{2D}level": "24",
               "arch": "x86_64",
-              "script": ".build/SDG/Emulator.sh",
+              "script": [
+                "|",
+                "adb -e push . /data/local/tmp/Package",
+                "adb -e shell 'chmod -R +x /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug'",
+                "adb -e shell 'LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64-unknown-linux-android/debug/\(try project.packageName())PackageTests.xctest'",
+              ].joined(separator: "\n          "),
             ]
           ),
         ])

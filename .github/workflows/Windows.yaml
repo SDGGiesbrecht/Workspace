@@ -34,9 +34,10 @@ jobs:
       shell: cmd
       run: |
         echo on
-        curl --location ^
+        curl ^
           https://swift.org/builds/swift-5.5.1-release/windows10/swift-5.5.1-RELEASE/swift-5.5.1-RELEASE-windows10.exe ^
-          --output %TEMP%\swift-5.5.1-RELEASE-windows10.exe
+          --output %TEMP%\swift-5.5.1-RELEASE-windows10.exe ^
+          --location
         %TEMP%\swift-5.5.1-RELEASE-windows10.exe /passive
         set SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk
         echo SDKROOT=%SDKROOT%>>%GITHUB_ENV%

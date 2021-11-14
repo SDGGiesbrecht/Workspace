@@ -831,7 +831,7 @@ for target in package.targets {
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])
     ),
-    // #workaround(Swift 5.4.2, SwiftPM lacks conditional targets.
+    // #workaround(Swift 5.5.1, SwiftPM lacks conditional targets.
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])

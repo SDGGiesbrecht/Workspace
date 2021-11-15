@@ -825,11 +825,10 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.windows, .wasi])
+      .when(platforms: [.wasi])
     ),
     // #workaround(Swift 5.5.1, SwiftPM lacks conditional targets.
     .define(
@@ -841,6 +840,7 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  // #workaround(Swift 5.5, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
     // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
     "SwiftSyntax",

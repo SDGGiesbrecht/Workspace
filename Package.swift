@@ -842,8 +842,8 @@ for target in package.targets {
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    "SwiftSyntax",
+    // #warning(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
+    //"SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {

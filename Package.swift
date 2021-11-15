@@ -829,7 +829,7 @@ for target in package.targets {
     // #workaround(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.windows, .wasi])
+      .when(platforms: [.wasi])
     ),
     // #workaround(Swift 5.5.1, SwiftPM lacks conditional targets.
     .define(
@@ -841,9 +841,10 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  // #workaround(Swift 5.5, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies: [String] = [
-    // #warning(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    //"SwiftSyntax",
+    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
+    "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {

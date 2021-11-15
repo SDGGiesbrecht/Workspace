@@ -825,7 +825,6 @@ for target in package.targets {
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(SwiftSyntax 0.50400.0, SwiftSyntax manifest does not compile on Windows.)
     // #workaround(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",

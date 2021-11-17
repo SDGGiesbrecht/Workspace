@@ -839,10 +839,10 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #warning(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
     // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    //"SwiftSyntax",
+    "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {

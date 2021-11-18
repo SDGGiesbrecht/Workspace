@@ -34,7 +34,7 @@ jobs:
       shell: pwsh
       run: |
         echo on
-        Install-Binary -Url "https://swift.org/builds/swift-5.5.1-release/windows10/swift-5.5.1-RELEASE/swift-5.5.1-RELEASE-windows10.exe" `
+        Install-Binary -Url "https://download.swift.org/swift-5.5.1-release/windows10/swift-5.5.1-RELEASE/swift-5.5.1-RELEASE-windows10.exe" `
           -Name "installer.exe" `
           -ArgumentList ("/passive")
         foreach ($level in "Machine", "User") {

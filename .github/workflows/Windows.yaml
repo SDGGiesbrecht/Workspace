@@ -38,6 +38,4 @@ jobs:
       run: |
         echo on
         set TARGETING_WINDOWS=true
-        swift test ^
-          -Xswiftc -I -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 ^
-          -Xswiftc -L -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows
+        swift test

@@ -34,10 +34,7 @@ jobs:
         branch: swift-5.5.1-release
         tag: 5.5.1-RELEASE
     - name: Test
-      shell: cmd
+      shell: pwsh
       run: |
-        echo on
-        set TARGETING_WINDOWS=true
-        swift test ^
-          -Xswiftc -I -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows\x86_64 ^
-          -Xswiftc -L -Xswiftc C:\Library\Developer\Platforms\Windows.platform\Developer\Library\XCTest-development\usr\lib\swift\windows
+        $env:TARGETING_WINDOWS = 'true'
+        swift test

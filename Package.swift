@@ -551,7 +551,7 @@ let package = Package(
           // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50400.0, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -839,7 +839,7 @@ for target in package.targets {
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.5, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
     // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
     "SwiftSyntax",

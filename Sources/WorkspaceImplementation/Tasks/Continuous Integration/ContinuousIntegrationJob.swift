@@ -773,62 +773,15 @@
           )
         )
       case .windows:
-        result.append(contentsOf: [
-          step(setVisualStudioUpStepName, localization: interfaceLocalization),
-          uses("ilammy/msvc\u{2D}dev\u{2D}cmd@v1"),
-        ])
         let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
-          script(
-            heading: installSwiftStepName,
-            localization: interfaceLocalization,
-            shell: "cmd",
-            commands: [
-              cURLAndExecuteWindowsInstaller(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/windows\(ContinuousIntegrationJob.currentWindowsVersion)/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}windows\(ContinuousIntegrationJob.currentWindowsVersion).exe"
-              ),
-              set(
-                environmentVariable: "SDKROOT",
-                to:
-                  "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}SDKs\u{5C}Windows.sdk",
-                windows: true
-              ),
-              export("SDKROOT", windows: true),
-              copyFile(
-                from:
-                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}ucrt.modulemap",
-                to:
-                  "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}ucrt\u{5C}module.modulemap"
-              ),
-              copyFile(
-                from:
-                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.modulemap",
-                to: "%VCToolsInstallDir%\u{5C}include\u{5C}module.modulemap"
-              ),
-              copyFile(
-                from:
-                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}visualc.apinotes",
-                to: "%VCToolsInstallDir%\u{5C}include\u{5C}visualc.apinotes"
-              ),
-              copyFile(
-                from:
-                  "%SDKROOT%\u{5C}usr\u{5C}share\u{5C}winsdk.modulemap",
-                to:
-                  "%UniversalCRTSdkDir%\u{5C}Include\u{5C}%UCRTVersion%\u{5C}um\u{5C}module.modulemap"
-              ),
-              prependPath("C:\u{5C}Library\u{5C}icu\u{2D}67\u{5C}usr\u{5C}bin", windows: true),
-              prependPath(
-                "C:\u{5C}Library\u{5C}Developer\u{5C}Toolchains\u{5C}unknown\u{2D}Asserts\u{2D}development.xctoolchain\u{5C}usr\u{5C}bin",
-                windows: true
-              ),
-              prependPath("C:\u{5C}Library\u{5C}Swift\u{2D}development\u{5C}bin", windows: true),
-              prependPath(
-                "C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}bin",
-                windows: true
-              ),
-              export("Path", windows: true),
-              "swift \u{2D}\u{2D}version",
+          step(installSwiftStepName, localization: interfaceLocalization),
+          uses(
+            "compnerd/gha\u{2D}setup\u{2D}swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1",
+            with: [
+              "branch": "swift\u{2D}5.5.1\u{2D}release",
+              "tag": "5.5.1\u{2D}RELEASE",
             ]
           ),
           script(
@@ -841,9 +794,7 @@
                 to: "true",
                 windows: true
               ),
-              "swift test ^",
-              "  \u{2D}Xswiftc \u{2D}I \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows\u{5C}x86_64 ^",
-              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc C:\u{5C}Library\u{5C}Developer\u{5C}Platforms\u{5C}Windows.platform\u{5C}Developer\u{5C}Library\u{5C}XCTest\u{2D}development\u{5C}usr\u{5C}lib\u{5C}swift\u{5C}windows",
+              "swift test",
             ]
           ),
         ])
@@ -915,7 +866,7 @@
               "sudo rm \u{2D}rf /usr/lib/clang/10.0.0",
               "sudo rm \u{2D}rf /usr/lib/python3/dist\u{2D}packages/lldb",
               cURL(
-                "https://swift.org/builds/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
+                "https://download.swift.org/swift\u{2D}\(version)\u{2D}release/ubuntu\(ubuntuVersion.replacingMatches(for: ".", with: ""))/swift\u{2D}\(version)\u{2D}RELEASE/swift\u{2D}\(version)\u{2D}RELEASE\u{2D}ubuntu\(ubuntuVersion).tar.gz",
                 andUntarTo: "/",
                 sudoCopy: true
               ),
@@ -1155,17 +1106,6 @@
           return "Set Xcode up"
         case .deutschDeutschland:
           return "Xcode einrichten"
-        }
-      })
-    }
-
-    private var setVisualStudioUpStepName: UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Set Visual Studio up"
-        case .deutschDeutschland:
-          return "Visual Studio einrichten"
         }
       })
     }

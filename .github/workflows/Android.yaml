@@ -47,7 +47,7 @@ jobs:
         sudo rm -rf /usr/lib/clang/10.0.0
         sudo rm -rf /usr/lib/python3/dist-packages/lldb
         curl \
-          'https://download.swift.org/swift-5.5.1-release/ubuntu2004/swift-5.5.1-RELEASE/swift-5.5.1-RELEASE-ubuntu20.04.tar.gz' \
+          'https://download.swift.org/swift-5.5-release/ubuntu2004/swift-5.5-RELEASE/swift-5.5-RELEASE-ubuntu20.04.tar.gz' \
           --output '/tmp/swift-5.5-RELEASE-ubuntu20.04.tar.gz' \
           --location
         tar --extract \

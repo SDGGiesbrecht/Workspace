@@ -574,11 +574,10 @@
 
     private func cURL(
       from origin: StrictString,
-      to destination: StrictString,
-      windows: Bool = false
+      to destination: StrictString
     ) -> StrictString {
-      let continuation = windows ? "^" : "\u{5C}"
-      let quotation = windows ? "" : "\u{27}"
+      let continuation = "\u{5C}"
+      let quotation = "\u{27}"
       return [
         "curl \(continuation)",
         "  \(quotation)\(origin)\(quotation) \(continuation)",
@@ -589,12 +588,6 @@
 
     private func makeDirectory(_ directory: StrictString, sudo: Bool = false) -> StrictString {
       return "\(sudo ? "sudo " : "")mkdir \u{2D}p \(directory)"
-    }
-    private func copyFile(
-      from origin: StrictString,
-      to destination: StrictString
-    ) -> StrictString {
-      "copy \(origin) \u{22}\(destination)\u{22}"
     }
     private func copyFiles(
       from origin: StrictString,
@@ -613,15 +606,6 @@
       sudo: Bool = false
     ) -> StrictString {
       return copyFiles(from: "\(origin)/*", to: destination, sudo: sudo)
-    }
-
-    private func cURLAndExecuteWindowsInstaller(_ url: StrictString) -> StrictString {
-      let installer = StrictString(url.components(separatedBy: "/").last!.contents)
-      let temporaryInstaller: StrictString = "%TEMP%\u{5C}\(installer)"
-      return [
-        cURL(from: url, to: temporaryInstaller, windows: true),
-        "\(temporaryInstaller) /passive",
-      ].joinedAsLines()
     }
 
     private func remove(_ path: StrictString) -> StrictString {
@@ -711,24 +695,17 @@
         return "export \(environmentVariable)=\u{22}\(value)\u{22}"
       }
     }
-    private func export(_ environmentVariable: StrictString, windows: Bool = false) -> StrictString
-    {
-      if windows {
-        return "echo \(environmentVariable)=%\(environmentVariable)%>>%GITHUB_ENV%"
-      } else {
-        return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
-      }
+    private func export(
+      _ environmentVariable: StrictString
+    ) -> StrictString {
+      return "echo \u{22}\(environmentVariable)=${\(environmentVariable)}\u{22} >> $GITHUB_ENV"
     }
 
-    private func prependPath(_ entry: StrictString, windows: Bool = false) -> StrictString {
-      if windows {
-        return set(environmentVariable: "Path", to: "\(entry);%Path%", windows: true)
-      } else {
-        return [
-          set(environmentVariable: "PATH", to: "\(entry):${PATH}"),
-          export("PATH"),
-        ].joinedAsLines()
-      }
+    private func prependPath(_ entry: StrictString) -> StrictString {
+      return [
+        set(environmentVariable: "PATH", to: "\(entry):${PATH}"),
+        export("PATH"),
+      ].joinedAsLines()
     }
 
     internal func gitHubWorkflowJob(

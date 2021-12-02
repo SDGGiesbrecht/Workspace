@@ -33,7 +33,7 @@ jobs:
       run: |
         set -x
         mkdir -p .build/SDG
-        git clone https://github.com/swiftwasm/carton .build/SDG --branch 0.12.1 --depth 1 --config advice.detachedHead=false
+        git clone https://github.com/swiftwasm/carton .build/SDG/carton --branch 0.12.1 --depth 1 --config advice.detachedHead=false
         cd .build/SDG/carton
         ./install_ubuntu_deps.sh
         swift build --configuration release

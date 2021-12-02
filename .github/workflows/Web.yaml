@@ -32,12 +32,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        cd ..
-        git clone https://github.com/swiftwasm/homebrew-tap
-        cd homebrew-tap
-        git checkout 74e1deea6545fd0666c0539e835c918ae00b52a8
-        brew install carton.rb
-        brew switch carton 0.12.1
+        brew install swiftwasm/tap/carton
     - name: Test
       shell: bash
       run: |

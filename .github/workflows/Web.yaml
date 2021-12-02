@@ -36,8 +36,8 @@ jobs:
         git clone https://github.com/swiftwasm/homebrew-tap
         cd homebrew-tap
         git checkout 74e1deea6545fd0666c0539e835c918ae00b52a8
-        export HOMEBREW_NO_AUTO_UPDATE=1
         brew install carton.rb
+        brew switch carton 0.12.1
     - name: Test
       shell: bash
       run: |

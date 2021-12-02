@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   Web:
     name: Web
-    runs-on: ubuntu-20.04
+    runs-on: macos-11
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -32,14 +32,10 @@ jobs:
       shell: bash
       run: |
         set -x
-        mkdir -p .build/SDG
-        git clone https://github.com/swiftwasm/carton .build/SDG/carton --branch 0.12.1 --depth 1 --config advice.detachedHead=false
-        cd .build/SDG/carton
-        ./install_ubuntu_deps.sh
-        swift build --configuration release
+        brew install swiftwasm/tap/carton@0.12.1
     - name: Test
       shell: bash
       run: |
         set -x
         export TARGETING_WEB=true
-        .build/release/carton test
+        carton test

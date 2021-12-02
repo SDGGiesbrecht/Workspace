@@ -1,0 +1,65 @@
+# Miscellaneous.yaml
+#
+# This source file is part of the Workspace open source project.
+# Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
+# https://github.com/SDGGiesbrecht/Workspace#workspace
+#
+# Copyright ©2021 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2021 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: Miscellaneous
+
+on: [push, pull_request]
+
+jobs:
+  Miscellaneous:
+    name: Miscellaneous
+    runs-on: ubuntu-20.04
+    container: swift:5.5.1-focal
+    steps:
+    - name: Check out
+      uses: actions/checkout@v1
+    - name: Cache Workspace
+      uses: actions/cache@v1
+      with:
+        key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install SwiftPM dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            libncurses-dev \
+            libsqlite3-dev
+    - name: Install Workspace dependencies
+      shell: bash
+      run: |
+        set -x
+        apt-get update --assume-yes
+        UCF_FORCE_CONFOLD=1 DEBIAN_FRONTEND=noninteractive \
+        apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+          install --assume-yes \
+            curl
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Validate
+      shell: bash
+      run: |
+        set -x
+        swift run workspace validate •job miscellaneous •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Grant permission to cache
+      shell: bash
+      run: |
+        set -x
+        chmod -R a+rwx .

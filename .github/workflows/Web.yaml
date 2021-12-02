@@ -20,7 +20,6 @@ jobs:
   Web:
     name: Web
     runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.12
     steps:
     - name: Check out
       uses: actions/checkout@v1
@@ -29,9 +28,18 @@ jobs:
       with:
         key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Install Carton
+      shell: bash
+      run: |
+        set -x
+        mkdir .build/SDG
+        git clone https://github.com/swiftwasm/carton .build/SDG --branch 0.12.1 --depth 1 --config advice.detachedHead=false
+        cd .build/SDG/carton
+        ./install_ubuntu_deps.sh
+        swift build --configuration release
     - name: Test
       shell: bash
       run: |
         set -x
         export TARGETING_WEB=true
-        carton test
+        .build/release/carton test

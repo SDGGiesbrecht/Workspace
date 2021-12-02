@@ -32,8 +32,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        brew install swiftwasm/tap/carton
-        brew search carton
+        brew install https://raw.githubusercontent.com/swiftwasm/homebrew-tap/fe78ae326f3bc1c592a20dbc7b685aba9b0675de/carton.rb
     - name: Test
       shell: bash
       run: |

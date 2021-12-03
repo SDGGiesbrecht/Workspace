@@ -7,8 +7,7 @@ on: [push, pull_request]
 jobs:
   Netz:
     name: Netz
-    runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.11.1
+    runs-on: macos-11
     steps:
     - name: Holen
       uses: actions/checkout@v1
@@ -17,6 +16,11 @@ jobs:
       with:
         key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Carton installieren
+      shell: bash
+      run: |
+        set -x
+        brew install swiftwasm/tap/carton
     - name: Testen
       shell: bash
       run: |

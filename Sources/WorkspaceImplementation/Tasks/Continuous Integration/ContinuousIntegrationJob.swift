@@ -50,7 +50,7 @@
     private static let currentWindowsVersion = "10"
     private static let currentVisualStudioVersion = "2019"
     private static let currentWSLImage = "2004"
-    private static let currentCartonVersion = Version(0, 11, 1)
+    private static let currentCartonVersion = Version(0, 12, 1)
     private static let currentCentOSVersion = "8"
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
@@ -408,12 +408,12 @@
 
     private var gitHubActionMachine: StrictString {
       switch platform {
-      case .macOS:
+      case .macOS, .web:  // #workaround(Docker image not currently available.)
         return
           "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())"
       case .windows:
         return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
-      case .web, .centOS, .ubuntu, .android, .amazonLinux:
+      case .centOS, .ubuntu, .android, .amazonLinux:
         return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
       case .tvOS, .iOS, .watchOS:
         unreachable()
@@ -426,7 +426,9 @@
         return nil
       case .web:
         let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
-        return "ghcr.io/swiftwasm/carton:\(version)"
+        _ = "ghcr.io/swiftwasm/carton:\(version)"
+        // #workaround(Docker image not currently available.)
+        return nil
       case .centOS:
         let version = ContinuousIntegrationJob.currentSwiftVersion.string()
         return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
@@ -757,8 +759,8 @@
           uses(
             "compnerd/gha\u{2D}setup\u{2D}swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1",
             with: [
-              "branch": "swift\u{2D}5.5.1\u{2D}release",
-              "tag": "5.5.1\u{2D}RELEASE",
+              "branch": "swift\u{2D}\(version)\u{2D}release",
+              "tag": "\(version)\u{2D}RELEASE",
             ]
           ),
           script(
@@ -776,7 +778,16 @@
           ),
         ])
       case .web:
-        break
+        // #workaround(Docker image not currently available.)
+        result.append(contentsOf: [
+          script(
+            heading: installCartonStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "brew install swiftwasm/tap/carton"
+            ]
+          )
+        ])
       case .centOS, .amazonLinux:
         result.append(contentsOf: [
           script(
@@ -1117,6 +1128,17 @@
           return "Install Swift"
         case .deutschDeutschland:
           return "Swift installieren"
+        }
+      })
+    }
+
+    private var installCartonStepName: UserFacing<StrictString, InterfaceLocalization> {
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Install Carton"
+        case .deutschDeutschland:
+          return "Carton installieren"
         }
       })
     }

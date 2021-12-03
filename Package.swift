@@ -790,6 +790,7 @@ let package = Package(
         "Resources",
         "Sources",
         "Tests",
+        "Validate (Linux).sh",
         "Validate (macOS).command",
       ],
       sources: ["Workspace.swift"]
@@ -797,10 +798,10 @@ let package = Package(
   ]
 )
 
-// #workaround(Swift 5.4.2, Needs a better way to silence the warning; maybe a build script?)
-#if os(Linux)
+// #workaround(Swift 5.5.1, Needs a better way to silence the warning; maybe a build script?)
+#if os(macOS)
   package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
-    .exclude.append("Validate (Linux).sh")
+    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
 #endif
 
 for target in package.targets {

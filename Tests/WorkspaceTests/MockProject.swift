@@ -64,11 +64,7 @@
         // Not using FileManager.default.temporaryDirectory because the dynamic URL causes Xcode’s derived data to grow limitlessly over many test iterations.
         temporary = URL(fileURLWithPath: "/tmp")
       #else
-        if #available(tvOS 10, iOS 10, watchOS 3, *) {
-          temporary = FileManager.default.temporaryDirectory
-        } else {
-          temporary = URL(fileURLWithPath: "/tmp")
-        }
+        temporary = FileManager.default.temporaryDirectory
       #endif
       self.init(at: temporary.appendingPathComponent(name))
     }

@@ -816,10 +816,10 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.4.2, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5, FoundationXML is broken on Android.)
+    // #workaround(Swift 5.5.1, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
     // #workaround(Swift 5.4.2, FoundationXML is broken on web.)
-    // #workaround(Swift 5.5, FoundationXML is broken on Android.)
+    // #workaround(Swift 5.5.1, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
@@ -860,7 +860,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.4.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.5.1, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM"
   ]
   package.dependencies.removeAll(where: { dependency in
@@ -890,7 +890,7 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.5.1, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
     // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
     "SwiftSyntax",

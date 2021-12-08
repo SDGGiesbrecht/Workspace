@@ -70,8 +70,8 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
     var container = encoder.singleValueContainer()
     let resolved = resolve(WorkspaceConfiguration.registered)
 
-    // #warning(Swift 5.5, Dodges a bug in Codable.)
-    /*func encodeArrayIfEmptyDictionary<K, V>(key: K.Type, value: V.Type) throws -> Bool
+    // #warning(Swift 5.5.1, Dodges a bug in Codable on Linux.)
+    func encodeArrayIfEmptyDictionary<K, V>(key: K.Type, value: V.Type) throws -> Bool
     where K: Hashable {
       if Option.self == [K: V].self,
         let cast = resolved as? [K: V],
@@ -88,11 +88,11 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
       value: [IssueTemplate].self
     ),
       try ¬encodeArrayIfEmptyDictionary(key: LocalizationIdentifier.self, value: Markdown.self)
-    {*/
+    {
 
       // Real implementation:
       try container.encode(resolved)
-    //}
+    }
   }
 
   public init(from decoder: Decoder) throws {

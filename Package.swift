@@ -561,9 +561,9 @@ let package = Package(
         ),
         .product(
           name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format"//,
-          // #warning(Swift 5.4.2, Does not compile for web.)
-          //condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.5.1, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
           name: "SwiftFormat",
@@ -679,9 +679,9 @@ let package = Package(
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
         .product(
           name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format"//,
-          // #warning(Swift 5.4.2, Does not compile for web.)
-          //condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.5.1, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ]
     ),
@@ -735,9 +735,9 @@ let package = Package(
         "CrossPlatformC",
         .product(
           name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format"//,
-          // #warning(Swift 5.4.2, Does not compile for web.)
-          //condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.5.1, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
       path: "Tests/CrossPlatform"
@@ -825,11 +825,11 @@ for target in package.targets {
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #warning(Swift 5.4.2, SwiftFormatConfiguration does not compile for web.)
-    /*.define(
+    // #workaround(Swift 5.5.1, SwiftFormatConfiguration does not compile for web.)
+    .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.wasi])
-    ),*/
+    ),
     // #workaround(Swift 5.5.1, SwiftPM lacks conditional targets.
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",

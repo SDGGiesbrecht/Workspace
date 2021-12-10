@@ -612,7 +612,7 @@ public struct DocumentationConfiguration: Codable {
 
   // MARK: - Encodable
 
-  // #workaround(Swift 5.5, Dodges a bug in Codable.)
+  // #workaround(Swift 5.5.1, Dodges a bug in Codable on Linux.)
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Encodes the configuration.
   ///

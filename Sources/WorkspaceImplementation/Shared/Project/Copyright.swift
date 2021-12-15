@@ -41,10 +41,6 @@
         }
       }
     }
-    // #warning(SDGCornerstone 7.2.4, Should be replaced with following line, but for compiler bug.)
-    /*let currentYear = String(
-      Calendar.init(identifier: .gregorian).component(.year, from: Date()).inDigits()
-    )*/
     let currentYear = String(CalendarDate.gregorianNow().gregorianYear.inEnglishDigits())
     let copyrightStart = oldStartDate ?? currentYear
 

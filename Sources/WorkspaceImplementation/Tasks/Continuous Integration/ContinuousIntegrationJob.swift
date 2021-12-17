@@ -850,7 +850,6 @@
             heading: installSwiftStepName,
             localization: interfaceLocalization,
             commands: [
-              // #workaround(Are these still in the way?)
               "sudo rm \u{2D}rf /usr/lib/clang/10.0.0",
               "sudo rm \u{2D}rf /usr/lib/python3/dist\u{2D}packages/lldb",
               cURL(

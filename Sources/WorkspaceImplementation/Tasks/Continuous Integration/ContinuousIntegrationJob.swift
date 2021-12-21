@@ -408,12 +408,12 @@
 
     private var gitHubActionMachine: StrictString {
       switch platform {
-      case .macOS, .web:  // #workaround(Docker image not currently available.)
+      case .macOS:
         return
           "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())"
       case .windows:
         return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
-      case .centOS, .ubuntu, .android, .amazonLinux:
+      case .web, .centOS, .ubuntu, .android, .amazonLinux:
         return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
       case .tvOS, .iOS, .watchOS:
         unreachable()
@@ -426,9 +426,7 @@
         return nil
       case .web:
         let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
-        _ = "ghcr.io/swiftwasm/carton:\(version)"
-        // #workaround(Docker image not currently available.)
-        return nil
+        return "ghcr.io/swiftwasm/carton:\(version)"
       case .centOS:
         let version = ContinuousIntegrationJob.currentSwiftVersion.string()
         return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
@@ -778,16 +776,7 @@
           ),
         ])
       case .web:
-        // #workaround(Docker image not currently available.)
-        result.append(contentsOf: [
-          script(
-            heading: installCartonStepName,
-            localization: interfaceLocalization,
-            commands: [
-              "brew install swiftwasm/tap/carton"
-            ]
-          )
-        ])
+        break
       case .centOS, .amazonLinux:
         result.append(contentsOf: [
           script(

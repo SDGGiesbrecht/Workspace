@@ -10,9 +10,9 @@ jobs:
     runs-on: windows-2019
     steps:
     - name: Holen
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Arbeitsbereich zwischenspeichern
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

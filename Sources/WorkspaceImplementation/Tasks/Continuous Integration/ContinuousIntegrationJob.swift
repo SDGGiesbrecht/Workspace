@@ -1120,17 +1120,6 @@
       })
     }
 
-    private var installCartonStepName: UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Install Carton"
-        case .deutschDeutschland:
-          return "Carton installieren"
-        }
-      })
-    }
-
     private var fetchAndroidSDKStepName: UserFacing<StrictString, InterfaceLocalization> {
       return UserFacing({ (localization) in
         switch localization {

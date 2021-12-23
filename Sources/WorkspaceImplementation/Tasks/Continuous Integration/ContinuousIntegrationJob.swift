@@ -408,12 +408,12 @@
 
     private var gitHubActionMachine: StrictString {
       switch platform {
-      case .macOS, .web:  // #workaround(Docker image not currently available.)
+      case .macOS:
         return
           "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())"
       case .windows:
         return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
-      case .centOS, .ubuntu, .android, .amazonLinux:
+      case .web, .centOS, .ubuntu, .android, .amazonLinux:
         return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
       case .tvOS, .iOS, .watchOS:
         unreachable()
@@ -426,9 +426,7 @@
         return nil
       case .web:
         let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
-        _ = "ghcr.io/swiftwasm/carton:\(version)"
-        // #workaround(Docker image not currently available.)
-        return nil
+        return "ghcr.io/swiftwasm/carton:\(version)"
       case .centOS:
         let version = ContinuousIntegrationJob.currentSwiftVersion.string()
         return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
@@ -474,7 +472,7 @@
     }
 
     private func checkOut() -> StrictString {
-      return uses("actions/checkout@v1")
+      return uses("actions/checkout@v2")
     }
 
     private func cache() -> StrictString {
@@ -498,7 +496,7 @@
         environment = "Amazon‐Linux"
       }
       return uses(
-        "actions/cache@v1",
+        "actions/cache@v2",
         with: [
           "key":
             "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
@@ -778,16 +776,7 @@
           ),
         ])
       case .web:
-        // #workaround(Docker image not currently available.)
-        result.append(contentsOf: [
-          script(
-            heading: installCartonStepName,
-            localization: interfaceLocalization,
-            commands: [
-              "brew install swiftwasm/tap/carton"
-            ]
-          )
-        ])
+        break
       case .centOS, .amazonLinux:
         result.append(contentsOf: [
           script(
@@ -985,7 +974,7 @@
         result.append(contentsOf: [
           step(uploadTestsStepName, localization: interfaceLocalization),
           uses(
-            "actions/upload\u{2D}artifact@v1",
+            "actions/upload\u{2D}artifact@v2",
             with: [
               "name": "tests",
               "path": "\(productsDirectory)",
@@ -1001,7 +990,7 @@
           checkOut(),
           step(downloadTestsStepName, localization: interfaceLocalization),
           uses(
-            "actions/download\u{2D}artifact@v1",
+            "actions/download\u{2D}artifact@v2",
             with: [
               "name": "tests",
               "path": "\(productsDirectory)",
@@ -1127,17 +1116,6 @@
           return "Install Swift"
         case .deutschDeutschland:
           return "Swift installieren"
-        }
-      })
-    }
-
-    private var installCartonStepName: UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Install Carton"
-        case .deutschDeutschland:
-          return "Carton installieren"
         }
       })
     }

@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Check out
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Cache Workspace
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -102,7 +102,7 @@ jobs:
         mkdir -p .build/x86_64-unknown-linux-android/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/*.so .build/x86_64-unknown-linux-android/debug
     - name: Upload tests
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug
@@ -112,9 +112,9 @@ jobs:
     needs: Android
     steps:
     - name: Check out
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
     - name: Download tests
-      uses: actions/download-artifact@v1
+      uses: actions/download-artifact@v2
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android/debug

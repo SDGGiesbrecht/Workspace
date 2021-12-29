@@ -47,9 +47,7 @@
 
     private static let currentMacOSVersion = Version(11)
     internal static let currentXcodeVersion = Version(13, 1)
-    private static let currentWindowsVersion = "10"
     private static let currentVisualStudioVersion = "2019"
-    private static let currentWSLImage = "2004"
     private static let currentCartonVersion = Version(0, 12, 1)
     private static let currentCentOSVersion = "8"
     private static let currentUbuntuName = "focal"  // Used by Docker image

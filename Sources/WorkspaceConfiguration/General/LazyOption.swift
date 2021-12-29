@@ -70,7 +70,7 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
     var container = encoder.singleValueContainer()
     let resolved = resolve(WorkspaceConfiguration.registered)
 
-    // #workaround(Swift 5.5.1, Dodges a bug in Codable on Linux.)
+    // #workaround(Swift 5.5.2, Dodges a bug in Codable on Linux.)
     func encodeArrayIfEmptyDictionary<K, V>(key: K.Type, value: V.Type) throws -> Bool
     where K: Hashable {
       if Option.self == [K: V].self,

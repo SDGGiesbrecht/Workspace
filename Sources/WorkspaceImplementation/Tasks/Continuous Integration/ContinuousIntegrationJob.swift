@@ -530,10 +530,18 @@
       return result.joinedAsLines()
     }
 
-    private func yumInstallation(_ packages: [StrictString]) -> StrictString {
-      var installLines: [StrictString] = [
+    private func yumInstallation(_ packages: [StrictString], fixingCentOS fixCentOS: Bool) -> StrictString {
+      var installLines: [StrictString] = []
+      if fixCentOS {
+        installLines.append(contentsOf: [
+          "cd /etc/yum.repos.d/",
+          "sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*",
+          "sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*",
+        ])
+      }
+      installLines.append(contentsOf: [
         "yum install \u{2D}\u{2D}assumeyes \u{5C}"
-      ]
+      ])
       let sorted = packages.sorted()
       installLines.append(
         contentsOf: sorted.indices.map { index in
@@ -781,14 +789,14 @@
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
             commands: [
-              yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"])
+              yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"], fixingCentOS: platform == .centOS)
             ]
           ),
           script(
             heading: installWorkspaceDependencies,
             localization: interfaceLocalization,
             commands: [
-              yumInstallation(["curl"])
+              yumInstallation(["curl"], fixingCentOS: platform == .centOS)
             ]
           ),
         ])

@@ -530,13 +530,16 @@
       return result.joinedAsLines()
     }
 
-    private func yumInstallation(_ packages: [StrictString], fixingCentOS fixCentOS: Bool) -> StrictString {
+    private func yumInstallation(
+      _ packages: [StrictString],
+      fixingCentOS fixCentOS: Bool
+    ) -> StrictString {
       var installLines: [StrictString] = []
       if fixCentOS {
         installLines.append(contentsOf: [
           "cd /etc/yum.repos.d/",
-          "sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*",
-          "sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*",
+          "sed \u{2D}i \u{27}s/mirrorlist/#mirrorlist/g\u{27} /etc/yum.repos.d/CentOS\u{2D}*",
+          "sed \u{2D}i \u{27}s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g\u{27} /etc/yum.repos.d/CentOS\u{2D}*",
         ])
       }
       installLines.append(contentsOf: [
@@ -789,7 +792,10 @@
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
             commands: [
-              yumInstallation(["ncurses\u{2D}devel", "sqlite\u{2D}devel"], fixingCentOS: platform == .centOS)
+              yumInstallation(
+                ["ncurses\u{2D}devel", "sqlite\u{2D}devel"],
+                fixingCentOS: platform == .centOS
+              )
             ]
           ),
           script(

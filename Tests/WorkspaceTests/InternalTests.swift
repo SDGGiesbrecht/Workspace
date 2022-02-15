@@ -56,7 +56,7 @@
         ".github",
       ]
 
-      // #workaround(Swift 5.3.3, Emulator lacks Git.)
+      // #workaround(Swift 5.5.2, Emulator lacks Git.)
       #if !os(Android)
         _ = try Command(
           name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),

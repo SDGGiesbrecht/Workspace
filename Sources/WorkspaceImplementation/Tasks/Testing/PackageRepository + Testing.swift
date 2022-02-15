@@ -93,7 +93,7 @@
               let filtered = log.lines.filter { line in
                 return
                   ¬(
-                  // #workaround(Xcode 12.5, XCTest not provided for older watchOS.)
+                  // #workaround(Xcode 13.2.1, XCTest not provided for older watchOS.)
                   line.line.contains(
                     "XCTest.framework/XCTest) was built for newer watchOS".scalars
                   )

@@ -27,7 +27,6 @@
 
     internal static let coverageJobs: Set<ContinuousIntegrationJob> = [
       .macOS,
-      .centOS,
       .ubuntu,
       .tvOS,
       .iOS,
@@ -56,8 +55,6 @@
         return "Windows"
       case .web:  // @exempt(from: tests) Unreachable from Linux.
         return "Web"
-      case .centOS:  // @exempt(from: tests)  Unreachable from macOS.
-        return "CentOS"
       case .ubuntu:  // @exempt(from: tests)  Unreachable from macOS.
         return "Ubuntu"  // @exempt(from: tests)
       case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -82,8 +79,6 @@
         return "Windows"
       case .web:  // @exempt(from: tests) Unreachable from Linux.
         return "Netz"
-      case .centOS:  // @exempt(from: tests)  Unreachable from macOS.
-        return "CentOS"
       case .ubuntu:  // @exempt(from: tests)
         return "Ubuntu"  // @exempt(from: tests) Unreachable from macOS.
       case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -108,7 +103,6 @@
       case .macOS,  // @exempt(from: tests)
         .windows,
         .web,
-        .centOS,
         .ubuntu,
         .android,
         .amazonLinux,
@@ -126,7 +120,7 @@
 
     internal var testPlatform: Xcode.Platform {
       switch self {  // @exempt(from: tests) Unreachable from Linux.
-      case .macOS, .windows, .web, .centOS, .ubuntu, .android, .amazonLinux, .miscellaneous,
+      case .macOS, .windows, .web, .ubuntu, .android, .amazonLinux, .miscellaneous,
         .deployment:
         unreachable()
       case .tvOS:  // @exempt(from: tests)

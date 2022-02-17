@@ -26,7 +26,6 @@ Proofreading source code... (§1)
 .github/PULL_REQUEST_TEMPLATE.md
 .github/workflows/Amazon Linux.yaml
 .github/workflows/Android.yaml
-.github/workflows/CentOS.yaml
 .github/workflows/Documentation Deployment.yaml
 .github/workflows/Miscellaneous.yaml
 .github/workflows/Ubuntu.yaml

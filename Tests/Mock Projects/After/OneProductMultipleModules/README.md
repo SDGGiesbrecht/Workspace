@@ -1,6 +1,6 @@
 
 
-macOS • Web • CentOS • Ubuntu • tvOS • iOS • Amazon Linux • watchOS
+macOS • Web • Ubuntu • tvOS • iOS • Amazon Linux • watchOS
 
 # OneProductMultipleModules
 

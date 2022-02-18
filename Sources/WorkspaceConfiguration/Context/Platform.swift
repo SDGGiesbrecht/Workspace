@@ -47,10 +47,6 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
-  /// CentOS.
-  case centOS  // 2004‐05‐14
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @localization(🇩🇪DE)
   /// Ubuntu.
   case ubuntu  // 2004‐10‐20
 
@@ -96,12 +92,6 @@ public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
         return "Web"
       case .deutschDeutschland:
         return "Netz"
-      }
-    case .centOS:
-      switch localization {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-        .deutschDeutschland:
-        return "CentOS"
       }
     case .ubuntu:
       switch localization {

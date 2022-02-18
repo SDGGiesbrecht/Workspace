@@ -11,7 +11,6 @@ Proofreading source code... (§1)
 
 .github/workflows/Amazon Linux.yaml
 .github/workflows/Android.yaml
-.github/workflows/CentOS.yaml
 .github/workflows/Miscellaneous.yaml
 .github/workflows/Ubuntu.yaml
 .github/workflows/Web.yaml

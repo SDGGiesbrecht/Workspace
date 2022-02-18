@@ -58,7 +58,7 @@
         do {
           let buildCommand: (Command.Output) throws -> Bool
           switch job {
-          case .macOS, .centOS, .ubuntu, .amazonLinux:
+          case .macOS, .ubuntu, .amazonLinux:
             buildCommand = { output in
               var log = try self.build(
                 releaseConfiguration: false,
@@ -187,7 +187,7 @@
 
         let testCommand: (Command.Output) -> Bool
         switch job {
-        case .macOS, .centOS, .ubuntu, .amazonLinux:
+        case .macOS, .ubuntu, .amazonLinux:
           // @exempt(from: tests) Tested separately.
           testCommand = { output in
             do {
@@ -299,7 +299,7 @@
       do {
         let report: TestCoverageReport
         switch job {
-        case .macOS, .centOS, .ubuntu, .amazonLinux:
+        case .macOS, .ubuntu, .amazonLinux:
           guard
             let fromPackageManager = try codeCoverageReport(
               ignoreCoveredRegions: true,

@@ -1,6 +1,6 @@
 
 
-macOS • Windows • Web • CentOS • Ubuntu • Android • Amazon Linux
+macOS • Windows • Web • Ubuntu • Android • Amazon Linux
 
 # Executable
 

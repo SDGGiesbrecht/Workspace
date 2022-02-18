@@ -109,6 +109,7 @@
       try cleanWindowsTestsUp(output: output)
       try cleanWindowsSDKUp(output: output)
       try cleanAndroidSDKUp(output: output)
+      try cleanCentOSUp(output: output)
     }
 
     private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {
@@ -171,6 +172,11 @@
 
     private func cleanAndroidSDKUp(output: Command.Output) throws {
       let url = location.appendingPathComponent(".github/workflows/Android/SDK.json")
+      delete(url, output: output)
+    }
+
+    private func cleanCentOSUp(output: Command.Output) throws {
+      let url = location.appendingPathComponent(".github/workflows/CentOS.yaml")
       delete(url, output: output)
     }
   }

@@ -32,7 +32,6 @@
     case macOS
     case windows
     case web
-    case centOS
     case ubuntu
     case tvOS
     case iOS
@@ -49,7 +48,6 @@
     internal static let currentXcodeVersion = Version(13, 1)
     private static let currentVisualStudioVersion = "2019"
     private static let currentCartonVersion = Version(0, 12, 1)
-    private static let currentCentOSVersion = "8"
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "23b"
@@ -88,14 +86,6 @@
             return "Web"
           case .deutschDeutschland:
             return "Netz"
-          }
-        })
-      case .centOS:
-        return UserFacing({ (localization) in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-            .deutschDeutschland:
-            return "CentOS"
           }
         })
       case .ubuntu:
@@ -203,14 +193,6 @@
             return "netz"
           }
         })
-      case .centOS:
-        return UserFacing({ (localization) in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada,
-            .deutschDeutschland:
-            return "centos"
-          }
-        })
       case .ubuntu:
         return UserFacing({ (localization) in
           switch localization {
@@ -288,8 +270,6 @@
         return "WINDOWS"
       case .web:
         return "WEB"
-      case .centOS:  // @exempt(from: tests) Unreachable from macOS.
-        return "CENTOS"
       case .ubuntu:  // @exempt(from: tests) Unreachable from macOS.
         return "UBUNTU"
       case .tvOS:  // @exempt(from: tests) Unreachable from Linux.
@@ -322,8 +302,6 @@
         return try .windows ∈ project.configuration(output: output).supportedPlatforms
       case .web:
         return try .web ∈ project.configuration(output: output).supportedPlatforms
-      case .centOS:
-        return try .centOS ∈ project.configuration(output: output).supportedPlatforms
       case .ubuntu:
         return try .ubuntu ∈ project.configuration(output: output).supportedPlatforms
       case .tvOS:
@@ -355,8 +333,6 @@
         return .windows
       case .web:
         return .web
-      case .centOS:
-        return .centOS
       case .ubuntu, .miscellaneous, .deployment:
         return .ubuntu
       case .android:
@@ -411,7 +387,7 @@
           "macos\u{2D}\(ContinuousIntegrationJob.currentMacOSVersion.stringDroppingEmptyMinor())"
       case .windows:
         return "windows\u{2D}\(ContinuousIntegrationJob.currentVisualStudioVersion)"
-      case .web, .centOS, .ubuntu, .android, .amazonLinux:
+      case .web, .ubuntu, .android, .amazonLinux:
         return "ubuntu\u{2D}\(ContinuousIntegrationJob.currentUbuntuVersion)"
       case .tvOS, .iOS, .watchOS:
         unreachable()
@@ -425,9 +401,6 @@
       case .web:
         let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
         return "ghcr.io/swiftwasm/carton:\(version)"
-      case .centOS:
-        let version = ContinuousIntegrationJob.currentSwiftVersion.string()
-        return "swift:\(version)\u{2D}centos\(ContinuousIntegrationJob.currentCentOSVersion)"
       case .ubuntu:
         let version = ContinuousIntegrationJob.currentSwiftVersion.string()
         return "swift:\(version)\u{2D}\(ContinuousIntegrationJob.currentUbuntuName)"
@@ -482,8 +455,6 @@
         environment = "Windows"
       case .web:
         environment = "Web"
-      case .centOS:
-        environment = "CentOS"
       case .ubuntu:
         environment = "Ubuntu"
       case .tvOS, .iOS, .watchOS:
@@ -531,17 +502,9 @@
     }
 
     private func yumInstallation(
-      _ packages: [StrictString],
-      fixingCentOS fixCentOS: Bool
+      _ packages: [StrictString]
     ) -> StrictString {
       var installLines: [StrictString] = []
-      if fixCentOS {
-        installLines.append(contentsOf: [
-          "cd /etc/yum.repos.d/",
-          "sed \u{2D}i \u{27}s/mirrorlist/#mirrorlist/g\u{27} /etc/yum.repos.d/CentOS\u{2D}*",
-          "sed \u{2D}i \u{27}s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g\u{27} /etc/yum.repos.d/CentOS\u{2D}*",
-        ])
-      }
       installLines.append(contentsOf: [
         "yum install \u{2D}\u{2D}assumeyes \u{5C}"
       ])
@@ -786,26 +749,6 @@
         ])
       case .web:
         break
-      case .centOS, .amazonLinux:
-        result.append(contentsOf: [
-          script(
-            heading: installSwiftPMDependenciesStepName,
-            localization: interfaceLocalization,
-            commands: [
-              yumInstallation(
-                ["ncurses\u{2D}devel", "sqlite\u{2D}devel"],
-                fixingCentOS: platform == .centOS
-              )
-            ]
-          ),
-          script(
-            heading: installWorkspaceDependencies,
-            localization: interfaceLocalization,
-            commands: [
-              yumInstallation(["curl"], fixingCentOS: platform == .centOS)
-            ]
-          ),
-        ])
       case .ubuntu:
         result.append(contentsOf: [
           script(
@@ -894,10 +837,29 @@
             ]
           ),
         ])
+      case .amazonLinux:
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftPMDependenciesStepName,
+            localization: interfaceLocalization,
+            commands: [
+              yumInstallation(
+                ["ncurses\u{2D}devel", "sqlite\u{2D}devel"]
+              )
+            ]
+          ),
+          script(
+            heading: installWorkspaceDependencies,
+            localization: interfaceLocalization,
+            commands: [
+              yumInstallation(["curl"])
+            ]
+          ),
+        ])
       }
 
       switch platform {
-      case .macOS, .centOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
+      case .macOS, .ubuntu, .tvOS, .iOS, .amazonLinux, .watchOS:
         if ¬(try project.isWorkspaceProject()) {
           result.append(
             try workspaceStep(
@@ -1028,7 +990,7 @@
       switch platform {
       case .macOS, .windows, .web, .tvOS, .iOS, .android, .watchOS:
         break
-      case .centOS, .ubuntu, .amazonLinux:
+      case .ubuntu, .amazonLinux:
         result.append(
           script(
             heading: grantCachPermissionsStepName,
@@ -1293,7 +1255,7 @@
       switch self {
       case .none:
         switch job {
-        case .macOS, .windows, .web, .centOS, .ubuntu, .tvOS, .iOS, .android, .amazonLinux,
+        case .macOS, .windows, .web, .ubuntu, .tvOS, .iOS, .android, .amazonLinux,
           .watchOS,
           .miscellaneous:
           return true

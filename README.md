@@ -14,7 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  -->
 
-macOS • CentOS • Ubuntu • Amazon Linux
+macOS • Ubuntu • Amazon Linux
 
 [Documentation](https://sdggiesbrecht.github.io/Workspace/%F0%9F%87%AC%F0%9F%87%A7EN)
 

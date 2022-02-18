@@ -1,5 +1,5 @@
 
 
-macOS • Windows • Web • CentOS • Ubuntu • tvOS • iOS • Android • Amazon Linux • watchOS
+macOS • Windows • Web • Ubuntu • tvOS • iOS • Android • Amazon Linux • watchOS
 
 # NoLibraries

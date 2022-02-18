@@ -19,7 +19,7 @@ Options
 
 Argument Types
 
-[job] “amazon‐linux”, “android”, “centos”, “deployment”, “ios”, “macos”, “miscellaneous”, “tvos”, “ubuntu”, “watchos”, “web” or “windows”.
+[job] “amazon‐linux”, “android”, “deployment”, “ios”, “macos”, “miscellaneous”, “tvos”, “ubuntu”, “watchos”, “web” or “windows”.
 [language preference] A list of IETF language tags or SDGCornerstone language icons. Semicolons indicate fallback order. Commas indicate that multiple languages should be used. Examples: “en-US” or “🇺🇸EN” → American English, “nv,en;es” → both Navajo and English, otherwise Spanish
 [path] A file system path. The form “/...” indicates an absolute path. The form “~/...” indicates a path relative to the home directory. Anything else is interpreted relative to the current working directory.
 

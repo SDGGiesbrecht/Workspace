@@ -34,9 +34,7 @@
         if let systemInformation = try? Shell.default.run(command: ["cat", "/etc/os\u{2D}release"])
           .get()
         {
-          if systemInformation.contains("ID=\u{22}centos\u{22}") {
-            return .centOS  // @exempt(from: tests)
-          } else if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
+          if systemInformation.contains("ID=\u{22}amzn\u{22}") {  // @exempt(from: tests)
             return .amazonLinux  // @exempt(from: tests)
           }
         }

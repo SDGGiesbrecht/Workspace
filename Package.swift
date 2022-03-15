@@ -499,19 +499,17 @@ let package = Package(
       from: Version(8, 0, 4)
     ),
     .package(
-      name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50500, 2))
+      exact: Version(0, 50500, 2)
     ),
     .package(
-      name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50500, 0))
+      exact: Version(0, 50500, 0)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50500, 0))
+      exact: Version(0, 50500, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -550,13 +548,13 @@ let package = Package(
         .product(
           // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
-          package: "SwiftPM",
+          package: "swift\u{2D}package\u{2D}manager",
           // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntax",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -861,11 +859,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM"
+    "swift\u{2D}package\u{2D}manager"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
+      switch dependency.kind {
+      case .sourceControl(_, location: let url, _):
+        return url.contains(impossible)
+      default:
+        return false
+      }
     })
   })
   for target in package.targets {

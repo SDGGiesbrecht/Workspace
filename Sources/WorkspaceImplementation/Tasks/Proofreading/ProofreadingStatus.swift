@@ -56,7 +56,8 @@
       let source = file.contents
       let scalars = source.scalars
       let lines = source.lines
-      var index = lines.index(lines.startIndex, offsetBy: location.line − 1).samePosition(in: scalars)
+      var index = lines.index(lines.startIndex, offsetBy: location.line − 1)
+        .samePosition(in: scalars)
       index = scalars.index(index, offsetBy: location.column)
       let range: Range<String.ScalarView.Index> = index..<index
 

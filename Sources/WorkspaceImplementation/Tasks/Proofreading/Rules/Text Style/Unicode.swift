@@ -208,7 +208,8 @@
           .poundImageLiteralKeyword, .poundColorLiteralKeyword, .unknown, .identifier,
           .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator,
           .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield,
-          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
+          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword,
+          .poundUnavailableKeyword:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.

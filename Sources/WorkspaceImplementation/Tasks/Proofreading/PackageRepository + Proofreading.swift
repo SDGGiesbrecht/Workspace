@@ -42,9 +42,12 @@
       if let formatConfiguration = try configuration(output: output).proofreading
         .swiftFormatConfiguration
       {
-        linter = SwiftLinter(configuration: formatConfiguration, findingConsumer: { finding in
-          status.handle(finding)
-        })
+        linter = SwiftLinter(
+          configuration: formatConfiguration,
+          findingConsumer: { finding in
+            status.handle(finding)
+          }
+        )
       }
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()

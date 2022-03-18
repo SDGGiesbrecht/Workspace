@@ -23,9 +23,9 @@
         "package": "SDGSwift",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
-          "branch": null,
-          "revision": "8c8d2dc3dc4f793b7091c6ffd97b17768aa3b676",
-          "version": "8.0.4"
+          "branch": "swift‐5.6",
+          "revision": "0441cfd8f344c2d03ec16c4dc4118def2c57f787",
+          "version": null
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto.git",
         "state": {
           "branch": null,
-          "revision": "c52a081f4b12d772872daf78e18b9c9c493b1ab3",
-          "version": "0.10106.0"
+          "revision": "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
+          "version": "0.10107.0"
         }
       },
       {
@@ -78,17 +78,17 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
         "state": {
           "branch": null,
-          "revision": "8d6a841ca8a3e115aa616e872f92911592c38675",
-          "version": "0.50500.2"
+          "revision": "0bbd7509847303870ddf16bc5b6c93dbd4333710",
+          "version": "0.50600.1"
         }
       },
       {
         "package": "swift-format",
-        "repositoryURL": "https://github.com/apple/swift-format",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
         "state": {
           "branch": null,
-          "revision": "f872223e16742fd97fabd319fbf4a939230cc796",
-          "version": "0.50500.0"
+          "revision": "839706a607ec309357ef94e6e322feb7d402c1b9",
+          "version": "0.0.506000"
         }
       },
       {
@@ -114,17 +114,17 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "9f049ba4ec8a83a4f5358bae270d4dd2fe564e64",
-          "version": "0.50500.2"
+          "revision": "2105b7697de6ea09bcd231ae471db68fec59d0b8",
+          "version": "0.50600.1"
         }
       },
       {
         "package": "SwiftSyntax",
-        "repositoryURL": "https://github.com/apple/swift-syntax",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-syntax",
         "state": {
           "branch": null,
-          "revision": "75e60475d9d8fd5bbc16a12e0eaa2cb01b0c322e",
-          "version": "0.50500.0"
+          "revision": "ec5daa84f88236b7c198783e51091a05f3f79362",
+          "version": "0.0.506000"
         }
       },
       {
@@ -132,8 +132,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
         "state": {
           "branch": null,
-          "revision": "1b21e2ce36891ed4f458421a83b5d9e886acd4cd",
-          "version": "0.50500.0"
+          "revision": "107e570e3565920174d5a25bc3a0340b32d16042",
+          "version": "0.50600.0"
         }
       },
       {

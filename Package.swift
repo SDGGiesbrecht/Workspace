@@ -876,6 +876,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       if name == nil {
         name = dependency.url
       }
+      fatalError("\(name)")
       return (name ?? "").contains(impossible)
     })
   })

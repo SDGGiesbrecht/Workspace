@@ -503,17 +503,17 @@ let package = Package(
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50600, 1))
+      .exact(Version(0, 50600, 3))
     ),
     .package(
       name: "SwiftSyntax",
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}syntax",
-      .exact(Version(0, 0, 506000))
+      url: "https://github.com/apple/swift\u{2D}syntax",
+      .exact(Version(0, 50600, 1))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 0, 506000))
+      .exact(Version(0, 0, 506001))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

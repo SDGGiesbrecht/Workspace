@@ -562,6 +562,11 @@ let package = Package(
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
+          name: "SwiftSyntaxParser",
+          package: "SwiftSyntax",
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
           // #workaround(Swift 5.5.2, Does not compile for web.)

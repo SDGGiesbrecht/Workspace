@@ -24,6 +24,7 @@
   import SDGCommandLine
 
   import SwiftSyntax
+  import SwiftSyntaxParser
   import SDGSwiftSource
   import SDGHTML
 

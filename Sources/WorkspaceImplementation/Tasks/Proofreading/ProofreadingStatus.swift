@@ -23,10 +23,11 @@
   import SDGCommandLine
 
   import SwiftSyntax
+  import SwiftFormat
 
   import WorkspaceLocalizations
 
-  internal class ProofreadingStatus: DiagnosticConsumer {
+  internal class ProofreadingStatus {
 
     // MARK: - Initialization
 
@@ -42,13 +43,19 @@
     internal var currentFile: TextFile?
     internal private(set) var passing: Bool = true
 
-    // MARK: - DiagnosticConsumer
+    // MARK: - Findings
 
+    #warning("Dead?")
     internal var needsLineColumn: Bool {  // @exempt(from: tests) Never called?
       return false
     }
 
-    internal func handle(_ diagnostic: Diagnostic) {
+    internal func handle(_ finding: Finding) {
+      #warning("Not implemented yet.")
+    }
+
+    #warning("Dead?")
+    /*internal func handle(_ diagnostic: Diagnostic) {
       let file = currentFile!
 
       // Determine highlight range.
@@ -109,8 +116,9 @@
       ) {
         report(violation: notExempt)
       }
-    }
+    }*/
 
+    #warning("Dead?")
     internal func finalize() {}
 
     // MARK: - Usage

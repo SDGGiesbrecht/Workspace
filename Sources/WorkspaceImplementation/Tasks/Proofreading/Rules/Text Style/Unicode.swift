@@ -208,11 +208,11 @@
           .poundImageLiteralKeyword, .poundColorLiteralKeyword, .unknown, .identifier,
           .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator,
           .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield,
-          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword:
+          .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword, .poundUnavailableKeyword:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.
-        case .stringLiteral, .stringSegment:
+        case .stringLiteral, .stringSegment, .regexLiteral:
           scope = .ambiguous  // @exempt(from: tests) Probably unreachable.
         }
       case .extended(let kind):

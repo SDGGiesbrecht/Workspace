@@ -91,7 +91,7 @@
         switch loadedTarget.type {
         case .library, .systemModule, .binary:
           accessControl = "internal "
-        case .executable, .plugin, .test:
+        case .executable, .plugin, .test, .snippet:
           accessControl = ""
         }
 

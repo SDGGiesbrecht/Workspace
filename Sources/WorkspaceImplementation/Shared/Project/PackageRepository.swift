@@ -236,7 +236,7 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      return StrictString(try cachedManifest().name)
+      return StrictString(try cachedManifest().displayName)
     }
 
     internal func projectName(
@@ -273,7 +273,7 @@
             } else {
               continue  // skip
             }
-          case .plugin, .test:
+          case .plugin, .test, .snippet:
             continue  // skip
           }
         }
@@ -288,7 +288,7 @@
 
         var result: [String: ResolvedPackage] = [:]
         for dependency in graph.packages {
-          result[dependency.manifestName] = dependency
+          result[dependency.manifest.displayName] = dependency
         }
         return result
       }
@@ -313,7 +313,7 @@
             case .executable:
               type = .executable
               modules = []
-            case .plugin, .test:
+            case .plugin, .test, .snippet:
               unreachable()
             }
 

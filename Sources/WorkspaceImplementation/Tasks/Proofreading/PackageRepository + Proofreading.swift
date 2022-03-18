@@ -42,8 +42,9 @@
       if let formatConfiguration = try configuration(output: output).proofreading
         .swiftFormatConfiguration
       {
-        #warning("Dropping findings (should make their way into “status”.")
-        linter = SwiftLinter(configuration: formatConfiguration, findingConsumer: { _ in })
+        linter = SwiftLinter(configuration: formatConfiguration, findingConsumer: { finding in
+          status.handle(finding)
+        })
       }
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()

@@ -496,17 +496,19 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(8, 0, 4)
+      // #warning(Branch.)
+      .branch("swift‐5.6")
+      //from: Version(8, 0, 4)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50500, 2))
+      .exact(Version(0, 50600, 1))
     ),
     .package(
       name: "SwiftSyntax",
-      url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50500, 0))
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}syntax",
+      .exact(Version(0, 0, 506000))
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}format",

@@ -16,6 +16,7 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGLogic
+  import SDGMathematics
   import SDGCollections
   import SDGText
   import SDGLocalization
@@ -43,46 +44,24 @@
     internal var currentFile: TextFile?
     internal private(set) var passing: Bool = true
 
-    // MARK: - Findings
-
-    #warning("Dead?")
-    internal var needsLineColumn: Bool {  // @exempt(from: tests) Never called?
-      return false
-    }
+    // MARK: - SwiftFormat
 
     internal func handle(_ finding: Finding) {
-      #warning("Not implemented yet.")
-    }
-
-    #warning("Dead?")
-    /*internal func handle(_ diagnostic: Diagnostic) {
       let file = currentFile!
 
       // Determine highlight range.
-      let range: Range<String.ScalarView.Index>
-      if let highlight = diagnostic.highlights.first,
-        diagnostic.highlights.count == 1
-      {
-        range = highlight.scalars(in: file.contents)
-      } else {  // @exempt(from: tests) Trigger unknown.
-        guard let location = diagnostic.location else {
-          return  // @exempt(from: tests) Trigger unknown.
-        }
-        let start = location.scalar(in: file.contents)
-        range = start..<start
+      guard let location = finding.location else {
+        return  // @exempt(from: tests) Trigger unknown.
       }
-
-      // Determine replacement.
-      var replacementSuggestion: StrictString? = nil
-      if let fixIt = diagnostic.fixIts.first,
-        diagnostic.fixIts.count == 1,  // @exempt(from: tests) No rules provide fix‐its yet.
-        fixIt.range.scalars(in: file.contents) == range
-      {
-        replacementSuggestion = StrictString(fixIt.text)  // @exempt(from: tests)
-      }
+      let source = file.contents
+      let scalars = source.scalars
+      let lines = source.lines
+      var index = lines.index(lines.startIndex, offsetBy: location.line − 1).samePosition(in: scalars)
+      index = scalars.index(index, offsetBy: location.column)
+      let range: Range<String.ScalarView.Index> = index..<index
 
       // Extract rule identifier.
-      var diagnosticMessage = StrictString(diagnostic.message.text)
+      var diagnosticMessage = StrictString(finding.message.text)
       var ruleIdentifier = StrictString("swiftFormat")
       if let ruleName = diagnosticMessage.firstMatch(
         for: "[".scalars
@@ -109,17 +88,14 @@
       if let notExempt = StyleViolation(
         in: file,
         at: range,
-        replacementSuggestion: replacementSuggestion,
+        replacementSuggestion: nil,
         noticeOnly: false,
         ruleIdentifier: identifier,
         message: message
       ) {
         report(violation: notExempt)
       }
-    }*/
-
-    #warning("Dead?")
-    internal func finalize() {}
+    }
 
     // MARK: - Usage
 

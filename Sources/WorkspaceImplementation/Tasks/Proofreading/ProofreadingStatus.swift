@@ -55,28 +55,25 @@
       }
       let source = file.contents
       let scalars = source.scalars
+      let utf8 = source.utf8
       let lines = source.lines
-      var index = lines.index(lines.startIndex, offsetBy: location.line − 1)
-        .samePosition(in: scalars)
-      index = scalars.index(index, offsetBy: location.column)
+      var utf8Index = (
+        lines.index(
+          lines.startIndex,
+          offsetBy: location.line − 1,
+          limitedBy: lines.endIndex
+        ) ?? lines.endIndex
+      ).samePosition(in: scalars).samePosition(in: utf8) ?? utf8.endIndex
+      utf8Index = utf8.index(utf8Index, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
+        ?? utf8.endIndex
+      let index = utf8Index.scalar(in: scalars)
       let range: Range<String.ScalarView.Index> = index..<index
 
       // Extract rule identifier.
-      var diagnosticMessage = StrictString(finding.message.text)
-      var ruleIdentifier = StrictString("swiftFormat")
-      if let ruleName = diagnosticMessage.firstMatch(
-        for: "[".scalars
-          + RepetitionPattern(ConditionalPattern({ ¬$0.properties.isWhitespace ∧ $0 ≠ "]" }))
-          + "]:".scalars
-      ) {
-        ruleIdentifier += "[" + StrictString(ruleName.contents.dropFirst().dropLast(2)) + "]"
-        diagnosticMessage.removeSubrange(ruleName.range)
-        while diagnosticMessage.first?.properties.isWhitespace == true {
-          diagnosticMessage.removeFirst()
-        }
-      }
+      let ruleIdentifier: StrictString = "swiftFormat[\(String(describing: finding.category))]"
 
       // Clean message up.
+      var diagnosticMessage = StrictString(finding.message.text)
       diagnosticMessage.prepend(
         contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars
       )

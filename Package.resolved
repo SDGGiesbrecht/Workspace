@@ -66,7 +66,7 @@
       },
       {
         "package": "swift-crypto",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto",
         "state": {
           "branch": null,
           "revision": "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
@@ -75,7 +75,7 @@
       },
       {
         "package": "swift-driver",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver",
         "state": {
           "branch": null,
           "revision": "5864885ffd1e732cc1c186f4241686b190aa5cbf",
@@ -129,7 +129,7 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
         "state": {
           "branch": null,
           "revision": "107e570e3565920174d5a25bc3a0340b32d16042",

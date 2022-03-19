@@ -113,7 +113,7 @@ Line 25
 Specify public access level for each member inside the extension. (swiftFormat[NoAccessLevelOnExtensionDeclaration])
 
 Line 32
-Move end-of-line comment that exceeds the line length. (swiftFormat)
+Move end-of-line comment that exceeds the line length. (swiftFormat[EndOfLineComment])
   let requirement: Bool { get }  // Should not warn; protocol requirements cannot have access control.
 
 Sources/BadStyle/Rules/Functionality/ClassFinality.swift

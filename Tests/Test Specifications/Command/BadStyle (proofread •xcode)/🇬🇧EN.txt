@@ -19,7 +19,7 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:27:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:31:10: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:25:1: warning: Specify public access level for each member inside the extension. (swiftFormat[NoAccessLevelOnExtensionDeclaration])
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:32:103: warning: Move end-of-line comment that exceeds the line length. (swiftFormat)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:32:34: warning: Move end-of-line comment that exceeds the line length. (swiftFormat[EndOfLineComment])
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ClassFinality.swift:1:1: warning: Public classes should be open, final or explicitly exempt. (classFinality)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ClassFinality.swift:8:7: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 may be lost in normalisation; use ‘2’ instead. (compatibilityCharacters)

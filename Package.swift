@@ -870,13 +870,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
     "SwiftPM"
   ]
+  var names: Set<String> = []
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
       var name = dependency.name
       if name == nil {
         name = dependency.url
       }
-      fatalError("\(name)")
+      if let name = name {
+        names.insert(name)
+      }
       return (name ?? "").contains(impossible)
     })
   })
@@ -887,6 +890,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
+  fatalError("\(names)")
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {

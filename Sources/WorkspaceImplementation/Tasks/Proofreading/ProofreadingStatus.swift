@@ -62,10 +62,12 @@
           lines.startIndex,
           offsetBy: location.line − 1,
           limitedBy: lines.endIndex
-        ) ?? lines.endIndex).samePosition(in: scalars).samePosition(in: utf8) ?? utf8.endIndex
+        ) ?? lines.endIndex)  // @exempt(from: tests) Fallback can only happen if swift‐format misbehaves.
+        .samePosition(in: scalars).samePosition(in: utf8)
+        ?? utf8.endIndex  // @exempt(from: tests) Fallback can only happen if swift‐format misbehaves.
       utf8Index =
         utf8.index(utf8Index, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
-        ?? utf8.endIndex
+        ?? utf8.endIndex  // @exempt(from: tests) Fallback can only happen if swift‐format misbehaves.
       let index = utf8Index.scalar(in: scalars)
       let range: Range<String.ScalarView.Index> = index..<index
 

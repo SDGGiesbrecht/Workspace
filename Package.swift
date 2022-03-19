@@ -875,8 +875,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     // #warning(Debugging...)
     "swift\u{2D}format",
     "SDGCommandLine",
-    "SDGSwift",
-    "SwiftSyntax"
+    "SDGSwift"
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in

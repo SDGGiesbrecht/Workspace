@@ -57,14 +57,14 @@
       let scalars = source.scalars
       let utf8 = source.utf8
       let lines = source.lines
-      var utf8Index = (
-        lines.index(
+      var utf8Index =
+        (lines.index(
           lines.startIndex,
           offsetBy: location.line − 1,
           limitedBy: lines.endIndex
-        ) ?? lines.endIndex
-      ).samePosition(in: scalars).samePosition(in: utf8) ?? utf8.endIndex
-      utf8Index = utf8.index(utf8Index, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
+        ) ?? lines.endIndex).samePosition(in: scalars).samePosition(in: utf8) ?? utf8.endIndex
+      utf8Index =
+        utf8.index(utf8Index, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
         ?? utf8.endIndex
       let index = utf8Index.scalar(in: scalars)
       let range: Range<String.ScalarView.Index> = index..<index

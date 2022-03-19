@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
           "branch": "swift‐5.6",
-          "revision": "868cccb41086cedfaa61d18863a71228ebfacf09",
+          "revision": "070e481c0f9b1739a83f898a96be740492b98b6d",
           "version": null
         }
       },
@@ -24,7 +24,7 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
           "branch": "swift‐5.6",
-          "revision": "49ae2155ef4af01b846cd33532da943b2d2b6aed",
+          "revision": "a7653eda27f16f77c236589654952e5293ce07e6",
           "version": null
         }
       },

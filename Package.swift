@@ -873,7 +873,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
     "SwiftPM",
 
     // #warning(Debugging...)
-    "swift-format",
+    "swift\u{2D}format",
     "SDGCommandLine",
     "SDGSwift",
     "SwiftSyntax",

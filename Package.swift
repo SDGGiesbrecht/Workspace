@@ -489,7 +489,7 @@ let package = Package(
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
       // #warning(Branch.)
-      .branch("swift‐5.6")
+      .branch("master")
       //from: Version(8, 0, 1)
     ),
     .package(

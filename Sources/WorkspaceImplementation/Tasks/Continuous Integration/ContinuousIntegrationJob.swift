@@ -710,7 +710,7 @@
       case .macOS:
         let xcodeVersion = ContinuousIntegrationJob.currentXcodeVersion
           .string(droppingEmptyPatch: true)
-        result.append(
+        result.append(contentsOf: [
           script(
             heading: setXcodeUpStepName,
             localization: interfaceLocalization,
@@ -719,8 +719,15 @@
               "xcodebuild \u{2D}version",
               "swift \u{2D}\u{2D}version",
             ]
-          )
-        )
+          ),
+          step(installSwiftStepName, localization: interfaceLocalization),
+          uses(
+            "fwal/setup\u{2D}swift@v1.14.0",
+            with: [
+              "swift\u{2D}version": "\u{27}5.6\u{27}"
+            ]
+          ),
+        ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)

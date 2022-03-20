@@ -6,26 +6,26 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
         "state": {
           "branch": null,
-          "revision": "3428f4cd8ee3aadf8d5949dff668f1e1e7121349",
-          "version": "1.7.8"
+          "revision": "dbf6c41e1613a45698595aac5d967ddb71cab4f9",
+          "version": "2.0.0"
         }
       },
       {
         "package": "SDGCornerstone",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
         "state": {
-          "branch": "master",
-          "revision": "7ec1a173cb8dc012ab5ddd83d9b6b40ce62bca32",
-          "version": null
+          "branch": null,
+          "revision": "5ab7d7449d9c9bea201bbe536b8d51fb1ebc4106",
+          "version": "9.0.0"
         }
       },
       {
         "package": "SDGSwift",
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
         "state": {
-          "branch": "master",
-          "revision": "3c45490eb1d0e53d2b662a509fe541030fdcf778",
-          "version": null
+          "branch": null,
+          "revision": "daec126d3abd5e13ac4c748615e0f7c93049b779",
+          "version": "9.0.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
         "state": {
           "branch": null,
-          "revision": "4479dc86c17ab6492751ff973d94b56f8f00a40d",
-          "version": "5.5.5"
+          "revision": "c21b18dea008fa1d91a259b14a004a1cb77df602",
+          "version": "6.0.0"
         }
       },
       {
@@ -66,7 +66,7 @@
       },
       {
         "package": "swift-crypto",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto.git",
         "state": {
           "branch": null,
           "revision": "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
@@ -75,7 +75,7 @@
       },
       {
         "package": "swift-driver",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver.git",
         "state": {
           "branch": null,
           "revision": "5864885ffd1e732cc1c186f4241686b190aa5cbf",
@@ -129,7 +129,7 @@
       },
       {
         "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core.git",
         "state": {
           "branch": null,
           "revision": "107e570e3565920174d5a25bc3a0340b32d16042",

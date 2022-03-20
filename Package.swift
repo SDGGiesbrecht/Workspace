@@ -488,19 +488,15 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      // #warning(Branch.)
-      .branch("master")
-      //from: Version(8, 0, 1)
+      from: Version(9, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 7, 8)
+      from: Version(2, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch.)
-      .branch("master")
-      //from: Version(8, 0, 4)
+      from: Version(9, 0, 0)
     ),
     .package(
       name: "SwiftPM",
@@ -519,7 +515,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(5, 5, 5)
+      from: Version(6, 0, 0)
     ),
   ],
   targets: [

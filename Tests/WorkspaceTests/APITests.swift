@@ -64,11 +64,6 @@
       APITests.configureGit
     }
 
-    func testCompiler() {
-      #warning("Debugging...")
-      print(SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)))
-    }
-
     func testAllDisabled() {
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()

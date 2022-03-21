@@ -39,6 +39,14 @@ jobs:
       uses: fwal/setup-swift@v1.14.0
       with:
         swift-version: '5.6'
+    - name: Inform Xcode
+      shell: bash
+      run: |
+        set -x
+        which swift || true
+        xcrun --find swift || true
+        swiftenv which swift || true
+        ls /Library/Developer/Toolchains || true
     - name: Refresh
       shell: bash
       run: |

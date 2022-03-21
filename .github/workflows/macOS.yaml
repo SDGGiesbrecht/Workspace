@@ -34,7 +34,12 @@ jobs:
         set -x
         sudo xcode-select -switch /Applications/Xcode_13.1.app
         xcodebuild -version
-        brew install kylef/formulae/swiftenv
+        git clone https://github.com/kylef/swiftenv.git ~/.swiftenv
+        export SWIFTENV_ROOT="$HOME/.swiftenv"
+        echo "SWIFTENV_ROOT=${SWIFTENV_ROOT}" >> $GITHUB_ENV
+        export PATH="$SWIFTENV_ROOT/bin:$PATH"
+        eval "$(swiftenv init -)"
+        echo "PATH=${PATH}" >> $GITHUB_ENV
         swiftenv install 5.6
         swift --version
     - name: Inform Xcode

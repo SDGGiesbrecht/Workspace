@@ -19,7 +19,7 @@ $ arbeitsbereich proofread •xcode •no‐colour
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:27:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:31:10: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:25:1: warning: Specify public access level for each member inside the extension. (swiftFormat[NoAccessLevelOnExtensionDeclaration])
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:32:103: warning: Move end-of-line comment that exceeds the line length. (swiftFormat)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/AccessControl.swift:32:34: warning: Move end-of-line comment that exceeds the line length. (swiftFormat[EndOfLineComment])
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ClassFinality.swift:1:1: warning: Öffentliche (public) Klassen sollen als offen (open), entgültig (final), oder ausdrückliche Ausnahme markiert. (klassenentgültigkeit)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ClassFinality.swift:8:7: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)

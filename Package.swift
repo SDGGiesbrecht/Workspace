@@ -488,34 +488,34 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      from: Version(8, 0, 1)
+      from: Version(9, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(1, 7, 8)
+      from: Version(2, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(8, 0, 4)
+      from: Version(9, 0, 0)
     ),
     .package(
       name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50500, 2))
+      .exact(Version(0, 50600, 3))
     ),
     .package(
       name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50500, 0))
+      .exact(Version(0, 50600, 1))
     ),
     .package(
-      url: "https://github.com/apple/swift\u{2D}format",
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 50500, 0))
+      .exact(Version(0, 0, 506001))
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(5, 5, 5)
+      from: Version(6, 0, 0)
     ),
   ],
   targets: [
@@ -556,6 +556,11 @@ let package = Package(
         ),
         .product(
           name: "SwiftSyntax",
+          package: "SwiftSyntax",
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SwiftSyntaxParser",
           package: "SwiftSyntax",
           condition: .when(platforms: [.macOS, .linux])
         ),
@@ -861,11 +866,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
-    "SwiftPM"
+    "swift\u{2D}format",
+    "SwiftPM",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      return (dependency.name ?? dependency.url).contains(impossible)
+      var name = dependency.name
+      if name == nil {
+        name = dependency.url
+      }
+      return (name ?? "").contains(impossible)
     })
   })
   for target in package.targets {
@@ -878,12 +888,36 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+    "SwiftFormat\u{22}",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+    "SwiftFormat\u{22}",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
@@ -906,6 +940,18 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
+  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  let impossibleDependencies: [String] = [
+    "SwiftSyntaxParser",
+    "SwiftFormat\u{22}",
+  ]
+  for target in package.targets {
+    target.dependencies.removeAll(where: { dependency in
+      return impossibleDependencies.contains(where: { impossible in
+        return "\(dependency)".contains(impossible)
+      })
+    })
+  }
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })

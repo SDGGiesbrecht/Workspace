@@ -26,6 +26,7 @@
   import SDGSwift
   import SDGSwiftSource
   import SwiftSyntax
+  import SwiftSyntaxParser
 
   import SwiftFormat
   import SwiftFormatConfiguration
@@ -41,9 +42,12 @@
       if let formatConfiguration = try configuration(output: output).proofreading
         .swiftFormatConfiguration
       {
-        let diagnostics = DiagnosticEngine()
-        diagnostics.addConsumer(status)
-        linter = SwiftLinter(configuration: formatConfiguration, diagnosticEngine: diagnostics)
+        linter = SwiftLinter(
+          configuration: formatConfiguration,
+          findingConsumer: { finding in
+            status.handle(finding)
+          }
+        )
       }
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
@@ -78,7 +82,7 @@
           switch target.type {
           case .library, .binary:
             setting = .library
-          case .executable, .plugin, .test:
+          case .executable, .plugin, .test, .snippet:
             setting = .topLevel
           case .systemModule:  // @exempt(from: tests)
             setting = nil

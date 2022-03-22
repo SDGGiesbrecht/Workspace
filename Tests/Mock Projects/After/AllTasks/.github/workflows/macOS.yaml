@@ -29,6 +29,10 @@ jobs:
         sudo xcode-select -switch /Applications/Xcode_13.1.app
         xcodebuild -version
         swift --version
+    - name: Install Swift
+      uses: fwal/setup-swift@v1.14.0
+      with:
+        swift-version: '5.6'
     - name: Install Workspace
       shell: bash
       run: |

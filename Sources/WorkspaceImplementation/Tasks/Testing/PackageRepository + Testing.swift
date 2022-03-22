@@ -354,7 +354,7 @@
           switch target.type {
           case .library, .systemModule, .binary:
             break  // Coverage matters.
-          case .executable, .plugin:
+          case .executable, .plugin, .snippet:
             // Not testable.
             for path in target.sources.paths {
               irrelevantFiles.insert(

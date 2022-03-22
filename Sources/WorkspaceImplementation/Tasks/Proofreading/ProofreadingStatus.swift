@@ -16,6 +16,7 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGLogic
+  import SDGMathematics
   import SDGCollections
   import SDGText
   import SDGLocalization
@@ -23,10 +24,11 @@
   import SDGCommandLine
 
   import SwiftSyntax
+  import SwiftFormat
 
   import WorkspaceLocalizations
 
-  internal class ProofreadingStatus: DiagnosticConsumer {
+  internal class ProofreadingStatus {
 
     // MARK: - Initialization
 
@@ -42,54 +44,38 @@
     internal var currentFile: TextFile?
     internal private(set) var passing: Bool = true
 
-    // MARK: - DiagnosticConsumer
+    // MARK: - SwiftFormat
 
-    internal var needsLineColumn: Bool {  // @exempt(from: tests) Never called?
-      return false
-    }
-
-    internal func handle(_ diagnostic: Diagnostic) {
+    internal func handle(_ finding: Finding) {
       let file = currentFile!
 
       // Determine highlight range.
-      let range: Range<String.ScalarView.Index>
-      if let highlight = diagnostic.highlights.first,
-        diagnostic.highlights.count == 1
-      {
-        range = highlight.scalars(in: file.contents)
-      } else {  // @exempt(from: tests) Trigger unknown.
-        guard let location = diagnostic.location else {
-          return  // @exempt(from: tests) Trigger unknown.
-        }
-        let start = location.scalar(in: file.contents)
-        range = start..<start
+      guard let location = finding.location else {
+        return  // @exempt(from: tests) Trigger unknown.
       }
-
-      // Determine replacement.
-      var replacementSuggestion: StrictString? = nil
-      if let fixIt = diagnostic.fixIts.first,
-        diagnostic.fixIts.count == 1,  // @exempt(from: tests) No rules provide fix‐its yet.
-        fixIt.range.scalars(in: file.contents) == range
-      {
-        replacementSuggestion = StrictString(fixIt.text)  // @exempt(from: tests)
-      }
+      let source = file.contents
+      let scalars = source.scalars
+      let utf8 = source.utf8
+      let lines = source.lines
+      var utf8Index =
+        (lines.index(
+          lines.startIndex,
+          offsetBy: location.line − 1,
+          limitedBy: lines.endIndex
+        ) ?? lines.endIndex)  // @exempt(from: tests) Only if swift‐format misbehaves.
+        .samePosition(in: scalars).samePosition(in: utf8)
+        ?? utf8.endIndex  // @exempt(from: tests) Only if swift‐format misbehaves.
+      utf8Index =
+        utf8.index(utf8Index, offsetBy: location.column − 1, limitedBy: utf8.endIndex)
+        ?? utf8.endIndex  // @exempt(from: tests) Only if swift‐format misbehaves.
+      let index = utf8Index.scalar(in: scalars)
+      let range: Range<String.ScalarView.Index> = index..<index
 
       // Extract rule identifier.
-      var diagnosticMessage = StrictString(diagnostic.message.text)
-      var ruleIdentifier = StrictString("swiftFormat")
-      if let ruleName = diagnosticMessage.firstMatch(
-        for: "[".scalars
-          + RepetitionPattern(ConditionalPattern({ ¬$0.properties.isWhitespace ∧ $0 ≠ "]" }))
-          + "]:".scalars
-      ) {
-        ruleIdentifier += "[" + StrictString(ruleName.contents.dropFirst().dropLast(2)) + "]"
-        diagnosticMessage.removeSubrange(ruleName.range)
-        while diagnosticMessage.first?.properties.isWhitespace == true {
-          diagnosticMessage.removeFirst()
-        }
-      }
+      let ruleIdentifier: StrictString = "swiftFormat[\(String(describing: finding.category))]"
 
       // Clean message up.
+      var diagnosticMessage = StrictString(finding.message.text)
       diagnosticMessage.prepend(
         contentsOf: String(diagnosticMessage.removeFirst()).uppercased().scalars
       )
@@ -102,7 +88,7 @@
       if let notExempt = StyleViolation(
         in: file,
         at: range,
-        replacementSuggestion: replacementSuggestion,
+        replacementSuggestion: nil,
         noticeOnly: false,
         ruleIdentifier: identifier,
         message: message
@@ -110,8 +96,6 @@
         report(violation: notExempt)
       }
     }
-
-    internal func finalize() {}
 
     // MARK: - Usage
 

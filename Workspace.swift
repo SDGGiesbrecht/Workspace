@@ -142,5 +142,11 @@ public let configuration: WorkspaceConfiguration = {
     "SwiftSyntax",
   ]
 
+  #if os(macOS)
+    // #workaround(Skipping because the wrong Swift is being found in CI.)
+    configuration.testing.prohibitCompilerWarnings = false
+    configuration.testing.enforceCoverage = false
+  #endif
+
   return configuration
 }()

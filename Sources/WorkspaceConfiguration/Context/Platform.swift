@@ -23,7 +23,7 @@ import WorkspaceLocalizations
 public typealias Schicht = Platform
 // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Platform)
 /// A platform.
-public enum Platform: String, Codable, CaseIterable, OrderedEnumeration {
+public enum Platform: String, CaseIterable, Codable, Comparable, OrderedEnumeration {
 
   // MARK: - Cases
 

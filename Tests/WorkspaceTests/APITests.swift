@@ -115,7 +115,8 @@
 
     func testBadStyle() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -168,7 +169,8 @@
 
     func testCheckedInDocumentation() throws {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -279,7 +281,8 @@
 
     func testCustomProofread() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -352,7 +355,8 @@
 
     func testCustomTasks() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -417,7 +421,8 @@
 
     func testDeutsch() throws {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -488,7 +493,8 @@
 
     func testFailingCustomTasks() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -908,7 +914,8 @@
 
     func testSDGLibrary() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
@@ -987,7 +994,8 @@
 
     func testSDGTool() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      {
         return
       }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)

@@ -114,6 +114,10 @@
     }
 
     func testBadStyle() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.normalize = true
@@ -163,6 +167,10 @@
     }
 
     func testCheckedInDocumentation() throws {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         var output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "en",
@@ -270,6 +278,10 @@
     }
 
     func testCustomProofread() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.normalize = true
@@ -339,6 +351,10 @@
     }
 
     func testCustomTasks() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration.optimizeForTests()
@@ -400,6 +416,10 @@
     }
 
     func testDeutsch() throws {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         var output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "de",
@@ -467,6 +487,10 @@
     }
 
     func testFailingCustomTasks() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         let failing = CustomTask(
@@ -883,6 +907,10 @@
     }
 
     func testSDGLibrary() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()
@@ -958,6 +986,10 @@
     }
 
     func testSDGTool() {
+      // #workaround(Skipping because the wrong Swift is being found in CI.)
+      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0)) < Version(5, 6) {
+        return
+      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()

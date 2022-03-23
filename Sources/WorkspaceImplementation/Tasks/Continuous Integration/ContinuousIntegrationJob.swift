@@ -42,12 +42,11 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 6, 0)
-    internal static let androidSwiftVersion = Version(5, 5, 0)
 
     private static let currentMacOSVersion = Version(11)
     internal static let currentXcodeVersion = Version(13, 1)
     private static let currentVisualStudioVersion = "2019"
-    private static let currentCartonVersion = Version(0, 12, 1)
+    private static let currentCartonVersion = Version(0, 12, 2)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "23b"
@@ -793,7 +792,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.androidSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [

@@ -632,20 +632,10 @@
       return "\(prefix)chmod \u{2D}R a+rwx \(path)"
     }
 
-    private func editStreamInPlace(
-      replacing searchTerm: String,
-      with replacement: String,
-      in file: String
+    private func createSymlink(
+      pointingAt destination: String,
+      from origin: String
     ) -> StrictString {
-      return [
-        "sed \u{2D}\u{2D}in\u{2D}place \u{5C}",
-        "  \u{22}s%\(searchTerm)%\(replacement)%\u{22} \u{5C}",
-        "  \(file)",
-      ].joinedAsLines()
-    }
-
-    private func createSymlink(pointingAt destination: String, from origin: String) -> StrictString
-    {
       return [
         "ln \u{5C}",
         "  \(destination) \u{5C}",

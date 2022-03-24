@@ -42,12 +42,11 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 6, 0)
-    internal static let androidSwiftVersion = Version(5, 5, 0)
 
     private static let currentMacOSVersion = Version(11)
     internal static let currentXcodeVersion = Version(13, 1)
     private static let currentVisualStudioVersion = "2019"
-    private static let currentCartonVersion = Version(0, 12, 1)
+    private static let currentCartonVersion = Version(0, 12, 2)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "23b"
@@ -633,20 +632,10 @@
       return "\(prefix)chmod \u{2D}R a+rwx \(path)"
     }
 
-    private func editStreamInPlace(
-      replacing searchTerm: String,
-      with replacement: String,
-      in file: String
+    private func createSymlink(
+      pointingAt destination: String,
+      from origin: String
     ) -> StrictString {
-      return [
-        "sed \u{2D}\u{2D}in\u{2D}place \u{5C}",
-        "  \u{22}s%\(searchTerm)%\(replacement)%\u{22} \u{5C}",
-        "  \(file)",
-      ].joinedAsLines()
-    }
-
-    private func createSymlink(pointingAt destination: String, from origin: String) -> StrictString
-    {
       return [
         "ln \u{5C}",
         "  \(destination) \u{5C}",
@@ -793,7 +782,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.androidSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
@@ -823,21 +812,8 @@
                 sudoCopy: true
               ),
               grantPermissions(to: "/Library"),
-              editStreamInPlace(
-                replacing: "/home/butta/android\u{2D}ndk\u{2D}r23",
-                with: "${ANDROID_HOME}/ndk\u{2D}bundle",
-                in:
-                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
-              ),
-              editStreamInPlace(
-                replacing:
-                  "/home/butta/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk",
-                with: "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
-                in:
-                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/x86_64/glibc.modulemap"
-              ),
               createSymlink(
-                pointingAt: "/usr/lib/clang/10.0.0",
+                pointingAt: "/usr/lib/clang/13.0.0",
                 from:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/clang"
               ),
@@ -920,7 +896,7 @@
             localization: interfaceLocalization,
             commands: [
               "export \(ContinuousIntegrationJob.android.environmentVariable)=true",
-              "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android \u{5C}",
+              "swift build \u{2D}\u{2D}triple x86_64\u{2D}unknown\u{2D}linux\u{2D}android24 \u{5C}",
               "  \u{2D}\u{2D}build\u{2D}tests \u{5C}",
               "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
@@ -933,7 +909,7 @@
           )
         )
         let productsDirectory: StrictString =
-          ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug"
+          ".build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android24/debug"
         result.append(
           script(
             heading: copyLibrariesStepName,
@@ -986,8 +962,8 @@
               "script": [
                 "|",
                 "adb \u{2D}e push . /data/local/tmp/Package",
-                "adb \u{2D}e shell \u{27}chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug\u{27}",
-                "adb \u{2D}e shell \u{27}LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android/debug/\(try project.packageName())PackageTests.xctest\u{27}",
+                "adb \u{2D}e shell \u{27}chmod \u{2D}R +x /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android24/debug\u{27}",
+                "adb \u{2D}e shell \u{27}LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android24/debug HOME=/data/local/tmp/Home SWIFTPM_PACKAGE_ROOT=/data/local/tmp/Package /data/local/tmp/Package/.build/x86_64\u{2D}unknown\u{2D}linux\u{2D}android24/debug/\(try project.packageName())PackageTests.xctest\u{27}",
               ].joined(separator: "\n          "),
             ]
           ),

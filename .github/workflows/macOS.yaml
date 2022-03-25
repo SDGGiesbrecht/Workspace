@@ -48,4 +48,5 @@ jobs:
         sudo mkdir -p /Library/Developer/Toolchains
         sudo ln -sf $installed_toolchain /Library/Developer/Toolchains/5.6.xctoolchain
         cat /Library/Developer/Toolchains/5.6.xctoolchain/Info.plist
+        export TOOLCHAINS=org.swift.560202203081a
         xcrun swift --version

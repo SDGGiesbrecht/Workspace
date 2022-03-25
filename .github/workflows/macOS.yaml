@@ -44,7 +44,8 @@ jobs:
       run: |
         set -x
         installed_toolchain=$(which swift)
-        echo $installed_toolchain
         installed_toolchain=$(echo "${installed_toolchain%??????????????}")
-        echo $installed_toolchain
+        ln -sf $installed_toolchain /Library/Developer/Toolchains/5.6
+        ls /Library/Developer/Toolchains
+        ls /Library/Developer/Toolchains/5.6
         xcrun swift --version

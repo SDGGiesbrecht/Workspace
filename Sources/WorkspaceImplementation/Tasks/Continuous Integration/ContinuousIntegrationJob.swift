@@ -634,10 +634,11 @@
 
     private func createSymlink(
       pointingAt destination: String,
-      from origin: String
+      from origin: String,
+      sudo: Bool = false
     ) -> StrictString {
       return [
-        "ln \u{5C}",
+        "\(sudo ? "sudo " : "")ln \u{5C}",
         "  \(destination) \u{5C}",
         "  \(origin) \u{5C}",
         "  \u{2D}\u{2D}symbolic \u{5C}",
@@ -716,6 +717,19 @@
               "swift\u{2D}version": "\u{27}5.6\u{27}"
             ]
           ),
+          script(
+            heading: installSwiftIntoXcodeStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "installed_toolchain=$(which swift)",
+              "installed_toolchain=$(echo \u{22}${installed_toolchain%??????????????}\u{22})",
+              makeDirectory("/Library/Developer/Toolchains", sudo: true),
+              createSymlink(pointingAt: "$installed_toolchain", from: "/Library/Developer/Toolchains/5.6.xctoolchain", sudo: true),
+              set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
+              export("TOOLCHAINS"),
+              "xcrun swift --version"
+            ]
+          )
         ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion
@@ -1073,6 +1087,16 @@
           return "Install Swift"
         case .deutschDeutschland:
           return "Swift installieren"
+        }
+      })
+    }
+    private var installSwiftIntoXcodeStepName: UserFacing<StrictString, InterfaceLocalization> {
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Install Swift into Xcode"
+        case .deutschDeutschland:
+          return "Swift in Xcode installieren"
         }
       })
     }

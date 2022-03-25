@@ -46,7 +46,6 @@ jobs:
         installed_toolchain=$(which swift)
         installed_toolchain=$(echo "${installed_toolchain%??????????????}")
         sudo mkdir -p /Library/Developer/Toolchains
-        sudo ln -sf $installed_toolchain /Library/Developer/Toolchains/5.6
-        ls /Library/Developer/Toolchains
-        ls /Library/Developer/Toolchains/5.6
+        sudo ln -sf $installed_toolchain /Library/Developer/Toolchains/5.6.xctoolchain
+        cat /Library/Developer/Toolchains/5.6.xctoolchain/Info.plist
         xcrun swift --version

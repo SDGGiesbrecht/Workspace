@@ -39,13 +39,9 @@ jobs:
       uses: fwal/setup-swift@v1.14.0
       with:
         swift-version: '5.6'
-    - name: Refresh
+    - name: Inform Xcode
       shell: bash
       run: |
         set -x
-        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
-    - name: Validate
-      shell: bash
-      run: |
-        set -x
-        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        which swift
+        xcrun swift --version

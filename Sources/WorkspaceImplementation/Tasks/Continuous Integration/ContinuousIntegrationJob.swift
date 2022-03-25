@@ -635,15 +635,21 @@
     private func createSymlink(
       pointingAt destination: String,
       from origin: String,
+      macOS: Bool = false,
       sudo: Bool = false
     ) -> StrictString {
-      return [
-        "\(sudo ? "sudo " : "")ln \u{5C}",
+      var command: [StrictString] = [
+        "\(sudo ? "sudo " : "")ln \(macOS ? "\u{2D}fs " : "")\u{5C}",
         "  \(destination) \u{5C}",
-        "  \(origin) \u{5C}",
-        "  \u{2D}\u{2D}symbolic \u{5C}",
-        "  \u{2D}\u{2D}force",
-      ].joinedAsLines()
+        "  \(origin)\(macOS ? "" : " \u{5C}")",
+      ]
+      if ¬macOS {
+        command.append(contentsOf: [
+          "  \u{2D}\u{2D}symbolic \u{5C}",
+          "  \u{2D}\u{2D}force",
+        ])
+      }
+      return command.joinedAsLines()
     }
 
     private func set(
@@ -724,12 +730,17 @@
               "installed_toolchain=$(which swift)",
               "installed_toolchain=$(echo \u{22}${installed_toolchain%??????????????}\u{22})",
               makeDirectory("/Library/Developer/Toolchains", sudo: true),
-              createSymlink(pointingAt: "$installed_toolchain", from: "/Library/Developer/Toolchains/5.6.xctoolchain", sudo: true),
+              createSymlink(
+                pointingAt: "$installed_toolchain",
+                from: "/Library/Developer/Toolchains/5.6.xctoolchain",
+                macOS: true,
+                sudo: true
+              ),
               set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
               export("TOOLCHAINS"),
-              "xcrun swift --version"
+              "xcrun swift --version",
             ]
-          )
+          ),
         ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion

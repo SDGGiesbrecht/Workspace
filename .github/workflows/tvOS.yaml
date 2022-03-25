@@ -46,11 +46,9 @@ jobs:
         installed_toolchain=$(which swift)
         installed_toolchain=$(echo "${installed_toolchain%??????????????}")
         sudo mkdir -p /Library/Developer/Toolchains
-        sudo ln \
+        sudo ln -fs \
           $installed_toolchain \
-          /Library/Developer/Toolchains/5.6.xctoolchain \
-          --symbolic \
-          --force
+          /Library/Developer/Toolchains/5.6.xctoolchain
         export TOOLCHAINS="org.swift.560202203081a"
         echo "TOOLCHAINS=${TOOLCHAINS}" >> $GITHUB_ENV
         xcrun swift --version

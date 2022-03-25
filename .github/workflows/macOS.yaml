@@ -45,6 +45,7 @@ jobs:
         set -x
         installed_toolchain=$(which swift)
         installed_toolchain=$(echo "${installed_toolchain%??????????????}")
+        mkdir -p /Library/Developer/Toolchains
         ln -sf $installed_toolchain /Library/Developer/Toolchains/5.6
         ls /Library/Developer/Toolchains
         ls /Library/Developer/Toolchains/5.6

@@ -40,6 +40,19 @@ jobs:
       uses: fwal/setup-swift@v1.14.0
       with:
         swift-version: '5.6'
+    - name: Install Swift into Xcode
+      shell: bash
+      run: |
+        set -x
+        installed_toolchain=$(which swift)
+        installed_toolchain=$(echo "${installed_toolchain%??????????????}")
+        sudo mkdir -p /Library/Developer/Toolchains
+        sudo ln -fs \
+          $installed_toolchain \
+          /Library/Developer/Toolchains/5.6.xctoolchain
+        export TOOLCHAINS="org.swift.560[Current Date]03081a"
+        echo "TOOLCHAINS=${TOOLCHAINS}" >> $GITHUB_ENV
+        xcrun swift --version
     - name: Install Workspace
       shell: bash
       run: |

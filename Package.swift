@@ -890,6 +890,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]
@@ -908,6 +909,7 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]
@@ -942,6 +944,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]

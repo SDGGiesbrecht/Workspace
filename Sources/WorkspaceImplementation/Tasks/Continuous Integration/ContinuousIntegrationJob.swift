@@ -738,7 +738,7 @@
               ),
               set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
               export("TOOLCHAINS"),
-              "xcrun swift --version",
+              "xcrun swift \u{2D}\u{2D}version",
             ]
           ),
         ])

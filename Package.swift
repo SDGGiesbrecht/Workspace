@@ -906,7 +906,7 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
-if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
+//if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
@@ -923,7 +923,7 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
-}
+//}
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
   // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)

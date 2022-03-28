@@ -51,7 +51,7 @@ jobs:
           /Library/Developer/Toolchains/5.6.xctoolchain
         export TOOLCHAINS="org.swift.560202203081a"
         echo "TOOLCHAINS=${TOOLCHAINS}" >> $GITHUB_ENV
-        sudo cp /Applications/Xcode_13.1.app/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a ${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin
+        sudo cp /Applications/Xcode_13.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a ${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin
         xcrun swift --version
     - name: Refresh
       shell: bash

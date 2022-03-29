@@ -738,6 +738,12 @@
               ),
               set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
               export("TOOLCHAINS"),
+              copyFiles(
+                from:
+                  "/Applications/Xcode_13.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a",
+                to: "${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin",
+                sudo: true
+              ),
               "xcrun swift \u{2D}\u{2D}version",
             ]
           ),

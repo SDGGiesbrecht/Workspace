@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   tvOS:
     name: tvOS
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - name: Check out
       uses: actions/checkout@v2

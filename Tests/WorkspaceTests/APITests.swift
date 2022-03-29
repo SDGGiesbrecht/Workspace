@@ -62,6 +62,9 @@
       PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
       CustomTask.emptyCache()
       APITests.configureGit
+      try? FileManager.default.removeItem(
+        at: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm/collections.json")
+      )
     }
 
     func testAllDisabled() {

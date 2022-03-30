@@ -68,7 +68,8 @@
         at: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm/collections.json")
       )
       #warning("Debugging...")
-      print(try? FileManager.default.contents(ofDirectory: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm")))
+      let contents = try? FileManager.default.contents(ofDirectory: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm"))
+      print(contents?.map({ $0.path }))
     }
 
     func testAllDisabled() {

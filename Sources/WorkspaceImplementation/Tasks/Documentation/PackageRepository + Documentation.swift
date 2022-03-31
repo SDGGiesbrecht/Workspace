@@ -85,11 +85,7 @@
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
     ) throws -> PackageCLI {
-      #warning("Debugging...")
-      print("About to...")
       let productsURL = try productsDirectory(releaseConfiguration: false).get()
-      #warning("Debugging...")
-      print("Products: \(productsURL.path)")
       let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
         switch product.type {
         case .library:
@@ -98,14 +94,8 @@
           return true
         }
       }).lazy.map({ $0.name })
-      #warning("Debugging...")
-      print("Names: \(Array(toolNames))")
       build(releaseConfiguration: false)
-      #warning("Debugging...")
-      print("Build result: \(build(releaseConfiguration: false))")
       let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
-      #warning("Debugging...")
-      print("Locations: \(toolLocations.map({ $0.path }))")
       return PackageCLI(
         tools: toolLocations,
         localizations: try configuration(output: output).documentation.localizations,

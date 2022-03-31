@@ -230,7 +230,7 @@ public func demonstrateParameters(
   tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
 ) {}
 
-#if !os(Linux)  // Compiler bug in Swift 5.5.
+#if !os(macOS)  // Compiler bug in Swift 5.6.
   // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
   /// ...
   ///

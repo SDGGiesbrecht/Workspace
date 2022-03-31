@@ -252,6 +252,11 @@
 
               // General commands
               func postprocess(_ output: inout String) {
+                #warning("Debugging...")
+                if location.lastPathComponent == "Default",
+                  command == ["validate", "build"] {
+                    print(output)
+                }
 
                 let any = RepetitionPattern(
                   ConditionalPattern<Unicode.Scalar>({ _ in true }),

@@ -62,14 +62,6 @@
       PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
       CustomTask.emptyCache()
       APITests.configureGit
-
-      // Pre‐empt warning recommending its deletion.
-      try? FileManager.default.removeItem(
-        at: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm/collections.json")
-      )
-      #warning("Debugging...")
-      let contents = try? FileManager.default.contents(ofDirectory: URL(fileURLWithPath: "/Users/runner/Library/org.swift.swiftpm"))
-      print(contents?.map({ $0.path }))
     }
 
     func testAllDisabled() {

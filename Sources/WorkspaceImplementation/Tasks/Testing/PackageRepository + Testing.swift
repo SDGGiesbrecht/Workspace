@@ -300,8 +300,6 @@
         let report: TestCoverageReport
         switch job {
         case .macOS, .ubuntu, .amazonLinux:
-          #warning("Debugging...")
-          print(try? Shell.default.run(command: ["swift", "test", "--show-codecov-path"]))
           guard
             let fromPackageManager = try codeCoverageReport(
               ignoreCoveredRegions: true,

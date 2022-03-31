@@ -252,10 +252,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-                #warning("Debugging...")
-                if (try? self.packageName()) == "AllTasks" {
-                  print(output)
-                }
 
                 let any = RepetitionPattern(
                   ConditionalPattern<Unicode.Scalar>({ _ in true }),

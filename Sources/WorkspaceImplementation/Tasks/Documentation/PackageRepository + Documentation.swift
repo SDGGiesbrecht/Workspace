@@ -85,7 +85,11 @@
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
     ) throws -> PackageCLI {
+      #warning("Debugging...")
+      print("About to...")
       let productsURL = try productsDirectory(releaseConfiguration: false).get()
+      #warning("Debugging...")
+      print("Products: \(productsURL.path)")
       let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
         switch product.type {
         case .library:

@@ -23,6 +23,7 @@
   import SDGCommandLine
 
   import SDGSwift
+  import SDGXcode
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -431,7 +432,7 @@
 
     func testDeutsch() throws {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      if Xcode.version(forConstraints: Version(13, 2, 0)...Version(13, 3, 0))! < Version(13, 3)
       {
         return
       }

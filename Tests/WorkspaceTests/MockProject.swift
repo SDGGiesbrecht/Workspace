@@ -253,8 +253,8 @@
               // General commands
               func postprocess(_ output: inout String) {
                 #warning("Debugging...")
-                if location.lastPathComponent == "Deutsch",
-                  command == ["prüfen", "erstellung"] {
+                if location.lastPathComponent == "SDGLibrary",
+                  command == ["validate"] {
                     print(output)
                 }
 

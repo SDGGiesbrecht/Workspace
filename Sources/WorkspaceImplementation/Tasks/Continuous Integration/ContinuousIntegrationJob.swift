@@ -46,7 +46,7 @@
     private static let currentMacOSVersion = Version(11)
     internal static let currentXcodeVersion = Version(13, 1)
     private static let currentVisualStudioVersion = "2019"
-    private static let currentCartonVersion = Version(0, 12, 2)
+    private static let currentCartonVersion = Version(0, 13, 0)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "23b"
@@ -398,7 +398,7 @@
       case .macOS, .windows, .android:
         return nil
       case .web:
-        let version = ContinuousIntegrationJob.currentCartonVersion.string(droppingEmptyPatch: true)
+        let version = ContinuousIntegrationJob.currentCartonVersion.string()
         return "ghcr.io/swiftwasm/carton:\(version)"
       case .ubuntu:
         let version = ContinuousIntegrationJob.currentSwiftVersion.string()
@@ -775,7 +775,18 @@
           ),
         ])
       case .web:
-        break
+        let version = ContinuousIntegrationJob.currentSwiftVersion.string()
+        result.append(contentsOf: [
+          script(
+            heading: installSwiftStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "carton sdk install wasm\u{2D}\(version)\u{2D}RELEASE",
+              "carton sdk versions",
+              "echo \u{22}wasm\u{2D}\(version)\u{2D}RELEASE\u{22} > .swift\u{2D}version",
+            ]
+          )
+        ])
       case .ubuntu:
         result.append(contentsOf: [
           script(

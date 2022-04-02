@@ -905,7 +905,7 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 
-  // #warning(Debugging...)
+  // #workaround(Cause test bundle to crash in continuous integration with dual toolchains.)
   let impossibleTargets: [String] = [
     "WorkspaceProjectConfiguration",
     "WorkspaceConfigurationTests",

@@ -904,6 +904,15 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #warning(Debugging...)
+  let impossibleTargets: [String] = [
+    "WorkspaceProjectConfiguration",
+    "WorkspaceConfigurationTests",
+    "WorkspaceImplementation",
+    "WorkspaceTests",
+  ]
+  package.targets.removeAll(where: { impossibleTargets.contains($0.name) })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {

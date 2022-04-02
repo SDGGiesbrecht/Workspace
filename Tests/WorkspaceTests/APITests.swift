@@ -432,7 +432,8 @@
 
     func testDeutsch() throws {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if Xcode.version(forConstraints: Version(13, 2, 0)...Version(13, 3, 0))! < Version(13, 3)
+      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
+        xcode < Version(13, 3)
       {
         return
       }

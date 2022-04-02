@@ -33,6 +33,7 @@ jobs:
       shell: bash
       run: |
         carton sdk install wasm-5.6.0-RELEASE
+        carton sdk versions
     - name: Test
       shell: bash
       run: |

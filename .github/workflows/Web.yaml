@@ -32,7 +32,7 @@ jobs:
     - name: Install Swift
       shell: bash
       run: |
-        carton sdk install 5.6
+        carton sdk install wasm-5.6.0-RELEASE
     - name: Test
       shell: bash
       run: |

@@ -23,6 +23,7 @@
   import SDGCommandLine
 
   import SDGSwift
+  import SDGXcode
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -62,6 +63,16 @@
       PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
       CustomTask.emptyCache()
       APITests.configureGit
+
+      // #workaround(xcodebuild -version 13.3, GitHub actions contain a stale configuration.) @exempt(from: unicode)
+      if isInGitHubAction {
+        let url = URL(fileURLWithPath: NSHomeDirectory())
+          .appendingPathComponent("Library")
+          .appendingPathComponent("org.swift.swiftpm")
+          .appendingPathComponent("collections.json")
+        try? FileManager.default.removeItem(at: url)
+        XCTAssert((try? url.checkResourceIsReachable()) ≠ true)
+      }
     }
 
     func testAllDisabled() {
@@ -421,7 +432,8 @@
 
     func testDeutsch() throws {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
+        xcode < Version(13, 3)
       {
         return
       }
@@ -919,7 +931,8 @@
 
     func testSDGLibrary() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
+        xcode < Version(13, 3)
       {
         return
       }

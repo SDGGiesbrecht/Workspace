@@ -496,7 +496,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(9, 0, 0)
+      from: Version(9, 0, 1)
     ),
     .package(
       name: "SwiftPM",
@@ -890,6 +890,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]
@@ -903,11 +904,21 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Cause test bundle to crash in continuous integration with dual toolchains.)
+  let impossibleTargets: [String] = [
+    "WorkspaceProjectConfiguration",
+    "WorkspaceConfigurationTests",
+    "WorkspaceImplementation",
+    "WorkspaceTests",
+  ]
+  package.targets.removeAll(where: { impossibleTargets.contains($0.name) })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]
@@ -942,6 +953,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
+    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]

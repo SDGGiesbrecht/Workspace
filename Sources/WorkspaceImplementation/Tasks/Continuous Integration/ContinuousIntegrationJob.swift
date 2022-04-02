@@ -634,15 +634,22 @@
 
     private func createSymlink(
       pointingAt destination: String,
-      from origin: String
+      from origin: String,
+      macOS: Bool = false,
+      sudo: Bool = false
     ) -> StrictString {
-      return [
-        "ln \u{5C}",
+      var command: [StrictString] = [
+        "\(sudo ? "sudo " : "")ln \(macOS ? "\u{2D}fs " : "")\u{5C}",
         "  \(destination) \u{5C}",
-        "  \(origin) \u{5C}",
-        "  \u{2D}\u{2D}symbolic \u{5C}",
-        "  \u{2D}\u{2D}force",
-      ].joinedAsLines()
+        "  \(origin)\(macOS ? "" : " \u{5C}")",
+      ]
+      if ¬macOS {
+        command.append(contentsOf: [
+          "  \u{2D}\u{2D}symbolic \u{5C}",
+          "  \u{2D}\u{2D}force",
+        ])
+      }
+      return command.joinedAsLines()
     }
 
     private func set(
@@ -714,6 +721,30 @@
             "fwal/setup\u{2D}swift@v1.14.0",
             with: [
               "swift\u{2D}version": "\u{27}5.6\u{27}"
+            ]
+          ),
+          script(
+            heading: installSwiftIntoXcodeStepName,
+            localization: interfaceLocalization,
+            commands: [
+              "installed_toolchain=$(which swift)",
+              "installed_toolchain=$(echo \u{22}${installed_toolchain%??????????????}\u{22})",
+              makeDirectory("/Library/Developer/Toolchains", sudo: true),
+              createSymlink(
+                pointingAt: "$installed_toolchain",
+                from: "/Library/Developer/Toolchains/5.6.xctoolchain",
+                macOS: true,
+                sudo: true
+              ),
+              set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
+              export("TOOLCHAINS"),
+              copyFiles(
+                from:
+                  "/Applications/Xcode_13.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a",
+                to: "${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin",
+                sudo: true
+              ),
+              "xcrun swift \u{2D}\u{2D}version",
             ]
           ),
         ])
@@ -1073,6 +1104,16 @@
           return "Install Swift"
         case .deutschDeutschland:
           return "Swift installieren"
+        }
+      })
+    }
+    private var installSwiftIntoXcodeStepName: UserFacing<StrictString, InterfaceLocalization> {
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Install Swift into Xcode"
+        case .deutschDeutschland:
+          return "Swift in Xcode installieren"
         }
       })
     }

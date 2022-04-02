@@ -252,11 +252,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-                #warning("Debugging...")
-                if location.lastPathComponent == "SDGLibrary",
-                  command == ["validate"] {
-                    print(output)
-                }
 
                 let any = RepetitionPattern(
                   ConditionalPattern<Unicode.Scalar>({ _ in true }),

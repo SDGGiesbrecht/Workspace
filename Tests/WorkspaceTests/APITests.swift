@@ -931,7 +931,8 @@
 
     func testSDGLibrary() {
       // #workaround(Skipping because the wrong Swift is being found in CI.)
-      if SwiftCompiler.version(forConstraints: Version(5, 5, 0)...Version(5, 6, 0))! < Version(5, 6)
+      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
+        xcode < Version(13, 3)
       {
         return
       }

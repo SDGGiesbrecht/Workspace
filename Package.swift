@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 
 /*
  Package.swift
@@ -499,19 +499,17 @@ let package = Package(
       from: Version(9, 0, 1)
     ),
     .package(
-      name: "SwiftPM",
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      .exact(Version(0, 50600, 3))
+      exact: Version(0, 50600, 3)
     ),
     .package(
-      name: "SwiftSyntax",
       url: "https://github.com/apple/swift\u{2D}syntax",
-      .exact(Version(0, 50600, 1))
+      exact: Version(0, 50600, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      .exact(Version(0, 0, 506001))
+      exact: Version(0, 0, 506001)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -550,18 +548,18 @@ let package = Package(
         .product(
           // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
           name: "SwiftPM\u{2D}auto",
-          package: "SwiftPM",
+          package: "swift\u{2D}package\u{2D}manager",
           // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntax",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntaxParser",
-          package: "SwiftSyntax",
+          package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -867,15 +865,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
     // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
     "swift\u{2D}format",
-    "SwiftPM",
+    "swift\u{2D}package\u{2D}manager",
   ]
   package.dependencies.removeAll(where: { dependency in
     return impossibleDependencies.contains(where: { impossible in
-      var name = dependency.name
-      if name == nil {
-        name = dependency.url
+      switch dependency.kind {
+      case .sourceControl(name: _, let location, requirement: _):
+        return location.contains(impossible)
+      default:
+        return false
       }
-      return (name ?? "").contains(impossible)
     })
   })
   for target in package.targets {

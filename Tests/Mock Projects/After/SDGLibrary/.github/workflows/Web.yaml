@@ -21,7 +21,7 @@ jobs:
   Web:
     name: Web
     runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.12.2
+    container: ghcr.io/swiftwasm/carton:0.13.0
     steps:
     - name: Check out
       uses: actions/checkout@v2
@@ -30,6 +30,13 @@ jobs:
       with:
         key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        carton sdk install wasm-5.6.0-RELEASE
+        carton sdk versions
+        echo "wasm-5.6.0-RELEASE" > .swift-version
     - name: Test
       shell: bash
       run: |

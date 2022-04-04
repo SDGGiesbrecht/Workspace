@@ -201,13 +201,9 @@
           unreachable()
         case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
           testCommand = { output in
-            #warning("Debugging...")
-            print("About to...")
             switch self.test(
               on: job.testPlatform,
               reportProgress: { report in
-                #warning("Debugging...")
-                print(report)
                 if let relevant = Xcode.abbreviate(output: report) {
                   output.print(relevant)
                 }
@@ -218,14 +214,10 @@
               var description = StrictString(error.localizedDescription)
               switch error {
               case .xcodeError:
-                #warning("Debugging...")
-                print(description)
                 description = ""  // Already printed.
               case .foundationError, .noPackageScheme:
                 break
               }
-              #warning("Debugging...")
-              print(description)
               output.print(description.formattedAsError())
               return false
             case .success:

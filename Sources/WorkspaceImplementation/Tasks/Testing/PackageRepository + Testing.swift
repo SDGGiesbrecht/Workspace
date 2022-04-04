@@ -204,6 +204,8 @@
             switch self.test(
               on: job.testPlatform,
               reportProgress: { report in
+                #warning("Debugging...")
+                print(report)
                 if let relevant = Xcode.abbreviate(output: report) {
                   output.print(relevant)
                 }
@@ -218,6 +220,8 @@
               case .foundationError, .noPackageScheme:
                 break
               }
+              #warning("Debugging...")
+              print(description)
               output.print(description.formattedAsError())
               return false
             case .success:

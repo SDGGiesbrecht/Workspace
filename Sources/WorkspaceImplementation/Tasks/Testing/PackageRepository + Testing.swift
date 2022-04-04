@@ -218,6 +218,8 @@
               var description = StrictString(error.localizedDescription)
               switch error {
               case .xcodeError:
+                #warning("Debugging...")
+                print(description)
                 description = ""  // Already printed.
               case .foundationError, .noPackageScheme:
                 break

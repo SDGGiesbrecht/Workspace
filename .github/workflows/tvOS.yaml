@@ -63,4 +63,5 @@ jobs:
       shell: bash
       run: |
         set -x
+        xcrun swift --version
         swift run workspace validate •job tvos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

@@ -20,7 +20,7 @@ jobs:
   Web:
     name: Web
     runs-on: ubuntu-20.04
-    container: ghcr.io/swiftwasm/carton:0.14.0
+    container: ghcr.io/swiftwasm/carton:0.14.1
     steps:
     - name: Check out
       uses: actions/checkout@v2
@@ -34,4 +34,4 @@ jobs:
       run: |
         set -x
         export TARGETING_WEB=true
-        carton test --environment defaultBrowser
+        carton test

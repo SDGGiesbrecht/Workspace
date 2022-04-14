@@ -143,8 +143,7 @@ public let configuration: WorkspaceConfiguration = {
   ]
 
   #if os(macOS)
-    // #workaround(Skipping because the wrong Swift is being found in CI.)
-    configuration.testing.prohibitCompilerWarnings = false
+    // #workaround(Skipping because CI has outdated Xcode.)
     configuration.testing.enforceCoverage = false
   #endif
 

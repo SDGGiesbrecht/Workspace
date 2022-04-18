@@ -723,30 +723,6 @@
               "swift\u{2D}version": "\u{27}5.6\u{27}"
             ]
           ),
-          script(
-            heading: installSwiftIntoXcodeStepName,
-            localization: interfaceLocalization,
-            commands: [
-              "installed_toolchain=$(which swift)",
-              "installed_toolchain=$(echo \u{22}${installed_toolchain%??????????????}\u{22})",
-              makeDirectory("/Library/Developer/Toolchains", sudo: true),
-              createSymlink(
-                pointingAt: "$installed_toolchain",
-                from: "/Library/Developer/Toolchains/5.6.xctoolchain",
-                macOS: true,
-                sudo: true
-              ),
-              set(environmentVariable: "TOOLCHAINS", to: "org.swift.560202203081a"),
-              export("TOOLCHAINS"),
-              copyFiles(
-                from:
-                  "/Applications/Xcode_13.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a",
-                to: "${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin",
-                sudo: true
-              ),
-              "xcrun swift \u{2D}\u{2D}version",
-            ]
-          ),
         ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion
@@ -1104,16 +1080,6 @@
           return "Install Swift"
         case .deutschDeutschland:
           return "Swift installieren"
-        }
-      })
-    }
-    private var installSwiftIntoXcodeStepName: UserFacing<StrictString, InterfaceLocalization> {
-      return UserFacing({ (localization) in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Install Swift into Xcode"
-        case .deutschDeutschland:
-          return "Swift in Xcode installieren"
         }
       })
     }

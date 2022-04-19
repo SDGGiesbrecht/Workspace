@@ -99,24 +99,6 @@
         allLocalizations: try configuration(output: output).documentation.localizations,
         output: output
       )
-
-      // Deprecated file locations.
-      delete(location.appendingPathComponent("Documentation/Related Projects.md"), output: output)
-      for localization in try configuration(output: output).documentation.localizations {
-        purgingAutoreleased {
-          delete(
-            ReadMeConfiguration.readMeLocation(for: location, localization: localization),
-            output: output
-          )
-          delete(
-            ReadMeConfiguration.relatedProjectsLocation(
-              for: location,
-              localization: localization
-            ),
-            output: output
-          )
-        }
-      }
     }
   }
 #endif

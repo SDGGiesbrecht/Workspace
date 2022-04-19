@@ -32,16 +32,10 @@
       return location.appendingPathComponent(".github")
     }
 
-    private var depricatedContributingInstructions: URL {
-      return location.appendingPathComponent("CONTRIBUTING.md")
-    }
     private var contributingInstructionsLocation: URL {
       return gitHubDirectory.appendingPathComponent("CONTRIBUTING.md")
     }
 
-    private var depricatedIssueTemplateLocation: URL {
-      return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE.md")
-    }
     private var issueTemplatesDirectory: URL {
       return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE")
     }
@@ -75,9 +69,6 @@
         try constructedContributingInstructions(output: output)
       )
       try contributingInstructionsFile.writeChanges(for: self, output: output)
-
-      // Remove deprecated.
-      delete(depricatedContributingInstructions, output: output)
     }
 
     private func constructedContributingInstructions(
@@ -133,7 +124,6 @@
         }
       }
 
-      delete(depricatedIssueTemplateLocation, output: output)
       if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
         for file in files where file ∉ validFiles {
           delete(file, output: output)

@@ -39,21 +39,6 @@ jobs:
       uses: fwal/setup-swift@v1.14.0
       with:
         swift-version: '5.6'
-    - name: Install Swift into Xcode
-      shell: bash
-      run: |
-        set -x
-        installed_toolchain=$(which swift)
-        installed_toolchain=$(echo "${installed_toolchain%??????????????}")
-        sudo mkdir -p /Library/Developer/Toolchains
-        sudo ln -fs \
-          $installed_toolchain \
-          /Library/Developer/Toolchains/5.6.xctoolchain
-        export TOOLCHAINS="org.swift.560202203081a"
-        echo "TOOLCHAINS=${TOOLCHAINS}" >> $GITHUB_ENV
-        sudo mkdir -p ${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin
-        sudo cp -R /Applications/Xcode_13.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/*/lib/darwin/libclang_rt.*.a ${installed_toolchain}/usr/lib/clang/13.0.0/lib/darwin
-        xcrun swift --version
     - name: Refresh
       shell: bash
       run: |

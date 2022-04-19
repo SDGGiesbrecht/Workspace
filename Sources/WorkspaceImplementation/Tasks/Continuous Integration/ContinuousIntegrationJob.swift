@@ -634,22 +634,15 @@
 
     private func createSymlink(
       pointingAt destination: String,
-      from origin: String,
-      macOS: Bool = false,
-      sudo: Bool = false
+      from origin: String
     ) -> StrictString {
-      var command: [StrictString] = [
-        "\(sudo ? "sudo " : "")ln \(macOS ? "\u{2D}fs " : "")\u{5C}",
+      return [
+        "ln \u{5C}",
         "  \(destination) \u{5C}",
-        "  \(origin)\(macOS ? "" : " \u{5C}")",
-      ]
-      if ¬macOS {
-        command.append(contentsOf: [
-          "  \u{2D}\u{2D}symbolic \u{5C}",
-          "  \u{2D}\u{2D}force",
-        ])
-      }
-      return command.joinedAsLines()
+        "  \(origin) \u{5C}",
+        "  \u{2D}\u{2D}symbolic \u{5C}",
+        "  \u{2D}\u{2D}force",
+      ].joinedAsLines()
     }
 
     private func set(

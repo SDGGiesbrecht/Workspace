@@ -35,12 +35,18 @@
     private var contributingInstructionsLocation: URL {
       return gitHubDirectory.appendingPathComponent("CONTRIBUTING.md")
     }
+    private var alternateContributingInstructionsLocation: URL {
+      return location.appendingPathComponent("CONTRIBUTING.md")
+    }
 
     private var issueTemplatesDirectory: URL {
       return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE")
     }
     private func issueTemplateLocation(for title: StrictString) -> URL {
       return issueTemplatesDirectory.appendingPathComponent(String(title + ".md"))
+    }
+    private var alternateIssueTemplateLocation: URL {
+      return gitHubDirectory.appendingPathComponent("ISSUE_TEMPLATE.md")
     }
 
     private var pullRequestTemplateLocation: URL {
@@ -69,6 +75,8 @@
         try constructedContributingInstructions(output: output)
       )
       try contributingInstructionsFile.writeChanges(for: self, output: output)
+
+      delete(alternateContributingInstructionsLocation, output: output)
     }
 
     private func constructedContributingInstructions(
@@ -124,6 +132,7 @@
         }
       }
 
+      delete(alternateIssueTemplateLocation, output: output)
       if let files = try? FileManager.default.deepFileEnumeration(in: issueTemplatesDirectory) {
         for file in files where file ∉ validFiles {
           delete(file, output: output)

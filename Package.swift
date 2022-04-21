@@ -566,7 +566,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
@@ -684,7 +684,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ]
@@ -740,7 +740,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -864,8 +864,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #warning(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
-    //"swift\u{2D}format",
+    // #workaround(Swift 5.6, Web toolchain rejects manifest due to dynamic library.)
+    "swift\u{2D}format",
     "SwiftPM",
   ]
   package.dependencies.removeAll(where: { dependency in

@@ -848,7 +848,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   let impossibleDependencies: [String] = [
     // #warning(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
     "SwiftSyntaxParser",
-    "SwiftFormat\u{22}",
+    //"SwiftFormat\u{22}",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

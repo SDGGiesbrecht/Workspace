@@ -566,8 +566,8 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+          // #warning(Swift 5.5.2, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .wasi, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
           name: "SwiftFormat",

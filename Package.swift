@@ -846,9 +846,9 @@ import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.6, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
-    // #warning(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
     "SwiftSyntaxParser",
-    //"SwiftFormat\u{22}",
+    "SwiftFormat\u{22}",
   ]
   for target in package.targets {
     target.dependencies.removeAll(where: { dependency in

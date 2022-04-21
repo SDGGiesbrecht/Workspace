@@ -621,10 +621,6 @@
         }
       }
 
-      // Remove deprecated cache.
-      try? FileManager.default.removeItem(
-        at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(".Workspace")
-      )
       return repository
     }
 

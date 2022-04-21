@@ -802,12 +802,6 @@ let package = Package(
   ]
 )
 
-// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
-#if os(macOS)
-  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
-    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
-#endif
-
 for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
@@ -842,12 +836,18 @@ for target in package.targets {
   ])
 }
 
+// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
+#if os(macOS)
+  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
+    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
+#endif
+
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    "SwiftSyntax",
+    // #warning(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
+    //"SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {

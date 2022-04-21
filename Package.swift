@@ -550,8 +550,8 @@ let package = Package(
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "SwiftPM",
-          // #warning(SwiftPM 0.50500.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .windows, .linux])
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
+          condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
           name: "SwiftSyntax",

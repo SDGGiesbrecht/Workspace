@@ -548,8 +548,7 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(
-          // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
-          name: "SwiftPM\u{2D}auto",
+          name: "SwiftPMDataModel\u{2D}auto",
           package: "SwiftPM",
           // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])

@@ -550,7 +550,7 @@ let package = Package(
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -566,7 +566,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
@@ -684,7 +684,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ]
@@ -740,7 +740,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -864,7 +864,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.6, Web toolchain rejects manifest due to dynamic library.)
     "swift\u{2D}format",
     "SwiftPM",
   ]

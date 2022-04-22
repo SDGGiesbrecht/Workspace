@@ -900,18 +900,9 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
       })
     })
   }
-  // #warning(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
-
-  // #warning(Cause test bundle to crash in continuous integration with dual toolchains.)
-  /*let impossibleTargets: [String] = [
-    "WorkspaceProjectConfiguration",
-    "WorkspaceConfigurationTests",
-    "WorkspaceImplementation",
-    "WorkspaceTests",
-  ]
-  package.targets.removeAll(where: { impossibleTargets.contains($0.name) })*/
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -934,10 +925,10 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #warning(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    // #warning(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    //"SwiftSyntax",
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
+    "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {

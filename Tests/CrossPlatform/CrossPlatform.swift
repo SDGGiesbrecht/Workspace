@@ -25,10 +25,7 @@ import Foundation
     import FoundationXML
   #endif
 #endif
-
-#if !PLATFORM_LACKS_DISPATCH
-  import Dispatch
-#endif
+import Dispatch
 
 import CrossPlatformC
 
@@ -45,7 +42,7 @@ public func helloWorld() {
   #if !PLATFORM_LACKS_FOUNDATION_XML
     print(XMLElement(name: "Hello, FoundationXML!"))
   #endif
-  #if !PLATFORM_LACKS_DISPATCH
+  #if !PLATFORM_LACKS_DISPATCH_DISPATCH_QUEUE
     print(DispatchQueue(label: "Hello, Dispatch!"))
   #endif
   helloC()

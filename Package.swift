@@ -808,15 +808,15 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #warning(Swift 5.5.2, Web lacks Dispatch.)
-    //.define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.6, Web lacks Dispatch.DispatchQueue.)
+    .define("PLATFORM_LACKS_DISPATCH_DISPATCH_QUEUE", .when(platforms: [.wasi])),
     // #warning(Swift 5.5.2, Web lacks Foundation.FileManager.)
     //.define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #warning(Swift 5.5.2, Web lacks Foundation.Process.)
     //.define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #warning(Swift 5.5.2, FoundationNetworking is broken on web.)
     // #warning(Swift 5.5.2, FoundationNetworking is broken on Android.)
-    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [/*.wasi,*/ /*.android*/])),
+    //.define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [/*.wasi,*/ /*.android*/])),
     // #warning(Swift 5.5.2, FoundationXML is broken on web.)
     // #warning(Swift 5.5.2, FoundationXML is broken on Android.)
     .define(
@@ -825,10 +825,10 @@ for target in package.targets {
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #warning(Swift 5.5.2, SwiftFormatConfiguration does not compile for web.)
-    .define(
+    /*.define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [/*.wasi*/])
-    ),
+      .when(platforms: [.wasi])
+    ),*/
     // #workaround(Swift 5.6, SwiftPM lacks conditional targets.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",

@@ -858,8 +858,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #warning(Swift 5.5.2, Unable to build from Windows.)
-  //package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
+  // #workaround(Swift 5.6, Unable to build from Windows.)
+  package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {

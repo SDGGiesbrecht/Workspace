@@ -858,7 +858,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #workaround(Swift 5.5.2, Unable to build from Windows.)
+  // #workaround(Swift 5.6, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }
 
@@ -887,7 +887,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -900,22 +900,13 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
-
-  // #workaround(Cause test bundle to crash in continuous integration with dual toolchains.)
-  let impossibleTargets: [String] = [
-    "WorkspaceProjectConfiguration",
-    "WorkspaceConfigurationTests",
-    "WorkspaceImplementation",
-    "WorkspaceTests",
-  ]
-  package.targets.removeAll(where: { impossibleTargets.contains($0.name) })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -928,15 +919,15 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
@@ -950,7 +941,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -963,7 +954,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }

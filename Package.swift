@@ -814,18 +814,18 @@ for target in package.targets {
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #warning(Swift 5.5.2, FoundationNetworking is broken on Android.)
-    //.define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
+    // #workaround(Swift 5.6, FoundationNetworking is broken on Android.)
+    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
     // #workaround(Swift 5.6, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
     ),
-    // #warning(Swift 5.5.2, FoundationXML is broken on web.)
+    // #workaround(Swift 5.6, FoundationXML is broken on web.)
     // #warning(Swift 5.5.2, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
-      .when(platforms: [ /*.wasi,*/.tvOS, .iOS, /*.android,*/ .watchOS])
+      .when(platforms: [.wasi, .tvOS, .iOS, /*.android,*/ .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)

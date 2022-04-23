@@ -810,11 +810,11 @@ for target in package.targets {
     // Internal‐only:
     // #workaround(Swift 5.6, Web lacks Dispatch.DispatchQueue.)
     .define("PLATFORM_LACKS_DISPATCH_DISPATCH_QUEUE", .when(platforms: [.wasi])),
-    // #warning(Swift 5.5.2, Web lacks Foundation.FileManager.)
-    //.define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #warning(Swift 5.5.2, Web lacks Foundation.Process.)
-    //.define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #warning(Swift 5.5.2, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
+    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.6, Web lacks Foundation.Process.)
+    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.6, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])

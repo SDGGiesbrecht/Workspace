@@ -808,19 +808,19 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.6, Web lacks Dispatch.DispatchQueue.)
-    .define("PLATFORM_LACKS_DISPATCH_DISPATCH_QUEUE", .when(platforms: [.wasi])),
+    // #workaround(Swift 5.6, Web lacks Dispatch.)
+    .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #warning(Swift 5.5.2, FoundationNetworking is broken on Android.)
+    //.define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
     // #workaround(Swift 5.6, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
     ),
-    // #warning(Swift 5.5.2, FoundationNetworking is broken on Android.)
-    //.define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
     // #warning(Swift 5.5.2, FoundationXML is broken on web.)
     // #warning(Swift 5.5.2, FoundationXML is broken on Android.)
     .define(

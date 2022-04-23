@@ -808,27 +808,28 @@ for target in package.targets {
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.5.2, Web lacks Dispatch.)
-    .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, Web lacks Foundation.FileManager.)
-    .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, Web lacks Foundation.Process.)
-    .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, FoundationNetworking is broken on Android.)
-    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
-    // #workaround(Swift 5.5.2, FoundationXML is broken on web.)
-    // #workaround(Swift 5.5.2, FoundationXML is broken on Android.)
+    // #warning(Swift 5.5.2, Web lacks Dispatch.)
+    //.define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
+    // #warning(Swift 5.5.2, Web lacks Foundation.FileManager.)
+    //.define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
+    // #warning(Swift 5.5.2, Web lacks Foundation.Process.)
+    //.define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
+    // #warning(Swift 5.5.2, FoundationNetworking is broken on web.)
+    // #warning(Swift 5.5.2, FoundationNetworking is broken on Android.)
+    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [/*.wasi,*/ /*.android*/])),
+    // #warning(Swift 5.5.2, FoundationXML is broken on web.)
+    // #warning(Swift 5.5.2, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
-      .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
+      .when(platforms: [/*.wasi,*/ .tvOS, .iOS, /*.android,*/ .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(Swift 5.5.2, SwiftFormatConfiguration does not compile for web.)
+    // #warning(Swift 5.5.2, SwiftFormatConfiguration does not compile for web.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.wasi])
+      .when(platforms: [/*.wasi*/])
     ),
-    // #workaround(Swift 5.5.2, SwiftPM lacks conditional targets.
+    // #workaround(Swift 5.6, SwiftPM lacks conditional targets.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])

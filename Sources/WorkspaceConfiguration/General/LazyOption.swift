@@ -68,31 +68,7 @@ public struct Lazy<Option>: Decodable, Encodable where Option: Codable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
-    let resolved = resolve(WorkspaceConfiguration.registered)
-
-    // #workaround(Swift 5.5.2, Dodges a bug in Codable on Linux.)
-    func encodeArrayIfEmptyDictionary<K, V>(key: K.Type, value: V.Type) throws -> Bool
-    where K: Hashable {
-      if Option.self == [K: V].self,
-        let cast = resolved as? [K: V],
-        cast.isEmpty
-      {
-        try container.encode([] as [String])
-        return true
-      } else {
-        return false
-      }
-    }
-    if try ¬encodeArrayIfEmptyDictionary(
-      key: LocalizationIdentifier.self,
-      value: [IssueTemplate].self
-    ),
-      try ¬encodeArrayIfEmptyDictionary(key: LocalizationIdentifier.self, value: Markdown.self)
-    {
-
-      // Real implementation:
-      try container.encode(resolved)
-    }
+    try container.encode(resolve(WorkspaceConfiguration.registered))
   }
 
   public init(from decoder: Decoder) throws {

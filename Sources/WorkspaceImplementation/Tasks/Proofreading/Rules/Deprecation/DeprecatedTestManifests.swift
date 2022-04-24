@@ -25,8 +25,7 @@
   import WorkspaceLocalizations
 
   internal struct DeprecatedTestManifests: TextRule {
-    // XCTestManifests deprecated in 0.25.0 (2019‐11‐03)
-    // LinuxMain deprecated in 0.37.5 (????‐??‐??)
+    // Deprecated in 0.37.5 (2021‐09‐03)
 
     internal static let identifier = UserFacing<StrictString, InterfaceLocalization>(
       { localization in

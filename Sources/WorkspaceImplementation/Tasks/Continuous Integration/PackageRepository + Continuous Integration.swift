@@ -33,7 +33,6 @@
 
     internal func refreshContinuousIntegration(output: Command.Output) throws {
       try refreshGitHubWorkflows(output: output)
-      delete(location.appendingPathComponent(".travis.yml"), output: output)
     }
 
     private func relevantJobs(output: Command.Output) throws -> [ContinuousIntegrationJob] {
@@ -83,7 +82,6 @@
           output: output
         )
       }
-      try cleanUpDeprecatedWorkflows(output: output)
 
       if try relevantJobs(output: output).contains(.deployment) {
         try refreshGitHubWorkflow(
@@ -105,34 +103,11 @@
           output: output
         )
       }
-      try cleanCMakeUp(output: output)
+
+      // Clean up after deprecated strategies.
       try cleanWindowsTestsUp(output: output)
       try cleanWindowsSDKUp(output: output)
-      try cleanAndroidSDKUp(output: output)
       try cleanCentOSUp(output: output)
-    }
-
-    private func cleanUpDeprecatedWorkflows(output: Command.Output) throws {
-      let deprecatedWorkflowName = UserFacing<StrictString, InterfaceLocalization>(
-        { localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Workspace Validation"
-          case .deutschDeutschland:
-            return "Arbeitsbereichprüfung"
-          }
-        }).resolved(for: try configuration(output: output).developmentInterfaceLocalization())
-      delete(
-        location.appendingPathComponent(".github/workflows/\(deprecatedWorkflowName).yaml"),
-        output: output
-      )
-    }
-
-    private func cleanCMakeUp(output: Command.Output) throws {
-      let url = location.appendingPathComponent(".github/workflows/Windows/CMakeLists.txt")
-      let mainURL = location.appendingPathComponent(".github/workflows/Windows/WindowsMain.swift")
-      delete(url, output: output)
-      delete(mainURL, output: output)
     }
 
     private func cleanWindowsTestsUp(output: Command.Output) throws {
@@ -167,11 +142,6 @@
 
     private func cleanWindowsSDKUp(output: Command.Output) throws {
       let url = location.appendingPathComponent(".github/workflows/Windows/SDK.json")
-      delete(url, output: output)
-    }
-
-    private func cleanAndroidSDKUp(output: Command.Output) throws {
-      let url = location.appendingPathComponent(".github/workflows/Android/SDK.json")
       delete(url, output: output)
     }
 

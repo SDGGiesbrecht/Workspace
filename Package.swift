@@ -822,10 +822,10 @@ for target in package.targets {
       .when(platforms: [.wasi])
     ),
     // #workaround(Swift 5.6, FoundationXML is broken on web.)
-    // #warning(Swift 5.5.2, FoundationXML is broken on Android.)
+    // #workaroung(Swift 5.6, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
-      .when(platforms: [.wasi, .tvOS, .iOS, /*.android,*/ .watchOS])
+      .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)

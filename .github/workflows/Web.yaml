@@ -1,0 +1,44 @@
+# Web.yaml
+#
+# This source file is part of the Workspace open source project.
+# Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
+# https://github.com/SDGGiesbrecht/Workspace#workspace
+#
+# Copyright ©2021–2022 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2021–2022 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+#
+# Soli Deo gloria.
+#
+# Licensed under the Apache Licence, Version 2.0.
+# See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+
+name: Web
+
+on: [push, pull_request]
+
+jobs:
+  Web:
+    name: Web
+    runs-on: ubuntu-20.04
+    container: ghcr.io/swiftwasm/carton:0.13.0
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Cache Workspace
+      uses: actions/cache@v2
+      with:
+        key: Web‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
+    - name: Install Swift
+      shell: bash
+      run: |
+        set -x
+        carton sdk install wasm-5.6.0-RELEASE
+        carton sdk versions
+        echo "wasm-5.6.0-RELEASE" > .swift-version
+    - name: Test
+      shell: bash
+      run: |
+        set -x
+        export TARGETING_WEB=true
+        carton test

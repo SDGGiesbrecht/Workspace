@@ -708,7 +708,7 @@
               "xcodebuild \u{2D}version",
               "swift \u{2D}\u{2D}version",
             ]
-          ),
+          )
         ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion

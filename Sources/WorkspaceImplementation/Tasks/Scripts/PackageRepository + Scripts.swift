@@ -35,10 +35,6 @@
       let localization = try project.configuration(output: output)
         .developmentInterfaceLocalization()
 
-      for deprecated in Script.deprecatedFileNames {
-        delete(location.appendingPathComponent(String(deprecated)), output: output)
-      }
-
       for script in Script.allCases where script.isCheckedIn ∨ script.isRelevantOnCurrentDevice {
         try purgingAutoreleased {
 

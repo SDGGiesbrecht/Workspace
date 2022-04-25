@@ -26,10 +26,6 @@ import XCTest
 import SDGXCTestUtilities
 import SDGLocalizationTestUtilities
 
-#if os(watchOS)
-  // #workaround(SDGCornerstone 7.2.3, Real TestCase unavailable.)
-  class TestCase: XCTestCase {}
-#endif
 class APITests: TestCase {
 
   override func setUp() {

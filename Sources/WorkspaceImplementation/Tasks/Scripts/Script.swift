@@ -60,33 +60,10 @@
         }
       }
     }
-    private var deprecatedPre0_1_1FileName: StrictString? {
-      switch self {
-      case .refreshMacOS:
-        return "Refresh Workspace (macOS).command"
-      case .refreshLinux:
-        return "Refresh Workspace (Linux).sh"
-      case .validateMacOS:
-        return "Validate Changes (macOS).command"
-      case .validateLinux:
-        return "Validate Changes (Linux).sh"
-      }
-    }
-    internal static let deprecatedFileNames: [StrictString] = {
-      var deprecated: Set<StrictString> = []
-      for script in Script.allCases {
-        if let pre0_1_1 = script.deprecatedPre0_1_1FileName,
-          pre0_1_1 ≠ script.fileName(localization: .englishCanada)
-        {
-          deprecated.insert(pre0_1_1)
-        }
-      }
-      return deprecated.sorted()
-    }()
 
     internal var isRelevantOnCurrentDevice: Bool {
       #if os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
-        // #workaround(Swift 5.5.2, Until Workspace works on these platforms.)
+        // #workaround(Swift 5.6, Until Workspace works on these platforms.)
         return false
       #else
         switch self {

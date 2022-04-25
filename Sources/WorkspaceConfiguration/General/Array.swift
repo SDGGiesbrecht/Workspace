@@ -24,7 +24,7 @@ extension Array where Element: StringFamily {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Array.joinedAsLines())
   /// Joins an array of strings so that each entry in the array is a line of the string.
   public func joinedAsLines() -> Element {
-    #if compiler(>=5.3)  // #workaround(SDGCornerstone 8.0.1, Generic “joined” is unavailable.)
+    #if compiler(>=5.3)  // #workaround(SDGCornerstone 9.0.1, Generic “joined” is unavailable.)
       if isEmpty {
         return ""
       } else {

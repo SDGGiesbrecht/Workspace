@@ -26,10 +26,6 @@ import XCTest
 import SDGXCTestUtilities
 import SDGPersistenceTestUtilities
 
-#if os(watchOS)
-  // #workaround(SDGCornerstone 7.2.3, Real TestCase unavailable.)
-  class TestCase: XCTestCase {}
-#endif
 final class Tests: TestCase {
 
   func testCachePermissions() throws {

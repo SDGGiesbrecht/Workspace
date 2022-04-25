@@ -177,7 +177,6 @@
                 ).documentation[localization],
                 let description = documentation.descriptionSection
               {
-                // @exempt(from: tests) #workaround(Temporarily unreachable because Swift 5.6 cannot load master.)
                 markdown += [
                   "",
                   StrictString(description.text),

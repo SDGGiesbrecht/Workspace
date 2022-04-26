@@ -7,7 +7,7 @@ on: [push, pull_request]
 jobs:
   tvOS:
     name: tvOS
-    runs-on: macos-11
+    runs-on: macos-12
     steps:
     - name: Holen
       uses: actions/checkout@v2
@@ -20,13 +20,9 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_13.1.app
+        sudo xcode-select -switch /Applications/Xcode_13.3.app
         xcodebuild -version
         swift --version
-    - name: Swift installieren
-      uses: fwal/setup-swift@v1.14.0
-      with:
-        swift-version: '5.6'
     - name: Arbeitsbereich installieren
       shell: bash
       run: |

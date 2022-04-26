@@ -548,10 +548,9 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(
-          // #workaround(SwiftPM 0.50500.2, Reduce to SwiftPMDataModel‐auto once available.)
-          name: "SwiftPM\u{2D}auto",
+          name: "SwiftPMDataModel\u{2D}auto",
           package: "SwiftPM",
-          // #workaround(SwiftPM 0.50500.2, Does not support Windows yet.)
+          // #workaround(SwiftPM 0.50600.3, Does not support Windows yet.)
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
@@ -567,7 +566,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
@@ -685,7 +684,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ]
@@ -741,7 +740,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.5.2, Does not compile for web.)
+          // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -803,39 +802,38 @@ let package = Package(
   ]
 )
 
-// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
-#if os(macOS)
-  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
-    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
-#endif
-
 for target in package.targets {
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.5.2, Web lacks Dispatch.)
+    // #workaround(Swift 5.6, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.6, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.5.2, FoundationNetworking is broken on Android.)
-    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.wasi, .android])),
-    // #workaround(Swift 5.5.2, FoundationXML is broken on web.)
-    // #workaround(Swift 5.5.2, FoundationXML is broken on Android.)
+    // #workaround(Swift 5.6, FoundationNetworking is broken on Android.)
+    .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
+    // #workaround(Swift 5.6, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    .define(
+      "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
+      .when(platforms: [.wasi])
+    ),
+    // #workaround(Swift 5.6, FoundationXML is broken on web.)
+    // #workaroung(Swift 5.6, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(Swift 5.5.2, SwiftFormatConfiguration does not compile for web.)
+    // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.wasi])
     ),
-    // #workaround(Swift 5.5.2, SwiftPM lacks conditional targets.
+    // #workaround(Swift 5.6, SwiftPM lacks conditional targets.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -843,12 +841,18 @@ for target in package.targets {
   ])
 }
 
+// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
+#if os(macOS)
+  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
+    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
+#endif
+
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Windows.)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Windows.)
   let impossibleDependencies: [String] = [
-    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
-    "SwiftSyntax",
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
+    "SwiftSyntaxParser",
     "SwiftFormat\u{22}",
   ]
   for target in package.targets {
@@ -859,13 +863,13 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #workaround(Swift 5.5.2, Unable to build from Windows.)
+  // #workaround(Swift 5.6, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   let impossibleDependencies: [String] = [
-    // #workaround(Swift 5.5.2, Web toolchain rejects manifest due to dynamic library.)
+    // #workaround(Swift 5.6, Web toolchain rejects manifest due to dynamic library.)
     "swift\u{2D}format",
     "SwiftPM",
   ]
@@ -888,7 +892,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -901,22 +905,13 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
-
-  // #workaround(Cause test bundle to crash in continuous integration with dual toolchains.)
-  let impossibleTargets: [String] = [
-    "WorkspaceProjectConfiguration",
-    "WorkspaceConfigurationTests",
-    "WorkspaceImplementation",
-    "WorkspaceTests",
-  ]
-  package.targets.removeAll(where: { impossibleTargets.contains($0.name) })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -929,15 +924,15 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
-  // #workaround(Swift 5.5.2, Conditional dependencies fail to skip for Android.)
+  // #workaround(Swift 5.6, Conditional dependencies fail to skip for Android.)
   let impossibleDependencies = [
-    // #workaround(SwiftSyntax 0.50500.0, Toolchain lacks internal parser.)
+    // #workaround(SwiftSyntax 0.50600.1, Toolchain lacks internal parser.)
     "SwiftSyntax",
     "SwiftFormat\u{22}",
   ]
@@ -951,7 +946,7 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
-  // #workaround(xcodebuild -version 13.3, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
   let impossibleDependencies: [String] = [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -964,7 +959,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
       })
     })
   }
-  // #workaround(xcodebuild -version 13.2.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
+  // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }

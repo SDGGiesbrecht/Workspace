@@ -39,7 +39,7 @@ import CrossPlatformC
 public func helloWorld() {
   print("Hello, world!")
   print(NSString(string: "Hello, Foundation!"))
-  #if !PLATFORM_LACKS_FOUNDATION_NETWORKING
+  #if !PLATFORM_LACKS_FOUNDATION_NETWORKING && !PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE
     print(URLCredential(user: "Hello,", password: "FoundationNetworking", persistence: .none))
   #endif
   #if !PLATFORM_LACKS_FOUNDATION_XML

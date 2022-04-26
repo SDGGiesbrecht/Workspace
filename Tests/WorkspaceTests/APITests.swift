@@ -37,10 +37,6 @@
 
   import SDGCommandLineTestUtilities
 
-  #if os(watchOS)
-    // #workaround(SDGCornerstone 7.2.3, Real TestCase unavailable.)
-    class TestCase: XCTestCase {}
-  #endif
   class APITests: TestCase {
 
     static let configureGit: Void = {
@@ -64,7 +60,7 @@
       CustomTask.emptyCache()
       APITests.configureGit
 
-      // #workaround(xcodebuild -version 13.3, GitHub actions contain a stale configuration.) @exempt(from: unicode)
+      // #workaround(xcodebuild -version 13.3.1, GitHub actions contain a stale configuration.) @exempt(from: unicode)
       if isInGitHubAction {
         let url = URL(fileURLWithPath: NSHomeDirectory())
           .appendingPathComponent("Library")

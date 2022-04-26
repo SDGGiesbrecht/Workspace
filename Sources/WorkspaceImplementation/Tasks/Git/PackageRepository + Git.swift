@@ -98,26 +98,6 @@
       var gitIgnore = try TextFile(possiblyAt: location.appendingPathComponent(".gitignore"))
       gitIgnore.body = entries.joinedAsLines()
       try gitIgnore.writeChanges(for: self, output: output)
-
-      var gitAttributes = try TextFile(
-        possiblyAt: location.appendingPathComponent(".gitattributes")
-      )
-      if let deprecatedManagedSection = gitAttributes.contents.scalars.firstMatch(
-        for: "# [_Begin Workspace Section_]".scalars
-          + RepetitionPattern(ConditionalPattern({ _ in true }))
-          + "# [_End Workspace Section]".scalars
-      ) {
-        if gitAttributes.contents.scalars[deprecatedManagedSection.range.upperBound...]
-          .contains(where: { $0 ∉ CharacterSet.whitespacesAndNewlines })
-        {
-          // Custom attributes present.
-          gitAttributes.contents.scalars.removeSubrange(deprecatedManagedSection.range)
-          try gitAttributes.writeChanges(for: self, output: output)
-        } else {
-          // Only deprecated Workspace entries.
-          delete(gitAttributes.location, output: output)
-        }
-      }
     }
   }
 #endif

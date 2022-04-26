@@ -43,8 +43,8 @@
 
     internal static let currentSwiftVersion = Version(5, 6, 0)
 
-    private static let currentMacOSVersion = Version(11)
-    internal static let currentXcodeVersion = Version(13, 1)
+    private static let currentMacOSVersion = Version(12)
+    internal static let currentXcodeVersion = Version(13, 3)
     private static let currentVisualStudioVersion = "2019"
     private static let currentCartonVersion = Version(0, 14, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
@@ -708,14 +708,7 @@
               "xcodebuild \u{2D}version",
               "swift \u{2D}\u{2D}version",
             ]
-          ),
-          step(installSwiftStepName, localization: interfaceLocalization),
-          uses(
-            "fwal/setup\u{2D}swift@v1.14.0",
-            with: [
-              "swift\u{2D}version": "\u{27}5.6\u{27}"
-            ]
-          ),
+          )
         ])
       case .windows:
         let version = ContinuousIntegrationJob.currentSwiftVersion

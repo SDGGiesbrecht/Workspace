@@ -142,10 +142,5 @@ public let configuration: WorkspaceConfiguration = {
     "SwiftSyntax",
   ]
 
-  #if os(macOS)
-    // #workaround(Skipping because CI has outdated Xcode.)
-    configuration.testing.enforceCoverage = false
-  #endif
-
   return configuration
 }()

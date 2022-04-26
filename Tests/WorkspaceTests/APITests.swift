@@ -407,12 +407,6 @@
     }
 
     func testDeutsch() throws {
-      // #workaround(Skipping because CI has outdated Xcode.)
-      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
-        xcode < Version(13, 3)
-      {
-        return
-      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         var output = try mockCommand.withRootBehaviour().execute(with: [
           "export‐interface", "•language", "de",
@@ -896,12 +890,6 @@
     }
 
     func testSDGLibrary() {
-      // #workaround(Skipping because CI has outdated Xcode.)
-      if let xcode = Xcode.version(forConstraints: Version(13, 1, 0)...Version(13, 3, 0)),
-        xcode < Version(13, 3)
-      {
-        return
-      }
       #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
         let configuration = WorkspaceConfiguration()
         configuration._applySDGDefaults()

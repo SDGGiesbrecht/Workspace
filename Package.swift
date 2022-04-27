@@ -783,24 +783,21 @@ let package = Package(
       dependencies: [
         "WorkspaceConfiguration"
       ],
-      path: "",
-      exclude: [
-        "LICENSE.md",
-        "README.md",
-        "Refresh (Linux).sh",
-        "Refresh (macOS).command",
-        "Resources",
-        "Sources",
-        "Tests",
-        "Validate (Linux).sh",
-        "Validate (macOS).command",
-      ],
-      sources: ["Workspace.swift"]
+      plugins: ["ConfigurationEmbedder"]
+    ),
+    .plugin(
+      name: "ConfigurationEmbedder",
+      capability: .buildTool(),
+      dependencies: ["copy‐source"]
+    ),
+    .executableTarget(
+      name: "copy‐source"
     ),
   ]
 )
 
-for target in package.targets {
+for target in package.targets
+where target.type != .plugin {  // @exempt(from: unicode)
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
@@ -838,12 +835,6 @@ for target in package.targets {
     ),
   ])
 }
-
-// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
-#if os(macOS)
-  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
-    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
-#endif
 
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {

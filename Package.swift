@@ -933,6 +933,12 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
       })
     })
   }
+
+  // #workaround(Swift 5.6, Android toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {

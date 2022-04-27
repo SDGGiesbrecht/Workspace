@@ -910,6 +910,12 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -929,6 +935,12 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -970,4 +982,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }

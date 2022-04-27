@@ -803,6 +803,8 @@ where target.type != .plugin {  // @exempt(from: unicode)
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
+    // #workaround(Swift 5.6, Plug‐ins do not work everywhere yet.)
+    .define("PLATFORM_CANNOT_USE_PLUG_INS", .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(Swift 5.6, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)

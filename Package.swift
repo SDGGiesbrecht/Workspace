@@ -854,6 +854,12 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
 
   // #workaround(Swift 5.6, Unable to build from Windows.)
   package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
+
+  // #workaround(Swift 5.6, Windows toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
@@ -878,6 +884,12 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
         return "\(dependency)".contains(impossible)
       })
     })
+  }
+
+  // #workaround(Swift 5.6, Web toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
   }
 }
 

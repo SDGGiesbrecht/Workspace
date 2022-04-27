@@ -473,8 +473,7 @@ class APITests: TestCase {
   }
 
   func testWorkspaceProjectConfiguration() throws {
-    // #workaround(Unexpected failure.)
-    #if !os(Windows)
+    #if !PLATFORM_CANNOT_USE_PLUG_INS
       let configuration = WorkspaceProjectConfiguration.configuration
       let encoded = try JSONEncoder().encode(configuration)
       _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)

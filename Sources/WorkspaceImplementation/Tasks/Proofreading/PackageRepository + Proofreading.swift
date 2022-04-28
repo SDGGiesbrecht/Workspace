@@ -74,6 +74,7 @@
         {
           let setting: Setting
           if try isWorkspaceProject() {
+            // @exempt(from: tests)
             setting = .library
           } else {
             setting = .topLevel

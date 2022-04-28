@@ -855,7 +855,9 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   }
 
   // #workaround(Swift 5.6, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
+  for target in package.targets {
+    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
+  }
 
   // #workaround(Swift 5.6, Windows toolchain cannot build plugins yet.)
   package.targets.removeAll(where: { $0.type == .plugin })

@@ -72,7 +72,14 @@
         for name in InterfaceLocalization.allCases
           .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
         {
-          settings[location.appendingPathComponent(String(name) + ".swift")] = .topLevel
+          let setting: Setting
+          if try isWorkspaceProject() {
+            // @exempt(from: tests)
+            setting = .library
+          } else {
+            setting = .topLevel
+          }
+          settings[location.appendingPathComponent(String(name) + ".swift")] = setting
         }
         guard #available(macOS 10.15, *) else {
           throw SwiftPMUnavailableError()  // @exempt(from: tests)

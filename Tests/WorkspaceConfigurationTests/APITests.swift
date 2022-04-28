@@ -473,12 +473,24 @@ class APITests: TestCase {
   }
 
   func testWorkspaceProjectConfiguration() throws {
-    // #workaround(Unexpected failure.)
-    #if !os(Windows)
+    #if !PLATFORM_CANNOT_USE_PLUG_INS
       let configuration = WorkspaceProjectConfiguration.configuration
-      let encoded = try JSONEncoder().encode(configuration)
-      _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+    #else
+      let configuration = WorkspaceConfiguration()
+      configuration._applySDGDefaults()
+      configuration.documentation.currentVersion = Version(0, 39, 1)
+      configuration.documentation.projectWebsite = URL(
+        string: "https://github.com/SDGGiesbrecht/Workspace#workspace"
+      )!
+      configuration.documentation.repositoryURL = URL(
+        string: "https://github.com/SDGGiesbrecht/Workspace"
+      )!
+      configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE"]
+      configuration._applySDGOverrides()
+      configuration._validateSDGStandards(openSource: true)
     #endif
+    let encoded = try JSONEncoder().encode(configuration)
+    _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
   }
 
   func testWorkspaceContext() {

@@ -39,6 +39,7 @@
         "Package.swift",
         "Sources",
         "Tests",
+        "Plugins",
         "Package.resolved",
 
         // Workspace

@@ -747,7 +747,7 @@ let package = Package(
     .executableTarget(
       name: "cross‐platform‐tool",
       dependencies: ["CrossPlatform"],
-      path: "Tests/cross‐platform‐tool"
+      path: "Tests/cross_platform_tool"
     ),
     .testTarget(
       name: "CrossPlatformTests",
@@ -783,29 +783,32 @@ let package = Package(
       dependencies: [
         "WorkspaceConfiguration"
       ],
-      path: "",
-      exclude: [
-        "LICENSE.md",
-        "README.md",
-        "Refresh (Linux).sh",
-        "Refresh (macOS).command",
-        "Resources",
-        "Sources",
-        "Tests",
-        "Validate (Linux).sh",
-        "Validate (macOS).command",
-      ],
-      sources: ["Workspace.swift"]
+      plugins: ["ConfigurationEmbedder"]
+    ),
+    .plugin(
+      name: "ConfigurationEmbedder",
+      capability: .buildTool(),
+      dependencies: ["copy‐source"]
+    ),
+    .executableTarget(
+      name: "copy‐source",
+      path: "Sources/copy_source"
     ),
   ]
 )
 
-for target in package.targets {
+for target in package.targets
+where target.type != .plugin {  // @exempt(from: unicode)
   var swiftSettings = target.swiftSettings ?? []
   defer { target.swiftSettings = swiftSettings }
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
+    // #workaround(Swift 5.6, Plug‐ins do not work everywhere yet.)
+    .define(
+      "PLATFORM_CANNOT_USE_PLUG_INS",
+      .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
+    ),
     // #workaround(Swift 5.6, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
@@ -839,12 +842,6 @@ for target in package.targets {
   ])
 }
 
-// #workaround(Swift 5.5.2, Needs a better way to silence the warning; maybe a build script?)
-#if os(macOS)
-  package.targets.first(where: { $0.name == "WorkspaceProjectConfiguration" })!
-    .exclude.removeAll(where: { $0.contains("Validate (Linux)") })
-#endif
-
 import Foundation
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.6, Conditional dependencies fail to skip for Windows.)
@@ -861,8 +858,16 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #workaround(Swift 5.6, Unable to build from Windows.)
-  package.targets.removeAll(where: { $0.name.hasSuffix("tool") })
+  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
+  for target in package.targets {
+    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
+  }
+
+  // #workaround(Swift 5.6, Windows toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
@@ -888,6 +893,12 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
       })
     })
   }
+
+  // #workaround(Swift 5.6, Web toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
@@ -907,6 +918,12 @@ if ProcessInfo.processInfo.environment["TARGETING_TVOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
@@ -926,6 +943,12 @@ if ProcessInfo.processInfo.environment["TARGETING_IOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on iOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }
 
 if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
@@ -941,6 +964,12 @@ if ProcessInfo.processInfo.environment["TARGETING_ANDROID"] == "true" {
         "\(dependency)".contains(impossible)
       })
     })
+  }
+
+  // #workaround(Swift 5.6, Android toolchain cannot build plugins yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
   }
 }
 
@@ -961,4 +990,10 @@ if ProcessInfo.processInfo.environment["TARGETING_WATCHOS"] == "true" {
   // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on watchOS.) @exempt(from: unicode)
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
+
+  // #workaround(Swift 5.6, Xcode cannot use plugins during cross‐compilation yet.)
+  package.targets.removeAll(where: { $0.type == .plugin })
+  for target in package.targets {
+    target.plugins = nil
+  }
 }

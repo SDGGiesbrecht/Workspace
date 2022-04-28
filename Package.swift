@@ -860,7 +860,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   // #workaround(Swift 5.6, Unable to build from Windows.)
   for target in package.targets
   where target.name.contains("‐") {
-    target.path = "Sources/\(target.name)"
+    target.path = target.path ?? "Sources/\(target.name)"
     target.name = target.name.replacingOccurrences(of: "‐", with: "_")
   }
 

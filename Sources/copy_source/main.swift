@@ -14,6 +14,8 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+// #workaround(Swift 5.6, Directory should be “copy‐source”, but for Windows bug.)
+
 import Foundation
 
 var arguments = ProcessInfo.processInfo.arguments.dropFirst()

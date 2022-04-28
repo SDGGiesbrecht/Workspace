@@ -747,7 +747,7 @@ let package = Package(
     .executableTarget(
       name: "cross‐platform‐tool",
       dependencies: ["CrossPlatform"],
-      path: "Tests/cross‐platform‐tool"
+      path: "Tests/cross_platform_tool"
     ),
     .testTarget(
       name: "CrossPlatformTests",
@@ -791,7 +791,8 @@ let package = Package(
       dependencies: ["copy‐source"]
     ),
     .executableTarget(
-      name: "copy‐source"
+      name: "copy‐source",
+      path: "Sources/copy_source"
     ),
   ]
 )
@@ -857,10 +858,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
     })
   }
 
-  // #workaround(Swift 5.6, Unable to build from Windows.)
-  for target in package.targets
-  where target.name.contains("‐") {
-    target.path = target.path ?? "Sources/\(target.name)"
+  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
+  for target in package.targets {
     target.name = target.name.replacingOccurrences(of: "‐", with: "_")
   }
 

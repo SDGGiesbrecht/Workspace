@@ -73,8 +73,8 @@
           .map({ PackageRepository.workspaceConfigurationNames.resolved(for: $0) })
         {
           let setting: Setting
-          if try ¬isWorkspaceProject() {
-            setting = .unknown
+          if try isWorkspaceProject() {
+            setting = .library
           } else {
             setting = .topLevel
           }

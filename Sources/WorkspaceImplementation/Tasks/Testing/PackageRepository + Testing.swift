@@ -60,21 +60,10 @@
           switch job {
           case .macOS, .ubuntu, .amazonLinux:
             buildCommand = { output in
-              var log = try self.build(
+              let log = try self.build(
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
-
-              let filtered = log.lines.filter { line in
-                return
-                  ¬(
-                  // #workaround(Xcode 13.0, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
-                  line.line.contains(
-                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
-                  ))
-              }
-              log.lines = LineView<String>(filtered)
-
               return ¬SwiftCompiler.warningsOccurred(during: log)
             }
           case .windows, .web, .android, .miscellaneous, .deployment:

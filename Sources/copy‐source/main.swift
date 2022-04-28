@@ -22,8 +22,8 @@ guard let inputPath = arguments.popFirst(),
 else {
   fatalError("Wrong number of arguments:\n\(Array(arguments))")
 }
+let input = URL(fileURLWithPath: inputPath)
+let output = URL(fileURLWithPath: outputPath)
 
-try FileManager.default.copyItem(
-  at: URL(fileURLWithPath: inputPath),
-  to: URL(fileURLWithPath: outputPath)
-)
+try? FileManager.default.removeItem(at: output)
+try FileManager.default.copyItem(at: input, to: output)

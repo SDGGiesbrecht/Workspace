@@ -482,7 +482,9 @@ class APITests: TestCase {
       configuration.documentation.projectWebsite = URL(
         string: "https://github.com/SDGGiesbrecht/Workspace#workspace"
       )!
-      configuration.documentation.repositoryURL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
+      configuration.documentation.repositoryURL = URL(
+        string: "https://github.com/SDGGiesbrecht/Workspace"
+      )!
       configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE"]
       configuration._applySDGOverrides()
       configuration._validateSDGStandards(openSource: true)

@@ -788,11 +788,11 @@ let package = Package(
     .plugin(
       name: "ConfigurationEmbedder",
       capability: .buildTool(),
-      dependencies: ["copy‐source"]
+      dependencies: ["copy_source"]
     ),
     .executableTarget(
-      name: "copy‐source",
-      path: "Sources/copy_source"
+      // #workaround(Swift 5.6, Should be “copy‐source”, but for Windows bug.)
+      name: "copy_source"
     ),
   ]
 )
@@ -856,11 +856,6 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
         "\(dependency)".contains(impossible)
       })
     })
-  }
-
-  // #workaround(Swift 5.6, Windows cannot handle Unicode name.)
-  for target in package.targets {
-    target.name = target.name.replacingOccurrences(of: "‐", with: "_")
   }
 
   // #workaround(Swift 5.6, Windows toolchain cannot build plugins yet.)

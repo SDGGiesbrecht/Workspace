@@ -26,7 +26,7 @@ import Foundation
     return [
       .buildCommand(
         displayName: "Embed Configuration",
-        executable: try context.tool(named: "copy‐source").path,
+        executable: try context.tool(named: "copy_source").path,
         arguments: [inputPath, outputPath],
         outputFiles: [outputPath]
       )

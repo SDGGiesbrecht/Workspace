@@ -14,8 +14,6 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-// #workaround(Swift 5.6, Directory should be “cross‐platform‐tool”, but for Windows bug.)
-
 import CrossPlatform
 
 helloWorld()

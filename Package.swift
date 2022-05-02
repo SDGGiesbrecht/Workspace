@@ -850,7 +850,8 @@ var impossibleDependencyProducts: [String] = []
 
 // #workaround(Swift 5.6, Conditional dependencies fail to skip for some platforms.)
 if ["WINDOWS", "ANDROID"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" }) {
+  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
+{
   impossibleDependencyProducts.append(contentsOf: [
     "SwiftSyntaxParser",
     "SwiftFormat",
@@ -859,7 +860,8 @@ if ["WINDOWS", "ANDROID"]
 
 // #workaround(Swift 5.6, Some platforms cannot build plugins yet.)
 if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" }) {
+  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
+{
   package.targets.removeAll(where: { $0.type == .plugin })
   for target in package.targets {
     target.plugins = nil
@@ -876,7 +878,8 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
 
 // #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" }) {
+  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
+{
   impossibleDependencyProducts.append(contentsOf: [
     "SDGSwiftSource",
     "SwiftSyntaxParser",
@@ -886,7 +889,8 @@ if ["TVOS", "IOS", "WATCHOS"]
 
 // #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" }) {
+  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
+{
   package.products.removeAll(where: { $0.name.first!.isLowercase })
   package.targets.removeAll(where: { $0.type == .executable })
 }
@@ -906,7 +910,8 @@ for target in package.targets {
     switch dependency {
     case .productItem(let name, let package, condition: _):
       if let package = package,
-         impossibleDependencyPackages.contains(where: { package == $0 }) {
+        impossibleDependencyPackages.contains(where: { package == $0 })
+      {
         return true
       } else {
         return impossibleDependencyProducts.contains(where: { name == $0 })

@@ -1,151 +1,149 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "SDGCommandLine",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCommandLine",
-        "state": {
-          "branch": null,
-          "revision": "dbf6c41e1613a45698595aac5d967ddb71cab4f9",
-          "version": "2.0.0"
-        }
-      },
-      {
-        "package": "SDGCornerstone",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGCornerstone",
-        "state": {
-          "branch": null,
-          "revision": "b65715d95ab2b494a5c9d579a2891c121e9b788e",
-          "version": "9.0.1"
-        }
-      },
-      {
-        "package": "SDGSwift",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGSwift",
-        "state": {
-          "branch": null,
-          "revision": "2d656ed406516fed0062fb927cf62fee8cee28cd",
-          "version": "9.0.1"
-        }
-      },
-      {
-        "package": "SDGWeb",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/SDGWeb",
-        "state": {
-          "branch": null,
-          "revision": "c21b18dea008fa1d91a259b14a004a1cb77df602",
-          "version": "6.0.0"
-        }
-      },
-      {
-        "package": "swift-argument-parser",
-        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
-        "state": {
-          "branch": null,
-          "revision": "82905286cc3f0fa8adc4674bf49437cab65a8373",
-          "version": "1.1.1"
-        }
-      },
-      {
-        "package": "cmark",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-cmark",
-        "state": {
-          "branch": null,
-          "revision": "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
-          "version": "0.50302.0"
-        }
-      },
-      {
-        "package": "swift-collections",
-        "repositoryURL": "https://github.com/apple/swift-collections",
-        "state": {
-          "branch": null,
-          "revision": "48254824bb4248676bf7ce56014ff57b142b77eb",
-          "version": "1.0.2"
-        }
-      },
-      {
-        "package": "swift-crypto",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-crypto",
-        "state": {
-          "branch": null,
-          "revision": "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
-          "version": "0.10107.0"
-        }
-      },
-      {
-        "package": "swift-driver",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-driver",
-        "state": {
-          "branch": null,
-          "revision": "5864885ffd1e732cc1c186f4241686b190aa5cbf",
-          "version": "0.50600.2"
-        }
-      },
-      {
-        "package": "swift-format",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-format",
-        "state": {
-          "branch": null,
-          "revision": "220cc90275220b9a040529b3f3f0956b2f818b6f",
-          "version": "0.0.506001"
-        }
-      },
-      {
-        "package": "llbuild",
-        "repositoryURL": "https://github.com/apple/swift-llbuild.git",
-        "state": {
-          "branch": null,
-          "revision": "5cd4df550b31301508a77064e3dfaa5c5628780e",
-          "version": "0.5.0"
-        }
-      },
-      {
-        "package": "swift-numerics",
-        "repositoryURL": "https://github.com/apple/swift-numerics",
-        "state": {
-          "branch": null,
-          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
-          "version": "1.0.2"
-        }
-      },
-      {
-        "package": "SwiftPM",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-package-manager",
-        "state": {
-          "branch": null,
-          "revision": "62cbf6cd5aed417fd485b8a0a4990f8b452f4e09",
-          "version": "0.50600.3"
-        }
-      },
-      {
-        "package": "SwiftSyntax",
-        "repositoryURL": "https://github.com/apple/swift-syntax",
-        "state": {
-          "branch": null,
-          "revision": "0b6c22b97f8e9320bca62e82cdbee601cf37ad3f",
-          "version": "0.50600.1"
-        }
-      },
-      {
-        "package": "swift-tools-support-core",
-        "repositoryURL": "https://github.com/SDGGiesbrecht/swift-tools-support-core",
-        "state": {
-          "branch": null,
-          "revision": "107e570e3565920174d5a25bc3a0340b32d16042",
-          "version": "0.50600.0"
-        }
-      },
-      {
-        "package": "Yams",
-        "repositoryURL": "https://github.com/jpsim/Yams.git",
-        "state": {
-          "branch": null,
-          "revision": "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
-          "version": "4.0.6"
-        }
+  "pins" : [
+    {
+      "identity" : "sdgcommandline",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGCommandLine",
+      "state" : {
+        "revision" : "dbf6c41e1613a45698595aac5d967ddb71cab4f9",
+        "version" : "2.0.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "sdgcornerstone",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGCornerstone",
+      "state" : {
+        "revision" : "b65715d95ab2b494a5c9d579a2891c121e9b788e",
+        "version" : "9.0.1"
+      }
+    },
+    {
+      "identity" : "sdgswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
+      "state" : {
+        "revision" : "2d656ed406516fed0062fb927cf62fee8cee28cd",
+        "version" : "9.0.1"
+      }
+    },
+    {
+      "identity" : "sdgweb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGWeb",
+      "state" : {
+        "revision" : "94d459e5c2f7e0d0fdbc2f7ae68441972b157e6a",
+        "version" : "6.0.1"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser.git",
+      "state" : {
+        "revision" : "f3c9084a71ef4376f2fabbdf1d3d90a49f1fabdb",
+        "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "swift-cmark",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
+      "state" : {
+        "revision" : "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
+        "version" : "0.50302.0"
+      }
+    },
+    {
+      "identity" : "swift-collections",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-collections",
+      "state" : {
+        "revision" : "48254824bb4248676bf7ce56014ff57b142b77eb",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-crypto",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-crypto",
+      "state" : {
+        "revision" : "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
+        "version" : "0.10107.0"
+      }
+    },
+    {
+      "identity" : "swift-driver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-driver",
+      "state" : {
+        "revision" : "5864885ffd1e732cc1c186f4241686b190aa5cbf",
+        "version" : "0.50600.2"
+      }
+    },
+    {
+      "identity" : "swift-format",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-format",
+      "state" : {
+        "revision" : "220cc90275220b9a040529b3f3f0956b2f818b6f",
+        "version" : "0.0.506001"
+      }
+    },
+    {
+      "identity" : "swift-llbuild",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-llbuild.git",
+      "state" : {
+        "revision" : "5cd4df550b31301508a77064e3dfaa5c5628780e",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-numerics",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-numerics",
+      "state" : {
+        "revision" : "0a5bc04095a675662cf24757cc0640aa2204253b",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "swift-package-manager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-package-manager",
+      "state" : {
+        "revision" : "62cbf6cd5aed417fd485b8a0a4990f8b452f4e09",
+        "version" : "0.50600.3"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax",
+      "state" : {
+        "revision" : "0b6c22b97f8e9320bca62e82cdbee601cf37ad3f",
+        "version" : "0.50600.1"
+      }
+    },
+    {
+      "identity" : "swift-tools-support-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-tools-support-core",
+      "state" : {
+        "revision" : "107e570e3565920174d5a25bc3a0340b32d16042",
+        "version" : "0.50600.0"
+      }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
+        "version" : "4.0.6"
+      }
+    }
+  ],
+  "version" : 2
 }

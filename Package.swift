@@ -513,7 +513,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
-      from: Version(6, 0, 0)
+      from: Version(6, 0, 1)
     ),
   ],
   targets: [

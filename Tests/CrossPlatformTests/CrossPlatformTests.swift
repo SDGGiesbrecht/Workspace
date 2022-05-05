@@ -50,6 +50,7 @@ final class Tests: TestCase {
           )
         else {
           #warning("Debugging...")
+          XCTFail(try ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "where git"]).get())
           XCTFail(try Shell.default.run(command: ["where", "git"]).get())
 
           XCTFail("Failed to locate Git.")

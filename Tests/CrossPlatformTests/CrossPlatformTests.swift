@@ -49,6 +49,9 @@ final class Tests: TestCase {
             validate: { _ in true }
           )
         else {
+          #warning("Debugging...")
+          XCTFail(try Shell.default.run(command: ["where", "git"]).get())
+
           XCTFail("Failed to locate Git.")
           return
         }

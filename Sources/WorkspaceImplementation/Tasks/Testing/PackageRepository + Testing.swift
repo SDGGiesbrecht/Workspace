@@ -81,7 +81,7 @@
             unreachable()
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
-              var log = try self.build(
+              let log = try self.build(
                 for: job.buildPlatform,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
@@ -89,20 +89,6 @@
                   }
                 }
               ).get()
-
-              let filtered = log.lines.filter { line in
-                return
-                  ¬(
-                  // #workaround(Xcode 13.2.1, XCTest not provided for older watchOS.)
-                  line.line.contains(
-                    "XCTest.framework/XCTest) was built for newer watchOS".scalars
-                  )
-                  ∨ line.line.contains(
-                    "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars
-                  ))
-              }
-              log.lines = LineView<String>(filtered)
-
               return ¬Xcode.warningsOccurred(during: log)
             }
           }

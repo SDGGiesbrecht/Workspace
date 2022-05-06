@@ -40,7 +40,7 @@ final class Tests: TestCase {
 
   func testGit() throws {
     #if !PLATFORM_LACKS_GIT
-      #if !os(Windows)
+      #if os(Windows)
         // #workaround(Swift 5.3.3, The standard way hits a segmentation fault.)
         guard
           let git = ExternalProcess(

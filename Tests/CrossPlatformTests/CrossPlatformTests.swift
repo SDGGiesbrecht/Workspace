@@ -40,7 +40,7 @@ final class Tests: TestCase {
 
   func testGit() throws {
     #if !PLATFORM_LACKS_GIT
-      #if os(Windows)
+      #if !os(Windows)
         // #workaround(Swift 5.3.3, The standard way hits a segmentation fault.)
         guard
           let git = ExternalProcess(
@@ -50,11 +50,36 @@ final class Tests: TestCase {
           )
         else {
           #warning("Debugging...")
-          XCTFail("URL: \(URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#))")
-          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date"]))")
-          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date", "/?"]))")
-          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date /?"]))")
-          XCTFail("process: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "where git"]))")
+          let url = URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)
+          XCTFail("URL: \(url)")
+          let process = Process()
+          process.executableURL = url
+          process.arguments = ["/c", "date /?"]
+          let pipe = Pipe()
+          process.standardOutput = pipe
+          process.standardError = pipe
+          try process.run()
+          var stream = Data()
+          func read() -> Data? {
+            let new = pipe.fileHandleForReading.availableData
+            return new.isEmpty ? nil : new
+          }
+          var end = false
+          while !end {
+            guard let newData = read() else {
+              end = true
+              return
+            }
+            stream.append(newData)
+          }
+          while process.isRunning {}
+          let output = try String(data: stream, encoding: .utf8)
+          XCTFail("output: \(output)")
+          let external = ExternalProcess(at: url)
+          XCTFail("date: \(external.run(["/c", "date"]))")
+          XCTFail("date: \(external.run(["/c", "date", "/?"]))")
+          XCTFail("date: \(external.run(["/c", "date /?"]))")
+          XCTFail("process: \(external.run(["/c", "where git"]))")
           XCTFail("shell: \(Shell.default.run(command: ["where", "git"]))")
 
           XCTFail("Failed to locate Git.")

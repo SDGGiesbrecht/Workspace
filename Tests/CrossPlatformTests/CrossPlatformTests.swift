@@ -50,9 +50,12 @@ final class Tests: TestCase {
           )
         else {
           #warning("Debugging...")
-          XCTFail("date: \(try ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date"]).get())")
-          XCTFail("process: \(try ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "where git"]).get())")
-          XCTFail("shell: \(try Shell.default.run(command: ["where", "git"]).get())")
+          XCTFail("URL: \(URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#))")
+          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date"]))")
+          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date", "/?"]))")
+          XCTFail("date: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "date /?"]))")
+          XCTFail("process: \(ExternalProcess(at: URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)).run(["/c", "where git"]))")
+          XCTFail("shell: \(Shell.default.run(command: ["where", "git"]))")
 
           XCTFail("Failed to locate Git.")
           return

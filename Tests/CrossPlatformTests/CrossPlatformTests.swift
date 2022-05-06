@@ -64,16 +64,11 @@ final class Tests: TestCase {
             let new = pipe.fileHandleForReading.availableData
             return new.isEmpty ? nil : new
           }
-          var end = false
-          while !end {
-            guard let newData = read() else {
-              end = true
-              return
-            }
+          while let newData = read() {
             stream.append(newData)
           }
           while process.isRunning {}
-          let output = try String(data: stream, encoding: .utf8)
+          let output = String(data: stream, encoding: .utf8)
           XCTFail("output: \(output)")
           let external = ExternalProcess(at: url)
           XCTFail("date: \(external.run(["/c", "date"]))")

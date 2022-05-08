@@ -54,7 +54,7 @@ final class Tests: TestCase {
           XCTFail("URL: \(url)")
           let process = Process()
           process.executableURL = url
-          process.arguments = ["/c", "date /?"]
+          process.arguments = ["/?"]
           let pipe = Pipe()
           process.standardOutput = pipe
           process.standardError = pipe

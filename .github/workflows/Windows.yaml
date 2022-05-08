@@ -37,7 +37,5 @@ jobs:
       shell: cmd
       run: |
         echo on
-        C:\Windows\System32\cmd.exe /c date /?
-        C:\Windows\System32\cmd.exe /c where git
         set TARGETING_WINDOWS=true
         swift test

@@ -41,51 +41,10 @@ final class Tests: TestCase {
   func testGit() throws {
     #if !PLATFORM_LACKS_GIT
       #if os(Windows)
-        // #workaround(Swift 5.3.3, The standard way hits a segmentation fault.)
-        guard
-          let git = ExternalProcess(
-            searching: [],
-            commandName: "git",
-            validate: { _ in true }
-          )
-        else {
-          #warning("Debugging...")
-          let url = URL(fileURLWithPath: #"C:\Windows\System32\cmd.exe"#)
-          XCTFail("URL: \(url)")
-          let process = Process()
-          process.executableURL = url
-          XCTFail("Round‐trip URL: \(process.executableURL)")
-          XCTFail("Round‐trip path: \(process.launchPath)")
-          process.arguments = ["/?"]
-          let pipe = Pipe()
-          process.standardOutput = pipe
-          process.standardError = pipe
-          try process.run()
-          var stream = Data()
-          func read() -> Data? {
-            let new = pipe.fileHandleForReading.availableData
-            return new.isEmpty ? nil : new
-          }
-          while let newData = read() {
-            stream.append(newData)
-          }
-          while process.isRunning {}
-          let output = String(data: stream, encoding: .utf8)
-          XCTFail("output: \(output)")
-          let external = ExternalProcess(at: url)
-          XCTFail("date: \(external.run(["/c", "date"]))")
-          XCTFail("date: \(external.run(["/c", "date", "/?"]))")
-          XCTFail("date: \(external.run(["/c", "date /?"]))")
-          XCTFail("process: \(external.run(["/c", "where git"]))")
-          XCTFail("shell: \(Shell.default.run(command: ["where", "git"]))")
-
-          XCTFail("Failed to locate Git.")
-          return
-        }
+        // #workaround(Swift 5.6, The standard way hits a segmentation fault.)
+        let git = ExternalProcess(at: URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
         let version = try git.run(["\u{2D}\u{2D}version"]).get()
-        print(version)
-      // #workaround(Swift 5.3.3, Segmentation fault.)
-      // print(Version(firstIn: version))
+        print(Version(firstIn: version))
       #else
         _ = try Git.runCustomSubcommand(
           ["\u{2D}\u{2D}version"],

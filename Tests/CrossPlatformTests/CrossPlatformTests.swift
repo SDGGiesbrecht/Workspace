@@ -54,6 +54,8 @@ final class Tests: TestCase {
           XCTFail("URL: \(url)")
           let process = Process()
           process.executableURL = url
+          XCTFail("Round‐trip URL: \(process.executableURL)")
+          XCTFail("Round‐trip path: \(process.launchPath)")
           process.arguments = ["/?"]
           let pipe = Pipe()
           process.standardOutput = pipe

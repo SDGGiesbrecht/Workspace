@@ -41,16 +41,14 @@
 
     static let configureGit: Void = {
       if isInGitHubAction {
-        #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-          _ = try? Git.runCustomSubcommand(
-            ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
-            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-          ).get()
-          _ = try? Git.runCustomSubcommand(
-            ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
-            versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
-          ).get()
-        #endif
+        _ = try? Git.runCustomSubcommand(
+          ["config", "\u{2D}\u{2D}global", "user.email", "john.doe@example.com"],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        ).get()
+        _ = try? Git.runCustomSubcommand(
+          ["config", "\u{2D}\u{2D}global", "user.name", "John Doe"],
+          versionConstraints: Version(0, 0, 0)..<Version(100, 0, 0)
+        ).get()
       }
     }()
     override func setUp() {
@@ -72,79 +70,73 @@
     }
 
     func testAllDisabled() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.provideWorkflowScripts = false
-        configuration.proofreading.rules = []
-        configuration.proofreading.swiftFormatConfiguration = nil
-        configuration.testing.prohibitCompilerWarnings = false
-        configuration.testing.enforceCoverage = false
-        configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "AllDisabled").test(
-          commands: [
-            ["refresh"],
-            ["validate"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.provideWorkflowScripts = false
+      configuration.proofreading.rules = []
+      configuration.proofreading.swiftFormatConfiguration = nil
+      configuration.testing.prohibitCompilerWarnings = false
+      configuration.testing.enforceCoverage = false
+      configuration.documentation.api.enforceCoverage = false
+      PackageRepository(mock: "AllDisabled").test(
+        commands: [
+          ["refresh"],
+          ["validate"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testAllTasks() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.optIntoAllTasks()
-        configuration.documentation.localizations = ["🇮🇱עב"]
-        configuration.licence.licence = .copyright
-        configuration.documentation.api.yearFirstPublished = 2018
-        let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
-          resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇮🇱עב"] = "#dates"
-            return result
-          })
-        PackageRepository(mock: "AllTasks").test(
-          commands: [
-            ["refresh"],
-            ["validate"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.optIntoAllTasks()
+      configuration.documentation.localizations = ["🇮🇱עב"]
+      configuration.licence.licence = .copyright
+      configuration.documentation.api.yearFirstPublished = 2018
+      let builtIn = configuration.fileHeaders.copyrightNotice
+      configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+        resolve: { configuration in
+          var result = builtIn.resolve(configuration)
+          result["🇮🇱עב"] = "#dates"
+          return result
+        })
+      PackageRepository(mock: "AllTasks").test(
+        commands: [
+          ["refresh"],
+          ["validate"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testBadStyle() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.normalize = true
-        configuration.proofreading.rules.insert(.listSeparation)
-        configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] =
-          true
-        let failing = CustomTask(
-          url: URL(string: "file:///tmp/Developer/Dependency")!,
-          version: Version(1, 0, 0),
-          executable: "Dependency",
-          arguments: ["fail"]
-        )
-        configuration.customProofreadingTasks.append(failing)
-        PackageRepository(mock: "BadStyle").test(
-          commands: [
-            ["proofread"],
-            ["proofread", "•xcode"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          withCustomTask: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.normalize = true
+      configuration.proofreading.rules.insert(.listSeparation)
+      configuration.proofreading.swiftFormatConfiguration?.rules["AlwaysUseLowerCamelCase"] =
+        true
+      let failing = CustomTask(
+        url: URL(string: "file:///tmp/Developer/Dependency")!,
+        version: Version(1, 0, 0),
+        executable: "Dependency",
+        arguments: ["fail"]
+      )
+      configuration.customProofreadingTasks.append(failing)
+      PackageRepository(mock: "BadStyle").test(
+        commands: [
+          ["proofread"],
+          ["proofread", "•xcode"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        withCustomTask: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testBrokenExample() {
@@ -158,91 +150,87 @@
     }
 
     func testBrokenTests() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        PackageRepository(mock: "BrokenTests").test(
-          commands: [
-            ["test"]
-          ],
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "BrokenTests").test(
+        commands: [
+          ["test"]
+        ],
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testCheckedInDocumentation() throws {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "en",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-            .appendingPathComponent("Resources/Tool/English.txt")
-        )
-        output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-            .appendingPathComponent("Resources/Tool/Deutsch.txt")
-        )
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "en",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/English.txt")
+      )
+      output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
+          .appendingPathComponent("Resources/Tool/Deutsch.txt")
+      )
 
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.normalize = true
-        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.api.enforceCoverage = false
-        configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
-        configuration.documentation.api.generate = true
-        configuration.documentation.about["🇨🇦EN"] =
-          "Stuff about the creators...\n\n...and more stuff..."
-        configuration.documentation.about["🇺🇸EN"] = ""
-        configuration.documentation.api.yearFirstPublished = 2018
-        configuration.documentation.api.ignoredDependencies.remove("Swift")
-        configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
-          false
-        configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
-          false
-        configuration.documentation.relatedProjects = [
-          .heading(text: [
-            "🇬🇧EN": "Heading",
-            "🇺🇸EN": "Heading",
-            "🇨🇦EN": "Heading",
-            "🇩🇪DE": "Überschrift",
-            "zxx": "...",
-          ]),
-          .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
-        ]
-        let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
-          resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["zxx"] = "#dates"
-            return result
-          })
-        configuration.provideWorkflowScripts = false
-        PackageRepository(mock: "CheckedInDocumentation").test(
-          commands: [
-            ["refresh"],
-            ["validate", "•job", "miscellaneous"],
-            ["validate", "•job", "deployment"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.normalize = true
+      configuration.documentation.repositoryURL = URL(string: "http://example.com")!
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.api.enforceCoverage = false
+      configuration.documentation.localizations = ["🇬🇧EN", "🇺🇸EN", "🇨🇦EN", "🇩🇪DE", "zxx"]
+      configuration.documentation.api.generate = true
+      configuration.documentation.about["🇨🇦EN"] =
+        "Stuff about the creators...\n\n...and more stuff..."
+      configuration.documentation.about["🇺🇸EN"] = ""
+      configuration.documentation.api.yearFirstPublished = 2018
+      configuration.documentation.api.ignoredDependencies.remove("Swift")
+      configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
+      configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
+        false
+      configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
+        false
+      configuration.documentation.relatedProjects = [
+        .heading(text: [
+          "🇬🇧EN": "Heading",
+          "🇺🇸EN": "Heading",
+          "🇨🇦EN": "Heading",
+          "🇩🇪DE": "Überschrift",
+          "zxx": "...",
+        ]),
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
+      ]
+      let builtIn = configuration.fileHeaders.copyrightNotice
+      configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+        resolve: { configuration in
+          var result = builtIn.resolve(configuration)
+          result["zxx"] = "#dates"
+          return result
+        })
+      configuration.provideWorkflowScripts = false
+      PackageRepository(mock: "CheckedInDocumentation").test(
+        commands: [
+          ["refresh"],
+          ["validate", "•job", "miscellaneous"],
+          ["validate", "•job", "deployment"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testCheckForUpdates() throws {
@@ -250,130 +238,122 @@
     }
 
     func testContinuousIntegrationWithoutScripts() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.provideWorkflowScripts = false
-        configuration.normalize = true
-        configuration.continuousIntegration.manage = true
-        configuration.licence.manage = true
-        configuration.licence.licence = .mit
-        configuration.fileHeaders.manage = true
+      let configuration = WorkspaceConfiguration()
+      configuration.provideWorkflowScripts = false
+      configuration.normalize = true
+      configuration.continuousIntegration.manage = true
+      configuration.licence.manage = true
+      configuration.licence.licence = .mit
+      configuration.fileHeaders.manage = true
 
-        // Text rules but no syntax rules.
-        configuration.proofreading.rules = [.manualWarnings]
+      // Text rules but no syntax rules.
+      configuration.proofreading.rules = [.manualWarnings]
 
-        PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
-          commands: [
-            ["refresh", "continuous‐integration"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"],
-            ["proofread"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      PackageRepository(mock: "ContinuousIntegrationWithoutScripts").test(
+        commands: [
+          ["refresh", "continuous‐integration"],
+          ["refresh", "licence"],
+          ["refresh", "file‐headers"],
+          ["proofread"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testCustomProofread() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.normalize = true
-        configuration.proofreading.rules.remove(.calloutCasing)
-        configuration.proofreading.unicodeRuleScope.remove(.ambiguous)
-        for rule in ProofreadingRule.allCases {
-          _ = rule.category
-        }
-        configuration.licence.manage = true
-        configuration.licence.licence = .gnuGeneralPublic3_0
-        configuration.fileHeaders.manage = true
-        let passing = CustomTask(
-          url: URL(string: "file:///tmp/Developer/Dependency")!,
-          version: Version(1, 0, 0),
-          executable: "Dependency",
-          arguments: []
-        )
-        configuration.customProofreadingTasks.append(passing)
-        PackageRepository(mock: "CustomProofread").test(
-          commands: [
-            ["proofread"],
-            ["proofread", "•xcode"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          withCustomTask: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.normalize = true
+      configuration.proofreading.rules.remove(.calloutCasing)
+      configuration.proofreading.unicodeRuleScope.remove(.ambiguous)
+      for rule in ProofreadingRule.allCases {
+        _ = rule.category
+      }
+      configuration.licence.manage = true
+      configuration.licence.licence = .gnuGeneralPublic3_0
+      configuration.fileHeaders.manage = true
+      let passing = CustomTask(
+        url: URL(string: "file:///tmp/Developer/Dependency")!,
+        version: Version(1, 0, 0),
+        executable: "Dependency",
+        arguments: []
+      )
+      configuration.customProofreadingTasks.append(passing)
+      PackageRepository(mock: "CustomProofread").test(
+        commands: [
+          ["proofread"],
+          ["proofread", "•xcode"],
+          ["refresh", "licence"],
+          ["refresh", "file‐headers"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        withCustomTask: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testCustomReadMe() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.currentVersion = Version(1, 2, 3)
-        configuration.documentation.repositoryURL = URL(
-          string: "https://github.com/User/Repository"
-        )!
-        configuration.documentation.localizations = ["en"]
-        configuration.documentation.installationInstructions = Lazy(resolve: { configuration in
-          return [
-            "en": StrictString(
-              [
-                "## Installation",
-                "",
-                "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`.",
-              ].joinedAsLines()
-            )
-          ]
-        })
-        configuration.licence.manage = true
-        configuration.licence.licence = .unlicense
-        configuration.fileHeaders.manage = true
-        PackageRepository(mock: "CustomReadMe").test(
-          commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "licence"],
-            ["refresh", "file‐headers"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.currentVersion = Version(1, 2, 3)
+      configuration.documentation.repositoryURL = URL(
+        string: "https://github.com/User/Repository"
+      )!
+      configuration.documentation.localizations = ["en"]
+      configuration.documentation.installationInstructions = Lazy(resolve: { configuration in
+        return [
+          "en": StrictString(
+            [
+              "## Installation",
+              "",
+              "Build from source at tag `\(configuration.documentation.currentVersion!.string())` of `\(configuration.documentation.repositoryURL!.absoluteString)`.",
+            ].joinedAsLines()
+          )
+        ]
+      })
+      configuration.licence.manage = true
+      configuration.licence.licence = .unlicense
+      configuration.fileHeaders.manage = true
+      PackageRepository(mock: "CustomReadMe").test(
+        commands: [
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "file‐headers"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testCustomTasks() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        let passing = CustomTask(
-          url: URL(string: "file:///tmp/Developer/Dependency")!,
-          version: Version(1, 0, 0),
-          executable: "Dependency",
-          arguments: []
-        )
-        configuration.customRefreshmentTasks.append(passing)
-        configuration.customValidationTasks.append(passing)
-        configuration.provideWorkflowScripts = false
-        configuration.proofreading.rules = []
-        configuration.proofreading.swiftFormatKonfiguration = nil
-        configuration.testing.prohibitCompilerWarnings = false
-        configuration.testing.enforceCoverage = false
-        configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "CustomTasks").test(
-          commands: [
-            ["refresh"],
-            ["validate"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          withCustomTask: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      let passing = CustomTask(
+        url: URL(string: "file:///tmp/Developer/Dependency")!,
+        version: Version(1, 0, 0),
+        executable: "Dependency",
+        arguments: []
+      )
+      configuration.customRefreshmentTasks.append(passing)
+      configuration.customValidationTasks.append(passing)
+      configuration.provideWorkflowScripts = false
+      configuration.proofreading.rules = []
+      configuration.proofreading.swiftFormatKonfiguration = nil
+      configuration.testing.prohibitCompilerWarnings = false
+      configuration.testing.enforceCoverage = false
+      configuration.documentation.api.enforceCoverage = false
+      PackageRepository(mock: "CustomTasks").test(
+        commands: [
+          ["refresh"],
+          ["validate"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        withCustomTask: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testDefaults() {
@@ -407,196 +387,182 @@
     }
 
     func testDeutsch() throws {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        var output = try mockCommand.withRootBehaviour().execute(with: [
-          "export‐interface", "•language", "de",
-        ]).get()
-        // macOS & Linux have different JSON whitespace.
-        output.scalars.replaceMatches(
-          for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
-          with: "\n\n".scalars
-        )
-        try output.save(
-          to: PackageRepository.beforeDirectory(for: "Deutsch")
-            .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
-        )
+      var output = try mockCommand.withRootBehaviour().execute(with: [
+        "export‐interface", "•language", "de",
+      ]).get()
+      // macOS & Linux have different JSON whitespace.
+      output.scalars.replaceMatches(
+        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        with: "\n\n".scalars
+      )
+      try output.save(
+        to: PackageRepository.beforeDirectory(for: "Deutsch")
+          .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+      )
 
-        let konfiguration = ArbeitsbereichKonfiguration()
-        konfiguration.optimizeForTests()
-        konfiguration.dokumentation.lokalisationen = ["de"]
-        konfiguration.dokumentation.programmierschnittstelle.erstellen = true
-        konfiguration.dokumentation.programmierschnittstelle
-          .durchGitHubSeitenVeröffentlichen = true
-        konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
-        konfiguration.dokumentation.programmierschnittstelle
-          .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-        PackageRepository(mock: "Deutsch").test(
-          commands: [
-            ["auffrischen", "skripte"],
-            ["auffrischen", "git"],
-            ["auffrischen", "fortlaufende‐einbindung"],
-            ["auffrischen", "ressourcen"],
-            ["normalisieren"],
-            ["prüfen", "erstellung"],
-            ["prüfen", "testabdeckung"],
-            ["prüfen", "dokumentationsabdeckung"],
-            ["dokumentieren"],
+      let konfiguration = ArbeitsbereichKonfiguration()
+      konfiguration.optimizeForTests()
+      konfiguration.dokumentation.lokalisationen = ["de"]
+      konfiguration.dokumentation.programmierschnittstelle.erstellen = true
+      konfiguration.dokumentation.programmierschnittstelle
+        .durchGitHubSeitenVeröffentlichen = true
+      konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
+      konfiguration.dokumentation.programmierschnittstelle
+        .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+      PackageRepository(mock: "Deutsch").test(
+        commands: [
+          ["auffrischen", "skripte"],
+          ["auffrischen", "git"],
+          ["auffrischen", "fortlaufende‐einbindung"],
+          ["auffrischen", "ressourcen"],
+          ["normalisieren"],
+          ["prüfen", "erstellung"],
+          ["prüfen", "testabdeckung"],
+          ["prüfen", "dokumentationsabdeckung"],
+          ["dokumentieren"],
 
-            ["korrekturlesen", "xcode‐projekt‐erstellen"],
-          ],
-          configuration: konfiguration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+          ["korrekturlesen", "xcode‐projekt‐erstellen"],
+        ],
+        configuration: konfiguration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testExecutable() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.supportedPlatforms.remove(.iOS)
-        configuration.supportedPlatforms.remove(.watchOS)
-        configuration.supportedPlatforms.remove(.tvOS)
-        configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "Executable").test(
-          commands: [
-            ["refresh", "licence"],
-            ["refresh", "read‐me"],
-            ["document"],
-            ["validate", "documentation‐coverage"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.supportedPlatforms.remove(.iOS)
+      configuration.supportedPlatforms.remove(.watchOS)
+      configuration.supportedPlatforms.remove(.tvOS)
+      configuration.documentation.localizations = ["en"]
+      PackageRepository(mock: "Executable").test(
+        commands: [
+          ["refresh", "licence"],
+          ["refresh", "read‐me"],
+          ["document"],
+          ["validate", "documentation‐coverage"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testFailingCustomTasks() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        let failing = CustomTask(
-          url: URL(string: "file:///tmp/Developer/Dependency")!,
-          version: Version(1, 0, 0),
-          executable: "Dependency",
-          arguments: ["fail"]
-        )
-        configuration.customRefreshmentTasks.append(failing)
-        configuration.provideWorkflowScripts = false
-        configuration.proofreading.rules = []
-        configuration.testing.prohibitCompilerWarnings = false
-        configuration.testing.enforceCoverage = false
-        configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomTasks").test(
-          commands: [
-            ["refresh"]
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          withCustomTask: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      let failing = CustomTask(
+        url: URL(string: "file:///tmp/Developer/Dependency")!,
+        version: Version(1, 0, 0),
+        executable: "Dependency",
+        arguments: ["fail"]
+      )
+      configuration.customRefreshmentTasks.append(failing)
+      configuration.provideWorkflowScripts = false
+      configuration.proofreading.rules = []
+      configuration.testing.prohibitCompilerWarnings = false
+      configuration.testing.enforceCoverage = false
+      configuration.documentation.api.enforceCoverage = false
+      PackageRepository(mock: "FailingCustomTasks").test(
+        commands: [
+          ["refresh"]
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        withCustomTask: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testFailingCustomValidation() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        let failing = CustomTask(
-          url: URL(string: "file:///tmp/Developer/Dependency")!,
-          version: Version(1, 0, 0),
-          executable: "Dependency",
-          arguments: ["fail"]
-        )
-        configuration.customValidationTasks.append(failing)
-        configuration.provideWorkflowScripts = false
-        configuration.proofreading.rules = []
-        configuration.proofreading.swiftFormatConfiguration = nil
-        configuration.testing.prohibitCompilerWarnings = false
-        configuration.testing.enforceCoverage = false
-        configuration.documentation.api.enforceCoverage = false
-        PackageRepository(mock: "FailingCustomValidation").test(
-          commands: [
-            ["validate"]
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          withCustomTask: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      let failing = CustomTask(
+        url: URL(string: "file:///tmp/Developer/Dependency")!,
+        version: Version(1, 0, 0),
+        executable: "Dependency",
+        arguments: ["fail"]
+      )
+      configuration.customValidationTasks.append(failing)
+      configuration.provideWorkflowScripts = false
+      configuration.proofreading.rules = []
+      configuration.proofreading.swiftFormatConfiguration = nil
+      configuration.testing.prohibitCompilerWarnings = false
+      configuration.testing.enforceCoverage = false
+      configuration.documentation.api.enforceCoverage = false
+      PackageRepository(mock: "FailingCustomValidation").test(
+        commands: [
+          ["validate"]
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        withCustomTask: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testFailingDocumentationCoverage() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.documentation.localizations = ["zxx"]
-        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
-        PackageRepository(mock: "FailingDocumentationCoverage").test(
-          commands: [
-            ["validate", "documentation‐coverage"],
-            ["document"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.documentation.localizations = ["zxx"]
+      configuration.documentation.repositoryURL = URL(string: "http://example.com")!
+      configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
+      PackageRepository(mock: "FailingDocumentationCoverage").test(
+        commands: [
+          ["validate", "documentation‐coverage"],
+          ["document"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testFailingTests() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
-        // Attempt to remove existing derived data so that the build is clean.
-        // Otherwise Xcode skips the build stages where the awaited warnings occur.
-        do {
-          for url in try FileManager.default.contentsOfDirectory(
-            at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
-              "Library/Developer/Xcode/DerivedData"
-            ),
-            includingPropertiesForKeys: nil,
-            options: []
-          ) {
-            if url.lastPathComponent.contains("FailingTests") {
-              try? FileManager.default.removeItem(at: url)
-            }
+      let configuration = WorkspaceConfiguration()
+      configuration.testing.exemptPaths.insert("Sources/FailingTests/Exempt")
+      // Attempt to remove existing derived data so that the build is clean.
+      // Otherwise Xcode skips the build stages where the awaited warnings occur.
+      do {
+        for url in try FileManager.default.contentsOfDirectory(
+          at: URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(
+            "Library/Developer/Xcode/DerivedData"
+          ),
+          includingPropertiesForKeys: nil,
+          options: []
+        ) {
+          if url.lastPathComponent.contains("FailingTests") {
+            try? FileManager.default.removeItem(at: url)
           }
-        } catch {}
-        // This test may fail if derived data is not in the default location. See above.
-        PackageRepository(mock: "FailingTests").test(
-          commands: [
-            ["validate", "build"],
-            ["validate", "test‐coverage"],
-            ["validate", "build", "•job", "miscellaneous"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+        }
+      } catch {}
+      // This test may fail if derived data is not in the default location. See above.
+      PackageRepository(mock: "FailingTests").test(
+        commands: [
+          ["validate", "build"],
+          ["validate", "test‐coverage"],
+          ["validate", "build", "•job", "miscellaneous"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testHeaders() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["🇨🇦EN"]
-        PackageRepository(mock: "Headers").test(
-          commands: [
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"],
-            ["test"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["🇨🇦EN"]
+      PackageRepository(mock: "Headers").test(
+        commands: [
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["test"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testHelp() throws {
@@ -720,324 +686,302 @@
     }
 
     func testMissingReadMeLocalization() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["zxx"]
-        configuration.documentation.readMe.contents.resolve = { _ in [:] }
-        PackageRepository(mock: "MissingReadMeLocalization").test(
-          commands: [
-            ["refresh", "read‐me"]
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["zxx"]
+      configuration.documentation.readMe.contents.resolve = { _ in [:] }
+      PackageRepository(mock: "MissingReadMeLocalization").test(
+        commands: [
+          ["refresh", "read‐me"]
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testMultipleProducts() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["en"]
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "MultipleProducts").test(
-          commands: [
-            ["refresh", "read‐me"]
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["en"]
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+      PackageRepository(mock: "MultipleProducts").test(
+        commands: [
+          ["refresh", "read‐me"]
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testNoLibraries() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["en"]
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        PackageRepository(mock: "NoLibraries").test(
-          commands: [
-            ["refresh", "read‐me"]
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["en"]
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+      PackageRepository(mock: "NoLibraries").test(
+        commands: [
+          ["refresh", "read‐me"]
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testNoLocalizations() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        PackageRepository(mock: "NoLocalizations").test(
-          commands: [
-            ["refresh", "read‐me"],
-            ["validate", "documentation‐coverage"],
-          ],
-          configuration: configuration,
-          localizations: InterfaceLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      PackageRepository(mock: "NoLocalizations").test(
+        commands: [
+          ["refresh", "read‐me"],
+          ["validate", "documentation‐coverage"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testNurDeutsch() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.gitHub.manage = true
-        PackageRepository(mock: "NurDeutsch").test(
-          commands: [
-            ["auffrischen", "github"],
-            ["normalisieren"],
-            ["korrekturlesen"],
-            ["prüfen", "erstellung"],
-            ["testen"],
-          ],
-          configuration: configuration,
-          localizations: NurDeutsch.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.gitHub.manage = true
+      PackageRepository(mock: "NurDeutsch").test(
+        commands: [
+          ["auffrischen", "github"],
+          ["normalisieren"],
+          ["korrekturlesen"],
+          ["prüfen", "erstellung"],
+          ["testen"],
+        ],
+        configuration: configuration,
+        localizations: NurDeutsch.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testOneLocalization() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["en"]
-        PackageRepository(mock: "OneLocalization").test(
-          commands: [
-            ["refresh", "github"]
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["en"]
+      PackageRepository(mock: "OneLocalization").test(
+        commands: [
+          ["refresh", "github"]
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testOneProductMultipleModules() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.documentation.localizations = ["en"]
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
-        configuration.supportedPlatforms.remove(.windows)
-        configuration.supportedPlatforms.remove(.android)
-        PackageRepository(mock: "OneProductMultipleModules").test(
-          commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "continuous‐integration"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.documentation.localizations = ["en"]
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.repositoryURL = URL(string: "https://somewhere.tld/repository")!
+      configuration.supportedPlatforms.remove(.windows)
+      configuration.supportedPlatforms.remove(.android)
+      PackageRepository(mock: "OneProductMultipleModules").test(
+        commands: [
+          ["refresh", "read‐me"],
+          ["refresh", "continuous‐integration"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testOnlyBritish() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.gitHub.manage = true
-        PackageRepository(mock: "OnlyBritish").test(
-          commands: [
-            ["refresh", "github"],
-            ["normalize"],
-          ],
-          configuration: configuration,
-          localizations: OnlyBritish.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.gitHub.manage = true
+      PackageRepository(mock: "OnlyBritish").test(
+        commands: [
+          ["refresh", "github"],
+          ["normalize"],
+        ],
+        configuration: configuration,
+        localizations: OnlyBritish.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testPartialReadMe() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration.optimizeForTests()
-        configuration.documentation.currentVersion = Version(0, 1, 0)
-        configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-        configuration.documentation.localizations = [
-          "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
-        ]
-        configuration.documentation.api.yearFirstPublished = 2018
-        configuration.gitHub.developmentNotes = "..."
-        let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
-          resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-          })
-        PackageRepository(mock: "PartialReadMe").test(
-          commands: [
-            ["refresh", "read‐me"],
-            ["refresh", "github"],
-            ["document"],
-          ],
-          configuration: configuration,
-          localizations: FastTestLocalization.self,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+      let configuration = WorkspaceConfiguration()
+      configuration.optimizeForTests()
+      configuration.documentation.currentVersion = Version(0, 1, 0)
+      configuration.documentation.repositoryURL = URL(string: "http://example.com")!
+      configuration.documentation.localizations = [
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+      ]
+      configuration.documentation.api.yearFirstPublished = 2018
+      configuration.gitHub.developmentNotes = "..."
+      let builtIn = configuration.fileHeaders.copyrightNotice
+      configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+        resolve: { configuration in
+          var result = builtIn.resolve(configuration)
+          result["🇫🇷FR"] = "#dates"
+          result["🇬🇷ΕΛ"] = "#dates"
+          result["🇮🇱עב"] = "#dates"
+          result["zxx"] = "#dates"
+          return result
+        })
+      PackageRepository(mock: "PartialReadMe").test(
+        commands: [
+          ["refresh", "read‐me"],
+          ["refresh", "github"],
+          ["document"],
+        ],
+        configuration: configuration,
+        localizations: FastTestLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testSDGLibrary() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration._applySDGDefaults()
-        configuration.optimizeForTests()
-        configuration.licence.licence = .apache2_0
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.projectWebsite = URL(
-          string: "https://example.github.io/SDG/SDG"
-        )!
-        configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
-        configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
-        configuration.documentation.primaryAuthor = "John Doe"
-        configuration.documentation.api.yearFirstPublished = 2017
-        configuration.documentation.api.serveFromGitHubPagesBranch = true
-        configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
-        configuration.documentation.localizations = [
-          "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
-        ]
-        for localization in configuration.documentation.localizations {
-          configuration.documentation.about[localization] = "..."
-        }
-        configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
-        configuration.documentation.relatedProjects = [
-          .heading(text: ["🇨🇦EN": "Heading"]),
-          .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
-        ]
-        configuration.testing.exemptionTokens.insert(
-          TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
-        )
-        configuration.testing.exemptionTokens.insert(
-          TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
-        )
+      let configuration = WorkspaceConfiguration()
+      configuration._applySDGDefaults()
+      configuration.optimizeForTests()
+      configuration.licence.licence = .apache2_0
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.projectWebsite = URL(
+        string: "https://example.github.io/SDG/SDG"
+      )!
+      configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
+      configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
+      configuration.documentation.primaryAuthor = "John Doe"
+      configuration.documentation.api.yearFirstPublished = 2017
+      configuration.documentation.api.serveFromGitHubPagesBranch = true
+      configuration.gitHub.administrators = ["John Doe", "Jane Doe"]
+      configuration.documentation.localizations = [
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+      ]
+      for localization in configuration.documentation.localizations {
+        configuration.documentation.about[localization] = "..."
+      }
+      configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
+      configuration.documentation.relatedProjects = [
+        .heading(text: ["🇨🇦EN": "Heading"]),
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!),
+      ]
+      configuration.testing.exemptionTokens.insert(
+        TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
+      )
+      configuration.testing.exemptionTokens.insert(
+        TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
+      )
 
-        let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
-          resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-          })
-        PackageRepository(mock: "SDGLibrary").test(
-          commands: [
-            ["refresh", "scripts"],
-            ["refresh", "git"],
-            ["refresh", "read‐me"],
-            ["refresh", "licence"],
-            ["refresh", "github"],
-            ["refresh", "continuous‐integration"],
-            ["refresh", "resources"],
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"],
-            ["normalize"],
-            ["proofread"],
-            ["validate", "build"],
-            ["test"],
-            ["validate", "test‐coverage"],
-            ["validate", "documentation‐coverage"],
+      let builtIn = configuration.fileHeaders.copyrightNotice
+      configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+        resolve: { configuration in
+          var result = builtIn.resolve(configuration)
+          result["🇫🇷FR"] = "#dates"
+          result["🇬🇷ΕΛ"] = "#dates"
+          result["🇮🇱עב"] = "#dates"
+          result["zxx"] = "#dates"
+          return result
+        })
+      PackageRepository(mock: "SDGLibrary").test(
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
 
-            ["proofread", "•xcode"],
-            ["validate"],
-          ],
-          configuration: configuration,
-          sdg: true,
-          localizations: FastTestLocalization.self,
-          withDependency: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+          ["proofread", "•xcode"],
+          ["validate"],
+        ],
+        configuration: configuration,
+        sdg: true,
+        localizations: FastTestLocalization.self,
+        withDependency: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testSDGTool() {
-      #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-        let configuration = WorkspaceConfiguration()
-        configuration._applySDGDefaults()
-        configuration.optimizeForTests()
-        configuration.supportedPlatforms.remove(.iOS)
-        configuration.supportedPlatforms.remove(.watchOS)
-        configuration.supportedPlatforms.remove(.tvOS)
-        configuration.licence.licence = .apache2_0
-        configuration.documentation.currentVersion = Version(1, 0, 0)
-        configuration.documentation.projectWebsite = URL(
-          string: "https://example.github.io/SDG/SDG"
-        )!
-        configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
-        configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
-        configuration.documentation.primaryAuthor = "John Doe"
-        configuration.documentation.api.yearFirstPublished = 2017
-        configuration.documentation.api.serveFromGitHubPagesBranch = true
-        configuration.gitHub.administrators = ["John Doe"]
-        configuration.documentation.localizations = [
-          "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
-        ]
-        for localization in configuration.documentation.localizations {
-          configuration.documentation.about[localization] = "..."
-        }
-        configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
-        configuration.documentation.relatedProjects = [
-          .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
-        ]
-        configuration.testing.exemptionTokens.insert(
-          TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
-        )
-        configuration.testing.exemptionTokens.insert(
-          TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
-        )
+      let configuration = WorkspaceConfiguration()
+      configuration._applySDGDefaults()
+      configuration.optimizeForTests()
+      configuration.supportedPlatforms.remove(.iOS)
+      configuration.supportedPlatforms.remove(.watchOS)
+      configuration.supportedPlatforms.remove(.tvOS)
+      configuration.licence.licence = .apache2_0
+      configuration.documentation.currentVersion = Version(1, 0, 0)
+      configuration.documentation.projectWebsite = URL(
+        string: "https://example.github.io/SDG/SDG"
+      )!
+      configuration.documentation.documentationURL = URL(string: "https://example.github.io/SDG")!
+      configuration.documentation.repositoryURL = URL(string: "https://github.com/JohnDoe/SDG")!
+      configuration.documentation.primaryAuthor = "John Doe"
+      configuration.documentation.api.yearFirstPublished = 2017
+      configuration.documentation.api.serveFromGitHubPagesBranch = true
+      configuration.gitHub.administrators = ["John Doe"]
+      configuration.documentation.localizations = [
+        "🇨🇦EN", "🇬🇧EN", "🇺🇸EN", "🇩🇪DE", "🇫🇷FR", "🇬🇷ΕΛ", "🇮🇱עב", "zxx",
+      ]
+      for localization in configuration.documentation.localizations {
+        configuration.documentation.about[localization] = "..."
+      }
+      configuration.documentation.about["🇨🇦EN"] = "This project is just a test."
+      configuration.documentation.relatedProjects = [
+        .project(url: URL(string: "https://github.com/SDGGiesbrecht/Workspace")!)
+      ]
+      configuration.testing.exemptionTokens.insert(
+        TestCoverageExemptionToken("customSameLineToken", scope: .sameLine)
+      )
+      configuration.testing.exemptionTokens.insert(
+        TestCoverageExemptionToken("customPreviousLineToken", scope: .previousLine)
+      )
 
-        let builtIn = configuration.fileHeaders.copyrightNotice
-        configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
-          resolve: { configuration in
-            var result = builtIn.resolve(configuration)
-            result["🇫🇷FR"] = "#dates"
-            result["🇬🇷ΕΛ"] = "#dates"
-            result["🇮🇱עב"] = "#dates"
-            result["zxx"] = "#dates"
-            return result
-          })
-        PackageRepository(mock: "SDGTool").test(
-          commands: [
-            ["refresh", "scripts"],
-            ["refresh", "git"],
-            ["refresh", "read‐me"],
-            ["refresh", "licence"],
-            ["refresh", "github"],
-            ["refresh", "continuous‐integration"],
-            ["refresh", "resources"],
-            ["refresh", "file‐headers"],
-            ["refresh", "examples"],
-            ["refresh", "inherited‐documentation"],
-            ["normalize"],
-            ["proofread"],
-            ["validate", "build"],
-            ["test"],
-            ["validate", "test‐coverage"],
-            ["validate", "documentation‐coverage"],
+      let builtIn = configuration.fileHeaders.copyrightNotice
+      configuration.fileHeaders.copyrightNotice = Lazy<[LocalizationIdentifier: StrictString]>(
+        resolve: { configuration in
+          var result = builtIn.resolve(configuration)
+          result["🇫🇷FR"] = "#dates"
+          result["🇬🇷ΕΛ"] = "#dates"
+          result["🇮🇱עב"] = "#dates"
+          result["zxx"] = "#dates"
+          return result
+        })
+      PackageRepository(mock: "SDGTool").test(
+        commands: [
+          ["refresh", "scripts"],
+          ["refresh", "git"],
+          ["refresh", "read‐me"],
+          ["refresh", "licence"],
+          ["refresh", "github"],
+          ["refresh", "continuous‐integration"],
+          ["refresh", "resources"],
+          ["refresh", "file‐headers"],
+          ["refresh", "examples"],
+          ["refresh", "inherited‐documentation"],
+          ["normalize"],
+          ["proofread"],
+          ["validate", "build"],
+          ["test"],
+          ["validate", "test‐coverage"],
+          ["validate", "documentation‐coverage"],
 
-            ["proofread", "•xcode"],
-          ],
-          configuration: configuration,
-          sdg: true,
-          localizations: FastTestLocalization.self,
-          withDependency: true,
-          overwriteSpecificationInsteadOfFailing: false
-        )
-      #endif
+          ["proofread", "•xcode"],
+        ],
+        configuration: configuration,
+        sdg: true,
+        localizations: FastTestLocalization.self,
+        withDependency: true,
+        overwriteSpecificationInsteadOfFailing: false
+      )
     }
 
     func testSelfSpecificScripts() throws {

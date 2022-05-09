@@ -76,7 +76,10 @@ final class Tests: TestCase {
   }
 
   func testResources() {
-    XCTAssertEqual(try getResource(), "Hello, world!")
+    XCTAssert(getResourcePath().hasSuffix("Resource.txt"))
+    #if !os(WASI)  // #workaround(WASI requires a custom loading implementation.)
+      XCTAssertEqual(try getResource(), "Hello, world!")
+    #endif
   }
 
   func testTemporaryDirectoryPermissions() throws {

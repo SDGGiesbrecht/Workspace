@@ -63,24 +63,22 @@ class APITests: TestCase {
   }
 
   func testIssueTemplate() {
-    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-      var vorlage = Themavorlage(
-        name: "",
-        beschreibung: "",
-        inhalt: "",
-        etiketten: []
-      )
-      vorlage.beschreibung = "..."
-      XCTAssertEqual(vorlage.beschreibung, "...")
-      vorlage.titel = "..."
-      XCTAssertEqual(vorlage.titel, "...")
-      vorlage.inhalt = "..."
-      XCTAssertEqual(vorlage.inhalt, "...")
-      vorlage.etiketten = ["..."]
-      XCTAssertEqual(vorlage.etiketten, ["..."])
-      vorlage.beauftragte = ["..."]
-      XCTAssertEqual(vorlage.beauftragte, ["..."])
-    #endif
+    var vorlage = Themavorlage(
+      name: "",
+      beschreibung: "",
+      inhalt: "",
+      etiketten: []
+    )
+    vorlage.beschreibung = "..."
+    XCTAssertEqual(vorlage.beschreibung, "...")
+    vorlage.titel = "..."
+    XCTAssertEqual(vorlage.titel, "...")
+    vorlage.inhalt = "..."
+    XCTAssertEqual(vorlage.inhalt, "...")
+    vorlage.etiketten = ["..."]
+    XCTAssertEqual(vorlage.etiketten, ["..."])
+    vorlage.beauftragte = ["..."]
+    XCTAssertEqual(vorlage.beauftragte, ["..."])
   }
 
   func testLazyOption() throws {
@@ -109,38 +107,36 @@ class APITests: TestCase {
   }
 
   func testLocalizationIdentifier() {
-    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-      var dictionary: [LocalizationIdentifier: Bool] = [:]
-      dictionary[ContentLocalization.englishCanada] = true
-      XCTAssertEqual(dictionary["🇨🇦EN"], true)
-      dictionary["🇬🇧EN"] = false
-      XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
+    var dictionary: [LocalizationIdentifier: Bool] = [:]
+    dictionary[ContentLocalization.englishCanada] = true
+    XCTAssertEqual(dictionary["🇨🇦EN"], true)
+    dictionary["🇬🇧EN"] = false
+    XCTAssertEqual(dictionary[ContentLocalization.englishUnitedKingdom], false)
 
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("en"),
-        localizations: ContentLocalization.self,
-        uniqueTestName: "English",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("cmn"),
-        localizations: ContentLocalization.self,
-        uniqueTestName: "Mandarin",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-      testCustomStringConvertibleConformance(
-        of: LocalizationIdentifier("zxx"),
-        localizations: ContentLocalization.self,
-        uniqueTestName: "Unknown",
-        overwriteSpecificationInsteadOfFailing: false
-      )
+    testCustomStringConvertibleConformance(
+      of: LocalizationIdentifier("en"),
+      localizations: ContentLocalization.self,
+      uniqueTestName: "English",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: LocalizationIdentifier("cmn"),
+      localizations: ContentLocalization.self,
+      uniqueTestName: "Mandarin",
+      overwriteSpecificationInsteadOfFailing: false
+    )
+    testCustomStringConvertibleConformance(
+      of: LocalizationIdentifier("zxx"),
+      localizations: ContentLocalization.self,
+      uniqueTestName: "Unknown",
+      overwriteSpecificationInsteadOfFailing: false
+    )
 
-      var identifier = LocalizationIdentifier("zxx")
-      _ = identifier._iconOrCode
-      identifier.kennzeichen = "de"
-      XCTAssertEqual(identifier.kennzeichen, "de")
-      _ = identifier.symbol
-    #endif
+    var identifier = LocalizationIdentifier("zxx")
+    _ = identifier._iconOrCode
+    identifier.kennzeichen = "de"
+    XCTAssertEqual(identifier.kennzeichen, "de")
+    _ = identifier.symbol
   }
 
   func testProofreadingRule() {
@@ -185,291 +181,289 @@ class APITests: TestCase {
   }
 
   func testWorkspaceConfiguration() throws {
-    #if !os(Windows)  // #workaround(Swift 5.3.3, SegFault)
-      let configuration = WorkspaceConfiguration()
-      configuration._applySDGDefaults(openSource: false)
-      XCTAssertFalse(configuration.documentation.readMe.manage)
+    let configuration = WorkspaceConfiguration()
+    configuration._applySDGDefaults(openSource: false)
+    XCTAssertFalse(configuration.documentation.readMe.manage)
 
-      configuration.fortlaufenderEinbindung.verwalten = false
-      XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
-      configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen =
-        true
-      XCTAssert(
-        configuration.fortlaufenderEinbindung
-          .auserhalbFortlaufenderEinbindungSimulatorÜberspringen
+    configuration.fortlaufenderEinbindung.verwalten = false
+    XCTAssertFalse(configuration.fortlaufenderEinbindung.verwalten)
+    configuration.fortlaufenderEinbindung.auserhalbFortlaufenderEinbindungSimulatorÜberspringen =
+      true
+    XCTAssert(
+      configuration.fortlaufenderEinbindung
+        .auserhalbFortlaufenderEinbindungSimulatorÜberspringen
+    )
+    configuration.customRefreshmentTasks.append(
+      Sonderaufgabe(
+        ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
+        version: Version(1, 0),
+        ausführbareDatei: "werkzeug",
+        argumente: ["argument"]
       )
-      configuration.customRefreshmentTasks.append(
-        Sonderaufgabe(
-          ressourcenzeiger: EinheitlicherRessourcenzeiger(string: "domain.tld")!,
-          version: Version(1, 0),
-          ausführbareDatei: "werkzeug",
-          argumente: ["argument"]
-        )
-      )
-      XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
-      configuration.dokumentation.programmierschnittstelle.erstellen = false
-      XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
-      configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen = false
-      XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
-      configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
-      XCTAssertEqual(
-        configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung,
-        1
-      )
-      configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk =
-        BequemeEinstellung(auswerten: { _ in [:] })
-      XCTAssertEqual(
-        configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
-          .auswerten(configuration),
-        [:]
-      )
+    )
+    XCTAssertEqual(configuration.customRefreshmentTasks.last?.version.major, 1)
+    configuration.dokumentation.programmierschnittstelle.erstellen = false
+    XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.erstellen)
+    configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen = false
+    XCTAssertFalse(configuration.dokumentation.programmierschnittstelle.abdeckungErzwingen)
+    configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 1
+    XCTAssertEqual(
+      configuration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung,
+      1
+    )
+    configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk =
+      BequemeEinstellung(auswerten: { _ in [:] })
+    XCTAssertEqual(
+      configuration.dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk
+        .auswerten(configuration),
+      [:]
+    )
+    configuration.dokumentation.programmierschnittstelle
+      .durchGitHubSeitenVeröffentlichen = true
+    XCTAssertEqual(
       configuration.dokumentation.programmierschnittstelle
-        .durchGitHubSeitenVeröffentlichen = true
-      XCTAssertEqual(
-        configuration.dokumentation.programmierschnittstelle
-          .durchGitHubSeitenVeröffentlichen,
-        true
-      )
-      configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
-        "..."
-      )
-      XCTAssert(
-        configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten
-          .contains("...")
-      )
-      configuration.dokumentation.localisations = ["und"]
-      XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
-      configuration.dokumentation.lokalisationen = ["zxx"]
-      XCTAssertEqual(configuration.dokumentation.lokalisationen, ["zxx"])
-      configuration.dokumentation.aktuelleVersion = Version(1, 0)
-      XCTAssertEqual(configuration.dokumentation.aktuelleVersion, Version(1, 0))
-      configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
-      XCTAssertEqual(
-        configuration.dokumentation.projektSeite,
-        EinheitlicherRessourcenzeiger(string: "seite.de")
-      )
-      configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
-        string: "dokumentation.de"
-      )
-      XCTAssertEqual(
-        configuration.dokumentation.dokumentationsRessourcenzeiger,
-        EinheitlicherRessourcenzeiger(string: "dokumentation.de")
-      )
-      configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(
-        string: "lager.de"
-      )
-      XCTAssertEqual(
-        configuration.dokumentation.lagerRessourcenzeiger,
-        EinheitlicherRessourcenzeiger(string: "lager.de")
-      )
-      configuration.dokumentation.hauptautor = "Autor"
-      XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
-      configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in
-        [:]
-      })
-      XCTAssertEqual(
-        configuration.dokumentation.installationsanleitungen.auswerten(configuration),
-        [:]
-      )
-      configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:]
-      })
-      XCTAssertEqual(
-        configuration.dokumentation.einführungsanleitungen.auswerten(configuration),
-        [:]
-      )
-      configuration.dokumentation.über = ["zxx": "..."]
-      XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
-      configuration.dokumentation.verwandteProjekte = []
-      XCTAssert(configuration.dokumentation.verwandteProjekte.isEmpty)
-      configuration.dokumentation.liesMich.verwalten = false
-      XCTAssertFalse(configuration.dokumentation.liesMich.verwalten)
-      configuration.dokumentation.liesMich.inhalt = BequemeEinstellung(auswerten: { _ in [:] })
-      XCTAssertEqual(configuration.dokumentation.liesMich.inhalt.auswerten(configuration), [:])
-      _ = LiesMichEinstellungen.programmierschnittstellenverweis(für: configuration, auf: "zxx")
-      configuration.license.manage = false
-      XCTAssertFalse(configuration.license.manage)
-      configuration.lizenz.manage = true
-      XCTAssert(configuration.lizenz.manage)
-      configuration.arbeitsablaufsskripteBereitstellen = false
-      XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
-      configuration.lager.ignoredPaths.insert("...")
-      configuration.license.license = nil
-      XCTAssertNil(configuration.license.license)
-      configuration.lizenz.lizenz = .mit
-      XCTAssertEqual(configuration.lizenz.lizenz, .mit)
-      XCTAssert(wahr)
-      XCTAssertFalse(falsch)
-      configuration.dateiVorspänne.verwalten = true
-      XCTAssert(configuration.dateiVorspänne.verwalten)
-      configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] }
-      )
-      XCTAssertNil(
-        configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"]
-      )
-      configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
-      XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
-      configuration.git.verwalten = true
-      XCTAssert(configuration.git.verwalten)
-      configuration.git.weitereEinträgeZuGitÜbergehen = []
-      XCTAssertEqual(configuration.git.weitereEinträgeZuGitÜbergehen, [])
-      configuration.gitHub.verwalten = true
-      XCTAssert(configuration.gitHub.verwalten)
-      configuration.gitHub.verwalter = []
-      XCTAssertEqual(configuration.gitHub.verwalter, [])
-      configuration.gitHub.entwicklungshinweise = ""
-      XCTAssertEqual(configuration.gitHub.entwicklungshinweise, "")
-      configuration.gitHub.themavorlagen = BequemeEinstellung(auswerten: { _ in [:] })
-      XCTAssert(configuration.gitHub.themavorlagen.auswerten(configuration).isEmpty)
-      configuration.gitHub.abziehungsanforderungsvorlage = ""
-      XCTAssertEqual(configuration.gitHub.abziehungsanforderungsvorlage, "")
-      configuration.lizenz.verwalten = true
-      XCTAssert(configuration.lizenz.verwalten)
-      configuration.korrektur.regeln = []
-      XCTAssertEqual(configuration.korrektur.regeln, [])
-      configuration.korrektur.geltungsbereichUnicodeRegel = []
-      XCTAssertEqual(configuration.korrektur.geltungsbereichUnicodeRegel, [])
-      configuration.lager.übergegangeneDateiarten = []
-      XCTAssertEqual(configuration.lager.übergegangeneDateiarten, [])
-      configuration.lager.übergegangenePfade = []
-      XCTAssertEqual(configuration.lager.übergegangenePfade, [])
-      configuration.testen.übersetzerwarnungenVerbieten = false
-      XCTAssertFalse(configuration.testen.übersetzerwarnungenVerbieten)
-      configuration.testen.abdeckungErzwingen = false
-      XCTAssertFalse(configuration.testen.abdeckungErzwingen)
-      configuration.testen.ausnahmensZeichen = []
-      XCTAssertEqual(configuration.testen.ausnahmensZeichen, [])
-      configuration.testen.ausnahmspfade = []
-      XCTAssertEqual(configuration.testen.ausnahmspfade, [])
-      configuration.unterstützteSchichte = []
-      XCTAssertEqual(configuration.unterstützteSchichte, [])
-      configuration.prüfungssonderaufgaben = []
-      XCTAssert(configuration.prüfungssonderaufgaben.isEmpty)
-      configuration.korrektursonderaufgaben = []
-      XCTAssert(configuration.korrektursonderaufgaben.isEmpty)
-      configuration.auffrischungssonderaufgaben = []
-      XCTAssert(configuration.auffrischungssonderaufgaben.isEmpty)
-      configuration.alleAufgabenEinschalten()
-      configuration.gitHub.mitwirkungsanweisungen = BequemeEinstellung(auswerten: { _ in [:] })
-      XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
-      configuration.projektname["de"] = "Lokalisiert"
-      XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
-      #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
-        configuration.korrektur.swiftFormatKonfiguration = nil
-        XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
-      #endif
-      configuration.normalise = true
-      XCTAssert(configuration.normalise)
-      configuration.normalisieren = false
-      XCTAssertFalse(configuration.normalisieren)
-      configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen = [:]
-      XCTAssertEqual(
-        configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen,
-        [:]
-      )
-      XCTAssertEqual(Schicht.netz, Platform.web)
-      XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
-      XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
-      XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
-      XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
-      XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
-      XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
-
-      let defaults = WorkspaceConfiguration()
-      _ = try? JSONEncoder().encode(defaults)
-
-      let filledIn = WorkspaceConfiguration()
-      filledIn.documentation.localizations = ["en", "de", "zxx"]
-      let copyright = filledIn.fileHeaders.copyrightNotice.resolve
-      filledIn.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
-        return copyright(configuration).mergedByOverwriting(from: ["zxx": "..."])
-      })
-      filledIn.documentation.repositoryURL = URL(string: "http://example.com")!
-      filledIn.documentation.currentVersion = Version(1)
-      filledIn.documentation.documentationURL = URL(string: "http://example.com")!
-      filledIn.documentation.about = [
-        "zxx": "...",
-        "de": "...",
-      ]
-      filledIn.documentation.relatedProjects = [
-        RelatedProjectEntry.heading(text: ["zxx": "..."]),
-        RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
-      ]
-      filledIn.documentation.primaryAuthor = "..."
-      filledIn.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
-      filledIn.gitHub.developmentNotes = "..."
-      filledIn.gitHub.administrators = ["A", "B", "C"]
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-        WorkspaceContext.current = WorkspaceContext(
-          _location: URL(string: "http://www.example.com")!,
-          manifest: PackageManifest(
-            _packageName: "Some Package",
-            products: [
-              PackageManifest.Product(
-                _name: "Library Product",
-                type: .library,
-                modules: ["SomeModule"]
-              ),
-              PackageManifest.Product(
-                _name: "Executable Product",
-                type: .executable,
-                modules: ["SomeModule"]
-              ),
-            ]
-          )
-        )
-      #endif
-      let encoded = try JSONEncoder().encode(filledIn)
-      _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
-
-      let manyProducts = WorkspaceConfiguration()
-      manyProducts.documentation.localizations = ["en", "de", "zxx"]
-      manyProducts.documentation.repositoryURL = URL(string: "http://example.com")!
-      manyProducts.documentation.currentVersion = Version(0, 1)
-      manyProducts.documentation.primaryAuthor = nil
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-        WorkspaceContext.current = WorkspaceContext(
-          _location: URL(string: "http://www.example.com")!,
-          manifest: PackageManifest(
-            _packageName: "Some Package",
-            products: [
-              PackageManifest.Product(
-                _name: "Library Product",
-                type: .library,
-                modules: ["SomeModule"]
-              ),
-              PackageManifest.Product(
-                _name: "Another Library Product",
-                type: .library,
-                modules: ["SomeOtherModule"]
-              ),
-              PackageManifest.Product(
-                _name: "Executable Product",
-                type: .executable,
-                modules: ["SomeModule"]
-              ),
-              PackageManifest.Product(
-                _name: "Another Executable Product",
-                type: .executable,
-                modules: ["SomeOtherModule"]
-              ),
-            ]
-          )
-        )
-      #endif
-      _ = try JSONEncoder().encode(manyProducts)
-
-      let noProducts = WorkspaceConfiguration()
-      #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
-        WorkspaceContext.current = WorkspaceContext(
-          _location: URL(string: "http://www.example.com")!,
-          manifest: PackageManifest(
-            _packageName: "Some Package",
-            products: []
-          )
-        )
-      #endif
-      _ = try JSONEncoder().encode(noProducts)
+        .durchGitHubSeitenVeröffentlichen,
+      true
+    )
+    configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
+      "..."
+    )
+    XCTAssert(
+      configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten
+        .contains("...")
+    )
+    configuration.dokumentation.localisations = ["und"]
+    XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
+    configuration.dokumentation.lokalisationen = ["zxx"]
+    XCTAssertEqual(configuration.dokumentation.lokalisationen, ["zxx"])
+    configuration.dokumentation.aktuelleVersion = Version(1, 0)
+    XCTAssertEqual(configuration.dokumentation.aktuelleVersion, Version(1, 0))
+    configuration.dokumentation.projektSeite = EinheitlicherRessourcenzeiger(string: "seite.de")
+    XCTAssertEqual(
+      configuration.dokumentation.projektSeite,
+      EinheitlicherRessourcenzeiger(string: "seite.de")
+    )
+    configuration.dokumentation.dokumentationsRessourcenzeiger = EinheitlicherRessourcenzeiger(
+      string: "dokumentation.de"
+    )
+    XCTAssertEqual(
+      configuration.dokumentation.dokumentationsRessourcenzeiger,
+      EinheitlicherRessourcenzeiger(string: "dokumentation.de")
+    )
+    configuration.dokumentation.lagerRessourcenzeiger = EinheitlicherRessourcenzeiger(
+      string: "lager.de"
+    )
+    XCTAssertEqual(
+      configuration.dokumentation.lagerRessourcenzeiger,
+      EinheitlicherRessourcenzeiger(string: "lager.de")
+    )
+    configuration.dokumentation.hauptautor = "Autor"
+    XCTAssertEqual(configuration.dokumentation.hauptautor, "Autor")
+    configuration.dokumentation.installationsanleitungen = BequemeEinstellung(auswerten: { _ in
+      [:]
+    })
+    XCTAssertEqual(
+      configuration.dokumentation.installationsanleitungen.auswerten(configuration),
+      [:]
+    )
+    configuration.dokumentation.einführungsanleitungen = BequemeEinstellung(auswerten: { _ in [:]
+    })
+    XCTAssertEqual(
+      configuration.dokumentation.einführungsanleitungen.auswerten(configuration),
+      [:]
+    )
+    configuration.dokumentation.über = ["zxx": "..."]
+    XCTAssertEqual(configuration.dokumentation.über, ["zxx": "..."])
+    configuration.dokumentation.verwandteProjekte = []
+    XCTAssert(configuration.dokumentation.verwandteProjekte.isEmpty)
+    configuration.dokumentation.liesMich.verwalten = false
+    XCTAssertFalse(configuration.dokumentation.liesMich.verwalten)
+    configuration.dokumentation.liesMich.inhalt = BequemeEinstellung(auswerten: { _ in [:] })
+    XCTAssertEqual(configuration.dokumentation.liesMich.inhalt.auswerten(configuration), [:])
+    _ = LiesMichEinstellungen.programmierschnittstellenverweis(für: configuration, auf: "zxx")
+    configuration.license.manage = false
+    XCTAssertFalse(configuration.license.manage)
+    configuration.lizenz.manage = true
+    XCTAssert(configuration.lizenz.manage)
+    configuration.arbeitsablaufsskripteBereitstellen = false
+    XCTAssertFalse(configuration.arbeitsablaufsskripteBereitstellen)
+    configuration.lager.ignoredPaths.insert("...")
+    configuration.license.license = nil
+    XCTAssertNil(configuration.license.license)
+    configuration.lizenz.lizenz = .mit
+    XCTAssertEqual(configuration.lizenz.lizenz, .mit)
+    XCTAssert(wahr)
+    XCTAssertFalse(falsch)
+    configuration.dateiVorspänne.verwalten = true
+    XCTAssert(configuration.dateiVorspänne.verwalten)
+    configuration.dateiVorspänne.urheberrechtshinweis = BequemeEinstellung(auswerten: { _ in [:] }
+    )
+    XCTAssertNil(
+      configuration.dateiVorspänne.urheberrechtshinweis.auswerten(configuration)["de"]
+    )
+    configuration.dateiVorspänne.inhalt = BequemeEinstellung(auswerten: { _ in "" })
+    XCTAssertEqual(configuration.dateiVorspänne.inhalt.auswerten(configuration), "")
+    configuration.git.verwalten = true
+    XCTAssert(configuration.git.verwalten)
+    configuration.git.weitereEinträgeZuGitÜbergehen = []
+    XCTAssertEqual(configuration.git.weitereEinträgeZuGitÜbergehen, [])
+    configuration.gitHub.verwalten = true
+    XCTAssert(configuration.gitHub.verwalten)
+    configuration.gitHub.verwalter = []
+    XCTAssertEqual(configuration.gitHub.verwalter, [])
+    configuration.gitHub.entwicklungshinweise = ""
+    XCTAssertEqual(configuration.gitHub.entwicklungshinweise, "")
+    configuration.gitHub.themavorlagen = BequemeEinstellung(auswerten: { _ in [:] })
+    XCTAssert(configuration.gitHub.themavorlagen.auswerten(configuration).isEmpty)
+    configuration.gitHub.abziehungsanforderungsvorlage = ""
+    XCTAssertEqual(configuration.gitHub.abziehungsanforderungsvorlage, "")
+    configuration.lizenz.verwalten = true
+    XCTAssert(configuration.lizenz.verwalten)
+    configuration.korrektur.regeln = []
+    XCTAssertEqual(configuration.korrektur.regeln, [])
+    configuration.korrektur.geltungsbereichUnicodeRegel = []
+    XCTAssertEqual(configuration.korrektur.geltungsbereichUnicodeRegel, [])
+    configuration.lager.übergegangeneDateiarten = []
+    XCTAssertEqual(configuration.lager.übergegangeneDateiarten, [])
+    configuration.lager.übergegangenePfade = []
+    XCTAssertEqual(configuration.lager.übergegangenePfade, [])
+    configuration.testen.übersetzerwarnungenVerbieten = false
+    XCTAssertFalse(configuration.testen.übersetzerwarnungenVerbieten)
+    configuration.testen.abdeckungErzwingen = false
+    XCTAssertFalse(configuration.testen.abdeckungErzwingen)
+    configuration.testen.ausnahmensZeichen = []
+    XCTAssertEqual(configuration.testen.ausnahmensZeichen, [])
+    configuration.testen.ausnahmspfade = []
+    XCTAssertEqual(configuration.testen.ausnahmspfade, [])
+    configuration.unterstützteSchichte = []
+    XCTAssertEqual(configuration.unterstützteSchichte, [])
+    configuration.prüfungssonderaufgaben = []
+    XCTAssert(configuration.prüfungssonderaufgaben.isEmpty)
+    configuration.korrektursonderaufgaben = []
+    XCTAssert(configuration.korrektursonderaufgaben.isEmpty)
+    configuration.auffrischungssonderaufgaben = []
+    XCTAssert(configuration.auffrischungssonderaufgaben.isEmpty)
+    configuration.alleAufgabenEinschalten()
+    configuration.gitHub.mitwirkungsanweisungen = BequemeEinstellung(auswerten: { _ in [:] })
+    XCTAssert(configuration.gitHub.mitwirkungsanweisungen.auswerten(configuration).isEmpty)
+    configuration.projektname["de"] = "Lokalisiert"
+    XCTAssertEqual(configuration.projektname["de"], "Lokalisiert")
+    #if !PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION
+      configuration.korrektur.swiftFormatKonfiguration = nil
+      XCTAssertNil(configuration.korrektur.swiftFormatKonfiguration)
     #endif
+    configuration.normalise = true
+    XCTAssert(configuration.normalise)
+    configuration.normalisieren = false
+    XCTAssertFalse(configuration.normalisieren)
+    configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen = [:]
+    XCTAssertEqual(
+      configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen,
+      [:]
+    )
+    XCTAssertEqual(Schicht.netz, Platform.web)
+    XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
+    XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
+    XCTAssertEqual(ProofreadingRule.markdownÜberschrifte, .markdownHeadings)
+    XCTAssertEqual(ProofreadingRule.sterngruppen, .asterisms)
+    XCTAssertEqual(ProofreadingRule.zugriffskontrolle, .accessControl)
+    XCTAssertEqual(ProofreadingRule.classFinality, .klassenentgültigkeit)
+
+    let defaults = WorkspaceConfiguration()
+    _ = try? JSONEncoder().encode(defaults)
+
+    let filledIn = WorkspaceConfiguration()
+    filledIn.documentation.localizations = ["en", "de", "zxx"]
+    let copyright = filledIn.fileHeaders.copyrightNotice.resolve
+    filledIn.fileHeaders.copyrightNotice = Lazy(resolve: { configuration in
+      return copyright(configuration).mergedByOverwriting(from: ["zxx": "..."])
+    })
+    filledIn.documentation.repositoryURL = URL(string: "http://example.com")!
+    filledIn.documentation.currentVersion = Version(1)
+    filledIn.documentation.documentationURL = URL(string: "http://example.com")!
+    filledIn.documentation.about = [
+      "zxx": "...",
+      "de": "...",
+    ]
+    filledIn.documentation.relatedProjects = [
+      RelatedProjectEntry.heading(text: ["zxx": "..."]),
+      RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
+    ]
+    filledIn.documentation.primaryAuthor = "..."
+    filledIn.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
+    filledIn.gitHub.developmentNotes = "..."
+    filledIn.gitHub.administrators = ["A", "B", "C"]
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      WorkspaceContext.current = WorkspaceContext(
+        _location: URL(string: "http://www.example.com")!,
+        manifest: PackageManifest(
+          _packageName: "Some Package",
+          products: [
+            PackageManifest.Product(
+              _name: "Library Product",
+              type: .library,
+              modules: ["SomeModule"]
+            ),
+            PackageManifest.Product(
+              _name: "Executable Product",
+              type: .executable,
+              modules: ["SomeModule"]
+            ),
+          ]
+        )
+      )
+    #endif
+    let encoded = try JSONEncoder().encode(filledIn)
+    _ = try JSONDecoder().decode(WorkspaceConfiguration.self, from: encoded)
+
+    let manyProducts = WorkspaceConfiguration()
+    manyProducts.documentation.localizations = ["en", "de", "zxx"]
+    manyProducts.documentation.repositoryURL = URL(string: "http://example.com")!
+    manyProducts.documentation.currentVersion = Version(0, 1)
+    manyProducts.documentation.primaryAuthor = nil
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      WorkspaceContext.current = WorkspaceContext(
+        _location: URL(string: "http://www.example.com")!,
+        manifest: PackageManifest(
+          _packageName: "Some Package",
+          products: [
+            PackageManifest.Product(
+              _name: "Library Product",
+              type: .library,
+              modules: ["SomeModule"]
+            ),
+            PackageManifest.Product(
+              _name: "Another Library Product",
+              type: .library,
+              modules: ["SomeOtherModule"]
+            ),
+            PackageManifest.Product(
+              _name: "Executable Product",
+              type: .executable,
+              modules: ["SomeModule"]
+            ),
+            PackageManifest.Product(
+              _name: "Another Executable Product",
+              type: .executable,
+              modules: ["SomeOtherModule"]
+            ),
+          ]
+        )
+      )
+    #endif
+    _ = try JSONEncoder().encode(manyProducts)
+
+    let noProducts = WorkspaceConfiguration()
+    #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
+      WorkspaceContext.current = WorkspaceContext(
+        _location: URL(string: "http://www.example.com")!,
+        manifest: PackageManifest(
+          _packageName: "Some Package",
+          products: []
+        )
+      )
+    #endif
+    _ = try JSONEncoder().encode(noProducts)
   }
 
   func testWorkspaceProjectConfiguration() throws {

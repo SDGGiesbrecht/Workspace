@@ -57,38 +57,35 @@
         ".github",
       ]
 
-      // #workaround(Swift 5.5.2, Emulator lacks Git.)
-      #if !os(Android)
-        _ = try Command(
-          name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-          description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
-          directArguments: [],
-          options: [],
-          execution: { (_, _, output: Command.Output) in
+      _ = try Command(
+        name: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+        description: UserFacing<StrictString, InterfaceLocalization>({ _ in "" }),
+        directArguments: [],
+        options: [],
+        execution: { (_, _, output: Command.Output) in
 
-            let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
-            let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
-            let unexpected = relative.filter { path in
+          let tracked = try PackageRepository(at: repositoryRoot).trackedFiles(output: output)
+          let relative = tracked.map { $0.path(relativeTo: repositoryRoot) }
+          let unexpected = relative.filter { path in
 
-              for prefix in expectedPrefixes {
-                if path.hasPrefix(prefix) {
-                  return false
-                }
+            for prefix in expectedPrefixes {
+              if path.hasPrefix(prefix) {
+                return false
               }
-
-              return true
             }
 
-            XCTAssert(
-              unexpected.isEmpty,
-              [
-                "Unexpected files are being tracked by Git:",
-                unexpected.joinedAsLines(),
-              ].joinedAsLines()
-            )
+            return true
           }
-        ).execute(with: []).get()
-      #endif
+
+          XCTAssert(
+            unexpected.isEmpty,
+            [
+              "Unexpected files are being tracked by Git:",
+              unexpected.joinedAsLines(),
+            ].joinedAsLines()
+          )
+        }
+      ).execute(with: []).get()
     }
 
     func testPlatform() {

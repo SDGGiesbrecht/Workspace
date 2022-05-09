@@ -57,3 +57,22 @@ public func helloWorld() {
 internal func helloTests() {
   print("Hello, tests!")
 }
+
+public func getResourcePath() -> String {
+  guard let path = Bundle.module.path(forResource: "Resource", ofType: "txt") else {
+    fatalError("Failed to locate resource!")
+  }
+  return path
+}
+#if !os(WASI)
+  public func getResource() throws -> String {
+    guard let url = Bundle.module.url(forResource: "Resource", withExtension: "txt") else {
+      fatalError("Failed to locate resource!")
+    }
+    let data = try Data(contentsOf: url)
+    guard let text = String(data: data, encoding: .utf8) else {
+      fatalError("Failed to decode text.")
+    }
+    return text
+  }
+#endif

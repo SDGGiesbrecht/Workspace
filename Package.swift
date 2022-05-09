@@ -742,7 +742,10 @@ let package = Package(
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
-      path: "Tests/CrossPlatform"
+      path: "Tests/CrossPlatform",
+      resources: [
+        .copy("Resource.txt")
+      ]
     ),
     .executableTarget(
       // #workaround(Swift 5.6, Name and directory should be “cross‐platform‐tool”, but for Windows bug.)

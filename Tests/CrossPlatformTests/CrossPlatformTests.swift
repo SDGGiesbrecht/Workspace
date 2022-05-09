@@ -75,6 +75,10 @@ final class Tests: TestCase {
     #endif
   }
 
+  func testResources() {
+    XCTAssertEqual(try getResource(), "Hello, world!")
+  }
+
   func testTemporaryDirectoryPermissions() throws {
     #if !PLATFORM_LACKS_FOUNDATION_FILE_MANAGER
       try FileManager.default.withTemporaryDirectory(appropriateFor: nil) { directory in

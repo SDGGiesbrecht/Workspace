@@ -57,3 +57,14 @@ public func helloWorld() {
 internal func helloTests() {
   print("Hello, tests!")
 }
+
+public func getResource() throws -> String {
+  guard let url = Bundle.module.url(forResource: "Resource", withExtension: "txt") else {
+    fatalError("Failed to locate resource!")
+  }
+  let data = try Data(contentsOf: url)
+  guard let text = String(data: data, encoding: .utf8) else {
+    fatalError("Failed to decode text.")
+  }
+  return text
+}

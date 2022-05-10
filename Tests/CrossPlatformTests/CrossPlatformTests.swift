@@ -77,7 +77,7 @@ final class Tests: TestCase {
 
   func testResources() {
     XCTAssert(getResourcePath().hasSuffix("Resource.txt"))
-    #if !os(WASI)  // #workaround(WASI requires a custom loading implementation.)
+    #if !os(WASI)  // Web cannot actually load a resource without additional dependencies.
       XCTAssertEqual(try getResource(), "Hello, world!")
     #endif
   }

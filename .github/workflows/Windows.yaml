@@ -37,7 +37,7 @@ jobs:
       shell: cmd
       run: |
         echo on
-        Install-Package SQLite -Version 3.13.0
+        nuget install sqlite3
     - name: Test
       shell: cmd
       run: |

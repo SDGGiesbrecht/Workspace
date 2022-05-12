@@ -33,6 +33,11 @@ jobs:
       with:
         branch: swift-5.6-release
         tag: 5.6-RELEASE
+    - name: Install SQLite3
+      shell: cmd
+      run: |
+        echo on
+        Install-Package SQLite -Version 3.13.0
     - name: Test
       shell: cmd
       run: |

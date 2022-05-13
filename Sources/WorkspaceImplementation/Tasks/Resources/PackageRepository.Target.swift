@@ -242,6 +242,7 @@
         var byteArray = data.lazy
           .map({ "0x\(String($0, radix: 16, uppercase: true))," })
           .joined(separator: " ")
+        // Creates some consistent line breaks, which is convenient if the files are checked in.
         byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n        ".scalars)
         let base64String = data.base64EncodedString()
 

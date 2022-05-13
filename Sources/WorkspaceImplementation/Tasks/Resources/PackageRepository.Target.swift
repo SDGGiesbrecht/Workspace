@@ -239,15 +239,30 @@
         }
 
         let data = try Data(from: resource)
-        let string = data.base64EncodedString()
-        var declaration: StrictString = "\(accessControl)static let "
-        declaration += name
-        declaration += " = "
-        declaration += initializer.0
+        var byteArray = data.lazy
+          .map({ "0x\(String($0, radix: 16, uppercase: true))," })
+          .joined(separator: " ")
+        byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n        ".scalars)
+        let base64String = data.base64EncodedString()
+
+        let variableStart: StrictString = "\(accessControl)static let \(name) = \(initializer.0)"
+        let variableEnd: StrictString = initializer.1
+
+        // #warning(See if it is possible to determine at what size the problem starts.)
+        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used.)
+        var declaration: StrictString = "#if arch(arm) |\u{7C} arch(arm64_32)\n"
+        declaration += variableStart
         declaration += "Data(base64Encoded: \u{22}"
-        declaration += string.scalars
+        declaration += base64String.scalars
         declaration += "\u{22})!"
-        declaration += initializer.1
+        declaration += variableEnd
+        declaration += "\n#else\n"
+        declaration += variableStart
+        declaration += "Data(["
+        declaration += byteArray.scalars
+        declaration += "] as [UInt8])"
+        declaration += variableEnd
+        declaration += "\n#endif"
         return declaration
       }
 

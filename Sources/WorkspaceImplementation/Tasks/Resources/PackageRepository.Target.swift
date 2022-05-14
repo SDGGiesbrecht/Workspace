@@ -240,7 +240,13 @@
 
         let data = try Data(from: resource)
         var byteArray = data.lazy
-          .map({ "0x\(String($0, radix: 16, uppercase: true))," })
+          .map({ byte in
+            var hexadecimal = String(byte, radix: 16, uppercase: true)
+            while hexadecimal.scalars.count < 2 {
+              hexadecimal.scalars.prepend("0")
+            }
+            return "0x\(hexadecimal),"
+          })
           .joined(separator: " ")
         // Creates some consistent line breaks, which is convenient if the files are checked in.
         byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n        ".scalars)

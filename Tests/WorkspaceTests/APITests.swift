@@ -990,21 +990,5 @@
         _ = try Workspace.command.execute(with: ["refresh", "continuous‐integration"]).get()
       }
     }
-
-    #warning("Temporary")
-    func testTemporary() throws {
-      let size: Int = 2 ↑ 20
-
-      var data = Data()
-      while data.count < size {
-        if let last = data.last {
-          data.append(last &+ 1)
-        } else {
-          data.append(0)
-        }
-      }
-      print(data.count)
-      try data.save(to: URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Resources").appendingPathComponent("CrossPlatform").appendingPathComponent("Resource File"))
-    }
   }
 #endif

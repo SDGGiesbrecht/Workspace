@@ -240,8 +240,6 @@
         }
 
         let data = try Data(from: resource)
-        // #warning(Debugging...)
-        print(data.count)
 
         var byteArray = data.lazy
           .map({ byte in
@@ -258,8 +256,7 @@
         let variableStart: StrictString = "\(accessControl)static let \(name) = \(initializer.0)"
         let variableEnd: StrictString = initializer.1
 
-        // #warning(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
-        // 2 ↑ (0 < x ≤ 15)
+        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
         let problematicLength: Int = 2 ↑ 15
         if data.count ≥ problematicLength {
           let base64String = data.base64EncodedString()

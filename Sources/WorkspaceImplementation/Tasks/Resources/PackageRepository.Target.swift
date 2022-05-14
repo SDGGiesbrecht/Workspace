@@ -19,6 +19,7 @@
 
   import SDGControlFlow
   import SDGLogic
+  import SDGMathematics
   import SDGCollections
   import SDGText
   import SDGLocalization
@@ -239,6 +240,9 @@
         }
 
         let data = try Data(from: resource)
+        // #warning(Debugging...)
+        print(data.count)
+
         var byteArray = data.lazy
           .map({ byte in
             var hexadecimal = String(byte, radix: 16, uppercase: true)
@@ -249,28 +253,39 @@
           })
           .joined(separator: " ")
         // Creates some consistent line breaks, which is convenient if the files are checked in.
-        byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n        ".scalars)
-        let base64String = data.base64EncodedString()
+        byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n".scalars)
 
         let variableStart: StrictString = "\(accessControl)static let \(name) = \(initializer.0)"
         let variableEnd: StrictString = initializer.1
 
-        // #warning(See if it is possible to determine at what size the problem starts.)
-        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used.)
-        var declaration: StrictString = "#if arch(arm) |\u{7C} arch(arm64_32)\n"
-        declaration += variableStart
-        declaration += "Data(base64Encoded: \u{22}"
-        declaration += base64String.scalars
-        declaration += "\u{22})!"
-        declaration += variableEnd
-        declaration += "\n#else\n"
-        declaration += variableStart
-        declaration += "Data(["
-        declaration += byteArray.scalars
-        declaration += "] as [UInt8])"
-        declaration += variableEnd
-        declaration += "\n#endif"
-        return declaration
+        // #warning(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
+        // 2 ↑ (0 < x ≤ 15)
+        let problematicLength: Int = 2 ↑ 15
+        if data.count ≥ problematicLength {
+          let base64String = data.base64EncodedString()
+
+          var declaration: StrictString = "#if arch(arm) |\u{7C} arch(arm64_32)\n"
+          declaration += variableStart
+          declaration += "Data(base64Encoded: \u{22}"
+          declaration += base64String.scalars
+          declaration += "\u{22})!"
+          declaration += variableEnd
+          declaration += "\n#else\n"
+          declaration += variableStart
+          declaration += "Data(["
+          declaration += byteArray.scalars
+          declaration += "] as [UInt8])"
+          declaration += variableEnd
+          declaration += "\n#endif"
+          return declaration
+        } else {
+          var declaration: StrictString = variableStart
+          declaration += "Data(["
+          declaration += byteArray.scalars
+          declaration += "] as [UInt8])"
+          declaration += variableEnd
+          return declaration
+        }
       }
 
       // MARK: - Comparable

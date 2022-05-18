@@ -279,7 +279,7 @@
 
         source.append(contentsOf: [
           "\(accessControl)static var \(name): \(type) {",
-          "  return \(initializer.0)Data([\(variables)].lazy.joined())\(initializer.1)",
+          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
           "}",
         ])
         return source.joined(separator: "\n")

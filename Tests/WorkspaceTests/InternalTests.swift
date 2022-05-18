@@ -96,6 +96,21 @@
       }
     }
 
+    func testResources() {
+      _ = WorkspaceImplementation.Resources.Documentation.page
+      _ = WorkspaceImplementation.Resources.Documentation.script
+      _ = WorkspaceImplementation.Resources.Documentation.site
+
+      _ = WorkspaceImplementation.Resources.Licences.apache2_0
+      _ = WorkspaceImplementation.Resources.Licences.copyright
+      _ = WorkspaceImplementation.Resources.Licences.gnuGeneralPublic3_0
+      _ = WorkspaceImplementation.Resources.Licences.mit
+      _ = WorkspaceImplementation.Resources.Licences.unlicense
+
+      _ = WorkspaceImplementation.Resources.Xcode.proofreadScheme
+      _ = WorkspaceImplementation.Resources.Xcode.proofreadProject
+    }
+
     func testXcodeProjectFormat() {
       // .gitignore interferes with testing this reliably in a mock project.
       _ = FileType.xcodeProject.syntax

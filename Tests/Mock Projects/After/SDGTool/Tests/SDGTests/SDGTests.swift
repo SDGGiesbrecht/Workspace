@@ -26,6 +26,13 @@ class SDGTests: XCTestCase {
     XCTAssertEqual(SDG().text(), "Hello, World!")
   }
 
+  func testResources() {
+    _ = Library.Resources.Namespace.dataResource
+    _ = Library.Resources._2001_01_01_NamedWithNumbers
+    _ = Library.Resources._namedWithPunctuation
+    _ = Library.Resources.textResource
+  }
+
   static var allTests = [
     ("testExample", testExample)
   ]

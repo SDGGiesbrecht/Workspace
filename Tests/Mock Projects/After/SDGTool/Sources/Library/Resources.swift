@@ -22,19 +22,39 @@ internal typealias Ressourcen = Resources
 
 extension Resources {
   internal enum Namespace {
-    internal static let dataResource = Data(base64Encoded: "")!
+    internal static var dataResource: Data {
+      return Data(([] as [[UInt8]]).lazy.joined())
+    }
   }
-  internal static let _2001_01_01_NamedWithNumbers = String(
-    data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!,
-    encoding: String.Encoding.utf8
-  )!
-  internal static let _namedWithPunctuation = String(
-    data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!,
-    encoding: String.Encoding.utf8
-  )!
-  internal static let textResource = String(
-    data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!,
-    encoding: String.Encoding.utf8
-  )!
+  private static let _2001_01_01_NamedWithNumbers0: [UInt8] = [
+    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+  ]
+  internal static var _2001_01_01_NamedWithNumbers: String {
+    return String(
+      data: Data(([_2001_01_01_NamedWithNumbers0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
+  }
+  private static let _namedWithPunctuation0: [UInt8] = [
+    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+  ]
+  internal static var _namedWithPunctuation: String {
+    return String(
+      data: Data(([_namedWithPunctuation0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
+  }
+  private static let textResource0: [UInt8] = [
+    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+  ]
+  internal static var textResource: String {
+    return String(
+      data: Data(([textResource0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
+  }
 
 }

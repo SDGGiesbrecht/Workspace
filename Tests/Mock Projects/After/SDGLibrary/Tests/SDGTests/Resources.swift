@@ -21,9 +21,15 @@ enum Resources {}
 typealias Ressourcen = Resources
 
 extension Resources {
-  static let textResource = String(
-    data: Data(base64Encoded: "SGVsbG8sIHdvcmxkIQ==")!,
-    encoding: String.Encoding.utf8
-  )!
+  private static let textResource0: [UInt8] = [
+    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+  ]
+  static var textResource: String {
+    return String(
+      data: Data(([textResource0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
+  }
 
 }

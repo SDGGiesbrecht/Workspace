@@ -19,6 +19,7 @@
 
   import SDGControlFlow
   import SDGLogic
+  import SDGMathematics
   import SDGCollections
   import SDGText
   import SDGLocalization
@@ -229,26 +230,63 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
+
+        let data = try Data(from: resource)
+
+        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
+        let problematicLength: Int = 2 ↑ 15
+        var unprocessed: Data.SubSequence = data[...]
+        var sections: [Data.SubSequence] = []
+        while ¬unprocessed.isEmpty {
+          let prefix = unprocessed.prefix(problematicLength)
+          sections.append(prefix)
+          unprocessed.removeFirst(prefix.count)
+        }
+
+        var source: [StrictString] = sections.enumerated().lazy.map({ index, section in
+
+          var byteArray = section.lazy
+            .map({ byte in
+              var hexadecimal = String(byte, radix: 16, uppercase: true)
+              while hexadecimal.scalars.count < 2 {
+                hexadecimal.scalars.prepend("0")
+              }
+              return "0x\(hexadecimal),"
+            })
+            .joined(separator: " ")
+          // Creates some consistent line breaks, which is convenient if the files are checked in.
+          byteArray.scalars.replaceMatches(for: "0, ".scalars, with: "0,\n".scalars)
+
+          let variable = indexedVariable(name: name, index: index)
+          return "private static let \(variable): [UInt8] = [\n\(byteArray)\n]"
+        })
+
+        let variables: StrictString = (0..<source.count).lazy.map({ index in
+          return indexedVariable(name: name, index: index)
+        }).joined(separator: ", ")
+
         let fileExtension = resource.pathExtension
+        let type: StrictString
         let initializer: (StrictString, StrictString)
         switch fileExtension {
         case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
+          type = "String"
           initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
         default:
+          type = "Data"
           initializer = ("", "")
         }
 
-        let data = try Data(from: resource)
-        let string = data.base64EncodedString()
-        var declaration: StrictString = "\(accessControl)static let "
-        declaration += name
-        declaration += " = "
-        declaration += initializer.0
-        declaration += "Data(base64Encoded: \u{22}"
-        declaration += string.scalars
-        declaration += "\u{22})!"
-        declaration += initializer.1
-        return declaration
+        source.append(contentsOf: [
+          "\(accessControl)static var \(name): \(type) {",
+          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
+          "}",
+        ])
+        return source.joined(separator: "\n")
+      }
+
+      private func indexedVariable(name: StrictString, index: Int) -> StrictString {
+        return "\(name)\(index.inDigits(thousandsSeparator: "_"))"
       }
 
       // MARK: - Comparable

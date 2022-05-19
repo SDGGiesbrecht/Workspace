@@ -44,7 +44,7 @@
     internal static let currentSwiftVersion = Version(5, 6, 0)
 
     private static let currentMacOSVersion = Version(12)
-    internal static let currentXcodeVersion = Version(13, 3)
+    internal static let currentXcodeVersion = Version(13, 4)
     private static let currentVisualStudioVersion = "2019"
     private static let currentCartonVersion = Version(0, 14, 2)
     private static let currentUbuntuName = "focal"  // Used by Docker image

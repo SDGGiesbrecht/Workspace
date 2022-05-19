@@ -335,7 +335,10 @@ extension Resources {
       0x0A,
     ]
     internal static var page: String {
-      return String(data: Data([page0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([page0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
     private static let script0: [UInt8] = [
       0x2F, 0x2A, 0x0A, 0x20,
@@ -1079,7 +1082,10 @@ extension Resources {
       0x22, 0x6E, 0x6F, 0x6E, 0x65, 0x22, 0x3B, 0x0A, 0x7D, 0x0A,
     ]
     internal static var script: String {
-      return String(data: Data([script0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([script0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
     private static let site0: [UInt8] = [
       0x2F, 0x2A, 0x0A, 0x20,
@@ -2999,7 +3005,10 @@ extension Resources {
       0x31, 0x72, 0x65, 0x6D, 0x29, 0x3B, 0x0A, 0x7D, 0x0A,
     ]
     internal static var site: String {
-      return String(data: Data([site0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([site0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
   }
   internal enum Licences {
@@ -4845,7 +4854,10 @@ extension Resources {
       0x4C, 0x69, 0x63, 0x65, 0x6E, 0x73, 0x65, 0x2E, 0x0A,
     ]
     internal static var apache2_0: String {
-      return String(data: Data([apache2_00].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([apache2_00] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
     private static let copyright0: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,
@@ -4977,7 +4989,10 @@ extension Resources {
       0x68, 0x6F, 0x6C, 0x64, 0x65, 0x72, 0x28, 0x73, 0x29, 0x2E, 0x2A, 0x2A, 0x0A,
     ]
     internal static var copyright: String {
-      return String(data: Data([copyright0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([copyright0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
     private static let gnuGeneralPublic3_00: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,
@@ -11303,7 +11318,7 @@ extension Resources {
     ]
     internal static var gnuGeneralPublic3_0: String {
       return String(
-        data: Data([gnuGeneralPublic3_00, gnuGeneralPublic3_01].lazy.joined()),
+        data: Data(([gnuGeneralPublic3_00, gnuGeneralPublic3_01] as [[UInt8]]).lazy.joined()),
         encoding: String.Encoding.utf8
       )!
     }
@@ -11581,7 +11596,10 @@ extension Resources {
       0x0A,
     ]
     internal static var mit: String {
-      return String(data: Data([mit0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([mit0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
     private static let unlicense0: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,
@@ -11889,7 +11907,10 @@ extension Resources {
       0x67, 0x2F, 0x29, 0x0A,
     ]
     internal static var unlicense: String {
-      return String(data: Data([unlicense0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([unlicense0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
   }
   internal enum Xcode {
@@ -12317,7 +12338,7 @@ extension Resources {
       0x72, 0x6F, 0x6A, 0x65, 0x63, 0x74, 0x22, 0x3B, 0x0A, 0x7D, 0x0A,
     ]
     internal static var proofreadProject: Data {
-      return Data([proofreadProject0].lazy.joined())
+      return Data(([proofreadProject0] as [[UInt8]]).lazy.joined())
     }
     private static let proofreadScheme0: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,
@@ -12594,7 +12615,10 @@ extension Resources {
       0x3C, 0x2F, 0x53, 0x63, 0x68, 0x65, 0x6D, 0x65, 0x3E, 0x0A,
     ]
     internal static var proofreadScheme: String {
-      return String(data: Data([proofreadScheme0].lazy.joined()), encoding: String.Encoding.utf8)!
+      return String(
+        data: Data(([proofreadScheme0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
     }
   }
 

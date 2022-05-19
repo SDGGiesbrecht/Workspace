@@ -428,7 +428,7 @@ extension Resources {
   ]
   internal static var contributingTemplate: String {
     return String(
-      data: Data([contributingTemplate0].lazy.joined()),
+      data: Data(([contributingTemplate0] as [[UInt8]]).lazy.joined()),
       encoding: String.Encoding.utf8
     )!
   }
@@ -808,7 +808,10 @@ extension Resources {
     0x6B, 0x6C, 0x69, 0x63, 0x6B, 0x65, 0x6E, 0x2E, 0x0A,
   ]
   internal static var mitwirkenVorlage: String {
-    return String(data: Data([mitwirkenVorlage0].lazy.joined()), encoding: String.Encoding.utf8)!
+    return String(
+      data: Data(([mitwirkenVorlage0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
   }
   private static let pullRequestTemplate0: [UInt8] = [
     0x3C, 0x21, 0x2D, 0x2D, 0x20,
@@ -889,7 +892,10 @@ extension Resources {
     0x6D, 0x64, 0x29, 0x2E, 0x0A,
   ]
   internal static var pullRequestTemplate: String {
-    return String(data: Data([pullRequestTemplate0].lazy.joined()), encoding: String.Encoding.utf8)!
+    return String(
+      data: Data(([pullRequestTemplate0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
   }
 
 }

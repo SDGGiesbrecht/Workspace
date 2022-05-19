@@ -4774,7 +4774,10 @@ extension Resources {
     0x5D, 0x0A, 0x7D,
   ]
   static var deutsch: String {
-    return String(data: Data([deutsch0].lazy.joined()), encoding: String.Encoding.utf8)!
+    return String(
+      data: Data(([deutsch0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
   }
 
 }

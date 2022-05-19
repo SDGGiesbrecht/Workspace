@@ -4774,7 +4774,10 @@ extension Resources {
     0x5D, 0x0A, 0x7D,
   ]
   static var deutsch: String {
-    return String(data: Data([deutsch0].lazy.joined()), encoding: String.Encoding.utf8)!
+    return String(
+      data: Data(([deutsch0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
   }
   private static let english0: [UInt8] = [
     0x7B, 0x0A, 0x20,
@@ -9431,7 +9434,10 @@ extension Resources {
     0x5D, 0x0A, 0x7D,
   ]
   static var english: String {
-    return String(data: Data([english0].lazy.joined()), encoding: String.Encoding.utf8)!
+    return String(
+      data: Data(([english0] as [[UInt8]]).lazy.joined()),
+      encoding: String.Encoding.utf8
+    )!
   }
 
 }

@@ -14,24 +14,24 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-  import SDGText
-  import SDGLocalization
+import SDGText
+import SDGLocalization
 
-  import SDGCommandLine
+import SDGCommandLine
 
-  import SDGSwift
+import SDGSwift
 
-  import WorkspaceLocalizations
-  import WorkspaceConfiguration
-  @testable import WorkspaceImplementation
+import WorkspaceLocalizations
+import WorkspaceConfiguration
+@testable import WorkspaceImplementation
 
-  import XCTest
+import XCTest
 
-  import SDGXCTestUtilities
+import SDGXCTestUtilities
 
-  class InternalTests: TestCase {
+class InternalTests: TestCase {
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
     func testGitIgnoreCoverage() throws {
       let expectedPrefixes = [
 
@@ -95,25 +95,27 @@
         }
       }
     }
+  #endif
 
-    func testResources() {
-      _ = WorkspaceImplementation.Resources.Documentation.page
-      _ = WorkspaceImplementation.Resources.Documentation.script
-      _ = WorkspaceImplementation.Resources.Documentation.site
+  func testResources() {
+    _ = WorkspaceImplementation.Resources.Documentation.page
+    _ = WorkspaceImplementation.Resources.Documentation.script
+    _ = WorkspaceImplementation.Resources.Documentation.site
 
-      _ = WorkspaceImplementation.Resources.Licences.apache2_0
-      _ = WorkspaceImplementation.Resources.Licences.copyright
-      _ = WorkspaceImplementation.Resources.Licences.gnuGeneralPublic3_0
-      _ = WorkspaceImplementation.Resources.Licences.mit
-      _ = WorkspaceImplementation.Resources.Licences.unlicense
+    _ = WorkspaceImplementation.Resources.Licences.apache2_0
+    _ = WorkspaceImplementation.Resources.Licences.copyright
+    _ = WorkspaceImplementation.Resources.Licences.gnuGeneralPublic3_0
+    _ = WorkspaceImplementation.Resources.Licences.mit
+    _ = WorkspaceImplementation.Resources.Licences.unlicense
 
-      _ = WorkspaceImplementation.Resources.Xcode.proofreadScheme
-      _ = WorkspaceImplementation.Resources.Xcode.proofreadProject
-    }
+    _ = WorkspaceImplementation.Resources.Xcode.proofreadScheme
+    _ = WorkspaceImplementation.Resources.Xcode.proofreadProject
+  }
 
+  #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
     func testXcodeProjectFormat() {
       // .gitignore interferes with testing this reliably in a mock project.
       _ = FileType.xcodeProject.syntax
     }
-  }
-#endif
+  #endif
+}

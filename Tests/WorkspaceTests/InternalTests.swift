@@ -98,18 +98,18 @@ class InternalTests: TestCase {
   #endif
 
   func testResources() {
-    _ = WorkspaceImplementation.Resources.Documentation.page
-    _ = WorkspaceImplementation.Resources.Documentation.script
-    _ = WorkspaceImplementation.Resources.Documentation.site
+    _ = WorkspaceImplementation.Resources.page
+    _ = WorkspaceImplementation.Resources.script
+    _ = WorkspaceImplementation.Resources.site
 
-    _ = WorkspaceImplementation.Resources.Licences.apache2_0
-    _ = WorkspaceImplementation.Resources.Licences.copyright
-    _ = WorkspaceImplementation.Resources.Licences.gnuGeneralPublic3_0
-    _ = WorkspaceImplementation.Resources.Licences.mit
-    _ = WorkspaceImplementation.Resources.Licences.unlicense
+    _ = WorkspaceImplementation.Resources.apache2_0
+    _ = WorkspaceImplementation.Resources.copyright
+    _ = WorkspaceImplementation.Resources.gnuGeneralPublic3_0
+    _ = WorkspaceImplementation.Resources.mit
+    _ = WorkspaceImplementation.Resources.unlicense
 
-    _ = WorkspaceImplementation.Resources.Xcode.proofreadScheme
-    _ = WorkspaceImplementation.Resources.Xcode.proofreadProject
+    _ = WorkspaceImplementation.Resources.proofreadScheme
+    _ = WorkspaceImplementation.Resources.proofreadProject
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE

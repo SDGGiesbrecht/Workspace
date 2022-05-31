@@ -72,7 +72,7 @@
       var project = try TextFile(
         possiblyAt: projectBundle.appendingPathComponent("project.pbxproj")
       )
-      var projectDefinition = try! String(file: Resources.Xcode.proofreadProject, origin: nil)
+      var projectDefinition = try! String(file: Resources.proofreadProject, origin: nil)
       let encoding: String = String(projectDefinition.prefix(through: "\n")!.contents)
       projectDefinition.drop(through: "*/\n\n")
       projectDefinition.prepend(contentsOf: encoding)
@@ -89,7 +89,7 @@
           "xcshareddata/xcschemes/\(PackageRepository.proofreadTargetName.resolved()).xcscheme"
         )
       )
-      var schemeDefinition = Resources.Xcode.proofreadScheme
+      var schemeDefinition = Resources.proofreadScheme
       schemeDefinition.drop(through: "\u{2D}\u{2D}>\n\n")
       schemeDefinition.replaceMatches(
         for: "[*project*]",

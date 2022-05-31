@@ -49,7 +49,9 @@
       return byName
     }
 
-    private static let deprecatedResourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>(
+    private static let deprecatedResourceDirectoryName = UserFacing<
+      StrictString, InterfaceLocalization
+    >(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -59,7 +61,7 @@
         }
       })
 
-    // #warning(Add rule warning about their presence.)
+    // #warning(Add rule warning about their presence; note removal of Resource.deprecated once deprecation phase is complete.)
     private func deprecatedResourceDirectories() -> [URL] {
 
       return InterfaceLocalization.allCases.map { (localization) in
@@ -125,10 +127,18 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      var targets: [Target: [URL]] = [:]
+      var targets: [Target: [Resource]] = [:]
       for resource in try deprecatedResourceFiles(output: output) {
         let intendedTarget = try target(for: resource, output: output)
-        targets[intendedTarget, default: []].append(resource)
+
+        let pathComponents = resource.path(relativeTo: location)
+          .components(separatedBy: "/")
+          .dropFirst(2)
+          .map({ StrictString(String($0.contents)) })
+
+        targets[intendedTarget, default: []].append(
+          Resource(origin: resource, namespace: pathComponents, deprecated: true)
+        )
       }
 
       for (target, resources) in targets.keys.sorted()

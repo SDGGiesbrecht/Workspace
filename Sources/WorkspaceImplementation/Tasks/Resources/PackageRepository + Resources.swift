@@ -141,6 +141,15 @@
         )
       }
 
+      for target in try self.targets() {
+        for resource in target.loadedTarget.resources {
+          let namespace = resource.destination.components.map { StrictString($0) }
+          targets[target, default: []].append(
+            Resource(origin: resource.path.asURL, namespace: namespace, deprecated: false)
+          )
+        }
+      }
+
       for (target, resources) in targets.keys.sorted()
         .map({ ($0, targets[$0]!) })
       {  // So that output order is consistent.

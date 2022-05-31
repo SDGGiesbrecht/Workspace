@@ -51,7 +51,7 @@
 
       // MARK: - Properties
 
-      private let loadedTarget: PackageModel.Target
+      internal let loadedTarget: PackageModel.Target
       private let package: PackageRepository
 
       internal var name: String {

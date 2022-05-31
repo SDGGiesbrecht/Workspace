@@ -65,7 +65,7 @@ public func getResourcePath() -> String {
   return path
 }
 #if !os(WASI)
-  public func getResource() throws -> String {
+  public func getResourceManually() throws -> String {
     guard let url = Bundle.module.url(forResource: "Resource", withExtension: "txt") else {
       fatalError("Failed to locate resource!")
     }
@@ -76,3 +76,6 @@ public func getResourcePath() -> String {
     return text
   }
 #endif
+public func getResource() -> String {
+  Resources.resource
+}

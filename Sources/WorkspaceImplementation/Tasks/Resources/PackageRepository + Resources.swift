@@ -61,8 +61,7 @@
         }
       })
 
-    // #warning(Add rule warning about their presence; note removal of Resource.deprecated once deprecation phase is complete.)
-    private func deprecatedResourceDirectories() -> [URL] {
+    internal func deprecatedResourceDirectories() -> [URL] {
 
       return InterfaceLocalization.allCases.map { (localization) in
         return location.appendingPathComponent(

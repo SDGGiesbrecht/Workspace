@@ -37,6 +37,16 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .deprecatedTestManifests
   }
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(ProofreadingRule.deprecatedResourceDirectory)
+  /// Catches deprecated resource directories.
+  case deprecatedResourceDirectory
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedTestManifests)
+  /// Erwischt überholte Ordner mit Ressourcen.
+  public static var überholteRessourcenOrdner: Korrekturregel {
+    return .deprecatedResourceDirectory
+  }
+
   // ••••••• Intentional •••••••
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -405,7 +415,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// The category the rule belongs to.
   public var category: Category {
     switch self {
-    case .deprecatedTestManifests:
+    case .deprecatedTestManifests, .deprecatedResourceDirectory:
       return .deprecation
 
     case .manualWarnings,

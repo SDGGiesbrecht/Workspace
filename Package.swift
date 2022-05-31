@@ -574,6 +574,18 @@ let package = Package(
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
+      ],
+      resources: [
+        .copy("Tasks/Documentation/Site Components/Page.html"),
+        .copy("Tasks/Documentation/Site Components/Script.js"),
+        .copy("Tasks/Documentation/Site Components/Site.css"),
+        .copy("Tasks/Licence/Licences/Apache 2.0.md"),
+        .copy("Tasks/Licence/Licences/Copyright.md"),
+        .copy("Tasks/Licence/Licences/GNU General Public 3.0.md"),
+        .copy("Tasks/Licence/Licences/MIT.md"),
+        .copy("Tasks/Licence/Licences/Unlicense.md"),
+        .copy("Tasks/Xcode/Project Components/Proofread Scheme.xcscheme"),
+        .copy("Tasks/Xcode/Project Components/ProofreadProject.pbxproj"),
       ]
     ),
 
@@ -685,6 +697,11 @@ let package = Package(
           // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
+      ],
+      resources: [
+        .copy("Configuration/GitHub/Contributing Template.txt"),
+        .copy("Configuration/GitHub/Mitwirken Vorlage.txt"),
+        .copy("Configuration/GitHub/Pull Request Template.txt"),
       ]
     ),
 

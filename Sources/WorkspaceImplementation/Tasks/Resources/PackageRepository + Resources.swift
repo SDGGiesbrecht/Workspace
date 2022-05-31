@@ -49,7 +49,7 @@
       return byName
     }
 
-    private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>(
+    private static let deprecatedResourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -59,19 +59,20 @@
         }
       })
 
-    private func resourceDirectories() -> [URL] {
+    // #warning(Add rule warning about their presence.)
+    private func deprecatedResourceDirectories() -> [URL] {
 
       return InterfaceLocalization.allCases.map { (localization) in
         return location.appendingPathComponent(
-          String(PackageRepository.resourceDirectoryName.resolved(for: localization))
+          String(PackageRepository.deprecatedResourceDirectoryName.resolved(for: localization))
         )
       }
     }
 
     // MARK: - Resources
 
-    private func resourceFiles(output: Command.Output) throws -> [URL] {
-      let locations = resourceDirectories()
+    private func deprecatedResourceFiles(output: Command.Output) throws -> [URL] {
+      let locations = deprecatedResourceDirectories()
 
       let result = try trackedFiles(output: output).filter { file in
         for directory in locations where file.is(in: directory) {
@@ -125,7 +126,7 @@
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       var targets: [Target: [URL]] = [:]
-      for resource in try resourceFiles(output: output) {
+      for resource in try deprecatedResourceFiles(output: output) {
         let intendedTarget = try target(for: resource, output: output)
         targets[intendedTarget, default: []].append(resource)
       }

@@ -198,7 +198,7 @@
           try purgingAutoreleased {
             let value = namespaceTree[name]
 
-            if let resource = value as? URL {
+            if let resource = value as? Resource {
               try result.append(
                 contentsOf: source(for: resource, named: name, accessControl: accessControl)
                   + "\n"
@@ -222,12 +222,12 @@
       }
 
       private func source(
-        for resource: URL,
+        for resource: Resource,
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
 
-        let data = try Data(from: resource)
+        let data = try Data(from: resource.origin)
 
         // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
         let problematicLength: Int = 2 ↑ 15
@@ -261,7 +261,7 @@
           return indexedVariable(name: name, index: index)
         }).joined(separator: ", ")
 
-        let fileExtension = resource.pathExtension
+        let fileExtension = resource.origin.pathExtension
         let type: StrictString
         let initializer: (StrictString, StrictString)
         switch fileExtension {

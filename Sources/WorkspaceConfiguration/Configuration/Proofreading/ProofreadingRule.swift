@@ -41,7 +41,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   // @crossReference(ProofreadingRule.deprecatedResourceDirectory)
   /// Catches deprecated resource directories.
   case deprecatedResourceDirectory
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedTestManifests)
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedResourceDirectory)
   /// Erwischt überholte Ordner mit Ressourcen.
   public static var überholteRessourcenOrdner: Korrekturregel {
     return .deprecatedResourceDirectory

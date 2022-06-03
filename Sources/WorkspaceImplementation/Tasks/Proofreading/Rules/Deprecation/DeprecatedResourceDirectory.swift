@@ -55,15 +55,15 @@
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      directories: for directory in project.deprecatedResourceDirectories() {
-        if let contents = try? FileManager.default.deepFileEnumeration(in: directory) {
-          files: for file in contents.sorted() where FileType(url: file) ≠ nil {
-            if let text = try? TextFile(possiblyAt: file) {
-              reportViolation(in: text, at: text.contents.bounds, message: message, status: status)
-              break files
-            }
-          }
-        }
+      for directory in project.deprecatedResourceDirectories()
+      where (try? directory.checkResourceIsReachable()) == true {
+        status.report(
+          violation: StyleViolation(
+            file: directory.path(relativeTo: project.location),
+            ruleIdentifier: identifier,
+            message: message
+          )
+        )
       }
     }
 

@@ -65,14 +65,13 @@
         }
       }
 
-      self.file = file
       self.noticeOnly = noticeOnly
       self.ruleIdentifier = ruleIdentifier
       self.message = message
 
       // Normalize to cluster boundaries
       let clusterRange = location.clusters(in: file.contents.clusters)
-      self.range = clusterRange
+      self.location = .text(range: clusterRange, file: file)
       if let scalarReplacement = replacementSuggestion {
         let modifiedScalarRange = clusterRange.scalars(in: file.contents.scalars)
         let clusterReplacement =
@@ -89,10 +88,21 @@
       }
     }
 
+    internal init(
+      file: String,
+      ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
+      message: UserFacing<StrictString, InterfaceLocalization>
+    ) {
+      self.location = .file(file)
+      self.replacementSuggestion = nil
+      self.noticeOnly = false
+      self.ruleIdentifier = ruleIdentifier
+      self.message = message
+    }
+
     // MARK: - Properties
 
-    internal let file: TextFile
-    internal let range: Range<String.ClusterView.Index>
+    internal let location: Location
     internal let replacementSuggestion: StrictString?
     internal let ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>
     internal let message: UserFacing<StrictString, InterfaceLocalization>

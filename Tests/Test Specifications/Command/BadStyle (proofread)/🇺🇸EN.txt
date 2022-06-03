@@ -5,6 +5,12 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
+Resources now belong inside the target directory. (deprecatedResourceDirectory)
+Resources
+Resources now belong inside the target directory. (deprecatedResourceDirectory)
+Resources
+Resources now belong inside the target directory. (deprecatedResourceDirectory)
+Resources
 .gitignore
 Other/CSS.css
 Other/HTML.html

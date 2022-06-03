@@ -1,4 +1,7 @@
 $ arbeitsbereich proofread •xcode •no‐colour
+Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
+Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
+Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
 [Temporary]/BadStyle/Package.swift:2:13: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Package.swift:30:6: warning: Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)

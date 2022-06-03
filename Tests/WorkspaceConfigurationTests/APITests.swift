@@ -156,6 +156,7 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
     XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
+    XCTAssertEqual(Korrekturregel.überholteRessourcenOrdner, .deprecatedResourceDirectory)
   }
 
   func testRelatedProject() {

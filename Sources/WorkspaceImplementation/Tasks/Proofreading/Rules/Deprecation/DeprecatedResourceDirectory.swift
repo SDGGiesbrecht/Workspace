@@ -15,6 +15,9 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
+
+  import SDGLogic
   import SDGText
   import SDGLocalization
 
@@ -48,16 +51,29 @@
     })
 
     internal static func check(
+      project: PackageRepository,
+      status: ProofreadingStatus,
+      output: Command.Output
+    ) {
+      directories: for directory in project.deprecatedResourceDirectories() {
+        if let contents = try? FileManager.default.deepFileEnumeration(in: directory) {
+          files: for file in contents.sorted() where FileType(url: file) ≠ nil {
+            if let text = try? TextFile(possiblyAt: file) {
+              reportViolation(in: text, at: text.contents.bounds, message: message, status: status)
+              break files
+            }
+          }
+        }
+      }
+    }
+
+    internal static func check(
       file: TextFile,
       in project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
-    ) {
-      for directory in project.deprecatedResourceDirectories() {
-        if file.location.is(in: directory) {
-          reportViolation(in: file, at: file.contents.bounds, message: message, status: status)
-        }
-      }
+    ) throws {
+      // Handled elsewhere.
     }
   }
 #endif

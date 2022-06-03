@@ -14,14 +14,16 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import Foundation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import Foundation
 
-import SDGText
+  import SDGText
 
-extension StyleViolation {
+  extension StyleViolation {
 
-  internal enum Location {
-    case text(range: Range<String.ClusterView.Index>, file: TextFile)
-    case file(String)
+    internal enum Location {
+      case text(range: Range<String.ClusterView.Index>, file: TextFile)
+      case file(String)
+    }
   }
-}
+#endif

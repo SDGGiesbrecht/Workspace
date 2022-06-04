@@ -21,11 +21,6 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
-  internal enum Namespace {
-    internal static var dataResource: Data {
-      return Data(([] as [[UInt8]]).lazy.joined())
-    }
-  }
   private static let _2001_01_01_NamedWithNumbers0: [UInt8] = [
     0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
     0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
@@ -45,6 +40,9 @@ extension Resources {
       data: Data(([_namedWithPunctuation0] as [[UInt8]]).lazy.joined()),
       encoding: String.Encoding.utf8
     )!
+  }
+  internal static var dataResource: Data {
+    return Data(([] as [[UInt8]]).lazy.joined())
   }
   private static let textResource0: [UInt8] = [
     0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,

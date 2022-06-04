@@ -36,6 +36,7 @@ let package = Package(
         ),
         .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")],
                     resources: [
+                      .copy("Text Resource.txt")
                     ]
                    )
     ]

@@ -64,6 +64,10 @@
           }
         }
 
+        if activeRules.contains(.deprecatedResourceDirectory) {
+          DeprecatedResourceDirectory.check(project: self, status: status, output: output)
+        }
+
         let sourceURLs = try sourceFiles(output: output)
 
         var settings: [URL: Setting] = [

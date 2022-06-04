@@ -4,6 +4,11 @@ enum Resources {}
 typealias Ressourcen = Resources
 
 extension Resources {
+  enum Namespace {
+    static var namespaced: String {
+      return String(data: Data(([] as [[UInt8]]).lazy.joined()), encoding: String.Encoding.utf8)!
+    }
+  }
   private static let deutsch0: [UInt8] = [
     0x7B, 0x0A, 0x20,
     0x20,

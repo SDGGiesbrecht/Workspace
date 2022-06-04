@@ -39,7 +39,7 @@ import PackageDescription
 ///     - [Einrichtung von fortlaufeden Einbindung](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/EinstellungenFortlaufenderEinbindung/Eigenschaften/verwalten.html) ([GitHub Vorgänge](https://github.com/features/actions))
 /// - Erstellt  [Dokumentation](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/Programmierschnittstellendokumentationseinstellungen/Eigenschaften/erstellen.html) von Programierschnittstellen.
 /// - Automatisiert Quellinstandhaltung:
-///     - [Einbau von Ressourcen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Programme/arbeitsbereich/Unterbefehle/auffrischen/Unterbefehle/ressourcen.html)
+///     - [Zugriff auf Ressourcen](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Programme/arbeitsbereich/Unterbefehle/auffrischen/Unterbefehle/ressourcen.html)
 ///     - [Geerbte Dokumentation](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Programme/arbeitsbereich/Unterbefehle/auffrischen/Unterbefehle/geerbte%E2%80%90dokumentation.html)
 ///     - [Erstellung von Xcode‐Projekte](https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/XcodeEinstellungen/Eigenschaften/verwalten.html)
 /// - Automatisiert quelloffene Nebensachen:
@@ -130,7 +130,7 @@ import PackageDescription
 ///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([GitHub Actions](https://github.com/features/actions))
 /// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/APIDocumentationConfiguration/Properties/generate.html).
 /// - Automates code maintenance:
-///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
+///     - [Resource accessors](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
 ///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Tools/workspace/Subcommands/refresh/Subcommands/inherited%E2%80%90documentation.html)
 ///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/XcodeConfiguration/Properties/manage.html)
 /// - Automates open source details:
@@ -221,7 +221,7 @@ import PackageDescription
 ///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([GitHub Actions](https://github.com/features/actions))
 /// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/APIDocumentationConfiguration/Properties/generate.html).
 /// - Automates code maintenance:
-///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
+///     - [Resource accessors](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
 ///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Tools/workspace/Subcommands/refresh/Subcommands/inherited%E2%80%90documentation.html)
 ///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/XcodeConfiguration/Properties/manage.html)
 /// - Automates open source details:
@@ -312,7 +312,7 @@ import PackageDescription
 ///     - [Continuous integration set‐up](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/ContinuousIntegrationConfiguration/Properties/manage.html) ([GitHub Actions](https://github.com/features/actions))
 /// - Generates API [documentation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/APIDocumentationConfiguration/Properties/generate.html).
 /// - Automates code maintenance:
-///     - [Embedded resources](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
+///     - [Resource accessors](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Tools/workspace/Subcommands/refresh/Subcommands/resources.html)
 ///     - [Inherited documentation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Tools/workspace/Subcommands/refresh/Subcommands/inherited%E2%80%90documentation.html)
 ///     - [Xcode project generation](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/XcodeConfiguration/Properties/manage.html)
 /// - Automates open source details:
@@ -574,6 +574,18 @@ let package = Package(
         ),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
+      ],
+      resources: [
+        .copy("Tasks/Documentation/Site Components/Page.html"),
+        .copy("Tasks/Documentation/Site Components/Script.js"),
+        .copy("Tasks/Documentation/Site Components/Site.css"),
+        .copy("Tasks/Licence/Licences/Apache 2.0.md"),
+        .copy("Tasks/Licence/Licences/Copyright.md"),
+        .copy("Tasks/Licence/Licences/GNU General Public 3.0.md"),
+        .copy("Tasks/Licence/Licences/MIT.md"),
+        .copy("Tasks/Licence/Licences/Unlicense.md"),
+        .copy("Tasks/Xcode/Project Components/Proofread Scheme.xcscheme"),
+        .copy("Tasks/Xcode/Project Components/ProofreadProject.pbxproj"),
       ]
     ),
 
@@ -685,6 +697,11 @@ let package = Package(
           // #workaround(Swift 5.6, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
+      ],
+      resources: [
+        .copy("Configuration/GitHub/Contributing Template.txt"),
+        .copy("Configuration/GitHub/Mitwirken Vorlage.txt"),
+        .copy("Configuration/GitHub/Pull Request Template.txt"),
       ]
     ),
 

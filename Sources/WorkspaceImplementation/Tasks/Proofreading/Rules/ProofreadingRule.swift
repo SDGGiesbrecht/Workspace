@@ -24,6 +24,8 @@
       case .deprecatedTestManifests:  // @exempt(from: tests)
         // Unreachable. Handled exceptionally elsewhere.
         return .text(DeprecatedTestManifests.self)
+      case .deprecatedResourceDirectory:
+        return .text(DeprecatedResourceDirectory.self)
       case .manualWarnings:
         return .text(ManualWarnings.self)
       case .missingImplementation:

@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.6
 
 import PackageDescription
 
@@ -26,8 +26,19 @@ let package = Package(
         /// A module.
         .target(name: "Library", dependencies: [
             .product(name: "Dependency", package: "Dependency")
-            ]),
-        .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")])
+            ],
+                resources: [
+                  .copy("(Named with) Punctuation!.txt"),
+                  .copy("2001‐01‐01 (Named with Numbers).txt"),
+                  .copy("Namespace/Data Resource"),
+                  .copy("Text Resource.txt")
+                ]
+        ),
+        .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")],
+                    resources: [
+                      .copy("Text Resource.txt")
+                    ]
+                   )
     ]
 )
 

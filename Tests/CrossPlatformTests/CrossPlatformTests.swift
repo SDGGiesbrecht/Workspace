@@ -78,8 +78,9 @@ final class Tests: TestCase {
   func testResources() {
     XCTAssert(getResourcePath().hasSuffix("Resource.txt"))
     #if !os(WASI)  // Web cannot actually load a resource without additional dependencies.
-      XCTAssertEqual(try getResource(), "Hello, world!")
+      XCTAssertEqual(try getResourceManually(), "Hello, world!")
     #endif
+    XCTAssertEqual(getResource(), "Hello, world!")
   }
 
   func testTemporaryDirectoryPermissions() throws {

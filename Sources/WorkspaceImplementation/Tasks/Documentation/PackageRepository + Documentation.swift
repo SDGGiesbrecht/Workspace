@@ -361,11 +361,11 @@
 
       try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
       try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
-      var siteCSS = TextFile(mockFileWithContents: Resources.Documentation.site, fileType: .css)
+      var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
       siteCSS.header = ""
       try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
       var siteJavaScript = TextFile(
-        mockFileWithContents: Resources.Documentation.script,
+        mockFileWithContents: Resources.script,
         fileType: .javaScript
       )
       siteJavaScript.header = ""

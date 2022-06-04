@@ -51,7 +51,7 @@
 
       // MARK: - Properties
 
-      private let loadedTarget: PackageModel.Target
+      internal let loadedTarget: PackageModel.Target
       private let package: PackageRepository
 
       internal var name: String {
@@ -65,7 +65,7 @@
       // MARK: - Resources
 
       internal func refresh(
-        resources: [URL],
+        resources: [Resource],
         from package: PackageRepository,
         output: Command.Output
       ) throws {
@@ -85,7 +85,7 @@
       }
 
       private func generateSource(
-        for resources: [URL],
+        for resources: [Resource],
         of package: PackageRepository
       ) throws -> StrictString {
         let accessControl: String
@@ -120,11 +120,11 @@
         source.append(contentsOf: "extension Resources {\n".scalars)
 
         source.append(
-          contentsOf: (try namespaceTreeSource(
+          contentsOf: try namespaceTreeSource(
             for: resources,
             of: package,
             accessControl: accessControl
-          )) + "\n"
+          ) + "\n"
         )
 
         source.append(contentsOf: "}\n".scalars)
@@ -142,7 +142,7 @@
         })
 
       private func namespaceTreeSource(
-        for resources: [URL],
+        for resources: [Resource],
         of package: PackageRepository,
         accessControl: String
       ) throws -> StrictString {
@@ -153,24 +153,20 @@
       }
 
       private func namespaceTree(
-        for resources: [URL],
+        for resources: [Resource],
         of package: PackageRepository
       ) -> [StrictString: Any] {
         var tree: [StrictString: Any] = [:]
         for resource in resources {
-          let pathComponentsArray = resource.path(relativeTo: package.location).components(
-            separatedBy: "/"
-          ).dropFirst(2).map({ String($0.contents) })
-          let pathComponents = pathComponentsArray[pathComponentsArray.startIndex...]
-          add(components: pathComponents, to: &tree, for: resource)
+          add(components: resource.namespace[...], to: &tree, for: resource)
         }
         return tree
       }
 
       private func add(
-        components: ArraySlice<String>,
+        components: ArraySlice<StrictString>,
         to tree: inout [StrictString: Any],
-        for resource: URL
+        for resource: Resource
       ) {
         if ¬components.isEmpty {
           if components.count == 1 {
@@ -187,8 +183,8 @@
         }
       }
 
-      private func variableName(for fileName: String) -> StrictString {
-        let nameOnly = URL(fileURLWithPath: "/" + fileName)
+      private func variableName(for fileName: StrictString) -> StrictString {
+        let nameOnly = URL(fileURLWithPath: "/" + String(fileName))
           .deletingPathExtension().lastPathComponent
         return SwiftLanguage.identifier(for: StrictString(nameOnly), casing: .variable)
       }
@@ -202,7 +198,7 @@
           try purgingAutoreleased {
             let value = namespaceTree[name]
 
-            if let resource = value as? URL {
+            if let resource = value as? Resource {
               try result.append(
                 contentsOf: source(for: resource, named: name, accessControl: accessControl)
                   + "\n"
@@ -226,12 +222,12 @@
       }
 
       private func source(
-        for resource: URL,
+        for resource: Resource,
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
 
-        let data = try Data(from: resource)
+        let data = try Data(from: resource.origin)
 
         // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
         let problematicLength: Int = 2 ↑ 15
@@ -265,7 +261,7 @@
           return indexedVariable(name: name, index: index)
         }).joined(separator: ", ")
 
-        let fileExtension = resource.pathExtension
+        let fileExtension = resource.origin.pathExtension
         let type: StrictString
         let initializer: (StrictString, StrictString)
         switch fileExtension {

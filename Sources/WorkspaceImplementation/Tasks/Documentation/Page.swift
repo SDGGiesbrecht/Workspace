@@ -35,7 +35,7 @@
     // MARK: - Static Properties
 
     private static let template: StrictString = {
-      var result = TextFile(mockFileWithContents: Resources.Documentation.page, fileType: .html)
+      var result = TextFile(mockFileWithContents: Resources.page, fileType: .html)
       result.header = ""
       return StrictString(result.contents)
     }()

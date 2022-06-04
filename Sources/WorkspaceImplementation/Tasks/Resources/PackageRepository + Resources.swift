@@ -49,7 +49,9 @@
       return byName
     }
 
-    private static let resourceDirectoryName = UserFacing<StrictString, InterfaceLocalization>(
+    private static let deprecatedResourceDirectoryName = UserFacing<
+      StrictString, InterfaceLocalization
+    >(
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -59,19 +61,19 @@
         }
       })
 
-    private func resourceDirectories() -> [URL] {
+    internal func deprecatedResourceDirectories() -> [URL] {
 
       return InterfaceLocalization.allCases.map { (localization) in
         return location.appendingPathComponent(
-          String(PackageRepository.resourceDirectoryName.resolved(for: localization))
+          String(PackageRepository.deprecatedResourceDirectoryName.resolved(for: localization))
         )
       }
     }
 
     // MARK: - Resources
 
-    private func resourceFiles(output: Command.Output) throws -> [URL] {
-      let locations = resourceDirectories()
+    private func deprecatedResourceFiles(output: Command.Output) throws -> [URL] {
+      let locations = deprecatedResourceDirectories()
 
       let result = try trackedFiles(output: output).filter { file in
         for directory in locations where file.is(in: directory) {
@@ -124,10 +126,27 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      var targets: [Target: [URL]] = [:]
-      for resource in try resourceFiles(output: output) {
+      var targets: [Target: [Resource]] = [:]
+      for resource in try deprecatedResourceFiles(output: output) {
         let intendedTarget = try target(for: resource, output: output)
-        targets[intendedTarget, default: []].append(resource)
+
+        let pathComponents = resource.path(relativeTo: location)
+          .components(separatedBy: "/")
+          .dropFirst(2)
+          .map({ StrictString(String($0.contents)) })
+
+        targets[intendedTarget, default: []].append(
+          Resource(origin: resource, namespace: pathComponents, deprecated: true)
+        )
+      }
+
+      for target in try self.targets() {
+        for resource in target.loadedTarget.resources {
+          let namespace = resource.destination.components.map { StrictString($0) }
+          targets[target, default: []].append(
+            Resource(origin: resource.path.asURL, namespace: namespace, deprecated: false)
+          )
+        }
       }
 
       for (target, resources) in targets.keys.sorted()

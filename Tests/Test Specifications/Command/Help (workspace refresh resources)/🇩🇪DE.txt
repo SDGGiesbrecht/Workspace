@@ -2,19 +2,6 @@ $ arbeitsbereich refresh resources help •no‐colour
 
 arbeitsbereich auffrischen ressourcen erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt.
 
-Arbeitsbereich kann Ressourcen in Ziele eines Swift‐Pakets einbauen.
-
-Arbeitsbereich findet Dateien in „Ressourcen“‐Verzeichnis des Projekts, und baut sie ein. Die Gestalltung des „Ressourcen“‐Verzeichnis bestimmt die Ziele und Namensräume unter denen die Ressourcen in Swift‐Quelltext bereitgestellt werden. Direkte Unterverzeichnisse müssen mit Ziele übereinstimmen; beliebige weitere geschachtelte Verzeichnisse erstellen Namensräume. Zum Beispiel, ein Projekt mit der folgenen Datei ...
-
-Ressourcen/MeineBibliotek/Vorlagen/Einfache Vorlage.txt
-
-... kann die Datei in das „MeineBibliotek“‐Ziel so verwenden ...
-
-let vorlage: String = Ressouren.Vorlagen.einfacheVorlage
-print(vorlage)
-
-Die meisten Dateien werden als „Data“ eingebaut, aber manche Dateinamenserweiterungen sind erkannt und werden als genaueren Typen eingebaut (z. B. „.txt“ als „String“).
-
 Unterbefehle
 
 hilfe zeigt Gebrauchsinformationen an.

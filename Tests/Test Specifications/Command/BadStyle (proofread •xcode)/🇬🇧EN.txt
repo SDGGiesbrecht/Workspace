@@ -1,4 +1,7 @@
 $ workspace proofread •xcode •no‐colour
+Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
+Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
+Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
 [Temporary]/BadStyle/Package.swift:2:13: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:30:6: warning: List separators should only occur between list elements. (listSeparation)

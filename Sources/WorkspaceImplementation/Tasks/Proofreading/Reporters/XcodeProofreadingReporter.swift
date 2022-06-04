@@ -35,20 +35,27 @@
 
     internal func report(violation: StyleViolation, to output: Command.Output) {
 
-      let file = violation.file.contents
-      let lines = file.lines
+      let location: String
+      switch violation.location {
+      case .text(let range, let textFile):
+        let file = textFile.contents
+        let lines = file.lines
 
-      let path = violation.file.location.path
+        let path = textFile.location.path
 
-      let lineIndex = violation.range.lowerBound.line(in: lines)
-      let lineNumber: Int = lines.distance(from: lines.startIndex, to: lineIndex) + 1
+        let lineIndex = range.lowerBound.line(in: lines)
+        let lineNumber: Int = lines.distance(from: lines.startIndex, to: lineIndex) + 1
 
-      let utf16LineStart = lineIndex.samePosition(in: file.clusters).samePosition(in: file.utf16)!
-      let utf16ViolationStart = violation.range.lowerBound.samePosition(in: file.utf16)!
-      let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
+        let utf16LineStart = lineIndex.samePosition(in: file.clusters).samePosition(in: file.utf16)!
+        let utf16ViolationStart = range.lowerBound.samePosition(in: file.utf16)!
+        let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
 
+        location = "\(path):\(lineNumber):\(column):"
+      case .file(let url):
+        location = "\(url):1:1:"
+      }
       output.print(
-        "\(path):\(lineNumber):\(column): warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"
+        "\(location) warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"
       )
     }
   }

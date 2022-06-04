@@ -89,18 +89,26 @@
         highlight(violation.message.resolved()) + " ("
         + violation.ruleIdentifier.resolved() + ")"
 
-      output.print(
-        [
-          String(lineMessage(source: violation.file.contents, violation: violation.range)),
+      let message: [String]
+      switch violation.location {
+      case .text(let range, let file):
+        message = [
+          String(lineMessage(source: file.contents, violation: range)),
           String(description),
           display(
-            source: violation.file.contents,
-            violation: violation.range,
+            source: file.contents,
+            violation: range,
             replacementSuggestion: violation.replacementSuggestion,
             highlight: highlight
           ),
-        ].joinedAsLines()
-      )
+        ]
+      case .file(let url):
+        message = [
+          String(description),
+          url,
+        ]
+      }
+      output.print(message.joinedAsLines())
     }
 
     // Parallel reporting style for test coverage.

@@ -25,15 +25,15 @@
       var source: String
       switch self {
       case .apache2_0:
-        source = Resources.Licences.apache2_0
+        source = Resources.apache2_0
       case .mit:
-        source = Resources.Licences.mit
+        source = Resources.mit
       case .gnuGeneralPublic3_0:
-        source = Resources.Licences.gnuGeneralPublic3_0
+        source = Resources.gnuGeneralPublic3_0
       case .unlicense:
-        source = Resources.Licences.unlicense
+        source = Resources.unlicense
       case .copyright:
-        source = Resources.Licences.copyright
+        source = Resources.copyright
       }
 
       let file = TextFile(mockFileWithContents: source, fileType: FileType.markdown)

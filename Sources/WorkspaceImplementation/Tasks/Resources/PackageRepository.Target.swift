@@ -226,26 +226,48 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
-        return
-          ([
-            // #workaround(Swift 5.6.1, Some platforms do not support bundled resources yet.)
-            "#if os(WASI)",
-            try embeddedSource(for: resource, named: name, accessControl: accessControl),
-            "#else",
-            bundledSource(for: resource, named: name, accessControl: accessControl),
-            "#endif",
-          ] as [StrictString]).joinedAsLines()
+        if ¬resource.deprecated,
+          let loadName = resource.bundledName
+        {
+          return
+            ([
+              // #workaround(Swift 5.6.1, Some platforms do not support bundled resources yet.)
+              "#if os(WASI)",
+              try embeddedSource(for: resource, named: name, accessControl: accessControl),
+              "#else",
+              bundledSource(
+                for: resource,
+                named: name,
+                loadName: loadName,
+                accessControl: accessControl
+              ),
+              "#endif",
+            ] as [StrictString]).joinedAsLines()
+        } else {
+          return try embeddedSource(for: resource, named: name, accessControl: accessControl)
+        }
       }
 
       private func bundledSource(
         for resource: Resource,
         named name: StrictString,
+        loadName: StrictString,
         accessControl: String
       ) -> StrictString {
+        let resourceName: StrictString = "\u{22}\(loadName)\u{22}"
+        let resourceExtension: StrictString
+        if let bundledExtension = resource.bundledExtension {
+          resourceExtension = "\u{22}\(bundledExtension)\u{22}"
+        } else {
+          resourceExtension = "nil"
+        }
+        let url: StrictString =
+          "Bundle.module.url(forResource: \(resourceName), withExtension: \(resourceExtension))!"
+        let data: StrictString = "try! Data(contentsOf: \(url), options: [.mappedIfSafe])"
         return accessor(
           for: resource,
           named: name,
-          data: "Data()",
+          data: data,
           accessControl: accessControl
         )
       }

@@ -35,7 +35,7 @@ extension Resources {
     internal static var resource: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Resource.txt", withExtension: "txt")!,
+          contentsOf: Bundle.module.url(forResource: "Resource", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

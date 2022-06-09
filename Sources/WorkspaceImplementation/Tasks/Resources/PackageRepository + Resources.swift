@@ -154,7 +154,7 @@
               origin: resource.path.asURL,
               namespace: namespace,
               deprecated: false,
-              bundledName: StrictString(resource.destination.basename),
+              bundledName: StrictString(resource.destination.basenameWithoutExt),
               bundledExtension: resource.destination.extension.map({ StrictString($0) })
             )
           )

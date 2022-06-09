@@ -1872,7 +1872,7 @@ extension Resources {
     internal static var apache2_0: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Apache 2.0.md", withExtension: "md")!,
+          contentsOf: Bundle.module.url(forResource: "Apache 2.0", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -2019,7 +2019,7 @@ extension Resources {
     internal static var copyright: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Copyright.md", withExtension: "md")!,
+          contentsOf: Bundle.module.url(forResource: "Copyright", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -8360,7 +8360,7 @@ extension Resources {
       return String(
         data: try! Data(
           contentsOf: Bundle.module.url(
-            forResource: "GNU General Public 3.0.md",
+            forResource: "GNU General Public 3.0",
             withExtension: "md"
           )!,
           options: [.mappedIfSafe]
@@ -8653,7 +8653,7 @@ extension Resources {
     internal static var mit: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "MIT.md", withExtension: "md")!,
+          contentsOf: Bundle.module.url(forResource: "MIT", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -8984,7 +8984,7 @@ extension Resources {
     internal static var page: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Page.html", withExtension: "html")!,
+          contentsOf: Bundle.module.url(forResource: "Page", withExtension: "html")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -9421,10 +9421,7 @@ extension Resources {
   #else
     internal static var proofreadProject: Data {
       return try! Data(
-        contentsOf: Bundle.module.url(
-          forResource: "ProofreadProject.pbxproj",
-          withExtension: "pbxproj"
-        )!,
+        contentsOf: Bundle.module.url(forResource: "ProofreadProject", withExtension: "pbxproj")!,
         options: [.mappedIfSafe]
       )
     }
@@ -9715,7 +9712,7 @@ extension Resources {
       return String(
         data: try! Data(
           contentsOf: Bundle.module.url(
-            forResource: "Proofread Scheme.xcscheme",
+            forResource: "Proofread Scheme",
             withExtension: "xcscheme"
           )!,
           options: [.mappedIfSafe]
@@ -10476,7 +10473,7 @@ extension Resources {
     internal static var script: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Script.js", withExtension: "js")!,
+          contentsOf: Bundle.module.url(forResource: "Script", withExtension: "js")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -12411,7 +12408,7 @@ extension Resources {
     internal static var site: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Site.css", withExtension: "css")!,
+          contentsOf: Bundle.module.url(forResource: "Site", withExtension: "css")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -12734,7 +12731,7 @@ extension Resources {
     internal static var unlicense: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Unlicense.md", withExtension: "md")!,
+          contentsOf: Bundle.module.url(forResource: "Unlicense", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

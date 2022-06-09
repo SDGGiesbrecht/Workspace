@@ -226,28 +226,29 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
-        /*return [
-          // #workaround(Swift 5.6, Some platforms do not support bundled resources yet.)
-          "#if os(WASI)",
-          try embeddedSource(for: resource, named: name, accessControl: accessControl)
-          "#else",
-          bundledSource(for: resource, named: name, accessControl: accessControl)
-          "#endif"
-        ].joined(separator: "\n")*/
-        return try embeddedSource(for: resource, named: name, accessControl: accessControl)
+        return
+          ([
+            // #workaround(Swift 5.6.1, Some platforms do not support bundled resources yet.)
+            "#if os(WASI)",
+            try embeddedSource(for: resource, named: name, accessControl: accessControl),
+            "#else",
+            bundledSource(for: resource, named: name, accessControl: accessControl),
+            "#endif",
+          ] as [StrictString]).joinedAsLines()
       }
 
-      /*private func bundledSource(
+      private func bundledSource(
         for resource: Resource,
         named name: StrictString,
         accessControl: String
-      ) throws -> StrictString {
-        return [
-          "\(accessControl)static var \(name): \(type) {",
-          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
-          "}",
-        ].joined(separator: "\n")
-      }*/
+      ) -> StrictString {
+        return accessor(
+          for: resource,
+          named: name,
+          data: "Data()",
+          accessControl: accessControl
+        )
+      }
 
       private func embeddedSource(
         for resource: Resource,
@@ -257,7 +258,7 @@
 
         let data = try Data(from: resource.origin)
 
-        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
+        // #workaround(Swift 5.6.1, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
         let problematicLength: Int = 2 ↑ 15
         var unprocessed: Data.SubSequence = data[...]
         var sections: [Data.SubSequence] = []

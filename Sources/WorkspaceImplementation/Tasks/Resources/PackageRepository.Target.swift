@@ -226,6 +226,34 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
+        /*return [
+          // #workaround(Swift 5.6, Some platforms do not support bundled resources yet.)
+          "#if os(WASI)",
+          try embeddedSource(for: resource, named: name, accessControl: accessControl)
+          "#else",
+          bundledSource(for: resource, named: name, accessControl: accessControl)
+          "#endif"
+        ].joined(separator: "\n")*/
+        return try embeddedSource(for: resource, named: name, accessControl: accessControl)
+      }
+
+      /*private func bundledSource(
+        for resource: Resource,
+        named name: StrictString,
+        accessControl: String
+      ) throws -> StrictString {
+        return [
+          "\(accessControl)static var \(name): \(type) {",
+          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
+          "}",
+        ].joined(separator: "\n")
+      }*/
+
+      private func embeddedSource(
+        for resource: Resource,
+        named name: StrictString,
+        accessControl: String
+      ) throws -> StrictString {
 
         let data = try Data(from: resource.origin)
 
@@ -261,28 +289,38 @@
           return indexedVariable(name: name, index: index)
         }).joined(separator: ", ")
 
-        let fileExtension = resource.origin.pathExtension
-        let type: StrictString
-        let initializer: (StrictString, StrictString)
-        switch fileExtension {
-        case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
-          type = "String"
-          initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
-        default:
-          type = "Data"
-          initializer = ("", "")
-        }
-
-        source.append(contentsOf: [
-          "\(accessControl)static var \(name): \(type) {",
-          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
-          "}",
-        ])
-        return source.joined(separator: "\n")
+        source.append(
+          accessor(
+            for: resource,
+            named: name,
+            data: "Data(([\(variables)] as [[UInt8]]).lazy.joined())",
+            accessControl: accessControl
+          )
+        )
+        return source.joinedAsLines()
       }
 
       private func indexedVariable(name: StrictString, index: Int) -> StrictString {
         return "\(name)\(index.inDigits(thousandsSeparator: "_"))"
+      }
+
+      private func accessor(
+        for resource: Resource,
+        named name: StrictString,
+        data: StrictString,
+        accessControl: String
+      ) -> StrictString {
+
+        let constructor = resource.constructor
+        let type = constructor.type
+        let initializer = constructor.initializationFromData(data)
+
+        return
+          ([
+            "\(accessControl)static var \(name): \(type) {",
+            "  return \(initializer)",
+            "}",
+          ] as [StrictString]).joinedAsLines()
       }
 
       // MARK: - Comparable

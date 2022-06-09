@@ -18,7 +18,29 @@ import Foundation
 import SDGText
 
 internal struct Resource {
+
+  // MARK: - Properties
+
   internal let origin: URL
   internal let namespace: [StrictString]
   internal let deprecated: Bool
+
+  internal var constructor: Constructor {
+    switch origin.pathExtension {
+    case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
+      return Constructor(
+        type: "String",
+        initializationFromData: { data in
+          return "String(data: \(data), encoding: String.Encoding.utf8)!"
+        }
+      )
+    default:
+      return Constructor(
+        type: "Data",
+        initializationFromData: { data in
+          return data
+        }
+      )
+    }
+  }
 }

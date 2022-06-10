@@ -14,12 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGText
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGText
 
-extension Resource {
+  extension Resource {
 
-  internal struct Constructor {
-    internal var type: StrictString
-    internal var initializationFromData: (_ data: StrictString) -> StrictString
+    internal struct Constructor {
+      internal var type: StrictString
+      internal var initializationFromData: (_ data: StrictString) -> StrictString
+    }
   }
-}
+#endif

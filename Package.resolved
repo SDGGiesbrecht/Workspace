@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGCommandLine",
       "state" : {
-        "revision" : "dbf6c41e1613a45698595aac5d967ddb71cab4f9",
-        "version" : "2.0.0"
+        "revision" : "070b0510f8303aef6bce861d77f0f4131c8dda92",
+        "version" : "2.1.0"
       }
     },
     {

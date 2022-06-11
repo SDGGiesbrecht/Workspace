@@ -136,7 +136,13 @@
           .map({ StrictString(String($0.contents)) })
 
         targets[intendedTarget, default: []].append(
-          Resource(origin: resource, namespace: pathComponents, deprecated: true)
+          Resource(
+            origin: resource,
+            namespace: pathComponents,
+            deprecated: true,
+            bundledName: nil,
+            bundledExtension: nil
+          )
         )
       }
 
@@ -144,7 +150,13 @@
         for resource in target.loadedTarget.resources {
           let namespace = resource.destination.components.map { StrictString($0) }
           targets[target, default: []].append(
-            Resource(origin: resource.path.asURL, namespace: namespace, deprecated: false)
+            Resource(
+              origin: resource.path.asURL,
+              namespace: namespace,
+              deprecated: false,
+              bundledName: StrictString(resource.destination.basenameWithoutExt),
+              bundledExtension: resource.destination.extension.map({ StrictString($0) })
+            )
           )
         }
       }

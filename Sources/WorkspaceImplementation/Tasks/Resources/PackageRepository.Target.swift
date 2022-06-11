@@ -226,10 +226,61 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
+        if ¬resource.deprecated,
+          let loadName = resource.bundledName
+        {
+          return
+            ([
+              // #workaround(Swift 5.6.1, Some platforms do not support bundled resources yet.)
+              "#if os(WASI)",
+              try embeddedSource(for: resource, named: name, accessControl: accessControl),
+              "#else",
+              bundledSource(
+                for: resource,
+                named: name,
+                loadName: loadName,
+                accessControl: accessControl
+              ),
+              "#endif",
+            ] as [StrictString]).joinedAsLines()
+        } else {
+          return try embeddedSource(for: resource, named: name, accessControl: accessControl)
+        }
+      }
+
+      private func bundledSource(
+        for resource: Resource,
+        named name: StrictString,
+        loadName: StrictString,
+        accessControl: String
+      ) -> StrictString {
+        let resourceName: StrictString = "\u{22}\(loadName)\u{22}"
+        let resourceExtension: StrictString
+        if let bundledExtension = resource.bundledExtension {
+          resourceExtension = "\u{22}\(bundledExtension)\u{22}"
+        } else {
+          resourceExtension = "nil"
+        }
+        let url: StrictString =
+          "Bundle.module.url(forResource: \(resourceName), withExtension: \(resourceExtension))!"
+        let data: StrictString = "try! Data(contentsOf: \(url), options: [.mappedIfSafe])"
+        return accessor(
+          for: resource,
+          named: name,
+          data: data,
+          accessControl: accessControl
+        )
+      }
+
+      private func embeddedSource(
+        for resource: Resource,
+        named name: StrictString,
+        accessControl: String
+      ) throws -> StrictString {
 
         let data = try Data(from: resource.origin)
 
-        // #workaround(Swift 5.6, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
+        // #workaround(Swift 5.6.1, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
         let problematicLength: Int = 2 ↑ 15
         var unprocessed: Data.SubSequence = data[...]
         var sections: [Data.SubSequence] = []
@@ -261,28 +312,38 @@
           return indexedVariable(name: name, index: index)
         }).joined(separator: ", ")
 
-        let fileExtension = resource.origin.pathExtension
-        let type: StrictString
-        let initializer: (StrictString, StrictString)
-        switch fileExtension {
-        case "command", "css", "html", "js", "md", "sh", "txt", "xcscheme", "yml":
-          type = "String"
-          initializer = ("String(data: ", ", encoding: String.Encoding.utf8)!")
-        default:
-          type = "Data"
-          initializer = ("", "")
-        }
-
-        source.append(contentsOf: [
-          "\(accessControl)static var \(name): \(type) {",
-          "  return \(initializer.0)Data(([\(variables)] as [[UInt8]]).lazy.joined())\(initializer.1)",
-          "}",
-        ])
-        return source.joined(separator: "\n")
+        source.append(
+          accessor(
+            for: resource,
+            named: name,
+            data: "Data(([\(variables)] as [[UInt8]]).lazy.joined())",
+            accessControl: accessControl
+          )
+        )
+        return source.joinedAsLines()
       }
 
       private func indexedVariable(name: StrictString, index: Int) -> StrictString {
         return "\(name)\(index.inDigits(thousandsSeparator: "_"))"
+      }
+
+      private func accessor(
+        for resource: Resource,
+        named name: StrictString,
+        data: StrictString,
+        accessControl: String
+      ) -> StrictString {
+
+        let constructor = resource.constructor
+        let type = constructor.type
+        let initializer = constructor.initializationFromData(data)
+
+        return
+          ([
+            "\(accessControl)static var \(name): \(type) {",
+            "  return \(initializer)",
+            "}",
+          ] as [StrictString]).joinedAsLines()
       }
 
       // MARK: - Comparable

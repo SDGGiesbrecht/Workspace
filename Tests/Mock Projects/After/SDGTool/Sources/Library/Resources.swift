@@ -21,38 +21,89 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
-  private static let _2001_01_01_NamedWithNumbers0: [UInt8] = [
-    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
-    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
-  ]
-  internal static var _2001_01_01_NamedWithNumbers: String {
-    return String(
-      data: Data(([_2001_01_01_NamedWithNumbers0] as [[UInt8]]).lazy.joined()),
-      encoding: String.Encoding.utf8
-    )!
-  }
-  private static let _namedWithPunctuation0: [UInt8] = [
-    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
-    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
-  ]
-  internal static var _namedWithPunctuation: String {
-    return String(
-      data: Data(([_namedWithPunctuation0] as [[UInt8]]).lazy.joined()),
-      encoding: String.Encoding.utf8
-    )!
-  }
-  internal static var dataResource: Data {
-    return Data(([] as [[UInt8]]).lazy.joined())
-  }
-  private static let textResource0: [UInt8] = [
-    0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
-    0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
-  ]
-  internal static var textResource: String {
-    return String(
-      data: Data(([textResource0] as [[UInt8]]).lazy.joined()),
-      encoding: String.Encoding.utf8
-    )!
-  }
+  #if os(WASI)
+    private static let _2001_01_01_NamedWithNumbers0: [UInt8] = [
+      0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+      0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+    ]
+    internal static var _2001_01_01_NamedWithNumbers: String {
+      return String(
+        data: Data(([_2001_01_01_NamedWithNumbers0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #else
+    internal static var _2001_01_01_NamedWithNumbers: String {
+      return String(
+        data: try! Data(
+          contentsOf: Bundle.module.url(
+            forResource: "2001‐01‐01 (Named with Numbers)",
+            withExtension: "txt"
+          )!,
+          options: [.mappedIfSafe]
+        ),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #endif
+  #if os(WASI)
+    private static let _namedWithPunctuation0: [UInt8] = [
+      0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+      0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+    ]
+    internal static var _namedWithPunctuation: String {
+      return String(
+        data: Data(([_namedWithPunctuation0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #else
+    internal static var _namedWithPunctuation: String {
+      return String(
+        data: try! Data(
+          contentsOf: Bundle.module.url(
+            forResource: "(Named with) Punctuation!",
+            withExtension: "txt"
+          )!,
+          options: [.mappedIfSafe]
+        ),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #endif
+  #if os(WASI)
+    internal static var dataResource: Data {
+      return Data(([] as [[UInt8]]).lazy.joined())
+    }
+  #else
+    internal static var dataResource: Data {
+      return try! Data(
+        contentsOf: Bundle.module.url(forResource: "Data Resource", withExtension: nil)!,
+        options: [.mappedIfSafe]
+      )
+    }
+  #endif
+  #if os(WASI)
+    private static let textResource0: [UInt8] = [
+      0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
+      0x77, 0x6F, 0x72, 0x6C, 0x64, 0x21,
+    ]
+    internal static var textResource: String {
+      return String(
+        data: Data(([textResource0] as [[UInt8]]).lazy.joined()),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #else
+    internal static var textResource: String {
+      return String(
+        data: try! Data(
+          contentsOf: Bundle.module.url(forResource: "Text Resource", withExtension: "txt")!,
+          options: [.mappedIfSafe]
+        ),
+        encoding: String.Encoding.utf8
+      )!
+    }
+  #endif
 
 }

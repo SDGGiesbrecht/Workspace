@@ -5,6 +5,7 @@
   "description" : "tut etwas.",
   "discussion" : "Paragraf eins.\nZeile zwei.\n\nParagraf zwei.",
   "identifier" : "do‐something",
+  "infiniteFinalArgument" : false,
   "name" : "etwas‐tun",
   "options" : [
     {
@@ -40,6 +41,7 @@
       "description" : "ist ein Beispielsunterbefehl.",
       "discussion" : null,
       "identifier" : "subcommand",
+      "infiniteFinalArgument" : false,
       "name" : "unterbefehl",
       "options" : [
         {
@@ -81,6 +83,7 @@
           "description" : "zeigt Gebrauchsinformationen an.",
           "discussion" : null,
           "identifier" : "עזרה",
+          "infiniteFinalArgument" : false,
           "name" : "hilfe",
           "options" : [
             {
@@ -117,6 +120,7 @@
       "description" : "zeigt Gebrauchsinformationen an.",
       "discussion" : null,
       "identifier" : "עזרה",
+      "infiniteFinalArgument" : false,
       "name" : "hilfe",
       "options" : [
         {
@@ -151,6 +155,7 @@
       "description" : "zeigt die verwendete Version an.",
       "discussion" : null,
       "identifier" : "version",
+      "infiniteFinalArgument" : false,
       "name" : "version",
       "options" : [
         {
@@ -182,6 +187,7 @@
           "description" : "zeigt Gebrauchsinformationen an.",
           "discussion" : null,
           "identifier" : "עזרה",
+          "infiniteFinalArgument" : false,
           "name" : "hilfe",
           "options" : [
             {
@@ -222,6 +228,7 @@
       "description" : "stellt die Spracheinstellung ein. (Das Argument weglassen, um an die Systemeinstellungen zurückzufallen.)",
       "discussion" : null,
       "identifier" : "set‐language",
+      "infiniteFinalArgument" : false,
       "name" : "sprache‐einstellen",
       "options" : [
         {
@@ -253,6 +260,7 @@
           "description" : "zeigt Gebrauchsinformationen an.",
           "discussion" : null,
           "identifier" : "עזרה",
+          "infiniteFinalArgument" : false,
           "name" : "hilfe",
           "options" : [
             {
@@ -289,6 +297,7 @@
       "description" : "entfernt zwischengespeicherte Daten.",
       "discussion" : null,
       "identifier" : "empty‐cache",
+      "infiniteFinalArgument" : false,
       "name" : "zwischenspeicher‐leeren",
       "options" : [
         {
@@ -320,6 +329,7 @@
           "description" : "zeigt Gebrauchsinformationen an.",
           "discussion" : null,
           "identifier" : "עזרה",
+          "infiniteFinalArgument" : false,
           "name" : "hilfe",
           "options" : [
             {

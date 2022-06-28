@@ -28,6 +28,7 @@ import Foundation
         displayName: "Embed Configuration",
         executable: try context.tool(named: "copy_source").path,
         arguments: [inputPath, outputPath],
+        inputFiles: [inputPath],
         outputFiles: [outputPath]
       )
     ]

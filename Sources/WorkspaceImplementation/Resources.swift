@@ -20,6 +20,13 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
+  #if !os(WASI)
+    private static let moduleBundle: Bundle = {
+      let main = Bundle.main.bundleURL.resolvingSymlinksInPath()
+      let module = main.appendingPathComponent("Workspace_WorkspaceImplementation.bundle")
+      return Bundle(url: module) ?? Bundle.module
+    }()
+  #endif
   #if os(WASI)
     private static let apache2_00: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,

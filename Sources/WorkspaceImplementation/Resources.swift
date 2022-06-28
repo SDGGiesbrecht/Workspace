@@ -8366,10 +8366,7 @@ extension Resources {
     internal static var gnuGeneralPublic3_0: String {
       return String(
         data: try! Data(
-          contentsOf: moduleBundle.url(
-            forResource: "GNU General Public 3.0",
-            withExtension: "md"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "GNU General Public 3.0", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -9718,10 +9715,7 @@ extension Resources {
     internal static var proofreadScheme: String {
       return String(
         data: try! Data(
-          contentsOf: moduleBundle.url(
-            forResource: "Proofread Scheme",
-            withExtension: "xcscheme"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Proofread Scheme", withExtension: "xcscheme")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

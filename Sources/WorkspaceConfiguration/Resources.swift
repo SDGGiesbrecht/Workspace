@@ -448,10 +448,7 @@ extension Resources {
     internal static var contributingTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: moduleBundle.url(
-            forResource: "Contributing Template",
-            withExtension: "txt"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Contributing Template", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -943,10 +940,7 @@ extension Resources {
     internal static var pullRequestTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: moduleBundle.url(
-            forResource: "Pull Request Template",
-            withExtension: "txt"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Pull Request Template", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

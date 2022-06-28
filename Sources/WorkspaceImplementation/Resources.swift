@@ -22,9 +22,9 @@ internal typealias Ressourcen = Resources
 extension Resources {
   #if !os(WASI)
     private static let moduleBundle: Bundle = {
-      let main = Bundle.main.bundleURL.resolvingSymlinksInPath()
-      let module = main.appendingPathComponent("Workspace_WorkspaceImplementation.bundle")
-      return Bundle(url: module) ?? Bundle.module
+      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
+      let module = main?.appendingPathComponent("Workspace_WorkspaceImplementation.bundle")
+      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
     }()
   #endif
   #if os(WASI)

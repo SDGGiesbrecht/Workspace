@@ -448,7 +448,7 @@ extension Resources {
     internal static var contributingTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
+          contentsOf: moduleBundle.url(
             forResource: "Contributing Template",
             withExtension: "txt"
           )!,
@@ -846,7 +846,7 @@ extension Resources {
     internal static var mitwirkenVorlage: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Mitwirken Vorlage", withExtension: "txt")!,
+          contentsOf: moduleBundle.url(forResource: "Mitwirken Vorlage", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -943,7 +943,7 @@ extension Resources {
     internal static var pullRequestTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
+          contentsOf: moduleBundle.url(
             forResource: "Pull Request Template",
             withExtension: "txt"
           )!,

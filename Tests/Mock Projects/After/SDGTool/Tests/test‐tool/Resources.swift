@@ -21,6 +21,13 @@ enum Resources {}
 typealias Ressourcen = Resources
 
 extension Resources {
+  #if !os(WASI)
+    private static let moduleBundle: Bundle = {
+      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
+      let module = main?.appendingPathComponent("SDG_test‐tool.bundle")
+      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
+    }()
+  #endif
   #if os(WASI)
     private static let textResource0: [UInt8] = [
       0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
@@ -36,7 +43,7 @@ extension Resources {
     static var textResource: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Text Resource", withExtension: "txt")!,
+          contentsOf: moduleBundle.url(forResource: "Text Resource", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

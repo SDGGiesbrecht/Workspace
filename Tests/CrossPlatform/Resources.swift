@@ -20,6 +20,13 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
+  #if !os(WASI)
+    private static let moduleBundle: Bundle = {
+      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
+      let module = main?.appendingPathComponent("Workspace_CrossPlatform.bundle")
+      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
+    }()
+  #endif
   #if os(WASI)
     private static let resource0: [UInt8] = [
       0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20,
@@ -35,7 +42,7 @@ extension Resources {
     internal static var resource: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Resource", withExtension: "txt")!,
+          contentsOf: moduleBundle.url(forResource: "Resource", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

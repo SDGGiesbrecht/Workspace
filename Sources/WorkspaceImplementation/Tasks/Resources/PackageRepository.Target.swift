@@ -119,6 +119,21 @@
 
         source.append(contentsOf: "extension Resources {\n".scalars)
 
+        // #workaround(Swift 5.6.1, Standard accessor tripped by symlinks.)
+        if resources.contains(where: { $0.deprecated == false }) {
+          source.append(
+            contentsOf: [
+              "#if !os(WASI)",
+              "  private static let moduleBundle: Bundle = {",
+              "    let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()",
+              "    let module = main?.appendingPathComponent(\u{22}\(try self.package.packageName())_\(self.name).bundle\u{22})",
+              "    return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module",
+              "  }()",
+              "#endif",
+            ].joined(separator: "\n")
+          )
+        }
+
         source.append(
           contentsOf: try namespaceTreeSource(
             for: resources,
@@ -262,7 +277,7 @@
           resourceExtension = "nil"
         }
         let url: StrictString =
-          "Bundle.module.url(forResource: \(resourceName), withExtension: \(resourceExtension))!"
+          "moduleBundle.url(forResource: \(resourceName), withExtension: \(resourceExtension))!"
         let data: StrictString = "try! Data(contentsOf: \(url), options: [.mappedIfSafe])"
         return accessor(
           for: resource,

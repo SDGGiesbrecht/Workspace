@@ -20,6 +20,13 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
+  #if !os(WASI)
+    private static let moduleBundle: Bundle = {
+      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
+      let module = main?.appendingPathComponent("Workspace_WorkspaceConfiguration.bundle")
+      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
+    }()
+  #endif
   #if os(WASI)
     private static let contributingTemplate0: [UInt8] = [
       0x23, 0x20,
@@ -441,10 +448,7 @@ extension Resources {
     internal static var contributingTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
-            forResource: "Contributing Template",
-            withExtension: "txt"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Contributing Template", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -839,7 +843,7 @@ extension Resources {
     internal static var mitwirkenVorlage: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Mitwirken Vorlage", withExtension: "txt")!,
+          contentsOf: moduleBundle.url(forResource: "Mitwirken Vorlage", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -936,10 +940,7 @@ extension Resources {
     internal static var pullRequestTemplate: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
-            forResource: "Pull Request Template",
-            withExtension: "txt"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Pull Request Template", withExtension: "txt")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

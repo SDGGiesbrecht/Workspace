@@ -20,6 +20,13 @@ internal enum Resources {}
 internal typealias Ressourcen = Resources
 
 extension Resources {
+  #if !os(WASI)
+    private static let moduleBundle: Bundle = {
+      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
+      let module = main?.appendingPathComponent("Workspace_WorkspaceImplementation.bundle")
+      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
+    }()
+  #endif
   #if os(WASI)
     private static let apache2_00: [UInt8] = [
       0x3C, 0x21, 0x2D, 0x2D, 0x0A, 0x20,
@@ -1872,7 +1879,7 @@ extension Resources {
     internal static var apache2_0: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Apache 2.0", withExtension: "md")!,
+          contentsOf: moduleBundle.url(forResource: "Apache 2.0", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -2019,7 +2026,7 @@ extension Resources {
     internal static var copyright: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Copyright", withExtension: "md")!,
+          contentsOf: moduleBundle.url(forResource: "Copyright", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -8359,10 +8366,7 @@ extension Resources {
     internal static var gnuGeneralPublic3_0: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
-            forResource: "GNU General Public 3.0",
-            withExtension: "md"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "GNU General Public 3.0", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -8653,7 +8657,7 @@ extension Resources {
     internal static var mit: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "MIT", withExtension: "md")!,
+          contentsOf: moduleBundle.url(forResource: "MIT", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -8984,7 +8988,7 @@ extension Resources {
     internal static var page: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Page", withExtension: "html")!,
+          contentsOf: moduleBundle.url(forResource: "Page", withExtension: "html")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -9421,7 +9425,7 @@ extension Resources {
   #else
     internal static var proofreadProject: Data {
       return try! Data(
-        contentsOf: Bundle.module.url(forResource: "ProofreadProject", withExtension: "pbxproj")!,
+        contentsOf: moduleBundle.url(forResource: "ProofreadProject", withExtension: "pbxproj")!,
         options: [.mappedIfSafe]
       )
     }
@@ -9711,10 +9715,7 @@ extension Resources {
     internal static var proofreadScheme: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(
-            forResource: "Proofread Scheme",
-            withExtension: "xcscheme"
-          )!,
+          contentsOf: moduleBundle.url(forResource: "Proofread Scheme", withExtension: "xcscheme")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -10473,7 +10474,7 @@ extension Resources {
     internal static var script: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Script", withExtension: "js")!,
+          contentsOf: moduleBundle.url(forResource: "Script", withExtension: "js")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -12408,7 +12409,7 @@ extension Resources {
     internal static var site: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Site", withExtension: "css")!,
+          contentsOf: moduleBundle.url(forResource: "Site", withExtension: "css")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8
@@ -12731,7 +12732,7 @@ extension Resources {
     internal static var unlicense: String {
       return String(
         data: try! Data(
-          contentsOf: Bundle.module.url(forResource: "Unlicense", withExtension: "md")!,
+          contentsOf: moduleBundle.url(forResource: "Unlicense", withExtension: "md")!,
           options: [.mappedIfSafe]
         ),
         encoding: String.Encoding.utf8

@@ -69,6 +69,15 @@
         from package: PackageRepository,
         output: Command.Output
       ) throws {
+        try refreshMainFile(resources: resources, from: package, output: output)
+        try refreshSecondaryFiles(resources: resources, from: package, output: output)
+      }
+
+      internal func refreshMainFile(
+        resources: [Resource],
+        from package: PackageRepository,
+        output: Command.Output
+      ) throws {
         let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
         var source = String(try generateSource(for: resources, of: package))
@@ -82,6 +91,27 @@
         resourceFile.body = source
 
         try resourceFile.writeChanges(for: package, output: output)
+      }
+
+      internal func refreshSecondaryFiles(
+        resources: [Resource],
+        from package: PackageRepository,
+        output: Command.Output
+      ) throws {
+        for (index, resource) in resources.enumerated() {
+          let fileLocation = sourceDirectory
+            .appendingPathComponent("Resources")
+            .appendingPathComponent("Resources\(index.inDigits()).swift")
+          var source = "" // source(for: resource, named: name, accessControl: accessControl)
+          try SwiftLanguage.format(
+            generatedCode: &source,
+            accordingTo: try package.configuration(output: output),
+            for: fileLocation
+          )
+          var file = try TextFile(possiblyAt: fileLocation)
+          file.body = source
+          try file.writeChanges(for: package, output: output)
+        }
       }
 
       private func generateSource(

@@ -126,7 +126,11 @@
         configuration: WorkspaceConfiguration,
         output: Command.Output
       ) throws {
-        for (index, resource) in resources.enumerated() {
+        for (index, resource) in resources.sorted(by: { $0.origin < $1.origin }).enumerated() {
+          CommandLineProofreadingReporter.default.reportParsing(
+            file: resource.origin.path(relativeTo: package.location),
+            to: output
+          )
           let fileLocation =
             sourceDirectory
             .appendingPathComponent("Resources")

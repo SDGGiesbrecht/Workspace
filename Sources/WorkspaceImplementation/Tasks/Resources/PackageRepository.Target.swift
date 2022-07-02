@@ -152,11 +152,10 @@
         var source = generateImports()
         #warning("Wrong namespace.")
         source.append(contentsOf: "extension Resources {\n")
-        #warning("Wrong name.")
         source.append(
           contentsOf: try self.source(
             for: resource,
-            named: "\(resource.origin.path)",
+            named: variableName(for: resource.namespace.last!),
             accessControl: accessControl
           )
         )

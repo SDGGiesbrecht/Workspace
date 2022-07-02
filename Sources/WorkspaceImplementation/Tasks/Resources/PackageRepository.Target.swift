@@ -101,7 +101,7 @@
         for (index, resource) in resources.enumerated() {
           let fileLocation = sourceDirectory
             .appendingPathComponent("Resources")
-            .appendingPathComponent("Resources\(index.inDigits()).swift")
+            .appendingPathComponent("Resources \(index.inDigits()).swift")
           var source = "" // source(for: resource, named: name, accessControl: accessControl)
           try SwiftLanguage.format(
             generatedCode: &source,

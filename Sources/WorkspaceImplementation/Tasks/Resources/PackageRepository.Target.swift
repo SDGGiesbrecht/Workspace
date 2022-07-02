@@ -32,6 +32,8 @@
   import PackageModel
   import SwiftFormat
 
+  import WorkspaceConfiguration
+
   import WorkspaceLocalizations
 
   extension PackageRepository {
@@ -69,13 +71,15 @@
         from package: PackageRepository,
         output: Command.Output
       ) throws {
-        try refreshMainFile(resources: resources, from: package, output: output)
-        try refreshSecondaryFiles(resources: resources, from: package, output: output)
+        let configuration = try package.configuration(output: output)
+        try refreshMainFile(resources: resources, from: package, configuration: configuration, output: output)
+        try refreshSecondaryFiles(resources: resources, from: package, configuration: configuration, output: output)
       }
 
       internal func refreshMainFile(
         resources: [Resource],
         from package: PackageRepository,
+        configuration: WorkspaceConfiguration,
         output: Command.Output
       ) throws {
         let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
@@ -83,7 +87,7 @@
         var source = String(try generateSource(for: resources, of: package))
         try SwiftLanguage.format(
           generatedCode: &source,
-          accordingTo: try package.configuration(output: output),
+          accordingTo: configuration,
           for: resourceFileLocation
         )
 
@@ -96,6 +100,7 @@
       internal func refreshSecondaryFiles(
         resources: [Resource],
         from package: PackageRepository,
+        configuration: WorkspaceConfiguration,
         output: Command.Output
       ) throws {
         for (index, resource) in resources.enumerated() {
@@ -105,7 +110,7 @@
           var source = "" // source(for: resource, named: name, accessControl: accessControl)
           try SwiftLanguage.format(
             generatedCode: &source,
-            accordingTo: try package.configuration(output: output),
+            accordingTo: configuration,
             for: fileLocation
           )
           var file = try TextFile(possiblyAt: fileLocation)

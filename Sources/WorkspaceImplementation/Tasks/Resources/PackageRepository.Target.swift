@@ -160,7 +160,7 @@
             accessControl: accessControl
           )
         )
-        soruce.append(contentsOf: "}\n")
+        source.append(contentsOf: "}\n")
         return source
       }
 

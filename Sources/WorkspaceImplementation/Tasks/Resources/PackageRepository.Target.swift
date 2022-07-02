@@ -107,7 +107,7 @@
           let fileLocation = sourceDirectory
             .appendingPathComponent("Resources")
             .appendingPathComponent("Resources \(index.inDigits()).swift")
-          var source = "" // source(for: resource, named: name, accessControl: accessControl)
+          var source = String(generateSecondarySource(for: resource))
           try SwiftLanguage.format(
             generatedCode: &source,
             accordingTo: configuration,
@@ -117,6 +117,18 @@
           file.body = source
           try file.writeChanges(for: package, output: output)
         }
+      }
+
+      private func generateSecondarySource(
+        for resource: Resource
+      ) -> StrictString {
+        var source = generateImports()
+        source.append(contentsOf: "" /*self.source(for: resource, named: name, accessControl: accessControl)*/)
+        return source
+      }
+
+      private func generateImports() -> StrictString {
+        return "import Foundation\n\n"
       }
 
       private func generateSource(
@@ -131,7 +143,7 @@
           accessControl = ""
         }
 
-        var source: StrictString = "import Foundation\n\n"
+        var source: StrictString = generateImports()
 
         let enumName = PackageRepository.Target.resourceNamespace.resolved(
           for: InterfaceLocalization.fallbackLocalization

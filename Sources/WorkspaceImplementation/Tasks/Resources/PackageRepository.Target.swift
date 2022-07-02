@@ -301,11 +301,8 @@
           try purgingAutoreleased {
             let value = namespaceTree[name]
 
-            if let resource = value as? Resource {
-              try result.append(
-                contentsOf: source(for: resource, named: name, accessControl: accessControl)
-                  + "\n"
-              )
+            if value is Resource {
+              // Handled in separate files.
             } else if let namespace = value as? [StrictString: Any] {
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))

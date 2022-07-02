@@ -150,8 +150,20 @@
         accessControl: String
       ) throws -> StrictString {
         var source = generateImports()
-        #warning("Wrong namespace.")
-        source.append(contentsOf: "extension Resources {\n")
+
+        var namespace = resource.namespace.dropLast().lazy
+          .map({ directory in
+            return SwiftLanguage.identifier(
+              for: directory,
+              casing: .type
+            )
+          })
+          .joined(separator: ".")
+        if ¬namespace.isEmpty {
+          namespace.prepend(".")
+        }
+        source.append(contentsOf: "extension Resources\(namespace) {\n")
+
         source.append(
           contentsOf: try self.source(
             for: resource,

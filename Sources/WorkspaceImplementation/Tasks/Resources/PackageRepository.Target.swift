@@ -71,20 +71,42 @@
         from package: PackageRepository,
         output: Command.Output
       ) throws {
+        let accessControl: String
+        switch loadedTarget.type {
+        case .library, .systemModule, .binary:
+          accessControl = "internal "
+        case .executable, .plugin, .test, .snippet:
+          accessControl = ""
+        }
         let configuration = try package.configuration(output: output)
-        try refreshMainFile(resources: resources, from: package, configuration: configuration, output: output)
-        try refreshSecondaryFiles(resources: resources, from: package, configuration: configuration, output: output)
+        try refreshMainFile(
+          resources: resources,
+          from: package,
+          accessControl: accessControl,
+          configuration: configuration,
+          output: output
+        )
+        try refreshSecondaryFiles(
+          resources: resources,
+          from: package,
+          accessControl: accessControl,
+          configuration: configuration,
+          output: output
+        )
       }
 
       internal func refreshMainFile(
         resources: [Resource],
         from package: PackageRepository,
+        accessControl: String,
         configuration: WorkspaceConfiguration,
         output: Command.Output
       ) throws {
         let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
-        var source = String(try generateSource(for: resources, of: package))
+        var source = String(
+          try generateSource(for: resources, of: package, accessControl: accessControl)
+        )
         try SwiftLanguage.format(
           generatedCode: &source,
           accordingTo: configuration,
@@ -100,14 +122,18 @@
       internal func refreshSecondaryFiles(
         resources: [Resource],
         from package: PackageRepository,
+        accessControl: String,
         configuration: WorkspaceConfiguration,
         output: Command.Output
       ) throws {
         for (index, resource) in resources.enumerated() {
-          let fileLocation = sourceDirectory
+          let fileLocation =
+            sourceDirectory
             .appendingPathComponent("Resources")
             .appendingPathComponent("Resources \(index.inDigits()).swift")
-          var source = String(generateSecondarySource(for: resource))
+          var source = String(
+            try generateSecondarySource(for: resource, accessControl: accessControl)
+          )
           try SwiftLanguage.format(
             generatedCode: &source,
             accordingTo: configuration,
@@ -120,10 +146,18 @@
       }
 
       private func generateSecondarySource(
-        for resource: Resource
-      ) -> StrictString {
+        for resource: Resource,
+        accessControl: String
+      ) throws -> StrictString {
         var source = generateImports()
-        source.append(contentsOf: "" /*self.source(for: resource, named: name, accessControl: accessControl)*/)
+        #warning("Wrong name.")
+        source.append(
+          contentsOf: try self.source(
+            for: resource,
+            named: "\(resource.origin.path)",
+            accessControl: accessControl
+          )
+        )
         return source
       }
 
@@ -133,16 +167,9 @@
 
       private func generateSource(
         for resources: [Resource],
-        of package: PackageRepository
+        of package: PackageRepository,
+        accessControl: String
       ) throws -> StrictString {
-        let accessControl: String
-        switch loadedTarget.type {
-        case .library, .systemModule, .binary:
-          accessControl = "internal "
-        case .executable, .plugin, .test, .snippet:
-          accessControl = ""
-        }
-
         var source: StrictString = generateImports()
 
         let enumName = PackageRepository.Target.resourceNamespace.resolved(

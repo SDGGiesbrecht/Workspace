@@ -2,4 +2,5 @@ $ arbeitsbereich auffrischen ressourcen •no‐colour
 
 Ressourcen werden aufgefrischt ...
 
+Resources/werkzeug/Deutsch.txt
 0

@@ -2,4 +2,5 @@ $ workspace auffrischen ressourcen •no‐colour
 
 Refreshing resources...
 
+Resources/werkzeug/Deutsch.txt
 0

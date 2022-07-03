@@ -134,7 +134,7 @@
           let fileLocation =
             sourceDirectory
             .appendingPathComponent("Resources")
-            .appendingPathComponent("Resources \(index.inDigits()).swift")
+            .appendingPathComponent("Resources \((index + 1).inDigits()).swift")
           var source = String(
             try generateSecondarySource(for: resource, accessControl: accessControl)
           )

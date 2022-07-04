@@ -40,8 +40,13 @@ Other/GeneratedData.json
 Package.swift
 README.md
 Sources/Library/Resources.swift
+Sources/Library/Resources/Resources 1.swift
+Sources/Library/Resources/Resources 2.swift
+Sources/Library/Resources/Resources 3.swift
+Sources/Library/Resources/Resources 4.swift
 Sources/Library/SDG.swift
 Tests/SDGTests/Resources.swift
+Tests/SDGTests/Resources/Resources 1.swift
 Tests/SDGTests/SDGTests.swift
 
 ✓ Source code passes proofreading.

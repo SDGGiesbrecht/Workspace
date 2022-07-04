@@ -1,5 +1,5 @@
 /*
- Resources.swift
+ Resources 3.swift
 
  This source file is part of the SDG open source project.
  Diese Quelldatei ist Teil des quelloffenen SDG‐Projekt.
@@ -17,16 +17,17 @@
 
 import Foundation
 
-internal enum Resources {}
-internal typealias Ressourcen = Resources
-
 extension Resources {
-  #if !os(WASI)
-    internal static let moduleBundle: Bundle = {
-      let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
-      let module = main?.appendingPathComponent("SDG_Library.bundle")
-      return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
-    }()
+  #if os(WASI)
+    internal static var dataResource: Data {
+      return Data(([] as [[UInt8]]).lazy.joined())
+    }
+  #else
+    internal static var dataResource: Data {
+      return try! Data(
+        contentsOf: moduleBundle.url(forResource: "Data Resource", withExtension: nil)!,
+        options: [.mappedIfSafe]
+      )
+    }
   #endif
-
 }

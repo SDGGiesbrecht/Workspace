@@ -32,6 +32,8 @@
   import PackageModel
   import SwiftFormat
 
+  import WorkspaceConfiguration
+
   import WorkspaceLocalizations
 
   extension PackageRepository {
@@ -69,12 +71,45 @@
         from package: PackageRepository,
         output: Command.Output
       ) throws {
+        let accessControl: String
+        switch loadedTarget.type {
+        case .library, .systemModule, .binary:
+          accessControl = "internal "
+        case .executable, .plugin, .test, .snippet:
+          accessControl = ""
+        }
+        let configuration = try package.configuration(output: output)
+        try refreshMainFile(
+          resources: resources,
+          from: package,
+          accessControl: accessControl,
+          configuration: configuration,
+          output: output
+        )
+        try refreshSecondaryFiles(
+          resources: resources,
+          from: package,
+          accessControl: accessControl,
+          configuration: configuration,
+          output: output
+        )
+      }
+
+      internal func refreshMainFile(
+        resources: [Resource],
+        from package: PackageRepository,
+        accessControl: String,
+        configuration: WorkspaceConfiguration,
+        output: Command.Output
+      ) throws {
         let resourceFileLocation = sourceDirectory.appendingPathComponent("Resources.swift")
 
-        var source = String(try generateSource(for: resources, of: package))
+        var source = String(
+          try generateSource(for: resources, of: package, accessControl: accessControl)
+        )
         try SwiftLanguage.format(
           generatedCode: &source,
-          accordingTo: try package.configuration(output: output),
+          accordingTo: configuration,
           for: resourceFileLocation
         )
 
@@ -84,19 +119,76 @@
         try resourceFile.writeChanges(for: package, output: output)
       }
 
+      internal func refreshSecondaryFiles(
+        resources: [Resource],
+        from package: PackageRepository,
+        accessControl: String,
+        configuration: WorkspaceConfiguration,
+        output: Command.Output
+      ) throws {
+        for (index, resource) in resources.sorted(by: { $0.origin < $1.origin }).enumerated() {
+          CommandLineProofreadingReporter.default.reportParsing(
+            file: resource.origin.path(relativeTo: package.location),
+            to: output
+          )
+          let fileLocation =
+            sourceDirectory
+            .appendingPathComponent("Resources")
+            .appendingPathComponent("Resources \((index + 1).inDigits()).swift")
+          var source = String(
+            try generateSecondarySource(for: resource, accessControl: accessControl)
+          )
+          try SwiftLanguage.format(
+            generatedCode: &source,
+            accordingTo: configuration,
+            for: fileLocation
+          )
+          var file = try TextFile(possiblyAt: fileLocation)
+          file.body = source
+          try file.writeChanges(for: package, output: output)
+        }
+      }
+
+      private func generateSecondarySource(
+        for resource: Resource,
+        accessControl: String
+      ) throws -> StrictString {
+        var source = generateImports()
+
+        var namespace = resource.namespace.dropLast().lazy
+          .map({ directory in
+            return SwiftLanguage.identifier(
+              for: directory,
+              casing: .type
+            )
+          })
+          .joined(separator: ".")
+        if ¬namespace.isEmpty {
+          namespace.prepend(".")
+        }
+        source.append(contentsOf: "extension Resources\(namespace) {\n")
+
+        source.append(
+          contentsOf: try self.source(
+            for: resource,
+            named: variableName(for: resource.namespace.last!),
+            accessControl: accessControl
+          )
+        )
+        source.append(contentsOf: "}\n")
+        return source
+      }
+
+      private func generateImports() -> StrictString {
+        return "import Foundation\n\n"
+      }
+
       private func generateSource(
         for resources: [Resource],
-        of package: PackageRepository
+        of package: PackageRepository,
+        accessControl: String
       ) throws -> StrictString {
-        let accessControl: String
-        switch loadedTarget.type {
-        case .library, .systemModule, .binary:
-          accessControl = "internal "
-        case .executable, .plugin, .test, .snippet:
-          accessControl = ""
-        }
-
-        var source: StrictString = "import Foundation\n\n"
+        var source: StrictString = generateImports()
 
         let enumName = PackageRepository.Target.resourceNamespace.resolved(
           for: InterfaceLocalization.fallbackLocalization
@@ -124,7 +216,7 @@
           source.append(
             contentsOf: [
               "#if !os(WASI)",
-              "  private static let moduleBundle: Bundle = {",
+              "  \(accessControl)static let moduleBundle: Bundle = {",
               "    let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()",
               "    let module = main?.appendingPathComponent(\u{22}\(try self.package.packageName())_\(self.name).bundle\u{22})",
               "    return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module",
@@ -213,11 +305,8 @@
           try purgingAutoreleased {
             let value = namespaceTree[name]
 
-            if let resource = value as? Resource {
-              try result.append(
-                contentsOf: source(for: resource, named: name, accessControl: accessControl)
-                  + "\n"
-              )
+            if value is Resource {
+              // Handled in separate files.
             } else if let namespace = value as? [StrictString: Any] {
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))

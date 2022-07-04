@@ -216,7 +216,7 @@
           source.append(
             contentsOf: [
               "#if !os(WASI)",
-              "  internal static let moduleBundle: Bundle = {",
+              "  \(accessControl)static let moduleBundle: Bundle = {",
               "    let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()",
               "    let module = main?.appendingPathComponent(\u{22}\(try self.package.packageName())_\(self.name).bundle\u{22})",
               "    return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module",

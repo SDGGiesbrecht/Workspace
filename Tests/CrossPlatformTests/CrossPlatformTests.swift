@@ -41,7 +41,7 @@ final class Tests: TestCase {
   func testGit() throws {
     #if !PLATFORM_LACKS_GIT
       #if os(Windows)
-        // #workaround(Swift 5.6, The standard way hits a segmentation fault.)
+        // #workaround(Swift 5.6.1, The standard way hits a segmentation fault.)
         let git = ExternalProcess(at: URL(fileURLWithPath: #"C:\Program Files\Git\bin\git.exe"#))
         let version = try git.run(["\u{2D}\u{2D}version"]).get()
         print(Version(firstIn: version))

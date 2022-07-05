@@ -58,7 +58,7 @@
       CustomTask.emptyCache()
       APITests.configureGit
 
-      // #workaround(xcodebuild -version 13.3.1, GitHub actions contain a stale configuration.) @exempt(from: unicode)
+      // #workaround(xcodebuild -version 13.4.1, GitHub actions contain a stale configuration.) @exempt(from: unicode)
       if isInGitHubAction {
         let url = URL(fileURLWithPath: NSHomeDirectory())
           .appendingPathComponent("Library")

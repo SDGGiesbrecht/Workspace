@@ -564,7 +564,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.6, Does not compile for web.)
+          // #workaround(Swift 5.6.1, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
@@ -694,7 +694,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.6, Does not compile for web.)
+          // #workaround(Swift 5.6.1, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -755,7 +755,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.6, Does not compile for web.)
+          // #workaround(Swift 5.6.1, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -765,7 +765,7 @@ let package = Package(
       ]
     ),
     .executableTarget(
-      // #workaround(Swift 5.6, Name and directory should be “cross‐platform‐tool”, but for Windows bug.)
+      // #workaround(Swift 5.6.1, Name and directory should be “cross‐platform‐tool”, but for Windows bug.)
       name: "cross_platform_tool",
       dependencies: ["CrossPlatform"],
       path: "Tests/cross_platform_tool"
@@ -812,7 +812,7 @@ let package = Package(
       dependencies: ["copy_source"]
     ),
     .executableTarget(
-      // #workaround(Swift 5.6, Should be “copy‐source”, but for Windows bug.)
+      // #workaround(Swift 5.6.1, Should be “copy‐source”, but for Windows bug.)
       name: "copy_source"
     ),
   ]
@@ -825,26 +825,26 @@ where target.type != .plugin {  // @exempt(from: unicode)
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.6, Plug‐ins do not work everywhere yet.)
+    // #workaround(Swift 5.6.1, Plug‐ins do not work everywhere yet.)
     .define(
       "PLATFORM_CANNOT_USE_PLUG_INS",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
-    // #workaround(Swift 5.6, Web lacks Dispatch.)
+    // #workaround(Swift 5.6.1, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.6.1, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6, FoundationNetworking is broken on Android.)
+    // #workaround(Swift 5.6.1, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
-    // #workaround(Swift 5.6, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    // #workaround(Swift 5.6.1, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
     ),
-    // #workaround(Swift 5.6, FoundationXML is broken on web.)
-    // #workaroung(Swift 5.6, FoundationXML is broken on Android.)
+    // #workaround(Swift 5.6.1, FoundationXML is broken on web.)
+    // #workaroung(Swift 5.6.1, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
@@ -855,7 +855,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.wasi])
     ),
-    // #workaround(Swift 5.6, SwiftPM lacks conditional targets.)
+    // #workaround(Swift 5.6.1, SwiftPM lacks conditional targets.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
@@ -868,7 +868,7 @@ import Foundation
 var impossibleDependencyPackages: [String] = []
 var impossibleDependencyProducts: [String] = []
 
-// #workaround(Swift 5.6, Conditional dependencies fail to skip for some platforms.)
+// #workaround(Swift 5.6.1, Conditional dependencies fail to skip for some platforms.)
 if ["WINDOWS", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
@@ -878,7 +878,7 @@ if ["WINDOWS", "ANDROID"]
   ])
 }
 
-// #workaround(Swift 5.6, Some platforms cannot build plugins yet.)
+// #workaround(Swift 5.6.1, Some platforms cannot build plugins yet.)
 if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
@@ -888,7 +888,7 @@ if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
   }
 }
 
-// #workaround(Swift 5.6, Web toolchain rejects manifest due to dynamic library.)
+// #workaround(Swift 5.6.1, Web toolchain rejects manifest due to dynamic library.)
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   impossibleDependencyPackages.append(contentsOf: [
     "swift\u{2D}format",
@@ -896,7 +896,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   ])
 }
 
-// #workaround(xcodebuild -version 13.3.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+// #workaround(xcodebuild -version 13.4.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
@@ -907,7 +907,7 @@ if ["TVOS", "IOS", "WATCHOS"]
   ])
 }
 
-// #workaround(xcodebuild -version 13.3.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
+// #workaround(xcodebuild -version 13.4.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {

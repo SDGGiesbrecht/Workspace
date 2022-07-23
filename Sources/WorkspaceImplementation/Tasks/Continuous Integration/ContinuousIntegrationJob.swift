@@ -46,7 +46,7 @@
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(13, 4)
     private static let currentVisualStudioVersion = "2019"
-    private static let currentCartonVersion = Version(0, 16, 0)
+    private static let currentCartonVersion = Version(0, 16, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "23b"

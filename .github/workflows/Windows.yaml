@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   Windows:
     name: Windows
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Check out
       uses: actions/checkout@v2
@@ -29,7 +29,7 @@ jobs:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install Swift
-      uses: compnerd/gha-setup-swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1
+      uses: compnerd/gha-setup-swift@v0.0.1
       with:
         branch: swift-5.6-release
         tag: 5.6-RELEASE

@@ -45,7 +45,7 @@
 
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(13, 4)
-    private static let currentVisualStudioVersion = "2019"
+    private static let currentVisualStudioVersion = "2022"
     private static let currentCartonVersion = Version(0, 16, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
@@ -716,7 +716,7 @@
         result.append(contentsOf: [
           step(installSwiftStepName, localization: interfaceLocalization),
           uses(
-            "compnerd/gha\u{2D}setup\u{2D}swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1",
+            "compnerd/gha\u{2D}setup\u{2D}swift@v0.0.1",
             with: [
               "branch": "swift\u{2D}\(version)\u{2D}release",
               "tag": "\(version)\u{2D}RELEASE",

@@ -44,5 +44,4 @@ jobs:
       shell: bash
       run: |
         set -x
-
-        swift run workspace validate •job watchos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        xcodebuild test -destination 'name=Apple Watch Series 6 - 40mm' -scheme Workspace

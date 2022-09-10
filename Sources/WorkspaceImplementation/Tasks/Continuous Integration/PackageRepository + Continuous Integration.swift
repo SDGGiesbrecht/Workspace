@@ -123,7 +123,7 @@
       let end = "// End Windows Tests"
       let startPattern = ConcatenatedPatterns(
         start,
-        RepetitionPattern(ConditionalPattern<Character>({ _ in return true }))
+        RepetitionPattern(ConditionalPattern<String>({ _ in return true }))
       )
       let range =
         manifest.contents.firstMatch(for: startPattern + end)?.range

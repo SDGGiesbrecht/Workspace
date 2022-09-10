@@ -67,12 +67,12 @@
 
         let line = file.contents.lineRange(for: match.range)
         if file.contents.scalars[line].hasPrefix(
-          RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
-            + "//".scalars
+          RepetitionPattern(ConditionalPattern<String.ScalarView.SubSequence>({ $0 ∈ CharacterSet.whitespaces }))
+            + "//".scalars.literal()
         ) {
 
           if ¬file.contents.scalars[..<match.range.lowerBound].hasSuffix(
-            ¬"/".scalars + "/\u{2F} ".scalars
+            ¬"/".scalars.literal() + "/\u{2F} ".scalars.literal()
           ) {
             errorExists = true
 
@@ -90,7 +90,7 @@
 
           if ¬file.contents.scalars[match.range.upperBound...]
             .hasPrefix(
-              ": \u{2D} ".scalars + ¬ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
+              ": \u{2D} ".scalars.literal() + ¬ConditionalPattern({ $0 ∈ CharacterSet.whitespaces })
             )
           {
             errorExists = true

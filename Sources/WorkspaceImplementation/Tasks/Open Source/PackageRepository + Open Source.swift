@@ -71,7 +71,7 @@
           fromDocumentation.append(contentsOf: paragraph.text.scalars)
         }
       }
-      readMe.replaceMatches(for: "#packageDocumentation".scalars, with: fromDocumentation)
+      readMe.replaceMatches(for: "#packageDocumentation".scalars.literal(), with: fromDocumentation)
 
       // Word Elements
 

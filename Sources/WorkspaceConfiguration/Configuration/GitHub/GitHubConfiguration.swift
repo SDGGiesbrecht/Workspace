@@ -121,19 +121,19 @@ public struct GitHubConfiguration: Codable {
 
         #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO
           template.replaceMatches(
-            for: "#packageName".scalars,
+            for: "#packageName".scalars.literal(),
             with: WorkspaceContext.current.manifest.packageName.scalars
           )
         #endif
 
         if let url = configuration.documentation.repositoryURL {
           template.replaceMatches(
-            for: "#cloneScript".scalars,
+            for: "#cloneScript".scalars.literal(),
             with: " `git clone https://github.com/user/\(url.lastPathComponent)`"
               .scalars
           )
         } else {
-          template.replaceMatches(for: "#cloneScript".scalars, with: "".scalars)
+          template.replaceMatches(for: "#cloneScript".scalars.literal(), with: "".scalars)
         }
 
         let administrators = configuration.gitHub.administrators
@@ -162,7 +162,7 @@ public struct GitHubConfiguration: Codable {
           let or = finalSeparator + administrators.last!
           administratorList = commas + or
         }
-        template.replaceMatches(for: "#administrators".scalars, with: administratorList)
+        template.replaceMatches(for: "#administrators".scalars.literal(), with: administratorList)
 
         if let notes = configuration.gitHub.developmentNotes {
           template.append(

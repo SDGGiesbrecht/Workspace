@@ -19,6 +19,7 @@
   import SDGText
   import SDGLocalization
 
+  #warning("Does the final constraint break Windows?")
   extension PatternMatch
   where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar, Searched.SubSequence: SearchableBidirectionalCollection {
 

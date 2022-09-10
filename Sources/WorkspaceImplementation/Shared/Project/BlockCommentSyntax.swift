@@ -79,20 +79,21 @@
       }
     }
 
-    internal func firstComment(in range: Range<String.ScalarView.Index>, of string: String)
-      -> NestingLevel<String.ScalarView>?
-    {
-      return string.scalars.firstNestingLevel(
-        startingWith: start.scalars,
-        endingWith: end.scalars
-      )
+    internal func firstComment(
+      in range: Range<String.ScalarView.Index>,
+      of string: String
+    ) -> NestingMatch<AtomicPatternMatch<String.ScalarView>, AtomicPatternMatch<String.ScalarView>>? {
+      return string.scalars.firstMatch(for: NestingPattern(
+        opening: start.scalars,
+        closing: end.scalars
+      ))
     }
 
     internal func contentsOfFirstComment(
       in range: Range<String.ScalarView.Index>,
       of string: String
     ) -> String? {
-      guard let range = firstComment(in: range, of: string)?.contents.range else {
+      guard let range = firstComment(in: range, of: string)?.contents.bounds else {
         return nil
       }
 

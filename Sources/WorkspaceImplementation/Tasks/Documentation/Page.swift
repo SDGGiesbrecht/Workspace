@@ -118,9 +118,9 @@
     ) {
 
       var mutable = Page.template
-      mutable.replaceMatches(for: "[*localization*]".scalars, with: localization.code.scalars)
+      mutable.replaceMatches(for: "[*localization*]".scalars.literal(), with: localization.code.scalars)
       mutable.replaceMatches(
-        for: "[*text direction*]".scalars,
+        for: "[*text direction*]".scalars.literal(),
         with: localization.textDirection.htmlAttribute.scalars
       )
 
@@ -135,11 +135,11 @@
       )
       mutable.replaceMatches(for: "[*platforms*]", with: platforms)
       mutable.replaceMatches(
-        for: "[*site root*]".scalars,
+        for: "[*site root*]".scalars.literal(),
         with: HTML.escapeTextForAttribute(pathToSiteRoot)
       )
 
-      mutable.replaceMatches(for: "[*imports*]".scalars, with: symbolImports)
+      mutable.replaceMatches(for: "[*imports*]".scalars.literal(), with: symbolImports)
 
       let symbolTypeLabel: StrictString
       if let specified = symbolType {
@@ -170,7 +170,7 @@
 
       mutable.replaceMatches(for: "[*content*]", with: content)
 
-      mutable.replaceMatches(for: "[*extensions*]".scalars, with: extensions)
+      mutable.replaceMatches(for: "[*extensions*]".scalars.literal(), with: extensions)
 
       contents = mutable
     }

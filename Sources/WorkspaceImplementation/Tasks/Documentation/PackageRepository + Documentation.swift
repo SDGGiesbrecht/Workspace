@@ -571,7 +571,7 @@
             while let match = file.contents.scalars[
               min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex
             ]
-            .firstMatch(for: InterfaceLocalization.documentationDirective) {
+            .firstMatch(for: InterfaceLocalization.documentationDirective.forSubSequence()) {
               searchIndex = match.range.upperBound
 
               let identifier = match.directiveArgument()
@@ -607,7 +607,7 @@
                 of: file
               ),
                 file.contents.scalars[nextLineStart..<commentRange.lowerBound]
-                  .firstMatch(for: CharacterSet.newlinePattern) == nil
+                  .firstMatch(for: CharacterSet.newlinePattern(for: String.ScalarView.SubSequence.self)) == nil
               {
 
                 let indent = StrictString(

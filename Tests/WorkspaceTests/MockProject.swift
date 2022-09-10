@@ -254,7 +254,7 @@
               func postprocess(_ output: inout String) {
 
                 let any = RepetitionPattern(
-                  ConditionalPattern<Unicode.Scalar>({ _ in true }),
+                  ConditionalPattern<String.ScalarView>({ _ in true }),
                   consumption: .lazy
                 )
 
@@ -292,8 +292,8 @@
                   .map { (match) -> Range<String.ScalarOffset> in
                     var range = match.range
                     var remainder = output.scalars[range.upperBound...]
-                    while remainder.hasPrefix("* Build Completed!".scalars),
-                      let end = remainder.firstMatch(for: "\n\n".scalars)?.range.upperBound
+                    while remainder.hasPrefix("* Build Completed!".scalars.literal()),
+                      let end = remainder.firstMatch(for: "\n\n".scalars.literal())?.range.upperBound
                     {
                       range = range.lowerBound..<end
                       remainder = output.scalars[range.upperBound...]
@@ -405,7 +405,7 @@
                   with: "[Current Version]".scalars
                 )
                 text.scalars.replaceMatches(
-                  for: CalendarDate.gregorianNow().gregorianYear.inEnglishDigits(),
+                  for: CalendarDate.gregorianNow().gregorianYear.inEnglishDigits().literal(),
                   with: "[Current Date]".scalars
                 )
                 try text.save(to: file)

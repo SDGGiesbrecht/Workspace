@@ -165,7 +165,7 @@
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
-        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        for: "\n".scalars.literal() + RepetitionPattern(" ".scalars.literal()) + "\n".scalars.literal(),
         with: "\n\n".scalars
       )
       try output.save(
@@ -177,7 +177,7 @@
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
-        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        for: "\n".scalars.literal() + RepetitionPattern(" ".scalars.literal()) + "\n".scalars.literal(),
         with: "\n\n".scalars
       )
       try output.save(
@@ -392,7 +392,7 @@
       ]).get()
       // macOS & Linux have different JSON whitespace.
       output.scalars.replaceMatches(
-        for: "\n".scalars + RepetitionPattern(" ".scalars) + "\n".scalars,
+        for: "\n".scalars.literal() + RepetitionPattern(" ".scalars.literal()) + "\n".scalars.literal(),
         with: "\n\n".scalars
       )
       try output.save(

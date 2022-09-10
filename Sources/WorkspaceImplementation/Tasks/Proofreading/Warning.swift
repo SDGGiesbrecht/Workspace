@@ -54,19 +54,19 @@
 
         var index = file.contents.scalars.startIndex
         while let match = file.contents.scalars[index..<file.contents.scalars.endIndex]
-          .firstNestingLevel(startingWith: marker.0.scalars, endingWith: marker.1.scalars)
+          .firstMatch(for: NestingPattern(opening: marker.0.scalars.literal(), closing: marker.1.scalars.literal()))
         {
-          index = match.container.range.upperBound
-          if match.container.range ∉ handledViolations {
-            handledViolations.insert(match.container.range)
+          index = match.contents.bounds.upperBound
+          if match.contents.bounds ∉ handledViolations {
+            handledViolations.insert(match.contents.bounds)
 
-            var details = StrictString(match.contents.contents)
+            var details = StrictString(match.levelContents.contents)
             details.trimMarginalWhitespace()
 
             if let description = try message(for: details, in: project, output: output) {
               reportViolation(
                 in: file,
-                at: match.container.range,
+                at: match.contents.bounds,
                 message: description,
                 status: status
               )

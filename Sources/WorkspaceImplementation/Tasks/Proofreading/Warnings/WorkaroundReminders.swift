@@ -60,14 +60,14 @@
 
       var description = details
 
-      if let comma = details.scalars.firstMatch(for: ",".scalars) {
+      if let comma = details.scalars.firstMatch(for: ",".scalars.literal()) {
         description = StrictString(details.scalars[comma.range.upperBound...])
 
         let versionCheckRange = details.scalars.startIndex..<comma.range.lowerBound
         var versionCheck = StrictString(details.scalars[versionCheckRange])
         versionCheck.trimMarginalWhitespace()
 
-        var parameters = versionCheck.components(separatedBy: " ".scalars)
+        var parameters = versionCheck.components(separatedBy: " ".scalars.literal())
         if ¬parameters.isEmpty,
           let problemVersion = Version(String(StrictString(parameters.removeLast().contents)))
         {

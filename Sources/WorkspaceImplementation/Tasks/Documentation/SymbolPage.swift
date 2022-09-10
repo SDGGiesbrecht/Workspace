@@ -961,7 +961,7 @@
             symbolLinks: symbolLinks
           )
         )
-        if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
+        if rendered.contains("<h1>".scalars.literal()) ∨ rendered.contains("<h2>".scalars.literal()) {
           status.reportExcessiveHeading(
             symbol: symbol,
             navigationPath: navigationPath,

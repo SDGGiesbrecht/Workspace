@@ -54,10 +54,10 @@
       let lineIndex = location.lowerBound.line(in: fileLines)
       let line = fileLines[lineIndex].line
       for exemptionMarker in StyleViolation.exemptionMarkers {
-        if line.contains(exemptionMarker) {
+        if line.contains(exemptionMarker.literal()) {
           for localization in InterfaceLocalization.allCases {
             if line.contains(
-              StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))")
+              StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))").literal()
             ) {
               return nil
             }

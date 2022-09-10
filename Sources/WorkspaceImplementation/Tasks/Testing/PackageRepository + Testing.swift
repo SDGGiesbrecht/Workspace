@@ -70,7 +70,7 @@
                   ¬(
                   // #workaround(Swift 5.6.1, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
                   line.line.contains(
-                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
+                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars.literal()
                   ))
               }
               log.lines = LineView<String>(filtered)
@@ -386,13 +386,13 @@
               let convertedRegion = sourceFile.indices(of: region.region)
               let startLineIndex = convertedRegion.lowerBound.line(in: sourceFile.lines)
               let startLine = sourceFile.lines[startLineIndex].line
-              for token in sameLineTokens where startLine.contains(token.scalars) {
+              for token in sameLineTokens where startLine.contains(token.scalars.literal()) {
                 continue regionLoop  // Ignore and move on.
               }
               let nextLineIndex = sourceFile.lines.index(after: startLineIndex)
               if nextLineIndex ≠ sourceFile.lines.endIndex {
                 let nextLine = sourceFile.lines[nextLineIndex].line
-                for token in previousLineTokens where nextLine.contains(token.scalars) {
+                for token in previousLineTokens where nextLine.contains(token.scalars.literal()) {
                   continue regionLoop  // Ignore and move on.
                 }
               }

@@ -1028,13 +1028,16 @@
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
       if parameters ≠ documentedParameters {
-        status.reportMismatchedParameters(
-          documentedParameters,
-          expected: parameters,
-          symbol: symbol,
-          navigationPath: navigationPath,
-          localization: localization
-        )
+        // #workaround(SDGSwift 10.0.1, Not collected properly for subscripts at present.)
+        if case .subscript = symbol {} else {
+          status.reportMismatchedParameters(
+            documentedParameters,
+            expected: parameters,
+            symbol: symbol,
+            navigationPath: navigationPath,
+            localization: localization
+          )
+        }
       }
       let validatedParameters =
         parameterDocumentation

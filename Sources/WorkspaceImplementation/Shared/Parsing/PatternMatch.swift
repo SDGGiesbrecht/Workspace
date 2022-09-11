@@ -20,11 +20,20 @@
   import SDGLocalization
 
   extension PatternMatch
-  where Searched: SearchableBidirectionalCollection, Searched.Element == Unicode.Scalar {
+  where
+    Searched: SearchableBidirectionalCollection,
+    Searched.Element == Unicode.Scalar,
+    Searched.SubSequence: SearchableBidirectionalCollection
+  {
 
     internal func declarationArgument() -> StrictString {
-      guard let openingParenthesis = contents.firstMatch(for: "(".scalars),
-        let closingParenthesis = contents.lastMatch(for: ")".scalars)
+      guard
+        let openingParenthesis = contents.firstMatch(
+          for: "(".scalars.literal(for: Searched.SubSequence.self)
+        ),
+        let closingParenthesis = contents.lastMatch(
+          for: ")".scalars.literal(for: Searched.SubSequence.self)
+        )
       else {
         unreachable()
       }

@@ -59,8 +59,8 @@
         authors = configuredAuthor + " and " + authors
       }
 
-      text.scalars.replaceMatches(for: "#copyright".scalars, with: copyright)
-      text.scalars.replaceMatches(for: "#authors".scalars, with: authors)
+      text.scalars.replaceMatches(for: "#copyright".scalars.literal(), with: copyright)
+      text.scalars.replaceMatches(for: "#authors".scalars.literal(), with: authors)
 
       file.contents = String(text)
       try file.writeChanges(for: self, output: output)

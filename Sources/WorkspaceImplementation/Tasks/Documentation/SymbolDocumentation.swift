@@ -35,7 +35,7 @@
 
       for documentation in self {
         for comment in documentation.developerComments {
-          let content = StrictString(comment.content.text)
+          let content = String(StrictString(comment.content.text)).scalars
           for match in content.matches(
             for: InterfaceLocalization.localizationDeclaration
           ) {

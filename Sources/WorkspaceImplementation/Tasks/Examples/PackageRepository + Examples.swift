@@ -33,12 +33,11 @@
       ConcatenatedPatterns<
         ConcatenatedPatterns<
           InterfaceLocalization.DirectivePatternWithArguments,
-          RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
+          RepetitionPattern<ConditionalPattern<String.ScalarView>>
         >,
         InterfaceLocalization.DirectivePattern
       >
     {
-
       return InterfaceLocalization.exampleDeclaration
         + RepetitionPattern(ConditionalPattern({ _ in true }), consumption: .lazy)
         + InterfaceLocalization.endExampleDeclaration
@@ -60,12 +59,12 @@
               ) {
                 guard
                   let openingParenthesis = match.contents.firstMatch(
-                    for: "(".scalars
+                    for: "(".scalars.literal()
                   ),
                   let closingParenthesis = match.contents.firstMatch(
-                    for: ")".scalars
+                    for: ")".scalars.literal()
                   ),
-                  let at = match.contents.lastMatch(for: "@".scalars)
+                  let at = match.contents.lastMatch(for: "@".scalars.literal())
                 else {
                   unreachable()
                 }
@@ -123,11 +122,11 @@
             while let match = file.contents.scalars[
               min(searchIndex, file.contents.scalars.endIndex)..<file.contents.scalars.endIndex
             ]
-            .firstMatch(for: InterfaceLocalization.exampleDirective) {
+            .firstMatch(for: InterfaceLocalization.exampleDirective.forSubSequence()) {
               searchIndex = match.range.upperBound
 
               let arguments = match.directiveArgument()
-              guard let comma = arguments.firstMatch(for: ",".scalars) else {
+              guard let comma = arguments.firstMatch(for: ",".scalars.literal()) else {
                 throw Command.Error(
                   description:
                     UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -187,12 +186,12 @@
                   exampleSearch: while let startRange = commentValue.scalars[
                     searchIndex..<commentValue.scalars.endIndex
                   ].firstMatch(
-                    for: "```".scalars
+                    for: "```".scalars.literal()
                   )?.range,
                     let endRange = commentValue.scalars[
                       startRange.upperBound..<commentValue.scalars.endIndex
                     ]
-                    .firstMatch(for: "```".scalars)?.range
+                    .firstMatch(for: "```".scalars.literal())?.range
                   {
 
                     let exampleRange = startRange.lowerBound..<endRange.upperBound

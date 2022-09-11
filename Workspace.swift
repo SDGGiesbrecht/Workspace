@@ -60,8 +60,8 @@ public let configuration: WorkspaceConfiguration = {
   // Optimizations
   configuration.documentation.api.ignoredDependencies = [
 
-    // CommonMark
-    "CCommonMark",
+    // cmark
+    "cmark",
 
     // llbuild
     "libllbuild",
@@ -114,7 +114,15 @@ public let configuration: WorkspaceConfiguration = {
     "Dispatch",
     "XCTest",
 
-    // SwiftFormat
+    // swift‐collections
+    "OrderedCollections",
+
+    // swift‐crypto
+    "CCryptoBoringSSL",
+    "CCryptoBoringSSLShims",
+    "Crypto",
+
+    // swift‐format
     "SwiftFormat",
     "SwiftFormatConfiguration",
     "SwiftFormatCore",
@@ -122,14 +130,26 @@ public let configuration: WorkspaceConfiguration = {
     "SwiftFormatRules",
     "SwiftFormatWhitespaceLinter",
 
+    // swift‐numerics
+    "_NumericsShims",
+    "RealModule",
+
     // SwiftPM
     "Basic",
+    "Basics",
     "Build",
     "clibc",
     "POSIX",
+    "PackageCollections",
+    "PackageCollectionsModel",
+    "PackageCollectionsSigning",
+    "PackageCollectionsSigningLibc",
+    "PackageFingerprint",
     "PackageGraph",
     "PackageLoading",
     "PackageModel",
+    "PackageRegistry",
+    "SPMBuildCore",
     "SPMLLBuild",
     "SPMLibc",
     "SPMUtility",
@@ -140,6 +160,13 @@ public let configuration: WorkspaceConfiguration = {
     // SwiftSyntax
     "_CSwiftSyntax",
     "SwiftSyntax",
+    "SwiftSyntaxParser",
+
+    // swift‐tools‐support‐core
+    "TSCclibc",
+    "TSCBasic",
+    "TSCLibc",
+    "TSCUtility",
   ]
 
   return configuration

@@ -961,7 +961,8 @@
             symbolLinks: symbolLinks
           )
         )
-        if rendered.contains("<h1>".scalars) ∨ rendered.contains("<h2>".scalars) {
+        if rendered.contains("<h1>".scalars.literal()) ∨ rendered.contains("<h2>".scalars.literal())
+        {
           status.reportExcessiveHeading(
             symbol: symbol,
             navigationPath: navigationPath,
@@ -1027,13 +1028,17 @@
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
       if parameters ≠ documentedParameters {
-        status.reportMismatchedParameters(
-          documentedParameters,
-          expected: parameters,
-          symbol: symbol,
-          navigationPath: navigationPath,
-          localization: localization
-        )
+        // #workaround(SDGSwift 10.0.1, Not collected properly for subscripts at present.)
+        if case .subscript = symbol {
+        } else {
+          status.reportMismatchedParameters(
+            documentedParameters,
+            expected: parameters,
+            symbol: symbol,
+            navigationPath: navigationPath,
+            localization: localization
+          )
+        }
       }
       let validatedParameters =
         parameterDocumentation

@@ -105,7 +105,7 @@
       of file: TextFile
     ) -> Range<String.ScalarView.Index>? {
       let possibleBlock = blockCommentSyntax?.firstComment(in: range, of: file.contents)?
-        .container.range
+        .contents.bounds
       let possibleLine = lineCommentSyntax?.rangeOfFirstComment(in: range, of: file.contents)
 
       if let block = possibleBlock {
@@ -145,15 +145,23 @@
     ) {
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
+        over: RepetitionPattern(
+          CharacterSet.newlinePattern(for: String.ScalarView.self),
+          count: 0...1
+        )
       )
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(ConditionalPattern({ $0 ∈ CharacterSet.whitespaces }))
+        over: RepetitionPattern(
+          ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.whitespaces })
+        )
       )
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(CharacterSet.newlinePattern, count: 0...1)
+        over: RepetitionPattern(
+          CharacterSet.newlinePattern(for: String.ScalarView.self),
+          count: 0...1
+        )
       )
     }
 
@@ -164,8 +172,10 @@
       if let required = requiredFirstLineToken {
 
         if file.contents.scalars.hasPrefix(required.scalars),
-          let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern)?
-            .range
+          let endOfLine = file.contents.scalars.firstMatch(
+            for: CharacterSet.newlinePattern(for: String.ScalarView.self)
+          )?
+          .range
         {
           index = endOfLine.lowerBound
         }
@@ -183,7 +193,7 @@
         let block = blockSyntax.firstComment(
           in: start..<file.contents.scalars.endIndex,
           of: file.contents
-        )?.container.range
+        )?.contents.bounds
           .upperBound
       {
         return block

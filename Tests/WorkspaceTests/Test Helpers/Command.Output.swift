@@ -27,7 +27,11 @@ extension Command.Output {
   }
 
   static var mock: Command.Output = {
-    var result: Command.Output?
+    class SendableClass: @unchecked Sendable {
+      fileprivate init() {}
+      fileprivate var result: Command.Output?
+    }
+    let waiting = SendableClass()
     do {
       _ = try Command(
         name: UserFacing<StrictString, MockLocalization>({ _ in "" }),
@@ -35,10 +39,10 @@ extension Command.Output {
         directArguments: [],
         options: [],
         execution: { (_, _, output: Command.Output) in
-          result = output
+          waiting.result = output
         }
       ).execute(with: []).get()
     } catch {}
-    return result!
+    return waiting.result!
   }()
 }

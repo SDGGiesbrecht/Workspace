@@ -27,20 +27,23 @@
   extension InterfaceLocalization {
 
     internal typealias DirectivePattern = ConcatenatedPatterns<
-      [Unicode.Scalar],
-      NaryAlternativePatterns<StrictString>
+      LiteralPattern<[Unicode.Scalar], String.ScalarView>,
+      NaryAlternativePatterns<LiteralPattern<StrictString, String.ScalarView>>
     >
     private static func pattern(
       named name: UserFacing<StrictString, InterfaceLocalization>,
       startingWith scalar: Unicode.Scalar
     ) -> DirectivePattern {
-      return [scalar]
-        + NaryAlternativePatterns(Array(Set(allCases.map({ name.resolved(for: $0) }))))
+      return [scalar].literal(for: String.ScalarView.self)
+        + NaryAlternativePatterns(
+          Array(Set(allCases.map({ name.resolved(for: $0) })))
+            .map({ $0.literal(for: String.ScalarView.self) })
+        )
     }
     internal typealias DirectivePatternWithArguments = ConcatenatedPatterns<
       ConcatenatedPatterns<
         ConcatenatedPatterns<DirectivePattern, String.ScalarView>,
-        RepetitionPattern<ConditionalPattern<Unicode.Scalar>>
+        RepetitionPattern<ConditionalPattern<String.ScalarView>>
       >,
       String.ScalarView
     >

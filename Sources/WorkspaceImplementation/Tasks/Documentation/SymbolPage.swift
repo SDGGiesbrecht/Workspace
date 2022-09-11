@@ -1029,7 +1029,8 @@
 
       if parameters ≠ documentedParameters {
         // #workaround(SDGSwift 10.0.1, Not collected properly for subscripts at present.)
-        if case .subscript = symbol {} else {
+        if case .subscript = symbol {
+        } else {
           status.reportMismatchedParameters(
             documentedParameters,
             expected: parameters,

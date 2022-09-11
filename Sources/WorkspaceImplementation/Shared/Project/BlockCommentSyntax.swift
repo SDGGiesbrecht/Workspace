@@ -96,7 +96,7 @@
       in range: Range<String.ScalarView.Index>,
       of string: String
     ) -> String? {
-      guard let range = firstComment(in: range, of: string)?.contents.bounds else {
+      guard let range = firstComment(in: range, of: string)?.levelContents.range else {
         return nil
       }
 

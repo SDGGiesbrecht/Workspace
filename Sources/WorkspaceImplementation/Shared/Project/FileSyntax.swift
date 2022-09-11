@@ -145,15 +145,23 @@
     ) {
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(CharacterSet.newlinePattern(for: String.ScalarView.self), count: 0...1)
+        over: RepetitionPattern(
+          CharacterSet.newlinePattern(for: String.ScalarView.self),
+          count: 0...1
+        )
       )
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.whitespaces }))
+        over: RepetitionPattern(
+          ConditionalPattern<String.ScalarView>({ $0 ∈ CharacterSet.whitespaces })
+        )
       )
       string.scalars.advance(
         &index,
-        over: RepetitionPattern(CharacterSet.newlinePattern(for: String.ScalarView.self), count: 0...1)
+        over: RepetitionPattern(
+          CharacterSet.newlinePattern(for: String.ScalarView.self),
+          count: 0...1
+        )
       )
     }
 
@@ -164,8 +172,10 @@
       if let required = requiredFirstLineToken {
 
         if file.contents.scalars.hasPrefix(required.scalars),
-          let endOfLine = file.contents.scalars.firstMatch(for: CharacterSet.newlinePattern(for: String.ScalarView.self))?
-            .range
+          let endOfLine = file.contents.scalars.firstMatch(
+            for: CharacterSet.newlinePattern(for: String.ScalarView.self)
+          )?
+          .range
         {
           index = endOfLine.lowerBound
         }

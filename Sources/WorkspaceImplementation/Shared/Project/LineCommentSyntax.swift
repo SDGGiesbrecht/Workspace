@@ -100,7 +100,8 @@
       of string: String
     ) -> Range<String.ScalarView.Index>? {
 
-      guard let startRange = string.scalars[range].firstMatch(for: start.scalars.literal())?.range else {
+      guard let startRange = string.scalars[range].firstMatch(for: start.scalars.literal())?.range
+      else {
         return nil
       }
 
@@ -108,7 +109,10 @@
       var testIndex: String.ScalarView.Index = resultEnd
       string.scalars.advance(
         &testIndex,
-        over: RepetitionPattern(CharacterSet.newlinePattern(for: String.ScalarView.self), count: 0...1)
+        over: RepetitionPattern(
+          CharacterSet.newlinePattern(for: String.ScalarView.self),
+          count: 0...1
+        )
       )
 
       string.scalars.advance(
@@ -121,7 +125,10 @@
         testIndex = resultEnd
         string.scalars.advance(
           &testIndex,
-          over: RepetitionPattern(CharacterSet.newlinePattern(for: String.ScalarView.self), count: 0...1)
+          over: RepetitionPattern(
+            CharacterSet.newlinePattern(for: String.ScalarView.self),
+            count: 0...1
+          )
         )
 
         string.scalars.advance(

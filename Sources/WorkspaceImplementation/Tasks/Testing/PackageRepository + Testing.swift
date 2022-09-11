@@ -70,7 +70,8 @@
                   ¬(
                   // #workaround(Swift 5.6.1, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
                   line.line.contains(
-                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars.literal()
+                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
+                      .literal()
                   ))
               }
               log.lines = LineView<String>(filtered)

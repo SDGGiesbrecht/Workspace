@@ -118,7 +118,10 @@
     ) {
 
       var mutable = Page.template
-      mutable.replaceMatches(for: "[*localization*]".scalars.literal(), with: localization.code.scalars)
+      mutable.replaceMatches(
+        for: "[*localization*]".scalars.literal(),
+        with: localization.code.scalars
+      )
       mutable.replaceMatches(
         for: "[*text direction*]".scalars.literal(),
         with: localization.textDirection.htmlAttribute.scalars

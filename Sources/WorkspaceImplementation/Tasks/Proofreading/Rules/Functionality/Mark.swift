@@ -67,7 +67,9 @@
 
         let line = file.contents.lineRange(for: match.range)
         if file.contents.scalars[line].hasPrefix(
-          RepetitionPattern(ConditionalPattern<String.ScalarView.SubSequence>({ $0 ∈ CharacterSet.whitespaces }))
+          RepetitionPattern(
+            ConditionalPattern<String.ScalarView.SubSequence>({ $0 ∈ CharacterSet.whitespaces })
+          )
             + "//".scalars.literal()
         ) {
 

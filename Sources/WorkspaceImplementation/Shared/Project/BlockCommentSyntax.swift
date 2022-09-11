@@ -82,11 +82,14 @@
     internal func firstComment(
       in range: Range<String.ScalarView.Index>,
       of string: String
-    ) -> NestingMatch<AtomicPatternMatch<String.ScalarView>, AtomicPatternMatch<String.ScalarView>>? {
-      return string.scalars.firstMatch(for: NestingPattern(
-        opening: start.scalars,
-        closing: end.scalars
-      ))
+    ) -> NestingMatch<AtomicPatternMatch<String.ScalarView>, AtomicPatternMatch<String.ScalarView>>?
+    {
+      return string.scalars.firstMatch(
+        for: NestingPattern(
+          opening: start.scalars,
+          closing: end.scalars
+        )
+      )
     }
 
     internal func contentsOfFirstComment(

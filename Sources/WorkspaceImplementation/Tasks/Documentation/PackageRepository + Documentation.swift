@@ -607,7 +607,9 @@
                 of: file
               ),
                 file.contents.scalars[nextLineStart..<commentRange.lowerBound]
-                  .firstMatch(for: CharacterSet.newlinePattern(for: String.ScalarView.SubSequence.self)) == nil
+                  .firstMatch(
+                    for: CharacterSet.newlinePattern(for: String.ScalarView.SubSequence.self)
+                  ) == nil
               {
 
                 let indent = StrictString(

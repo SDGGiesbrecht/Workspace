@@ -57,7 +57,8 @@
         if line.contains(exemptionMarker.literal()) {
           for localization in InterfaceLocalization.allCases {
             if line.contains(
-              StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))").literal()
+              StrictString("\(exemptionMarker)\(ruleIdentifier.resolved(for: localization)))")
+                .literal()
             ) {
               return nil
             }

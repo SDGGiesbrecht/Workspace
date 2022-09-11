@@ -293,7 +293,8 @@
                     var range = match.range
                     var remainder = output.scalars[range.upperBound...]
                     while remainder.hasPrefix("* Build Completed!".scalars.literal()),
-                      let end = remainder.firstMatch(for: "\n\n".scalars.literal())?.range.upperBound
+                      let end = remainder.firstMatch(for: "\n\n".scalars.literal())?.range
+                        .upperBound
                     {
                       range = range.lowerBound..<end
                       remainder = output.scalars[range.upperBound...]

@@ -54,7 +54,12 @@
 
         var index = file.contents.scalars.startIndex
         while let match = file.contents.scalars[index..<file.contents.scalars.endIndex]
-          .firstMatch(for: NestingPattern(opening: marker.0.scalars.literal(), closing: marker.1.scalars.literal()))
+          .firstMatch(
+            for: NestingPattern(
+              opening: marker.0.scalars.literal(),
+              closing: marker.1.scalars.literal()
+            )
+          )
         {
           index = match.contents.bounds.upperBound
           if match.contents.bounds ∉ handledViolations {

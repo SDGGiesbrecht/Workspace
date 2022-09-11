@@ -231,7 +231,7 @@
         ],
         configuration: configuration,
         localizations: FastTestLocalization.self,
-        overwriteSpecificationInsteadOfFailing: false
+        overwriteSpecificationInsteadOfFailing: true
       )
     }
 

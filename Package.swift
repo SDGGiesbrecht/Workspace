@@ -927,7 +927,8 @@ package.dependencies.removeAll(where: { dependency in
 })
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
-    switch dependency {
+    // #warning(Debugging...)
+    /*switch dependency {
     case .productItem(let name, let package, condition: _):
       if let package = package,
         impossibleDependencyPackages.contains(where: { package == $0 })
@@ -936,8 +937,8 @@ for target in package.targets {
       } else {
         return impossibleDependencyProducts.contains(where: { name == $0 })
       }
-    default:
+    default:*/
       return false
-    }
+    //}
   })
 }

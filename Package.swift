@@ -930,7 +930,7 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    #if compiler(<5.7)  // #warning(Only for compatibility with Swift 5.6)
+    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
       case .productItem(let name, let package, condition: _):
         if let package = package,
           impossibleDependencyPackages.contains(where: { package == $0 })

@@ -288,19 +288,21 @@
                 )
 
                 // Swift order varies.
-                let matches = output.scalars.matches(for: "$ swift ".scalars + any + "\n\n".scalars)
-                  .map { (match) -> Range<String.ScalarOffset> in
-                    var range = match.range
-                    var remainder = output.scalars[range.upperBound...]
-                    while remainder.hasPrefix("* Build Completed!".scalars.literal()),
-                      let end = remainder.firstMatch(for: "\n\n".scalars.literal())?.range
-                        .upperBound
-                    {
-                      range = range.lowerBound..<end
-                      remainder = output.scalars[range.upperBound...]
-                    }
-                    return output.offsets(of: range)
+                let matches = output.scalars.matches(
+                  for: NestingPattern(opening: "$ swift ".scalars, closing: "\n\n".scalars)
+                )
+                .map { (match) -> Range<String.ScalarOffset> in
+                  var range = match.range
+                  var remainder = output.scalars[range.upperBound...]
+                  while remainder.hasPrefix("* Build Completed!".scalars.literal()),
+                    let end = remainder.firstMatch(for: "\n\n".scalars.literal())?.range
+                      .upperBound
+                  {
+                    range = range.lowerBound..<end
+                    remainder = output.scalars[range.upperBound...]
                   }
+                  return output.offsets(of: range)
+                }
                 for match in matches.reversed() {
                   let range = output.indices(of: match)
                   output.scalars.replaceSubrange(range, with: "[$ swift...]\n\n".scalars)
@@ -312,7 +314,7 @@
 
                 // Xcode order varies.
                 output.scalars.replaceMatches(
-                  for: "$ xcodebuild".scalars + any + "\n\n".scalars,
+                  for: NestingPattern(opening: "$ xcodebuild".scalars, closing: "\n\n".scalars),
                   with: "[$ xcodebuild...]\n\n".scalars
                 )
 

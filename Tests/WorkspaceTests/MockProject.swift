@@ -445,6 +445,11 @@
                 let after = afterLocation.appendingPathComponent(fileName)
                 if let resultContents = try? String(from: result) {
                   if (try? String(from: after)) ≠ nil {
+                    #if !EXPERIMENTAL_TOOLCHAIN_VERSION  // Cannot load related projects.
+                      if location.lastPathComponent == "CheckedInDocumentation" {
+                        break
+                      }
+                    #endif
                     compare(
                       resultContents,
                       against: after,

@@ -107,6 +107,9 @@
                     "name: \u{22}Dependency\u{22},\n    products: [\n        .executable(name: \u{22}Dependency\u{22}, targets: [\u{22}Dependency\u{22}])\n    ],\n    dependencies: ["
                 )
                 try manifestContents.save(to: manifest)
+                try? FileManager.default.removeItem(
+                  at: dependency.appendingPathComponent("Sources/Dependency/Dependency.swift")
+                )
                 try
                   "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}"
                   .save(

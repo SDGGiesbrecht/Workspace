@@ -863,6 +863,10 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
+  // #workaround(Until switch to 5.7.)
+  #if compiler(>=5.7)
+    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
+  #endif
 }
 
 import Foundation

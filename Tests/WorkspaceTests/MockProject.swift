@@ -352,6 +352,15 @@
                       "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft"
                       .scalars
                   )
+                  #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                    // Dependency inexplicably absent when loaded with mismatched toolchain.
+                    if location.lastPathComponent.starts(with: "SDG") {
+                      output.scalars.replaceMatches(
+                        for: "Loading inheritance from “Dependency”...\n",
+                        with: ""
+                      )
+                    }
+                  #endif
                 }
               }
 

@@ -352,12 +352,12 @@
                       "\n[... wird aufgefrisct ...]\n\n„FailingCustomValidation“ wird geprüft"
                       .scalars
                   )
-                  #if !EXPERIMENTAL_TOOLCHAIN_VERSION
+                  #if EXPERIMENTAL_TOOLCHAIN_VERSION
                     // Dependency inexplicably absent when loaded with mismatched toolchain.
                     if location.lastPathComponent.starts(with: "SDG") {
                       output.scalars.replaceMatches(
-                        for: "Loading inheritance from “Dependency”...\n",
-                        with: ""
+                        for: "Parsing “Library”...\n".scalars,
+                        with: "Parsing “Library”...\nLoading inheritance from “Dependency”...\n".scalars
                       )
                     }
                   #endif
@@ -454,7 +454,7 @@
                 let after = afterLocation.appendingPathComponent(fileName)
                 if let resultContents = try? String(from: result) {
                   if (try? String(from: after)) ≠ nil {
-                    #if !EXPERIMENTAL_TOOLCHAIN_VERSION  // Cannot load related projects.
+                    #if EXPERIMENTAL_TOOLCHAIN_VERSION  // Cannot load related projects.
                       if location.lastPathComponent == "CheckedInDocumentation" {
                         break
                       }

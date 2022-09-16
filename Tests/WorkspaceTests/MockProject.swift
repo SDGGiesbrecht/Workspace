@@ -357,7 +357,8 @@
                     if location.lastPathComponent.starts(with: "SDG") {
                       output.scalars.replaceMatches(
                         for: "Parsing “Library”...\n".scalars,
-                        with: "Parsing “Library”...\nLoading inheritance from “Dependency”...\n".scalars
+                        with: "Parsing “Library”...\nLoading inheritance from “Dependency”...\n"
+                          .scalars
                       )
                     }
                   #endif

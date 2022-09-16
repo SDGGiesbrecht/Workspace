@@ -116,6 +116,12 @@
           return Version(version)
         }
       }
+      #if EXPERIMENTAL_TOOLCHAIN_VERSION && DEBUG
+        // #workaround(Inexplicably absent when loaded with mismatched toolchain; this resolves the difference during testing.)
+        if dependency == "Dependency" {
+          return SDGVersioning.Version(1)
+        }
+      #endif
       return cached(
         in: &dependencyVersionCache[dependency],
         {

@@ -496,7 +496,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(10, 0, 1)
+      from: Version(10, 0, 2)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
@@ -861,6 +861,10 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
+  // #workaround(Until switch to 5.7.)
+  #if compiler(>=5.7)
+    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
+  #endif
 }
 
 import Foundation
@@ -928,14 +932,25 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    case .productItem(let name, let package, condition: _):
-      if let package = package,
-        impossibleDependencyPackages.contains(where: { package == $0 })
-      {
-        return true
-      } else {
-        return impossibleDependencyProducts.contains(where: { name == $0 })
-      }
+    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
+      case .productItem(let name, let package, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(where: { package == $0 })
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(where: { name == $0 })
+        }
+    #else
+      case .productItem(let name, let package, moduleAliases: _, condition: _):
+        if let package = package,
+          impossibleDependencyPackages.contains(where: { package == $0 })
+        {
+          return true
+        } else {
+          return impossibleDependencyProducts.contains(where: { name == $0 })
+        }
+    #endif
     default:
       return false
     }

@@ -12,13 +12,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Swift 5.7 (Android)
+name: Swift 5.6 (Android)
 
 on: [push, pull_request]
 
 jobs:
   Android:
-    name: Swift 5.7 (Android)
+    name: Swift 5.6 (Android)
     runs-on: ubuntu-20.04
     steps:
     - name: Check out
@@ -102,7 +102,7 @@ jobs:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug
   Android_II:
-    name: Swift 5.7 (Android II)
+    name: Swift 5.6 (Android II)
     runs-on: macos-12
     needs: Android
     steps:

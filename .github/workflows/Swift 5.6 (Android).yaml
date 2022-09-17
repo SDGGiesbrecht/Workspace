@@ -1,33 +1,28 @@
-# Android.yaml
+# Swift 5.6 (Android).yaml
 #
 # This source file is part of the Workspace open source project.
 # Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
 # https://github.com/SDGGiesbrecht/Workspace#workspace
 #
-# Copyright ©2021–2022 Jeremy David Giesbrecht and the Workspace project contributors.
-# Urheberrecht ©2021–2022 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+# Copyright ©2022 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2022 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 #
 # Soli Deo gloria.
 #
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Android
+name: Swift 5.7 (Android)
 
 on: [push, pull_request]
 
 jobs:
   Android:
-    name: Android
+    name: Swift 5.7 (Android)
     runs-on: ubuntu-20.04
     steps:
     - name: Check out
       uses: actions/checkout@v2
-    - name: Cache Workspace
-      uses: actions/cache@v2
-      with:
-        key: Android‐${{ hashFiles('.github/workflows/**') }}
-        path: .build/SDG/Workspace
     - name: Fetch Android NDK
       shell: bash
       run: |
@@ -47,15 +42,15 @@ jobs:
         sudo rm -rf /usr/lib/clang/10.0.0
         sudo rm -rf /usr/lib/python3/dist-packages/lldb
         curl \
-          'https://download.swift.org/swift-5.7-release/ubuntu2004/swift-5.7-RELEASE/swift-5.7-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.7-RELEASE-ubuntu20.04.tar.gz' \
+          'https://download.swift.org/swift-5.6-release/ubuntu2004/swift-5.6-RELEASE/swift-5.6-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.6-RELEASE-ubuntu20.04.tar.gz' \
           --location
         tar --extract \
-          --file /tmp/swift-5.7-RELEASE-ubuntu20.04.tar.gz \
+          --file /tmp/swift-5.6-RELEASE-ubuntu20.04.tar.gz \
           --directory /tmp \
           --verbose
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.7-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.6-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
@@ -64,15 +59,15 @@ jobs:
       run: |
         set -x
         curl \
-          'https://github.com/buttaface/swift-android-sdk/releases/download/5.7/swift-5.7-android-x86_64-24-sdk.tar.xz' \
-          --output '/tmp/swift-5.7-android-x86_64-24-sdk.tar.xz' \
+          'https://github.com/buttaface/swift-android-sdk/releases/download/5.6/swift-5.6-android-x86_64-24-sdk.tar.xz' \
+          --output '/tmp/swift-5.6-android-x86_64-24-sdk.tar.xz' \
           --location
         tar --extract \
-          --file /tmp/swift-5.7-android-x86_64-24-sdk.tar.xz \
+          --file /tmp/swift-5.6-android-x86_64-24-sdk.tar.xz \
           --directory /tmp \
           --verbose
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        sudo cp -R /tmp/swift-5.7-android-x86_64-24-sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/swift-5.6-android-x86_64-24-sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
         ln \
           /usr/lib/clang/13.0.0 \
@@ -107,7 +102,7 @@ jobs:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug
   Android_II:
-    name: Android II
+    name: Swift 5.7 (Android II)
     runs-on: macos-12
     needs: Android
     steps:

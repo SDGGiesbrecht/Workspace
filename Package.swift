@@ -496,11 +496,13 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(10, 0, 2)
+      // #warning(Branch.)
+      // from: Version(10, 0, 2)
+      branch: "package"
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      exact: Version(0, 50600, 3)
+      exact: Version(0, 50700, 1)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",

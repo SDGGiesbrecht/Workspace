@@ -12,13 +12,13 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: tvOS
+name: Swift 5.6 (tvOS)
 
 on: [push, pull_request]
 
 jobs:
   tvOS:
-    name: tvOS
+    name: Swift 5.6 (tvOS)
     runs-on: macos-12
     steps:
     - name: Check out

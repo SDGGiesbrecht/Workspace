@@ -1,11 +1,11 @@
-# tvOS.yaml
+# Swift 5.6 (tvOS).yaml
 #
 # This source file is part of the Workspace open source project.
 # Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
 # https://github.com/SDGGiesbrecht/Workspace#workspace
 #
-# Copyright ©2021–2022 Jeremy David Giesbrecht and the Workspace project contributors.
-# Urheberrecht ©2021–2022 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+# Copyright ©2022 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2022 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 #
 # Soli Deo gloria.
 #
@@ -32,7 +32,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_14.0.app
+        sudo xcode-select -switch /Applications/Xcode_13.4.app
         xcodebuild -version
         swift --version
     - name: Refresh

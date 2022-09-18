@@ -24,16 +24,16 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v2
-    - name: Repair Git
-      shell: bash
-      run: |
-        set -x
-        git config --global --add safe.directory '*'
     - name: Cache Workspace
       uses: actions/cache@v2
       with:
         key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Repair Git
+      shell: bash
+      run: |
+        set -x
+        git config --global --add safe.directory '*'
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

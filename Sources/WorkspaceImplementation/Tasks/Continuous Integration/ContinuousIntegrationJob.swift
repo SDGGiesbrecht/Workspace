@@ -500,6 +500,16 @@
       return result.joinedAsLines()
     }
 
+    private func repairGit(localization: InterfaceLocalization) -> StrictString {
+      return script(
+        heading: repairGitStepName,
+        localization: localization,
+        commands: [
+          "git config \u{2D}\u{2D}global \u{2D}\u{2D}add safe.directory \u{27}*\u{27}"
+        ]
+      )
+    }
+
     private func yumInstallation(
       _ packages: [StrictString]
     ) -> StrictString {
@@ -815,6 +825,7 @@
         ])
       case .amazonLinux:
         result.append(contentsOf: [
+          repairGit(localization: interfaceLocalization),
           script(
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
@@ -1021,6 +1032,17 @@
           return "Cache Workspace"
         case .deutschDeutschland:
           return "Arbeitsbereich zwischenspeichern"
+        }
+      })
+    }
+
+    private var repairGitStepName: UserFacing<StrictString, InterfaceLocalization> {
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Repair Git"
+        case .deutschDeutschland:
+          return "Git instand setzen"
         }
       })
     }

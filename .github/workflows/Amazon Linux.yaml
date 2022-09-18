@@ -24,6 +24,11 @@ jobs:
     steps:
     - name: Check out
       uses: actions/checkout@v2
+    - name: Repair Git
+      shell: bash
+      run: |
+        set -x
+        git config --global --add safe.directory '*'
     - name: Cache Workspace
       uses: actions/cache@v2
       with:

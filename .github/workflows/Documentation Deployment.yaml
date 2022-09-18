@@ -32,6 +32,11 @@ jobs:
       with:
         key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Repair Git
+      shell: bash
+      run: |
+        set -x
+        git config --global --add safe.directory '*'
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

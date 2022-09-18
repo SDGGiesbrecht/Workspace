@@ -750,6 +750,7 @@
         break
       case .ubuntu:
         result.append(contentsOf: [
+          repairGit(localization: interfaceLocalization),
           script(
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,

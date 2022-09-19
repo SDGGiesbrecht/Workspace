@@ -496,11 +496,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(10, 0, 2)
+      from: Version(11, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      exact: Version(0, 50600, 3)
+      exact: Version(0, 50700, 2)
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
@@ -509,7 +509,7 @@ let package = Package(
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      exact: Version(0, 0, 506001)
+      exact: Version(0, 0, 506002)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

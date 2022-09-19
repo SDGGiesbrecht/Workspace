@@ -24,6 +24,7 @@
   extension SDGVersioning.Version {
 
     internal init(_ version: PackageModel.Version) {
+      // @exempt(from: tests) ...while EXPERIMENTAL_TOOLCHAIN_VERSION is active.
       self.init(version.major, version.minor, version.patch)
     }
 

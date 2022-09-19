@@ -112,7 +112,7 @@
       if #available(macOS 10.15, *) {
         if let dependency = try project.dependenciesByName()[String(dependency)],
           let version = dependency.manifest.version
-        {
+        {  // @exempt(from: tests) While EXPERIMENTAL_TOOLCHAIN_VERSION is active.
           return Version(version)
         }
       }

@@ -1,4 +1,4 @@
-# Swift 5.7 (macOS).yaml
+# Swift 5.6 (watchOS).yaml
 #
 # This source file is part of the Workspace open source project.
 # Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
@@ -12,26 +12,36 @@
 # Licensed under the Apache Licence, Version 2.0.
 # See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
 
-name: Swift 5.7 (macOS)
+name: Swift 5.6 (watchOS)
 
 on: [push, pull_request]
 
 jobs:
-  macOS:
-    name: Swift 5.7 (macOS)
+  watchOS:
+    name: Swift 5.6 (watchOS)
     runs-on: macos-12
     steps:
     - name: Check out
       uses: actions/checkout@v2
+    - name: Cache Workspace
+      uses: actions/cache@v2
+      with:
+        key: macOS‐${{ hashFiles('.github/workflows/**') }}
+        path: .build/SDG/Workspace
     - name: Set Xcode up
       shell: bash
       run: |
         set -x
-        sudo xcode-select -switch /Applications/Xcode_14.0.app
+        sudo xcode-select -switch /Applications/Xcode_13.4.app
         xcodebuild -version
         swift --version
+    - name: Refresh
+      shell: bash
+      run: |
+        set -x
+        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift test
+        swift run workspace validate •job watchos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

@@ -112,16 +112,10 @@
       if #available(macOS 10.15, *) {
         if let dependency = try project.dependenciesByName()[String(dependency)],
           let version = dependency.manifest.version
-        {  // @exempt(from: tests) While EXPERIMENTAL_TOOLCHAIN_VERSION is active.
+        {
           return Version(version)
         }
       }
-      #if EXPERIMENTAL_TOOLCHAIN_VERSION && DEBUG
-        // #workaround(Inexplicably absent when loaded with mismatched toolchain; this resolves the difference during testing.)
-        if dependency == "Dependency" {
-          return SDGVersioning.Version(1)
-        }
-      #endif
       return cached(
         in: &dependencyVersionCache[dependency],
         {

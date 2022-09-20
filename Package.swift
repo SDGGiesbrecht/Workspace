@@ -492,13 +492,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(3, 0, 0)
+      from: Version(3, 0, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch.)
-      // from: Version(10, 0, 2)
-      branch: "package"
+      from: Version(11, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
@@ -863,10 +861,6 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
-  // #workaround(Until switch to 5.7.)
-  #if compiler(>=5.7)
-    swiftSettings.append(.define("EXPERIMENTAL_TOOLCHAIN_VERSION"))
-  #endif
 }
 
 import Foundation

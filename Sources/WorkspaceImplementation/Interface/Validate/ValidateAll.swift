@@ -247,7 +247,8 @@
         if try ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
           ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
-          ∧ { () -> Bool in  // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
+          ∧ { () -> Bool in  // @exempt(from: tests)
+            // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
             if try options.project.isWorkspaceProject() {
               #if compiler(<5.7)
                 return false

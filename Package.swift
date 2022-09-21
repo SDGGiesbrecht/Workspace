@@ -908,7 +908,7 @@ if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
 // #workaround(Swift 5.7.0, Windows toolchain rejects manifests due to plugins.)
 if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   impossibleDependencyPackages.append(contentsOf: [
-    "swift\u{2D}format",  // its constraint on swift‐argument‐parser
+    "swift\u{2D}format"  // its constraint on swift‐argument‐parser
   ])
   package.dependencies.append(
     .package(

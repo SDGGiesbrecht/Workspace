@@ -244,9 +244,20 @@
         }
 
         // State
-        if ProcessInfo.isInContinuousIntegration
+        if try ProcessInfo.isInContinuousIntegration
           ∧ ProcessInfo.isPullRequest  // @exempt(from: tests)
           ∧ ¬_isDuringSpecificationTest  // @exempt(from: tests)
+          ∧ { () -> Bool in  // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
+            if try options.project.isWorkspaceProject() {
+              #if compiler(<5.7)
+                return false
+              #else
+                return true
+              #endif
+            } else {
+              return true
+            }
+          }()
         {
           // @exempt(from: tests) Only reachable during pull request.
 

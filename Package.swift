@@ -866,10 +866,11 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(swift 5.7.0, Has dependencies with rejected manifests; see note about plugins below.) @exempt(from: unicode)
     // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.wasi])
+      .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.6.1, SwiftPM lacks conditional targets.)
     .define(

@@ -506,12 +506,26 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: Version(0, 50700, 0)
+      exact: {
+        // #workaround(Until switch to 5.7.)
+        #if compiler(>=5.7)
+          return Version(0, 50700, 0)
+        #else
+          return Version(0, 50600, 1)
+        #endif
+      }()
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      exact: Version(0, 0, 507000)
+      exact: {
+        // #workaround(Until switch to 5.7.)
+        #if compiler(>=5.7)
+          return Version(0, 0, 507000)
+        #else
+          return Version(0, 0, 506002)
+        #endif
+      }()
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",

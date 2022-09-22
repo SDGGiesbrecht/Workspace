@@ -4,7 +4,7 @@ arbeitsbereich normalisieren normalisiert die Dateien des Projekt, in dem Leerze
 
 Für die algemeine Formatierung, wendet Arbeitsbereich das offiziele Formatierer an, der als swift‐format bekannt ist. Weitere Informationen über swift‐format sind bei ‹https://github.com/apple/swift-format› erhältlich.
 
-Innerhalb eines Arbeitsberich‐Konfiguration befindet sich das swift‐format‐Konfiguration unter „korrektur.swiftFormatKonfiguration“ und es verwendet das Swift‐Programmierschnittstelle aus seinem eigenen SwiftFormatConfiguration‐Modul. Siehe ‹https://github.com/apple/swift-format/blob/0.50600.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
+Innerhalb eines Arbeitsberich‐Konfiguration befindet sich das swift‐format‐Konfiguration unter „korrektur.swiftFormatKonfiguration“ und es verwendet das Swift‐Programmierschnittstelle aus seinem eigenen SwiftFormatConfiguration‐Modul. Siehe ‹https://github.com/apple/swift-format/blob/0.50700.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
 
 Wenn das ganze Eigenschaft auf nil eingestellt ist, wird swift‐format völlig ausgeschaltet.
 

@@ -496,7 +496,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(11, 0, 0)
+      from: Version(11, 0, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
@@ -504,12 +504,26 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: Version(0, 50600, 1)
+      exact: {
+        // #workaround(Until switch to 5.7.)
+        #if compiler(>=5.7)
+          return Version(0, 50700, 0)
+        #else
+          return Version(0, 50600, 1)
+        #endif
+      }()
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      exact: Version(0, 0, 506002)
+      exact: {
+        // #workaround(Until switch to 5.7.)
+        #if compiler(>=5.7)
+          return Version(0, 0, 507000)
+        #else
+          return Version(0, 0, 506002)
+        #endif
+      }()
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -850,10 +864,11 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
+    // #workaround(swift 5.7.0, Has dependencies with rejected manifests; see note about plugins below.) @exempt(from: unicode)
     // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.wasi])
+      .when(platforms: [.windows, .wasi])
     ),
     // #workaround(Swift 5.6.1, SwiftPM lacks conditional targets.)
     .define(
@@ -886,6 +901,19 @@ if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
   for target in package.targets {
     target.plugins = nil
   }
+}
+
+// #workaround(Swift 5.7.0, Windows toolchain rejects manifests due to plugins.)
+if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
+  impossibleDependencyPackages.append(contentsOf: [
+    "swift\u{2D}format"  // its constraint on swift‐argument‐parser
+  ])
+  package.dependencies.append(
+    .package(
+      url: "https://github.com/apple/swift\u{2D}argument\u{2D}parser",
+      exact: Version(1, 1, 3)
+    )
+  )
 }
 
 // #workaround(Swift 5.6.1, Web toolchain rejects manifest due to dynamic library.)

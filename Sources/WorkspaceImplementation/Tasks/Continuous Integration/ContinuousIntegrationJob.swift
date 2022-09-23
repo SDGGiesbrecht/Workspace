@@ -42,6 +42,7 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 7, 0)
+    internal static let currentSwiftVersionForAndroid = Version(5, 6, 0)
 
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(14, 0)
@@ -786,7 +787,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersionForAndroid
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [

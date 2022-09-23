@@ -11,7 +11,7 @@ jobs:
   Verteilung:
     name: Verteilung
     runs-on: ubuntu-20.04
-    container: swift:5.6.0-focal
+    container: swift:5.7.0-focal
     steps:
     - name: Holen
       uses: actions/checkout@v2
@@ -20,6 +20,11 @@ jobs:
       with:
         key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Git instand setzen
+      shell: bash
+      run: |
+        set -x
+        git config --global --add safe.directory '*'
     - name: SwiftPM‐Abhängigkeiten installieren
       shell: bash
       run: |

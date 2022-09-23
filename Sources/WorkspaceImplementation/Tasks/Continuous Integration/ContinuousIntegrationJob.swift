@@ -41,7 +41,9 @@
     case miscellaneous
     case deployment
 
-    internal static let currentSwiftVersion = Version(5, 6, 0)
+    internal static let currentSwiftVersion = Version(5, 7, 0)
+    internal static let currentSwiftVersionForWindows = Version(5, 6, 0)
+    internal static let currentSwiftVersionForAndroid = Version(5, 6, 0)
 
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(14, 0)
@@ -500,6 +502,16 @@
       return result.joinedAsLines()
     }
 
+    private func repairGit(localization: InterfaceLocalization) -> StrictString {
+      return script(
+        heading: repairGitStepName,
+        localization: localization,
+        commands: [
+          "git config \u{2D}\u{2D}global \u{2D}\u{2D}add safe.directory \u{27}*\u{27}"
+        ]
+      )
+    }
+
     private func yumInstallation(
       _ packages: [StrictString]
     ) -> StrictString {
@@ -711,7 +723,7 @@
           )
         ])
       case .windows:
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersionForWindows
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           step(installSwiftStepName, localization: interfaceLocalization),
@@ -740,6 +752,7 @@
         break
       case .ubuntu:
         result.append(contentsOf: [
+          repairGit(localization: interfaceLocalization),
           script(
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
@@ -775,7 +788,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersion
+        let version = ContinuousIntegrationJob.currentSwiftVersionForAndroid
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
@@ -815,6 +828,7 @@
         ])
       case .amazonLinux:
         result.append(contentsOf: [
+          repairGit(localization: interfaceLocalization),
           script(
             heading: installSwiftPMDependenciesStepName,
             localization: interfaceLocalization,
@@ -1021,6 +1035,17 @@
           return "Cache Workspace"
         case .deutschDeutschland:
           return "Arbeitsbereich zwischenspeichern"
+        }
+      })
+    }
+
+    private var repairGitStepName: UserFacing<StrictString, InterfaceLocalization> {
+      return UserFacing({ (localization) in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Repair Git"
+        case .deutschDeutschland:
+          return "Git instand setzen"
         }
       })
     }

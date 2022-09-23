@@ -42,7 +42,6 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 7, 0)
-    internal static let currentSwiftVersionForWindows = Version(5, 6, 0)
     internal static let currentSwiftVersionForAndroid = Version(5, 6, 0)
 
     private static let currentMacOSVersion = Version(12)
@@ -723,7 +722,7 @@
           )
         ])
       case .windows:
-        let version = ContinuousIntegrationJob.currentSwiftVersionForWindows
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         result.append(contentsOf: [
           step(installSwiftStepName, localization: interfaceLocalization),

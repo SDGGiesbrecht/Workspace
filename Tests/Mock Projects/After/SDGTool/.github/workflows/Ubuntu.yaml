@@ -21,7 +21,7 @@ jobs:
   Ubuntu:
     name: Ubuntu
     runs-on: ubuntu-20.04
-    container: swift:5.6.0-focal
+    container: swift:5.7.0-focal
     steps:
     - name: Check out
       uses: actions/checkout@v2
@@ -30,6 +30,11 @@ jobs:
       with:
         key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
+    - name: Repair Git
+      shell: bash
+      run: |
+        set -x
+        git config --global --add safe.directory '*'
     - name: Install SwiftPM dependencies
       shell: bash
       run: |

@@ -49,7 +49,7 @@
     private static let currentCartonVersion = Version(0, 16, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
-    private static let currentAnroidNDKVersion = "23b"
+    private static let currentAnroidNDKVersion = "25b"
     private static let currentAmazonLinuxVerison = "2"
 
     internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [

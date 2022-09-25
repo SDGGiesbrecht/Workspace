@@ -89,8 +89,6 @@ jobs:
           --sdk ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
-          -Xswiftc -Xclang-linker -Xswiftc --target=x86_64-linux-android24 \
-          -Xswiftc -use-ld=lld \
           -Xcc -fPIC \
           -Xcc -lstdc++
     - name: Copy libraries

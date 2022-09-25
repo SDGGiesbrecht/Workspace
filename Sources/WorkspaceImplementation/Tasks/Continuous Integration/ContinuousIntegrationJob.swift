@@ -42,7 +42,6 @@
     case deployment
 
     internal static let currentSwiftVersion = Version(5, 7, 0)
-    internal static let currentSwiftVersionForAndroid = Version(5, 6, 0)
 
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(14, 0)
@@ -50,7 +49,7 @@
     private static let currentCartonVersion = Version(0, 16, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
-    private static let currentAnroidNDKVersion = "23b"
+    private static let currentAnroidNDKVersion = "25b"
     private static let currentAmazonLinuxVerison = "2"
 
     internal static let simulatorJobs: Set<ContinuousIntegrationJob> = [
@@ -787,7 +786,7 @@
             ]
           )
         )
-        let version = ContinuousIntegrationJob.currentSwiftVersionForAndroid
+        let version = ContinuousIntegrationJob.currentSwiftVersion
           .string(droppingEmptyPatch: true)
         let ubuntuVersion = ContinuousIntegrationJob.currentUbuntuVersion
         result.append(contentsOf: [
@@ -907,8 +906,6 @@
               "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
               "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}Xclang\u{2D}linker \u{2D}Xswiftc \u{2D}\u{2D}target=x86_64\u{2D}linux\u{2D}android24 \u{5C}",
-              "  \u{2D}Xswiftc \u{2D}use\u{2D}ld=lld \u{5C}",
               "  \u{2D}Xcc \u{2D}fPIC \u{5C}",
               "  \u{2D}Xcc \u{2D}lstdc++",
             ]

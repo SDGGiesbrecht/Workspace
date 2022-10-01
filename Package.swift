@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.7
 
 /*
  Package.swift
@@ -384,10 +384,7 @@ import PackageDescription
 /// By default, Workspace refrains from tasks which would involve modifying project files. Such tasks must be activated with a [configuration](https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Libraries/WorkspaceConfiguration.html) file. `optIntoAllTasks()` can be used in the configuration file to easily activate everything at once, no matter how much it might end up overwriting.
 let package = Package(
   name: "Workspace",
-  platforms: [
-    // These must also be updated in Sources/WorkspaceImplementation/Shared/Project/PackageRepository.swift.
-    .macOS(.v10_12)
-  ],
+  // Any platform constraints must also be updated in Sources/WorkspaceImplementation/Shared/Project/PackageRepository.swift.
   products: [
     // @localization(🇩🇪DE)
     // #documentation(ArbeitsbereichKonfiguration)

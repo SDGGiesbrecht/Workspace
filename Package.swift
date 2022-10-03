@@ -501,26 +501,12 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: {
-        // #workaround(Until switch to 5.7.)
-        #if compiler(>=5.7)
-          return Version(0, 50700, 0)
-        #else
-          return Version(0, 50600, 1)
-        #endif
-      }()
+      exact: Version(0, 50700, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
-      exact: {
-        // #workaround(Until switch to 5.7.)
-        #if compiler(>=5.7)
-          return Version(0, 0, 507000)
-        #else
-          return Version(0, 0, 506002)
-        #endif
-      }()
+      exact: Version(0, 0, 507000)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGWeb",
@@ -953,25 +939,14 @@ package.dependencies.removeAll(where: { dependency in
 for target in package.targets {
   target.dependencies.removeAll(where: { dependency in
     switch dependency {
-    #if compiler(<5.7)  // #workaround(Swift 5.6.1, Only for compatibility with Swift 5.6)
-      case .productItem(let name, let package, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(where: { package == $0 })
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(where: { name == $0 })
-        }
-    #else
-      case .productItem(let name, let package, moduleAliases: _, condition: _):
-        if let package = package,
-          impossibleDependencyPackages.contains(where: { package == $0 })
-        {
-          return true
-        } else {
-          return impossibleDependencyProducts.contains(where: { name == $0 })
-        }
-    #endif
+    case .productItem(let name, let package, moduleAliases: _, condition: _):
+      if let package = package,
+        impossibleDependencyPackages.contains(where: { package == $0 })
+      {
+        return true
+      } else {
+        return impossibleDependencyProducts.contains(where: { name == $0 })
+      }
     default:
       return false
     }

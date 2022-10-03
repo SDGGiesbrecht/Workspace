@@ -918,14 +918,6 @@ if ["TVOS", "IOS", "WATCHOS"]
   ])
 }
 
-// #workaround(xcodebuild -version 13.4.1, Tool targets don’t work on tvOS.) @exempt(from: unicode)
-if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
-{
-  package.products.removeAll(where: { $0.name.first!.isLowercase })
-  package.targets.removeAll(where: { $0.type == .executable })
-}
-
 package.dependencies.removeAll(where: { dependency in
   switch dependency.kind {
   case .sourceControl(name: _, let location, requirement: _):

@@ -899,13 +899,13 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   )
 }
 
-// #warning(Swift 5.6.1, Web toolchain rejects manifest due to dynamic library.)
-/*if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
+// #workaround(Swift 7.0, Web toolchain rejects manifest due to dynamic library.)
+if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   impossibleDependencyPackages.append(contentsOf: [
     "swift\u{2D}format",
     "swift\u{2D}package\u{2D}manager",
   ])
-}*/
+}
 
 // #workaround(xcodebuild -version 13.4.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]

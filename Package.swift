@@ -907,12 +907,11 @@ if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   ])
 }
 
-// #workaround(xcodebuild -version 13.4.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
+// #workaround(xcodebuild -version 14.0.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
   impossibleDependencyProducts.append(contentsOf: [
-    "SDGSwiftSource",
     "SwiftSyntaxParser",
     "SwiftFormat",
   ])

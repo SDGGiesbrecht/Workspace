@@ -899,7 +899,7 @@ if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
   )
 }
 
-// #workaround(Swift 7.0, Web toolchain rejects manifest due to dynamic library.)
+// #workaround(Swift 5.7, Web toolchain rejects manifest due to dynamic library.)
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   impossibleDependencyPackages.append(contentsOf: [
     "swift\u{2D}format",

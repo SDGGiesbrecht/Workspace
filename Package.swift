@@ -866,13 +866,13 @@ import Foundation
 var impossibleDependencyPackages: [String] = []
 var impossibleDependencyProducts: [String] = []
 
-// #warning(Swift 5.6.1, Conditional dependencies fail to skip for some platforms.)
+// #workaround(Swift 5.7, Conditional dependencies fail to skip for some platforms.)
 if ["WINDOWS", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
   impossibleDependencyProducts.append(contentsOf: [
-    //"SwiftSyntaxParser",
-    //"SwiftFormat",
+    "SwiftSyntaxParser",
+    "SwiftFormat",
   ])
 }
 

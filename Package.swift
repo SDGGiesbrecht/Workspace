@@ -876,8 +876,8 @@ if ["WINDOWS", "ANDROID"]
   ])
 }
 
-// #warning(Swift 5.6.1, Some platforms cannot build plugins yet.)
-if ["#warning(...)"/*"WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"*/]
+// #warning(Swift 5.7, Some platforms cannot build plugins yet.)
+if ["WINDOWS", "WEB", /*"TVOS", "IOS",*/ "ANDROID", /*"WATCHOS"*/]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
   for target in package.targets {

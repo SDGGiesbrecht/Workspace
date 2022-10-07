@@ -876,11 +876,10 @@ if ["WINDOWS", "ANDROID"]
   ])
 }
 
-// #workaround(Swift 5.6.1, Some platforms cannot build plugins yet.)
-if ["WINDOWS", "WEB", "TVOS", "IOS", "ANDROID", "WATCHOS"]
+// #workaround(Swift 5.7, Some platforms cannot use plugins yet.)
+if ["WINDOWS", "WEB", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
-  package.targets.removeAll(where: { $0.type == .plugin })
   for target in package.targets {
     target.plugins = nil
   }

@@ -835,11 +835,11 @@ where target.type != .plugin {  // @exempt(from: unicode)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.7, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
-    // #warning(Swift 5.6.1, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
-    /*.define(
+    // #warning(Swift 5.7, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
-    ),*/
+    ),
     // #workaround(Swift 5.7, FoundationXML is broken on web.)
     // #workaroung(Swift 5.7, FoundationXML is broken on Android.)
     .define(

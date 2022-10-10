@@ -560,9 +560,9 @@ let package = Package(
         ),
         .product(
           name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format"/*,
-          // #warning(Swift 5.6.1, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])*/
+          package: "swift\u{2D}format",
+          // #workaround(Swift 5.7, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
         .product(
           name: "SwiftFormat",
@@ -691,7 +691,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.6.1, Does not compile for web.)
+          // #workaround(Swift 5.7, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -835,7 +835,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.7, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
-    // #warning(Swift 5.7, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    // #workaround(Swift 5.7, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
@@ -848,7 +848,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
     // #workaround(swift 5.7.0, Has dependencies with rejected manifests; see note about plugins below.) @exempt(from: unicode)
-    // #workaround(swift-format 0.0.506001, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
+    // #workaround(swift-format 0.0.507000, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
       .when(platforms: [.windows, .wasi])

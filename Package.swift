@@ -752,7 +752,7 @@ let package = Package(
         .product(
           name: "SwiftFormatConfiguration",
           package: "swift\u{2D}format",
-          // #workaround(Swift 5.6.1, Does not compile for web.)
+          // #workaround(Swift 5.7, Does not compile for web.)
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         ),
       ],
@@ -831,7 +831,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
     // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.6.1, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.7, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
     // #workaround(Swift 5.7, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),

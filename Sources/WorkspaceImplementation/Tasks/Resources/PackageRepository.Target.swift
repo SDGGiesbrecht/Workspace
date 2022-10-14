@@ -335,17 +335,17 @@
         {
           return
             ([
-              // #warning(Swift 5.6.1, Some platforms do not support bundled resources yet.)
-              /*"#if os(WASI)",
+              // #workaround(Swift 5.7, Some platforms do not support bundled resources yet.)
+              "#if os(WASI)",
               try embeddedSource(for: resource, named: name, accessControl: accessControl),
-              "#else",*/
+              "#else",
               bundledSource(
                 for: resource,
                 named: name,
                 loadName: loadName,
                 accessControl: accessControl
               ),
-              //"#endif",
+              "#endif",
             ] as [StrictString]).joinedAsLines()
         } else {
           return try embeddedSource(for: resource, named: name, accessControl: accessControl)

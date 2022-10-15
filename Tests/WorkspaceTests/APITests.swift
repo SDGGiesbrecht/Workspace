@@ -57,16 +57,6 @@
       PackageRepository.resetRelatedProjectCache()  // Make sure starting state is consistent.
       CustomTask.emptyCache()
       APITests.configureGit
-
-      // #warning(xcodebuild -version 13.4.1, GitHub actions contain a stale configuration.) @exempt(from: unicode)
-      /*if isInGitHubAction {
-        let url = URL(fileURLWithPath: NSHomeDirectory())
-          .appendingPathComponent("Library")
-          .appendingPathComponent("org.swift.swiftpm")
-          .appendingPathComponent("collections.json")
-        try? FileManager.default.removeItem(at: url)
-        XCTAssert((try? url.checkResourceIsReachable()) ≠ true)
-      }*/
     }
 
     func testAllDisabled() {

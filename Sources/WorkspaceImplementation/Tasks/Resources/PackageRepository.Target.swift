@@ -211,7 +211,7 @@
 
         source.append(contentsOf: "extension Resources {\n".scalars)
 
-        // #workaround(Swift 5.6.1, Standard accessor tripped by symlinks.)
+        // #workaround(Swift 5.7, Standard accessor tripped by symlinks.)
         if resources.contains(where: { $0.deprecated == false }) {
           source.append(
             contentsOf: [
@@ -335,7 +335,7 @@
         {
           return
             ([
-              // #workaround(Swift 5.6.1, Some platforms do not support bundled resources yet.)
+              // #workaround(Swift 5.7, Some platforms do not support bundled resources yet.)
               "#if os(WASI)",
               try embeddedSource(for: resource, named: name, accessControl: accessControl),
               "#else",
@@ -384,7 +384,7 @@
 
         let data = try Data(from: resource.origin)
 
-        // #workaround(Swift 5.6.1, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem).)
+        // #workaround(Swift 5.7, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem). Not worth removing until SwiftFormat can handle long literals quickly.)
         let problematicLength: Int = 2 ↑ 15
         var unprocessed: Data.SubSequence = data[...]
         var sections: [Data.SubSequence] = []

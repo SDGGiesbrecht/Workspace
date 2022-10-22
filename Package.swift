@@ -479,8 +479,9 @@ let package = Package(
 
     /// Workspace.
     .executable(name: "workspace", targets: ["WorkspaceTool"]),
+    // #warning("Temoprarily disabled.")
     /// Arbeitsbereich.
-    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
+    //.executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
   ],
   dependencies: [
     .package(
@@ -492,8 +493,10 @@ let package = Package(
       from: Version(3, 0, 2)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(11, 1, 0)
+      // #warning(Path dependency.)
+      path: "../SDGSwift"
+      /*url: "https://github.com/SDGGiesbrecht/SDGSwift",
+      from: Version(11, 1, 0)*/
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

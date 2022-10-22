@@ -27,7 +27,7 @@
 
   import SDGSwift
   import SDGXcode
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
   import SDGHTML
   import SDGCSS
 

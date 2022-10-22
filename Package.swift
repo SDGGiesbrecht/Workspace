@@ -544,6 +544,7 @@ let package = Package(
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",

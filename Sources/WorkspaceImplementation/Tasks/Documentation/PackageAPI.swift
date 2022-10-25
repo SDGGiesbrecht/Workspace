@@ -36,7 +36,9 @@
       for module in modules {
         extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
         = libraries.first(where: { library in
-          library.modules.contains(where: { $0 == module.names.title })
+          return library.modules.contains(where: { moduleName in
+            return moduleName == module.names.title
+          })
         })
         for element in module.children {
           element.homeModule = Weak(module)

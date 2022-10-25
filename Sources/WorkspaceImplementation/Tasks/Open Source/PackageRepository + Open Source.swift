@@ -62,13 +62,11 @@
         let documentation = documentation(packageName: String(packageName))
         .resolved(localizations: allLocalizations).documentation[localization]
       {
-
-        if let description = documentation.descriptionSection {
-          fromDocumentation.append(contentsOf: description.text.scalars)
-        }
-        for paragraph in documentation.discussionEntries {
-          fromDocumentation.append(contentsOf: paragraph.text.scalars)
-        }
+        fromDocumentation.append(
+          contentsOf: documentation.lines.lazy
+            .map({ StrictString($0.text) })
+            .joined(separator: "\n")
+        )
       }
       readMe.replaceMatches(for: "#packageDocumentation".scalars.literal(), with: fromDocumentation)
 

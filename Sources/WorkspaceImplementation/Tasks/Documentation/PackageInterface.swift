@@ -23,9 +23,7 @@
 
   import SDGCommandLine
 
-  import SwiftSyntax
-  import SwiftSyntaxParser
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
   import SDGHTML
 
   import WorkspaceLocalizations

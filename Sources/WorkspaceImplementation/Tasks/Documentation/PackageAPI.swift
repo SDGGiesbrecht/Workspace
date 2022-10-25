@@ -18,7 +18,7 @@
   import SDGControlFlow
   import SDGLogic
 
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
 
   extension PackageAPI {
 

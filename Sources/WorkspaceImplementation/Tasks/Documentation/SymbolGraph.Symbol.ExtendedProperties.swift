@@ -12,5 +12,14 @@ extension SymbolGraph.Symbol {
     internal var skippedLocalizations: Set<LocalizationIdentifier> = []
     internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
     internal var homeProduct: LibraryAPI?
+    internal var homeModule: ModuleAPI?
+
+    internal var packageTypes: [SymbolGraph.Symbol] = []
+    internal var packageExtensions: [String] = []
+    internal var packageProtocols: [SymbolGraph.Symbol] = []
+    internal var packageFunctions: [SymbolGraph.Symbol] = []
+    internal var packageGlobalVariables: [SymbolGraph.Symbol] = []
+    internal var packageOperators: [Operator] = []
+    internal var packagePrecedenceGroups: [PrecedenceGroup] = []
   }
 }

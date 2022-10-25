@@ -27,7 +27,7 @@
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
     ) {
       var types: [SymbolGraph.Symbol] = []
-      var unprocessedExtensions: [SymbolGraph.Symbol] = []
+      var unprocessedExtensions: Set<String> = []
       var protocols: [SymbolGraph.Symbol] = []
       var functions: [SymbolGraph.Symbol] = []
       var globalVariables: [SymbolGraph.Symbol] = []
@@ -40,127 +40,57 @@
             return moduleName == module.names.title
           })
         })
-        for element in module.children {
-          element.homeModule = Weak(module)
 
-          switch element {
-          case .package,  // @exempt(from: tests)
-            .library,
-            .module,
-            .case,
-            .initializer,
-            .subscript,
-            .conformance:
-            break  // @exempt(from: tests) Should never occur.
-          case .type(let type):
-            types.append(type)
-          case .protocol(let `protocol`):
-            protocols.append(`protocol`)
-          case .extension(let `extension`):
-            unprocessedExtensions.append(`extension`)
-          case .function(let function):
-            functions.append(function)
-          case .variable(let globalVariable):
-            globalVariables.append(globalVariable)
-          case .operator(let `operator`):
-            operators.append(`operator`)
-          case .precedence(let precedence):
-            precedenceGroups.append(precedence)
+        func handle<Child>(child: Child) where Child: SymbolLike {
+          extensionStorage[child.extendedPropertiesIndex, default: .default].homeModule = module
+        }
+        for graph in module.symbolGraphs {
+          for symbol in graph.symbols.values {
+            handle(child: symbol)
+            switch symbol.kind.identifier {
+            case .associatedtype, .deinit, .case, .`init`, .ivar, .macro, .method, .property, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .module, .unknown:
+              break
+            case .class, .enum, .struct, .typealias:
+              types.append(symbol)
+            case .func, .operator:
+              functions.append(symbol)
+            case .protocol:
+              protocols.append(symbol)
+            case .var:
+              globalVariables.append(symbol)
+            }
+          }
+          for relationship in graph.relationships
+          where relationship.kind == .memberOf {
+            unprocessedExtensions.insert(relationship.target)
           }
         }
-      }
-
-      var extensions: [ExtensionAPI] = []
-      for `extension` in unprocessedExtensions {
-        if ¬types.contains(where: { `extension`.isExtension(of: $0) }),
-          ¬protocols.contains(where: { `extension`.isExtension(of: $0) }),
-          ¬extensions.contains(where: { `extension`.extendsSameType(as: $0) })
-        {
-          extensions.append(`extension`)
+        for `operator` in module.operators {
+          handle(child: `operator`)
+          operators.append(`operator`)
+        }
+        for precedenceGroup in module.precedenceGroups {
+          handle(child: precedenceGroup)
+          precedenceGroups.append(precedenceGroup)
         }
       }
 
-      self.types = types.sorted()
-      self.uniqueExtensions = extensions.sorted()
-      self.protocols = protocols.sorted()
-      self.functions = functions.sorted()
-      self.globalVariables = globalVariables.sorted()
-      self.operators = operators.sorted()
-      self.precedenceGroups = precedenceGroups.sorted()
-    }
+      var extensions: Set<String> = unprocessedExtensions
+      for type in [types, protocols].lazy.joined() {
+        extensions.remove(type.identifier.precise)
+      }
 
-    internal var types: [TypeAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.types]
-          as? [TypeAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.types] = newValue
-      }
-    }
-
-    internal var uniqueExtensions: [ExtensionAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.extensions]
-          as? [ExtensionAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.extensions] = newValue
-      }
-    }
-
-    internal var allExtensions: AnyBidirectionalCollection<ExtensionAPI> {
-      return AnyBidirectionalCollection(modules.map({ $0.extensions }).joined())
-    }
-
-    internal var protocols: [ProtocolAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.protocols]
-          as? [ProtocolAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.protocols] = newValue
-      }
-    }
-
-    internal var functions: [FunctionAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.functions]
-          as? [FunctionAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.functions] = newValue
-      }
-    }
-
-    internal var globalVariables: [VariableAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.globalVariables] as? [VariableAPI]
-          ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.globalVariables] = newValue
-      }
-    }
-
-    internal var operators: [OperatorAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.operators]
-          as? [OperatorAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.operators] = newValue
-      }
-    }
-
-    internal var precedenceGroups: [PrecedenceAPI] {
-      get {
-        return APIElement.package(self).extendedProperties[.precedenceGroups]
-          as? [PrecedenceAPI] ?? []  // @exempt(from: tests) Should never be nil.
-      }
-      set {
-        APIElement.package(self).extendedProperties[.precedenceGroups] = newValue
-      }
+      {
+        var storage = extensionStorage[extendedPropertiesIndex, default: .default]
+        storage.packageTypes = types.sorted(by: { $0.names.title < $1.names.title })
+        storage.packageExtensions = extensions.sorted()
+        storage.packageProtocols = protocols.sorted(by: { $0.names.title < $1.names.title })
+        storage.packageFunctions = functions.sorted(by: { $0.names.title < $1.names.title })
+        storage.packageGlobalVariables = globalVariables.sorted(by: { $0.names.title < $1.names.title })
+        storage.packageOperators = operators.sorted()
+        storage.packagePrecedenceGroups = precedenceGroups.sorted()
+        extensionStorage[extendedPropertiesIndex] = storage
+      }()
     }
   }
 #endif

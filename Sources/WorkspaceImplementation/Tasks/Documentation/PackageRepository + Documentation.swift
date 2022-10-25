@@ -312,11 +312,9 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      let api = try PackageAPI(
-        package: cachedPackageGraph(),
-        ignoredDependencies: configuration.documentation.api.ignoredDependencies,
+      let api = try self.api(
         reportProgress: { output.print($0) }
-      )
+      ).get()
       let cli = try loadCommandLineInterface(
         output: output,
         customReplacements: customReplacements

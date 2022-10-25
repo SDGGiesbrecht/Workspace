@@ -24,6 +24,7 @@
   import SDGCommandLine
 
   import SDGSwiftDocumentation
+  import SymbolKit
   import SDGHTML
 
   import WorkspaceLocalizations
@@ -248,6 +249,7 @@
     private static func generateIndex(
       for package: PackageAPI,
       tools: PackageCLI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       hasInstallation: Bool,
       hasImporting: Bool,
       hasRelatedProjects: Bool,
@@ -265,7 +267,7 @@
               "a",
               attributes: [
                 "href":
-                  "[*site root*]\(HTML.percentEncodeURLPath(APIElement.package(package).relativePagePath[localization]!))"
+                  "[*site root*]\(HTML.percentEncodeURLPath(package.relativePagePath(extensionStorage)[localization]!))"
               ],
               contents: HTML.escapeTextForCharacterData(
                 StrictString(package.name.source())

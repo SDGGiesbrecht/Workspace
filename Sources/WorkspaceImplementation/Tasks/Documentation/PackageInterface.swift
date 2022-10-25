@@ -270,7 +270,7 @@
                   "[*site root*]\(HTML.percentEncodeURLPath(package.relativePagePath(extensionStorage)[localization]!))"
               ],
               contents: HTML.escapeTextForCharacterData(
-                StrictString(package.name.source())
+                StrictString(package.names.resolvedForNavigation)
               ),
               inline: false
             ).normalizedSource()

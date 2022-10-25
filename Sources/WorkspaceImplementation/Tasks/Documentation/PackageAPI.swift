@@ -19,17 +19,18 @@
   import SDGLogic
 
   import SDGSwiftDocumentation
+  import SymbolKit
 
   extension PackageAPI {
 
     internal func computeMergedAPI() {
-      var types: [TypeAPI] = []
-      var unprocessedExtensions: [ExtensionAPI] = []
-      var protocols: [ProtocolAPI] = []
-      var functions: [FunctionAPI] = []
-      var globalVariables: [VariableAPI] = []
-      var operators: [OperatorAPI] = []
-      var precedenceGroups: [PrecedenceAPI] = []
+      var types: [SymbolGraph.Symbol] = []
+      var unprocessedExtensions: [SymbolGraph.Symbol] = []
+      var protocols: [SymbolGraph.Symbol] = []
+      var functions: [SymbolGraph.Symbol] = []
+      var globalVariables: [SymbolGraph.Symbol] = []
+      var operators: [Operator] = []
+      var precedenceGroups: [PrecedenceGroup] = []
       for module in modules {
         APIElement.module(module).homeProduct = Weak(
           libraries.first(where: { $0.modules.contains(module) })

@@ -58,11 +58,10 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      if let documentation = try? PackageAPI.documentation(
-        for: package().get()
-      ).resolved(localizations: allLocalizations).documentation[
-        localization
-      ] {
+      if let packageName = try? packageName(),
+        let documentation = documentation(packageName: String(packageName))
+        .resolved(localizations: allLocalizations).documentation[localization]
+      {
 
         if let description = documentation.descriptionSection {
           fromDocumentation.append(contentsOf: description.text.scalars)

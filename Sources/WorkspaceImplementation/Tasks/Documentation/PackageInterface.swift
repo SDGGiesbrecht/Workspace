@@ -269,7 +269,7 @@
               "a",
               attributes: [
                 "href":
-                  "[*site root*]\(HTML.percentEncodeURLPath(package.relativePagePath(extensionStorage)[localization]!))"
+                  "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[package.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))"
               ],
               contents: HTML.escapeTextForCharacterData(
                 StrictString(package.names.resolvedForNavigation)
@@ -309,7 +309,7 @@
       }
 
       if ¬package.libraries.lazy
-        .filter({ localization ∉ $0.skippedLocalizations(extensionStorage) }).isEmpty
+        .filter({ localization ∉ extensionStorage[$0.extendedPropertiesIndex, default: .default].skippedLocalizations }).isEmpty
       {
         result.append(
           generateIndexSection(
@@ -321,7 +321,7 @@
         )
       }
       if ¬package.modules.lazy.filter({
-        localization ∉ $0.skippedLocalizations(extensionStorage)
+        localization ∉ extensionStorage[$0.extendedPropertiesIndex, default: .default].skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(

@@ -23,7 +23,9 @@
 
   extension PackageAPI {
 
-    internal func computeMergedAPI() {
+    internal func computeMergedAPI(
+      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
+    ) {
       var types: [SymbolGraph.Symbol] = []
       var unprocessedExtensions: [SymbolGraph.Symbol] = []
       var protocols: [SymbolGraph.Symbol] = []
@@ -32,9 +34,10 @@
       var operators: [Operator] = []
       var precedenceGroups: [PrecedenceGroup] = []
       for module in modules {
-        APIElement.module(module).homeProduct = Weak(
-          libraries.first(where: { $0.modules.contains(module) })
-        )
+        extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
+        = libraries.first(where: { library in
+          library.modules.contains(where: { $0 == module.names.title })
+        })
         for element in module.children {
           element.homeModule = Weak(module)
 

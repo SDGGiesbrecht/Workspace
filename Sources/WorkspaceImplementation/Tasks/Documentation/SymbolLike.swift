@@ -7,7 +7,7 @@ import WorkspaceConfiguration
 
 extension SymbolLike {
 
-  private var identifier: String {
+  internal var extendedPropertiesIndex: String {
     switch self {
     case let symbol as SymbolGraph.Symbol:
       return symbol.identifier.precise
@@ -24,23 +24,5 @@ extension SymbolLike {
     default:
       unreachable()
     }
-  }
-
-  private func extendedProperties(
-    _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
-  ) -> SymbolGraph.Symbol.ExtendedProperties {
-    return storage[identifier] ?? SymbolGraph.Symbol.ExtendedProperties()
-  }
-
-  internal func skippedLocalizations(
-    _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
-  ) -> Set<LocalizationIdentifier> {
-    return extendedProperties(storage).skippedLocalizations
-  }
-
-  internal func relativePagePath(
-    _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
-  ) -> [LocalizationIdentifier: StrictString] {
-    return extendedProperties(storage).relativePagePath
   }
 }

@@ -15,7 +15,7 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration

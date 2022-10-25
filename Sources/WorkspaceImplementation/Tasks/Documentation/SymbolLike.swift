@@ -32,8 +32,14 @@ extension SymbolLike {
     return storage[identifier] ?? SymbolGraph.Symbol.ExtendedProperties()
   }
 
+  internal func skippedLocalizations(
+    _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) -> Set<LocalizationIdentifier> {
+    return extendedProperties(storage).skippedLocalizations
+  }
+
   internal func relativePagePath(
-  _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    _ storage: [String: SymbolGraph.Symbol.ExtendedProperties]
   ) -> [LocalizationIdentifier: StrictString] {
     return extendedProperties(storage).relativePagePath
   }

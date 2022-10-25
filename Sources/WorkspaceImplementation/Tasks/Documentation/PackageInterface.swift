@@ -309,7 +309,7 @@
       }
 
       if ¬package.libraries.lazy
-        .filter({ localization ∉ APIElement.library($0).skippedLocalizations }).isEmpty
+        .filter({ localization ∉ $0.skippedLocalizations(extensionStorage) }).isEmpty
       {
         result.append(
           generateIndexSection(

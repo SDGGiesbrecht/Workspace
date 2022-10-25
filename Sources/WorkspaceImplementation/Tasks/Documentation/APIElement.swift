@@ -426,10 +426,12 @@
 
     // MARK: - Localization
 
+    #warning("Dead?")
+    @available(*, deprecated)
     internal func determine(
       localizations: [LocalizationIdentifier],
       customReplacements: [(StrictString, StrictString)]
-    ) {
+    ) {/*
 
       let parsed = documentation.resolved(localizations: localizations)
       localizedDocumentation = parsed.documentation
@@ -466,7 +468,7 @@
             )
           }
         }
-      }
+      }*/
     }
 
     private func addLocalizations(

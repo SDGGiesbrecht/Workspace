@@ -169,9 +169,10 @@
               guard #available(macOS 10.15, *) else {
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
-              if let packageDocumentation = try? PackageAPI.documentation(
-                for: package.package().get()
-              ),
+              if let packageName = try? package.packageName(),
+                let packageDocumentation = try? package.documentation(
+                  packageName: String(packageName)
+                ),
                 let documentation = packageDocumentation.resolved(
                   localizations: localizations
                 ).documentation[localization],

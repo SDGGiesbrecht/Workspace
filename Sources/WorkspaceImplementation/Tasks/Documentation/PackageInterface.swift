@@ -321,13 +321,13 @@
         )
       }
       if ¬package.modules.lazy.filter({
-        localization ∉ APIElement.module($0).skippedLocalizations
+        localization ∉ $0.skippedLocalizations(extensionStorage)
       }).isEmpty {
         result.append(
           generateIndexSection(
             named: SymbolPage.modulesHeader(localization: localization),
             identifier: .modules,
-            apiEntries: package.modules.lazy.map({ APIElement.module($0) }),
+            apiEntries: package.modules,
             localization: localization
           )
         )

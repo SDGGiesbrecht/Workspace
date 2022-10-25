@@ -315,7 +315,7 @@
           generateIndexSection(
             named: SymbolPage.librariesHeader(localization: localization),
             identifier: .libraries,
-            apiEntries: package.libraries.lazy.map({ APIElement.library($0) }),
+            apiEntries: package.libraries,
             localization: localization
           )
         )
@@ -439,7 +439,7 @@
     private static func generateIndexSection(
       named name: StrictString,
       identifier: IndexSectionIdentifier,
-      apiEntries: [APIElement],
+      apiEntries: [SymbolLike],
       localization: LocalizationIdentifier
     ) -> StrictString {
       var entries: [StrictString] = []

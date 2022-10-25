@@ -17,6 +17,8 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGSwiftDocumentation
 
+  import SymbolKit
+
   import WorkspaceLocalizations
   import WorkspaceConfiguration
 
@@ -25,17 +27,17 @@
     internal func resolved(
       localizations: [LocalizationIdentifier]
     ) -> (
-      documentation: [LocalizationIdentifier: DocumentationSyntax],
+      documentation: [LocalizationIdentifier: SymbolGraph.LineList],
       crossReference: StrictString?,
       skipped: Set<LocalizationIdentifier>
     ) {
-      var result: [LocalizationIdentifier: DocumentationSyntax] = [:]
+      var result: [LocalizationIdentifier: SymbolGraph.LineList] = [:]
       var parent: StrictString?
       var skipped: Set<LocalizationIdentifier> = []
 
       for documentation in self {
-        for comment in documentation.developerComments {
-          let content = String(StrictString(comment.content.text)).scalars
+        for comment in documentation.developerComments.lines {
+          let content = String(StrictString(comment.text)).scalars
           for match in content.matches(
             for: InterfaceLocalization.localizationDeclaration
           ) {

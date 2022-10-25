@@ -507,6 +507,10 @@ let package = Package(
       exact: Version(0, 50700, 0)
     ),
     .package(
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
+      exact: Version(0, 50700, 0)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
       // Must also be updated in the documentation link in Sources/WorkspaceImplementation/Interface/Normalize.swift.
       exact: Version(0, 0, 507000)
@@ -561,6 +565,10 @@ let package = Package(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SymbolKit",
+          package: "swift\u{2D}docc\u{2D}symbolkit"
         ),
         .product(
           name: "SwiftFormatConfiguration",

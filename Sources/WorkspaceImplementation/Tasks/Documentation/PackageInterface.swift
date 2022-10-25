@@ -210,6 +210,7 @@
     private static func generateIndices(
       for package: PackageAPI,
       tools: PackageCLI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       installation: [LocalizationIdentifier: StrictString],
       importing: [LocalizationIdentifier: StrictString],
       relatedProjects: [LocalizationIdentifier: StrictString],
@@ -222,6 +223,7 @@
           result[localization] = generateIndex(
             for: package,
             tools: tools,
+            extensionStorage: extensionStorage,
             hasInstallation: installation[localization] ≠ nil,
             hasImporting: importing[localization] ≠ nil,
             hasRelatedProjects: relatedProjects[localization] ≠ nil,

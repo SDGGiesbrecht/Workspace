@@ -379,14 +379,16 @@
           )
         )
       }
-      if ¬package.functions.lazy.filter({
-        localization ∉ APIElement.function($0).skippedLocalizations
+      if ¬packageProperties.packageFunctions.lazy.filter({ function in
+        return localization
+        ∉ extensionStorage[function.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
             named: SymbolPage.functionsHeader(localization: localization),
             identifier: .functions,
-            apiEntries: package.functions.lazy.map({ APIElement.function($0) }),
+            apiEntries: packageProperties.packageFunctions,
             localization: localization
           )
         )

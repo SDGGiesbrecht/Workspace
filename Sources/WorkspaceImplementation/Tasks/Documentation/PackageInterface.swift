@@ -1048,17 +1048,14 @@
               coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: location)
 
-            switch symbol {
-            case .package, .library, .module, .case, .initializer, .variable, .subscript,
-              .function, .operator, .precedence, .conformance:
+            switch symbol.indexSectionIdentifier {
+            case .package, .tools, .libraries, .modules, .functions, .variables, .operators, .precedenceGroups:
               break
-            case .extension:
-              break  // Iterated separately below.
-            case .type, .protocol:
+            case .types, .extensions, .protocols:
               try outputNestedSymbols(
                 of: symbol,
                 namespace: [symbol],
-                sectionIdentifier: section,
+                sectionIdentifier: symbol.indexSectionIdentifier,
                 to: outputDirectory,
                 localization: localization,
                 customReplacements: customReplacements,
@@ -1068,21 +1065,6 @@
               )
             }
           }
-        }
-
-        for `extension` in extensionStorage[self.api.extendedPropertiesIndex, default: .default]
-          .packageExtensions {
-          try outputNestedSymbols(
-            of: `extension`,
-            namespace: [`extension`],
-            sectionIdentifier: .extensions,
-            to: outputDirectory,
-            localization: localization,
-            customReplacements: customReplacements,
-            status: status,
-            output: output,
-            coverageCheckOnly: coverageCheckOnly
-          )
         }
       }
     }

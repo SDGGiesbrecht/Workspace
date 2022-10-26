@@ -360,7 +360,7 @@
           generateIndexSection(
             named: SymbolPage.extensionsHeader(localization: localization),
             identifier: .extensions,
-            apiEntries: package.uniqueExtensions.lazy.map({ APIElement.extension($0) }),
+            apiEntries: packageProperties.packageExtensions,
             localization: localization
           )
         )

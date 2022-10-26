@@ -83,7 +83,7 @@
       }
       let extensions = extensionIdendifiers.compactMap { identifier in
         if let symbol = symbolLookup[identifier] {
-          return Extension(names: symbol.names)
+          return Extension(names: symbol.names, identifier: symbol.identifier)
         } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
           return Extension(
             names: SymbolGraph.Symbol.Names(
@@ -91,6 +91,10 @@
               navigator: nil,
               subHeading: nil,
               prose: nil
+            ),
+            identifier: SymbolGraph.Symbol.Identifier(
+              precise: "SDG.extension.\(fallback)",
+              interfaceLanguage: "swift"
             )
           )
         } else {

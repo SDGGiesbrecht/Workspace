@@ -58,6 +58,23 @@ extension SymbolLike {
     }
   }
 
+  // MARK: - Relationships
+
+  internal func children(package: PackageAPI) -> [SymbolGraph.Symbol] {
+    switch self {
+    case let symbol as SymbolGraph.Symbol:
+      
+    case is PackageAPI, is LibraryAPI, is ModuleAPI:
+      unreachable()
+    case let `extension` as Extension:
+      
+    case is Operator, is PrecedenceGroup:
+      return []
+    default:
+      unreachable()
+    }
+  }
+
   // MARK: - Localization
 
   internal func determine(

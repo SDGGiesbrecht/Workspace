@@ -7,12 +7,25 @@ import WorkspaceConfiguration
 extension SymbolGraph.Symbol {
 
   internal struct ExtendedProperties {
+
+    // MARK: - Static Properties
+
     internal static let `default` = ExtendedProperties()
-    
+
+    // MARK: - General Properties
+
     internal var skippedLocalizations: Set<LocalizationIdentifier> = []
+    internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
+    internal func exists(in localization: LocalizationIdentifier) -> Bool {
+      return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
+    }
+
     internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
+
     internal var homeProduct: LibraryAPI?
     internal var homeModule: ModuleAPI?
+
+    // MARK: - PackageAPI Only
 
     internal var packageTypes: [SymbolGraph.Symbol] = []
     internal var packageExtensions: [Extension] = []

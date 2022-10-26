@@ -320,7 +320,8 @@
             named: SymbolPage.librariesHeader(localization: localization),
             identifier: .libraries,
             apiEntries: package.libraries,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -334,7 +335,8 @@
             named: SymbolPage.modulesHeader(localization: localization),
             identifier: .modules,
             apiEntries: package.modules,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -351,7 +353,8 @@
             named: SymbolPage.typesHeader(localization: localization),
             identifier: .types,
             apiEntries: packageProperties.packageTypes,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -361,7 +364,8 @@
             named: SymbolPage.extensionsHeader(localization: localization),
             identifier: .extensions,
             apiEntries: packageProperties.packageExtensions,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -375,7 +379,8 @@
             named: SymbolPage.protocolsHeader(localization: localization),
             identifier: .protocols,
             apiEntries: packageProperties.packageProtocols,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -389,7 +394,8 @@
             named: SymbolPage.functionsHeader(localization: localization),
             identifier: .functions,
             apiEntries: packageProperties.packageFunctions,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -405,7 +411,8 @@
             named: SymbolPage.variablesHeader(localization: localization),
             identifier: .variables,
             apiEntries: packageProperties.packageGlobalVariables,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -421,7 +428,8 @@
             named: SymbolPage.operatorsHeader(localization: localization),
             identifier: .operators,
             apiEntries: packageProperties.packageOperators,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -437,7 +445,8 @@
             named: SymbolPage.precedenceGroupsHeader(localization: localization),
             identifier: .precedenceGroups,
             apiEntries: packageProperties.packagePrecedenceGroups,
-            localization: localization
+            localization: localization,
+            extensionStorage: extensionStorage
           )
         )
       }
@@ -465,10 +474,14 @@
       named name: StrictString,
       identifier: IndexSectionIdentifier,
       apiEntries: [SymbolLike],
-      localization: LocalizationIdentifier
+      localization: LocalizationIdentifier,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
       var entries: [StrictString] = []
-      for entry in apiEntries.lazy.filter({ $0.exists(in: localization) }) {
+      for entry in apiEntries.lazy.filter({ entry in
+        return extensionStorage[entry.extendedPropertiesIndex, default: .default]
+          .exists(in: localization)
+      }) {
         entries.append(
           ElementSyntax(
             "a",

@@ -63,11 +63,41 @@ extension SymbolLike {
   internal func children(package: PackageAPI) -> [SymbolGraph.Symbol] {
     switch self {
     case let symbol as SymbolGraph.Symbol:
-      
+      var result: [SymbolGraph.Symbol] = []
+      for graph in package.symbolGraphs() {
+        for relationship in graph.relationships {
+          switch relationship.kind {
+          case .memberOf, .requirementOf, .optionalRequirementOf:
+            if relationship.target == symbol.identifier.precise,
+              let child = graph.symbols[relationship.source],
+              ¬result.contains(where: { $0.identifier.precise == child.identifier.precise }) {
+              result.append(child)
+            }
+          default:
+            break
+          }
+        }
+      }
+      return result
     case is PackageAPI, is LibraryAPI, is ModuleAPI:
       unreachable()
     case let `extension` as Extension:
-      
+      var result: [SymbolGraph.Symbol] = []
+      for graph in package.symbolGraphs() {
+        for relationship in graph.relationships {
+          switch relationship.kind {
+          case .memberOf, .requirementOf, .optionalRequirementOf:
+            if relationship.target == `extension`.identifier.precise,
+              let child = graph.symbols[relationship.source],
+              ¬result.contains(where: { $0.identifier.precise == child.identifier.precise }) {
+              result.append(child)
+            }
+          default:
+            break
+          }
+        }
+      }
+      return result
     case is Operator, is PrecedenceGroup:
       return []
     default:

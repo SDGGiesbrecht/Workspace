@@ -90,6 +90,14 @@ extension SymbolLike {
 
   // MARK: - Paths
 
+  internal func pageURL(
+    in outputDirectory: URL,
+    for localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)]
+  ) -> URL {
+    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+  }
+
   internal func determinePaths(
     for localization: LocalizationIdentifier,
     customReplacements: [(StrictString, StrictString)],

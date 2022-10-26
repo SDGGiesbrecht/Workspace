@@ -867,7 +867,7 @@
             sectionIdentifier: .package,
             platforms: platforms[localization]!,
             symbol: api,
-            package: packageAPI,
+            package: api,
             tools: cli,
             copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,

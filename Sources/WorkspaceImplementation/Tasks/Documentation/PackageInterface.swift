@@ -1119,9 +1119,9 @@
       }
     }
 
-    private func outputNestedSymbols(
-      of parent: APIElement,
-      namespace: [APIElement],
+    private func outputNestedSymbols<Parent>(
+      of parent: Parent,
+      namespace: [SymbolLike],
       sectionIdentifier: IndexSectionIdentifier,
       to outputDirectory: URL,
       localization: LocalizationIdentifier,
@@ -1129,7 +1129,8 @@
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
-    ) throws {
+    ) throws
+    where Parent: SymbolLike {
 
       for symbol in [parent.children, parent.localizedChildren].joined()
       where symbol.receivesPage ∧ symbol.exists(in: localization) {

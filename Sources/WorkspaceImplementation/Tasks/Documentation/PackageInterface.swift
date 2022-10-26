@@ -1082,7 +1082,7 @@
     ) throws
     where Parent: SymbolLike {
 
-      for symbol in [parent.children(package: self.api), parent.localizedChildren].joined()
+      for symbol in [parent.children(package: self.api), extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren].joined()
       where symbol.receivesPage ∧ symbol.exists(in: localization) {
         try purgingAutoreleased {
           let location = symbol.pageURL(

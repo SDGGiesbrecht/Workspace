@@ -16,6 +16,7 @@ extension SymbolGraph.Symbol {
 
     internal var skippedLocalizations: Set<LocalizationIdentifier> = []
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
+    internal var localizedChildren: [SymbolGraph.Symbol] = []
     internal func exists(in localization: LocalizationIdentifier) -> Bool {
       return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
     }

@@ -393,14 +393,18 @@
           )
         )
       }
-      if ¬package.globalVariables
-        .lazy.filter({ localization ∉ APIElement.variable($0).skippedLocalizations }).isEmpty
+      if ¬packageProperties.packageGlobalVariables
+        .lazy.filter({ variable in
+          return localization
+          ∉ extensionStorage[variable.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
+        }).isEmpty
       {
         result.append(
           generateIndexSection(
             named: SymbolPage.variablesHeader(localization: localization),
             identifier: .variables,
-            apiEntries: package.globalVariables.lazy.map({ APIElement.variable($0) }),
+            apiEntries: packageProperties.packageGlobalVariables,
             localization: localization
           )
         )

@@ -71,6 +71,23 @@ extension SymbolLike {
     }
   }
 
+  internal func determineLocalizedPaths(localizations: [LocalizationIdentifier]) {
+    var groups: [StrictString: [APIElement]] = [:]
+    for child in children {
+      child.determineLocalizedPaths(localizations: localizations)
+      if let crossReference = child.crossReference {
+        groups[crossReference, default: []].append(child)
+      }
+    }
+    for (_, group) in groups {
+      for indexA in group.indices {
+        for indexB in group.indices where indexA ≠ indexB {
+          group[indexA].addLocalizedPaths(from: group[indexB])
+        }
+      }
+    }
+  }
+
   // MARK: - Paths
 
   internal func determinePaths(

@@ -697,7 +697,7 @@
           customReplacements: customReplacements
         )
       }
-      APIElement.package(api).determineLocalizedPaths(localizations: localizations)
+      api.determineLocalizedPaths(localizations: localizations)
       self.symbolLinks = paths.mapValues { localization in
         localization.mapValues { link in
           return HTML.percentEncodeURLPath(link)

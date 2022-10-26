@@ -18,7 +18,7 @@ extension SymbolLike {
     case let module as ModuleAPI:
       return "SDG.target.\(module.names.title)"
     case let `extension` as Extension:
-      return "SDG.extension.\(`extension`.identifier.precise)"
+      return `extension`.identifier.precise
     case let `operator` as Operator:
       return "SDG.operator.\(`operator`.names.title)"
     case let precedenceGroup as PrecedenceGroup:

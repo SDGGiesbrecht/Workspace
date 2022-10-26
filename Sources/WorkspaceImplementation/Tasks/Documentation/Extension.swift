@@ -5,9 +5,19 @@ import SymbolKit
 
 struct Extension: SymbolLike {
 
-  init(names: SymbolGraph.Symbol.Names) {
+  // MARK: - Initialization
+
+  init(
+    names: SymbolGraph.Symbol.Names,
+    identifier: SymbolGraph.Symbol.Identifier
+  ) {
     self.names = names
+    self.identifier = identifier
   }
+
+  // MARK: - Properties
+
+  var identifier: SymbolGraph.Symbol.Identifier
 
   // MARK: - SymbolLike
 

@@ -20,8 +20,7 @@
 
   import SDGCommandLine
 
-  import SwiftSyntax
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
   import SDGHTML
 
   import WorkspaceLocalizations
@@ -34,16 +33,16 @@
     /// Begins creating a symbol page.
     ///
     /// If `coverageCheckOnly` is `true`, initialization will be aborted and `nil` returned once validation is complete. No other circumstances will cause initialization to fail.
-    internal convenience init?(
+    internal convenience init?<SymbolType>(
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      navigationPath: [APIElement],
+      navigationPath: [SymbolLike],
       packageImport: StrictString?,
       index: StrictString,
       sectionIdentifier: IndexSectionIdentifier,
       platforms: StrictString,
-      symbol: APIElement,
+      symbol: SymbolType,
       package: PackageAPI,
       tools: PackageCLI? = nil,
       copyright: StrictString,
@@ -52,7 +51,7 @@
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
-    ) {
+    ) where SymbolType: SymbolLike {
 
       if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
         switch symbol {

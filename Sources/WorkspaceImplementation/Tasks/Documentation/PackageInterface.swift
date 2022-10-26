@@ -487,9 +487,9 @@
             "a",
             attributes: [
               "href":
-                "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
+                "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[entry.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))"
             ],
-            contents: HTML.escapeTextForCharacterData(StrictString(entry.name.source())),
+            contents: HTML.escapeTextForCharacterData(StrictString(entry.names.resolvedForNavigation)),
             inline: false
           ).normalizedSource()
         )

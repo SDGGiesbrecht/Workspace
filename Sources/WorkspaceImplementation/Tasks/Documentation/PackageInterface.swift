@@ -686,13 +686,13 @@
 
       self.packageIdentifiers = api.identifierList()
 
-      APIElement.package(api).determine(
+      api.determine(
         localizations: localizations,
         customReplacements: customReplacements
       )
       var paths: [LocalizationIdentifier: [String: String]] = [:]
       for localization in localizations {
-        paths[localization] = APIElement.package(api).determinePaths(
+        paths[localization] = api.determinePaths(
           for: localization,
           customReplacements: customReplacements
         )

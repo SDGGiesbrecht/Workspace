@@ -1082,8 +1082,12 @@
     ) throws
     where Parent: SymbolLike {
 
-      for symbol in [parent.children(package: self.api), extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren].joined()
-      where symbol.receivesPage ∧ symbol.exists(in: localization) {
+      for symbol in [
+        parent.children(package: self.api),
+        extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren
+      ].joined()
+      where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+        .exists(in: localization) {
         try purgingAutoreleased {
           let location = symbol.pageURL(
             in: outputDirectory,
@@ -1096,8 +1100,8 @@
             modifiedRoot += "../../".scalars
           }
 
-          var navigation: [APIElement] = [api]
-          navigation += namespace as [APIElement]
+          var navigation: [SymbolLike] = [api]
+          navigation += namespace as [SymbolLike]
           navigation += [symbol]
 
           try SymbolPage(
@@ -1110,7 +1114,7 @@
             sectionIdentifier: sectionIdentifier,
             platforms: platforms[localization]!,
             symbol: symbol,
-            package: packageAPI,
+            package: self.api,
             copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
@@ -1119,11 +1123,10 @@
             coverageCheckOnly: coverageCheckOnly
           )?.contents.save(to: location)
 
-          switch symbol {
-          case .package, .library, .module, .case, .initializer, .variable, .subscript,
-            .function, .operator, .precedence, .conformance:
+          switch symbol.indexSectionIdentifier {
+          case .package, .tools, .libraries, .modules, .functions, .variables, .operators, .precedenceGroups:
             break
-          case .type, .protocol, .extension:
+          case .types, .extensions, .protocols:
             try outputNestedSymbols(
               of: symbol,
               namespace: namespace + [symbol],

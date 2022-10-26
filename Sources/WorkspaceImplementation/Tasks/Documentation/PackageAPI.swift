@@ -110,5 +110,32 @@
         extensionStorage[extendedPropertiesIndex] = storage
       }()
     }
+
+    internal func identifierList() -> Set<String> {
+      var result: Set<String> = []
+      for graph in symbolGraphs() {
+        for (_, symbol) in graph.symbols {
+          if let declaration = symbol.declaration {
+            for fragment in declaration.declarationFragments {
+              switch fragment.kind {
+              case .identifier, .typeIdentifier, .genericParameter, .externalParameter:
+                result.insert(fragment.spelling)
+              default:
+                break
+              }
+            }
+          }
+        }
+      }
+      for module in modules {
+        for `operator` in module.operators {
+          result.insert(`operator`.names.title)
+        }
+        for group in module.precedenceGroups {
+          result.insert(group.names.title)
+        }
+      }
+      return result
+    }
   }
 #endif

@@ -928,8 +928,7 @@
       customReplacements: [(StrictString, StrictString)],
       status: DocumentationStatus,
       output: Command.Output,
-      coverageCheckOnly: Bool,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+      coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
         for library in api.libraries

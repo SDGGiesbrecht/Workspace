@@ -707,6 +707,7 @@
       self.indices = PackageInterface.generateIndices(
         for: api,
         tools: cli,
+        extensionStorage: extensionStorage,
         installation: installation,
         importing: importing,
         relatedProjects: relatedProjects,
@@ -721,7 +722,7 @@
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
     private let api: PackageAPI
-    private let extensionStorage: []
+    private let extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]

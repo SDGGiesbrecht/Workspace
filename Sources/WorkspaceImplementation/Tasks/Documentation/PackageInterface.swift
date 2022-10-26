@@ -971,8 +971,9 @@
       coverageCheckOnly: Bool
     ) throws {
       for localization in localizations {
-        for module in api.modules.lazy.map({ APIElement.module($0) })
-        where module.exists(in: localization) {
+        for module in api.modules
+        where extensionStorage[module.extendedPropertiesIndex, default: .default]
+          .exists(in: localization) {
           try purgingAutoreleased {
             let location = module.pageURL(
               in: outputDirectory,
@@ -989,7 +990,7 @@
               sectionIdentifier: .modules,
               platforms: platforms[localization]!,
               symbol: module,
-              package: packageAPI,
+              package: self.api,
               copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,

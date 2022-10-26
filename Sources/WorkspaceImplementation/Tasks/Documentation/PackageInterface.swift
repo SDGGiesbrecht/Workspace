@@ -365,14 +365,16 @@
           )
         )
       }
-      if ¬package.protocols.lazy.filter({
-        localization ∉ APIElement.protocol($0).skippedLocalizations
+      if ¬packageProperties.packageProtocols.lazy.filter({ `protocol` in
+        return localization
+        ∉ extensionStorage[`protocol`.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
             named: SymbolPage.protocolsHeader(localization: localization),
             identifier: .protocols,
-            apiEntries: package.protocols.lazy.map({ APIElement.protocol($0) }),
+            apiEntries: packageProperties.packageProtocols,
             localization: localization
           )
         )

@@ -425,14 +425,18 @@
           )
         )
       }
-      if ¬package.precedenceGroups
-        .lazy.filter({ localization ∉ APIElement.precedence($0).skippedLocalizations }).isEmpty
+      if ¬packageProperties.packagePrecedenceGroups
+        .lazy.filter({ group in
+          localization
+          ∉ extensionStorage[group.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
+        }).isEmpty
       {
         result.append(
           generateIndexSection(
             named: SymbolPage.precedenceGroupsHeader(localization: localization),
             identifier: .precedenceGroups,
-            apiEntries: package.precedenceGroups.lazy.map({ APIElement.precedence($0) }),
+            apiEntries: packageProperties.packagePrecedenceGroups,
             localization: localization
           )
         )

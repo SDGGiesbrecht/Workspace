@@ -309,7 +309,11 @@
       }
 
       if ¬package.libraries.lazy
-        .filter({ localization ∉ extensionStorage[$0.extendedPropertiesIndex, default: .default].skippedLocalizations }).isEmpty
+        .filter({ library in
+          return localization
+          ∉ extensionStorage[library.extendedPropertiesIndex, default: .default]
+            .skippedLocalizations
+        }).isEmpty
       {
         result.append(
           generateIndexSection(
@@ -320,8 +324,10 @@
           )
         )
       }
-      if ¬package.modules.lazy.filter({
-        localization ∉ extensionStorage[$0.extendedPropertiesIndex, default: .default].skippedLocalizations
+      if ¬package.modules.lazy.filter({ module in
+        return localization
+        ∉ extensionStorage[module.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
@@ -332,14 +338,19 @@
           )
         )
       }
-      if ¬package.types.lazy.filter({ localization ∉ APIElement.type($0).skippedLocalizations })
-        .isEmpty
+      let packageProperties = extensionStorage[package.extendedPropertiesIndex, default: .default]
+      if ¬packageProperties.packageTypes.lazy.filter({ type in
+          return localization
+          ∉ extensionStorage[type.extendedPropertiesIndex, default: .default]
+            .skippedLocalizations
+          
+        }).isEmpty
       {
         result.append(
           generateIndexSection(
             named: SymbolPage.typesHeader(localization: localization),
             identifier: .types,
-            apiEntries: package.types.lazy.map({ APIElement.type($0) }),
+            apiEntries: packageProperties.packageTypes,
             localization: localization
           )
         )

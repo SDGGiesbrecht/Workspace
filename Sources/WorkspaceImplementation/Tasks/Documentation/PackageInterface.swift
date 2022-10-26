@@ -928,11 +928,13 @@
       customReplacements: [(StrictString, StrictString)],
       status: DocumentationStatus,
       output: Command.Output,
-      coverageCheckOnly: Bool
+      coverageCheckOnly: Bool,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) throws {
       for localization in localizations {
-        for library in api.libraries.lazy.map({ APIElement.library($0) })
-        where library.exists(in: localization) {
+        for library in api.libraries
+        where extensionStorage[library.extendedPropertiesIndex, default: .default]
+          .exists(in: localization) {
           try purgingAutoreleased {
             let location = library.pageURL(
               in: outputDirectory,
@@ -949,7 +951,7 @@
               sectionIdentifier: .libraries,
               platforms: platforms[localization]!,
               symbol: library,
-              package: packageAPI,
+              package: self.api,
               copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,

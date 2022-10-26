@@ -1070,29 +1070,12 @@
           }
         }
 
-        for `extension` in packageAPI.allExtensions {
-          let apiElement = APIElement.extension(`extension`)
-
-          var namespace = apiElement
-          var section: IndexSectionIdentifier = .extensions
-          for type in packageAPI.types where `extension`.isExtension(of: type) {
-            namespace = APIElement.type(type)
-            section = .types
-            break
-          }
-          if namespace == apiElement /* Still not resolved. */ {
-            for `protocol` in packageAPI.protocols
-            where `extension`.isExtension(of: `protocol`) {
-              namespace = APIElement.protocol(`protocol`)
-              section = .protocols
-              break
-            }
-          }
-
+        for `extension` in extensionStorage[self.api.extendedPropertiesIndex, default: .default]
+          .packageExtensions {
           try outputNestedSymbols(
-            of: apiElement,
-            namespace: [namespace],
-            sectionIdentifier: section,
+            of: `extension`,
+            namespace: [`extension`],
+            sectionIdentifier: .extensions,
             to: outputDirectory,
             localization: localization,
             customReplacements: customReplacements,

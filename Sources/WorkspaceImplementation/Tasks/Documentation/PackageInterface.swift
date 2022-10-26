@@ -671,10 +671,11 @@
 
       self.localizations = localizations
       self.developmentLocalization = developmentLocalization
-      self.packageAPI = api
-      self.api = APIElement.package(api)
+      self.api = api
       self.cli = cli
-      api.computeMergedAPI()
+      var extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties] = [:]
+      api.computeMergedAPI(extensionStorage: &extensionStorage)
+      self.extensionStorage = extensionStorage
 
       self.packageImport = PackageInterface.specify(package: packageURL, version: version)
       self.installation = installation
@@ -719,8 +720,8 @@
 
     private let localizations: [LocalizationIdentifier]
     private let developmentLocalization: LocalizationIdentifier
-    private let packageAPI: PackageAPI
-    private let api: APIElement
+    private let api: PackageAPI
+    private let extensionStorage: []
     private let cli: PackageCLI
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]

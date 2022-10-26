@@ -355,9 +355,7 @@
           )
         )
       }
-      if ¬package.uniqueExtensions
-        .lazy.filter({ localization ∉ APIElement.extension($0).skippedLocalizations }).isEmpty
-      {
+      if ¬packageProperties.packageExtensions.isEmpty{
         result.append(
           generateIndexSection(
             named: SymbolPage.extensionsHeader(localization: localization),

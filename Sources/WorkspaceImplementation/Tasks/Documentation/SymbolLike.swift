@@ -17,10 +17,42 @@ extension SymbolLike {
       return "SDG.library.\(library.names.title)"
     case let module as ModuleAPI:
       return "SDG.target.\(module.names.title)"
+    case let `extension` as Extension:
+      return "SDG.extension.\(`extension`.identifier.precise)"
     case let `operator` as Operator:
       return "SDG.operator.\(`operator`.names.title)"
     case let precedenceGroup as PrecedenceGroup:
       return "SDG.precedencegroup.\(precedenceGroup.names.title)"
+    default:
+      unreachable()
+    }
+  }
+
+  internal var indexSectionIdentifier: IndexSectionIdentifier {
+    switch self {
+    case let symbol as SymbolGraph.Symbol:
+      switch symbol.kind.identifier {
+      case .associatedtype, .class, .enum, .struct, .typealias, .module:
+        return .types
+      case .deinit, .func, .operator, .`init`, .macro, .method, .snippet, .snippetGroup, .subscript, .typeMethod, .typeSubscript, .unknown:
+        return .functions
+      case .case, .ivar, .property, .typeProperty, .var:
+        return .variables
+      case .protocol:
+        return .protocols
+      }
+    case is PackageAPI:
+      return .package
+    case is LibraryAPI:
+      return .libraries
+    case is ModuleAPI:
+      return .modules
+    case is Extension:
+      return .extensions
+    case is Operator:
+      return .operators
+    case is PrecedenceGroup:
+      return .precedenceGroups
     default:
       unreachable()
     }

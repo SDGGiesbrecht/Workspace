@@ -1010,42 +1010,25 @@
       output: Command.Output,
       coverageCheckOnly: Bool
     ) throws {
+      let packageProperties = extensionStorage[self.api.extendedPropertiesIndex, default: .default]
       for localization in localizations {
         for symbol in [
-          packageAPI.types.map({ APIElement.type($0) }),
-          packageAPI.uniqueExtensions.map({ APIElement.extension($0) }),
-          packageAPI.protocols.map({ APIElement.protocol($0) }),
-          packageAPI.functions.map({ APIElement.function($0) }),
-          packageAPI.globalVariables.map({ APIElement.variable($0) }),
-          packageAPI.operators.map({ APIElement.operator($0) }),
-          packageAPI.precedenceGroups.map({ APIElement.precedence($0) }),
+          packageProperties.packageTypes.map({ $0 as SymbolLike }),
+          packageProperties.packageExtensions.map({ $0 as SymbolLike }),
+          packageProperties.packageProtocols.map({ $0 as SymbolLike }),
+          packageProperties.packageFunctions.map({ $0 as SymbolLike }),
+          packageProperties.packageGlobalVariables.map({ $0 as SymbolLike }),
+          packageProperties.packageOperators.map({ $0 as SymbolLike }),
+          packageProperties.packagePrecedenceGroups.map({ $0 as SymbolLike }),
         ].joined()
-        where symbol.exists(in: localization) {
+        where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+          .exists(in: localization) {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
               customReplacements: customReplacements
             )
-            let section: IndexSectionIdentifier
-            switch symbol {
-            case .package, .library, .module, .case, .initializer, .subscript, .conformance:
-              unreachable()
-            case .type:
-              section = .types
-            case .extension:
-              section = .extensions
-            case .protocol:
-              section = .protocols
-            case .function:
-              section = .functions
-            case .variable:
-              section = .variables
-            case .operator:
-              section = .operators
-            case .precedence:
-              section = .precedenceGroups
-            }
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
@@ -1053,10 +1036,10 @@
               navigationPath: [api, symbol],
               packageImport: packageImport,
               index: indices[localization]!,
-              sectionIdentifier: section,
+              sectionIdentifier: symbol.indexSectionIdentifier,
               platforms: platforms[localization]!,
               symbol: symbol,
-              package: packageAPI,
+              package: self.api,
               copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,

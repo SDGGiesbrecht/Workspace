@@ -22,7 +22,7 @@
   import SDGExportedCommandLineInterface
 
   import SDGHTML
-  import SDGSwiftSource
+  import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -33,7 +33,7 @@
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      package: APIElement,
+      package: PackageAPI,
       navigationPath: [CommandInterfaceInformation],
       packageImport: StrictString?,
       index: StrictString,

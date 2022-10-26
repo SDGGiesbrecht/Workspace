@@ -409,14 +409,18 @@
           )
         )
       }
-      if ¬package.operators
-        .lazy.filter({ localization ∉ APIElement.operator($0).skippedLocalizations }).isEmpty
+      if ¬packageProperties.packageOperators
+        .lazy.filter({ `operator` in
+          return localization
+          ∉ extensionStorage[`operator`.extendedPropertiesIndex, default: .default]
+          .skippedLocalizations
+        }).isEmpty
       {
         result.append(
           generateIndexSection(
             named: SymbolPage.operatorsHeader(localization: localization),
             identifier: .operators,
-            apiEntries: package.operators.lazy.map({ APIElement.operator($0) }),
+            apiEntries: packageProperties.packageOperators,
             localization: localization
           )
         )

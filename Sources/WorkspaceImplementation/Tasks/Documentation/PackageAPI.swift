@@ -27,12 +27,13 @@
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
     ) {
       var types: [SymbolGraph.Symbol] = []
-      var unprocessedExtensions: Set<String> = []
+      var unprocessedExtensionIdentifiers: [String: String] = [:]
       var protocols: [SymbolGraph.Symbol] = []
       var functions: [SymbolGraph.Symbol] = []
       var globalVariables: [SymbolGraph.Symbol] = []
       var operators: [Operator] = []
       var precedenceGroups: [PrecedenceGroup] = []
+      var symbolLookup: [String: SymbolGraph.Symbol] = [:]
       for module in modules {
         extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
         = libraries.first(where: { library in
@@ -45,6 +46,7 @@
           extensionStorage[child.extendedPropertiesIndex, default: .default].homeModule = module
         }
         for graph in module.symbolGraphs {
+          symbolLookup.mergeByOverwriting(from: graph.symbols)
           for symbol in graph.symbols.values {
             handle(child: symbol)
             switch symbol.kind.identifier {
@@ -62,7 +64,7 @@
           }
           for relationship in graph.relationships
           where relationship.kind == .memberOf {
-            unprocessedExtensions.insert(relationship.target)
+            unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
           }
         }
         for `operator` in module.operators {
@@ -75,15 +77,31 @@
         }
       }
 
-      var extensions: Set<String> = unprocessedExtensions
+      var extensionIdendifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
       for type in [types, protocols].lazy.joined() {
-        extensions.remove(type.identifier.precise)
+        extensionIdendifiers.remove(type.identifier.precise)
+      }
+      let extensions = extensionIdendifiers.compactMap { identifier in
+        if let symbol = symbolLookup[identifier] {
+          return Extension(names: symbol.names)
+        } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
+          return Extension(
+            names: SymbolGraph.Symbol.Names(
+              title: fallback,
+              navigator: nil,
+              subHeading: nil,
+              prose: nil
+            )
+          )
+        } else {
+          return nil
+        }
       }
 
       {
         var storage = extensionStorage[extendedPropertiesIndex, default: .default]
         storage.packageTypes = types.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageExtensions = extensions.sorted()
+        storage.packageExtensions = extensions.sorted(by: { $0.names.title < $1.names.title })
         storage.packageProtocols = protocols.sorted(by: { $0.names.title < $1.names.title })
         storage.packageFunctions = functions.sorted(by: { $0.names.title < $1.names.title })
         storage.packageGlobalVariables = globalVariables.sorted(by: { $0.names.title < $1.names.title })

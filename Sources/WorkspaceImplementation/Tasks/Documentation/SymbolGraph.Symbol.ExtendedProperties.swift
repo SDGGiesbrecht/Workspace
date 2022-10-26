@@ -15,7 +15,7 @@ extension SymbolGraph.Symbol {
     internal var homeModule: ModuleAPI?
 
     internal var packageTypes: [SymbolGraph.Symbol] = []
-    internal var packageExtensions: [String] = []
+    internal var packageExtensions: [Extension] = []
     internal var packageProtocols: [SymbolGraph.Symbol] = []
     internal var packageFunctions: [SymbolGraph.Symbol] = []
     internal var packageGlobalVariables: [SymbolGraph.Symbol] = []

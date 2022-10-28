@@ -14,7 +14,7 @@ extension SymbolGraph.Symbol {
 
     // MARK: - General Properties
 
-    internal var localizedDocumentation: [LocalizationIdentifier: DocumentationSyntax] = [:]
+    internal var localizedDocumentation: [LocalizationIdentifier: SymbolGraph.LineList] = [:]
     internal var skippedLocalizations: Set<LocalizationIdentifier> = []
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
     internal var localizedChildren: [SymbolGraph.Symbol] = []

@@ -17,7 +17,8 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGCommandLine
 
-  import SDGSwiftSource
+  import SymbolKit
+  import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -44,14 +45,14 @@
       output.print(problem.resolved().formattedAsError().separated())
     }
 
-    private func report(
+    private func report<SymbolType>(
       problem: UserFacing<StrictString, InterfaceLocalization>,
-      with symbol: APIElement,
-      navigationPath: [APIElement],
+      with symbol: SymbolType,
+      navigationPath: [SymbolLike],
       parameter: String? = nil,
       localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
-    ) {
+    ) where SymbolType: SymbolLike {
       var symbolName: StrictString
       switch symbol {
       case .package, .library, .module:
@@ -81,11 +82,11 @@
       )
     }
 
-    internal func reportMissingDescription(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    internal func reportMissingDescription<SymbolType>(
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       var hint: UserFacing<StrictString, InterfaceLocalization>?
 
       var possibleSearch: StrictString?
@@ -169,11 +170,11 @@
       )
     }
 
-    internal func reportUnlabelledParameter(
+    internal func reportUnlabelledParameter<SymbolType>(
       _ closureType: String,
-      symbol: APIElement,
-      navigationPath: [APIElement]
-    ) {
+      symbol: SymbolType,
+      navigationPath: [SymbolLike]
+    ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
@@ -189,7 +190,10 @@
       )
     }
 
-    internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
+    internal func reportMissingVariableType(
+      _ variable: SymbolGraph.Symbol,
+      navigationPath: [SymbolLike]
+    ) {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
@@ -270,11 +274,11 @@
       }
     }
 
-    internal func reportExcessiveHeading(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    internal func reportExcessiveHeading<SymbolType>(
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

@@ -139,13 +139,13 @@
       )
     }
 
-    internal func reportMismatchedParameters(
+    internal func reportMismatchedParameters<SymbolType>(
       _ parameters: [String],
       expected: [String],
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

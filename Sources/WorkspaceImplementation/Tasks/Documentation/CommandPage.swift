@@ -208,7 +208,7 @@
 
       return SymbolPage.generateDiscussionSection(
         localization: localization,
-        symbol: nil,
+        symbol: nil as SymbolGraph.Symbol?,
         content: discussion
       )
     }

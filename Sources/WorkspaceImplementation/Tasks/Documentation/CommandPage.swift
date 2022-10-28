@@ -22,6 +22,7 @@
   import SDGExportedCommandLineInterface
 
   import SDGHTML
+  import SymbolKit
   import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
@@ -34,6 +35,7 @@
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [CommandInterfaceInformation],
       packageImport: StrictString?,
       index: StrictString,
@@ -86,8 +88,9 @@
       }
       navigationPathLinks.prepend(
         (
-          StrictString(package.name.source()),
-          package.relativePagePath[localization]!
+          StrictString(package.names.resolvedForNavigation),
+          extensionStorage[package.extendedPropertiesIndex, default: .default]
+            .relativePagePath[localization]!
         )
       )
 

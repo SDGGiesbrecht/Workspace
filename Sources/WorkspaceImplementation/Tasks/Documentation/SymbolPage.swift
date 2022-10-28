@@ -1033,7 +1033,9 @@
 
       if parameters ≠ documentedParameters {
         // #workaround(SDGSwift 11.1.0, Not collected properly for subscripts at present.)
-        if case .subscript = symbol {
+        if let graphSymbol = symbol as? SymbolGraph.Symbol,
+           graphSymbol.kind.identifier == .subscript
+            ∨ graphSymbol.kind.identifier == .typeSubscript {
         } else {
           status.reportMismatchedParameters(
             documentedParameters,

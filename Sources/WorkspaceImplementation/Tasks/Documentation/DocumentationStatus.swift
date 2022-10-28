@@ -54,12 +54,11 @@
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
       var symbolName: StrictString
-      switch symbol {
-      case .package, .library, .module:
-        symbolName = StrictString(symbol.name.source())
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .operator, .precedence, .conformance:
-        symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) })
+      switch symbol.indexSectionIdentifier {
+      case .package, .tools, .libraries, .modules:
+        symbolName = StrictString(symbol.names.title)
+      case .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
+        symbolName = navigationPath.dropFirst().map({ StrictString($0.names.title) })
           .joined(separator: ".")
       }
       if let specificParameter = parameter {
@@ -90,20 +89,19 @@
       var hint: UserFacing<StrictString, InterfaceLocalization>?
 
       var possibleSearch: StrictString?
-      switch symbol {
+      switch symbol.indexSectionIdentifier {
       case .package:
         possibleSearch = "Package"
-      case .library:
+      case .libraries:
         possibleSearch = ".library"
-      case .module:
+      case .modules:
         possibleSearch = ".target"
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .operator, .precedence, .conformance:
+      case .tools, .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
         break
       }
       if var search = possibleSearch {
         search.append(
-          contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}"
+          contentsOf: "(name: \u{22}" + StrictString(symbol.names.title) + "\u{22}"
         )
 
         hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -203,7 +201,7 @@
             return "Einem öffentlichen Variable fehlt der ausdrückliche Typ."
           }
         }),
-        with: APIElement.variable(variable),
+        with: variable,
         navigationPath: navigationPath
       )
     }

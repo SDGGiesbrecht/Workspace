@@ -1864,7 +1864,7 @@
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString where SymbolType: Symbollike {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.instanceMethods.isEmpty else {
         return ""
       }

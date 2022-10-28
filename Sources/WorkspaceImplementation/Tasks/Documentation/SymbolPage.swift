@@ -20,10 +20,15 @@
 
   import SDGCommandLine
 
-  import SwiftSyntax
-  import SDGSwiftDocumentation
   import SymbolKit
+  import SDGSwiftDocumentation
   import SDGHTML
+
+  import SwiftSyntax
+  import SwiftSyntaxParser
+  #warning("Simplify.")
+  import enum SDGSwiftSource.Callout
+  import struct SDGSwiftSource.ParameterDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -1080,7 +1085,10 @@
           }
         }
         let scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
-        scanner.walk(declaration)
+        let source: String = declaration.declarationFragments.lazy.map({ $0.spelling }).joined()
+        if let syntax = try? SyntaxParser.parse(source: source) {
+          scanner.walk(syntax)
+        }
       }
 
       let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)

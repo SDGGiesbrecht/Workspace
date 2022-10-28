@@ -261,4 +261,27 @@ extension SymbolLike {
       return links
     }
   }
+
+  // MARK: - Parameters
+
+  internal func parameters() -> [String] {
+    let parameterList: FunctionParameterListSyntax
+    switch self {
+    case .package, .library, .module, .type, .protocol, .extension, .case, .operator,
+      .precedence, .conformance:
+      return []
+    case .variable(let variable):
+      guard let typeAnnotation = variable.declaration.bindings.first?.typeAnnotation else {
+        return []
+      }
+      return typeAnnotation.type.parameterNames()
+    case .initializer(let initializer):
+      parameterList = initializer.declaration.parameters.parameterList
+    case .subscript(let `subscript`):
+      parameterList = `subscript`.declaration.indices.parameterList
+    case .function(let function):
+      parameterList = function.declaration.signature.input.parameterList
+    }
+    return Array(parameterList.lazy.map({ $0.parameterNames() }).joined())
+  }
 }

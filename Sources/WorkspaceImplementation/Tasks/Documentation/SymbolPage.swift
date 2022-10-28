@@ -21,6 +21,7 @@
   import SDGCommandLine
 
   import SDGSwiftDocumentation
+  import SymbolKit
   import SDGHTML
 
   import WorkspaceLocalizations
@@ -1019,12 +1020,14 @@
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
 
       let parameters = symbol.parameters()
       let parameterDocumentation =
-        symbol.localizedDocumentation[localization]?.normalizedParameters
+      extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+        .localizedDocumentation[localization]?.normalizedParameters
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 

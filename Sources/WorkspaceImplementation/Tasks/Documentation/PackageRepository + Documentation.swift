@@ -27,6 +27,7 @@
 
   import SDGSwift
   import SDGXcode
+  import SDGSwiftSource
   import SDGSwiftDocumentation
   import SDGHTML
   import SDGCSS
@@ -136,7 +137,8 @@
       for localization in localizations {
         var markdown: [Markdown] = []
         for entry in relatedProjects {
-          try purgingAutoreleased {
+          #warning("Debugging type checking...")
+          //try purgingAutoreleased {
             switch entry {
             case .heading(text: let translations):
               if let text = translations[localization] {
@@ -170,12 +172,10 @@
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
               if let packageName = try? package.packageName(),
-                let packageDocumentation = try? package.documentation(
-                  packageName: String(packageName)
-                ),
-                let documentation = packageDocumentation.resolved(
-                  localizations: localizations
-                ).documentation[localization],
+                let documentation = package
+                .documentation(packageName: String(packageName))
+                .resolved(localizations: localizations)
+                .documentation[localization],
                 let description = documentation.descriptionSection
               {
                 markdown += [
@@ -184,7 +184,7 @@
                 ]
               }
             }
-          }
+          //}
         }
         if ¬markdown.isEmpty {
           result[localization] = markdown.joinedAsLines()

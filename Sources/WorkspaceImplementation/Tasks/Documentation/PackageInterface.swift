@@ -26,6 +26,8 @@
   import SDGSwiftDocumentation
   import SymbolKit
   import SDGHTML
+  import SwiftSyntax
+  import SwiftSyntaxParser
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -899,6 +901,7 @@
               allLocalizations: localizations,
               pathToSiteRoot: "../../",
               package: api,
+              extensionStorage: extensionStorage,
               navigationPath: [tool],
               packageImport: packageImport,
               index: indices[localization]!,
@@ -1194,6 +1197,7 @@
             allLocalizations: localizations,
             pathToSiteRoot: modifiedRoot,
             package: api,
+            extensionStorage: extensionStorage,
             navigationPath: navigation,
             packageImport: packageImport,
             index: indices[localization]!,
@@ -1269,8 +1273,9 @@
                 }),
               navigationPath: [
                 (
-                  label: StrictString(api.name.source()),
-                  path: api.relativePagePath[localization]!
+                  label: StrictString(api.names.resolvedForNavigation),
+                  path: extensionStorage[api.extendedPropertiesIndex, default: .default]
+                    .relativePagePath[localization]!
                 ),
                 (label: pageTitle, path: pagePath),
               ]

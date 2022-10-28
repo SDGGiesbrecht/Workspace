@@ -20,6 +20,7 @@
 
   import SDGCommandLine
 
+  import SwiftSyntax
   import SDGSwiftDocumentation
   import SymbolKit
   import SDGHTML
@@ -1014,15 +1015,15 @@
         .normalizedSource()
     }
 
-    private static func generateParametersSection<SymbolType>(
+    private static func generateParametersSection(
       localization: LocalizationIdentifier,
-      symbol: SymbolType,
+      symbol: SymbolLike,
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
-    ) -> StrictString where SymbolType: SymbolLike {
+    ) -> StrictString {
 
       let parameters = symbol.parameters()
       let parameterDocumentation =
@@ -1053,14 +1054,14 @@
       /// Check that closure parameters are labelled.
       if let declaration = symbol.declaration {
         class Scanner: SyntaxVisitor {
-          init(status: DocumentationStatus, symbol: APIElement, navigationPath: [APIElement]) {
+          init(status: DocumentationStatus, symbol: SymbolLike, navigationPath: [SymbolLike]) {
             self.status = status
             self.symbol = symbol
             self.navigationPath = navigationPath
           }
           let status: DocumentationStatus
-          let symbol: APIElement
-          let navigationPath: [APIElement]
+          let symbol: SymbolLike
+          let navigationPath: [SymbolLike]
           override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
             for argument in node.arguments
             where

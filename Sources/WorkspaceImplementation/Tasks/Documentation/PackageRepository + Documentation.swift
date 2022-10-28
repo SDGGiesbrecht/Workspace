@@ -176,7 +176,7 @@
                 .documentation(packageName: String(packageName))
                 .resolved(localizations: localizations)
                 .documentation[localization],
-                let description = documentation.descriptionSection
+                 let description = documentation.documentation().descriptionSection
               {
                 markdown += [
                   "",

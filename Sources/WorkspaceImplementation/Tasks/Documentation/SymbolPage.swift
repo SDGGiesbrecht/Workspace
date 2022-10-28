@@ -816,7 +816,7 @@
     ) -> StrictString where SymbolType: SymbolLike {
 
       if let documentation = symbol.localizedDocumentation[localization],
-        let description = documentation.descriptionSection
+         let description = documentation.documentation().descriptionSection
       {
         return generateDescriptionSection(
           contents: StrictString(

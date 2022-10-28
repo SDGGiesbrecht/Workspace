@@ -109,27 +109,39 @@ extension SymbolLike {
 
   internal func determine(
     localizations: [LocalizationIdentifier],
-    customReplacements: [(StrictString, StrictString)]
+    customReplacements: [(StrictString, StrictString)],
+    package: PackageAPI,
+    module: String?,
+    extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties],
+    parsingCache: inout [URL: SymbolGraph.Symbol.CachedSource]
   ) {
 
-    let parsed = documentation.resolved(localizations: localizations)
-    localizedDocumentation = parsed.documentation
-    crossReference = parsed.crossReference
-    skippedLocalizations = parsed.skipped
+    let parsed = parseDocumentation(cache: &parsingCache, module: module)
+      .resolved(localizations: localizations)
+    extensionStorage[extendedPropertiesIndex, default: .default].localizedDocumentation = parsed.documentation
+    extensionStorage[extendedPropertiesIndex, default: .default].crossReference = parsed.crossReference
+    extensionStorage[extendedPropertiesIndex, default: .default].skippedLocalizations = parsed.skipped
 
     let globalScope: Bool
-    if case .module = self {
+    if self is ModuleAPI {
       globalScope = true
     } else {
       globalScope = false
     }
 
     var unique = 0
-    var groups: [StrictString: [APIElement]] = [:]
-    for child in children {
-      child.determine(localizations: localizations, customReplacements: customReplacements)
+    var groups: [StrictString: [SymbolLike]] = [:]
+    for child in children(package: package) {
+      child.determine(
+        localizations: localizations,
+        customReplacements: customReplacements,
+        package: package,
+        module: module,
+        extensionStorage: &extensionStorage,
+        parsingCache: &parsingCache
+      )
       let crossReference =
-        child.crossReference
+      extensionStorage[child.extendedPropertiesIndex, default: .default].crossReference
         ?? {
           unique += 1
           return "\u{7F}\(String(describing: unique))"
@@ -143,9 +155,53 @@ extension SymbolLike {
             from: group[indexB],
             isSame: indexA == indexB,
             globalScope: globalScope,
-            customReplacements: customReplacements
+            customReplacements: customReplacements,
+            extensionStorage: extensionStorage
           )
         }
+      }
+    }
+  }
+
+  private func addLocalizations(
+    from other: SymbolLike,
+    isSame: Bool,
+    globalScope: Bool,
+    customReplacements: [(StrictString, StrictString)],
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) {
+    for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
+      .localizedDocumentation {
+      extensionStorage[extendedPropertiesIndex, default: .default]
+        .localizedEquivalentFileNames[localization] = extensionStorage[other.extendedPropertiesIndex, default: .default]
+        .fileName(customReplacements: customReplacements)
+      localizedEquivalentDirectoryNames[localization] = other.directoryName(
+        for: localization,
+        globalScope: globalScope,
+        typeMember: {
+          switch other {
+          case .package,  // @exempt(from: tests)
+            .library,
+            .module,
+            .type,
+            .protocol,
+            .extension,
+            .case,
+            .initializer,
+            .subscript,
+            .operator,
+            .precedence,
+            .conformance:
+            unreachable()
+          case .variable(let variable):
+            return variable.declaration.isTypeMember()
+          case .function(let function):
+            return function.declaration.isTypeMember()
+          }
+        }
+      )
+      if ¬isSame {
+        localizedChildren.append(contentsOf: other.children)
       }
     }
   }

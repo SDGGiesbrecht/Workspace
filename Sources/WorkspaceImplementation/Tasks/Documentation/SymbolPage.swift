@@ -1033,7 +1033,7 @@
       let parameters = symbol.parameters()
       let parameterDocumentation =
       extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-        .localizedDocumentation[localization]?.normalizedParameters
+        .localizedDocumentation[localization]?.normalizedParameters()
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 

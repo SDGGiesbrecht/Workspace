@@ -160,16 +160,16 @@
     }
 
     /// Final initialization which can be skipped when only checking coverage.
-    private init(
+    private init<SymbolType>(
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      navigationPath: [APIElement],
+      navigationPath: [SymbolLike],
       packageImport: StrictString?,
       index: StrictString,
       sectionIdentifier: IndexSectionIdentifier,
       platforms: StrictString,
-      symbol: APIElement,
+      symbol: SymbolType,
       package: PackageAPI,
       tools: PackageCLI?,
       copyright: StrictString,
@@ -177,7 +177,7 @@
       symbolLinks: [String: String],
       adjustedSymbolLinks: [String: String],
       partiallyConstructedContent: [StrictString]
-    ) {
+    ) where SymbolType: SymbolLike {
 
       let navigationPath = SymbolPage.generateNavigationPath(
         localization: localization,
@@ -455,14 +455,14 @@
       ).normalizedSource()
     }
 
-    private static func generateMembersSections(
+    private static func generateMembersSections<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> [StrictString] {
+    ) -> [StrictString] where SymbolType: SymbolLike {
       var result: [StrictString] = []
       result.append(
         SymbolPage.generateCasesSection(
@@ -561,7 +561,7 @@
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString,
       allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
-      navigationPath: [APIElement]
+      navigationPath: [SymbolLike]
     ) -> StrictString {
       return generateNavigationPath(
         localization: localization,
@@ -656,12 +656,12 @@
       return elements.lazy.map({ $0.normalizedSource() }).joined(separator: "\n")
     }
 
-    private static func generateDependencyStatement(
-      for symbol: APIElement,
+    private static func generateDependencyStatement<SymbolType>(
+      for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       guard let module = symbol.homeModule.pointee,
         let product = APIElement.module(module).homeProduct.pointee
@@ -709,12 +709,12 @@
       return StrictString(source)
     }
 
-    private static func generateImportStatement(
-      for symbol: APIElement,
+    private static func generateImportStatement<SymbolType>(
+      for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       guard let module = symbol.homeModule.pointee else {
         return ""
@@ -761,18 +761,20 @@
       ).normalizedSource()
     }
 
-    private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {
+    private static func generateCompilationConditions<SymbolType>(
+      symbol: SymbolType
+    ) -> StrictString? where SymbolType: SymbolLike {
       if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
         return StrictString(conditions)
       }
       return nil
     }
 
-    private static func generateConstraints(
-      symbol: APIElement,
+    private static func generateConstraints<SymbolType>(
+      symbol: SymbolType,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString? {
+    ) -> StrictString? where SymbolType: SymbolLike {
       if let constraints = symbol.constraints {
         let withoutSpace = constraints.withWhereKeyword(
           constraints.whereKeyword.withLeadingTrivia([])
@@ -797,14 +799,14 @@
       ).normalizedSource()
     }
 
-    private static func generateDescriptionSection(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    private static func generateDescriptionSection<SymbolType>(
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       if let documentation = symbol.localizedDocumentation[localization],
         let description = documentation.descriptionSection
@@ -856,14 +858,14 @@
       ).normalizedSource()
     }
 
-    private static func generateDeclarationSection(
+    private static func generateDeclarationSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       guard var declaration = symbol.declaration else {
         return ""
@@ -892,11 +894,11 @@
       )
     }
 
-    internal static func generateDiscussionSection(
+    internal static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement?,
+      symbol: SymbolType?,
       content: StrictString?
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       guard let discussion = content else {
         return ""
@@ -934,14 +936,14 @@
         .normalizedSource()
     }
 
-    private static func generateDiscussionSection(
+    private static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
         ¬discussion.isEmpty
@@ -1011,14 +1013,14 @@
         .normalizedSource()
     }
 
-    private static func generateParametersSection(
+    private static func generateParametersSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       let parameters = symbol.parameters()
       let parameterDocumentation =
@@ -1103,14 +1105,14 @@
       )
     }
 
-    private static func generateThrowsSection(
+    private static func generateThrowsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
         return ""
       }
@@ -1133,14 +1135,14 @@
         .normalizedSource()
     }
 
-    private static func generateReturnsSection(
+    private static func generateReturnsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
         return ""
       }
@@ -1163,14 +1165,14 @@
         .normalizedSource()
     }
 
-    private static func generateOtherModuleExtensionsSections(
-      symbol: APIElement,
+    private static func generateOtherModuleExtensionsSections<SymbolType>(
+      symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> [StrictString] {
+    ) -> [StrictString] where SymbolType: SymbolLike {
       var extensions: [ExtensionAPI] = []
       for `extension` in package.allExtensions {
         switch symbol {
@@ -1278,14 +1280,14 @@
       return heading
     }
 
-    private static func generateLibrariesSection(
+    private static func generateLibrariesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard case .package(let package) = symbol,
         ¬package.libraries.isEmpty
       else {
@@ -1317,14 +1319,14 @@
       return heading
     }
 
-    private static func generateModulesSection(
+    private static func generateModulesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard case .library(let library) = symbol,
         ¬library.modules.isEmpty
       else {
@@ -1356,14 +1358,14 @@
       return heading
     }
 
-    private static func generateTypesSection(
+    private static func generateTypesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.types.isEmpty else {
         return ""
       }
@@ -1393,14 +1395,14 @@
       return heading
     }
 
-    private static func generateExtensionsSection(
+    private static func generateExtensionsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.extensions.isEmpty else {
         return ""
       }
@@ -1430,14 +1432,14 @@
       return heading
     }
 
-    private static func generateProtocolsSection(
+    private static func generateProtocolsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.protocols.isEmpty else {
         return ""
       }
@@ -1467,14 +1469,14 @@
       return heading
     }
 
-    private static func generateFunctionsSection(
+    private static func generateFunctionsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.instanceMethods.isEmpty else {
         return ""
       }
@@ -1504,14 +1506,14 @@
       return heading
     }
 
-    private static func generateVariablesSection(
+    private static func generateVariablesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.instanceProperties.isEmpty else {
         return ""
       }
@@ -1541,14 +1543,14 @@
       return heading
     }
 
-    private static func generateOperatorsSection(
+    private static func generateOperatorsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.operators.isEmpty else {
         return ""
       }
@@ -1580,14 +1582,14 @@
       return heading
     }
 
-    private static func generatePrecedenceGroupsSection(
+    private static func generatePrecedenceGroupsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.operators.isEmpty else {
         return ""
       }
@@ -1602,14 +1604,14 @@
       )
     }
 
-    private static func generateCasesSection(
+    private static func generateCasesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.cases.isEmpty else {
         return ""
       }
@@ -1637,14 +1639,14 @@
       )
     }
 
-    private static func generateNestedTypesSection(
+    private static func generateNestedTypesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.types.isEmpty else {
         return ""
       }
@@ -1672,14 +1674,14 @@
       )
     }
 
-    private static func generateTypePropertiesSection(
+    private static func generateTypePropertiesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.typeProperties.isEmpty else {
         return ""
       }
@@ -1707,14 +1709,14 @@
       )
     }
 
-    private static func generateTypeMethodsSection(
+    private static func generateTypeMethodsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.typeMethods.isEmpty else {
         return ""
       }
@@ -1742,14 +1744,14 @@
       )
     }
 
-    private static func generateInitializersSection(
+    private static func generateInitializersSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.initializers.isEmpty else {
         return ""
       }
@@ -1779,14 +1781,14 @@
       )
     }
 
-    private static func generatePropertiesSection(
+    private static func generatePropertiesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.instanceProperties.isEmpty else {
         return ""
       }
@@ -1814,14 +1816,14 @@
       )
     }
 
-    private static func generateSubscriptsSection(
+    private static func generateSubscriptsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
       guard ¬symbol.subscripts.isEmpty else {
         return ""
       }
@@ -1849,14 +1851,14 @@
       )
     }
 
-    private static func generateMethodsSection(
+    private static func generateMethodsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: Symbollike {
       guard ¬symbol.instanceMethods.isEmpty else {
         return ""
       }
@@ -1884,14 +1886,14 @@
       )
     }
 
-    private static func generateConformanceSections(
+    private static func generateConformanceSections<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> [StrictString] {
+    ) -> [StrictString] where SymbolType: SymbolLike {
       var result: [StrictString] = []
       conformanceProcessing: for conformance in symbol.conformances {
         let name = conformance.type.syntaxHighlightedHTML(
@@ -1998,16 +2000,16 @@
       )
     }
 
-    private static func generateChildrenSection(
+    private static func generateChildrenSection<SymbolType>(
       localization: LocalizationIdentifier,
       heading: StrictString,
       escapeHeading: Bool = true,
-      children: [APIElement],
+      children: [SymbolType],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
+    ) -> StrictString where SymbolType: SymbolLike {
 
       func getEntryContents(_ child: APIElement) -> [StrictString] {
         var entry: [StrictString] = []

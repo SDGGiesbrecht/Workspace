@@ -247,6 +247,220 @@ extension SymbolLike {
     )
   }
 
+  private func directoryName(
+    for localization: LocalizationIdentifier,
+    globalScope: Bool,
+    typeMember: () -> Bool
+  ) -> StrictString {
+
+    switch self {
+    case .package:
+      unreachable()
+    case .library:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Libraries"
+        case .deutschDeutschland:
+          return "Biblioteken"
+        }
+      } else {
+        return "library"  // From “products: [.library(...)]”
+      }
+    case .module:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Modules"
+        case .deutschDeutschland:
+          return "Module"
+        }
+      } else {
+        return "target"  // From “targets: [.target(...)]”
+      }
+    case .type:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Types"
+        case .deutschDeutschland:
+          return "Typen"
+        }
+      } else {
+        return "struct"
+      }
+    case .protocol:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Protocols"
+        case .deutschDeutschland:
+          return "Protokolle"
+        }
+      } else {
+        return "protocol"
+      }
+    case .extension:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Extensions"
+        case .deutschDeutschland:
+          return "Erweiterungen"
+        }
+      } else {
+        return "extension"
+      }
+    case .case:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Cases"
+        case .deutschDeutschland:
+          return "Fälle"
+        }
+      } else {
+        return "case"
+      }
+    case .initializer:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom:
+          return "Initialisers"
+        case .englishUnitedStates, .englishCanada:
+          return "Initializers"
+        case .deutschDeutschland:
+          return "Voreinsteller"
+        }
+      } else {
+        return "init"
+      }
+    case .variable:
+      if globalScope {
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Global Variables"
+          case .deutschDeutschland:
+            return "globale Variablen"
+          }
+        } else {
+          return "var"
+        }
+      } else {
+        if typeMember() {
+          if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Type Properties"
+            case .deutschDeutschland:
+              return "Typ‐Eigenschaften"
+            }
+          } else {
+            return "static var"
+          }
+        } else {
+          if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Properties"
+            case .deutschDeutschland:
+              return "Eigenschaften"
+            }
+          } else {
+            return "var"
+          }
+        }
+      }
+    case .subscript:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Subscripts"
+        case .deutschDeutschland:
+          return "Indexe"
+        }
+      } else {
+        return "subscript"
+      }
+    case .function:
+      if globalScope {
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Functions"
+          case .deutschDeutschland:
+            return "Funktionen"
+          }
+        } else {
+          return "func"
+        }
+      } else {
+        if typeMember() {
+          if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Type Methods"
+            case .deutschDeutschland:
+              return "Typ‐Methoden"
+            }
+          } else {
+            return "static func"
+          }
+        } else {
+          if let match = localization._reasonableMatch {
+            switch match {
+            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+              return "Methods"
+            case .deutschDeutschland:
+              return "Methoden"
+            }
+          } else {
+            return "func"
+          }
+        }
+      }
+    case .operator:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Operators"
+        case .deutschDeutschland:
+          return "Operatoren"
+        }
+      } else {
+        return "operator"
+      }
+    case .precedence:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Precedence Groups"
+        case .deutschDeutschland:
+          return "Rangfolgenklassen"
+        }
+      } else {
+        return "precedencegroup"
+      }
+    case .conformance:
+      unreachable()
+    }
+  }
+
+  internal func localizedDirectoryName(
+    for localization: LocalizationIdentifier,
+    globalScope: Bool = false,
+    typeMember: Bool = false,
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) -> StrictString {
+    return extensionStorage[self.extendedPropertiesIndex, default: .default].localizedEquivalentDirectoryNames[localization]
+      ?? directoryName(
+        for: localization,
+        globalScope: globalScope,
+        typeMember: { typeMember }  // @exempt(from: tests) Should never be called.
+      )
+  }
+
   internal func pageURL(
     in outputDirectory: URL,
     for localization: LocalizationIdentifier,

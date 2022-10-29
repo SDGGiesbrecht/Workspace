@@ -254,9 +254,9 @@ extension SymbolLike {
   ) -> StrictString {
 
     switch self {
-    case .package:
+    case is PackageAPI:
       unreachable()
-    case .library:
+    case is LibraryAPI:
       if let match = localization._reasonableMatch {
         switch match {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -267,7 +267,7 @@ extension SymbolLike {
       } else {
         return "library"  // From “products: [.library(...)]”
       }
-    case .module:
+    case is ModuleAPI:
       if let match = localization._reasonableMatch {
         switch match {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -278,113 +278,44 @@ extension SymbolLike {
       } else {
         return "target"  // From “targets: [.target(...)]”
       }
-    case .type:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Types"
-        case .deutschDeutschland:
-          return "Typen"
-        }
-      } else {
-        return "struct"
-      }
-    case .protocol:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Protocols"
-        case .deutschDeutschland:
-          return "Protokolle"
-        }
-      } else {
-        return "protocol"
-      }
-    case .extension:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Extensions"
-        case .deutschDeutschland:
-          return "Erweiterungen"
-        }
-      } else {
-        return "extension"
-      }
-    case .case:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Cases"
-        case .deutschDeutschland:
-          return "Fälle"
-        }
-      } else {
-        return "case"
-      }
-    case .initializer:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom:
-          return "Initialisers"
-        case .englishUnitedStates, .englishCanada:
-          return "Initializers"
-        case .deutschDeutschland:
-          return "Voreinsteller"
-        }
-      } else {
-        return "init"
-      }
-    case .variable:
-      if globalScope {
+    case let symbol as SymbolGraph.Symbol:
+      switch symbol.kind.identifier {
+      case .associatedtype, .class, .enum, .struct, .typealias, .module:
         if let match = localization._reasonableMatch {
           switch match {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Global Variables"
+            return "Types"
           case .deutschDeutschland:
-            return "globale Variablen"
+            return "Typen"
           }
         } else {
-          return "var"
+          return "struct"
         }
-      } else {
-        if typeMember() {
-          if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Type Properties"
-            case .deutschDeutschland:
-              return "Typ‐Eigenschaften"
-            }
-          } else {
-            return "static var"
+      case .deinit, .`init`:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom:
+            return "Initialisers"
+          case .englishUnitedStates, .englishCanada:
+            return "Initializers"
+          case .deutschDeutschland:
+            return "Voreinsteller"
           }
         } else {
-          if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Properties"
-            case .deutschDeutschland:
-              return "Eigenschaften"
-            }
-          } else {
-            return "var"
+          return "init"
+        }
+      case .`case`:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Cases"
+          case .deutschDeutschland:
+            return "Fälle"
           }
+        } else {
+          return "case"
         }
-      }
-    case .subscript:
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Subscripts"
-        case .deutschDeutschland:
-          return "Indexe"
-        }
-      } else {
-        return "subscript"
-      }
-    case .function:
-      if globalScope {
+      case .func, .operator, .macro, .snippet, .snippetGroup, .unknown:
         if let match = localization._reasonableMatch {
           switch match {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -395,32 +326,97 @@ extension SymbolLike {
         } else {
           return "func"
         }
-      } else {
-        if typeMember() {
-          if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Type Methods"
-            case .deutschDeutschland:
-              return "Typ‐Methoden"
-            }
-          } else {
-            return "static func"
+      case .ivar, .property:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Properties"
+          case .deutschDeutschland:
+            return "Eigenschaften"
           }
         } else {
-          if let match = localization._reasonableMatch {
-            switch match {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Methods"
-            case .deutschDeutschland:
-              return "Methoden"
-            }
-          } else {
-            return "func"
+          return "var"
+        }
+      case .method:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Methods"
+          case .deutschDeutschland:
+            return "Methoden"
           }
+        } else {
+          return "func"
+        }
+      case .protocol:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Protocols"
+          case .deutschDeutschland:
+            return "Protokolle"
+          }
+        } else {
+          return "protocol"
+        }
+      case .subscript:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Subscripts"
+          case .deutschDeutschland:
+            return "Indexe"
+          }
+        } else {
+          return "subscript"
+        }
+      case .typeMethod, .typeSubscript:
+        // #workaround(Type subscripts are not separately supported yet.)
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Type Methods"
+          case .deutschDeutschland:
+            return "Typ‐Methoden"
+          }
+        } else {
+          return "static func"
+        }
+      case .typeProperty:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Type Properties"
+          case .deutschDeutschland:
+            return "Typ‐Eigenschaften"
+          }
+        } else {
+          return "static var"
+        }
+      case .var:
+        if let match = localization._reasonableMatch {
+          switch match {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Global Variables"
+          case .deutschDeutschland:
+            return "globale Variablen"
+          }
+        } else {
+          return "var"
         }
       }
-    case .operator:
+    case is Extension:
+      if let match = localization._reasonableMatch {
+        switch match {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Extensions"
+        case .deutschDeutschland:
+          return "Erweiterungen"
+        }
+      } else {
+        return "extension"
+      }
+    case is Operator:
       if let match = localization._reasonableMatch {
         switch match {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -431,7 +427,7 @@ extension SymbolLike {
       } else {
         return "operator"
       }
-    case .precedence:
+    case is PrecedenceGroup:
       if let match = localization._reasonableMatch {
         switch match {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -442,7 +438,7 @@ extension SymbolLike {
       } else {
         return "precedencegroup"
       }
-    case .conformance:
+    default:
       unreachable()
     }
   }

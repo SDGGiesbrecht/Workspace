@@ -57,19 +57,21 @@
       symbolLinks: [String: String],
       status: DocumentationStatus,
       output: Command.Output,
-      coverageCheckOnly: Bool
+      coverageCheckOnly: Bool,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) where SymbolType: SymbolLike {
 
-      if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
-        switch symbol {
-        case .package, .module, .type, .extension, .protocol:
+      if extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
+        let name: StrictString?
+        switch symbol.indexSectionIdentifier {
+        case .package, .modules, .types, .extensions, .protocols:
           output.print(
             UserFacing<StrictString, InterfaceLocalization>({ localization in
               switch localization {
               case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "...\(StrictString(symbol.name.source()))..."
+                return "...\(StrictString(symbol.names.title))..."
               case .deutschDeutschland:
-                return "... \(StrictString(symbol.name.source())) ..."
+                return "... \(StrictString(symbol.names.title)) ..."
               }
             }).resolved()
           )

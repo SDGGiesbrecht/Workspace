@@ -479,87 +479,102 @@ extension SymbolLike {
     for localization: LocalizationIdentifier,
     customReplacements: [(StrictString, StrictString)],
     namespace: StrictString = "",
-    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    package: PackageAPI,
+    extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
   ) -> [String: String] {
-    #warning("Debugging...")
-    //return purgingAutoreleased {
+    return purgingAutoreleased {
 
       var links: [String: String] = [:]
       var path = localization._directoryName + "/"
 
       switch self {
-      case .package(let package):
+      case let package as PackageAPI:
         for library in package.libraries {
           links = library.determinePaths(
             for: localization,
-            customReplacements: customReplacements
+            customReplacements: customReplacements,
+            package: package,
+            extensionStorage: &extensionStorage
           )
           .mergedByOverwriting(from: links)
         }
-      case .library(let library):
-        path += localizedDirectoryName(for: localization) + "/"
+      case let library as LibraryAPI:
+        path += localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
         for module in library.modules {
-          links = module.determinePaths(
+          links = package.modules.first(where: { $0.names.title == module })!.determinePaths(
             for: localization,
-            customReplacements: customReplacements
+            customReplacements: customReplacements,
+            package: package,
+            extensionStorage: &extensionStorage
           )
           .mergedByOverwriting(from: links)
         }
-      case .module(let module):
-        path += localizedDirectoryName(for: localization) + "/"
-        for child in module.children {
-          links = child.determinePaths(for: localization, customReplacements: customReplacements)
-            .mergedByOverwriting(from: links)
-        }
-      case .type, .extension, .protocol:
-        path += namespace + localizedDirectoryName(for: localization) + "/"
-        var newNamespace = namespace
-        newNamespace.append(contentsOf: localizedDirectoryName(for: localization) + "/")
-        newNamespace.append(
-          contentsOf: localizedFileName(for: localization, customReplacements: customReplacements)
-            + "/"
-        )
-        for child in children where child.receivesPage {
+      case let module as ModuleAPI:
+        path += localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
+        for child in module.children(package: package) {
           links = child.determinePaths(
             for: localization,
             customReplacements: customReplacements,
-            namespace: newNamespace
-          )
-          .mergedByOverwriting(from: links)
+            package: package,
+            extensionStorage: &extensionStorage
+          ).mergedByOverwriting(from: links)
         }
-      case .case, .initializer, .subscript, .operator, .precedence:
-        path += namespace + localizedDirectoryName(for: localization) + "/"
-      case .variable(let variable):
-        path +=
-          namespace
-          + localizedDirectoryName(
-            for: localization,
-            globalScope: namespace.isEmpty,
-            typeMember: variable.declaration.isTypeMember()
-          ) + "/"
-      case .function(let function):
-        path +=
-          namespace
-          + localizedDirectoryName(
-            for: localization,
-            globalScope: namespace.isEmpty,
-            typeMember: function.declaration.isTypeMember()
-          ) + "/"
-      case .conformance:
+      case let symbol as SymbolGraph.Symbol:
+        switch symbol.kind.identifier {
+        case .associatedtype, .class, .enum, .protocol, .struct, .typealias, .module:
+          path += namespace + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
+          var newNamespace = namespace
+          newNamespace.append(contentsOf: localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/")
+          newNamespace.append(
+            contentsOf: localizedFileName(for: localization, customReplacements: customReplacements, extensionStorage: extensionStorage)
+              + "/"
+          )
+          for child in children(package: package) {
+            links = child.determinePaths(
+              for: localization,
+              customReplacements: customReplacements,
+              namespace: newNamespace,
+              package: package,
+              extensionStorage: &extensionStorage
+            )
+            .mergedByOverwriting(from: links)
+          }
+        case .deinit, .`case`, .`init`, .macro, .snippet, .snippetGroup, .subscript, .typeSubscript, .unknown:
+          path += namespace + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
+        case .func, .ivar, .operator, .method, .property, .var:
+          path +=
+            namespace
+            + localizedDirectoryName(
+              for: localization,
+              globalScope: namespace.isEmpty,
+              typeMember: false,
+              extensionStorage: extensionStorage
+            ) + "/"
+        case .typeMethod, .typeProperty:
+          path +=
+            namespace
+            + localizedDirectoryName(
+              for: localization,
+              globalScope: namespace.isEmpty,
+              typeMember: true,
+              extensionStorage: extensionStorage
+            ) + "/"
+        }
+      default:
         unreachable()
       }
 
       path +=
-        localizedFileName(for: localization, customReplacements: customReplacements)
+    localizedFileName(for: localization, customReplacements: customReplacements, extensionStorage: extensionStorage)
         + ".html"
       extensionStorage[self.extendedPropertiesIndex, default: .default].relativePagePath[localization] = path
-      if case .type = self {
+      if case .types = self.indexSectionIdentifier {
         links[names.title.truncated(before: "<")] = String(path)
       } else {
         links[names.title] = String(path)
       }
       return links
-    //}
+    }
   }
 
   // MARK: - Parameters

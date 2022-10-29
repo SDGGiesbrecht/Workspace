@@ -202,7 +202,8 @@
             }
             return (localization: localization, path: path)
           }),
-        navigationPath: navigationPath
+        navigationPath: navigationPath,
+        extensionStorage: extensionStorage
       )
 
       var content = partiallyConstructedContent
@@ -570,20 +571,19 @@
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString,
       allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
-      navigationPath: [SymbolLike]
+      navigationPath: [SymbolLike],
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       return generateNavigationPath(
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
         allLocalizations: allLocalizations,
         navigationPath: navigationPath.map({ element in
           return (
-            StrictString(element.name.source()), element.relativePagePath[localization]!
+            StrictString(element.names.resolvedForNavigation), extensionStorage[element.extendedPropertiesIndex, default: .default].relativePagePath[localization]!
           )
         })
-      )*/
+      )
     }
 
     internal static func generateNavigationPath(
@@ -671,17 +671,16 @@
       for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString
+      pathToSiteRoot: StrictString,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard let module = symbol.homeModule.pointee,
-        let product = APIElement.module(module).homeProduct.pointee
+      guard let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule,
+            let product = extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
       else {
         return ""  // @exempt(from: tests) Should never be nil.
       }
-      let libraryName = product.name.text
-      let packageName = package.name.text
+      let libraryName = product.names.title
+      let packageName = package.names.title
 
       let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
         calledExpression: ExprSyntax(
@@ -718,7 +717,7 @@
         symbolLinks: [:]
       )
 
-      return StrictString(source)*/
+      return StrictString(source)
     }
 
     private static func generateImportStatement<SymbolType>(

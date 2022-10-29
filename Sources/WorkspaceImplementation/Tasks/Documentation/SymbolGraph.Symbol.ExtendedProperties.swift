@@ -18,6 +18,7 @@ extension SymbolGraph.Symbol {
     internal var crossReference: StrictString? = nil
     internal var skippedLocalizations: Set<LocalizationIdentifier> = []
     internal var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] = [:]
+    internal var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] = [:]
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
     internal var localizedChildren: [SymbolGraph.Symbol] = []
     internal func exists(in localization: LocalizationIdentifier) -> Bool {

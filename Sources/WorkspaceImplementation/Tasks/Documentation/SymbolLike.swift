@@ -156,7 +156,7 @@ extension SymbolLike {
             isSame: indexA == indexB,
             globalScope: globalScope,
             customReplacements: customReplacements,
-            extensionStorage: extensionStorage
+            extensionStorage: &extensionStorage
           )
         }
       }
@@ -168,14 +168,14 @@ extension SymbolLike {
     isSame: Bool,
     globalScope: Bool,
     customReplacements: [(StrictString, StrictString)],
-    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
   ) {
     for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
       .localizedDocumentation {
       extensionStorage[extendedPropertiesIndex, default: .default]
-        .localizedEquivalentFileNames[localization] = extensionStorage[other.extendedPropertiesIndex, default: .default]
+        .localizedEquivalentFileNames[localization] = other
         .fileName(customReplacements: customReplacements)
-      localizedEquivalentDirectoryNames[localization] = other.directoryName(
+      extensionStorage[extendedPropertiesIndex, default: .default].localizedEquivalentDirectoryNames[localization] = other.directoryName(
         for: localization,
         globalScope: globalScope,
         typeMember: {
@@ -224,6 +224,13 @@ extension SymbolLike {
   }
 
   // MARK: - Paths
+
+  private func fileName(customReplacements: [(StrictString, StrictString)]) -> StrictString {
+    return Page.sanitize(
+      fileName: StrictString(name.source()),
+      customReplacements: customReplacements
+    )
+  }
 
   internal func pageURL(
     in outputDirectory: URL,

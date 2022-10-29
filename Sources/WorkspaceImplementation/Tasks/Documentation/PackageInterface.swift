@@ -677,7 +677,6 @@
       self.cli = cli
       var extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties] = [:]
       api.computeMergedAPI(extensionStorage: &extensionStorage)
-      self.extensionStorage = extensionStorage
 
       self.packageImport = PackageInterface.specify(package: packageURL, version: version)
       self.installation = installation
@@ -688,10 +687,17 @@
 
       self.packageIdentifiers = api.identifierList()
 
+      var parsingCache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
       api.determine(
         localizations: localizations,
-        customReplacements: customReplacements
+        customReplacements: customReplacements,
+        package: api,
+        module: nil,
+        extensionStorage: &extensionStorage,
+        parsingCache: &parsingCache
       )
+      self.extensionStorage = extensionStorage
+
       var paths: [LocalizationIdentifier: [String: String]] = [:]
       for localization in localizations {
         paths[localization] = api.determinePaths(

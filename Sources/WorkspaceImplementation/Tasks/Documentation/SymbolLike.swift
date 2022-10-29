@@ -210,11 +210,11 @@ extension SymbolLike {
   internal func determineLocalizedPaths(
     localizations: [LocalizationIdentifier],
     package: PackageAPI,
-    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
   ) {
     var groups: [StrictString: [SymbolLike]] = [:]
     for child in children(package: package) {
-      child.determineLocalizedPaths(localizations: localizations, package: package, extensionStorage: extensionStorage)
+      child.determineLocalizedPaths(localizations: localizations, package: package, extensionStorage: &extensionStorage)
       if let crossReference = extensionStorage[child.extendedPropertiesIndex, default: .default].crossReference {
         groups[crossReference, default: []].append(child)
       }
@@ -222,9 +222,18 @@ extension SymbolLike {
     for (_, group) in groups {
       for indexA in group.indices {
         for indexB in group.indices where indexA ≠ indexB {
-          group[indexA].addLocalizedPaths(from: group[indexB])
+          group[indexA].addLocalizedPaths(from: group[indexB], extensionStorage: &extensionStorage)
         }
       }
+    }
+  }
+
+  private func addLocalizedPaths(
+    from other: SymbolLike,
+    extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) {
+    for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default].localizedDocumentation {
+      extensionStorage[self.extendedPropertiesIndex, default: .default].localizedEquivalentPaths[localization] = extensionStorage[other.extendedPropertiesIndex, default: .default].relativePagePath[localization]
     }
   }
 

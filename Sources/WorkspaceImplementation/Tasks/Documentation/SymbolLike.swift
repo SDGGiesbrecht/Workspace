@@ -443,6 +443,15 @@ extension SymbolLike {
     }
   }
 
+  internal func localizedFileName(
+    for localization: LocalizationIdentifier,
+    customReplacements: [(StrictString, StrictString)],
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) -> StrictString {
+    return extensionStorage[self.extendedPropertiesIndex, default: .default].localizedEquivalentFileNames[localization]
+      ?? fileName(customReplacements: customReplacements)
+  }
+
   internal func localizedDirectoryName(
     for localization: LocalizationIdentifier,
     globalScope: Bool = false,
@@ -469,9 +478,11 @@ extension SymbolLike {
   internal func determinePaths(
     for localization: LocalizationIdentifier,
     customReplacements: [(StrictString, StrictString)],
-    namespace: StrictString = ""
+    namespace: StrictString = "",
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
   ) -> [String: String] {
-    return purgingAutoreleased {
+    #warning("Debugging...")
+    //return purgingAutoreleased {
 
       var links: [String: String] = [:]
       var path = localization._directoryName + "/"
@@ -488,7 +499,7 @@ extension SymbolLike {
       case .library(let library):
         path += localizedDirectoryName(for: localization) + "/"
         for module in library.modules {
-          links = APIElement.module(module).determinePaths(
+          links = module.determinePaths(
             for: localization,
             customReplacements: customReplacements
           )
@@ -541,14 +552,14 @@ extension SymbolLike {
       path +=
         localizedFileName(for: localization, customReplacements: customReplacements)
         + ".html"
-      relativePagePath[localization] = path
+      extensionStorage[self.extendedPropertiesIndex, default: .default].relativePagePath[localization] = path
       if case .type = self {
-        links[name.source().truncated(before: "<")] = String(path)
+        links[names.title.truncated(before: "<")] = String(path)
       } else {
-        links[name.source()] = String(path)
+        links[names.title] = String(path)
       }
       return links
-    }
+    //}
   }
 
   // MARK: - Parameters

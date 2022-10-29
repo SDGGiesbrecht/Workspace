@@ -157,6 +157,7 @@ extension SymbolLike {
             isSame: indexA == indexB,
             globalScope: globalScope,
             customReplacements: customReplacements,
+            package: package,
             extensionStorage: &extensionStorage
           )
         }

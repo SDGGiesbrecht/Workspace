@@ -696,16 +696,17 @@
         extensionStorage: &extensionStorage,
         parsingCache: &parsingCache
       )
-      self.extensionStorage = extensionStorage
 
       var paths: [LocalizationIdentifier: [String: String]] = [:]
       for localization in localizations {
         paths[localization] = api.determinePaths(
           for: localization,
-          customReplacements: customReplacements
+          customReplacements: customReplacements,
+          package: api,
+          extensionStorage: &extensionStorage
         )
       }
-      api.determineLocalizedPaths(localizations: localizations)
+      api.determineLocalizedPaths(localizations: localizations, package: api, extensionStorage: &extensionStorage)
       self.symbolLinks = paths.mapValues { localization in
         localization.mapValues { link in
           return HTML.percentEncodeURLPath(link)
@@ -723,6 +724,7 @@
         localizations: localizations
       )
       self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
+      self.extensionStorage = extensionStorage
     }
 
     // MARK: - Properties
@@ -863,7 +865,8 @@
           let pageURL = api.pageURL(
             in: outputDirectory,
             for: localization,
-            customReplacements: customReplacements
+            customReplacements: customReplacements,
+            extensionStorage: extensionStorage
           )
           try SymbolPage(
             localization: localization,
@@ -947,7 +950,8 @@
             let location = library.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements
+              customReplacements: customReplacements,
+              extensionStorage: extensionStorage
             )
             try SymbolPage(
               localization: localization,
@@ -987,7 +991,8 @@
             let location = module.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements
+              customReplacements: customReplacements,
+              extensionStorage: extensionStorage
             )
             try SymbolPage(
               localization: localization,
@@ -1036,7 +1041,8 @@
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements
+              customReplacements: customReplacements,
+              extensionStorage: extensionStorage
             )
             try SymbolPage(
               localization: localization,
@@ -1101,7 +1107,8 @@
           let location = symbol.pageURL(
             in: outputDirectory,
             for: localization,
-            customReplacements: customReplacements
+            customReplacements: customReplacements,
+            extensionStorage: extensionStorage
           )
 
           var modifiedRoot: StrictString = "../../"
@@ -1350,7 +1357,8 @@
         let pageURL = api.pageURL(
           in: outputDirectory,
           for: localization,
-          customReplacements: customReplacements
+          customReplacements: customReplacements,
+          extensionStorage: extensionStorage
         )
         if redirectURL ≠ pageURL {
           try DocumentSyntax.redirect(

@@ -573,7 +573,7 @@ extension SymbolLike {
   // MARK: - Parameters
 
   internal func parameters() -> [String] {
-    return declaration?.compactMap({ fragment in
+    return declaration?.declarationFragments.compactMap({ fragment in
       switch fragment.kind {
       case .internalParameter:
         return fragment.spelling

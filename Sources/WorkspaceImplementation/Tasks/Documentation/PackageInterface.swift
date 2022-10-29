@@ -879,13 +879,13 @@
             platforms: platforms[localization]!,
             symbol: api,
             package: api,
-            tools: cli,
+            extensionStorage: extensionStorage, tools: cli,
             copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
             status: status,
             output: output,
-            coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
+            coverageCheckOnly: coverageCheckOnly
           )?.contents.save(to: pageURL)
         }
       }
@@ -964,12 +964,12 @@
               platforms: platforms[localization]!,
               symbol: library,
               package: self.api,
-              copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
+              coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: location)
           }
         }
@@ -1005,12 +1005,12 @@
               platforms: platforms[localization]!,
               symbol: module,
               package: self.api,
-              copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
+              coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: location)
           }
         }
@@ -1055,12 +1055,12 @@
               platforms: platforms[localization]!,
               symbol: symbol,
               package: self.api,
-              copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
+              coverageCheckOnly: coverageCheckOnly
             )?.contents.save(to: location)
 
             switch symbol.indexSectionIdentifier {
@@ -1131,12 +1131,12 @@
             platforms: platforms[localization]!,
             symbol: symbol,
             package: self.api,
-            copyright: copyright(for: localization, status: status),
+            extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
             status: status,
             output: output,
-            coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
+            coverageCheckOnly: coverageCheckOnly
           )?.contents.save(to: location)
 
           switch symbol.indexSectionIdentifier {

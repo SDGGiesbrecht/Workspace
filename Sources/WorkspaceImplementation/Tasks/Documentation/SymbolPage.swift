@@ -51,18 +51,17 @@
       platforms: StrictString,
       symbol: SymbolType,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI? = nil,
       copyright: StrictString,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus,
       output: Command.Output,
-      coverageCheckOnly: Bool,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+      coverageCheckOnly: Bool
     ) where SymbolType: SymbolLike {
 
       if extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
-        let name: StrictString?
         switch symbol.indexSectionIdentifier {
         case .package, .modules, .types, .extensions, .protocols:
           output.print(
@@ -120,6 +119,7 @@
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
+          extensionStorage: extensionStorage,
           status: status
         )
       )
@@ -159,6 +159,7 @@
         platforms: platforms,
         symbol: symbol,
         package: package,
+        extensionStorage: extensionStorage,
         tools: tools,
         copyright: copyright,
         packageIdentifiers: packageIdentifiers,
@@ -180,6 +181,7 @@
       platforms: StrictString,
       symbol: SymbolType,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI?,
       copyright: StrictString,
       packageIdentifiers: Set<String>,
@@ -187,17 +189,16 @@
       adjustedSymbolLinks: [String: String],
       partiallyConstructedContent: [StrictString]
     ) where SymbolType: SymbolLike {
-
       let navigationPath = SymbolPage.generateNavigationPath(
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
         allLocalizations: allLocalizations
-          .lazy.filter({ $0 ∉ symbol.skippedLocalizations }).map({ localization in
+          .lazy.filter({ $0 ∉ extensionStorage[symbol.extendedPropertiesIndex, default: .default].skippedLocalizations }).map({ localization in
             let path: StrictString
-            if symbol.exists(in: localization) {
-              path = symbol.relativePagePath[localization]!
+            if extensionStorage[symbol.extendedPropertiesIndex, default: .default].exists(in: localization) {
+              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath[localization]!
             } else {
-              path = symbol.localizedEquivalentPaths[localization]!
+              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedEquivalentPaths[localization]!
             }
             return (localization: localization, path: path)
           }),
@@ -236,8 +237,8 @@
         )
       )
 
-      switch symbol {
-      case .package, .library, .module:
+      switch symbol.indexSectionIdentifier {
+      case .package, .libraries, .modules:
         content.append(
           SymbolPage.generateTypesSection(
             localization: localization,
@@ -308,9 +309,8 @@
             symbolLinks: adjustedSymbolLinks
           )
         )
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .conformance:
-        if case .protocol = symbol {
+      case .types, .protocols, .extensions, .variables, .functions:
+        if case .protocols = symbol.indexSectionIdentifier {
           content.append(SymbolPage.protocolModeInterface(localization: localization))
         }
         content.append(
@@ -323,7 +323,7 @@
             symbolLinks: adjustedSymbolLinks
           )
         )
-      case .operator, .precedence:
+      case .tools, .operators, .precedenceGroups:
         break
       }
 
@@ -357,7 +357,7 @@
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         ),
-        title: StrictString(symbol.name.source()),
+        title: StrictString(symbol.names.title),
         content: content.joinedAsLines(),
         extensions: extensions.joinedAsLines(),
         copyright: copyright
@@ -572,6 +572,8 @@
       allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
       navigationPath: [SymbolLike]
     ) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       return generateNavigationPath(
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
@@ -581,7 +583,7 @@
             StrictString(element.name.source()), element.relativePagePath[localization]!
           )
         })
-      )
+      )*/
     }
 
     internal static func generateNavigationPath(
@@ -671,7 +673,8 @@
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+      #warning("Debugging...")/*
       guard let module = symbol.homeModule.pointee,
         let product = APIElement.module(module).homeProduct.pointee
       else {
@@ -715,7 +718,7 @@
         symbolLinks: [:]
       )
 
-      return StrictString(source)
+      return StrictString(source)*/
     }
 
     private static func generateImportStatement<SymbolType>(
@@ -724,7 +727,8 @@
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+      #warning("Debugging...")/*
       guard let module = symbol.homeModule.pointee else {
         return ""
       }
@@ -767,16 +771,18 @@
           ),
         ].joinedAsLines(),
         inline: false
-      ).normalizedSource()
+      ).normalizedSource()*/
     }
 
     private static func generateCompilationConditions<SymbolType>(
       symbol: SymbolType
     ) -> StrictString? where SymbolType: SymbolLike {
+      return nil
+      #warning("Debugging...")/*
       if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
         return StrictString(conditions)
       }
-      return nil
+      return nil*/
     }
 
     private static func generateConstraints<SymbolType>(
@@ -784,6 +790,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString? where SymbolType: SymbolLike {
+      return nil
+      #warning("Debugging...")/*
       if let constraints = symbol.constraints {
         let withoutSpace = constraints.withWhereKeyword(
           constraints.whereKeyword.withLeadingTrivia([])
@@ -796,7 +804,7 @@
           )
         )
       }
-      return nil
+      return nil*/
     }
 
     internal static func generateDescriptionSection(contents: StrictString) -> StrictString {
@@ -816,7 +824,8 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+      #warning("Debugging...")/*
       if let documentation = symbol.localizedDocumentation[localization],
          let description = documentation.documentation().descriptionSection
       {
@@ -838,14 +847,15 @@
           localization: localization
         )
       }
-      return ""
+      return ""*/
     }
 
     internal static func generateDeclarationSection(
       localization: LocalizationIdentifier,
       declaration: StrictString
     ) -> StrictString {
-
+      return ""
+#warning("Debugging...")/*
       let declarationHeading: StrictString
       switch localization._bestMatch {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -864,7 +874,7 @@
         attributes: ["class": "declaration"],
         contents: sectionContents.joinedAsLines(),
         inline: false
-      ).normalizedSource()
+      ).normalizedSource()*/
     }
 
     private static func generateDeclarationSection<SymbolType>(
@@ -875,7 +885,8 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+#warning("Debugging...")/*
       guard var declaration = symbol.declaration else {
         return ""
       }
@@ -900,7 +911,7 @@
             symbolLinks: symbolLinks
           )
         )
-      )
+      )*/
     }
 
     internal static func generateDiscussionSection<SymbolType>(
@@ -908,7 +919,8 @@
       symbol: SymbolType?,
       content: StrictString?
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+#warning("Debugging...")/*
       guard let discussion = content else {
         return ""
       }
@@ -942,7 +954,7 @@
       sectionContents.append(discussion)
 
       return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
-        .normalizedSource()
+        .normalizedSource()*/
     }
 
     private static func generateDiscussionSection<SymbolType>(
@@ -953,7 +965,8 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-
+      return ""
+#warning("Debugging...")/*
       guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
         ¬discussion.isEmpty
       else {
@@ -992,14 +1005,15 @@
         localization: localization,
         symbol: symbol,
         content: sectionContents.joinedAsLines()
-      )
+      )*/
     }
 
     internal static func generateParameterLikeSection(
       heading: StrictString,
       entries: [(term: StrictString, description: StrictString)]
     ) -> StrictString {
-
+      return ""
+#warning("Debugging...")/*
       guard ¬entries.isEmpty else {
         return ""
       }
@@ -1019,7 +1033,7 @@
         ).normalizedSource(),
       ]
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()
+        .normalizedSource()*/
     }
 
     private static func generateParametersSection(
@@ -1031,7 +1045,8 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
     ) -> StrictString {
-
+      return ""
+#warning("Debugging...")/*
       let parameters = symbol.parameters()
       let parameterDocumentation =
       extensionStorage[symbol.extendedPropertiesIndex, default: .default]
@@ -1118,7 +1133,7 @@
               return (term: term, description: StrictString(description.joinedAsLines()))
             }
           )
-      )
+      )*/
     }
 
     private static func generateThrowsSection<SymbolType>(
@@ -1129,6 +1144,8 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+#warning("Debugging...")/*
       guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
         return ""
       }
@@ -1148,7 +1165,7 @@
         )
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()
+        .normalizedSource()*/
     }
 
     private static func generateReturnsSection<SymbolType>(
@@ -1159,6 +1176,8 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+#warning("Debugging...")/*
       guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
         return ""
       }
@@ -1178,7 +1197,7 @@
         )
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()
+        .normalizedSource()*/
     }
 
     private static func generateOtherModuleExtensionsSections<SymbolType>(
@@ -1189,6 +1208,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> [StrictString] where SymbolType: SymbolLike {
+      return []
+#warning("Debugging...")/*
       var extensions: [ExtensionAPI] = []
       for `extension` in package.allExtensions {
         switch symbol {
@@ -1240,7 +1261,7 @@
           ).normalizedSource()
         )
         return result.joinedAsLines()
-      })
+      })*/
     }
 
     internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -1304,6 +1325,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard case .package(let package) = symbol,
         ¬package.libraries.isEmpty
       else {
@@ -1317,10 +1340,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func modulesHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1332,7 +1357,7 @@
       } else {
         heading = "target"  // From “targets: [.target(...)]”
       }
-      return heading
+      return heading*/
     }
 
     private static func generateModulesSection<SymbolType>(
@@ -1343,6 +1368,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard case .library(let library) = symbol,
         ¬library.modules.isEmpty
       else {
@@ -1356,10 +1383,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func typesHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1371,7 +1400,7 @@
       } else {
         heading = "struct/class/enum"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateTypesSection<SymbolType>(
@@ -1382,6 +1411,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.types.isEmpty else {
         return ""
       }
@@ -1393,10 +1424,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func extensionsHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1408,7 +1441,7 @@
       } else {
         heading = "extension"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateExtensionsSection<SymbolType>(
@@ -1419,6 +1452,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.extensions.isEmpty else {
         return ""
       }
@@ -1430,10 +1465,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1445,7 +1482,7 @@
       } else {
         heading = "protocol"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateProtocolsSection<SymbolType>(
@@ -1456,6 +1493,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.protocols.isEmpty else {
         return ""
       }
@@ -1467,10 +1506,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func functionsHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1482,7 +1523,7 @@
       } else {
         heading = "func"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateFunctionsSection<SymbolType>(
@@ -1493,6 +1534,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.instanceMethods.isEmpty else {
         return ""
       }
@@ -1504,10 +1547,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func variablesHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1519,7 +1564,7 @@
       } else {
         heading = "var"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateVariablesSection<SymbolType>(
@@ -1530,6 +1575,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.instanceProperties.isEmpty else {
         return ""
       }
@@ -1541,10 +1588,12 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     internal static func operatorsHeader(localization: LocalizationIdentifier) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1556,7 +1605,7 @@
       } else {
         heading = "operator"
       }
-      return heading
+      return heading*/
     }
 
     private static func generateOperatorsSection<SymbolType>(
@@ -1567,6 +1616,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.operators.isEmpty else {
         return ""
       }
@@ -1578,12 +1629,14 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
-    internal static func precedenceGroupsHeader(localization: LocalizationIdentifier)
-      -> StrictString
-    {
+    internal static func precedenceGroupsHeader(
+      localization: LocalizationIdentifier
+    ) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1595,7 +1648,7 @@
       } else {
         heading = "precedencegroup"
       }
-      return heading
+      return heading*/
     }
 
     private static func generatePrecedenceGroupsSection<SymbolType>(
@@ -1606,6 +1659,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.operators.isEmpty else {
         return ""
       }
@@ -1617,7 +1672,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateCasesSection<SymbolType>(
@@ -1628,6 +1683,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.cases.isEmpty else {
         return ""
       }
@@ -1652,7 +1709,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateNestedTypesSection<SymbolType>(
@@ -1663,6 +1720,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.types.isEmpty else {
         return ""
       }
@@ -1687,7 +1746,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateTypePropertiesSection<SymbolType>(
@@ -1698,6 +1757,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.typeProperties.isEmpty else {
         return ""
       }
@@ -1722,7 +1783,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateTypeMethodsSection<SymbolType>(
@@ -1733,6 +1794,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.typeMethods.isEmpty else {
         return ""
       }
@@ -1757,7 +1820,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateInitializersSection<SymbolType>(
@@ -1768,6 +1831,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.initializers.isEmpty else {
         return ""
       }
@@ -1794,7 +1859,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generatePropertiesSection<SymbolType>(
@@ -1805,6 +1870,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.instanceProperties.isEmpty else {
         return ""
       }
@@ -1829,7 +1896,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateSubscriptsSection<SymbolType>(
@@ -1840,6 +1907,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.subscripts.isEmpty else {
         return ""
       }
@@ -1864,7 +1933,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateMethodsSection<SymbolType>(
@@ -1875,6 +1944,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
       guard ¬symbol.instanceMethods.isEmpty else {
         return ""
       }
@@ -1899,7 +1970,7 @@
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
+      )*/
     }
 
     private static func generateConformanceSections<SymbolType>(
@@ -1910,6 +1981,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> [StrictString] where SymbolType: SymbolLike {
+      return []
+      #warning("Debugging...")/*
       var result: [StrictString] = []
       conformanceProcessing: for conformance in symbol.conformances {
         let name = conformance.type.syntaxHighlightedHTML(
@@ -1961,7 +2034,7 @@
           )
         )
       }
-      return result
+      return result*/
     }
 
     private static func generateChildrenSection(
@@ -1971,6 +2044,8 @@
       children: [CommandInterfaceInformation],
       pathToSiteRoot: StrictString
     ) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
 
       func getEntryContents(_ child: CommandInterfaceInformation) -> [StrictString] {
         var entry: [StrictString] = []
@@ -2013,7 +2088,7 @@
         escapeHeading: escapeHeading,
         children: children,
         childContents: getEntryContents
-      )
+      )*/
     }
 
     private static func generateChildrenSection<SymbolType>(
@@ -2026,6 +2101,8 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
+      return ""
+      #warning("Debugging...")/*
 
       func getEntryContents(_ child: APIElement) -> [StrictString] {
         var entry: [StrictString] = []
@@ -2144,7 +2221,7 @@
         children: children.filter({ $0.exists(in: localization) }),
         childContents: getEntryContents,
         childAttributes: getAttributes
-      )
+      )*/
     }
 
     private static func generateChildrenSection<T>(
@@ -2154,6 +2231,8 @@
       childContents: (T) -> [StrictString],
       childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }
     ) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
 
       var sectionContents: [StrictString] = [
         ElementSyntax(
@@ -2183,10 +2262,12 @@
         )
       }
       return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
-        .normalizedSource()
+        .normalizedSource()*/
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
+      return ""
+      #warning("Debugging...")/*
       var result = HTML.escapeTextForCharacterData(name)
       highlight("(", as: "punctuation", in: &result, internal: `internal`)
       highlight(")", as: "punctuation", in: &result, internal: `internal`)
@@ -2199,7 +2280,7 @@
           as StrictString + " identifier\u{22}>"
       )
       result.append(contentsOf: "</span>")
-      return result
+      return result*/
     }
     private static func highlight(
       _ token: StrictString,
@@ -2207,6 +2288,7 @@
       in name: inout StrictString,
       internal: Bool
     ) {
+      #warning("Debugging...")/*
       name.replaceMatches(
         for: token,
         with: "</span>"
@@ -2218,7 +2300,7 @@
           )
           .normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external")
           as StrictString + " identifier\u{22}>"
-      )
+      )*/
     }
   }
 #endif

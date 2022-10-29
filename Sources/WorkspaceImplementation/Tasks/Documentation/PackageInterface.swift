@@ -885,7 +885,7 @@
             symbolLinks: symbolLinks[localization]!,
             status: status,
             output: output,
-            coverageCheckOnly: coverageCheckOnly
+            coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
           )?.contents.save(to: pageURL)
         }
       }
@@ -969,7 +969,7 @@
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly
+              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
             )?.contents.save(to: location)
           }
         }
@@ -1010,7 +1010,7 @@
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly
+              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
             )?.contents.save(to: location)
           }
         }
@@ -1060,7 +1060,7 @@
               symbolLinks: symbolLinks[localization]!,
               status: status,
               output: output,
-              coverageCheckOnly: coverageCheckOnly
+              coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
             )?.contents.save(to: location)
 
             switch symbol.indexSectionIdentifier {
@@ -1136,7 +1136,7 @@
             symbolLinks: symbolLinks[localization]!,
             status: status,
             output: output,
-            coverageCheckOnly: coverageCheckOnly
+            coverageCheckOnly: coverageCheckOnly, extensionStorage: extensionStorage
           )?.contents.save(to: location)
 
           switch symbol.indexSectionIdentifier {

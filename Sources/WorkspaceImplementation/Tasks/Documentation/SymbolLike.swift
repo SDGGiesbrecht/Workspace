@@ -241,7 +241,7 @@ extension SymbolLike {
 
   private func fileName(customReplacements: [(StrictString, StrictString)]) -> StrictString {
     return Page.sanitize(
-      fileName: StrictString(name.source()),
+      fileName: StrictString(names.title),
       customReplacements: customReplacements
     )
   }
@@ -249,9 +249,10 @@ extension SymbolLike {
   internal func pageURL(
     in outputDirectory: URL,
     for localization: LocalizationIdentifier,
-    customReplacements: [(StrictString, StrictString)]
+    customReplacements: [(StrictString, StrictString)],
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
   ) -> URL {
-    return outputDirectory.appendingPathComponent(String(relativePagePath[localization]!))
+    return outputDirectory.appendingPathComponent(String(extensionStorage[self.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))
   }
 
   internal func determinePaths(

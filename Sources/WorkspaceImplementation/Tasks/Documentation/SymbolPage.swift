@@ -349,7 +349,7 @@
           for: symbol,
           package: package,
           localization: localization,
-          pathToSiteRoot: pathToSiteRoot
+          pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
         ),
         symbolType: symbol.symbolType(localization: localization),
         compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
@@ -724,14 +724,13 @@
       for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString
+      pathToSiteRoot: StrictString,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard let module = symbol.homeModule.pointee else {
+      guard let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule else {
         return ""
       }
-      let moduleName = module.name.text
+      let moduleName = module.names.title
 
       let importStatement = SyntaxFactory.makeImportDecl(
         attributes: nil,
@@ -747,7 +746,7 @@
       )
 
       var links: [String: String] = [:]
-      if let link = APIElement.module(module).relativePagePath[localization] {
+      if let link = extensionStorage[module.extendedPropertiesIndex, default: .default].relativePagePath[localization] {
         links[moduleName] = String(pathToSiteRoot + link)
       }
 
@@ -766,11 +765,11 @@
             for: symbol,
             package: package,
             localization: localization,
-            pathToSiteRoot: pathToSiteRoot
+            pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
           ),
         ].joinedAsLines(),
         inline: false
-      ).normalizedSource()*/
+      ).normalizedSource()
     }
 
     private static func generateCompilationConditions<SymbolType>(

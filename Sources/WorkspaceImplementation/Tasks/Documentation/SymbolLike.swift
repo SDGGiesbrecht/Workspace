@@ -269,7 +269,7 @@ extension SymbolLike {
       switch self {
       case .package(let package):
         for library in package.libraries {
-          links = APIElement.library(library).determinePaths(
+          links = library.determinePaths(
             for: localization,
             customReplacements: customReplacements
           )

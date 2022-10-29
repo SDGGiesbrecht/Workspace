@@ -169,11 +169,11 @@ extension SymbolLike {
     isSame: Bool,
     globalScope: Bool,
     customReplacements: [(StrictString, StrictString)],
+    package: PackageAPI,
     extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
   ) {
     for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
       .localizedDocumentation {
-      #warning("Debugging...")/*
       extensionStorage[extendedPropertiesIndex, default: .default]
         .localizedEquivalentFileNames[localization] = other
         .fileName(customReplacements: customReplacements)
@@ -182,29 +182,21 @@ extension SymbolLike {
         globalScope: globalScope,
         typeMember: {
           switch other {
-          case .package,  // @exempt(from: tests)
-            .library,
-            .module,
-            .type,
-            .protocol,
-            .extension,
-            .case,
-            .initializer,
-            .subscript,
-            .operator,
-            .precedence,
-            .conformance:
+          case let symbol as SymbolGraph.Symbol:
+            switch symbol.kind.identifier {
+            case .associatedtype, .class, .deinit, .enum, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .struct, .subscript, .typealias, .var, .module, .unknown:
+              return false
+            case .typeMethod, .typeProperty, .typeSubscript:
+             return true
+            }
+          default:
             unreachable()
-          case .variable(let variable):
-            return variable.declaration.isTypeMember()
-          case .function(let function):
-            return function.declaration.isTypeMember()
           }
         }
       )
       if ¬isSame {
-        localizedChildren.append(contentsOf: other.children)
-      }*/
+        extensionStorage[self.extendedPropertiesIndex, default: .default].localizedChildren.append(contentsOf: other.children(package: package))
+      }
     }
   }
 

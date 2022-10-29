@@ -172,6 +172,7 @@ extension SymbolLike {
   ) {
     for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
       .localizedDocumentation {
+      #warning("Debugging...")/*
       extensionStorage[extendedPropertiesIndex, default: .default]
         .localizedEquivalentFileNames[localization] = other
         .fileName(customReplacements: customReplacements)
@@ -202,15 +203,19 @@ extension SymbolLike {
       )
       if ¬isSame {
         localizedChildren.append(contentsOf: other.children)
-      }
+      }*/
     }
   }
 
-  internal func determineLocalizedPaths(localizations: [LocalizationIdentifier]) {
-    var groups: [StrictString: [APIElement]] = [:]
-    for child in children {
-      child.determineLocalizedPaths(localizations: localizations)
-      if let crossReference = child.crossReference {
+  internal func determineLocalizedPaths(
+    localizations: [LocalizationIdentifier],
+    package: PackageAPI,
+    extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+  ) {
+    var groups: [StrictString: [SymbolLike]] = [:]
+    for child in children(package: package) {
+      child.determineLocalizedPaths(localizations: localizations, package: package, extensionStorage: extensionStorage)
+      if let crossReference = extensionStorage[child.extendedPropertiesIndex, default: .default].crossReference {
         groups[crossReference, default: []].append(child)
       }
     }

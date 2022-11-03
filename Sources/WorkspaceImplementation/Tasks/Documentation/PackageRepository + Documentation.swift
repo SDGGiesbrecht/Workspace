@@ -137,8 +137,7 @@
       for localization in localizations {
         var markdown: [Markdown] = []
         for entry in relatedProjects {
-          #warning("Debugging type checking...")
-          //try purgingAutoreleased {
+          try purgingAutoreleased {
             switch entry {
             case .heading(text: let translations):
               if let text = translations[localization] {
@@ -184,7 +183,7 @@
                 ]
               }
             }
-          //}
+          }
         }
         if ¬markdown.isEmpty {
           result[localization] = markdown.joinedAsLines()

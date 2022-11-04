@@ -1195,9 +1195,7 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard case .package(let package) = symbol,
+      guard let package = symbol as? PackageAPI,
         ¬package.libraries.isEmpty
       else {
         return ""
@@ -1205,12 +1203,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: librariesHeader(localization: localization),
-        children: package.libraries.map({ APIElement.library($0) }),
+        children: package.libraries,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func modulesHeader(localization: LocalizationIdentifier) -> StrictString {

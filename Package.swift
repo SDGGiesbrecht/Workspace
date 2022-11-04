@@ -493,10 +493,9 @@ let package = Package(
       from: Version(3, 0, 2)
     ),
     .package(
-      // #warning(Path dependency.)
-      path: "../SDGSwift"
-      /*url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(11, 1, 0)*/
+      url: "https://github.com/SDGGiesbrecht/SDGSwift",
+      // #warning(Branch dependency.)
+      branch: "symbol‐kit"//from: Version(11, 1, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

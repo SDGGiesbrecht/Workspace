@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "sdgswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
+      "state" : {
+        "branch" : "symbol‐kit",
+        "revision" : "f6a58f4285bcbe4412d38e4e130bb855be1ac8fa"
+      }
+    },
+    {
       "identity" : "sdgweb",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGWeb",

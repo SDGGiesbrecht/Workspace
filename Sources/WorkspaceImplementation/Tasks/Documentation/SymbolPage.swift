@@ -1374,8 +1374,6 @@
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1387,7 +1385,7 @@
       } else {
         heading = "protocol"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateProtocolsSection<SymbolType>(
@@ -1398,25 +1396,23 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.protocols.isEmpty else {
+      let protocols = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .`protocol` })
+      guard ¬protocols.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: protocolsHeader(localization: localization),
-        children: symbol.protocols.map({ APIElement.protocol($0) }),
+        children: protocols,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func functionsHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1428,7 +1424,7 @@
       } else {
         heading = "func"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateFunctionsSection<SymbolType>(
@@ -1456,8 +1452,6 @@
     }
 
     internal static func variablesHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1469,7 +1463,7 @@
       } else {
         heading = "var"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateVariablesSection<SymbolType>(
@@ -1497,8 +1491,6 @@
     }
 
     internal static func operatorsHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1510,7 +1502,7 @@
       } else {
         heading = "operator"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateOperatorsSection<SymbolType>(
@@ -1540,8 +1532,6 @@
     internal static func precedenceGroupsHeader(
       localization: LocalizationIdentifier
     ) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1553,7 +1543,7 @@
       } else {
         heading = "precedencegroup"
       }
-      return heading*/
+      return heading
     }
 
     private static func generatePrecedenceGroupsSection<SymbolType>(

@@ -85,6 +85,7 @@
       content.append(
         SymbolPage.generateDescriptionSection(
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           localization: localization,
           packageIdentifiers: packageIdentifiers,
@@ -777,15 +778,14 @@
 
     private static func generateDescriptionSection<SymbolType>(
       symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
       localization: LocalizationIdentifier,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      if let documentation = symbol.localizedDocumentation[localization],
+      if let documentation = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization],
          let description = documentation.documentation().descriptionSection
       {
         return generateDescriptionSection(
@@ -798,7 +798,7 @@
           )
         )
       }
-      if case .extension = symbol {
+      if symbol is Extension {
       } else {
         status.reportMissingDescription(
           symbol: symbol,
@@ -806,7 +806,7 @@
           localization: localization
         )
       }
-      return ""*/
+      return ""
     }
 
     internal static func generateDeclarationSection(

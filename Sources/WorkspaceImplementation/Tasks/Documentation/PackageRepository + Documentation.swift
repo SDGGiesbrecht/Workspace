@@ -311,6 +311,7 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
+      #warning("Needs to merge graphs from other platforms.")
       let api = try self.api(
         reportProgress: { output.print($0) }
       ).get()

@@ -1212,8 +1212,6 @@
     }
 
     internal static func modulesHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1225,7 +1223,7 @@
       } else {
         heading = "target"  // From “targets: [.target(...)]”
       }
-      return heading*/
+      return heading
     }
 
     private static func generateModulesSection<SymbolType>(
@@ -1236,9 +1234,7 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard case .library(let library) = symbol,
+      guard let library = symbol as? LibraryAPI,
         ¬library.modules.isEmpty
       else {
         return ""
@@ -1246,17 +1242,17 @@
       return generateChildrenSection(
         localization: localization,
         heading: modulesHeader(localization: localization),
-        children: library.modules.map({ APIElement.module($0) }),
+        children: library.modules.compactMap({ name in
+          return package.modules.first(where: { $0.names.title == name })
+        }),
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func typesHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1268,7 +1264,7 @@
       } else {
         heading = "struct/class/enum"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateTypesSection<SymbolType>(

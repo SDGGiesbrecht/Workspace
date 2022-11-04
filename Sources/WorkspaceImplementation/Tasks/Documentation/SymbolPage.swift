@@ -129,6 +129,7 @@
         SymbolPage.generateThrowsSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
@@ -1083,14 +1084,13 @@
     private static func generateThrowsSection<SymbolType>(
       localization: LocalizationIdentifier,
       symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-#warning("Debugging...")/*
-      guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
+      guard let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().throwsCallout else {
         return ""
       }
       let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
@@ -1109,7 +1109,7 @@
         )
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()*/
+        .normalizedSource()
     }
 
     private static func generateReturnsSection<SymbolType>(

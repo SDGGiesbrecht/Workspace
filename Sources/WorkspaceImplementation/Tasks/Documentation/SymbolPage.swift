@@ -332,15 +332,6 @@
         break
       }
 
-      let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(
-        symbol: symbol,
-        package: package,
-        localization: localization,
-        pathToSiteRoot: pathToSiteRoot,
-        packageIdentifiers: packageIdentifiers,
-        symbolLinks: adjustedSymbolLinks
-      )
-
       super.init(
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
@@ -358,7 +349,6 @@
         symbolType: symbol.symbolType(localization: localization),
         title: StrictString(symbol.names.title),
         content: content.joinedAsLines(),
-        extensions: extensions.joinedAsLines(),
         copyright: copyright
       )
     }
@@ -1142,70 +1132,6 @@
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
         .normalizedSource()
-    }
-
-    private static func generateOtherModuleExtensionsSections<SymbolType>(
-      symbol: SymbolType,
-      package: PackageAPI,
-      localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> [StrictString] where SymbolType: SymbolLike {
-      return []
-#warning("Debugging...")/*
-      var extensions: [ExtensionAPI] = []
-      for `extension` in package.allExtensions {
-        switch symbol {
-        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function,
-          .operator, .precedence, .conformance:
-          break
-        case .type(let type):
-          if `extension`.isExtension(of: type) {
-            extensions.append(`extension`)
-          }
-        case .protocol(let `protocol`):
-          if `extension`.isExtension(of: `protocol`) {
-            extensions.append(`extension`)
-          }
-        case .extension(let `rootExtension`):
-          if ¬(`extension` === `rootExtension`),
-            `extension`.extendsSameType(as: `rootExtension`)
-          {
-            extensions.append(`extension`)
-          }
-        }
-      }
-
-      return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
-        var result: [StrictString] = []
-        result.append(
-          generateImportStatement(
-            for: APIElement.extension(`extension`),
-            package: package,
-            localization: localization,
-            pathToSiteRoot: pathToSiteRoot
-          )
-        )
-
-        let sections = generateMembersSections(
-          localization: localization,
-          symbol: APIElement.extension(`extension`),
-          pathToSiteRoot: pathToSiteRoot,
-          package: package,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-        result.append(
-          ElementSyntax(
-            "div",
-            attributes: ["class": "main‐text‐column"],
-            contents: sections.joinedAsLines(),
-            inline: false
-          ).normalizedSource()
-        )
-        return result.joinedAsLines()
-      })*/
     }
 
     internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {

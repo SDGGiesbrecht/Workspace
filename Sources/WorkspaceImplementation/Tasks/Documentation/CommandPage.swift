@@ -148,7 +148,6 @@
         symbolType: symbolType,
         title: interface.name,
         content: content.joinedAsLines(),
-        extensions: "",
         copyright: copyright
       )
     }

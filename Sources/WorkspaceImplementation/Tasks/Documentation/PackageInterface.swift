@@ -1301,7 +1301,6 @@
             symbolType: nil,
             title: HTML.escapeTextForCharacterData(pageTitle),
             content: StrictString(pageContent),
-            extensions: "",
             copyright: copyright(for: localization, status: status)
           )
           let url = outputDirectory.appendingPathComponent(String(location(localization)))

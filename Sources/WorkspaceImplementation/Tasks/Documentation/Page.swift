@@ -111,7 +111,6 @@
       symbolType: StrictString?,
       title: StrictString,
       content: StrictString,
-      extensions: StrictString,
       copyright: StrictString
     ) {
 
@@ -168,8 +167,6 @@
       )
 
       mutable.replaceMatches(for: "[*content*]", with: content)
-
-      mutable.replaceMatches(for: "[*extensions*]".scalars.literal(), with: extensions)
 
       contents = mutable
     }

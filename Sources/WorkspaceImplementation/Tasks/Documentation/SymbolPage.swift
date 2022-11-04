@@ -1975,26 +1975,22 @@
 
         var name = StrictString(child.names.title)
         var relativePathOfChild = extensionStorage[child.extendedPropertiesIndex, default: .default].relativePagePath[localization]
-        if case .extension(let `extension`) = child {
-          var baseType: APIElement?
-          for type in package.types where `extension`.isExtension(of: type) {
-            baseType = APIElement.type(type)
-            break
-          }
-          if baseType == nil /* Still not resolved. */ {
-            for `protocol` in package.protocols
-            where `extension`.isExtension(of: `protocol`) {
-              baseType = APIElement.protocol(`protocol`)
-              break
+        if let `extension` = child as? Extension {
+          var baseType: SymbolGraph.Symbol?
+          for graph in package.symbolGraphs() {
+            for symbol in graph.symbols.values {
+              if symbol.identifier.precise == `extension`.identifier.precise {
+                baseType = symbol
+              }
             }
           }
           if let resolved = baseType {
-            relativePathOfChild = resolved.relativePagePath[localization]
+            relativePathOfChild = extensionStorage[resolved.extendedPropertiesIndex, default: .default].relativePagePath[localization]
           }
         }
 
         switch child {
-        case .package, .library:
+        case is PackageAPI, is LibraryAPI:
           name = ElementSyntax(
             "span",
             attributes: ["class": "text"],
@@ -2008,8 +2004,7 @@
             inline: true
           )
           .normalizedSource()
-        case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript,
-          .function, .operator, .precedence, .conformance:
+        default:
           name = highlight(name: name, internal: relativePathOfChild ≠ nil)
         }
         name = ElementSyntax(
@@ -2019,14 +2014,6 @@
           inline: true
         )
         .normalizedSource()
-        if let constraints = child.constraints {
-          name += StrictString(
-            constraints.syntaxHighlightedHTML(
-              inline: true,
-              internalIdentifiers: packageIdentifiers
-            )
-          )
-        }
 
         if let local = relativePathOfChild {
           let target = pathToSiteRoot + local
@@ -2040,7 +2027,7 @@
               inline: true
             ).normalizedSource()
           )
-          if let description = child.localizedDocumentation[localization]?.descriptionSection {
+          if let description = extensionStorage[child.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().descriptionSection {
             entry.append(
               StrictString(
                 description.renderedHTML(
@@ -2057,22 +2044,11 @@
 
         return entry
       }
-      func getAttributes(_ child: APIElement) -> [StrictString: StrictString] {
-        if child.isProtocolRequirement {
-          let conformanceAttributeName: StrictString = "data\u{2D}conformance"
-          if child.hasDefaultImplementation {
-            return [conformanceAttributeName: "customizable"]
-          } else {
-            return [conformanceAttributeName: "requirement"]
-          }
-        }
-        return [:]
-      }
 
       return generateChildrenSection(
         heading: heading,
         escapeHeading: escapeHeading,
-        children: children.filter({ $0.exists(in: localization) }),
+        children: children.filter({ extensionStorage[$0.extendedPropertiesIndex, default: .default].exists(in: localization) }),
         childContents: getEntryContents,
         childAttributes: getAttributes
       )

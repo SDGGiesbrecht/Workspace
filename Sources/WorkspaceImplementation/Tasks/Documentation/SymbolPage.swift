@@ -140,6 +140,7 @@
         SymbolPage.generateReturnsSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
@@ -1115,14 +1116,13 @@
     private static func generateReturnsSection<SymbolType>(
       localization: LocalizationIdentifier,
       symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-#warning("Debugging...")/*
-      guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
+      guard let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().returnsCallout else {
         return ""
       }
       let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
@@ -1141,7 +1141,7 @@
         )
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()*/
+        .normalizedSource()
     }
 
     private static func generateOtherModuleExtensionsSections<SymbolType>(

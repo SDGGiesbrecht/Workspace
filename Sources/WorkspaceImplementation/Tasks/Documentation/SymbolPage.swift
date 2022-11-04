@@ -870,8 +870,6 @@
       symbol: SymbolType?,
       content: StrictString?
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-#warning("Debugging...")/*
       guard let discussion = content else {
         return ""
       }
@@ -884,16 +882,15 @@
         discussionHeading = "Einzelheiten"
       }
       if let swiftSymbol = symbol {
-        switch swiftSymbol {
-        case .package, .library, .module, .type, .protocol, .extension:
+        switch swiftSymbol.indexSectionIdentifier {
+        case .package, .libraries, .modules, .types, .protocols, .extensions:
           switch localization._bestMatch {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             discussionHeading = "Overview"
           case .deutschDeutschland:
             discussionHeading = "Übersicht"
           }
-        case .case, .initializer, .variable, .subscript, .function, .operator, .precedence,
-          .conformance:
+        case .variables, .functions, .operators, .precedenceGroups, .tools:
           break
         }
       }
@@ -905,7 +902,7 @@
       sectionContents.append(discussion)
 
       return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
-        .normalizedSource()*/
+        .normalizedSource()
     }
 
     private static func generateDiscussionSection<SymbolType>(

@@ -225,7 +225,7 @@
           localization: localization,
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
-          package: package,
+          package: package, extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         )
@@ -237,6 +237,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         )
@@ -249,7 +250,7 @@
             localization: localization,
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
-            package: package,
+            package: package, extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -260,6 +261,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -270,6 +272,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -280,6 +283,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -290,6 +294,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -300,6 +305,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -310,6 +316,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -324,6 +331,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -458,6 +466,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> [StrictString] where SymbolType: SymbolLike {
@@ -468,6 +477,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -478,6 +488,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -488,6 +499,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -498,6 +510,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -508,6 +521,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -518,6 +532,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -528,6 +543,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -538,6 +554,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -1182,6 +1199,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1196,7 +1214,7 @@
         children: package.libraries,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
-        packageIdentifiers: packageIdentifiers,
+        extensionStorage: extensionStorage, packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
@@ -1221,6 +1239,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1237,6 +1256,7 @@
         }),
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1262,6 +1282,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1282,6 +1303,7 @@
         children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1307,6 +1329,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1358,6 +1381,7 @@
         children: extensions,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1383,6 +1407,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1397,6 +1422,7 @@
         children: protocols,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1422,6 +1448,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1436,6 +1463,7 @@
         children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1461,6 +1489,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1475,6 +1504,7 @@
         children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1500,6 +1530,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1513,6 +1544,7 @@
         children: operators,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1540,6 +1572,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1553,6 +1586,7 @@
         children: precedenceGroups,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1563,6 +1597,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1590,6 +1625,7 @@
         children: cases,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1600,6 +1636,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1628,7 +1665,7 @@
         children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
-        packageIdentifiers: packageIdentifiers,
+        extensionStorage: extensionStorage, packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
@@ -1638,6 +1675,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1665,6 +1703,7 @@
         children: typeProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1675,6 +1714,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1702,6 +1742,7 @@
         children: typeMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1712,6 +1753,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1741,6 +1783,7 @@
         children: initializers,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1751,6 +1794,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1778,6 +1822,7 @@
         children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1788,6 +1833,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1815,6 +1861,7 @@
         children: subscripts,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1825,6 +1872,7 @@
       symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
@@ -1852,6 +1900,7 @@
         children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1864,8 +1913,6 @@
       children: [CommandInterfaceInformation],
       pathToSiteRoot: StrictString
     ) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
 
       func getEntryContents(_ child: CommandInterfaceInformation) -> [StrictString] {
         var entry: [StrictString] = []
@@ -1908,7 +1955,7 @@
         escapeHeading: escapeHeading,
         children: children,
         childContents: getEntryContents
-      )*/
+      )
     }
 
     private static func generateChildrenSection<SymbolType>(
@@ -1918,29 +1965,16 @@
       children: [SymbolType],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
 
-      func getEntryContents(_ child: APIElement) -> [StrictString] {
+      func getEntryContents(_ child: SymbolLike) -> [StrictString] {
         var entry: [StrictString] = []
-        if let conditions = child.compilationConditions {
-          entry.append(
-            StrictString(
-              conditions.syntaxHighlightedHTML(
-                inline: true,
-                internalIdentifiers: [],
-                symbolLinks: [:]
-              )
-            )
-          )
-          entry.append("<br>")
-        }
 
-        var name = StrictString(child.name.source())
-        var relativePathOfChild = child.relativePagePath[localization]
+        var name = StrictString(child.names.title)
+        var relativePathOfChild = extensionStorage[child.extendedPropertiesIndex, default: .default].relativePagePath[localization]
         if case .extension(let `extension`) = child {
           var baseType: APIElement?
           for type in package.types where `extension`.isExtension(of: type) {
@@ -2041,7 +2075,7 @@
         children: children.filter({ $0.exists(in: localization) }),
         childContents: getEntryContents,
         childAttributes: getAttributes
-      )*/
+      )
     }
 
     private static func generateChildrenSection<T>(

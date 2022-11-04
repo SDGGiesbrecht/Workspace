@@ -58,29 +58,6 @@ function contractIndex(currentSection) {
     }
 }
 
-function switchConformanceMode(sender) {
-    var children = document.getElementsByClassName("child");
-    for (var index = 0; index < children.length; ++index) {
-        let child = children[index];
-        if (sender.value == "required") {
-            if (child.getAttribute("data-conformance") == "requirement") {
-                unhideElement(child);
-            } else {
-                hideElement(child);
-            }
-        } else if (sender.value == "customizable") {
-            if (child.getAttribute("data-conformance") == "requirement"
-                || child.getAttribute("data-conformance") == "customizable") {
-                unhideElement(child);
-            } else {
-                hideElement(child);
-            }
-        } else {
-            unhideElement(child);
-        }
-    }
-}
-
 function showLanguageSwitch(sender) {
     var popup = document.getElementById("language‐switch");
     popup.style["display"] = "block";

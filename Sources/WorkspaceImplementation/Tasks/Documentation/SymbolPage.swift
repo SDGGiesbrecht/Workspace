@@ -373,57 +373,6 @@
       }
     }
 
-    internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString
-    {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "All"
-      case .deutschDeutschland:
-        return "Alle"
-      }
-    }
-
-    internal static func conformanceFilterRequired(
-      localization: LocalizationIdentifier
-    ) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Conformance Requirements"
-      case .deutschDeutschland:
-        return "Übereinstimmungsvoraussetzungen"
-      }
-    }
-
-    internal static func conformanceFilterCustomizable(
-      localization: LocalizationIdentifier
-    ) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom:
-        return "Customisation Points"
-      case .englishUnitedStates, .englishCanada:
-        return "Customization Points"
-      case .deutschDeutschland:
-        return "Anpassungsmöglichkeiten"
-      }
-    }
-
-    internal static func conformanceFilterButton(
-      labelled label: StrictString,
-      value: StrictString
-    ) -> StrictString {
-      return ElementSyntax(
-        "input",
-        attributes: [
-          "name": "conformance filter",
-          "onchange": "switchConformanceMode(this)",
-          "type": "radio",
-          "value": value,
-        ],
-        contents: label,
-        inline: false
-      ).normalizedSource()
-    }
-
     private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString
     {
       var contents: StrictString = ""
@@ -434,24 +383,6 @@
           contents: conformanceFilterLabel(localization: localization),
           inline: false
         ).normalizedSource()
-      )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterOff(localization: localization),
-          value: "all"
-        )
-      )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterRequired(localization: localization),
-          value: "required"
-        )
-      )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterCustomizable(localization: localization),
-          value: "customizable"
-        )
       )
       return ElementSyntax(
         "div",
@@ -2050,7 +1981,7 @@
         escapeHeading: escapeHeading,
         children: children.filter({ extensionStorage[$0.extendedPropertiesIndex, default: .default].exists(in: localization) }),
         childContents: getEntryContents,
-        childAttributes: { return [:] }
+        childAttributes: { _ in return [:] }
       )
     }
 
@@ -2061,8 +1992,6 @@
       childContents: (T) -> [StrictString],
       childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }
     ) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
 
       var sectionContents: [StrictString] = [
         ElementSyntax(
@@ -2092,7 +2021,7 @@
         )
       }
       return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
-        .normalizedSource()*/
+        .normalizedSource()
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {

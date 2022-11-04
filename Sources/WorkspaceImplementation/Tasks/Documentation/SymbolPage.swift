@@ -813,8 +813,6 @@
       localization: LocalizationIdentifier,
       declaration: StrictString
     ) -> StrictString {
-      return ""
-#warning("Debugging...")/*
       let declarationHeading: StrictString
       switch localization._bestMatch {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -833,7 +831,7 @@
         attributes: ["class": "declaration"],
         contents: sectionContents.joinedAsLines(),
         inline: false
-      ).normalizedSource()*/
+      ).normalizedSource()
     }
 
     private static func generateDeclarationSection<SymbolType>(
@@ -844,22 +842,16 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-#warning("Debugging...")/*
       guard var declaration = symbol.declaration else {
         return ""
       }
-      if let constraints = symbol.constraints,
-        let constrained = declaration.asProtocol(SyntaxProtocol.self) as? Constrained
-      {
-        declaration = constrained.withGenericWhereClause(constraints).asSyntax()
-      }
 
-      if case .variable(let variable) = symbol,
+      #warning("Need to convert to proofreading rule.")
+      /*if case .variable(let variable) = symbol,
         variable.declaration.bindings.first?.typeAnnotation?.isMissing ≠ false
       {
         status.reportMissingVariableType(variable, navigationPath: navigationPath)
-      }
+      }*/
 
       return generateDeclarationSection(
         localization: localization,
@@ -870,7 +862,7 @@
             symbolLinks: symbolLinks
           )
         )
-      )*/
+      )
     }
 
     internal static func generateDiscussionSection<SymbolType>(

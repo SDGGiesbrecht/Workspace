@@ -542,16 +542,6 @@
           symbolLinks: symbolLinks
         )
       )
-      result.append(
-        contentsOf: SymbolPage.generateConformanceSections(
-          localization: localization,
-          symbol: symbol,
-          pathToSiteRoot: pathToSiteRoot,
-          package: package,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-      )
       return result
     }
 
@@ -1651,9 +1641,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.typeProperties.isEmpty else {
+      let typeProperties = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .typeProperty })
+      guard ¬typeProperties.isEmpty else {
         return ""
       }
 
@@ -1672,12 +1662,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.typeProperties.map({ APIElement.variable($0) }),
+        children: typeProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateTypeMethodsSection<SymbolType>(
@@ -1688,9 +1678,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.typeMethods.isEmpty else {
+      let typeMethods = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .typeMethod })
+      guard ¬typeMethods.isEmpty else {
         return ""
       }
 
@@ -1709,12 +1699,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.typeMethods.map({ APIElement.function($0) }),
+        children: typeMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateInitializersSection<SymbolType>(
@@ -1725,9 +1715,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.initializers.isEmpty else {
+      let initializers = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .`init` })
+      guard ¬initializers.isEmpty else {
         return ""
       }
 
@@ -1748,12 +1738,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.initializers.map({ APIElement.initializer($0) }),
+        children: initializers,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generatePropertiesSection<SymbolType>(
@@ -1764,9 +1754,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.instanceProperties.isEmpty else {
+      let instanceProperties = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .property })
+      guard ¬instanceProperties.isEmpty else {
         return ""
       }
 
@@ -1785,12 +1775,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.instanceProperties.map({ APIElement.variable($0) }),
+        children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateSubscriptsSection<SymbolType>(
@@ -1801,9 +1791,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.subscripts.isEmpty else {
+      let subscripts = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .subscript })
+      guard ¬subscripts.isEmpty else {
         return ""
       }
 
@@ -1822,12 +1812,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.subscripts.map({ APIElement.subscript($0) }),
+        children: subscripts,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateMethodsSection<SymbolType>(
@@ -1838,9 +1828,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.instanceMethods.isEmpty else {
+      let instanceMethods = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .method })
+      guard ¬instanceMethods.isEmpty else {
         return ""
       }
 
@@ -1859,76 +1849,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.instanceMethods.map({ APIElement.function($0) }),
+        children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
-    }
-
-    private static func generateConformanceSections<SymbolType>(
-      localization: LocalizationIdentifier,
-      symbol: SymbolType,
-      pathToSiteRoot: StrictString,
-      package: PackageAPI,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> [StrictString] where SymbolType: SymbolLike {
-      return []
-      #warning("Debugging...")/*
-      var result: [StrictString] = []
-      conformanceProcessing: for conformance in symbol.conformances {
-        let name = conformance.type.syntaxHighlightedHTML(
-          inline: true,
-          internalIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-
-        var children: [APIElement] = []
-        if let reference = conformance.reference {
-          var apiElement: APIElement?
-          switch reference {
-          case .protocol(let `protocol`):
-            if let pointee = `protocol`.pointee {
-              apiElement = .protocol(pointee)
-            }
-          case .superclass(let superclass):
-            if let pointee = superclass.pointee {
-              apiElement = .type(pointee)
-            }
-          }
-          if let element = apiElement {
-            if ¬element.exists(in: localization) {
-              continue conformanceProcessing
-            }
-            children = element.children
-          }
-        }
-
-        let subconformancesFiltered = children.filter { child in
-          switch child {
-          case .package, .library, .module, .type, .protocol, .extension, .case, .initializer,
-            .variable, .subscript, .function, .operator, .precedence:
-            return true
-          case .conformance:
-            return false
-          }
-        }
-        result.append(
-          generateChildrenSection(
-            localization: localization,
-            heading: StrictString(name),
-            escapeHeading: false,
-            children: subconformancesFiltered,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        )
-      }
-      return result*/
+      )
     }
 
     private static func generateChildrenSection(

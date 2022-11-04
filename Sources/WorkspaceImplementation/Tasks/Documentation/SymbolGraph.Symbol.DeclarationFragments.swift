@@ -1,4 +1,6 @@
 
+
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import SymbolKit
 
 import SwiftSyntax
@@ -20,3 +22,4 @@ extension SymbolGraph.Symbol.DeclarationFragments {
     return parsed.syntaxHighlightedHTML(inline: inline, internalIdentifiers: internalIdentifiers, symbolLinks: symbolLinks)
   }
 }
+#endif

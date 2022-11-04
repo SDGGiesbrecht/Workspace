@@ -1299,7 +1299,6 @@
             platforms: platforms[localization]!,
             symbolImports: "",
             symbolType: nil,
-            constraints: nil,
             title: HTML.escapeTextForCharacterData(pageTitle),
             content: StrictString(pageContent),
             extensions: "",

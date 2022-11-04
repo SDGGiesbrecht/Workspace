@@ -352,11 +352,6 @@
           pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
         ),
         symbolType: symbol.symbolType(localization: localization),
-        constraints: SymbolPage.generateConstraints(
-          symbol: symbol,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: adjustedSymbolLinks
-        ),
         title: StrictString(symbol.names.title),
         content: content.joinedAsLines(),
         extensions: extensions.joinedAsLines(),
@@ -769,28 +764,6 @@
         ].joinedAsLines(),
         inline: false
       ).normalizedSource()
-    }
-
-    private static func generateConstraints<SymbolType>(
-      symbol: SymbolType,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> StrictString? where SymbolType: SymbolLike {
-      return nil
-      #warning("Debugging...")/*
-      if let constraints = symbol.constraints {
-        let withoutSpace = constraints.withWhereKeyword(
-          constraints.whereKeyword.withLeadingTrivia([])
-        )
-        return StrictString(
-          withoutSpace.syntaxHighlightedHTML(
-            inline: true,
-            internalIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        )
-      }
-      return nil*/
     }
 
     internal static func generateDescriptionSection(contents: StrictString) -> StrictString {

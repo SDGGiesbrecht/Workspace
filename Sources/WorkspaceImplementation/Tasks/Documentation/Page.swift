@@ -109,7 +109,6 @@
       platforms: StrictString,
       symbolImports: StrictString,
       symbolType: StrictString?,
-      constraints: StrictString?,
       title: StrictString,
       content: StrictString,
       extensions: StrictString,
@@ -158,7 +157,6 @@
       mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
 
       mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
-      mutable.replaceMatches(for: "[*constraints*]", with: constraints ?? "")
 
       mutable.replaceMatches(
         for: "[*copyright*]",

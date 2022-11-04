@@ -146,7 +146,6 @@
         platforms: platforms,
         symbolImports: "",
         symbolType: symbolType,
-        constraints: nil,
         title: interface.name,
         content: content.joinedAsLines(),
         extensions: "",

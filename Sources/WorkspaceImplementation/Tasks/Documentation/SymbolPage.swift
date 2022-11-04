@@ -1320,20 +1320,57 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.extensions.isEmpty else {
+      guard let module = symbol as? ModuleAPI else {
+        return ""
+      }
+      var unprocessedExtensionIdentifiers: [String: String] = [:]
+      for graph in module.symbolGraphs {
+        for relationship in graph.relationships
+        where relationship.kind == .memberOf {
+          unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
+        }
+      }
+      var extensionIdendifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
+      var symbolLookup: [String: SymbolGraph.Symbol] = [:]
+      for graph in module.symbolGraphs {
+        symbolLookup.mergeByOverwriting(from: graph.symbols)
+        for symbol in graph.symbols.values {
+          extensionIdendifiers.remove(symbol.identifier.precise)
+        }
+      }
+      let extensions = extensionIdendifiers.compactMap { identifier in
+        if let symbol = symbolLookup[identifier] {
+          return Extension(names: symbol.names, identifier: symbol.identifier)
+        } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
+          return Extension(
+            names: SymbolGraph.Symbol.Names(
+              title: fallback,
+              navigator: nil,
+              subHeading: nil,
+              prose: nil
+            ),
+            identifier: SymbolGraph.Symbol.Identifier(
+              precise: "SDG.extension.\(fallback)",
+              interfaceLanguage: "swift"
+            )
+          )
+        } else {
+          return nil
+        }
+      }
+
+      guard ¬extensions.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: extensionsHeader(localization: localization),
-        children: symbol.extensions.map({ APIElement.extension($0) }),
+        children: extensions,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func protocolsHeader(localization: LocalizationIdentifier) -> StrictString {

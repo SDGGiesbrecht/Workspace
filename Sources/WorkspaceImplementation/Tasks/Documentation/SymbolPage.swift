@@ -960,8 +960,6 @@
       heading: StrictString,
       entries: [(term: StrictString, description: StrictString)]
     ) -> StrictString {
-      return ""
-#warning("Debugging...")/*
       guard ¬entries.isEmpty else {
         return ""
       }
@@ -981,7 +979,7 @@
         ).normalizedSource(),
       ]
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()*/
+        .normalizedSource()
     }
 
     private static func generateParametersSection(

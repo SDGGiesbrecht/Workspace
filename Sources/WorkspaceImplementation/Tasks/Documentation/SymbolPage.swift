@@ -2025,8 +2025,6 @@
     }
 
     private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       var result = HTML.escapeTextForCharacterData(name)
       highlight("(", as: "punctuation", in: &result, internal: `internal`)
       highlight(")", as: "punctuation", in: &result, internal: `internal`)
@@ -2039,7 +2037,7 @@
           as StrictString + " identifier\u{22}>"
       )
       result.append(contentsOf: "</span>")
-      return result*/
+      return result
     }
     private static func highlight(
       _ token: StrictString,
@@ -2047,7 +2045,6 @@
       in name: inout StrictString,
       internal: Bool
     ) {
-      #warning("Debugging...")/*
       name.replaceMatches(
         for: token,
         with: "</span>"
@@ -2059,7 +2056,7 @@
           )
           .normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external")
           as StrictString + " identifier\u{22}>"
-      )*/
+      )
     }
   }
 #endif

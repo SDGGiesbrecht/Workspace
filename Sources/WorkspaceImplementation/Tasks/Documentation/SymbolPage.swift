@@ -1275,25 +1275,29 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.types.isEmpty else {
+      let types = symbol.children(package: package).filter({ child in
+        switch child.kind.identifier {
+        case .associatedtype, .class, .enum, .struct, .typealias:
+          return true
+        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .var, .module, .unknown:
+          return false
+        }
+      })
+      guard ¬types.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: typesHeader(localization: localization),
-        children: symbol.types.map({ APIElement.type($0) }),
+        children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func extensionsHeader(localization: LocalizationIdentifier) -> StrictString {
-      return ""
-      #warning("Debugging...")/*
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1305,7 +1309,7 @@
       } else {
         heading = "extension"
       }
-      return heading*/
+      return heading
     }
 
     private static func generateExtensionsSection<SymbolType>(

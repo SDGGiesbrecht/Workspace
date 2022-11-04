@@ -107,6 +107,7 @@
         SymbolPage.generateDiscussionSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
@@ -908,14 +909,13 @@
     private static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
       symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-#warning("Debugging...")/*
-      guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
+      guard let discussion = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().discussionEntries,
         ¬discussion.isEmpty
       else {
         return ""
@@ -953,7 +953,7 @@
         localization: localization,
         symbol: symbol,
         content: sectionContents.joinedAsLines()
-      )*/
+      )
     }
 
     internal static func generateParameterLikeSection(

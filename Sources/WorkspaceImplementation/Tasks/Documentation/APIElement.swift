@@ -426,51 +426,6 @@
 
     // MARK: - Localization
 
-    #warning("Dead?")
-    @available(*, deprecated)
-    internal func determine(
-      localizations: [LocalizationIdentifier],
-      customReplacements: [(StrictString, StrictString)]
-    ) {/*
-
-      let parsed = documentation.resolved(localizations: localizations)
-      localizedDocumentation = parsed.documentation
-      crossReference = parsed.crossReference
-      skippedLocalizations = parsed.skipped
-
-      let globalScope: Bool
-      if case .module = self {
-        globalScope = true
-      } else {
-        globalScope = false
-      }
-
-      var unique = 0
-      var groups: [StrictString: [APIElement]] = [:]
-      for child in children {
-        child.determine(localizations: localizations, customReplacements: customReplacements)
-        let crossReference =
-          child.crossReference
-          ?? {
-            unique += 1
-            return "\u{7F}\(String(describing: unique))"
-          }()
-        groups[crossReference, default: []].append(child)
-      }
-      for (_, group) in groups {
-        for indexA in group.indices {
-          for indexB in group.indices {
-            group[indexA].addLocalizations(
-              from: group[indexB],
-              isSame: indexA == indexB,
-              globalScope: globalScope,
-              customReplacements: customReplacements
-            )
-          }
-        }
-      }*/
-    }
-
     private func addLocalizations(
       from other: APIElement,
       isSame: Bool,

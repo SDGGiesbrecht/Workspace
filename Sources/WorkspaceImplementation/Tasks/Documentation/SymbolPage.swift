@@ -773,7 +773,7 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      guard var declaration = symbol.declaration else {
+      guard let declaration = symbol.declaration else {
         return ""
       }
 

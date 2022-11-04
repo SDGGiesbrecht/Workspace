@@ -1435,20 +1435,20 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.instanceMethods.isEmpty else {
+      let instanceMethods = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .method })
+      guard ¬instanceMethods.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: functionsHeader(localization: localization),
-        children: symbol.instanceMethods.map({ APIElement.function($0) }),
+        children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func variablesHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -1474,20 +1474,20 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.instanceProperties.isEmpty else {
+      let instanceProperties = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .property })
+      guard ¬instanceProperties.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: variablesHeader(localization: localization),
-        children: symbol.instanceProperties.map({ APIElement.variable($0) }),
+        children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func operatorsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -1513,20 +1513,19 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.operators.isEmpty else {
+      let operators = (symbol as? ModuleAPI)?.operators ?? []
+      guard ¬operators.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: operatorsHeader(localization: localization),
-        children: symbol.operators.map({ APIElement.operator($0) }),
+        children: operators,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     internal static func precedenceGroupsHeader(
@@ -1554,20 +1553,19 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.operators.isEmpty else {
+      let precedenceGroups = (symbol as? ModuleAPI)?.precedenceGroups ?? []
+      guard ¬precedenceGroups.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: precedenceGroupsHeader(localization: localization),
-        children: symbol.precedenceGroups.map({ APIElement.precedence($0) }),
+        children: precedenceGroups,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateCasesSection<SymbolType>(
@@ -1578,9 +1576,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.cases.isEmpty else {
+      let cases = symbol.children(package: package)
+        .filter({ $0.kind.identifier == .`case` })
+      guard ¬cases.isEmpty else {
         return ""
       }
 
@@ -1599,12 +1597,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.cases.map({ APIElement.case($0) }),
+        children: cases,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateNestedTypesSection<SymbolType>(
@@ -1615,9 +1613,10 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      return ""
-      #warning("Debugging...")/*
-      guard ¬symbol.types.isEmpty else {
+      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier> = [.associatedtype, .class, .struct, .enum, .typealias]
+      let types = symbol.children(package: package)
+        .filter({ $0.kind.identifier ∈ typeKinds })
+      guard ¬types.isEmpty else {
         return ""
       }
 
@@ -1636,12 +1635,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.types.map({ APIElement.type($0) }),
+        children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )*/
+      )
     }
 
     private static func generateTypePropertiesSection<SymbolType>(

@@ -2050,7 +2050,7 @@
         escapeHeading: escapeHeading,
         children: children.filter({ extensionStorage[$0.extendedPropertiesIndex, default: .default].exists(in: localization) }),
         childContents: getEntryContents,
-        childAttributes: getAttributes
+        childAttributes: { return [:] }
       )
     }
 

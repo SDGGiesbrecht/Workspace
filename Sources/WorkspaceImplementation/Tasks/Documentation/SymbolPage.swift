@@ -991,8 +991,6 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
     ) -> StrictString {
-      return ""
-#warning("Debugging...")/*
       let parameters = symbol.parameters()
       let parameterDocumentation =
       extensionStorage[symbol.extendedPropertiesIndex, default: .default]
@@ -1079,7 +1077,7 @@
               return (term: term, description: StrictString(description.joinedAsLines()))
             }
           )
-      )*/
+      )
     }
 
     private static func generateThrowsSection<SymbolType>(

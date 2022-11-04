@@ -168,11 +168,11 @@
       )
     }
 
-    internal func reportUnlabelledParameter<SymbolType>(
+    internal func reportUnlabelledParameter(
       _ closureType: String,
-      symbol: SymbolType,
+      symbol: SymbolLike,
       navigationPath: [SymbolLike]
-    ) where SymbolType: SymbolLike {
+    ) {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

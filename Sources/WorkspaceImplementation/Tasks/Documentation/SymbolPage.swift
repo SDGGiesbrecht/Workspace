@@ -352,7 +352,6 @@
           pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
         ),
         symbolType: symbol.symbolType(localization: localization),
-        compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
         constraints: SymbolPage.generateConstraints(
           symbol: symbol,
           packageIdentifiers: packageIdentifiers,
@@ -770,17 +769,6 @@
         ].joinedAsLines(),
         inline: false
       ).normalizedSource()
-    }
-
-    private static func generateCompilationConditions<SymbolType>(
-      symbol: SymbolType
-    ) -> StrictString? where SymbolType: SymbolLike {
-      return nil
-      #warning("Debugging...")/*
-      if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
-        return StrictString(conditions)
-      }
-      return nil*/
     }
 
     private static func generateConstraints<SymbolType>(

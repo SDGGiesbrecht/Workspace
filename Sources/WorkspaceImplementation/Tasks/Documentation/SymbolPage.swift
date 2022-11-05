@@ -1218,10 +1218,10 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let types = symbol.children(package: package).filter({ child in
-        switch child.kind.identifier {
+        switch child.kind?.identifier {
         case .associatedtype, .class, .enum, .struct, .typealias:
           return true
-        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .var, .module, .unknown:
+        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .var, .module, .unknown, .none:
           return false
         }
       })
@@ -1343,7 +1343,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let protocols = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .`protocol` })
+        .filter({ $0.kind?.identifier == .`protocol` })
       guard ¬protocols.isEmpty else {
         return ""
       }
@@ -1384,7 +1384,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceMethods = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .method })
+        .filter({ $0.kind?.identifier == .method })
       guard ¬instanceMethods.isEmpty else {
         return ""
       }
@@ -1425,7 +1425,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceProperties = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .property })
+        .filter({ $0.kind?.identifier == .property })
       guard ¬instanceProperties.isEmpty else {
         return ""
       }
@@ -1533,7 +1533,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let cases = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .`case` })
+        .filter({ $0.kind?.identifier == .`case` })
       guard ¬cases.isEmpty else {
         return ""
       }
@@ -1571,9 +1571,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier> = [.associatedtype, .class, .struct, .enum, .typealias]
+      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier?> = [.associatedtype, .class, .struct, .enum, .typealias]
       let types = symbol.children(package: package)
-        .filter({ $0.kind.identifier ∈ typeKinds })
+        .filter({ $0.kind?.identifier ∈ typeKinds })
       guard ¬types.isEmpty else {
         return ""
       }
@@ -1611,7 +1611,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let typeProperties = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .typeProperty })
+        .filter({ $0.kind?.identifier == .typeProperty })
       guard ¬typeProperties.isEmpty else {
         return ""
       }
@@ -1650,7 +1650,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let typeMethods = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .typeMethod })
+        .filter({ $0.kind?.identifier == .typeMethod })
       guard ¬typeMethods.isEmpty else {
         return ""
       }
@@ -1689,7 +1689,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let initializers = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .`init` })
+        .filter({ $0.kind?.identifier == .`init` })
       guard ¬initializers.isEmpty else {
         return ""
       }
@@ -1730,7 +1730,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceProperties = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .property })
+        .filter({ $0.kind?.identifier == .property })
       guard ¬instanceProperties.isEmpty else {
         return ""
       }
@@ -1769,7 +1769,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let subscripts = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .subscript })
+        .filter({ $0.kind?.identifier == .subscript })
       guard ¬subscripts.isEmpty else {
         return ""
       }
@@ -1808,7 +1808,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceMethods = symbol.children(package: package)
-        .filter({ $0.kind.identifier == .method })
+        .filter({ $0.kind?.identifier == .method })
       guard ¬instanceMethods.isEmpty else {
         return ""
       }
@@ -1889,17 +1889,17 @@
       )
     }
 
-    private static func generateChildrenSection<SymbolType>(
+    private static func generateChildrenSection(
       localization: LocalizationIdentifier,
       heading: StrictString,
       escapeHeading: Bool = true,
-      children: [SymbolType],
+      children: [SymbolLike],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString where SymbolType: SymbolLike {
+    ) -> StrictString {
 
       func getEntryContents(_ child: SymbolLike) -> [StrictString] {
         var entry: [StrictString] = []

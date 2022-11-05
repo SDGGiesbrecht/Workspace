@@ -30,6 +30,13 @@ extension SymbolLike {
     }
   }
 
+  internal var kind: SymbolGraph.Symbol.Kind? {
+    guard let symbol = self as? SymbolGraph.Symbol else {
+      return nil
+    }
+    return symbol.kind
+  }
+
   internal var indexSectionIdentifier: IndexSectionIdentifier {
     switch self {
     case let symbol as SymbolGraph.Symbol:
@@ -307,7 +314,7 @@ extension SymbolLike {
 
   // MARK: - Relationships
 
-  internal func children(package: PackageAPI) -> [SymbolGraph.Symbol] {
+  internal func children(package: PackageAPI) -> [SymbolLike] {
     switch self {
     case let symbol as SymbolGraph.Symbol:
       var result: [SymbolGraph.Symbol] = []
@@ -326,7 +333,9 @@ extension SymbolLike {
         }
       }
       return result
-    case is PackageAPI, is LibraryAPI, is ModuleAPI:
+    case let package as PackageAPI:
+      return package.libraries + package.modules
+    case is LibraryAPI, is ModuleAPI:
       return []
     case let `extension` as Extension:
       var result: [SymbolGraph.Symbol] = []

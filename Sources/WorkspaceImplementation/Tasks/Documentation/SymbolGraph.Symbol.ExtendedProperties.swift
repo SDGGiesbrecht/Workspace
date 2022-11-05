@@ -20,7 +20,7 @@ extension SymbolGraph.Symbol {
     internal var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] = [:]
     internal var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] = [:]
     internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
-    internal var localizedChildren: [SymbolGraph.Symbol] = []
+    internal var localizedChildren: [SymbolLike] = []
     internal func exists(in localization: LocalizationIdentifier) -> Bool {
       return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
     }

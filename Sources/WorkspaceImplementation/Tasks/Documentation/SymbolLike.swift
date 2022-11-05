@@ -327,7 +327,7 @@ extension SymbolLike {
       }
       return result
     case is PackageAPI, is LibraryAPI, is ModuleAPI:
-      unreachable()
+      return []
     case let `extension` as Extension:
       var result: [SymbolGraph.Symbol] = []
       for graph in package.symbolGraphs() {

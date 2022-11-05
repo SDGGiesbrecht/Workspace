@@ -1,3 +1,4 @@
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import SDGControlFlow
 import SDGText
 
@@ -828,3 +829,4 @@ extension SymbolLike {
     }) ?? []
   }
 }
+#endif

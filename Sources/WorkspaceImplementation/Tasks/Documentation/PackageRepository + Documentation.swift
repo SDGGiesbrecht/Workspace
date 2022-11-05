@@ -82,6 +82,17 @@
       return result
     }
 
+    @available(macOS 10.15, *)
+    private func loadSwiftInterface(
+      output: Command.Output
+    ) throws -> SDGSwiftDocumentation.PackageAPI {
+      let result = try self.api(
+        reportProgress: { output.print($0) }
+      ).get()
+      output.print("")
+      return result
+    }
+
     private func loadCommandLineInterface(
       output: Command.Output,
       customReplacements: [(StrictString, StrictString)]
@@ -312,9 +323,7 @@
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       #warning("Needs to merge graphs from other platforms.")
-      let api = try self.api(
-        reportProgress: { output.print($0) }
-      ).get()
+      let api = try loadSwiftInterface(output: output)
       let cli = try loadCommandLineInterface(
         output: output,
         customReplacements: customReplacements

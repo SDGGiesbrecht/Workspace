@@ -34,7 +34,7 @@ extension SymbolLike {
     guard let symbol = self as? SymbolGraph.Symbol else {
       return nil
     }
-    return symbol.kind
+    return symbol.kind as SymbolGraph.Symbol.Kind
   }
 
   internal var indexSectionIdentifier: IndexSectionIdentifier {
@@ -335,8 +335,30 @@ extension SymbolLike {
       return result
     case let package as PackageAPI:
       return package.libraries + package.modules
-    case is LibraryAPI, is ModuleAPI:
+    case is LibraryAPI:
       return []
+    case let module as ModuleAPI:
+      var result: [SymbolLike] = []
+      for graph in module.symbolGraphs {
+        for (_, symbol) in graph.symbols {
+          if ¬graph.relationships.contains(where: { relationship in
+            guard relationship.source == symbol.identifier.precise else {
+              return false
+            }
+            switch relationship.kind {
+            case .memberOf, .requirementOf, .defaultImplementationOf, .optionalRequirementOf:
+              return true
+            default:
+              return false
+            }
+          }) {
+            result.append(symbol)
+          }
+        }
+      }
+      result.append(contentsOf: module.operators)
+      result.append(contentsOf: module.precedenceGroups)
+      return result
     case let `extension` as Extension:
       var result: [SymbolGraph.Symbol] = []
       for graph in package.symbolGraphs() {

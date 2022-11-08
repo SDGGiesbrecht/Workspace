@@ -313,7 +313,7 @@
       if ¬package.libraries.lazy
         .filter({ library in
           return localization
-          ∉ extensionStorage[library.extendedPropertiesIndex, default: .default]
+            ∉ extensionStorage[library.extendedPropertiesIndex, default: .default]
             .skippedLocalizations
         }).isEmpty
       {
@@ -329,7 +329,7 @@
       }
       if ¬package.modules.lazy.filter({ module in
         return localization
-        ∉ extensionStorage[module.extendedPropertiesIndex, default: .default]
+          ∉ extensionStorage[module.extendedPropertiesIndex, default: .default]
           .skippedLocalizations
       }).isEmpty {
         result.append(
@@ -344,12 +344,11 @@
       }
       let packageProperties = extensionStorage[package.extendedPropertiesIndex, default: .default]
       if ¬packageProperties.packageTypes.lazy.filter({ type in
-          return localization
+        return localization
           ∉ extensionStorage[type.extendedPropertiesIndex, default: .default]
-            .skippedLocalizations
-          
-        }).isEmpty
-      {
+          .skippedLocalizations
+
+      }).isEmpty {
         result.append(
           generateIndexSection(
             named: SymbolPage.typesHeader(localization: localization),
@@ -360,7 +359,7 @@
           )
         )
       }
-      if ¬packageProperties.packageExtensions.isEmpty{
+      if ¬packageProperties.packageExtensions.isEmpty {
         result.append(
           generateIndexSection(
             named: SymbolPage.extensionsHeader(localization: localization),
@@ -373,7 +372,7 @@
       }
       if ¬packageProperties.packageProtocols.lazy.filter({ `protocol` in
         return localization
-        ∉ extensionStorage[`protocol`.extendedPropertiesIndex, default: .default]
+          ∉ extensionStorage[`protocol`.extendedPropertiesIndex, default: .default]
           .skippedLocalizations
       }).isEmpty {
         result.append(
@@ -388,7 +387,7 @@
       }
       if ¬packageProperties.packageFunctions.lazy.filter({ function in
         return localization
-        ∉ extensionStorage[function.extendedPropertiesIndex, default: .default]
+          ∉ extensionStorage[function.extendedPropertiesIndex, default: .default]
           .skippedLocalizations
       }).isEmpty {
         result.append(
@@ -404,8 +403,8 @@
       if ¬packageProperties.packageGlobalVariables
         .lazy.filter({ variable in
           return localization
-          ∉ extensionStorage[variable.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+            ∉ extensionStorage[variable.extendedPropertiesIndex, default: .default]
+            .skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -421,8 +420,8 @@
       if ¬packageProperties.packageOperators
         .lazy.filter({ `operator` in
           return localization
-          ∉ extensionStorage[`operator`.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+            ∉ extensionStorage[`operator`.extendedPropertiesIndex, default: .default]
+            .skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -438,8 +437,8 @@
       if ¬packageProperties.packagePrecedenceGroups
         .lazy.filter({ group in
           localization
-          ∉ extensionStorage[group.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+            ∉ extensionStorage[group.extendedPropertiesIndex, default: .default]
+            .skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -491,7 +490,9 @@
               "href":
                 "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[entry.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))"
             ],
-            contents: HTML.escapeTextForCharacterData(StrictString(entry.names.resolvedForNavigation)),
+            contents: HTML.escapeTextForCharacterData(
+              StrictString(entry.names.resolvedForNavigation)
+            ),
             inline: false
           ).normalizedSource()
         )
@@ -706,7 +707,11 @@
           extensionStorage: &extensionStorage
         )
       }
-      api.determineLocalizedPaths(localizations: localizations, package: api, extensionStorage: &extensionStorage)
+      api.determineLocalizedPaths(
+        localizations: localizations,
+        package: api,
+        extensionStorage: &extensionStorage
+      )
       self.symbolLinks = paths.mapValues { localization in
         localization.mapValues { link in
           return HTML.percentEncodeURLPath(link)
@@ -879,7 +884,8 @@
             platforms: platforms[localization]!,
             symbol: api,
             package: api,
-            extensionStorage: extensionStorage, tools: cli,
+            extensionStorage: extensionStorage,
+            tools: cli,
             copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
@@ -945,7 +951,8 @@
       for localization in localizations {
         for library in api.libraries
         where extensionStorage[library.extendedPropertiesIndex, default: .default]
-          .exists(in: localization) {
+          .exists(in: localization)
+        {
           try purgingAutoreleased {
             let location = library.pageURL(
               in: outputDirectory,
@@ -964,7 +971,8 @@
               platforms: platforms[localization]!,
               symbol: library,
               package: self.api,
-              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage,
+              copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -986,7 +994,8 @@
       for localization in localizations {
         for module in api.modules
         where extensionStorage[module.extendedPropertiesIndex, default: .default]
-          .exists(in: localization) {
+          .exists(in: localization)
+        {
           try purgingAutoreleased {
             let location = module.pageURL(
               in: outputDirectory,
@@ -1005,7 +1014,8 @@
               platforms: platforms[localization]!,
               symbol: module,
               package: self.api,
-              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage,
+              copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -1036,7 +1046,8 @@
           packageProperties.packagePrecedenceGroups.map({ $0 as SymbolLike }),
         ].joined()
         where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-          .exists(in: localization) {
+          .exists(in: localization)
+        {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
@@ -1055,7 +1066,8 @@
               platforms: platforms[localization]!,
               symbol: symbol,
               package: self.api,
-              extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
+              extensionStorage: extensionStorage,
+              copyright: copyright(for: localization, status: status),
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -1064,7 +1076,8 @@
             )?.contents.save(to: location)
 
             switch symbol.indexSectionIdentifier {
-            case .package, .tools, .libraries, .modules, .functions, .variables, .operators, .precedenceGroups:
+            case .package, .tools, .libraries, .modules, .functions, .variables, .operators,
+              .precedenceGroups:
               break
             case .types, .extensions, .protocols:
               try outputNestedSymbols(
@@ -1099,10 +1112,11 @@
 
       for symbol in [
         parent.children(package: self.api),
-        extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren
+        extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren,
       ].joined()
       where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-        .exists(in: localization) {
+        .exists(in: localization)
+      {
         try purgingAutoreleased {
           let location = symbol.pageURL(
             in: outputDirectory,
@@ -1131,7 +1145,8 @@
             platforms: platforms[localization]!,
             symbol: symbol,
             package: self.api,
-            extensionStorage: extensionStorage, copyright: copyright(for: localization, status: status),
+            extensionStorage: extensionStorage,
+            copyright: copyright(for: localization, status: status),
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
             status: status,
@@ -1140,7 +1155,8 @@
           )?.contents.save(to: location)
 
           switch symbol.indexSectionIdentifier {
-          case .package, .tools, .libraries, .modules, .functions, .variables, .operators, .precedenceGroups:
+          case .package, .tools, .libraries, .modules, .functions, .variables, .operators,
+            .precedenceGroups:
             break
           case .types, .extensions, .protocols:
             try outputNestedSymbols(

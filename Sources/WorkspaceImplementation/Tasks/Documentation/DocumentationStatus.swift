@@ -96,7 +96,8 @@
         possibleSearch = ".library"
       case .modules:
         possibleSearch = ".target"
-      case .tools, .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
+      case .tools, .types, .extensions, .protocols, .functions, .variables, .operators,
+        .precedenceGroups:
         break
       }
       if var search = possibleSearch {

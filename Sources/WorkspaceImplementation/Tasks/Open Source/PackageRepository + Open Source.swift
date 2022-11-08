@@ -60,7 +60,7 @@
       }
       if let packageName = try? packageName(),
         let documentation = documentation(packageName: String(packageName))
-        .resolved(localizations: allLocalizations).documentation[localization]
+          .resolved(localizations: allLocalizations).documentation[localization]
       {
         fromDocumentation.append(
           contentsOf: documentation.lines.lazy

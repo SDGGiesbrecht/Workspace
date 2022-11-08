@@ -61,7 +61,9 @@
       coverageCheckOnly: Bool
     ) where SymbolType: SymbolLike {
 
-      if extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
+      if extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath.first?
+        .value.components(separatedBy: "/").count == 3
+      {
         switch symbol.indexSectionIdentifier {
         case .package, .modules, .types, .extensions, .protocols:
           output.print(
@@ -197,12 +199,20 @@
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
         allLocalizations: allLocalizations
-          .lazy.filter({ $0 ∉ extensionStorage[symbol.extendedPropertiesIndex, default: .default].skippedLocalizations }).map({ localization in
+          .lazy.filter({ localization in
+            localization
+              ∉ extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+              .skippedLocalizations
+          }).map({ localization in
             let path: StrictString
-            if extensionStorage[symbol.extendedPropertiesIndex, default: .default].exists(in: localization) {
-              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath[localization]!
+            if extensionStorage[symbol.extendedPropertiesIndex, default: .default].exists(
+              in: localization
+            ) {
+              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+                .relativePagePath[localization]!
             } else {
-              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedEquivalentPaths[localization]!
+              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+                .localizedEquivalentPaths[localization]!
             }
             return (localization: localization, path: path)
           }),
@@ -225,7 +235,8 @@
           localization: localization,
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
-          package: package, extensionStorage: extensionStorage,
+          package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         )
@@ -250,7 +261,8 @@
             localization: localization,
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
-            package: package, extensionStorage: extensionStorage,
+            package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -352,7 +364,8 @@
           for: symbol,
           package: package,
           localization: localization,
-          pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
+          pathToSiteRoot: pathToSiteRoot,
+          extensionStorage: extensionStorage
         ),
         symbolType: symbol.symbolType(localization: localization),
         title: StrictString(symbol.names.title),
@@ -506,7 +519,10 @@
         allLocalizations: allLocalizations,
         navigationPath: navigationPath.map({ element in
           return (
-            StrictString(element.names.resolvedForNavigation), extensionStorage[element.extendedPropertiesIndex, default: .default].relativePagePath[localization]!
+            StrictString(element.names.resolvedForNavigation),
+            extensionStorage[element.extendedPropertiesIndex, default: .default].relativePagePath[
+              localization
+            ]!
           )
         })
       )
@@ -600,8 +616,10 @@
       pathToSiteRoot: StrictString,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
-      guard let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule,
-            let product = extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
+      guard
+        let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule,
+        let product = extensionStorage[module.extendedPropertiesIndex, default: .default]
+          .homeProduct
       else {
         return ""  // @exempt(from: tests) Should never be nil.
       }
@@ -653,7 +671,9 @@
       pathToSiteRoot: StrictString,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
-      guard let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule else {
+      guard
+        let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule
+      else {
         return ""
       }
       let moduleName = module.names.title
@@ -672,7 +692,9 @@
       )
 
       var links: [String: String] = [:]
-      if let link = extensionStorage[module.extendedPropertiesIndex, default: .default].relativePagePath[localization] {
+      if let link = extensionStorage[module.extendedPropertiesIndex, default: .default]
+        .relativePagePath[localization]
+      {
         links[moduleName] = String(pathToSiteRoot + link)
       }
 
@@ -691,7 +713,8 @@
             for: symbol,
             package: package,
             localization: localization,
-            pathToSiteRoot: pathToSiteRoot, extensionStorage: extensionStorage
+            pathToSiteRoot: pathToSiteRoot,
+            extensionStorage: extensionStorage
           ),
         ].joinedAsLines(),
         inline: false
@@ -716,8 +739,9 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      if let documentation = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization],
-         let description = documentation.documentation().descriptionSection
+      if let documentation = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+        .localizedDocumentation[localization],
+        let description = documentation.documentation().descriptionSection
       {
         return generateDescriptionSection(
           contents: StrictString(
@@ -845,7 +869,9 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      guard let discussion = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().discussionEntries,
+      guard
+        let discussion = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+          .localizedDocumentation[localization]?.documentation().discussionEntries,
         ¬discussion.isEmpty
       else {
         return ""
@@ -923,7 +949,7 @@
     ) -> StrictString {
       let parameters = symbol.parameters()
       let parameterDocumentation =
-      extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+        extensionStorage[symbol.extendedPropertiesIndex, default: .default]
         .localizedDocumentation[localization]?.normalizedParameters()
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
@@ -931,8 +957,9 @@
       if parameters ≠ documentedParameters {
         // #workaround(SDGSwift 11.1.0, Not collected properly for subscripts at present.)
         if let graphSymbol = symbol as? SymbolGraph.Symbol,
-           graphSymbol.kind.identifier == .subscript
-            ∨ graphSymbol.kind.identifier == .typeSubscript {
+          graphSymbol.kind.identifier == .subscript
+            ∨ graphSymbol.kind.identifier == .typeSubscript
+        {
         } else {
           status.reportMismatchedParameters(
             documentedParameters,
@@ -1019,7 +1046,10 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      guard let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().throwsCallout else {
+      guard
+        let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+          .localizedDocumentation[localization]?.documentation().throwsCallout
+      else {
         return ""
       }
       let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
@@ -1050,7 +1080,10 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      guard let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().returnsCallout else {
+      guard
+        let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
+          .localizedDocumentation[localization]?.documentation().returnsCallout
+      else {
         return ""
       }
       let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
@@ -1145,7 +1178,8 @@
         children: package.libraries,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
-        extensionStorage: extensionStorage, packageIdentifiers: packageIdentifiers,
+        extensionStorage: extensionStorage,
+        packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
@@ -1221,7 +1255,9 @@
         switch child.kind?.identifier {
         case .associatedtype, .class, .enum, .struct, .typealias:
           return true
-        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .var, .module, .unknown, .none:
+        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property,
+          .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty,
+          .typeSubscript, .var, .module, .unknown, .none:
           return false
         }
       })
@@ -1536,7 +1572,9 @@
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
-      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier?> = [.associatedtype, .class, .struct, .enum, .typealias]
+      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier?> = [
+        .associatedtype, .class, .struct, .enum, .typealias,
+      ]
       let types = symbol.children(package: package)
         .filter({ $0.kind?.identifier ∈ typeKinds })
       guard ¬types.isEmpty else {
@@ -1561,7 +1599,8 @@
         children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
-        extensionStorage: extensionStorage, packageIdentifiers: packageIdentifiers,
+        extensionStorage: extensionStorage,
+        packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
@@ -1870,7 +1909,8 @@
         var entry: [StrictString] = []
 
         var name = StrictString(child.names.title)
-        var relativePathOfChild = extensionStorage[child.extendedPropertiesIndex, default: .default].relativePagePath[localization]
+        var relativePathOfChild = extensionStorage[child.extendedPropertiesIndex, default: .default]
+          .relativePagePath[localization]
         if let `extension` = child as? Extension {
           var baseType: SymbolGraph.Symbol?
           for graph in package.symbolGraphs() {
@@ -1881,7 +1921,9 @@
             }
           }
           if let resolved = baseType {
-            relativePathOfChild = extensionStorage[resolved.extendedPropertiesIndex, default: .default].relativePagePath[localization]
+            relativePathOfChild =
+              extensionStorage[resolved.extendedPropertiesIndex, default: .default]
+              .relativePagePath[localization]
           }
         }
 
@@ -1923,7 +1965,9 @@
               inline: true
             ).normalizedSource()
           )
-          if let description = extensionStorage[child.extendedPropertiesIndex, default: .default].localizedDocumentation[localization]?.documentation().descriptionSection {
+          if let description = extensionStorage[child.extendedPropertiesIndex, default: .default]
+            .localizedDocumentation[localization]?.documentation().descriptionSection
+          {
             entry.append(
               StrictString(
                 description.renderedHTML(
@@ -1944,7 +1988,9 @@
       return generateChildrenSection(
         heading: heading,
         escapeHeading: escapeHeading,
-        children: children.filter({ extensionStorage[$0.extendedPropertiesIndex, default: .default].exists(in: localization) }),
+        children: children.filter({ child in
+          extensionStorage[child.extendedPropertiesIndex, default: .default].exists(in: localization)
+        }),
         childContents: getEntryContents,
         childAttributes: { _ in return [:] }
       )

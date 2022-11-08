@@ -182,11 +182,12 @@
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
               if let packageName = try? package.packageName(),
-                let documentation = package
-                .documentation(packageName: String(packageName))
-                .resolved(localizations: localizations)
-                .documentation[localization],
-                 let description = documentation.documentation().descriptionSection
+                let documentation =
+                  package
+                  .documentation(packageName: String(packageName))
+                  .resolved(localizations: localizations)
+                  .documentation[localization],
+                let description = documentation.documentation().descriptionSection
               {
                 markdown += [
                   "",

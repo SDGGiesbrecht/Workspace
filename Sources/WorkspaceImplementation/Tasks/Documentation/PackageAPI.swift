@@ -35,12 +35,12 @@
       var precedenceGroups: [PrecedenceGroup] = []
       var symbolLookup: [String: SymbolGraph.Symbol] = [:]
       for module in modules {
-        extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct
-        = libraries.first(where: { library in
-          return library.modules.contains(where: { moduleName in
-            return moduleName == module.names.title
+        extensionStorage[module.extendedPropertiesIndex, default: .default].homeProduct =
+          libraries.first(where: { library in
+            return library.modules.contains(where: { moduleName in
+              return moduleName == module.names.title
+            })
           })
-        })
 
         func handle<Child>(child: Child) where Child: SymbolLike {
           extensionStorage[child.extendedPropertiesIndex, default: .default].homeModule = module
@@ -50,7 +50,9 @@
           for symbol in graph.symbols.values {
             handle(child: symbol)
             switch symbol.kind.identifier {
-            case .associatedtype, .deinit, .case, .`init`, .ivar, .macro, .method, .property, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript, .module, .unknown:
+            case .associatedtype, .deinit, .case, .`init`, .ivar, .macro, .method, .property,
+              .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty, .typeSubscript,
+              .module, .unknown:
               break
             case .class, .enum, .struct, .typealias:
               types.append(symbol)
@@ -108,7 +110,9 @@
         storage.packageExtensions = extensions.sorted(by: { $0.names.title < $1.names.title })
         storage.packageProtocols = protocols.sorted(by: { $0.names.title < $1.names.title })
         storage.packageFunctions = functions.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageGlobalVariables = globalVariables.sorted(by: { $0.names.title < $1.names.title })
+        storage.packageGlobalVariables =
+          globalVariables
+          .sorted(by: { $0.names.title < $1.names.title })
         storage.packageOperators = operators.sorted()
         storage.packagePrecedenceGroups = precedenceGroups.sorted()
         extensionStorage[extendedPropertiesIndex] = storage

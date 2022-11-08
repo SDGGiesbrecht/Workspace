@@ -12,15 +12,15 @@ extension ModuleAPI {
         unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
       }
     }
-    var extensionIdendifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
+    var extensionIdentifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
     var symbolLookup: [String: SymbolGraph.Symbol] = [:]
     for graph in self.symbolGraphs {
       symbolLookup.mergeByOverwriting(from: graph.symbols)
       for symbol in graph.symbols.values {
-        extensionIdendifiers.remove(symbol.identifier.precise)
+        extensionIdentifiers.remove(symbol.identifier.precise)
       }
     }
-    return extensionIdendifiers.compactMap { identifier in
+    let result = extensionIdentifiers.compactMap { identifier in
       if let symbol = symbolLookup[identifier] {
         return Extension(names: symbol.names, identifier: symbol.identifier)
       } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
@@ -40,5 +40,6 @@ extension ModuleAPI {
         return nil
       }
     }
+    return result
   }
 }

@@ -8,7 +8,7 @@ import SDGSwiftSource
 
 extension SymbolGraph.LineList {
 
-  func documentation() -> DocumentationSyntax {
+  internal func documentation() -> DocumentationSyntax {
     let source = lines.lazy.map({ $0.text }).joined(separator: "\n")
     let triviaPiece = TriviaPiece.docBlockComment("/**\n\(source)\n*/")
     let trivia = Trivia(pieces: [triviaPiece])
@@ -16,7 +16,7 @@ extension SymbolGraph.LineList {
     return (extended as! BlockDocumentationSyntax).documentation
   }
 
-  func normalizedParameters() -> [ParameterDocumentation] {
+  internal func normalizedParameters() -> [ParameterDocumentation] {
     documentation().normalizedParameters
   }
 }

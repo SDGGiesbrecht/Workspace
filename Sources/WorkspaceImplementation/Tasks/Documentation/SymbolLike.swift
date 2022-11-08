@@ -358,6 +358,7 @@ extension SymbolLike {
       }
       result.append(contentsOf: module.operators)
       result.append(contentsOf: module.precedenceGroups)
+      result.append(contentsOf: module.extensions())
       return result
     case let `extension` as Extension:
       var result: [SymbolGraph.Symbol] = []
@@ -830,7 +831,7 @@ extension SymbolLike {
               extensionStorage: extensionStorage
             ) + "/"
         }
-      case is Operator, is PrecedenceGroup:
+      case is Operator, is PrecedenceGroup, is Extension:
         path += namespace + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
       default:
         unreachable()

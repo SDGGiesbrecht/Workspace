@@ -830,6 +830,8 @@ extension SymbolLike {
               extensionStorage: extensionStorage
             ) + "/"
         }
+      case is Operator, is PrecedenceGroup:
+        path += namespace + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
       default:
         unreachable()
       }

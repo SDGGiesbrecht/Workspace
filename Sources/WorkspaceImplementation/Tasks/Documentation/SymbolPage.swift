@@ -54,6 +54,7 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI? = nil,
       copyright: StrictString,
+      editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus,
@@ -90,6 +91,7 @@
           extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           localization: localization,
+          editableModules: editableModules,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
           status: status
@@ -735,6 +737,7 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
       localization: LocalizationIdentifier,
+      editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
@@ -753,8 +756,7 @@
           )
         )
       }
-      if symbol is Extension {
-      } else {
+      if symbol.hasEditableDocumentation(editableModules: editableModules) {
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,
@@ -1989,7 +1991,9 @@
         heading: heading,
         escapeHeading: escapeHeading,
         children: children.filter({ child in
-          extensionStorage[child.extendedPropertiesIndex, default: .default].exists(in: localization)
+          extensionStorage[child.extendedPropertiesIndex, default: .default].exists(
+            in: localization
+          )
         }),
         childContents: getEntryContents,
         childAttributes: { _ in return [:] }

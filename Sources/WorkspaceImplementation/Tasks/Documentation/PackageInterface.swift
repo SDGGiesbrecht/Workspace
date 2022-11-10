@@ -686,6 +686,7 @@
       self.about = about
       self.copyrightNotices = copyright
 
+      self.editableModules = api.modules.map { $0.names.title }
       self.packageIdentifiers = api.identifierList()
 
       var parsingCache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
@@ -747,6 +748,7 @@
     private let relatedProjects: [LocalizationIdentifier: Markdown]
     private let about: [LocalizationIdentifier: Markdown]
     private let copyrightNotices: [LocalizationIdentifier?: StrictString]
+    private let editableModules: [String]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
 
@@ -887,6 +889,7 @@
             extensionStorage: extensionStorage,
             tools: cli,
             copyright: copyright(for: localization, status: status),
+            editableModules: editableModules,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
             status: status,
@@ -973,6 +976,7 @@
               package: self.api,
               extensionStorage: extensionStorage,
               copyright: copyright(for: localization, status: status),
+              editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -1016,6 +1020,7 @@
               package: self.api,
               extensionStorage: extensionStorage,
               copyright: copyright(for: localization, status: status),
+              editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -1068,6 +1073,7 @@
               package: self.api,
               extensionStorage: extensionStorage,
               copyright: copyright(for: localization, status: status),
+              editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
               status: status,
@@ -1147,6 +1153,7 @@
             package: self.api,
             extensionStorage: extensionStorage,
             copyright: copyright(for: localization, status: status),
+            editableModules: editableModules,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
             status: status,

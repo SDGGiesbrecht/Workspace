@@ -25,6 +25,22 @@
 
   extension SymbolLike {
 
+    internal func hasEditableDocumentation(editableModules: [String]) -> Bool {
+      switch self {
+      case is Extension:
+        return false
+      case let symbol as SymbolGraph.Symbol:
+        if ¬editableModules.contains(where: { module in
+          return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true
+        }) {  // From dependency.
+          return false
+        }
+        return true
+      default:
+        return true
+      }
+    }
+
     internal var extendedPropertiesIndex: String {
       switch self {
       case let symbol as SymbolGraph.Symbol:

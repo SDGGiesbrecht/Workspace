@@ -958,22 +958,22 @@
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
-      if parameters ≠ documentedParameters {
+      if symbol.hasEditableDocumentation(editableModules: editableModules),
+        parameters ≠ documentedParameters
+      {
         // #workaround(SDGSwift 11.1.0, Not collected properly for subscripts at present.)
         if let graphSymbol = symbol as? SymbolGraph.Symbol,
           graphSymbol.kind.identifier == .subscript
             ∨ graphSymbol.kind.identifier == .typeSubscript
         {
         } else {
-          if symbol.hasEditableDocumentation(editableModules: editableModules) {
-            status.reportMismatchedParameters(
-              documentedParameters,
-              expected: parameters,
-              symbol: symbol,
-              navigationPath: navigationPath,
-              localization: localization
-            )
-          }
+          status.reportMismatchedParameters(
+            documentedParameters,
+            expected: parameters,
+            symbol: symbol,
+            navigationPath: navigationPath,
+            localization: localization
+          )
         }
       }
       let validatedParameters =
@@ -981,7 +981,9 @@
         .filter { parameters.contains($0.name.text) }
 
       /// Check that closure parameters are labelled.
-      if let declaration = symbol.declaration {
+      if symbol.hasEditableDocumentation(editableModules: editableModules),
+        let declaration = symbol.declaration
+      {
         class Scanner: SyntaxVisitor {
           init(status: DocumentationStatus, symbol: SymbolLike, navigationPath: [SymbolLike]) {
             self.status = status

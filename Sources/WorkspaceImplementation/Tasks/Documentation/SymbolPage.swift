@@ -123,6 +123,7 @@
           localization: localization,
           symbol: symbol,
           navigationPath: navigationPath,
+          editableModules: editableModules,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
           extensionStorage: extensionStorage,
@@ -944,6 +945,7 @@
       localization: LocalizationIdentifier,
       symbol: SymbolLike,
       navigationPath: [SymbolLike],
+      editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
@@ -963,13 +965,15 @@
             ∨ graphSymbol.kind.identifier == .typeSubscript
         {
         } else {
-          status.reportMismatchedParameters(
-            documentedParameters,
-            expected: parameters,
-            symbol: symbol,
-            navigationPath: navigationPath,
-            localization: localization
-          )
+          if symbol.hasEditableDocumentation(editableModules: editableModules) {
+            status.reportMismatchedParameters(
+              documentedParameters,
+              expected: parameters,
+              symbol: symbol,
+              navigationPath: navigationPath,
+              localization: localization
+            )
+          }
         }
       }
       let validatedParameters =

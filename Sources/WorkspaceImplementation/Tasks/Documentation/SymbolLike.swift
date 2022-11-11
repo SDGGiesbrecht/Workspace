@@ -947,14 +947,32 @@
     // MARK: - Parameters
 
     internal func parameters() -> [String] {
-      return declaration?.declarationFragments.compactMap({ fragment in
-        switch fragment.kind {
-        case .internalParameter:
-          return fragment.spelling
-        default:
-          return nil
+      switch self {
+      case is PackageAPI, is LibraryAPI, is ModuleAPI:
+        return []
+      default:
+        guard let fragments = declaration?.declarationFragments else {
+          return []
         }
-      }) ?? []
+        return fragments.indices.compactMap({ index in
+          let fragment = fragments[index]
+          switch fragment.kind {
+          case .externalParameter:
+            let remainder = fragments[index...].dropFirst()
+            let afterWhitespace = remainder.drop(while: { nextFragment in
+              return nextFragment.spelling.scalars.allSatisfy { $0 == " " }
+            })
+            if afterWhitespace.first?.kind == .internalParameter {
+              return nil
+            }
+            return fragment.spelling
+          case .internalParameter:
+            return fragment.spelling
+          default:
+            return nil
+          }
+        })
+      }
     }
   }
 #endif

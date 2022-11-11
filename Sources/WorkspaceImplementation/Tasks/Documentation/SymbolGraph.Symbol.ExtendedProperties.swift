@@ -14,45 +14,47 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SDGSwiftDocumentation
-import SymbolKit
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SDGSwiftDocumentation
+  import SymbolKit
 
-import WorkspaceConfiguration
+  import WorkspaceConfiguration
 
-extension SymbolGraph.Symbol {
+  extension SymbolGraph.Symbol {
 
-  internal struct ExtendedProperties {
+    internal struct ExtendedProperties {
 
-    // MARK: - Static Properties
+      // MARK: - Static Properties
 
-    internal static let `default` = ExtendedProperties()
+      internal static let `default` = ExtendedProperties()
 
-    // MARK: - General Properties
+      // MARK: - General Properties
 
-    internal var localizedDocumentation: [LocalizationIdentifier: SymbolGraph.LineList] = [:]
-    internal var crossReference: StrictString? = nil
-    internal var skippedLocalizations: Set<LocalizationIdentifier> = []
-    internal var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] = [:]
-    internal var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] = [:]
-    internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
-    internal var localizedChildren: [SymbolLike] = []
-    internal func exists(in localization: LocalizationIdentifier) -> Bool {
-      return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
+      internal var localizedDocumentation: [LocalizationIdentifier: SymbolGraph.LineList] = [:]
+      internal var crossReference: StrictString? = nil
+      internal var skippedLocalizations: Set<LocalizationIdentifier> = []
+      internal var localizedEquivalentFileNames: [LocalizationIdentifier: StrictString] = [:]
+      internal var localizedEquivalentDirectoryNames: [LocalizationIdentifier: StrictString] = [:]
+      internal var localizedEquivalentPaths: [LocalizationIdentifier: StrictString] = [:]
+      internal var localizedChildren: [SymbolLike] = []
+      internal func exists(in localization: LocalizationIdentifier) -> Bool {
+        return localizedEquivalentPaths[localization] == nil ∧ localization ∉ skippedLocalizations
+      }
+
+      internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
+
+      internal var homeProduct: LibraryAPI?
+      internal var homeModule: ModuleAPI?
+
+      // MARK: - PackageAPI Only
+
+      internal var packageTypes: [SymbolGraph.Symbol] = []
+      internal var packageExtensions: [Extension] = []
+      internal var packageProtocols: [SymbolGraph.Symbol] = []
+      internal var packageFunctions: [SymbolGraph.Symbol] = []
+      internal var packageGlobalVariables: [SymbolGraph.Symbol] = []
+      internal var packageOperators: [Operator] = []
+      internal var packagePrecedenceGroups: [PrecedenceGroup] = []
     }
-
-    internal var relativePagePath: [LocalizationIdentifier: StrictString] = [:]
-
-    internal var homeProduct: LibraryAPI?
-    internal var homeModule: ModuleAPI?
-
-    // MARK: - PackageAPI Only
-
-    internal var packageTypes: [SymbolGraph.Symbol] = []
-    internal var packageExtensions: [Extension] = []
-    internal var packageProtocols: [SymbolGraph.Symbol] = []
-    internal var packageFunctions: [SymbolGraph.Symbol] = []
-    internal var packageGlobalVariables: [SymbolGraph.Symbol] = []
-    internal var packageOperators: [Operator] = []
-    internal var packagePrecedenceGroups: [PrecedenceGroup] = []
   }
-}
+#endif

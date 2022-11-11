@@ -14,12 +14,14 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SymbolKit
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SymbolKit
 
-extension SymbolGraph.Symbol.Names {
+  extension SymbolGraph.Symbol.Names {
 
-  internal var resolvedForNavigation: String {
-    return navigator?.lazy.map({ $0.spelling }).joined()
-      ?? title
+    internal var resolvedForNavigation: String {
+      return navigator?.lazy.map({ $0.spelling }).joined()
+        ?? title
+    }
   }
-}
+#endif

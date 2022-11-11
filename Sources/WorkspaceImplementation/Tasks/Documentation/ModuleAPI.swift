@@ -14,47 +14,49 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
-import SymbolKit
-import SDGSwiftDocumentation
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+  import SymbolKit
+  import SDGSwiftDocumentation
 
-extension ModuleAPI {
+  extension ModuleAPI {
 
-  internal func extensions() -> [Extension] {
-    var unprocessedExtensionIdentifiers: [String: String] = [:]
-    for graph in self.symbolGraphs {
-      for relationship in graph.relationships
-      where relationship.kind == .memberOf {
-        unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
+    internal func extensions() -> [Extension] {
+      var unprocessedExtensionIdentifiers: [String: String] = [:]
+      for graph in self.symbolGraphs {
+        for relationship in graph.relationships
+        where relationship.kind == .memberOf {
+          unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
+        }
       }
-    }
-    var extensionIdentifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
-    var symbolLookup: [String: SymbolGraph.Symbol] = [:]
-    for graph in self.symbolGraphs {
-      symbolLookup.mergeByOverwriting(from: graph.symbols)
-      for symbol in graph.symbols.values {
-        extensionIdentifiers.remove(symbol.identifier.precise)
+      var extensionIdentifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
+      var symbolLookup: [String: SymbolGraph.Symbol] = [:]
+      for graph in self.symbolGraphs {
+        symbolLookup.mergeByOverwriting(from: graph.symbols)
+        for symbol in graph.symbols.values {
+          extensionIdentifiers.remove(symbol.identifier.precise)
+        }
       }
-    }
-    let result = extensionIdentifiers.compactMap { identifier in
-      if let symbol = symbolLookup[identifier] {
-        return Extension(names: symbol.names, identifier: symbol.identifier)
-      } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
-        return Extension(
-          names: SymbolGraph.Symbol.Names(
-            title: fallback,
-            navigator: nil,
-            subHeading: nil,
-            prose: nil
-          ),
-          identifier: SymbolGraph.Symbol.Identifier(
-            precise: "SDG.extension.\(fallback)",
-            interfaceLanguage: "swift"
+      let result = extensionIdentifiers.compactMap { identifier in
+        if let symbol = symbolLookup[identifier] {
+          return Extension(names: symbol.names, identifier: symbol.identifier)
+        } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
+          return Extension(
+            names: SymbolGraph.Symbol.Names(
+              title: fallback,
+              navigator: nil,
+              subHeading: nil,
+              prose: nil
+            ),
+            identifier: SymbolGraph.Symbol.Identifier(
+              precise: "SDG.extension.\(fallback)",
+              interfaceLanguage: "swift"
+            )
           )
-        )
-      } else {
-        return nil
+        } else {
+          return nil
+        }
       }
+      return result
     }
-    return result
   }
-}
+#endif

@@ -169,26 +169,6 @@
       )
     }
 
-    internal func reportUnlabelledParameter(
-      _ closureType: String,
-      symbol: SymbolLike,
-      navigationPath: [SymbolLike]
-    ) {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A closure parameter has no label:"
-          case .deutschDeutschland:
-            return "Einem Abschluss fehlt die Beschriftung."
-          }
-        }),
-        with: symbol,
-        navigationPath: navigationPath,
-        parameter: closureType
-      )
-    }
-
     internal func reportMissingVariableType(
       _ variable: SymbolGraph.Symbol,
       navigationPath: [SymbolLike]

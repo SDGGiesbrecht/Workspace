@@ -980,43 +980,6 @@
         parameterDocumentation
         .filter { parameters.contains($0.name.text) }
 
-      /// Check that closure parameters are labelled.
-      if symbol.hasEditableDocumentation(editableModules: editableModules),
-        let declaration = symbol.declaration
-      {
-        class Scanner: SyntaxVisitor {
-          init(status: DocumentationStatus, symbol: SymbolLike, navigationPath: [SymbolLike]) {
-            self.status = status
-            self.symbol = symbol
-            self.navigationPath = navigationPath
-          }
-          let status: DocumentationStatus
-          let symbol: SymbolLike
-          let navigationPath: [SymbolLike]
-          override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
-            for argument in node.arguments
-            where
-              (argument.secondName?.text.isEmpty ≠ false
-              ∨ argument.secondName?.tokenKind == .wildcardKeyword)  // @exempt(from: tests)
-              ∧ (argument.firstName?.text.isEmpty ≠ false
-                ∨ argument.firstName?.tokenKind == .wildcardKeyword)
-            {
-              status.reportUnlabelledParameter(
-                node.source(),
-                symbol: symbol,
-                navigationPath: navigationPath
-              )
-            }
-            return .visitChildren
-          }
-        }
-        let scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
-        let source: String = declaration.declarationFragments.lazy.map({ $0.spelling }).joined()
-        if let syntax = try? SyntaxParser.parse(source: source) {
-          scanner.walk(syntax)
-        }
-      }
-
       let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
       return generateParameterLikeSection(
         heading: parametersHeading,

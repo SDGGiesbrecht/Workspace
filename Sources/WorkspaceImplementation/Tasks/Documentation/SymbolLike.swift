@@ -954,7 +954,6 @@
         guard let fragments = declaration?.declarationFragments else {
           return []
         }
-        #warning("Closure parameters are dropped by SymbolKit.")
         return fragments.indices.compactMap({ index in
           let fragment = fragments[index]
           switch fragment.kind {

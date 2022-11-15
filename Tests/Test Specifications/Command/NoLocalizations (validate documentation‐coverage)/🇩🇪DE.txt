@@ -6,7 +6,8 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-„NoLocalizations“ wird zerteilt ...
+[$ swift...]
+
 Die Programmierschnitstelle wird verarbeitet ...
 Auszeichnung wird erstellt ...
 

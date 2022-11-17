@@ -400,7 +400,7 @@
           for relationship in graph.relationships {
             switch relationship.kind {
             case .memberOf, .requirementOf, .optionalRequirementOf:
-              if relationship.target == `extension`.identifier.precise,
+              if relationship.targetFallback == `extension`.names.title,
                 let child = graph.symbols[relationship.source],
                 ¬result.contains(where: { $0.identifier.precise == child.identifier.precise })
               {
@@ -883,7 +883,7 @@
               )
                 + "/"
             )
-            for child in children(package: package) {
+            for child in symbol.children(package: package) {
               links = child.determinePaths(
                 for: localization,
                 customReplacements: customReplacements,
@@ -917,10 +917,39 @@
                 extensionStorage: extensionStorage
               ) + "/"
           }
-        case is Operator, is PrecedenceGroup, is Extension:
+        case is Operator, is PrecedenceGroup:
           path +=
             namespace
             + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
+        case let `extension` as Extension:
+          path +=
+            namespace
+            + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
+          var newNamespace = namespace
+          newNamespace.append(
+            contentsOf: localizedDirectoryName(
+              for: localization,
+              extensionStorage: extensionStorage
+            ) + "/"
+          )
+          newNamespace.append(
+            contentsOf: localizedFileName(
+              for: localization,
+              customReplacements: customReplacements,
+              extensionStorage: extensionStorage
+            )
+              + "/"
+          )
+          for child in `extension`.children(package: package) {
+            links = child.determinePaths(
+              for: localization,
+              customReplacements: customReplacements,
+              namespace: newNamespace,
+              package: package,
+              extensionStorage: &extensionStorage
+            )
+            .mergedByOverwriting(from: links)
+          }
         default:
           unreachable()
         }
@@ -932,9 +961,8 @@
             extensionStorage: extensionStorage
           )
           + ".html"
-        extensionStorage[self.extendedPropertiesIndex, default: .default].relativePagePath[
-          localization
-        ] = path
+        extensionStorage[self.extendedPropertiesIndex, default: .default]
+          .relativePagePath[localization] = path
         if case .types = self.indexSectionIdentifier {
           links[names.title.truncated(before: "<")] = String(path)
         } else {

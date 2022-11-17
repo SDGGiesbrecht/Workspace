@@ -7,7 +7,7 @@
 <html dir="auto" lang="zxx">
  <head>
   <meta charset="utf&#x002D;8">
-  <title>Array</title>
+  <title>Swift.Array</title>
   <link rel="stylesheet" href="../../CSS/Root.css">
   <link rel="stylesheet" href="../../CSS/Swift.css">
   <link rel="stylesheet" href="../../CSS/Site.css">
@@ -20,13 +20,13 @@
 
 <a id="current‐language‐icon" onmouseenter="showLanguageSwitch(this)"><span>zxx</span></a>
 <div id="language‐switch" onmouseleave="hideLanguageSwitch(this)">
-<a href="../../🇬🇧EN/Extensions/Array.html">🇬🇧EN</a>
-<a href="../../🇺🇸EN/Extensions/Array.html">🇺🇸EN</a>
-<a href="../../🇨🇦EN/Extensions/Array.html">🇨🇦EN</a>
-<a href="../../🇩🇪DE/Erweiterungen/Array.html">🇩🇪DE</a>
+<a href="../../🇬🇧EN/Extensions/Swift.Array.html">🇬🇧EN</a>
+<a href="../../🇺🇸EN/Extensions/Swift.Array.html">🇺🇸EN</a>
+<a href="../../🇨🇦EN/Extensions/Swift.Array.html">🇨🇦EN</a>
+<a href="../../🇩🇪DE/Erweiterungen/Swift.Array.html">🇩🇪DE</a>
 </div>
 <a href="../../zxx/CheckedInDocumentation.html">CheckedInDocumentation</a>
-<span>Array</span>
+<span>Swift.Array</span>
 
     </div>
     <div>
@@ -82,8 +82,8 @@ Class
 <a href="../../zxx/struct/Enumeration.html">
 Enumeration
 </a>
-<a href="../../zxx/struct/GenericStructure%5bU+003C%5dGenericParameter%5bU+003E%5d.html">
-GenericStructure&#x003C;GenericParameter&#x003E;
+<a href="../../zxx/struct/GenericStructure.html">
+GenericStructure
 </a>
 <a href="../../zxx/struct/LocalizedEnumeration.html">
 LocalizedEnumeration
@@ -97,20 +97,23 @@ Subclass
 <a href="../../zxx/struct/TopConformer.html">
 TopConformer
 </a>
+<a href="../../zxx/struct/TopConformer/struct/TopConformer.AssociatedType.html">
+AssociatedType
+</a>
 <a href="../../zxx/struct/TypeAlias.html">
 TypeAlias
 </a>
 </div>
 <div id="extension‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">extension</a>
-<a href="../../zxx/extension/Array.html">
-Array
+<a href="../../zxx/extension/Swift.Array.html">
+Swift.Array
 </a>
-<a href="../../zxx/extension/Bool.html">
-Bool
+<a href="../../zxx/extension/Swift.Bool.html">
+Swift.Bool
 </a>
-<a href="../../zxx/extension/Dictionary.html">
-Dictionary
+<a href="../../zxx/extension/Swift.Dictionary.html">
+Swift.Dictionary
 </a>
 </div>
 <div id="protocol‐index">
@@ -127,11 +130,23 @@ Protocol
 </div>
 <div id="func‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">func</a>
+<a href="../../zxx/struct/Structure/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/LocalizedEnumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/Enumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/Structure/func/%5bU+003C%5d(_%5bU+003A%5d_%5bU+003A%5d).html">
+&#x003C;(_:_:)
+</a>
+<a href="../../zxx/struct/Structure/func/==(_%5bU+003A%5d_%5bU+003A%5d).html">
+==(_:_:)
+</a>
 <a href="../../zxx/func/conditionallyCompiled().html">
 conditionallyCompiled()
-</a>
-<a href="../../zxx/func/demonstrateMoreParameters(composition%5bU+003A%5darray%5bU+003A%5ddictionary%5bU+003A%5dfunction%5bU+003A%5dattributed%5bU+003A%5d).html">
-demonstrateMoreParameters(composition:array:dictionary:function:attributed:)
 </a>
 <a href="../../zxx/func/demonstrateParameters(simple%5bU+003A%5dmetatype%5bU+003A%5dmember%5bU+003A%5doptional%5bU+003A%5dunwrapped%5bU+003A%5dtuple%5bU+003A%5d).html">
 demonstrateParameters(simple:metatype:member:optional:unwrapped:tuple:)
@@ -181,17 +196,12 @@ Precedence
    </header>
    <main>
 
-<div class="import‐header">
-<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../zxx/target/CheckedInDocumentation.html"><span class="internal identifier TokenSyntax identifier">CheckedInDocumentation</span></a></span></span></span></code>
-<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
-</div>
+
 
     <div class="main‐text‐column">
      <div class="title">
       <div class="symbol‐type">extension</div>
-      
-      <h1>Array</h1>
-      
+      <h1>Swift.Array</h1>
      </div>
 
 
@@ -210,18 +220,9 @@ Precedence
 
 
 
-<section>
-<h2>func</h2>
-<div class="child">
-<a href="../../zxx/extension/Array/func/constrained().html"><code class="swift"><span class="internal identifier">constrained</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code><code class="swift"><span class="GenericWhereClauseSyntax"> <span class="keyword TokenSyntax whereKeyword">where</span> <span class="GenericRequirementListSyntax"><span class="GenericRequirementSyntax"><span class="ConformanceRequirementSyntax"><span class="SimpleTypeIdentifierSyntax"><span class="external identifier TokenSyntax identifier">Element</span></span> <span class="punctuation TokenSyntax colon">:</span> <span class="SimpleTypeIdentifierSyntax"><span class="external identifier TokenSyntax identifier">Equatable</span></span></span></span></span></span></code></a>
-<p>A constrained method.</p>
-</div>
-</section>
+
 
     </div>
-
-
-
    </main>
    <header class="platforms">
 <span>

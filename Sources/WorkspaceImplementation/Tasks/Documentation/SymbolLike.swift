@@ -41,6 +41,27 @@
       }
     }
 
+    internal func isCapableOfInheritingDocumentation(graphs: [SymbolGraph]) -> Bool {
+      switch self {
+      case let symbol as SymbolGraph.Symbol:
+        return graphs.contains(where: { graph in
+          return graph.relationships.contains(where: { relationship in
+            if relationship.source == symbol.identifier.precise {
+              switch relationship.kind {
+              case .defaultImplementationOf, .overrides, .requirementOf, .optionalRequirementOf:
+                return true
+              default:
+                return false
+              }
+            }
+            return false
+          })
+        })
+      default:
+        return false
+      }
+    }
+
     internal var extendedPropertiesIndex: String {
       switch self {
       case let symbol as SymbolGraph.Symbol:

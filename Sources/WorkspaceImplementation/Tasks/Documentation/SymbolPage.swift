@@ -92,6 +92,7 @@
           navigationPath: navigationPath,
           localization: localization,
           editableModules: editableModules,
+          graphs: package.symbolGraphs(),
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
           status: status
@@ -739,6 +740,7 @@
       navigationPath: [SymbolLike],
       localization: LocalizationIdentifier,
       editableModules: [String],
+      graphs: [SymbolGraph],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
@@ -757,7 +759,8 @@
           )
         )
       }
-      if symbol.hasEditableDocumentation(editableModules: editableModules) {
+      if symbol.hasEditableDocumentation(editableModules: editableModules),
+         ¬symbol.isCapableOfInheritingDocumentation(graphs: graphs) {
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,

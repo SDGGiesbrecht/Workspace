@@ -58,7 +58,8 @@
       case .package, .tools, .libraries, .modules:
         symbolName = StrictString(symbol.names.title)
       case .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
-        symbolName = navigationPath.dropFirst().map({ StrictString($0.names.title) })
+        symbolName = navigationPath.dropFirst()
+          .map({ StrictString($0.names.title.components(separatedBy: ".").last!) })
           .joined(separator: ".")
       }
       if let specificParameter = parameter {

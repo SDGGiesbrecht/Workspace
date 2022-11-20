@@ -55,7 +55,16 @@
               .module, .unknown:
               break
             case .class, .enum, .struct, .typealias:
-              types.append(symbol)
+              if ¬graph.relationships.contains(where: { relationship in
+                switch relationship.kind {
+                case .memberOf:
+                  return relationship.source == symbol.identifier.precise
+                default:
+                  return false
+                }
+              }) {
+                types.append(symbol)
+              }
             case .func, .operator:
               functions.append(symbol)
             case .protocol:

@@ -760,7 +760,8 @@
         )
       }
       if symbol.hasEditableDocumentation(editableModules: editableModules),
-         ¬symbol.isCapableOfInheritingDocumentation(graphs: graphs) {
+        ¬symbol.isCapableOfInheritingDocumentation(graphs: graphs)
+      {
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,

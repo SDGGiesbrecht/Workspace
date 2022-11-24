@@ -209,18 +209,11 @@ precedencegroup Precedence {
 ///
 /// - Parameters:
 ///     - simple: A simple parameter.
-///     - nestedInSimple: A nested parameter.
 ///     - metatype: A metatype parameter.
-///     - nestedInMetatype: A nested parameter.
 ///     - member: A member parameter.
-///     - nestedInMember: A nested parameter.
 ///     - optional: An optional parameter.
-///     - nestedInOptional: A nested parameter.
 ///     - unwrapped: An implicitly unwrapped parameter.
-///     - nestedInUnwrapped: A nested parameter.
 ///     - tuple: A tuple parameter.
-///     - nestedInTuple: A nested parameter.
-///     - alsoNestedInTuple: A nested parameter.
 public func demonstrateParameters(
   simple: Simple<(_ nestedInSimple: Bool) -> Void>,
   metatype: Metatype<(_ nestedInMetatype: Bool) -> Void>.Type,
@@ -236,16 +229,10 @@ public func demonstrateParameters(
   ///
   /// - Parameters:
   ///     - composition: A composition parameter.
-  ///     - nestedInComposition: A nested parameter.
   ///     - array: An array parameter.
-  ///     - nestedInArray: A nested parameter.
   ///     - dictionary: A dictionary parameter.
-  ///     - nestedInDictionaryKey: A nested parameter.
-  ///     - nestedInDictionaryValue: A nested parameter.
   ///     - function: A function parameter.
-  ///     - nestedInFunction: A nested parameter.
   ///     - attributed: An attributed parameter.
-  ///     - nestedInAttributed: A nested parameter.
   public func demonstrateMoreParameters(
     composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
     array: [Simple<(_ nestedInArray: Bool) -> Void>],
@@ -275,9 +262,6 @@ public struct TopConformer: IntermediateProtocol {
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A variable with a closure type.
-///
-/// - Parameters:
-///     - aParameter: A parameter.
 public var variable: (_ aParameter: Type) -> Void = { _ in }
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
@@ -285,9 +269,6 @@ public var variable: (_ aParameter: Type) -> Void = { _ in }
 ///
 /// - Parameters:
 ///     - aParameter: A parameter.
-///     - tupleHalfA: The first element of the tuple.
-///     - closureParameter: The parameter of the closure.
-///     - tupleHalfB: The second element of the tuple.
 public func function(
   parameter aParameter: (tupleHalfA: (_ closureParameter: Int) -> Void, tupleHalfB: Bool)
 ) {}

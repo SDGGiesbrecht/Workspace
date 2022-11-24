@@ -88,8 +88,8 @@ Class
 <a href="../../🇨🇦EN/Types/Enumeration.html">
 Enumeration
 </a>
-<a href="../../🇨🇦EN/Types/GenericStructure%5bU+003C%5dGenericParameter%5bU+003E%5d.html">
-GenericStructure&#x003C;GenericParameter&#x003E;
+<a href="../../🇨🇦EN/Types/GenericStructure.html">
+GenericStructure
 </a>
 <a href="../../🇨🇦EN/Types/LocalizedEnumeration.html">
 LocalizedEnumeration
@@ -109,14 +109,14 @@ TypeAlias
 </div>
 <div id="extension‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">Extensions</a>
-<a href="../../🇨🇦EN/Extensions/Array.html">
-Array
+<a href="../../🇨🇦EN/Extensions/Swift.Array.html">
+Swift.Array
 </a>
-<a href="../../🇨🇦EN/Extensions/Bool.html">
-Bool
+<a href="../../🇨🇦EN/Extensions/Swift.Bool.html">
+Swift.Bool
 </a>
-<a href="../../🇨🇦EN/Extensions/Dictionary.html">
-Dictionary
+<a href="../../🇨🇦EN/Extensions/Swift.Dictionary.html">
+Swift.Dictionary
 </a>
 </div>
 <div id="protocol‐index">
@@ -133,6 +133,21 @@ Protocol
 </div>
 <div id="func‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">Functions</a>
+<a href="../../🇨🇦EN/Types/LocalizedEnumeration/Functions/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../🇨🇦EN/Types/Structure/Functions/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../🇨🇦EN/Types/Enumeration/Functions/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../🇨🇦EN/Types/Structure/Functions/%5bU+003C%5d(_%5bU+003A%5d_%5bU+003A%5d).html">
+&#x003C;(_:_:)
+</a>
+<a href="../../🇨🇦EN/Types/Structure/Functions/==(_%5bU+003A%5d_%5bU+003A%5d).html">
+==(_:_:)
+</a>
 <a href="../../🇨🇦EN/Functions/conditionallyCompiled().html">
 conditionallyCompiled()
 </a>
@@ -198,9 +213,7 @@ Precedence
     <div class="main‐text‐column">
      <div class="title">
       <div class="symbol‐type">Protocol</div>
-      
       <h1>Protocol</h1>
-      
      </div>
 
 <div class="description">
@@ -208,7 +221,7 @@ Precedence
 </div>
 <section class="declaration">
 <h2>Declaration</h2>
-<code class="swift blockquote"><span class="ProtocolDeclSyntax"><span class="ModifierListSyntax"></span><span class="keyword TokenSyntax protocolKeyword">protocol</span> <a href="../../🇨🇦EN/Protocols/Protocol.html"><span class="internal identifier TokenSyntax identifier">Protocol</span></a><span class="MemberDeclBlockSyntax"></span></span></code>
+<code class="swift blockquote"><span class="SourceFileSyntax"><span class="CodeBlockItemListSyntax"><span class="CodeBlockItemSyntax"><span class="UnknownDeclSyntax"><span class="keyword TokenSyntax protocolKeyword">protocol</span> <a href="../../🇨🇦EN/Protocols/Protocol.html"><span class="internal identifier TokenSyntax identifier">Protocol</span></a><span class="UnknownSyntax"></span></span></span></span><span class="TokenSyntax eof"></span></span></code>
 </section>
 
 
@@ -220,18 +233,12 @@ Precedence
 <div class="conformance‐filter">
 <p class="conformance‐filter‐label">
 Filter
-</p><input name="conformance filter" onchange="switchConformanceMode(this)" type="radio" value="all">
-All
-</input><input name="conformance filter" onchange="switchConformanceMode(this)" type="radio" value="required">
-Conformance Requirements
-</input><input name="conformance filter" onchange="switchConformanceMode(this)" type="radio" value="customizable">
-Customization Points
-</input>
+</p>
 </div>
 
 <section>
 <h2>Nested Types</h2>
-<div class="child" data-conformance="requirement">
+<div class="child">
 <a href="../../🇨🇦EN/Protocols/Protocol/Types/AssociatedType.html"><code class="swift"><span class="internal identifier">AssociatedType</span></code></a>
 <p>An associated type.</p>
 </div>
@@ -243,11 +250,11 @@ Customization Points
 
 <section>
 <h2>Methods</h2>
-<div class="child" data-conformance="customizable">
+<div class="child">
 <a href="../../🇨🇦EN/Protocols/Protocol/Methods/customizationPoint().html"><code class="swift"><span class="internal identifier">customizationPoint</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
 <p>A customization point.</p>
 </div>
-<div class="child" data-conformance="requirement">
+<div class="child">
 <a href="../../🇨🇦EN/Protocols/Protocol/Methods/protocolRequirement().html"><code class="swift"><span class="internal identifier">protocolRequirement</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
 <p>A protocol requirement.</p>
 </div>
@@ -255,31 +262,13 @@ Customization Points
 <a href="../../🇨🇦EN/Protocols/Protocol/Methods/providedExtension().html"><code class="swift"><span class="internal identifier">providedExtension</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
 <p>A provided extension.</p>
 </div>
-</section>
-
-    </div>
-
-<div class="import‐header">
-<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../🇨🇦EN/Modules/Extensions.html"><span class="internal identifier TokenSyntax identifier">Extensions</span></a></span></span></span></code>
-<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">Extensions</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
-</div>
-<div class="main‐text‐column">
-
-
-
-
-
-
-
-<section>
-<h2>Methods</h2>
 <div class="child">
-<a href="../../🇨🇦EN/Extensions/Protocol/Methods/extensionMethodInAnotherModule().html"><code class="swift"><span class="internal identifier">extensionMethodInAnotherModule</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
+<a href="../../🇨🇦EN/Extensions/CheckedInDocumentation.Protocol/Methods/extensionMethodInAnotherModule().html"><code class="swift"><span class="internal identifier">extensionMethodInAnotherModule</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
 <p>An extension method in another module.</p>
 </div>
 </section>
-</div>
 
+    </div>
    </main>
    <header class="platforms">
 <span>

@@ -7,7 +7,7 @@
 <html dir="auto" lang="zxx">
  <head>
   <meta charset="utf&#x002D;8">
-  <title>extensionMethodInAnotherModule()</title>
+  <title>subscript(_:)</title>
   <link rel="stylesheet" href="../../../../CSS/Root.css">
   <link rel="stylesheet" href="../../../../CSS/Swift.css">
   <link rel="stylesheet" href="../../../../CSS/Site.css">
@@ -20,14 +20,14 @@
 
 <a id="current‐language‐icon" onmouseenter="showLanguageSwitch(this)"><span>zxx</span></a>
 <div id="language‐switch" onmouseleave="hideLanguageSwitch(this)">
-<a href="../../../../🇬🇧EN/Extensions/Protocol/Methods/extensionMethodInAnotherModule().html">🇬🇧EN</a>
-<a href="../../../../🇺🇸EN/Extensions/Protocol/Methods/extensionMethodInAnotherModule().html">🇺🇸EN</a>
-<a href="../../../../🇨🇦EN/Extensions/Protocol/Methods/extensionMethodInAnotherModule().html">🇨🇦EN</a>
-<a href="../../../../🇩🇪DE/Erweiterungen/Protocol/Methoden/extensionMethodInAnotherModule().html">🇩🇪DE</a>
+<a href="../../../../🇬🇧EN/Extensions/Swift.Dictionary/Subscripts/subscript(_%5bU+003A%5d).html">🇬🇧EN</a>
+<a href="../../../../🇺🇸EN/Extensions/Swift.Dictionary/Subscripts/subscript(_%5bU+003A%5d).html">🇺🇸EN</a>
+<a href="../../../../🇨🇦EN/Extensions/Swift.Dictionary/Subscripts/subscript(_%5bU+003A%5d).html">🇨🇦EN</a>
+<a href="../../../../🇩🇪DE/Erweiterungen/Swift.Dictionary/Indexe/subscript(_%5bU+003A%5d).html">🇩🇪DE</a>
 </div>
 <a href="../../../../zxx/CheckedInDocumentation.html">CheckedInDocumentation</a>
-<a href="../../../../zxx/protocol/Protocol.html">Protocol</a>
-<span>extensionMethodInAnotherModule()</span>
+<a href="../../../../zxx/extension/Swift.Dictionary.html">Swift.Dictionary</a>
+<span>subscript(_:)</span>
 
     </div>
     <div>
@@ -83,8 +83,8 @@ Class
 <a href="../../../../zxx/struct/Enumeration.html">
 Enumeration
 </a>
-<a href="../../../../zxx/struct/GenericStructure%5bU+003C%5dGenericParameter%5bU+003E%5d.html">
-GenericStructure&#x003C;GenericParameter&#x003E;
+<a href="../../../../zxx/struct/GenericStructure.html">
+GenericStructure
 </a>
 <a href="../../../../zxx/struct/LocalizedEnumeration.html">
 LocalizedEnumeration
@@ -104,14 +104,14 @@ TypeAlias
 </div>
 <div id="extension‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">extension</a>
-<a href="../../../../zxx/extension/Array.html">
-Array
+<a href="../../../../zxx/extension/Swift.Array.html">
+Swift.Array
 </a>
-<a href="../../../../zxx/extension/Bool.html">
-Bool
+<a href="../../../../zxx/extension/Swift.Bool.html">
+Swift.Bool
 </a>
-<a href="../../../../zxx/extension/Dictionary.html">
-Dictionary
+<a href="../../../../zxx/extension/Swift.Dictionary.html">
+Swift.Dictionary
 </a>
 </div>
 <div id="protocol‐index">
@@ -128,6 +128,21 @@ Protocol
 </div>
 <div id="func‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">func</a>
+<a href="../../../../zxx/struct/LocalizedEnumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../../../zxx/struct/Structure/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../../../zxx/struct/Enumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../../../zxx/struct/Structure/func/%5bU+003C%5d(_%5bU+003A%5d_%5bU+003A%5d).html">
+&#x003C;(_:_:)
+</a>
+<a href="../../../../zxx/struct/Structure/func/==(_%5bU+003A%5d_%5bU+003A%5d).html">
+==(_:_:)
+</a>
 <a href="../../../../zxx/func/conditionallyCompiled().html">
 conditionallyCompiled()
 </a>
@@ -183,24 +198,28 @@ Precedence
    <main>
 
 <div class="import‐header">
-<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../../../zxx/target/Extensions.html"><span class="internal identifier TokenSyntax identifier">Extensions</span></a></span></span></span></code>
-<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">Extensions</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
+<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../../../zxx/target/CheckedInDocumentation.html"><span class="internal identifier TokenSyntax identifier">CheckedInDocumentation</span></a></span></span></span></code>
+<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
 </div>
 
     <div class="main‐text‐column">
      <div class="title">
-      <div class="symbol‐type">func</div>
-      
-      <h1>extensionMethodInAnotherModule()</h1>
-      
+      <div class="symbol‐type">subscript</div>
+      <h1>subscript(_:)</h1>
      </div>
 
 <div class="description">
-<p>An extension method in another module.</p>
+<p>...</p>
 </div>
 <section class="declaration">
 <h2>Declaration</h2>
-<code class="swift blockquote"><span class="FunctionDeclSyntax"><span class="ModifierListSyntax"></span><span class="keyword TokenSyntax funcKeyword">func</span> <span class="internal identifier TokenSyntax identifier">extensionMethodInAnotherModule</span><span class="FunctionSignatureSyntax"><span class="ParameterClauseSyntax"><span class="punctuation TokenSyntax leftParen">(</span><span class="FunctionParameterListSyntax"></span><span class="punctuation TokenSyntax rightParen">)</span></span></span></span></code>
+<code class="swift blockquote"><span class="SourceFileSyntax"><span class="CodeBlockItemListSyntax"><span class="CodeBlockItemSyntax"><span class="SubscriptDeclSyntax"><span class="keyword TokenSyntax subscriptKeyword">subscript</span><span class="ParameterClauseSyntax"><span class="punctuation TokenSyntax leftParen">(</span><span class="FunctionParameterListSyntax"><span class="FunctionParameterSyntax"><span class="internal identifier TokenSyntax identifier">i</span><span class="punctuation TokenSyntax colon">:</span> <span class="SimpleTypeIdentifierSyntax"><a href="../../../../zxx/struct/Aliased.html"><span class="internal identifier TokenSyntax identifier">Aliased</span></a></span></span></span><span class="punctuation TokenSyntax rightParen">)</span> </span><span class="ReturnClauseSyntax"><span class="punctuation TokenSyntax arrow">-&#x003E;</span> <span class="SimpleTypeIdentifierSyntax"><a href="../../../../zxx/struct/Aliased.html"><span class="internal identifier TokenSyntax identifier">Aliased</span></a> </span></span><span class="AccessorBlockSyntax"><span class="punctuation TokenSyntax leftBrace">{</span> <span class="AccessorListSyntax"><span class="AccessorDeclSyntax"><span class="keyword TokenSyntax contextualKeyword">get</span> </span></span><span class="punctuation TokenSyntax rightBrace">}</span></span></span></span></span><span class="TokenSyntax eof"></span></span></code>
+</section>
+
+<section>
+<h2>Parameters</h2>
+<dl><dt><code class="swift"><span class="internal identifier">i</span></code></dt>
+<dd><p>...</p></dd></dl>
 </section>
 
 
@@ -216,12 +235,7 @@ Precedence
 
 
 
-
-
     </div>
-
-
-
    </main>
    <header class="platforms">
 <span>
@@ -259,6 +273,6 @@ watchOS
 </span>
    <span dir="ltr" lang="en-GB">Generated with <a href="https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Workspace.html">Workspace</a>. <span lang="la-IT">Soli Deo gloria.</span></span>
   </footer>
-  <script>contractIndex("protocol‐index");</script>
+  <script>contractIndex("extension‐index");</script>
  </body>
 </html>

@@ -7,7 +7,7 @@
 <html dir="auto" lang="zxx">
  <head>
   <meta charset="utf&#x002D;8">
-  <title>Bool</title>
+  <title>Swift.Bool</title>
   <link rel="stylesheet" href="../../CSS/Root.css">
   <link rel="stylesheet" href="../../CSS/Swift.css">
   <link rel="stylesheet" href="../../CSS/Site.css">
@@ -20,13 +20,13 @@
 
 <a id="current‐language‐icon" onmouseenter="showLanguageSwitch(this)"><span>zxx</span></a>
 <div id="language‐switch" onmouseleave="hideLanguageSwitch(this)">
-<a href="../../🇬🇧EN/Extensions/Bool.html">🇬🇧EN</a>
-<a href="../../🇺🇸EN/Extensions/Bool.html">🇺🇸EN</a>
-<a href="../../🇨🇦EN/Extensions/Bool.html">🇨🇦EN</a>
-<a href="../../🇩🇪DE/Erweiterungen/Bool.html">🇩🇪DE</a>
+<a href="../../🇬🇧EN/Extensions/Swift.Bool.html">🇬🇧EN</a>
+<a href="../../🇺🇸EN/Extensions/Swift.Bool.html">🇺🇸EN</a>
+<a href="../../🇨🇦EN/Extensions/Swift.Bool.html">🇨🇦EN</a>
+<a href="../../🇩🇪DE/Erweiterungen/Swift.Bool.html">🇩🇪DE</a>
 </div>
 <a href="../../zxx/CheckedInDocumentation.html">CheckedInDocumentation</a>
-<span>Bool</span>
+<span>Swift.Bool</span>
 
     </div>
     <div>
@@ -82,8 +82,8 @@ Class
 <a href="../../zxx/struct/Enumeration.html">
 Enumeration
 </a>
-<a href="../../zxx/struct/GenericStructure%5bU+003C%5dGenericParameter%5bU+003E%5d.html">
-GenericStructure&#x003C;GenericParameter&#x003E;
+<a href="../../zxx/struct/GenericStructure.html">
+GenericStructure
 </a>
 <a href="../../zxx/struct/LocalizedEnumeration.html">
 LocalizedEnumeration
@@ -103,14 +103,14 @@ TypeAlias
 </div>
 <div id="extension‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">extension</a>
-<a href="../../zxx/extension/Array.html">
-Array
+<a href="../../zxx/extension/Swift.Array.html">
+Swift.Array
 </a>
-<a href="../../zxx/extension/Bool.html">
-Bool
+<a href="../../zxx/extension/Swift.Bool.html">
+Swift.Bool
 </a>
-<a href="../../zxx/extension/Dictionary.html">
-Dictionary
+<a href="../../zxx/extension/Swift.Dictionary.html">
+Swift.Dictionary
 </a>
 </div>
 <div id="protocol‐index">
@@ -127,6 +127,21 @@ Protocol
 </div>
 <div id="func‐index">
 <a class="heading" onclick="toggleIndexSectionVisibility(this)">func</a>
+<a href="../../zxx/struct/LocalizedEnumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/Structure/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/Enumeration/func/!=(_%5bU+003A%5d_%5bU+003A%5d).html">
+!=(_:_:)
+</a>
+<a href="../../zxx/struct/Structure/func/%5bU+003C%5d(_%5bU+003A%5d_%5bU+003A%5d).html">
+&#x003C;(_:_:)
+</a>
+<a href="../../zxx/struct/Structure/func/==(_%5bU+003A%5d_%5bU+003A%5d).html">
+==(_:_:)
+</a>
 <a href="../../zxx/func/conditionallyCompiled().html">
 conditionallyCompiled()
 </a>
@@ -181,17 +196,12 @@ Precedence
    </header>
    <main>
 
-<div class="import‐header">
-<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../zxx/target/CheckedInDocumentation.html"><span class="internal identifier TokenSyntax identifier">CheckedInDocumentation</span></a></span></span></span></code>
-<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
-</div>
+
 
     <div class="main‐text‐column">
      <div class="title">
       <div class="symbol‐type">extension</div>
-      
-      <h1>Bool</h1>
-      
+      <h1>Swift.Bool</h1>
      </div>
 
 
@@ -213,34 +223,16 @@ Precedence
 <section>
 <h2>func</h2>
 <div class="child">
-<a href="../../zxx/extension/Bool/func/extensionMethod().html"><code class="swift"><span class="internal identifier">extensionMethod</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
+<a href="../../zxx/extension/Swift.Bool/func/extensionMethod().html"><code class="swift"><span class="internal identifier">extensionMethod</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
 <p>An extension method.</p>
+</div>
+<div class="child">
+<a href="../../zxx/extension/Swift.Bool/func/extensionMethodInAnotherModule().html"><code class="swift"><span class="internal identifier">extensionMethodInAnotherModule</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
+<p>An extension method in another module.</p>
 </div>
 </section>
 
     </div>
-
-<div class="import‐header">
-<code class="swift blockquote"><span class="ImportDeclSyntax"><span class="keyword TokenSyntax importKeyword">import</span> <span class="AccessPathSyntax"><span class="AccessPathComponentSyntax"><a href="../../zxx/target/Extensions.html"><span class="internal identifier TokenSyntax identifier">Extensions</span></a></span></span></span></code>
-<code class="swift blockquote"><span class="FunctionCallExprSyntax"><span class="MemberAccessExprSyntax"><span class="UnknownExprSyntax"></span><span class="punctuation TokenSyntax period">.</span><span class="external identifier TokenSyntax identifier">product</span></span><span class="punctuation TokenSyntax leftParen">(</span><span class="TupleExprElementListSyntax"><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">name</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">Extensions</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span><span class="punctuation TokenSyntax comma">,</span> </span><span class="TupleExprElementSyntax"><span class="external identifier TokenSyntax identifier">package</span><span class="punctuation TokenSyntax colon">:</span> <span class="string StringLiteralExprSyntax"><span class="string‐punctuation TokenSyntax stringQuote">"</span><span class="StringLiteralSegmentsSyntax"><span class="StringSegmentSyntax"><span class="text TokenSyntax stringSegment">CheckedInDocumentation</span></span></span><span class="string‐punctuation TokenSyntax stringQuote">"</span></span></span></span><span class="punctuation TokenSyntax rightParen">)</span></span></code>
-</div>
-<div class="main‐text‐column">
-
-
-
-
-
-
-
-<section>
-<h2>func</h2>
-<div class="child">
-<a href="../../zxx/extension/Bool/func/extensionMethodInAnotherModule().html"><code class="swift"><span class="internal identifier">extensionMethodInAnotherModule</span><span class="punctuation">(</span><span class="internal identifier"></span><span class="punctuation">)</span><span class="internal identifier"></span></code></a>
-<p>An extension method in another module.</p>
-</div>
-</section>
-</div>
-
    </main>
    <header class="platforms">
 <span>

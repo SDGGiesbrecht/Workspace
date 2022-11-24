@@ -223,26 +223,24 @@ public func demonstrateParameters(
   tuple: (nestedInTuple: Bool, alsoNestedInTuple: Bool)
 ) {}
 
-#if !os(macOS)  // Compiler bug in Swift 5.6.
-  // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
-  /// ...
-  ///
-  /// - Parameters:
-  ///     - composition: A composition parameter.
-  ///     - array: An array parameter.
-  ///     - dictionary: A dictionary parameter.
-  ///     - function: A function parameter.
-  ///     - attributed: An attributed parameter.
-  public func demonstrateMoreParameters(
-    composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
-    array: [Simple<(_ nestedInArray: Bool) -> Void>],
-    dictionary: [Simple<(_ nestedInDictionaryKey: Bool) -> Void>: Simple<
-      (_ nestedInDictionaryValue: Bool) -> Void
-    >],
-    function: (_ nestedInFunction: Bool) -> Void,
-    attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
-  ) {}
-#endif
+// @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
+/// ...
+///
+/// - Parameters:
+///     - composition: A composition parameter.
+///     - array: An array parameter.
+///     - dictionary: A dictionary parameter.
+///     - function: A function parameter.
+///     - attributed: An attributed parameter.
+public func demonstrateMoreParameters(
+  composition: Composition & Simple<(_ nestedInComposition: Bool) -> Void>,
+  array: [Simple<(_ nestedInArray: Bool) -> Void>],
+  dictionary: [Simple<(_ nestedInDictionaryKey: Bool) -> Void>: Simple<
+    (_ nestedInDictionaryValue: Bool) -> Void
+  >],
+  function: (_ nestedInFunction: Bool) -> Void,
+  attributed: inout Simple<(_ nestedInAttributed: Bool) -> Void>
+) {}
 
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// An intermediate protocol.

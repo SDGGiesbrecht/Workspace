@@ -178,12 +178,6 @@ public func function() {}
 /// A global variable.
 public var globalVariable: Bool = false
 
-#if canImport(AppKit)
-  // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
-  /// Conditionally compiled.
-  public func conditionallyCompiled() {}
-#endif
-
 // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
 /// A generic structure.
 public struct GenericStructure<GenericParameter> {}

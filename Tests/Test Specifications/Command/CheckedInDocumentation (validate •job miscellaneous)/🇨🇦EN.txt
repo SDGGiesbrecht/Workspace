@@ -55,11 +55,11 @@ Line 67
 Parameters should be grouped under a single callout. (parameterGrouping)
   /// - Parameter parameterTwo: The second parameter.
 
-Line 276
+Line 270
 Public classes should be open, final or explicitly exempt. (classFinality)
 public class BaseClass {
 
-Line 284
+Line 278
 Public classes should be open, final or explicitly exempt. (classFinality)
 public class Subclass: BaseClass {
 

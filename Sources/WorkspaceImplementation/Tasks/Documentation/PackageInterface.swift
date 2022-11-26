@@ -482,6 +482,16 @@
       for entry in apiEntries.lazy.filter({ entry in
         return extensionStorage[entry.extendedPropertiesIndex, default: .default]
           .exists(in: localization)
+      }).sorted(by: { first, second in
+        return compare(
+          first,
+          second,
+          by: { $0.names.resolvedForNavigation },
+          { entry in
+            return extensionStorage[entry.extendedPropertiesIndex, default: .default]
+              .relativePagePath[localization]!
+          }
+        )
       }) {
         entries.append(
           ElementSyntax(

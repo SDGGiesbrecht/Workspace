@@ -44,7 +44,7 @@
             return "regenerates code providing access to the project’s resources."
           case .deutschDeutschland:
             return
-              "erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt."
+              "erstellt den Quelltext neu, der Zugriff auf die Ressourcen des Projekts bereitstellt."
           }
         })
 

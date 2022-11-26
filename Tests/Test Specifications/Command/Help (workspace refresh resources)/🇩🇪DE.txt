@@ -1,6 +1,6 @@
 $ arbeitsbereich refresh resources help •no‐colour
 
-arbeitsbereich auffrischen ressourcen erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt.
+arbeitsbereich auffrischen ressourcen erstellt den Quelltext neu, der Zugriff auf die Ressourcen des Projekts bereitstellt.
 
 Unterbefehle
 

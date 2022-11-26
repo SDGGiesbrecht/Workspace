@@ -1964,10 +1964,9 @@
         heading: heading,
         escapeHeading: escapeHeading,
         children: children.filter({ child in
-          extensionStorage[child.extendedPropertiesIndex, default: .default].exists(
-            in: localization
-          )
-        }),
+          extensionStorage[child.extendedPropertiesIndex, default: .default]
+            .exists(in: localization)
+        }).sorted(by: { $0.names.resolvedForNavigation < $1.names.resolvedForNavigation }),
         childContents: getEntryContents,
         childAttributes: { _ in return [:] }
       )

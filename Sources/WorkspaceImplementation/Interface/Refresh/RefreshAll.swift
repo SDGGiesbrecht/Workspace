@@ -156,11 +156,13 @@
         }
 
         // Resources
-        try Workspace.Refresh.Resources.command.execute(
-          withArguments: arguments,
-          options: options,
-          output: output
-        )
+        if try options.project.configuration(output: output).generateResourceAccessors {
+          try Workspace.Refresh.Resources.command.execute(
+            withArguments: arguments,
+            options: options,
+            output: output
+          )
+        }
 
         // File Headers
         if try options.project.configuration(output: output).fileHeaders.manage {

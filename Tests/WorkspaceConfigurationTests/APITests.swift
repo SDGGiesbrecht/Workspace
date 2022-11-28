@@ -465,6 +465,10 @@ class APITests: TestCase {
       )
     #endif
     _ = try JSONEncoder().encode(noProducts)
+    configuration.generateResourceAccessors = false
+    XCTAssertFalse(configuration.ressourcenzugriffErstellen)
+    configuration.ressourcenzugriffErstellen = true
+    XCTAssert(configuration.generateResourceAccessors)
   }
 
   func testWorkspaceProjectConfiguration() throws {

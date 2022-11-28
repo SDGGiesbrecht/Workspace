@@ -198,6 +198,29 @@ public final class WorkspaceConfiguration: Configuration {
   }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
+  // @crossReference(WorkspaceConfiguration.generateResourceAccessors)
+  /// Whether or not to generate resource accessors.
+  ///
+  /// This is on by default.
+  ///
+  /// ```swift
+  /// $ workspace refresh resources
+  /// ```
+  public var generateResourceAccessors: Bool = true
+  // @localization(🇩🇪DE) @crossReference(WorkspaceConfiguration.generateResourceAccessors)
+  /// Ob Arbeitsbereich Ressourcenzugriff erstellen soll.
+  ///
+  /// Wenn nicht angegeben, ist diese Einstellung ein.
+  ///
+  /// ```shell
+  /// $ arbeitsbereich auffrischen ressourcen
+  /// ```
+  public var ressourcenzugriffErstellen: Bool {
+    get { return generateResourceAccessors }
+    set { generateResourceAccessors = newValue }
+  }
+
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(WorkspaceConfiguration.fileHeaders)
   /// Options related to file headers.
   public var fileHeaders: FileHeaderConfiguration = FileHeaderConfiguration()

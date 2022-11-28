@@ -14,7 +14,7 @@ github erstellt die GitHub‐Konfigurationen des Projekts neu.
 hilfe zeigt Gebrauchsinformationen an.
 lies‐mich erstellt die Lies‐mich‐Datei des Projekts neu.
 lizenz erstellt die Lizenzdatei der Projekt neu.
-ressourcen erstellt den Quelltext neu, der zugriff auf die Ressourcen des Projekts bereitstellt.
+ressourcen erstellt den Quelltext neu, der Zugriff auf die Ressourcen des Projekts bereitstellt.
 skripte erstellt die Auffrisch‐ und Überprüfungskripte neu.
 
 Optionen

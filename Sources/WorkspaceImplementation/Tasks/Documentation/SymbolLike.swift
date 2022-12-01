@@ -987,7 +987,13 @@
         if case .types = self.indexSectionIdentifier {
           links[names.title.truncated(before: "<")] = String(path)
         } else {
-          links[names.title] = String(path)
+          let converted = String(path)
+          if let existing = links[names.title],
+            existing < converted {
+            // Use existing
+          } else {
+            links[names.title] = converted
+          }
         }
         return links
       }

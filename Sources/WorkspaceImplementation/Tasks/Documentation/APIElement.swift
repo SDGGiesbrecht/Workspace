@@ -749,8 +749,7 @@
             links = APIElement.library(library).determinePaths(
               for: localization,
               customReplacements: customReplacements
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case .library(let library):
           path += localizedDirectoryName(for: localization) + "/"
@@ -758,14 +757,13 @@
             links = APIElement.module(module).determinePaths(
               for: localization,
               customReplacements: customReplacements
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case .module(let module):
           path += localizedDirectoryName(for: localization) + "/"
           for child in module.children {
             links = child.determinePaths(for: localization, customReplacements: customReplacements)
-              .mergedByOverwriting(from: links)
+              .merging(links, uniquingKeysWith: min)
           }
         case .type, .extension, .protocol:
           path += namespace + localizedDirectoryName(for: localization) + "/"
@@ -780,8 +778,7 @@
               for: localization,
               customReplacements: customReplacements,
               namespace: newNamespace
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case .case, .initializer, .subscript, .operator, .precedence:
           path += namespace + localizedDirectoryName(for: localization) + "/"

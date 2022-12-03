@@ -857,8 +857,7 @@
               customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case let library as LibraryAPI:
           path +=
@@ -869,8 +868,7 @@
               customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case let module as ModuleAPI:
           path +=
@@ -881,7 +879,7 @@
               customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
-            ).mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         case let symbol as SymbolGraph.Symbol:
           switch symbol.kind.identifier {
@@ -911,8 +909,7 @@
                 namespace: newNamespace,
                 package: package,
                 extensionStorage: &extensionStorage
-              )
-              .mergedByOverwriting(from: links)
+              ).merging(links, uniquingKeysWith: min)
             }
           case .deinit, .`case`, .`init`, .macro, .snippet, .snippetGroup, .subscript,
             .typeSubscript, .unknown:
@@ -968,8 +965,7 @@
               namespace: newNamespace,
               package: package,
               extensionStorage: &extensionStorage
-            )
-            .mergedByOverwriting(from: links)
+            ).merging(links, uniquingKeysWith: min)
           }
         default:
           unreachable()
@@ -987,18 +983,7 @@
         if case .types = self.indexSectionIdentifier {
           links[names.title.truncated(before: "<")] = String(path)
         } else {
-          let converted = String(path)
-          if let existing = links[names.title],
-            existing < converted
-          {
-            // Use existing
-          } else {
-            #warning("Debugging...")
-            if names.title == "typeProperty" {
-              print("Registering: \(names.title) \(converted)")
-            }
-            links[names.title] = converted
-          }
+          links[names.title] = String(path)
         }
         return links
       }

@@ -989,9 +989,14 @@
         } else {
           let converted = String(path)
           if let existing = links[names.title],
-            existing < converted {
+            existing < converted
+          {
             // Use existing
           } else {
+            #warning("Debugging...")
+            if names.title == "typeProperty" {
+              print("Registering: \(names.title) \(converted)")
+            }
             links[names.title] = converted
           }
         }

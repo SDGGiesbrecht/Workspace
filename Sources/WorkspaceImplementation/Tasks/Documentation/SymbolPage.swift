@@ -1278,7 +1278,10 @@
       guard let module = symbol as? ModuleAPI else {
         return ""
       }
-      let extensions = module.extensions()
+      let global = extensionStorage[package.extendedPropertiesIndex, default: .default].packageExtensions
+      let extensions = module.extensions().filter({ `extension` in
+        return global.contains(where: { $0.identifier == `extension`.identifier } )
+      })
       guard ¬extensions.isEmpty else {
         return ""
       }

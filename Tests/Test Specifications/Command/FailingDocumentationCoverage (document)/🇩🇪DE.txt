@@ -7,7 +7,8 @@ Verstorbene Ressourcenzeiger werden weiterleitet ...
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-„FailingDocumentationCoverage“ wird zerteilt ...
+[$ swift...]
+
 Die Programmierschnitstelle wird verarbeitet ...
 Auszeichnung wird erstellt ...
 
@@ -34,15 +35,6 @@ FailingDocumentationCoverage.zxx
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "FailingDocumentationCoverage"“.)
 
 
-Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen.
-anotherUnlabelled(closure:).zxx
-(Erwartete: closure, _)
-
-
-Einem Abschluss fehlt die Beschriftung.
-anotherUnlabelled(closure:).(_ _: Int) -> Int
-
-
 Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:
 excessiveHeading().zxx
 (Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)
@@ -57,16 +49,8 @@ Einem Symbol fehlt die Beschreibung.
 undocumented().zxx
 
 
-Einem Abschluss fehlt die Beschriftung.
-unlabelled(closure:).(Int) -> Int
-
-
 Einem Symbol fehlt die Beschreibung.
 inferredType.zxx
-
-
-Einem öffentlichen Variable fehlt der ausdrückliche Typ.
-inferredType
 
 
 ✗ Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst.

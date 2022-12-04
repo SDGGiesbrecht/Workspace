@@ -6,7 +6,8 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under ‘documentation.api.yearFirstPublished’. See https://sdggiesbrecht.github.io/Workspace/🇬🇧EN/Types/WorkspaceConfiguration.html.)
 
-Parsing ‘FailingDocumentationCoverage’...
+[$ swift...]
+
 Processing API...
 Generating HTML...
 
@@ -33,15 +34,6 @@ FailingDocumentationCoverage.zxx
 Workspace will look for documentation on the line above ‘.target(name: "FailingDocumentationCoverage"’.)
 
 
-A symbol has mismatched parameter descriptions:
-anotherUnlabelled(closure:).zxx
-(Expected: closure, _)
-
-
-A closure parameter has no label:
-anotherUnlabelled(closure:).(_ _: Int) -> Int
-
-
 A symbol’s documentation contains excessively strong headings:
 excessiveHeading().zxx
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
@@ -56,16 +48,8 @@ A symbol has no description:
 undocumented().zxx
 
 
-A closure parameter has no label:
-unlabelled(closure:).(Int) -> Int
-
-
 A symbol has no description:
 inferredType.zxx
-
-
-A public variable has no explicit type:
-inferredType
 
 
 ✗ Documentation coverage is incomplete. (See [⌘F] ‘§1’)

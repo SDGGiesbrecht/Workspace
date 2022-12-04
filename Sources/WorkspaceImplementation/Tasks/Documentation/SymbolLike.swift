@@ -30,12 +30,17 @@
       case is Extension:
         return false
       case let symbol as SymbolGraph.Symbol:
-        if ¬editableModules.contains(where: { module in
-          return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true
-        }) {  // From dependency.
-          return false
+        if docComment == nil {
+          return true
+        } else {
+          if ¬editableModules.contains(where: { module in
+            return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true
+          }) {  // From dependency.
+            return false
+          } else {
+            return true
+          }
         }
-        return true
       default:
         return true
       }

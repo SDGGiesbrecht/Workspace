@@ -1363,7 +1363,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceMethods = symbol.children(package: package)
-        .filter({ $0.kind?.identifier == .method })
+        .filter({ $0.kind?.identifier == .func ∨ $0.kind?.identifier == .method })
       guard ¬instanceMethods.isEmpty else {
         return ""
       }
@@ -1404,7 +1404,7 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let instanceProperties = symbol.children(package: package)
-        .filter({ $0.kind?.identifier == .property })
+        .filter({ $0.kind?.identifier == .`var` ∨ $0.kind?.identifier == .property })
       guard ¬instanceProperties.isEmpty else {
         return ""
       }

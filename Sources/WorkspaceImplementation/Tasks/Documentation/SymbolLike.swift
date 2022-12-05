@@ -31,7 +31,7 @@
         return false
       case let symbol as SymbolGraph.Symbol:
         if docComment == nil {
-          return true
+          return symbol.location ≠ nil
         } else {
           if ¬editableModules.contains(where: { module in
             return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true

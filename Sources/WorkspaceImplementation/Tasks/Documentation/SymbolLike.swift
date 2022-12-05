@@ -30,8 +30,8 @@
       case is Extension:
         return false
       case let symbol as SymbolGraph.Symbol:
-        if docComment == nil {
-          return symbol.location ≠ nil
+        if symbol.location == nil {
+          return false
         } else {
           if ¬editableModules.contains(where: { module in
             return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true

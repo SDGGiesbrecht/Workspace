@@ -715,6 +715,7 @@
             localization: interfaceLocalization,
             commands: [
               "sudo xcode\u{2D}select \u{2D}switch /Applications/Xcode_\(xcodeVersion).app",
+              "defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation \u{2D}bool YES",
               "xcodebuild \u{2D}version",
               "swift \u{2D}\u{2D}version",
             ]

@@ -33,6 +33,7 @@ jobs:
       run: |
         set -x
         sudo xcode-select -switch /Applications/Xcode_14.0.app
+        defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
         xcodebuild -version
         swift --version
     - name: Refresh

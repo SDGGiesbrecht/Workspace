@@ -538,6 +538,7 @@ public final class WorkspaceConfiguration: Configuration {
     case supportedPlatforms
     case git
     case licence
+    case generateResourceAccessors
     case fileHeaders
     case gitHub
     case normalize
@@ -559,6 +560,7 @@ public final class WorkspaceConfiguration: Configuration {
     try container.encode(supportedPlatforms, forKey: .supportedPlatforms)
     try container.encode(git, forKey: .git)
     try container.encode(licence, forKey: .licence)
+    try container.encode(generateResourceAccessors, forKey: .generateResourceAccessors)
     try container.encode(fileHeaders, forKey: .fileHeaders)
     try container.encode(gitHub, forKey: .gitHub)
     try container.encode(normalize, forKey: .normalize)
@@ -584,6 +586,7 @@ public final class WorkspaceConfiguration: Configuration {
     supportedPlatforms = try container.decode(Set<Platform>.self, forKey: .supportedPlatforms)
     git = try container.decode(GitConfiguration.self, forKey: .git)
     licence = try container.decode(LicenceConfiguration.self, forKey: .licence)
+    generateResourceAccessors = try container.decode(Bool.self, forKey: .generateResourceAccessors)
     fileHeaders = try container.decode(FileHeaderConfiguration.self, forKey: .fileHeaders)
     gitHub = try container.decode(GitHubConfiguration.self, forKey: .gitHub)
     normalize = try container.decode(Bool.self, forKey: .normalize)

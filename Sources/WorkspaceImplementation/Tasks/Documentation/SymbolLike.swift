@@ -30,9 +30,12 @@
       case is Extension:
         return false
       case let symbol as SymbolGraph.Symbol:
-        if symbol.location == nil {
+        if symbol.location == nil {  // Synthesized, such as from default conformance.
           return false
-        } else {
+        } else {  // Has somewhere to attach documentation.
+          if docComment == nil {  // Undocumented.
+            return true
+          }
           if ¬editableModules.contains(where: { module in
             return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true
           }) {  // From dependency.

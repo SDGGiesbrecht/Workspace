@@ -812,16 +812,7 @@ let package = Package(
       dependencies: [
         "WorkspaceConfiguration"
       ],
-      plugins: ["ConfigurationEmbedder"]
-    ),
-    .plugin(
-      name: "ConfigurationEmbedder",
-      capability: .buildTool(),
-      dependencies: ["copy_source"]
-    ),
-    .executableTarget(
-      // #workaround(Swift 5.7, Should be “copy‐source”, but for Windows bug.)
-      name: "copy_source"
+      plugins: [.plugin(name: "SDGCopySources", package: "SDGCornerstone")]
     ),
   ]
 )

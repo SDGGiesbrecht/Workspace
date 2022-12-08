@@ -65,8 +65,19 @@
               }) {
                 types.append(symbol)
               }
-            case .func, .operator:
+            case .func:
               functions.append(symbol)
+            case .operator:
+              if ¬graph.relationships.contains(where: { relationship in
+                switch relationship.kind {
+                case .memberOf:
+                  return relationship.source == symbol.identifier.precise
+                default:
+                  return false
+                }
+              }) {
+                functions.append(symbol)
+              }
             case .protocol:
               protocols.append(symbol)
             case .var:

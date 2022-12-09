@@ -106,6 +106,7 @@
       }
       let extensions = extensionIdendifiers.compactMap { identifier in
         if let symbol = symbolLookup[identifier] {
+          // @exempt(from: tests) Reachability unknown.
           return Extension(names: symbol.names, identifier: symbol.identifier)
         } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
           return Extension(

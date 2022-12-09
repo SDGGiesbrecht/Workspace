@@ -479,9 +479,8 @@ let package = Package(
 
     /// Workspace.
     .executable(name: "workspace", targets: ["WorkspaceTool"]),
-    // #warning("Temoprarily disabled.")
     /// Arbeitsbereich.
-    //.executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
+    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
   ],
   dependencies: [
     .package(

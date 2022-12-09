@@ -346,7 +346,10 @@
           )
         )
       }
-      let packageProperties = extensionStorage[package.extendedPropertiesIndex, default: .default]
+      let packageProperties = extensionStorage[
+        package.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ]
       if ¬packageProperties.packageTypes.lazy.filter({ type in
         return localization
           ∉ extensionStorage[
@@ -506,8 +509,10 @@
           second,
           by: { $0.names.resolvedForNavigation },
           { entry in
-            return extensionStorage[entry.extendedPropertiesIndex, default: .default]
-              .relativePagePath[localization]!
+            return extensionStorage[
+              entry.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].relativePagePath[localization]!
           }
         )
       }) {
@@ -981,9 +986,10 @@
     ) throws {
       for localization in localizations {
         for library in api.libraries
-        where extensionStorage[library.extendedPropertiesIndex, default: .default]
-          .exists(in: localization)
-        {
+        where extensionStorage[
+          library.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].exists(in: localization) {
           try purgingAutoreleased {
             let location = library.pageURL(
               in: outputDirectory,
@@ -1025,9 +1031,10 @@
     ) throws {
       for localization in localizations {
         for module in api.modules
-        where extensionStorage[module.extendedPropertiesIndex, default: .default]
-          .exists(in: localization)
-        {
+        where extensionStorage[
+          module.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].exists(in: localization) {
           try purgingAutoreleased {
             let location = module.pageURL(
               in: outputDirectory,
@@ -1067,7 +1074,10 @@
       output: Command.Output,
       coverageCheckOnly: Bool
     ) throws {
-      let packageProperties = extensionStorage[self.api.extendedPropertiesIndex, default: .default]
+      let packageProperties = extensionStorage[
+        self.api.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ]
       for localization in localizations {
         for symbol in [
           packageProperties.packageTypes.map({ $0 as SymbolLike }),
@@ -1078,9 +1088,10 @@
           packageProperties.packageOperators.map({ $0 as SymbolLike }),
           packageProperties.packagePrecedenceGroups.map({ $0 as SymbolLike }),
         ].joined()
-        where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-          .exists(in: localization)
-        {
+        where extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].exists(in: localization) {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
@@ -1146,11 +1157,15 @@
 
       for symbol in [
         parent.children(package: self.api),
-        extensionStorage[parent.extendedPropertiesIndex, default: .default].localizedChildren,
+        extensionStorage[
+          parent.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedChildren,
       ].joined()
-      where extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-        .exists(in: localization)
-      {
+      where extensionStorage[
+        symbol.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].exists(in: localization) {
         try purgingAutoreleased {
           let location = symbol.pageURL(
             in: outputDirectory,
@@ -1338,8 +1353,10 @@
               navigationPath: [
                 (
                   label: StrictString(api.names.resolvedForNavigation),
-                  path: extensionStorage[api.extendedPropertiesIndex, default: .default]
-                    .relativePagePath[localization]!
+                  path: extensionStorage[
+                    api.extendedPropertiesIndex,
+                    default: .default  // @exempt(from: tests) Reachability unknown.
+                  ].relativePagePath[localization]!
                 ),
                 (label: pageTitle, path: pagePath),
               ]

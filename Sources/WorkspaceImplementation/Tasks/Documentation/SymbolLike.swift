@@ -53,17 +53,18 @@
       switch self {
       case let symbol as SymbolGraph.Symbol:  // @exempt(from: tests) Reachability unknown.
         return graphs.contains(where: { graph in
-          return graph.relationships.contains(where: { relationship in
-            if relationship.source == symbol.identifier.precise {
-              switch relationship.kind {
-              case .defaultImplementationOf, .overrides, .requirementOf, .optionalRequirementOf:
-                return true
-              default:
-                return false
+          return graph.relationships.contains(
+            where: { relationship in  // @exempt(from: tests) Reachability unknown.
+              if relationship.source == symbol.identifier.precise {
+                switch relationship.kind {
+                case .defaultImplementationOf, .overrides, .requirementOf, .optionalRequirementOf:
+                  return true
+                default:
+                  return false
+                }
               }
-            }
-            return false
-          })
+              return false
+            })
         })
       default:
         return false
@@ -463,9 +464,15 @@
         .resolved(localizations: localizations)
       extensionStorage[extendedPropertiesIndex, default: .default].localizedDocumentation =
         parsed.documentation
-      extensionStorage[extendedPropertiesIndex, default: .default].crossReference =
+      extensionStorage[
+        extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].crossReference =
         parsed.crossReference
-      extensionStorage[extendedPropertiesIndex, default: .default].skippedLocalizations =
+      extensionStorage[
+        extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].skippedLocalizations =
         parsed.skipped
 
       let globalScope: Bool
@@ -487,7 +494,10 @@
           parsingCache: &parsingCache
         )
         let crossReference =
-          extensionStorage[child.extendedPropertiesIndex, default: .default].crossReference
+          extensionStorage[
+            child.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].crossReference
           ?? {
             unique += 1
             return "\u{7F}\(String(describing: unique))"
@@ -518,36 +528,43 @@
       package: PackageAPI,
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
     ) {
-      for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
-        .localizedDocumentation
-      {
-        extensionStorage[extendedPropertiesIndex, default: .default]
-          .localizedEquivalentFileNames[localization] =
+      for (localization, _) in extensionStorage[
+        other.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].localizedDocumentation {
+        extensionStorage[
+          extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedEquivalentFileNames[localization] =
           other
           .fileName(customReplacements: customReplacements)
-        extensionStorage[extendedPropertiesIndex, default: .default]
-          .localizedEquivalentDirectoryNames[localization] = other.directoryName(
-            for: localization,
-            globalScope: globalScope,
-            typeMember: {
-              switch other {
-              case let symbol as SymbolGraph.Symbol:
-                switch symbol.kind.identifier {
-                case .associatedtype, .class, .deinit, .enum, .`case`, .func, .operator, .`init`,
-                  .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .struct,
-                  .subscript, .typealias, .var, .module, .unknown:
-                  return false
-                case .typeMethod, .typeProperty, .typeSubscript:
-                  return true
-                }
-              default:
-                unreachable()
+        extensionStorage[
+          extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedEquivalentDirectoryNames[localization] = other.directoryName(
+          for: localization,
+          globalScope: globalScope,
+          typeMember: {
+            switch other {
+            case let symbol as SymbolGraph.Symbol:
+              switch symbol.kind.identifier {
+              case .associatedtype, .class, .deinit, .enum, .`case`, .func, .operator, .`init`,
+                .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .struct,
+                .subscript, .typealias, .var, .module, .unknown:
+                return false
+              case .typeMethod, .typeProperty, .typeSubscript:
+                return true
               }
+            default:
+              unreachable()
             }
-          )
+          }
+        )
         if ¬isSame {
-          extensionStorage[self.extendedPropertiesIndex, default: .default].localizedChildren
-            .append(contentsOf: other.children(package: package))
+          extensionStorage[
+            self.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].localizedChildren.append(contentsOf: other.children(package: package))
         }
       }
     }
@@ -564,9 +581,10 @@
           package: package,
           extensionStorage: &extensionStorage
         )
-        if let crossReference = extensionStorage[child.extendedPropertiesIndex, default: .default]
-          .crossReference
-        {
+        if let crossReference = extensionStorage[
+          child.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].crossReference {
           groups[crossReference, default: []].append(child)
         }
       }
@@ -586,15 +604,18 @@
       from other: SymbolLike,
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
     ) {
-      for (localization, _) in extensionStorage[other.extendedPropertiesIndex, default: .default]
-        .localizedDocumentation
-      {
-        extensionStorage[self.extendedPropertiesIndex, default: .default].localizedEquivalentPaths[
-          localization
-        ] =
-          extensionStorage[other.extendedPropertiesIndex, default: .default].relativePagePath[
-            localization
-          ]
+      for (localization, _) in extensionStorage[
+        other.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].localizedDocumentation {
+        extensionStorage[
+          self.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedEquivalentPaths[localization] =
+          extensionStorage[
+            other.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].relativePagePath[localization]
       }
     }
 
@@ -809,8 +830,10 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
       return
-        extensionStorage[self.extendedPropertiesIndex, default: .default]
-        .localizedEquivalentFileNames[localization]
+        extensionStorage[
+          self.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedEquivalentFileNames[localization]
         ?? fileName(customReplacements: customReplacements)
     }
 
@@ -821,8 +844,10 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
       return
-        extensionStorage[self.extendedPropertiesIndex, default: .default]
-        .localizedEquivalentDirectoryNames[localization]
+        extensionStorage[
+          self.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedEquivalentDirectoryNames[localization]
         ?? directoryName(
           for: localization,
           globalScope: globalScope,
@@ -838,9 +863,10 @@
     ) -> URL {
       return outputDirectory.appendingPathComponent(
         String(
-          extensionStorage[self.extendedPropertiesIndex, default: .default].relativePagePath[
-            localization
-          ]!
+          extensionStorage[
+            self.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].relativePagePath[localization]!
         )
       )
     }
@@ -986,8 +1012,10 @@
             extensionStorage: extensionStorage
           )
           + ".html"
-        extensionStorage[self.extendedPropertiesIndex, default: .default]
-          .relativePagePath[localization] = path
+        extensionStorage[
+          self.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].relativePagePath[localization] = path
         if case .types = self.indexSectionIdentifier {
           links[names.title.truncated(before: "<")] = String(path)
         } else {

@@ -38,6 +38,8 @@
         return .syntax(ClassFinality.self)
       case .compatibilityCharacters:
         return .text(CompatibilityCharacters.self)
+      case .explicitTypes:
+        return .syntax(ExplicitTypes.self)
       case .marks:
         return .text(Marks.self)
       case .syntaxColouring:

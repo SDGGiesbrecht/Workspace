@@ -808,13 +808,6 @@
         return ""
       }
 
-      #warning("Need to convert to proofreading rule.")
-      /*if case .variable(let variable) = symbol,
-        variable.declaration.bindings.first?.typeAnnotation?.isMissing ≠ false
-      {
-        status.reportMissingVariableType(variable, navigationPath: navigationPath)
-      }*/
-
       return generateDeclarationSection(
         localization: localization,
         declaration: StrictString(

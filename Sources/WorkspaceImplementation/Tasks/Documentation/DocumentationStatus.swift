@@ -49,7 +49,6 @@
       problem: UserFacing<StrictString, InterfaceLocalization>,
       with symbol: SymbolType,
       navigationPath: [SymbolLike],
-      parameter: String? = nil,
       localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
@@ -61,9 +60,6 @@
         symbolName = navigationPath.dropFirst()
           .map({ StrictString($0.names.title.components(separatedBy: ".").last!) })
           .joined(separator: ".")
-      }
-      if let specificParameter = parameter {
-        symbolName += "." + StrictString(specificParameter)
       }
       if let localized = localization {
         symbolName += "." + localized._iconOrCode
@@ -167,24 +163,6 @@
             return "(Erwartete: \(expected.joined(separator: ", ")))"
           }
         })
-      )
-    }
-
-    internal func reportMissingVariableType(
-      _ variable: SymbolGraph.Symbol,
-      navigationPath: [SymbolLike]
-    ) {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A public variable has no explicit type:"
-          case .deutschDeutschland:
-            return "Einem öffentlichen Variable fehlt der ausdrückliche Typ."
-          }
-        }),
-        with: variable,
-        navigationPath: navigationPath
       )
     }
 

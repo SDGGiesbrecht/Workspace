@@ -45,11 +45,11 @@
     }
 
     internal var docComment: SymbolGraph.LineList? {
-      return nil
+      return nil  // @exempt(from: tests) Unreachable.
     }
 
     internal var location: SymbolGraph.Symbol.Location? {
-      return nil
+      return nil  // @exempt(from: tests) Unreachable.
     }
 
     internal func parseDocumentation(

@@ -51,7 +51,7 @@
 
     internal func isCapableOfInheritingDocumentation(graphs: [SymbolGraph]) -> Bool {
       switch self {
-      case let symbol as SymbolGraph.Symbol:
+      case let symbol as SymbolGraph.Symbol:  // @exempt(from: tests) Reachability unknown.
         return graphs.contains(where: { graph in
           return graph.relationships.contains(where: { relationship in
             if relationship.source == symbol.identifier.precise {

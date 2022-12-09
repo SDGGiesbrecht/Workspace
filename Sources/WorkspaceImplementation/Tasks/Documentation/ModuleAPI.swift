@@ -38,6 +38,7 @@
       }
       let result = extensionIdentifiers.compactMap { identifier in
         if let symbol = symbolLookup[identifier] {
+          // @exempt(from: tests) Reachability unknown.
           return Extension(names: symbol.names, identifier: symbol.identifier)
         } else if let fallback = unprocessedExtensionIdentifiers[identifier] {
           return Extension(
@@ -53,7 +54,7 @@
             )
           )
         } else {
-          return nil
+          return nil  // @exempt(from: tests) Reachability unknown.
         }
       }
       return result

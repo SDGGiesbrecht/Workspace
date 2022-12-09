@@ -76,6 +76,7 @@
                   return false
                 }
               }) {
+                // #workaround(No test for global operators yet.)
                 functions.append(symbol)
               }
             case .protocol:
@@ -120,6 +121,7 @@
             )
           )
         } else {
+          // @exempt(from: tests) Reachability unknown.
           return nil
         }
       }

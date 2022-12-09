@@ -31,7 +31,7 @@
       let tokens = declarationFragments.map({ $0.spelling })
       let parsed =
         (try? SyntaxParser.parse(source: tokens.joined())).map({ Syntax($0) })
-        ?? Syntax(
+        ?? Syntax(  // @exempt(from: tests)
           SyntaxFactory.makeUnknownSyntax(
             tokens: tokens.map({ SyntaxFactory.makeToken(.unknown($0)) })
           )

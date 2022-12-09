@@ -89,8 +89,10 @@
       navigationPathLinks.prepend(
         (
           StrictString(package.names.resolvedForNavigation),
-          extensionStorage[package.extendedPropertiesIndex, default: .default]
-            .relativePagePath[localization]!
+          extensionStorage[
+            package.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Never still empty.
+          ].relativePagePath[localization]!
         )
       )
 

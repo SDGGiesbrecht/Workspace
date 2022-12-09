@@ -271,7 +271,7 @@
               "a",
               attributes: [
                 "href":
-                  "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[package.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))"
+                  "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[package.extendedPropertiesIndex, default: .default/* @exempt(from: tests) */].relativePagePath[localization]!))"
               ],
               contents: HTML.escapeTextForCharacterData(
                 StrictString(package.names.resolvedForNavigation)
@@ -313,8 +313,10 @@
       if ¬package.libraries.lazy
         .filter({ library in
           return localization
-            ∉ extensionStorage[library.extendedPropertiesIndex, default: .default]
-            .skippedLocalizations
+            ∉ extensionStorage[
+              library.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -329,8 +331,10 @@
       }
       if ¬package.modules.lazy.filter({ module in
         return localization
-          ∉ extensionStorage[module.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+          ∉ extensionStorage[
+            module.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
@@ -345,8 +349,10 @@
       let packageProperties = extensionStorage[package.extendedPropertiesIndex, default: .default]
       if ¬packageProperties.packageTypes.lazy.filter({ type in
         return localization
-          ∉ extensionStorage[type.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+          ∉ extensionStorage[
+            type.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].skippedLocalizations
 
       }).isEmpty {
         result.append(
@@ -372,8 +378,10 @@
       }
       if ¬packageProperties.packageProtocols.lazy.filter({ `protocol` in
         return localization
-          ∉ extensionStorage[`protocol`.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+          ∉ extensionStorage[
+            `protocol`.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
@@ -387,8 +395,10 @@
       }
       if ¬packageProperties.packageFunctions.lazy.filter({ function in
         return localization
-          ∉ extensionStorage[function.extendedPropertiesIndex, default: .default]
-          .skippedLocalizations
+          ∉ extensionStorage[
+            function.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].skippedLocalizations
       }).isEmpty {
         result.append(
           generateIndexSection(
@@ -403,8 +413,10 @@
       if ¬packageProperties.packageGlobalVariables
         .lazy.filter({ variable in
           return localization
-            ∉ extensionStorage[variable.extendedPropertiesIndex, default: .default]
-            .skippedLocalizations
+            ∉ extensionStorage[
+              variable.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -420,8 +432,10 @@
       if ¬packageProperties.packageOperators
         .lazy.filter({ `operator` in
           return localization
-            ∉ extensionStorage[`operator`.extendedPropertiesIndex, default: .default]
-            .skippedLocalizations
+            ∉ extensionStorage[
+              `operator`.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -437,8 +451,10 @@
       if ¬packageProperties.packagePrecedenceGroups
         .lazy.filter({ group in
           localization
-            ∉ extensionStorage[group.extendedPropertiesIndex, default: .default]
-            .skippedLocalizations
+            ∉ extensionStorage[
+              group.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].skippedLocalizations
         }).isEmpty
       {
         result.append(
@@ -480,8 +496,10 @@
     ) -> StrictString {
       var entries: [StrictString] = []
       for entry in apiEntries.lazy.filter({ entry in
-        return extensionStorage[entry.extendedPropertiesIndex, default: .default]
-          .exists(in: localization)
+        return extensionStorage[
+          entry.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].exists(in: localization)
       }).sorted(by: { first, second in
         return compare(
           first,
@@ -498,7 +516,7 @@
             "a",
             attributes: [
               "href":
-                "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[entry.extendedPropertiesIndex, default: .default].relativePagePath[localization]!))"
+                "[*site root*]\(HTML.percentEncodeURLPath(extensionStorage[entry.extendedPropertiesIndex, default: .default /* @exempt(from: tests) */].relativePagePath[localization]!))"
             ],
             contents: HTML.escapeTextForCharacterData(
               StrictString(entry.names.resolvedForNavigation)

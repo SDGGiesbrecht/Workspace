@@ -323,7 +323,7 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      // #workaround(Needs to merge graphs from other platforms.")
+      // #workaround(Needs to merge graphs from other platforms.)
       let api = try loadSwiftInterface(output: output)
       let cli = try loadCommandLineInterface(
         output: output,

@@ -34,6 +34,12 @@
           return false
         } else {  // Has somewhere to attach documentation.
           if docComment == nil {  // Undocumented.
+            if declaration?.declarationFragments.contains(where: { fragment in
+              return fragment.spelling == "override"
+                ∨ fragment.spelling == "required"
+            }) == true {  // Override.
+              return false
+            }
             return true
           }
           if ¬editableModules.contains(where: { module in

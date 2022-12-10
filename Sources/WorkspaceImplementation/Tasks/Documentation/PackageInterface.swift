@@ -508,7 +508,7 @@
           first,
           second,
           by: { $0.names.resolvedForNavigation },
-          { entry in
+          { entry in  // @exempt(from: tests) Reachability unknown.
             return extensionStorage[
               entry.extendedPropertiesIndex,
               default: .default  // @exempt(from: tests) Reachability unknown.

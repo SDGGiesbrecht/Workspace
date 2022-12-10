@@ -1950,7 +1950,7 @@
           )
           .normalizedSource()
         default:
-          name = highlight(name: name, internal: relativePathOfChild ≠ nil)
+          name = highlight(name: name)
         }
         name = ElementSyntax(
           "code",
@@ -2046,17 +2046,16 @@
         .normalizedSource()
     }
 
-    private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
+    private static func highlight(name: StrictString) -> StrictString {
       var result = HTML.escapeTextForCharacterData(name)
-      highlight("(", as: "punctuation", in: &result, internal: `internal`)
-      highlight(")", as: "punctuation", in: &result, internal: `internal`)
-      highlight(":", as: "punctuation", in: &result, internal: `internal`)
-      highlight("_", as: "keyword", in: &result, internal: `internal`)
-      highlight("[", as: "punctuation", in: &result, internal: `internal`)
-      highlight("]", as: "punctuation", in: &result, internal: `internal`)
+      highlight("(", as: "punctuation", in: &result)
+      highlight(")", as: "punctuation", in: &result)
+      highlight(":", as: "punctuation", in: &result)
+      highlight("_", as: "keyword", in: &result)
+      highlight("[", as: "punctuation", in: &result)
+      highlight("]", as: "punctuation", in: &result)
       result.prepend(
-        contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external")
-          as StrictString + " identifier\u{22}>"
+        contentsOf: "<span class=\u{22}internal identifier\u{22}>"
       )
       result.append(contentsOf: "</span>")
       return result
@@ -2064,8 +2063,7 @@
     private static func highlight(
       _ token: StrictString,
       as class: StrictString,
-      in name: inout StrictString,
-      internal: Bool
+      in name: inout StrictString
     ) {
       name.replaceMatches(
         for: token,
@@ -2076,8 +2074,7 @@
             contents: token,
             inline: true
           )
-          .normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external")
-          as StrictString + " identifier\u{22}>"
+          .normalizedSource() + "<span class=\u{22}internal identifier\u{22}>"
       )
     }
   }

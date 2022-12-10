@@ -37,7 +37,7 @@
             if declaration?.declarationFragments.contains(where: { fragment in
               return fragment.spelling == "override"
                 ∨ fragment.spelling == "required"
-            }) == true {  // Override.
+            }) == true {  // Override. @exempt(from: tests)
               return false
             }
             return true

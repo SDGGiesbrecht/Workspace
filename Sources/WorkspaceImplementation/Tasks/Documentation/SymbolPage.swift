@@ -1920,12 +1920,12 @@
           for graph in package.symbolGraphs() {
             for symbol in graph.symbols.values {
               if symbol.identifier.precise == `extension`.identifier.precise {
-                baseType = symbol
+                baseType = symbol  // @exempt(from: tests) Reachability unknown.
               }
             }
           }
           if let resolved = baseType {
-            relativePathOfChild =
+            relativePathOfChild =  // @exempt(from: tests) Reachability unknown.
               extensionStorage[resolved.extendedPropertiesIndex, default: .default]
               .relativePagePath[localization]
           }

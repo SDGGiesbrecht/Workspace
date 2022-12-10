@@ -62,7 +62,10 @@
       coverageCheckOnly: Bool
     ) where SymbolType: SymbolLike {
 
-      if extensionStorage[symbol.extendedPropertiesIndex, default: .default].relativePagePath.first?
+      if extensionStorage[
+        symbol.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].relativePagePath.first?
         .value.components(separatedBy: "/").count == 3
       {
         switch symbol.indexSectionIdentifier {
@@ -205,18 +208,27 @@
         allLocalizations: allLocalizations
           .lazy.filter({ localization in
             localization
-              ∉ extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-              .skippedLocalizations
+              ∉ extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].skippedLocalizations
           }).map({ localization in
             let path: StrictString
-            if extensionStorage[symbol.extendedPropertiesIndex, default: .default].exists(
+            if extensionStorage[
+              symbol.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].exists(
               in: localization
             ) {
-              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-                .relativePagePath[localization]!
+              path = extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].relativePagePath[localization]!
             } else {
-              path = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-                .localizedEquivalentPaths[localization]!
+              path = extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].localizedEquivalentPaths[localization]!
             }
             return (localization: localization, path: path)
           }),
@@ -524,9 +536,10 @@
         navigationPath: navigationPath.map({ element in
           return (
             StrictString(element.names.resolvedForNavigation),
-            extensionStorage[element.extendedPropertiesIndex, default: .default].relativePagePath[
-              localization
-            ]!
+            extensionStorage[
+              element.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].relativePagePath[localization]!
           )
         })
       )
@@ -621,9 +634,14 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
       guard
-        let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule,
-        let product = extensionStorage[module.extendedPropertiesIndex, default: .default]
-          .homeProduct
+        let module = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeModule,
+        let product = extensionStorage[
+          module.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeProduct
       else {
         return ""  // @exempt(from: tests) Should never be nil.
       }
@@ -676,7 +694,10 @@
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString where SymbolType: SymbolLike {
       guard
-        let module = extensionStorage[symbol.extendedPropertiesIndex, default: .default].homeModule
+        let module = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeModule
       else {
         return ""
       }
@@ -696,8 +717,10 @@
       )
 
       var links: [String: String] = [:]
-      if let link = extensionStorage[module.extendedPropertiesIndex, default: .default]
-        .relativePagePath[localization]
+      if let link = extensionStorage[
+        module.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].relativePagePath[localization]
       {
         links[moduleName] = String(pathToSiteRoot + link)
       }
@@ -745,8 +768,10 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
-      if let documentation = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-        .localizedDocumentation[localization],
+      if let documentation = extensionStorage[
+        symbol.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].localizedDocumentation[localization],
         let description = documentation.documentation().descriptionSection
       {
         return generateDescriptionSection(
@@ -870,8 +895,10 @@
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
       guard
-        let discussion = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-          .localizedDocumentation[localization]?.documentation().discussionEntries,
+        let discussion = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().discussionEntries,
         ¬discussion.isEmpty
       else {
         return ""
@@ -950,8 +977,10 @@
     ) -> StrictString {
       let parameters = symbol.parameters()
       let parameterDocumentation =
-        extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-        .localizedDocumentation[localization]?.normalizedParameters()
+        extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.normalizedParameters()
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
@@ -1015,8 +1044,10 @@
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
       guard
-        let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-          .localizedDocumentation[localization]?.documentation().throwsCallout
+        let callout = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().throwsCallout
       else {
         return ""
       }
@@ -1049,8 +1080,10 @@
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
       guard
-        let callout = extensionStorage[symbol.extendedPropertiesIndex, default: .default]
-          .localizedDocumentation[localization]?.documentation().returnsCallout
+        let callout = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().returnsCallout
       else {
         return ""
       }
@@ -1271,8 +1304,10 @@
       guard let module = symbol as? ModuleAPI else {
         return ""
       }
-      let global = extensionStorage[package.extendedPropertiesIndex, default: .default]
-        .packageExtensions
+      let global = extensionStorage[
+        package.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].packageExtensions
       let extensions = module.extensions().filter({ `extension` in
         return global.contains(where: { $0.identifier == `extension`.identifier })
       })
@@ -1881,8 +1916,10 @@
         var entry: [StrictString] = []
 
         var name = StrictString(child.names.title)
-        var relativePathOfChild = extensionStorage[child.extendedPropertiesIndex, default: .default]
-          .relativePagePath[localization]
+        var relativePathOfChild = extensionStorage[
+          child.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].relativePagePath[localization]
         if let `extension` = child as? Extension {
           var baseType: SymbolGraph.Symbol?
           for graph in package.symbolGraphs() {
@@ -1937,8 +1974,10 @@
               inline: true
             ).normalizedSource()
           )
-          if let description = extensionStorage[child.extendedPropertiesIndex, default: .default]
-            .localizedDocumentation[localization]?.documentation().descriptionSection
+          if let description = extensionStorage[
+            child.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].localizedDocumentation[localization]?.documentation().descriptionSection
           {
             entry.append(
               StrictString(
@@ -1961,8 +2000,10 @@
         heading: heading,
         escapeHeading: escapeHeading,
         children: children.filter({ child in
-          extensionStorage[child.extendedPropertiesIndex, default: .default]
-            .exists(in: localization)
+          extensionStorage[
+            child.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].exists(in: localization)
         }).sorted(by: { $0.names.resolvedForNavigation < $1.names.resolvedForNavigation }),
         childContents: getEntryContents,
         childAttributes: { _ in return [:] }

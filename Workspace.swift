@@ -24,7 +24,9 @@ public enum Metadata {
 
   public static let packageURL: URL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
   public static let issuesURL: URL = packageURL.appendingPathComponent("issues")
-  public static let documentationURL: URL = URL(string: "https://sdggiesbrecht.github.io/Workspace")!
+  public static let documentationURL: URL = URL(
+    string: "https://sdggiesbrecht.github.io/Workspace"
+  )!
 }
 
 public let configuration: WorkspaceConfiguration = {

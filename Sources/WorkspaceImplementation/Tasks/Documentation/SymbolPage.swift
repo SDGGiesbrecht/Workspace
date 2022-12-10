@@ -66,8 +66,7 @@
         symbol.extendedPropertiesIndex,
         default: .default  // @exempt(from: tests) Reachability unknown.
       ].relativePagePath.first?
-        .value.components(separatedBy: "/").count == 3
-      {
+      .value.components(separatedBy: "/").count == 3 {
         switch symbol.indexSectionIdentifier {
         case .package, .modules, .types, .extensions, .protocols:
           output.print(
@@ -720,8 +719,7 @@
       if let link = extensionStorage[
         module.extendedPropertiesIndex,
         default: .default  // @exempt(from: tests) Reachability unknown.
-      ].relativePagePath[localization]
-      {
+      ].relativePagePath[localization] {
         links[moduleName] = String(pathToSiteRoot + link)
       }
 
@@ -1977,8 +1975,7 @@
           if let description = extensionStorage[
             child.extendedPropertiesIndex,
             default: .default  // @exempt(from: tests) Reachability unknown.
-          ].localizedDocumentation[localization]?.documentation().descriptionSection
-          {
+          ].localizedDocumentation[localization]?.documentation().descriptionSection {
             entry.append(
               StrictString(
                 description.renderedHTML(

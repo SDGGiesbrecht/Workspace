@@ -549,22 +549,7 @@
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].localizedEquivalentDirectoryNames[localization] = other.directoryName(
           for: localization,
-          globalScope: globalScope,
-          typeMember: {
-            switch other {
-            case let symbol as SymbolGraph.Symbol:
-              switch symbol.kind.identifier {
-              case .associatedtype, .class, .deinit, .enum, .`case`, .func, .operator, .`init`,
-                .ivar, .macro, .method, .property, .protocol, .snippet, .snippetGroup, .struct,
-                .subscript, .typealias, .var, .module, .unknown:
-                return false
-              case .typeMethod, .typeProperty, .typeSubscript:
-                return true
-              }
-            default:
-              unreachable()
-            }
-          }
+          globalScope: globalScope
         )
         if ¬isSame {
           extensionStorage[
@@ -636,8 +621,7 @@
 
     private func directoryName(
       for localization: LocalizationIdentifier,
-      globalScope: Bool,
-      typeMember: () -> Bool
+      globalScope: Bool
     ) -> StrictString {
 
       switch self {
@@ -856,8 +840,7 @@
         ].localizedEquivalentDirectoryNames[localization]
         ?? directoryName(
           for: localization,
-          globalScope: globalScope,
-          typeMember: { typeMember }  // @exempt(from: tests) Should never be called.
+          globalScope: globalScope
         )
     }
 

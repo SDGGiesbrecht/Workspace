@@ -1849,7 +1849,6 @@
     private static func generateChildrenSection(
       localization: LocalizationIdentifier,
       heading: StrictString,
-      escapeHeading: Bool = true,
       children: [CommandInterfaceInformation],
       pathToSiteRoot: StrictString
     ) -> StrictString {
@@ -1892,7 +1891,6 @@
 
       return generateChildrenSection(
         heading: heading,
-        escapeHeading: escapeHeading,
         children: children,
         childContents: getEntryContents
       )
@@ -1901,7 +1899,6 @@
     private static func generateChildrenSection(
       localization: LocalizationIdentifier,
       heading: StrictString,
-      escapeHeading: Bool = true,
       children: [SymbolLike],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
@@ -1995,7 +1992,6 @@
 
       return generateChildrenSection(
         heading: heading,
-        escapeHeading: escapeHeading,
         children: children.filter({ child in
           extensionStorage[
             child.extendedPropertiesIndex,
@@ -2009,7 +2005,6 @@
 
     private static func generateChildrenSection<T>(
       heading: StrictString,
-      escapeHeading: Bool,
       children: [T],
       childContents: (T) -> [StrictString],
       childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }
@@ -2018,7 +2013,7 @@
       var sectionContents: [StrictString] = [
         ElementSyntax(
           "h2",
-          contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
+          contents: HTML.escapeTextForCharacterData(heading),
           inline: true
         ).normalizedSource()
       ]

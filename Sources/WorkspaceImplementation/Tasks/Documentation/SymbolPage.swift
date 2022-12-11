@@ -1983,8 +1983,6 @@
               )
             )
           }
-        } else {
-          entry.append(name)
         }
 
         return entry

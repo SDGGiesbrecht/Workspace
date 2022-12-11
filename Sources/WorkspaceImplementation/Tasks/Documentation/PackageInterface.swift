@@ -26,6 +26,8 @@
   import SDGSwiftDocumentation
   import SymbolKit
   import SDGHTML
+  #warning("Simplify.")
+  import class SDGSwiftSource.DocumentationSyntax
   import SwiftSyntax
   import SwiftSyntaxParser
 
@@ -1314,22 +1316,16 @@
           let pageTitle = title(localization)
           let pagePath = location(localization)
 
-          // Parse via proxy Swift file.
+          // Parse via proxy.
           var documentationMarkup: StrictString = ""
           if ¬specifiedContent.isEmpty {
-            documentationMarkup.append(contentsOf: StrictString("/// ...\n///\n"))
-            documentationMarkup.append(
-              contentsOf: specifiedContent.lines.lazy.map({ line in
-                return "/// \(line.line)" as StrictString
-              }).joined(separator: "\n")
-            )
+            documentationMarkup.append(contentsOf: StrictString("...\n\n"))
+            documentationMarkup.append(contentsOf: specifiedContent)
           }
-          documentationMarkup.append(contentsOf: "\npublic func function() {}\n")
-          let parsed = try SyntaxParser.parse(source: String(documentationMarkup))
-          let documentation = parsed.api().first!.documentation.last?.documentationComment
+          let documentation = DocumentationSyntax.parse(source: "...\n\n\(documentationMarkup)")
 
           var pageContent = ""
-          for paragraph in documentation?.discussionEntries ?? [] {  // @exempt(from: tests)
+          for paragraph in documentation.discussionEntries {  // @exempt(from: tests)
             pageContent.append("\n")
             pageContent.append(
               contentsOf: paragraph.renderedHTML(

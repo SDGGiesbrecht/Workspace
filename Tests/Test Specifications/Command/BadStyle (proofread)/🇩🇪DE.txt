@@ -127,6 +127,11 @@ Zeile 3
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 let compatibility = "2"
 
+Sources/BadStyle/Rules/Functionality/ExplicitTypes.swift
+Zeile 1
+Öffentliche (public) Variablen sollen ausdrückliche Typen haben. (ausdrücklicheTypen)
+public var implit = ""  // Should trigger; needs explicit type.
+
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Zeile 3
 Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)

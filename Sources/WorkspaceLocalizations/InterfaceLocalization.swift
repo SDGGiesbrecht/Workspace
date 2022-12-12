@@ -29,5 +29,5 @@ public enum InterfaceLocalization: String, InputLocalization, Localization {
 
   // MARK: - Localization
 
-  public static let fallbackLocalization = InterfaceLocalization.englishUnitedKingdom
+  public static let fallbackLocalization: InterfaceLocalization = .englishUnitedKingdom
 }

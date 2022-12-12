@@ -189,21 +189,6 @@
       )
     }
 
-    internal func reportMissingVariableType(_ variable: VariableAPI, navigationPath: [APIElement]) {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A public variable has no explicit type:"
-          case .deutschDeutschland:
-            return "Einem öffentlichen Variable fehlt der ausdrückliche Typ."
-          }
-        }),
-        with: APIElement.variable(variable),
-        navigationPath: navigationPath
-      )
-    }
-
     internal func reportMissingYearFirstPublished() {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in

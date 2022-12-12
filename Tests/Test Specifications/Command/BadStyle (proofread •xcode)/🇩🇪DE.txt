@@ -27,6 +27,7 @@ Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überh
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ClassFinality.swift:8:7: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:22: warning: U+00B2 geht bei Normalisierung vielleicht verloren; stattdessen „2“ verwenden. (verträglichkeitsschriftzeichen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift:3:5: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/ExplicitTypes.swift:1:1: warning: Öffentliche (public) Variablen sollen ausdrückliche Typen haben. (ausdrücklicheTypen)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Functionality/Mark.swift:3:1: warning: Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:4:3: warning: Fehlende Implementierung. (fehlendeImplementierung)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Intentional/MissingImplementation.swift:3:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)

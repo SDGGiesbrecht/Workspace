@@ -65,10 +65,6 @@ A symbol has no description:
 inferredType.zxx
 
 
-A public variable has no explicit type:
-inferredType
-
-
 ✗ Generated documentation, but encountered warnings. (See [⌘F] “§1”)
 
 “FailingDocumentationCoverage” fails validation.

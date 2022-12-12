@@ -64,10 +64,6 @@ Einem Symbol fehlt die Beschreibung.
 inferredType.zxx
 
 
-Einem öffentlichen Variable fehlt der ausdrückliche Typ.
-inferredType
-
-
 ✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)
 
 „FailingDocumentationCoverage“ besteht die Überprüfung nicht.

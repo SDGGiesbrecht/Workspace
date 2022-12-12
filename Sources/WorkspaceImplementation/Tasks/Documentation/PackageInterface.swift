@@ -26,8 +26,7 @@
   import SDGSwiftDocumentation
   import SymbolKit
   import SDGHTML
-  #warning("Simplify.")
-  import class SDGSwiftSource.DocumentationSyntax
+  import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
 

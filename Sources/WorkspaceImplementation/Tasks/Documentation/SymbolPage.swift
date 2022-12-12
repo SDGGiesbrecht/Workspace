@@ -26,9 +26,7 @@
 
   import SwiftSyntax
   import SwiftSyntaxParser
-  #warning("Simplify.")
-  import enum SDGSwiftSource.Callout
-  import struct SDGSwiftSource.ParameterDocumentation
+  import SDGSwiftSource
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration

@@ -75,7 +75,7 @@
         }
       })
 
-    public static let command = Command(
+    public static let command: Command = Command(
       name: name,
       description: description,
       subcommands: [

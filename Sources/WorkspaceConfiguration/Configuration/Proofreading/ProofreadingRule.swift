@@ -193,6 +193,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .compatibilityCharacters
   }
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.accessControl)
+  /// Requires public variables to have explicit types.
+  case explicitTypes
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.accessControl)
+  /// Erfordert ausdrückliche Typen für öffentlichen Variablen.
+  public static var ausdrücklicheTypen: Korrekturregel {
+    return .explicitTypes
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.marks)
   /// Catches broken syntax in source code headings.
@@ -426,6 +435,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     case .accessControl,
       .classFinality,
       .compatibilityCharacters,
+      .explicitTypes,
       .marks:
       return .functionality
 

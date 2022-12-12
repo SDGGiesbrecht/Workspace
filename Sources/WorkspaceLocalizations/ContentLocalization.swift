@@ -28,5 +28,5 @@ public enum ContentLocalization: String, Codable, InputLocalization {
 
   // MARK: - Localization
 
-  public static let fallbackLocalization = ContentLocalization.englishUnitedKingdom
+  public static let fallbackLocalization: ContentLocalization = .englishUnitedKingdom
 }

@@ -11,6 +11,6 @@ public protocol Composition {}
 public struct Type {}
 
 public struct Resources {
-  public static let deutsch = ""
-  public static let english = ""
+  public static let deutsch: String = ""
+  public static let english: String = ""
 }

@@ -61,7 +61,6 @@
 
     func testAllDisabled() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.provideWorkflowScripts = false
       configuration.proofreading.rules = []
       configuration.proofreading.swiftFormatConfiguration = nil
@@ -81,7 +80,6 @@
 
     func testAllTasks() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.optIntoAllTasks()
       configuration.documentation.localizations = ["🇮🇱עב"]
       configuration.licence.licence = .copyright
@@ -178,7 +176,6 @@
       )
 
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.normalize = true
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.currentVersion = Version(1, 0, 0)
@@ -189,7 +186,6 @@
         "Stuff about the creators...\n\n...and more stuff..."
       configuration.documentation.about["🇺🇸EN"] = ""
       configuration.documentation.api.yearFirstPublished = 2018
-      configuration.documentation.api.ignoredDependencies.remove("Swift")
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
       configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
         false
@@ -321,7 +317,6 @@
 
     func testCustomTasks() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       let passing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,
         version: Version(1, 0, 0),
@@ -394,7 +389,6 @@
       )
 
       let konfiguration = ArbeitsbereichKonfiguration()
-      konfiguration.optimizeForTests()
       konfiguration.dokumentation.lokalisationen = ["de"]
       konfiguration.dokumentation.programmierschnittstelle.erstellen = true
       konfiguration.dokumentation.programmierschnittstelle
@@ -424,7 +418,6 @@
 
     func testExecutable() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.supportedPlatforms.remove(.iOS)
       configuration.supportedPlatforms.remove(.watchOS)
       configuration.supportedPlatforms.remove(.tvOS)
@@ -469,7 +462,6 @@
 
     func testFailingCustomValidation() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       let failing = CustomTask(
         url: URL(string: "file:///tmp/Developer/Dependency")!,
         version: Version(1, 0, 0),
@@ -496,7 +488,6 @@
 
     func testFailingDocumentationCoverage() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
@@ -724,7 +715,6 @@
 
     func testNoLocalizations() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       PackageRepository(mock: "NoLocalizations").test(
         commands: [
           ["refresh", "read‐me"],
@@ -800,7 +790,6 @@
 
     func testPartialReadMe() {
       let configuration = WorkspaceConfiguration()
-      configuration.optimizeForTests()
       configuration.documentation.currentVersion = Version(0, 1, 0)
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
       configuration.documentation.localizations = [
@@ -833,7 +822,6 @@
     func testSDGLibrary() {
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
-      configuration.optimizeForTests()
       configuration.licence.licence = .apache2_0
       configuration.documentation.currentVersion = Version(1, 0, 0)
       configuration.documentation.projectWebsite = URL(
@@ -906,7 +894,6 @@
     func testSDGTool() {
       let configuration = WorkspaceConfiguration()
       configuration._applySDGDefaults()
-      configuration.optimizeForTests()
       configuration.supportedPlatforms.remove(.iOS)
       configuration.supportedPlatforms.remove(.watchOS)
       configuration.supportedPlatforms.remove(.tvOS)

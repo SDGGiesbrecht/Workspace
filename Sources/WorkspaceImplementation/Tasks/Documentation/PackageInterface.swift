@@ -1321,7 +1321,7 @@
             documentationMarkup.append(contentsOf: StrictString("...\n\n"))
             documentationMarkup.append(contentsOf: specifiedContent)
           }
-          let documentation = DocumentationSyntax.parse(source: "...\n\n\(documentationMarkup)")
+          let documentation = DocumentationSyntax.parse(source: String(documentationMarkup))
 
           var pageContent = ""
           for paragraph in documentation.discussionEntries {  // @exempt(from: tests)

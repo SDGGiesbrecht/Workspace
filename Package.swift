@@ -489,12 +489,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(3, 0, 2)
+      from: Version(3, 0, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch dependency.)
-      branch: "master"  //from: Version(11, 1, 0)
+      from: Version(12, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

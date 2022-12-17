@@ -20,9 +20,13 @@
 
   import SDGCommandLine
 
-  import SwiftSyntax
-  import SDGSwiftSource
+  import SymbolKit
+  import SDGSwiftDocumentation
   import SDGHTML
+
+  import SwiftSyntax
+  import SwiftSyntaxParser
+  import SDGSwiftSource
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -34,36 +38,42 @@
     /// Begins creating a symbol page.
     ///
     /// If `coverageCheckOnly` is `true`, initialization will be aborted and `nil` returned once validation is complete. No other circumstances will cause initialization to fail.
-    internal convenience init?(
+    internal convenience init?<SymbolType>(
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      navigationPath: [APIElement],
+      navigationPath: [SymbolLike],
       packageImport: StrictString?,
       index: StrictString,
       sectionIdentifier: IndexSectionIdentifier,
       platforms: StrictString,
-      symbol: APIElement,
+      symbol: SymbolType,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI? = nil,
       copyright: StrictString,
+      editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
-    ) {
+    ) where SymbolType: SymbolLike {
 
-      if symbol.relativePagePath.first?.value.components(separatedBy: "/").count == 3 {
-        switch symbol {
-        case .package, .module, .type, .extension, .protocol:
+      if extensionStorage[
+        symbol.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].relativePagePath.first?
+      .value.components(separatedBy: "/").count == 3 {
+        switch symbol.indexSectionIdentifier {
+        case .package, .modules, .types, .extensions, .protocols:
           output.print(
             UserFacing<StrictString, InterfaceLocalization>({ localization in
               switch localization {
               case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                return "...\(StrictString(symbol.name.source()))..."
+                return "...\(StrictString(symbol.names.title))..."
               case .deutschDeutschland:
-                return "... \(StrictString(symbol.name.source())) ..."
+                return "... \(StrictString(symbol.names.title)) ..."
               }
             }).resolved()
           )
@@ -78,8 +88,11 @@
       content.append(
         SymbolPage.generateDescriptionSection(
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           localization: localization,
+          editableModules: editableModules,
+          graphs: package.symbolGraphs(),
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
           status: status
@@ -99,6 +112,7 @@
         SymbolPage.generateDiscussionSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
@@ -110,8 +124,10 @@
           localization: localization,
           symbol: symbol,
           navigationPath: navigationPath,
+          editableModules: editableModules,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
+          extensionStorage: extensionStorage,
           status: status
         )
       )
@@ -119,6 +135,7 @@
         SymbolPage.generateThrowsSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
@@ -129,6 +146,7 @@
         SymbolPage.generateReturnsSection(
           localization: localization,
           symbol: symbol,
+          extensionStorage: extensionStorage,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
@@ -151,6 +169,7 @@
         platforms: platforms,
         symbol: symbol,
         package: package,
+        extensionStorage: extensionStorage,
         tools: tools,
         copyright: copyright,
         packageIdentifiers: packageIdentifiers,
@@ -161,39 +180,57 @@
     }
 
     /// Final initialization which can be skipped when only checking coverage.
-    private init(
+    private init<SymbolType>(
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      navigationPath: [APIElement],
+      navigationPath: [SymbolLike],
       packageImport: StrictString?,
       index: StrictString,
       sectionIdentifier: IndexSectionIdentifier,
       platforms: StrictString,
-      symbol: APIElement,
+      symbol: SymbolType,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI?,
       copyright: StrictString,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       adjustedSymbolLinks: [String: String],
       partiallyConstructedContent: [StrictString]
-    ) {
-
+    ) where SymbolType: SymbolLike {
       let navigationPath = SymbolPage.generateNavigationPath(
         localization: localization,
         pathToSiteRoot: pathToSiteRoot,
         allLocalizations: allLocalizations
-          .lazy.filter({ $0 ∉ symbol.skippedLocalizations }).map({ localization in
+          .lazy.filter({ localization in
+            localization
+              ∉ extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].skippedLocalizations
+          }).map({ localization in
             let path: StrictString
-            if symbol.exists(in: localization) {
-              path = symbol.relativePagePath[localization]!
+            if extensionStorage[
+              symbol.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].exists(
+              in: localization
+            ) {
+              path = extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].relativePagePath[localization]!
             } else {
-              path = symbol.localizedEquivalentPaths[localization]!
+              path = extensionStorage[
+                symbol.extendedPropertiesIndex,
+                default: .default  // @exempt(from: tests) Reachability unknown.
+              ].localizedEquivalentPaths[localization]!
             }
             return (localization: localization, path: path)
           }),
-        navigationPath: navigationPath
+        navigationPath: navigationPath,
+        extensionStorage: extensionStorage
       )
 
       var content = partiallyConstructedContent
@@ -212,6 +249,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         )
@@ -223,19 +261,21 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks
         )
       )
 
-      switch symbol {
-      case .package, .library, .module:
+      switch symbol.indexSectionIdentifier {
+      case .package, .libraries, .modules:
         content.append(
           SymbolPage.generateTypesSection(
             localization: localization,
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -246,6 +286,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -256,6 +297,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -266,6 +308,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -276,6 +319,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -286,6 +330,7 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
@@ -296,13 +341,13 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
         )
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .conformance:
-        if case .protocol = symbol {
+      case .types, .protocols, .extensions, .variables, .functions:
+        if case .protocols = symbol.indexSectionIdentifier {
           content.append(SymbolPage.protocolModeInterface(localization: localization))
         }
         content.append(
@@ -311,22 +356,14 @@
             symbol: symbol,
             pathToSiteRoot: pathToSiteRoot,
             package: package,
+            extensionStorage: extensionStorage,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: adjustedSymbolLinks
           )
         )
-      case .operator, .precedence:
+      case .tools, .operators, .precedenceGroups:
         break
       }
-
-      let extensions: [StrictString] = SymbolPage.generateOtherModuleExtensionsSections(
-        symbol: symbol,
-        package: package,
-        localization: localization,
-        pathToSiteRoot: pathToSiteRoot,
-        packageIdentifiers: packageIdentifiers,
-        symbolLinks: adjustedSymbolLinks
-      )
 
       super.init(
         localization: localization,
@@ -340,18 +377,12 @@
           for: symbol,
           package: package,
           localization: localization,
-          pathToSiteRoot: pathToSiteRoot
+          pathToSiteRoot: pathToSiteRoot,
+          extensionStorage: extensionStorage
         ),
         symbolType: symbol.symbolType(localization: localization),
-        compilationConditions: SymbolPage.generateCompilationConditions(symbol: symbol),
-        constraints: SymbolPage.generateConstraints(
-          symbol: symbol,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: adjustedSymbolLinks
-        ),
-        title: StrictString(symbol.name.source()),
+        title: StrictString(symbol.names.title),
         content: content.joinedAsLines(),
-        extensions: extensions.joinedAsLines(),
         copyright: copyright
       )
     }
@@ -368,57 +399,6 @@
       }
     }
 
-    internal static func conformanceFilterOff(localization: LocalizationIdentifier) -> StrictString
-    {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "All"
-      case .deutschDeutschland:
-        return "Alle"
-      }
-    }
-
-    internal static func conformanceFilterRequired(
-      localization: LocalizationIdentifier
-    ) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Conformance Requirements"
-      case .deutschDeutschland:
-        return "Übereinstimmungsvoraussetzungen"
-      }
-    }
-
-    internal static func conformanceFilterCustomizable(
-      localization: LocalizationIdentifier
-    ) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom:
-        return "Customisation Points"
-      case .englishUnitedStates, .englishCanada:
-        return "Customization Points"
-      case .deutschDeutschland:
-        return "Anpassungsmöglichkeiten"
-      }
-    }
-
-    internal static func conformanceFilterButton(
-      labelled label: StrictString,
-      value: StrictString
-    ) -> StrictString {
-      return ElementSyntax(
-        "input",
-        attributes: [
-          "name": "conformance filter",
-          "onchange": "switchConformanceMode(this)",
-          "type": "radio",
-          "value": value,
-        ],
-        contents: label,
-        inline: false
-      ).normalizedSource()
-    }
-
     private static func protocolModeInterface(localization: LocalizationIdentifier) -> StrictString
     {
       var contents: StrictString = ""
@@ -430,24 +410,6 @@
           inline: false
         ).normalizedSource()
       )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterOff(localization: localization),
-          value: "all"
-        )
-      )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterRequired(localization: localization),
-          value: "required"
-        )
-      )
-      contents.append(
-        contentsOf: conformanceFilterButton(
-          labelled: conformanceFilterCustomizable(localization: localization),
-          value: "customizable"
-        )
-      )
       return ElementSyntax(
         "div",
         attributes: ["class": "conformance‐filter"],
@@ -456,14 +418,15 @@
       ).normalizedSource()
     }
 
-    private static func generateMembersSections(
+    private static func generateMembersSections<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> [StrictString] {
+    ) -> [StrictString] where SymbolType: SymbolLike {
       var result: [StrictString] = []
       result.append(
         SymbolPage.generateCasesSection(
@@ -471,6 +434,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -481,6 +445,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -491,6 +456,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -501,6 +467,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -511,6 +478,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -521,6 +489,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -531,6 +500,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -541,16 +511,7 @@
           symbol: symbol,
           pathToSiteRoot: pathToSiteRoot,
           package: package,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-      )
-      result.append(
-        contentsOf: SymbolPage.generateConformanceSections(
-          localization: localization,
-          symbol: symbol,
-          pathToSiteRoot: pathToSiteRoot,
-          package: package,
+          extensionStorage: extensionStorage,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks
         )
@@ -562,7 +523,8 @@
       localization: LocalizationIdentifier,
       pathToSiteRoot: StrictString,
       allLocalizations: [(localization: LocalizationIdentifier, path: StrictString)],
-      navigationPath: [APIElement]
+      navigationPath: [SymbolLike],
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
       return generateNavigationPath(
         localization: localization,
@@ -570,7 +532,11 @@
         allLocalizations: allLocalizations,
         navigationPath: navigationPath.map({ element in
           return (
-            StrictString(element.name.source()), element.relativePagePath[localization]!
+            StrictString(element.names.resolvedForNavigation),
+            extensionStorage[
+              element.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].relativePagePath[localization]!
           )
         })
       )
@@ -657,20 +623,27 @@
       return elements.lazy.map({ $0.normalizedSource() }).joined(separator: "\n")
     }
 
-    private static func generateDependencyStatement(
-      for symbol: APIElement,
+    private static func generateDependencyStatement<SymbolType>(
+      for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString
-    ) -> StrictString {
-
-      guard let module = symbol.homeModule.pointee,
-        let product = APIElement.module(module).homeProduct.pointee
+      pathToSiteRoot: StrictString,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard
+        let module = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeModule,
+        let product = extensionStorage[
+          module.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeProduct
       else {
         return ""  // @exempt(from: tests) Should never be nil.
       }
-      let libraryName = product.name.text
-      let packageName = package.name.text
+      let libraryName = product.names.title
+      let packageName = package.names.title
 
       let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
         calledExpression: ExprSyntax(
@@ -710,17 +683,22 @@
       return StrictString(source)
     }
 
-    private static func generateImportStatement(
-      for symbol: APIElement,
+    private static func generateImportStatement<SymbolType>(
+      for symbol: SymbolType,
       package: PackageAPI,
       localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString
-    ) -> StrictString {
-
-      guard let module = symbol.homeModule.pointee else {
+      pathToSiteRoot: StrictString,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard
+        let module = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].homeModule
+      else {
         return ""
       }
-      let moduleName = module.name.text
+      let moduleName = module.names.title
 
       let importStatement = SyntaxFactory.makeImportDecl(
         attributes: nil,
@@ -736,7 +714,10 @@
       )
 
       var links: [String: String] = [:]
-      if let link = APIElement.module(module).relativePagePath[localization] {
+      if let link = extensionStorage[
+        module.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].relativePagePath[localization] {
         links[moduleName] = String(pathToSiteRoot + link)
       }
 
@@ -755,38 +736,12 @@
             for: symbol,
             package: package,
             localization: localization,
-            pathToSiteRoot: pathToSiteRoot
+            pathToSiteRoot: pathToSiteRoot,
+            extensionStorage: extensionStorage
           ),
         ].joinedAsLines(),
         inline: false
       ).normalizedSource()
-    }
-
-    private static func generateCompilationConditions(symbol: APIElement) -> StrictString? {
-      if let conditions = symbol.compilationConditions?.syntaxHighlightedHTML(inline: true) {
-        return StrictString(conditions)
-      }
-      return nil
-    }
-
-    private static func generateConstraints(
-      symbol: APIElement,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> StrictString? {
-      if let constraints = symbol.constraints {
-        let withoutSpace = constraints.withWhereKeyword(
-          constraints.whereKeyword.withLeadingTrivia([])
-        )
-        return StrictString(
-          withoutSpace.syntaxHighlightedHTML(
-            inline: true,
-            internalIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        )
-      }
-      return nil
     }
 
     internal static func generateDescriptionSection(contents: StrictString) -> StrictString {
@@ -798,17 +753,22 @@
       ).normalizedSource()
     }
 
-    private static func generateDescriptionSection(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    private static func generateDescriptionSection<SymbolType>(
+      symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier,
+      editableModules: [String],
+      graphs: [SymbolGraph],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
-
-      if let documentation = symbol.localizedDocumentation[localization],
-        let description = documentation.descriptionSection
+    ) -> StrictString where SymbolType: SymbolLike {
+      if let documentation = extensionStorage[
+        symbol.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].localizedDocumentation[localization],
+        let description = documentation.documentation().descriptionSection
       {
         return generateDescriptionSection(
           contents: StrictString(
@@ -820,8 +780,9 @@
           )
         )
       }
-      if case .extension = symbol {
-      } else {
+      if symbol.hasEditableDocumentation(editableModules: editableModules),
+        ¬symbol.isCapableOfInheritingDocumentation(graphs: graphs)
+      {
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,
@@ -835,7 +796,6 @@
       localization: LocalizationIdentifier,
       declaration: StrictString
     ) -> StrictString {
-
       let declarationHeading: StrictString
       switch localization._bestMatch {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -857,22 +817,16 @@
       ).normalizedSource()
     }
 
-    private static func generateDeclarationSection(
+    private static func generateDeclarationSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
-
-      guard var declaration = symbol.declaration else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard let declaration = symbol.declaration else {
         return ""
-      }
-      if let constraints = symbol.constraints,
-        let constrained = declaration.asProtocol(SyntaxProtocol.self) as? Constrained
-      {
-        declaration = constrained.withGenericWhereClause(constraints).asSyntax()
       }
 
       return generateDeclarationSection(
@@ -887,12 +841,11 @@
       )
     }
 
-    internal static func generateDiscussionSection(
+    internal static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement?,
+      symbol: SymbolType?,
       content: StrictString?
-    ) -> StrictString {
-
+    ) -> StrictString where SymbolType: SymbolLike {
       guard let discussion = content else {
         return ""
       }
@@ -905,16 +858,15 @@
         discussionHeading = "Einzelheiten"
       }
       if let swiftSymbol = symbol {
-        switch swiftSymbol {
-        case .package, .library, .module, .type, .protocol, .extension:
+        switch swiftSymbol.indexSectionIdentifier {
+        case .package, .libraries, .modules, .types, .protocols, .extensions:
           switch localization._bestMatch {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             discussionHeading = "Overview"
           case .deutschDeutschland:
             discussionHeading = "Übersicht"
           }
-        case .case, .initializer, .variable, .subscript, .function, .operator, .precedence,
-          .conformance:
+        case .variables, .functions, .operators, .precedenceGroups, .tools:
           break
         }
       }
@@ -929,16 +881,20 @@
         .normalizedSource()
     }
 
-    private static func generateDiscussionSection(
+    private static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
-
-      guard let discussion = symbol.localizedDocumentation[localization]?.discussionEntries,
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard
+        let discussion = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().discussionEntries,
         ¬discussion.isEmpty
       else {
         return ""
@@ -983,7 +939,6 @@
       heading: StrictString,
       entries: [(term: StrictString, description: StrictString)]
     ) -> StrictString {
-
       guard ¬entries.isEmpty else {
         return ""
       }
@@ -1008,22 +963,31 @@
 
     private static func generateParametersSection(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolLike,
+      navigationPath: [SymbolLike],
+      editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
     ) -> StrictString {
-
       let parameters = symbol.parameters()
       let parameterDocumentation =
-        symbol.localizedDocumentation[localization]?.normalizedParameters
+        extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.normalizedParameters()
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 
-      if parameters ≠ documentedParameters {
+      if symbol.hasEditableDocumentation(editableModules: editableModules),
+        parameters ≠ documentedParameters
+      {
         // #workaround(SDGSwift 11.1.0, Not collected properly for subscripts at present.)
-        if case .subscript = symbol {
+        if let graphSymbol = symbol as? SymbolGraph.Symbol,
+          graphSymbol.kind.identifier == .subscript
+            ∨ graphSymbol.kind.identifier == .typeSubscript
+        {
         } else {
           status.reportMismatchedParameters(
             documentedParameters,
@@ -1037,38 +1001,6 @@
       let validatedParameters =
         parameterDocumentation
         .filter { parameters.contains($0.name.text) }
-
-      /// Check that closure parameters are labelled.
-      if let declaration = symbol.declaration {
-        class Scanner: SyntaxVisitor {
-          init(status: DocumentationStatus, symbol: APIElement, navigationPath: [APIElement]) {
-            self.status = status
-            self.symbol = symbol
-            self.navigationPath = navigationPath
-          }
-          let status: DocumentationStatus
-          let symbol: APIElement
-          let navigationPath: [APIElement]
-          override func visit(_ node: FunctionTypeSyntax) -> SyntaxVisitorContinueKind {
-            for argument in node.arguments
-            where
-              (argument.secondName?.text.isEmpty ≠ false
-              ∨ argument.secondName?.tokenKind == .wildcardKeyword)  // @exempt(from: tests)
-              ∧ (argument.firstName?.text.isEmpty ≠ false
-                ∨ argument.firstName?.tokenKind == .wildcardKeyword)
-            {
-              status.reportUnlabelledParameter(
-                node.source(),
-                symbol: symbol,
-                navigationPath: navigationPath
-              )
-            }
-            return .visitChildren
-          }
-        }
-        let scanner = Scanner(status: status, symbol: symbol, navigationPath: navigationPath)
-        scanner.walk(declaration)
-      }
 
       let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
       return generateParameterLikeSection(
@@ -1098,15 +1030,21 @@
       )
     }
 
-    private static func generateThrowsSection(
+    private static func generateThrowsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
-      guard let callout = symbol.localizedDocumentation[localization]?.throwsCallout else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard
+        let callout = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().throwsCallout
+      else {
         return ""
       }
       let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
@@ -1128,15 +1066,21 @@
         .normalizedSource()
     }
 
-    private static func generateReturnsSection(
+    private static func generateReturnsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
-    ) -> StrictString {
-      guard let callout = symbol.localizedDocumentation[localization]?.returnsCallout else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard
+        let callout = extensionStorage[
+          symbol.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].localizedDocumentation[localization]?.documentation().returnsCallout
+      else {
         return ""
       }
       let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
@@ -1156,68 +1100,6 @@
       }
       return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
         .normalizedSource()
-    }
-
-    private static func generateOtherModuleExtensionsSections(
-      symbol: APIElement,
-      package: PackageAPI,
-      localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> [StrictString] {
-      var extensions: [ExtensionAPI] = []
-      for `extension` in package.allExtensions {
-        switch symbol {
-        case .package, .library, .module, .case, .initializer, .variable, .subscript, .function,
-          .operator, .precedence, .conformance:
-          break
-        case .type(let type):
-          if `extension`.isExtension(of: type) {
-            extensions.append(`extension`)
-          }
-        case .protocol(let `protocol`):
-          if `extension`.isExtension(of: `protocol`) {
-            extensions.append(`extension`)
-          }
-        case .extension(let `rootExtension`):
-          if ¬(`extension` === `rootExtension`),
-            `extension`.extendsSameType(as: `rootExtension`)
-          {
-            extensions.append(`extension`)
-          }
-        }
-      }
-
-      return extensions.map({ (`extension`: ExtensionAPI) -> StrictString in
-        var result: [StrictString] = []
-        result.append(
-          generateImportStatement(
-            for: APIElement.extension(`extension`),
-            package: package,
-            localization: localization,
-            pathToSiteRoot: pathToSiteRoot
-          )
-        )
-
-        let sections = generateMembersSections(
-          localization: localization,
-          symbol: APIElement.extension(`extension`),
-          pathToSiteRoot: pathToSiteRoot,
-          package: package,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-        result.append(
-          ElementSyntax(
-            "div",
-            attributes: ["class": "main‐text‐column"],
-            contents: sections.joinedAsLines(),
-            inline: false
-          ).normalizedSource()
-        )
-        return result.joinedAsLines()
-      })
     }
 
     internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -1273,15 +1155,16 @@
       return heading
     }
 
-    private static func generateLibrariesSection(
+    private static func generateLibrariesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard case .package(let package) = symbol,
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard let package = symbol as? PackageAPI,
         ¬package.libraries.isEmpty
       else {
         return ""
@@ -1289,9 +1172,10 @@
       return generateChildrenSection(
         localization: localization,
         heading: librariesHeader(localization: localization),
-        children: package.libraries.map({ APIElement.library($0) }),
+        children: package.libraries,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1312,15 +1196,16 @@
       return heading
     }
 
-    private static func generateModulesSection(
+    private static func generateModulesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard case .library(let library) = symbol,
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard let library = symbol as? LibraryAPI,
         ¬library.modules.isEmpty
       else {
         return ""
@@ -1328,9 +1213,12 @@
       return generateChildrenSection(
         localization: localization,
         heading: modulesHeader(localization: localization),
-        children: library.modules.map({ APIElement.module($0) }),
+        children: library.modules.compactMap({ name in
+          return package.modules.first(where: { $0.names.title == name })
+        }),
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1351,23 +1239,35 @@
       return heading
     }
 
-    private static func generateTypesSection(
+    private static func generateTypesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.types.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let types = symbol.children(package: package).filter({ child in
+        switch child.kind?.identifier {
+        case .associatedtype, .class, .enum, .struct, .typealias:
+          return true
+        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property,
+          .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty,
+          .typeSubscript, .var, .module, .unknown, .none:
+          return false
+        }
+      })
+      guard ¬types.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: typesHeader(localization: localization),
-        children: symbol.types.map({ APIElement.type($0) }),
+        children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1388,23 +1288,35 @@
       return heading
     }
 
-    private static func generateExtensionsSection(
+    private static func generateExtensionsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.extensions.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      guard let module = symbol as? ModuleAPI else {
+        return ""
+      }
+      let global = extensionStorage[
+        package.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].packageExtensions
+      let extensions = module.extensions().filter({ `extension` in
+        return global.contains(where: { $0.identifier == `extension`.identifier })
+      })
+      guard ¬extensions.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: extensionsHeader(localization: localization),
-        children: symbol.extensions.map({ APIElement.extension($0) }),
+        children: extensions,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1425,23 +1337,27 @@
       return heading
     }
 
-    private static func generateProtocolsSection(
+    private static func generateProtocolsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.protocols.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let protocols = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .`protocol` })
+      guard ¬protocols.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: protocolsHeader(localization: localization),
-        children: symbol.protocols.map({ APIElement.protocol($0) }),
+        children: protocols,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1462,23 +1378,27 @@
       return heading
     }
 
-    private static func generateFunctionsSection(
+    private static func generateFunctionsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.instanceMethods.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let instanceMethods = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .func ∨ $0.kind?.identifier == .method })
+      guard ¬instanceMethods.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: functionsHeader(localization: localization),
-        children: symbol.instanceMethods.map({ APIElement.function($0) }),
+        children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1499,23 +1419,27 @@
       return heading
     }
 
-    private static func generateVariablesSection(
+    private static func generateVariablesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.instanceProperties.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let instanceProperties = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .`var` ∨ $0.kind?.identifier == .property })
+      guard ¬instanceProperties.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: variablesHeader(localization: localization),
-        children: symbol.instanceProperties.map({ APIElement.variable($0) }),
+        children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
@@ -1536,31 +1460,34 @@
       return heading
     }
 
-    private static func generateOperatorsSection(
+    private static func generateOperatorsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.operators.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let operators = (symbol as? ModuleAPI)?.operators ?? []
+      guard ¬operators.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: operatorsHeader(localization: localization),
-        children: symbol.operators.map({ APIElement.operator($0) }),
+        children: operators,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    internal static func precedenceGroupsHeader(localization: LocalizationIdentifier)
-      -> StrictString
-    {
+    internal static func precedenceGroupsHeader(
+      localization: LocalizationIdentifier
+    ) -> StrictString {
       let heading: StrictString
       if let match = localization._reasonableMatch {
         switch match {
@@ -1575,37 +1502,43 @@
       return heading
     }
 
-    private static func generatePrecedenceGroupsSection(
+    private static func generatePrecedenceGroupsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.operators.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let precedenceGroups = (symbol as? ModuleAPI)?.precedenceGroups ?? []
+      guard ¬precedenceGroups.isEmpty else {
         return ""
       }
       return generateChildrenSection(
         localization: localization,
         heading: precedenceGroupsHeader(localization: localization),
-        children: symbol.precedenceGroups.map({ APIElement.precedence($0) }),
+        children: precedenceGroups,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateCasesSection(
+    private static func generateCasesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.cases.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let cases = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .`case` })
+      guard ¬cases.isEmpty else {
         return ""
       }
 
@@ -1624,23 +1557,30 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.cases.map({ APIElement.case($0) }),
+        children: cases,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateNestedTypesSection(
+    private static func generateNestedTypesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.types.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let typeKinds: Set<SymbolGraph.Symbol.KindIdentifier?> = [
+        .associatedtype, .class, .struct, .enum, .typealias,
+      ]
+      let types = symbol.children(package: package)
+        .filter({ $0.kind?.identifier ∈ typeKinds })
+      guard ¬types.isEmpty else {
         return ""
       }
 
@@ -1659,23 +1599,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.types.map({ APIElement.type($0) }),
+        children: types,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateTypePropertiesSection(
+    private static func generateTypePropertiesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.typeProperties.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let typeProperties = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .typeProperty })
+      guard ¬typeProperties.isEmpty else {
         return ""
       }
 
@@ -1694,23 +1638,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.typeProperties.map({ APIElement.variable($0) }),
+        children: typeProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateTypeMethodsSection(
+    private static func generateTypeMethodsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.typeMethods.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let typeMethods = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .typeMethod })
+      guard ¬typeMethods.isEmpty else {
         return ""
       }
 
@@ -1729,23 +1677,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.typeMethods.map({ APIElement.function($0) }),
+        children: typeMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateInitializersSection(
+    private static func generateInitializersSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.initializers.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let initializers = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .`init` })
+      guard ¬initializers.isEmpty else {
         return ""
       }
 
@@ -1766,23 +1718,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.initializers.map({ APIElement.initializer($0) }),
+        children: initializers,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generatePropertiesSection(
+    private static func generatePropertiesSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.instanceProperties.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let instanceProperties = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .property })
+      guard ¬instanceProperties.isEmpty else {
         return ""
       }
 
@@ -1801,23 +1757,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.instanceProperties.map({ APIElement.variable($0) }),
+        children: instanceProperties,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateSubscriptsSection(
+    private static func generateSubscriptsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.subscripts.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let subscripts = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .subscript })
+      guard ¬subscripts.isEmpty else {
         return ""
       }
 
@@ -1836,23 +1796,27 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.subscripts.map({ APIElement.subscript($0) }),
+        children: subscripts,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateMethodsSection(
+    private static func generateMethodsSection<SymbolType>(
       localization: LocalizationIdentifier,
-      symbol: APIElement,
+      symbol: SymbolType,
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
-    ) -> StrictString {
-      guard ¬symbol.instanceMethods.isEmpty else {
+    ) -> StrictString where SymbolType: SymbolLike {
+      let instanceMethods = symbol.children(package: package)
+        .filter({ $0.kind?.identifier == .method })
+      guard ¬instanceMethods.isEmpty else {
         return ""
       }
 
@@ -1871,80 +1835,18 @@
       return generateChildrenSection(
         localization: localization,
         heading: heading,
-        children: symbol.instanceMethods.map({ APIElement.function($0) }),
+        children: instanceMethods,
         pathToSiteRoot: pathToSiteRoot,
         package: package,
+        extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
       )
     }
 
-    private static func generateConformanceSections(
-      localization: LocalizationIdentifier,
-      symbol: APIElement,
-      pathToSiteRoot: StrictString,
-      package: PackageAPI,
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String]
-    ) -> [StrictString] {
-      var result: [StrictString] = []
-      conformanceProcessing: for conformance in symbol.conformances {
-        let name = conformance.type.syntaxHighlightedHTML(
-          inline: true,
-          internalIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks
-        )
-
-        var children: [APIElement] = []
-        if let reference = conformance.reference {
-          var apiElement: APIElement?
-          switch reference {
-          case .protocol(let `protocol`):
-            if let pointee = `protocol`.pointee {
-              apiElement = .protocol(pointee)
-            }
-          case .superclass(let superclass):
-            if let pointee = superclass.pointee {
-              apiElement = .type(pointee)
-            }
-          }
-          if let element = apiElement {
-            if ¬element.exists(in: localization) {
-              continue conformanceProcessing
-            }
-            children = element.children
-          }
-        }
-
-        let subconformancesFiltered = children.filter { child in
-          switch child {
-          case .package, .library, .module, .type, .protocol, .extension, .case, .initializer,
-            .variable, .subscript, .function, .operator, .precedence:
-            return true
-          case .conformance:
-            return false
-          }
-        }
-        result.append(
-          generateChildrenSection(
-            localization: localization,
-            heading: StrictString(name),
-            escapeHeading: false,
-            children: subconformancesFiltered,
-            pathToSiteRoot: pathToSiteRoot,
-            package: package,
-            packageIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        )
-      }
-      return result
-    }
-
     private static func generateChildrenSection(
       localization: LocalizationIdentifier,
       heading: StrictString,
-      escapeHeading: Bool = true,
       children: [CommandInterfaceInformation],
       pathToSiteRoot: StrictString
     ) -> StrictString {
@@ -1987,7 +1889,6 @@
 
       return generateChildrenSection(
         heading: heading,
-        escapeHeading: escapeHeading,
         children: children,
         childContents: getEntryContents
       )
@@ -1996,51 +1897,40 @@
     private static func generateChildrenSection(
       localization: LocalizationIdentifier,
       heading: StrictString,
-      escapeHeading: Bool = true,
-      children: [APIElement],
+      children: [SymbolLike],
       pathToSiteRoot: StrictString,
       package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String]
     ) -> StrictString {
 
-      func getEntryContents(_ child: APIElement) -> [StrictString] {
+      func getEntryContents(_ child: SymbolLike) -> [StrictString] {
         var entry: [StrictString] = []
-        if let conditions = child.compilationConditions {
-          entry.append(
-            StrictString(
-              conditions.syntaxHighlightedHTML(
-                inline: true,
-                internalIdentifiers: [],
-                symbolLinks: [:]
-              )
-            )
-          )
-          entry.append("<br>")
-        }
 
-        var name = StrictString(child.name.source())
-        var relativePathOfChild = child.relativePagePath[localization]
-        if case .extension(let `extension`) = child {
-          var baseType: APIElement?
-          for type in package.types where `extension`.isExtension(of: type) {
-            baseType = APIElement.type(type)
-            break
-          }
-          if baseType == nil /* Still not resolved. */ {
-            for `protocol` in package.protocols
-            where `extension`.isExtension(of: `protocol`) {
-              baseType = APIElement.protocol(`protocol`)
-              break
+        var name = StrictString(child.names.title)
+        var relativePathOfChild = extensionStorage[
+          child.extendedPropertiesIndex,
+          default: .default  // @exempt(from: tests) Reachability unknown.
+        ].relativePagePath[localization]
+        if let `extension` = child as? Extension {
+          var baseType: SymbolGraph.Symbol?
+          for graph in package.symbolGraphs() {
+            for symbol in graph.symbols.values {
+              if symbol.identifier.precise == `extension`.identifier.precise {
+                baseType = symbol  // @exempt(from: tests) Reachability unknown.
+              }
             }
           }
           if let resolved = baseType {
-            relativePathOfChild = resolved.relativePagePath[localization]
+            relativePathOfChild =  // @exempt(from: tests) Reachability unknown.
+              extensionStorage[resolved.extendedPropertiesIndex, default: .default]
+              .relativePagePath[localization]
           }
         }
 
         switch child {
-        case .package, .library:
+        case is PackageAPI, is LibraryAPI:
           name = ElementSyntax(
             "span",
             attributes: ["class": "text"],
@@ -2054,9 +1944,8 @@
             inline: true
           )
           .normalizedSource()
-        case .module, .type, .protocol, .extension, .case, .initializer, .variable, .subscript,
-          .function, .operator, .precedence, .conformance:
-          name = highlight(name: name, internal: relativePathOfChild ≠ nil)
+        default:
+          name = highlight(name: name)
         }
         name = ElementSyntax(
           "code",
@@ -2065,14 +1954,6 @@
           inline: true
         )
         .normalizedSource()
-        if let constraints = child.constraints {
-          name += StrictString(
-            constraints.syntaxHighlightedHTML(
-              inline: true,
-              internalIdentifiers: packageIdentifiers
-            )
-          )
-        }
 
         if let local = relativePathOfChild {
           let target = pathToSiteRoot + local
@@ -2086,7 +1967,10 @@
               inline: true
             ).normalizedSource()
           )
-          if let description = child.localizedDocumentation[localization]?.descriptionSection {
+          if let description = extensionStorage[
+            child.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].localizedDocumentation[localization]?.documentation().descriptionSection {
             entry.append(
               StrictString(
                 description.renderedHTML(
@@ -2097,36 +1981,26 @@
               )
             )
           }
-        } else {
-          entry.append(name)
         }
 
         return entry
       }
-      func getAttributes(_ child: APIElement) -> [StrictString: StrictString] {
-        if child.isProtocolRequirement {
-          let conformanceAttributeName: StrictString = "data\u{2D}conformance"
-          if child.hasDefaultImplementation {
-            return [conformanceAttributeName: "customizable"]
-          } else {
-            return [conformanceAttributeName: "requirement"]
-          }
-        }
-        return [:]
-      }
 
       return generateChildrenSection(
         heading: heading,
-        escapeHeading: escapeHeading,
-        children: children.filter({ $0.exists(in: localization) }),
+        children: children.filter({ child in
+          extensionStorage[
+            child.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].exists(in: localization)
+        }).sorted(by: { $0.names.resolvedForNavigation < $1.names.resolvedForNavigation }),
         childContents: getEntryContents,
-        childAttributes: getAttributes
+        childAttributes: { _ in return [:] }
       )
     }
 
     private static func generateChildrenSection<T>(
       heading: StrictString,
-      escapeHeading: Bool,
       children: [T],
       childContents: (T) -> [StrictString],
       childAttributes: (T) -> [StrictString: StrictString] = { _ in [:] }
@@ -2135,7 +2009,7 @@
       var sectionContents: [StrictString] = [
         ElementSyntax(
           "h2",
-          contents: escapeHeading ? HTML.escapeTextForCharacterData(heading) : heading,
+          contents: HTML.escapeTextForCharacterData(heading),
           inline: true
         ).normalizedSource()
       ]
@@ -2163,17 +2037,16 @@
         .normalizedSource()
     }
 
-    private static func highlight(name: StrictString, internal: Bool = true) -> StrictString {
+    private static func highlight(name: StrictString) -> StrictString {
       var result = HTML.escapeTextForCharacterData(name)
-      highlight("(", as: "punctuation", in: &result, internal: `internal`)
-      highlight(")", as: "punctuation", in: &result, internal: `internal`)
-      highlight(":", as: "punctuation", in: &result, internal: `internal`)
-      highlight("_", as: "keyword", in: &result, internal: `internal`)
-      highlight("[", as: "punctuation", in: &result, internal: `internal`)
-      highlight("]", as: "punctuation", in: &result, internal: `internal`)
+      highlight("(", as: "punctuation", in: &result)
+      highlight(")", as: "punctuation", in: &result)
+      highlight(":", as: "punctuation", in: &result)
+      highlight("_", as: "keyword", in: &result)
+      highlight("[", as: "punctuation", in: &result)
+      highlight("]", as: "punctuation", in: &result)
       result.prepend(
-        contentsOf: "<span class=\u{22}" + (`internal` ? "internal" : "external")
-          as StrictString + " identifier\u{22}>"
+        contentsOf: "<span class=\u{22}internal identifier\u{22}>"
       )
       result.append(contentsOf: "</span>")
       return result
@@ -2181,8 +2054,7 @@
     private static func highlight(
       _ token: StrictString,
       as class: StrictString,
-      in name: inout StrictString,
-      internal: Bool
+      in name: inout StrictString
     ) {
       name.replaceMatches(
         for: token,
@@ -2193,8 +2065,7 @@
             contents: token,
             inline: true
           )
-          .normalizedSource() + "<span class=\u{22}" + (`internal` ? "internal" : "external")
-          as StrictString + " identifier\u{22}>"
+          .normalizedSource() + "<span class=\u{22}internal identifier\u{22}>"
       )
     }
   }

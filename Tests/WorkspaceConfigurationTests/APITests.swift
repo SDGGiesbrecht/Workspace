@@ -227,13 +227,6 @@ class APITests: TestCase {
         .durchGitHubSeitenVeröffentlichen,
       true
     )
-    configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten.insert(
-      "..."
-    )
-    XCTAssert(
-      configuration.dokumentation.programmierschnittstelle.übergegangeneAbhängigkeiten
-        .contains("...")
-    )
     configuration.dokumentation.localisations = ["und"]
     XCTAssertEqual(configuration.dokumentation.localisations, ["und"])
     configuration.dokumentation.lokalisationen = ["zxx"]

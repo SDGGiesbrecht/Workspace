@@ -22,7 +22,8 @@
   import SDGExportedCommandLineInterface
 
   import SDGHTML
-  import SDGSwiftSource
+  import SymbolKit
+  import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -33,7 +34,8 @@
       localization: LocalizationIdentifier,
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
-      package: APIElement,
+      package: PackageAPI,
+      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [CommandInterfaceInformation],
       packageImport: StrictString?,
       index: StrictString,
@@ -86,8 +88,11 @@
       }
       navigationPathLinks.prepend(
         (
-          StrictString(package.name.source()),
-          package.relativePagePath[localization]!
+          StrictString(package.names.resolvedForNavigation),
+          extensionStorage[
+            package.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Never still empty.
+          ].relativePagePath[localization]!
         )
       )
 
@@ -143,11 +148,8 @@
         platforms: platforms,
         symbolImports: "",
         symbolType: symbolType,
-        compilationConditions: nil,
-        constraints: nil,
         title: interface.name,
         content: content.joinedAsLines(),
-        extensions: "",
         copyright: copyright
       )
     }
@@ -205,7 +207,7 @@
 
       return SymbolPage.generateDiscussionSection(
         localization: localization,
-        symbol: nil,
+        symbol: nil as SymbolGraph.Symbol?,
         content: discussion
       )
     }

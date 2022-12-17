@@ -17,7 +17,8 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGCommandLine
 
-  import SDGSwiftSource
+  import SymbolKit
+  import SDGSwiftDocumentation
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -44,25 +45,21 @@
       output.print(problem.resolved().formattedAsError().separated())
     }
 
-    private func report(
+    private func report<SymbolType>(
       problem: UserFacing<StrictString, InterfaceLocalization>,
-      with symbol: APIElement,
-      navigationPath: [APIElement],
-      parameter: String? = nil,
+      with symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
-    ) {
+    ) where SymbolType: SymbolLike {
       var symbolName: StrictString
-      switch symbol {
-      case .package, .library, .module:
-        symbolName = StrictString(symbol.name.source())
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .operator, .precedence, .conformance:
-        symbolName = navigationPath.dropFirst().map({ StrictString($0.name.source()) })
+      switch symbol.indexSectionIdentifier {
+      case .package, .tools, .libraries, .modules:
+        symbolName = StrictString(symbol.names.title)
+      case .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
+        symbolName = navigationPath.dropFirst()
+          .map({ StrictString($0.names.title.components(separatedBy: ".").last!) })
           .joined(separator: ".")
-      }
-      if let specificParameter = parameter {
-        symbolName += "." + StrictString(specificParameter)
       }
       if let localized = localization {
         symbolName += "." + localized._iconOrCode
@@ -81,28 +78,28 @@
       )
     }
 
-    internal func reportMissingDescription(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    internal func reportMissingDescription<SymbolType>(
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       var hint: UserFacing<StrictString, InterfaceLocalization>?
 
       var possibleSearch: StrictString?
-      switch symbol {
+      switch symbol.indexSectionIdentifier {
       case .package:
         possibleSearch = "Package"
-      case .library:
+      case .libraries:
         possibleSearch = ".library"
-      case .module:
+      case .modules:
         possibleSearch = ".target"
-      case .type, .protocol, .extension, .case, .initializer, .variable, .subscript, .function,
-        .operator, .precedence, .conformance:
+      case .tools, .types, .extensions, .protocols, .functions, .variables, .operators,
+        .precedenceGroups:
         break
       }
       if var search = possibleSearch {
         search.append(
-          contentsOf: "(name: \u{22}" + StrictString(symbol.name.source()) + "\u{22}"
+          contentsOf: "(name: \u{22}" + StrictString(symbol.names.title) + "\u{22}"
         )
 
         hint = UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -139,13 +136,13 @@
       )
     }
 
-    internal func reportMismatchedParameters(
+    internal func reportMismatchedParameters<SymbolType>(
       _ parameters: [String],
       expected: [String],
-      symbol: APIElement,
-      navigationPath: [APIElement],
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
@@ -166,26 +163,6 @@
             return "(Erwartete: \(expected.joined(separator: ", ")))"
           }
         })
-      )
-    }
-
-    internal func reportUnlabelledParameter(
-      _ closureType: String,
-      symbol: APIElement,
-      navigationPath: [APIElement]
-    ) {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A closure parameter has no label:"
-          case .deutschDeutschland:
-            return "Einem Abschluss fehlt die Beschriftung."
-          }
-        }),
-        with: symbol,
-        navigationPath: navigationPath,
-        parameter: closureType
       )
     }
 
@@ -255,11 +232,11 @@
       }
     }
 
-    internal func reportExcessiveHeading(
-      symbol: APIElement,
-      navigationPath: [APIElement],
+    internal func reportExcessiveHeading<SymbolType>(
+      symbol: SymbolType,
+      navigationPath: [SymbolLike],
       localization: LocalizationIdentifier
-    ) {
+    ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

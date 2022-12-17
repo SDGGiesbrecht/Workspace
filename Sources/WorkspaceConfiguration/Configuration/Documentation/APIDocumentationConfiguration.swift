@@ -209,19 +209,4 @@ public struct APIDocumentationConfiguration: Codable {
   public mutating func dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen() {
     applyWindowsCompatibilityFileNameReplacements()
   }
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(APIDocumentationConfiguration.ignoredDependencies)
-  /// Dependency module names known to be irrelevant to documentation.
-  ///
-  /// Parsing can be sped up by specifing dependencies to skip, but if a dependency is skipped, its API will not be available to participate in inheritance resolution.
-  public var ignoredDependencies: Set<String> = []
-  // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration.ignoredDependencies)
-  /// Modulnamen von Abhängkeiten die für die Dokumentation unerheblich sind.
-  ///
-  /// Die Zerteilung kann beschleunigt werden, in dem Abhängigkeiten übersprungen werden, aber die übersprungene Programierschnittstellen kann dann nicht geerbt werden.
-  public var übergegangeneAbhängigkeiten: Menge<Zeichenkette> {
-    get { return ignoredDependencies }
-    set { ignoredDependencies = newValue }
-  }
 }

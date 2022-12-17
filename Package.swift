@@ -489,11 +489,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(3, 0, 2)
+      from: Version(3, 0, 3)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(11, 1, 0)
+      from: Version(12, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
@@ -501,6 +501,10 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}syntax",
+      exact: Version(0, 50700, 0)
+    ),
+    .package(
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
       exact: Version(0, 50700, 0)
     ),
     .package(
@@ -541,6 +545,7 @@ let package = Package(
         .product(name: "SDGSwift", package: "SDGSwift"),
         .product(name: "SDGSwiftPackageManager", package: "SDGSwift"),
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
+        .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
         .product(
           name: "SwiftPMDataModel\u{2D}auto",
@@ -557,6 +562,10 @@ let package = Package(
           name: "SwiftSyntaxParser",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SymbolKit",
+          package: "swift\u{2D}docc\u{2D}symbolkit"
         ),
         .product(
           name: "SwiftFormatConfiguration",

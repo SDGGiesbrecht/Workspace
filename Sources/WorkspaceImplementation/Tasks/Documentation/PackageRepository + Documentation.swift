@@ -28,6 +28,7 @@
   import SDGSwift
   import SDGXcode
   import SDGSwiftSource
+  import SDGSwiftDocumentation
   import SDGHTML
   import SDGCSS
 
@@ -78,6 +79,17 @@
         }
         result[localization] = list
       }
+      return result
+    }
+
+    @available(macOS 10.15, *)
+    private func loadSwiftInterface(
+      output: Command.Output
+    ) throws -> SDGSwiftDocumentation.PackageAPI {
+      let result = try self.api(
+        reportProgress: { output.print($0) }
+      ).get()
+      output.print("")
       return result
     }
 
@@ -169,13 +181,13 @@
               guard #available(macOS 10.15, *) else {
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
-              if let packageDocumentation = try? PackageAPI.documentation(
-                for: package.package().get()
-              ),
-                let documentation = packageDocumentation.resolved(
-                  localizations: localizations
-                ).documentation[localization],
-                let description = documentation.descriptionSection
+              if let packageName = try? package.packageName(),
+                let documentation =
+                  package
+                  .documentation(packageName: String(packageName))
+                  .resolved(localizations: localizations)
+                  .documentation[localization],
+                let description = documentation.documentation().descriptionSection
               {
                 markdown += [
                   "",
@@ -311,11 +323,8 @@
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
-      let api = try PackageAPI(
-        package: cachedPackageGraph(),
-        ignoredDependencies: configuration.documentation.api.ignoredDependencies,
-        reportProgress: { output.print($0) }
-      )
+      // #workaround(Needs to merge graphs from other platforms.)
+      let api = try loadSwiftInterface(output: output)
       let cli = try loadCommandLineInterface(
         output: output,
         customReplacements: customReplacements

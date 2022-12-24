@@ -41,7 +41,7 @@
               return false
             }
             if symbol.location?.uri.contains(".build/checkouts") == true {
-              // Locally synthesized due to a declaration reported in a dependency.
+              // Locally synthesized due to a declaration reported in a dependency. @exempt(from: tests)
               return false
             }
             return true

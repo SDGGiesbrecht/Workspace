@@ -45,7 +45,7 @@
       { localization in
         switch localization {
         case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Public variables should be have explicit types."
+          return "Public variables should have explicit types."
         case .deutschDeutschland:
           return
             "Öffentliche (public) Variablen sollen ausdrückliche Typen haben."

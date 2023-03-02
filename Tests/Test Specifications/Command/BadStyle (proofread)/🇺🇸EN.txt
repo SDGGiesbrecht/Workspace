@@ -129,7 +129,7 @@ let compatibility = "2"
 
 Sources/BadStyle/Rules/Functionality/ExplicitTypes.swift
 Line 1
-Public variables should be have explicit types. (explicitTypes)
+Public variables should have explicit types. (explicitTypes)
 public var implit = ""  // Should trigger; needs explicit type.
 
 Sources/BadStyle/Rules/Functionality/Mark.swift

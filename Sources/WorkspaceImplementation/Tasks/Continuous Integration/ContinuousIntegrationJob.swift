@@ -41,7 +41,7 @@
     case miscellaneous
     case deployment
 
-    internal static let currentSwiftVersion = Version(5, 7, 0)
+    internal static let currentSwiftVersion = Version(5, 8, 0)
 
     private static let currentMacOSVersion = Version(12)
     internal static let currentXcodeVersion = Version(14, 0)

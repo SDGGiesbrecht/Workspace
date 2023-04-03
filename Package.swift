@@ -961,5 +961,4 @@ let toRemove: Set<String> = [
   "WorkspaceTests",
 ]
 package.targets.removeAll(where: { toRemove.contains($0.name) })
-assert(package.targets.isEmpty)
 #endif

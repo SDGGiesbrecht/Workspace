@@ -811,7 +811,7 @@
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk.tar.xz",
+                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}24\u{2D}sdk.tar.xz",
                 andUntarTo:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true

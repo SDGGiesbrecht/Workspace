@@ -63,6 +63,12 @@ jobs:
       run: |
         set -x
         swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+    - name: Debug documentation crash
+      shell: bash
+      run: |
+        set -x
+        git clone https://github.com/SDGGiesbrecht/SDGCornerstone --branch workspace
+        swift run workspace validate documentation‐coverage •project SDGCornerstone
     - name: Grant permission to cache
       shell: bash
       run: |

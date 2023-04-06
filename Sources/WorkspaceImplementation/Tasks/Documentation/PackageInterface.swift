@@ -510,6 +510,13 @@
           second,
           by: { $0.names.resolvedForNavigation },
           { entry in  // @exempt(from: tests) Reachability unknown.
+            if extensionStorage[
+              entry.extendedPropertiesIndex,
+              default: .default  // @exempt(from: tests) Reachability unknown.
+            ].relativePagePath[localization] == nil {
+              #warning("Debugging...")
+              dump(extensionStorage)
+            }
             return extensionStorage[
               entry.extendedPropertiesIndex,
               default: .default  // @exempt(from: tests) Reachability unknown.

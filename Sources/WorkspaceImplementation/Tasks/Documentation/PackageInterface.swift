@@ -515,7 +515,7 @@
               default: .default
             ].relativePagePath[localization] == nil {
               #warning("Debugging...")
-              fatalError("Problem: \(entry.location)")
+              fatalError("Index section: \(name) Problem: \(entry.location)")
             }
             return extensionStorage[
               entry.extendedPropertiesIndex,

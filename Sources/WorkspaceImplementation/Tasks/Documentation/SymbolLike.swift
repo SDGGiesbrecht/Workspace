@@ -1005,6 +1005,7 @@
             extensionStorage: extensionStorage
           )
           + ".html"
+        #warning("↓ This is what did not happen.")
         extensionStorage[
           self.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.

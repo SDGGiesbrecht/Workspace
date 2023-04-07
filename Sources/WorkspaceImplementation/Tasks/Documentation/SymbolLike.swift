@@ -1009,7 +1009,7 @@ var handled: [String] = []
           )
           + ".html"
         #warning("Debugging")
-        handled.append("\(names.title) (\(location))")
+        handled.append("\(names.title) (\((self as? SymbolGraph.Symbol)?.identifier), \(location))")
         #warning("↓ This is what did not happen.")
         extensionStorage[
           self.extendedPropertiesIndex,

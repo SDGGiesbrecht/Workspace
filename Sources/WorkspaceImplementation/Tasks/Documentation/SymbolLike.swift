@@ -853,15 +853,13 @@
       for localization: LocalizationIdentifier,
       customReplacements: [(StrictString, StrictString)],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) -> URL {
-      return outputDirectory.appendingPathComponent(
-        String(
-          extensionStorage[
-            self.extendedPropertiesIndex,
-            default: .default  // @exempt(from: tests) Reachability unknown.
-          ].relativePagePath[localization]!
-        )
-      )
+    ) -> URL? {
+      return extensionStorage[
+        self.extendedPropertiesIndex,
+        default: .default  // @exempt(from: tests) Reachability unknown.
+      ].relativePagePath[localization].map { relativePath in
+        return outputDirectory.appendingPathComponent(String(relativePath))
+      }
     }
 
     internal func determinePaths(

@@ -915,7 +915,7 @@
             for: localization,
             customReplacements: customReplacements,
             extensionStorage: extensionStorage
-          )
+          )!
           try SymbolPage(
             localization: localization,
             allLocalizations: localizations,
@@ -1004,7 +1004,7 @@
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
@@ -1049,7 +1049,7 @@
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
@@ -1106,7 +1106,7 @@
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
@@ -1180,7 +1180,7 @@
             for: localization,
             customReplacements: customReplacements,
             extensionStorage: extensionStorage
-          )
+          )!
 
           var modifiedRoot: StrictString = "../../"
           for _ in namespace.indices {
@@ -1426,7 +1426,7 @@
           for: localization,
           customReplacements: customReplacements,
           extensionStorage: extensionStorage
-        )
+        )!
         if redirectURL ≠ pageURL {
           try DocumentSyntax.redirect(
             language: AnyLocalization(code: localization.code),

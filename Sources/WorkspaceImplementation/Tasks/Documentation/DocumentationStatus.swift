@@ -70,6 +70,10 @@
             problem.resolved(for: localization),
             symbolName,
           ]
+
+          #warning("Debugging...")
+          result.append("\(String(describing: symbol.location))")
+
           if let theHint = hint {
             result.append(theHint.resolved(for: localization))
           }

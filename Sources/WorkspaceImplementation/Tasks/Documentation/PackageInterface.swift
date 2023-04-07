@@ -1099,7 +1099,17 @@
         where extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].exists(in: localization) {
+        ].exists(in: localization)
+
+          // #workaround(Why are there symbols that still have no URL? See SDGCornerstone.)
+          ∧ symbol.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements,
+            extensionStorage: extensionStorage
+          ) ≠ nil
+
+        {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,

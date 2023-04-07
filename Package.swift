@@ -480,8 +480,7 @@ let package = Package(
     /// Workspace.
     .executable(name: "workspace", targets: ["WorkspaceTool"]),
     /// Arbeitsbereich.
-    // #warning(Temporarily disabled.)
-    //.executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
+    .executable(name: "arbeitsbereich", targets: ["WorkspaceTool"]),
   ],
   dependencies: [
     .package(

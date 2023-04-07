@@ -504,19 +504,19 @@
           entry.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].exists(in: localization)
+
+          // #workaround(Why are there symbols that still have no path? See SDGCornerstone.)
+          ∧ extensionStorage[
+            entry.extendedPropertiesIndex,
+            default: .default
+          ].relativePagePath[localization] ≠ nil
+
       }).sorted(by: { first, second in
         return compare(
           first,
           second,
           by: { $0.names.resolvedForNavigation },
           { entry in  // @exempt(from: tests) Reachability unknown.
-            if extensionStorage[
-              entry.extendedPropertiesIndex,
-              default: .default
-            ].relativePagePath[localization] == nil {
-              #warning("Debugging...")
-              fatalError("Index section: \(name) Problem: \((entry as? SymbolGraph.Symbol)?.identifier),\(entry.location)\nHandled:\n\(handled.joined(separator: "\n"))")
-            }
             return extensionStorage[
               entry.extendedPropertiesIndex,
               default: .default  // @exempt(from: tests) Reachability unknown.

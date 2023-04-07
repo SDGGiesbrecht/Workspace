@@ -23,9 +23,6 @@
 
   import WorkspaceConfiguration
 
-#warning("Debugging...")
-var handled: [String] = []
-
   extension SymbolLike {
 
     internal func hasEditableDocumentation(editableModules: [String]) -> Bool {
@@ -1008,9 +1005,6 @@ var handled: [String] = []
             extensionStorage: extensionStorage
           )
           + ".html"
-        #warning("Debugging")
-        handled.append("\(names.title) (\((self as? SymbolGraph.Symbol)?.identifier), \(location))")
-        #warning("↓ This is what did not happen.")
         extensionStorage[
           self.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.

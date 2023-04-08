@@ -113,6 +113,7 @@
           localization: localization,
           symbol: symbol,
           extensionStorage: extensionStorage,
+          editableModules: editableModules,
           navigationPath: navigationPath,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,

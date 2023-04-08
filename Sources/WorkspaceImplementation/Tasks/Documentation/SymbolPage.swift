@@ -885,6 +885,7 @@
       localization: LocalizationIdentifier,
       symbol: SymbolType,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      editableModules: [String],
       navigationPath: [SymbolLike],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
@@ -911,7 +912,8 @@
             symbolLinks: symbolLinks
           )
         )
-        if rendered.contains("<h1>".scalars.literal()) ∨ rendered.contains("<h2>".scalars.literal())
+        if rendered.contains("<h1>".scalars.literal()) ∨ rendered.contains("<h2>".scalars.literal()),
+          symbol.hasEditableDocumentation(editableModules: editableModules)
         {
           status.reportExcessiveHeading(
             symbol: symbol,

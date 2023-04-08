@@ -485,9 +485,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCornerstone",
-      // #warning(Branch)
-      //from: Version(10, 1, 0)
-      branch: "master"
+      from: Version(10, 1, 1)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
@@ -497,7 +495,7 @@ let package = Package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
       // #warning(Branch)
       // from: Version(12, 0, 0)
-      branch: "syntax"
+      branch: "master"
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

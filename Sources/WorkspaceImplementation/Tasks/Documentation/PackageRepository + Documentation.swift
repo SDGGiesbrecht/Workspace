@@ -86,10 +86,28 @@
     private func loadSwiftInterface(
       output: Command.Output
     ) throws -> SDGSwiftDocumentation.PackageAPI {
-      let result = try self.api(
+      var result = try self.api(
         reportProgress: { output.print($0) }
       ).get()
-      output.print("")
+      // #workaround(This should already be filtered by SDGSwift, but see leakage of swift‐numerics into SDGCornerstone.)
+      result.modules = result.modules.map { module in
+        var module = module
+        module.symbolGraphs = module.symbolGraphs.map { graph in
+          var graph = graph
+          for identifier in Array(graph.symbols.keys) {
+            if let symbol = graph.symbols[identifier],
+              let sourcePath = symbol.location?.uri,
+              sourcePath.contains("/.build/checkouts/") {
+              graph.symbols[identifier] = nil
+              graph.relationships = graph.relationships.filter { relationship in
+                return relationship.source ≠ identifier ∧ relationship.target ≠ identifier
+              }
+            }
+          }
+          return graph
+        }
+        return module
+      }
       return result
     }
 

@@ -944,23 +944,3 @@ for target in package.targets {
     }
   })
 }
-
-#warning("Debugging...")
-#if os(Windows)
-package.products = []
-let toRemove: Set<String> = [
-  //"CrossPlatformC",
-  //"CrossPlatform",
-  //"cross_platform_tool",
-  //"CrossPlatformTests",
-  //"WorkspaceLocalizations",
-  //"WorkspaceConfiguration",
-  "WorkspaceConfigurationExample",
-  "WorkspaceProjectConfiguration",
-  "WorkspaceConfigurationTests",
-  "WorkspaceImplementation",
-  "WorkspaceTool",
-  "WorkspaceTests",
-]
-package.targets.removeAll(where: { toRemove.contains($0.name) })
-#endif

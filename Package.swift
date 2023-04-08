@@ -495,15 +495,17 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(12, 0, 0)
+      // #warning(Branch)
+      // from: Version(12, 0, 0)
+      branch: "syntax"
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
-      exact: Version(0, 50700, 2)
+      exact: Version(0, 50800, 0)
     ),
     .package(
-      url: "https://github.com/apple/swift\u{2D}syntax",
-      exact: Version(0, 50700, 0)
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}syntax",
+      exact: Version(0, 50800, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",

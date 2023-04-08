@@ -359,6 +359,7 @@
       try interface.outputHTML(
         to: outputDirectory,
         customReplacements: customReplacements,
+        projectRoot: location,
         status: documentationStatus,
         output: output,
         coverageCheckOnly: coverageCheckOnly

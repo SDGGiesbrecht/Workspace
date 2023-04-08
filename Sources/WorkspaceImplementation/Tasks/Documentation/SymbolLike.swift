@@ -1019,10 +1019,14 @@
     // MARK: - Parameters
 
     internal func parameters() -> [String] {
-      switch self {
-      case is PackageAPI, is LibraryAPI, is ModuleAPI:
+      guard let symbol = self as? SymbolGraph.Symbol else {
         return []
-      default:
+      }
+      switch symbol.kind.identifier {
+      case .associatedtype, .class, .deinit, .enum, .`case`, .ivar, .property, .protocol, .snippet,
+        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module, .unknown:
+        return []
+      case .func, .operator, .`init`, .macro, .method, .subscript, .typeMethod, .typeSubscript:
         guard let fragments = declaration?.declarationFragments else {
           return []
         }

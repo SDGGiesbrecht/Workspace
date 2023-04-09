@@ -50,6 +50,7 @@
           }
         )
       }
+      let linterOperators = OperatorTable.standardOperators
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
       if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -125,7 +126,8 @@
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                let syntax = try SyntaxParser.parseAndRetry(url)
+                var syntax = try SyntaxParser.parseAndRetry(url)
+                syntax = try linterOperators.foldAll(syntax).as(SourceFileSyntax.self)!
                 try RuleSyntaxScanner(
                   rules: syntaxRules,
                   file: file,
@@ -135,10 +137,9 @@
                   output: output
                 ).scan(syntax)
 
-                // #workaround(Can a real OperatorTable be acquired somehow?)
                 try linter?.lint(
                   syntax: syntax,
-                  operatorTable: OperatorTable(),
+                  operatorTable: linterOperators,
                   assumingFileURL: url
                 )
               }

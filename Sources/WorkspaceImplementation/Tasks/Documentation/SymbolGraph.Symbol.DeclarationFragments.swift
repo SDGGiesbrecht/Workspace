@@ -32,8 +32,8 @@
       let parsed =
         (try? SyntaxParser.parse(source: tokens.joined())).map({ Syntax($0) })
         ?? Syntax(  // @exempt(from: tests)
-          SyntaxFactory.makeUnknownSyntax(
-            tokens: tokens.map({ SyntaxFactory.makeToken(.unknown($0)) })
+          UnexpectedNodesSyntax(
+            tokens.map({ UnexpectedNodesSyntax.Element(TokenSyntax(.unknown($0))) })
           )
         )
       return parsed.syntaxHighlightedHTML(

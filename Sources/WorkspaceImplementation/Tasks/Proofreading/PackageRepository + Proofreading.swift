@@ -136,7 +136,11 @@
                 ).scan(syntax)
 
                 // #workaround(Can a real OperatorTable be acquired somehow?)
-                try linter?.lint(syntax: syntax, operatorTable: OperatorTable(), assumingFileURL: url)
+                try linter?.lint(
+                  syntax: syntax,
+                  operatorTable: OperatorTable(),
+                  assumingFileURL: url
+                )
               }
             }
           }

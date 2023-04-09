@@ -645,31 +645,51 @@
       let libraryName = product.names.title
       let packageName = package.names.title
 
-      let dependencyStatement = SyntaxFactory.makeFunctionCallExpr(
+      let dependencyStatement = FunctionCallExprSyntax(
         calledExpression: ExprSyntax(
-          SyntaxFactory.makeMemberAccessExpr(
-            base: ExprSyntax(SyntaxFactory.makeBlankUnknownExpr()),
-            dot: SyntaxFactory.makeToken(.period),
-            name: SyntaxFactory.makeToken(.identifier("product")),
+          MemberAccessExprSyntax(
+            base: ExprSyntax(MissingSyntax()),
+            dot: TokenSyntax(.period),
+            name: TokenSyntax(.identifier("product")),
             declNameArguments: nil
           )
         ),
-        leftParen: SyntaxFactory.makeToken(.leftParen),
-        argumentList: SyntaxFactory.makeTupleExprElementList([
-          SyntaxFactory.makeTupleExprElement(
-            label: SyntaxFactory.makeToken(.identifier("name")),
-            colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(libraryName)),
-            trailingComma: SyntaxFactory.makeToken(.comma, trailingTrivia: .spaces(1))
+        leftParen: TokenSyntax(.leftParen),
+        argumentList: TupleExprElementListSyntax([
+          TupleExprElementSyntax(
+            label: TokenSyntax(.identifier("name")),
+            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1)),
+            expression: ExprSyntax(
+              StringLiteralExprSyntax(
+                openQuote: TokenSyntax(.stringQuote),
+                segments: StringLiteralSegmentsSyntax([
+                  .stringSegment(
+                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(libraryName)))
+                  )
+                ]),
+                closeQuote: TokenSyntax(.stringQuote)
+              )
+            ),
+            trailingComma: TokenSyntax(.comma, trailingTrivia: .spaces(1))
           ),
-          SyntaxFactory.makeTupleExprElement(
-            label: SyntaxFactory.makeToken(.identifier("package")),
-            colon: SyntaxFactory.makeToken(.colon, trailingTrivia: .spaces(1)),
-            expression: ExprSyntax(SyntaxFactory.makeStringLiteralExpr(packageName)),
+          TupleExprElementSyntax(
+            label: TokenSyntax(.identifier("package")),
+            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1)),
+            expression: ExprSyntax(
+              StringLiteralExprSyntax(
+                openQuote: TokenSyntax(.stringQuote),
+                segments: StringLiteralSegmentsSyntax([
+                  .stringSegment(
+                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(packageName)))
+                  )
+                ]),
+                closeQuote: TokenSyntax(.stringQuote)
+              )
+            ),
             trailingComma: nil
           ),
         ]),
-        rightParen: SyntaxFactory.makeToken(.rightParen),
+        rightParen: TokenSyntax(.rightParen),
         trailingClosure: nil,
         additionalTrailingClosures: nil
       )
@@ -700,14 +720,14 @@
       }
       let moduleName = module.names.title
 
-      let importStatement = SyntaxFactory.makeImportDecl(
+      let importStatement = ImportDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        importTok: SyntaxFactory.makeToken(.importKeyword, trailingTrivia: .spaces(1)),
+        importTok: TokenSyntax(.importKeyword, trailingTrivia: .spaces(1)),
         importKind: nil,
-        path: SyntaxFactory.makeAccessPath([
-          SyntaxFactory.makeAccessPathComponent(
-            name: SyntaxFactory.makeToken(.identifier(moduleName)),
+        path: AccessPathSyntax([
+          AccessPathComponentSyntax(
+            name: TokenSyntax(.identifier(moduleName)),
             trailingDot: nil
           )
         ])

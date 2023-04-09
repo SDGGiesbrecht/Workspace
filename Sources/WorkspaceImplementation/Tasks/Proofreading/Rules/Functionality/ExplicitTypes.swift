@@ -67,7 +67,7 @@
 
       if let variable = node.as(VariableDeclSyntax.self),
         variable.modifiers?.contains(where: { $0.name.text == "public" }) == true,
-        variable.bindings.first?.typeAnnotation?.isMissing ≠ false
+        variable.bindings.first?.typeAnnotation?.type == nil
       {
         reportViolation(
           in: file,

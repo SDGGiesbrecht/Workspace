@@ -566,6 +566,11 @@ let package = Package(
           condition: .when(platforms: [.macOS, .linux])
         ),
         .product(
+          name: "SwiftOperators",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
           name: "SymbolKit",
           package: "swift\u{2D}docc\u{2D}symbolkit"
         ),

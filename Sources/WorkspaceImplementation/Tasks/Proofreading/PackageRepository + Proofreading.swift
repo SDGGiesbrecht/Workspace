@@ -27,6 +27,7 @@
   import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
+  import SwiftOperators
 
   import SwiftFormat
   import SwiftFormatConfiguration
@@ -134,7 +135,8 @@
                   output: output
                 ).scan(syntax)
 
-                try linter?.lint(syntax: syntax, assumingFileURL: url)
+                // #workaround(Can a real OperatorTable be acquired somehow?)
+                try linter?.lint(syntax: syntax, operatorTable: OperatorTable(), assumingFileURL: url)
               }
             }
           }

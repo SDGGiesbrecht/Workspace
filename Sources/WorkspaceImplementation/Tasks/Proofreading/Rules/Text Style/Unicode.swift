@@ -193,8 +193,7 @@
           .caseKeyword, .defaultKeyword, .whereKeyword, .catchKeyword, .throwKeyword, .asKeyword,
           .anyKeyword, .falseKeyword, .isKeyword, .nilKeyword, .rethrowsKeyword, .superKeyword,
           .selfKeyword, .capitalSelfKeyword, .trueKeyword, .tryKeyword, .throwsKeyword,
-          .__file__Keyword, .__line__Keyword, .__column__Keyword, .__function__Keyword,
-          .__dso_handle__Keyword, .wildcardKeyword, .leftParen, .rightParen, .leftBrace,
+          .wildcardKeyword, .leftParen, .rightParen, .leftBrace,
           .rightBrace, .leftSquareBracket, .rightSquareBracket, .leftAngle, .rightAngle, .period,
           .prefixPeriod, .comma, .colon, .semicolon, .equal, .atSign, .pound, .prefixAmpersand,
           .arrow, .backtick, .backslash, .exclamationMark, .postfixQuestionMark,
@@ -209,7 +208,7 @@
           .unspacedBinaryOperator, .spacedBinaryOperator, .postfixOperator, .prefixOperator,
           .dollarIdentifier, .contextualKeyword, .stringInterpolationAnchor, .yield,
           .poundEndifKeyword, .ellipsis, .singleQuote, .rawStringDelimiter, .poundFileIDKeyword,
-          .poundUnavailableKeyword:
+          .poundUnavailableKeyword, .poundHasSymbolKeyword:
           scope = .machineIdentifiers
         case .integerLiteral, .floatingLiteral:
           scope = .humanLanguage  // @exempt(from: tests) Probably unreachable.

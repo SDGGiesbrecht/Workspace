@@ -19,12 +19,16 @@ Einem Symbol fehlt die Beschreibung.
 NoLocalizations.🇩🇪DE
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "NoLocalizations"“.)
+Package.swift
+Zeile 5
 
 
 Einem Symbol fehlt die Beschreibung.
 NoLocalizations.🇩🇪DE
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "NoLocalizations"“.)
+Package.swift
+Zeile 9
 
 ... NoLocalizations ...
 
@@ -32,6 +36,8 @@ Einem Symbol fehlt die Beschreibung.
 NoLocalizations.🇩🇪DE
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "NoLocalizations"“.)
+Package.swift
+Zeile 19
 
 
 ✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)

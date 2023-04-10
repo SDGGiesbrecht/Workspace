@@ -27,6 +27,7 @@
   import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
+  import SwiftOperators
 
   import SwiftFormat
   import SwiftFormatConfiguration
@@ -49,6 +50,7 @@
           }
         )
       }
+      let linterOperators = OperatorTable.standardOperators
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
       if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -124,7 +126,8 @@
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                let syntax = try SyntaxParser.parseAndRetry(url)
+                var syntax = try SyntaxParser.parseAndRetry(url)
+                syntax = try linterOperators.foldAll(syntax).as(SourceFileSyntax.self)!
                 try RuleSyntaxScanner(
                   rules: syntaxRules,
                   file: file,
@@ -134,7 +137,11 @@
                   output: output
                 ).scan(syntax)
 
-                try linter?.lint(syntax: syntax, assumingFileURL: url)
+                try linter?.lint(
+                  syntax: syntax,
+                  operatorTable: linterOperators,
+                  assumingFileURL: url
+                )
               }
             }
           }

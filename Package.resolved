@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
       "state" : {
-        "revision" : "b898b510e8f06aae1fbc683310e6b2d4bfda6944",
-        "version" : "12.0.0"
+        "branch" : "master",
+        "revision" : "d0735ab8b941ddaae2bdb1e37f53ff79377b21a3"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
       "state" : {
-        "revision" : "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
-        "version" : "0.50302.0"
+        "revision" : "ba5e03be521f621fcfd29e63be2cf475b97efd5a",
+        "version" : "0.50700.1"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-crypto",
       "state" : {
-        "revision" : "477051bcb0f29f01b7f22ef3dab5ebbe6962246d",
-        "version" : "0.10107.0"
+        "revision" : "0adce56a99ee26faba51407c49e399ba382b943a",
+        "version" : "0.20400.0"
       }
     },
     {
@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-docc-symbolkit",
       "state" : {
-        "revision" : "8682202025906dce29a8b04f9263f40ba87b89d8",
-        "version" : "0.50700.0"
+        "revision" : "eaaf9b3531186b5390de3f558e58233d37cfb817",
+        "version" : "0.50800.0"
       }
     },
     {
@@ -86,8 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-driver",
       "state" : {
-        "revision" : "9f6b0c73f8733ac2bffb3b307fc41bb597fb82ff",
-        "version" : "0.50700.2"
+        "revision" : "2353b37ce91a0fa587e16fba1ca205353781e0ed",
+        "version" : "0.50800.0"
       }
     },
     {
@@ -95,17 +95,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-format",
       "state" : {
-        "revision" : "f07566fd4fdceafc9a74f384a964c6c74ca9b380",
-        "version" : "0.0.507000"
+        "revision" : "e725e5a10b177415b68922822544178052c89b9e",
+        "version" : "0.50800.0"
       }
     },
     {
       "identity" : "swift-llbuild",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-llbuild.git",
+      "location" : "https://github.com/SDGGiesbrecht/swift-llbuild",
       "state" : {
-        "revision" : "5cd4df550b31301508a77064e3dfaa5c5628780e",
-        "version" : "0.5.0"
+        "revision" : "14d9618f53db8ca57ed46ed7b4587155c2a03390",
+        "version" : "0.50800.0"
       }
     },
     {
@@ -122,17 +122,17 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-package-manager",
       "state" : {
-        "revision" : "51a818398567b6c3000bc09c44e2e31d98d6c09f",
-        "version" : "0.50700.2"
+        "revision" : "558eda62ff7d3e12b319cadf9f3b529e2de63c68",
+        "version" : "0.50800.0"
       }
     },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax",
+      "location" : "https://github.com/SDGGiesbrecht/swift-syntax",
       "state" : {
-        "revision" : "04d4497be6b88e524a71778d828790e9589ae1c4",
-        "version" : "0.50700.0"
+        "revision" : "374cc240f1ef840e9872f17e6ae1f90a0a72c176",
+        "version" : "0.50800.0"
       }
     },
     {
@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-tools-support-core",
       "state" : {
-        "revision" : "4f07be3dc201f6e2ee85b6942d0c220a16926811",
-        "version" : "0.2.7"
+        "revision" : "93784c59434dbca8e8a9e4b700d0d6d94551da6a",
+        "version" : "0.5.2"
       }
     },
     {
@@ -158,8 +158,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams.git",
       "state" : {
-        "revision" : "9ff1cc9327586db4e0c8f46f064b6a82ec1566fa",
-        "version" : "4.0.6"
+        "revision" : "f47ba4838c30dbd59998a4e4c87ab620ff959e8a",
+        "version" : "5.0.5"
       }
     }
   ],

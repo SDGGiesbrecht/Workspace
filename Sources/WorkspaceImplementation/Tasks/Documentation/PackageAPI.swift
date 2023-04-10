@@ -129,19 +129,17 @@
         }
       }
 
-      {
-        var storage = extensionStorage[extendedPropertiesIndex, default: .default]
-        storage.packageTypes = types.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageExtensions = extensions.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageProtocols = protocols.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageFunctions = functions.sorted(by: { $0.names.title < $1.names.title })
-        storage.packageGlobalVariables =
-          globalVariables
-          .sorted(by: { $0.names.title < $1.names.title })
-        storage.packageOperators = operators.sorted()
-        storage.packagePrecedenceGroups = precedenceGroups.sorted()
-        extensionStorage[extendedPropertiesIndex] = storage
-      }()
+      var storage = extensionStorage[extendedPropertiesIndex, default: .default]
+      storage.packageTypes = types.sorted(by: { $0.names.title < $1.names.title })
+      storage.packageExtensions = extensions.sorted(by: { $0.names.title < $1.names.title })
+      storage.packageProtocols = protocols.sorted(by: { $0.names.title < $1.names.title })
+      storage.packageFunctions = functions.sorted(by: { $0.names.title < $1.names.title })
+      storage.packageGlobalVariables =
+        globalVariables
+        .sorted(by: { $0.names.title < $1.names.title })
+      storage.packageOperators = operators.sorted()
+      storage.packagePrecedenceGroups = precedenceGroups.sorted()
+      extensionStorage[extendedPropertiesIndex] = storage
     }
 
     internal func identifierList() -> Set<String> {

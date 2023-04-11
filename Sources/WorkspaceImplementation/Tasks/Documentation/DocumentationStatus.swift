@@ -49,6 +49,7 @@
       problem: UserFacing<StrictString, InterfaceLocalization>,
       with symbol: SymbolType,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
@@ -73,6 +74,17 @@
           if let theHint = hint {
             result.append(theHint.resolved(for: localization))
           }
+          if let location = symbol.location {
+            result.append(contentsOf: [
+              StrictString(
+                location.url?.path(relativeTo: projectRoot)
+                  ?? location.uri  // @exempt(from: tests) Should never happen.
+              ),
+              CommandLineProofreadingReporter.lineNumberReport(location.position.line).resolved(
+                for: localization
+              ),
+            ])
+          }
           return result.joined(separator: "\n")
         })
       )
@@ -81,6 +93,7 @@
     internal func reportMissingDescription<SymbolType>(
       symbol: SymbolType,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
       var hint: UserFacing<StrictString, InterfaceLocalization>?
@@ -131,6 +144,7 @@
         }),
         with: symbol,
         navigationPath: navigationPath,
+        projectRoot: projectRoot,
         localization: localization,
         hint: hint
       )
@@ -141,6 +155,7 @@
       expected: [String],
       symbol: SymbolType,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
       report(
@@ -154,6 +169,7 @@
         }),
         with: symbol,
         navigationPath: navigationPath,
+        projectRoot: projectRoot,
         localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
@@ -235,6 +251,7 @@
     internal func reportExcessiveHeading<SymbolType>(
       symbol: SymbolType,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
       report(
@@ -248,6 +265,7 @@
         }),
         with: symbol,
         navigationPath: navigationPath,
+        projectRoot: projectRoot,
         localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {

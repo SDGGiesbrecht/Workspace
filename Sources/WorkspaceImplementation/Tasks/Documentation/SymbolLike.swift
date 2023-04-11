@@ -1028,7 +1028,7 @@
         return []
       case .func, .operator, .`init`, .macro, .method, .subscript, .typeMethod, .typeSubscript:
         guard let fragments = declaration?.declarationFragments else {
-          return []
+          return []  // @exempt(from: tests) Reachability unknown.
         }
         return fragments.indices.compactMap({ index in
           let fragment = fragments[index]

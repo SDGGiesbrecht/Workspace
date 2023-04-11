@@ -508,7 +508,7 @@
           // #workaround(Why are there symbols that still have no path? See SDGCornerstone.)
           ∧ extensionStorage[
             entry.extendedPropertiesIndex,
-            default: .default
+            default: .default  // @exempt(from: tests) Reachability unknown.
           ].relativePagePath[localization] ≠ nil
 
       }).sorted(by: { first, second in

@@ -78,7 +78,7 @@
             result.append(contentsOf: [
               StrictString(
                 location.url?.path(relativeTo: projectRoot)
-                ?? location.uri  // @exempt(from: tests) Should never happen.
+                  ?? location.uri  // @exempt(from: tests) Should never happen.
               ),
               CommandLineProofreadingReporter.lineNumberReport(location.position.line).resolved(
                 for: localization

@@ -52,7 +52,6 @@
         // #workaround(swift-format, 0.50800.0, This crashes; see testBadStyle.) @exempt(from: unicode)
         linter?.debugOptions.insert(.disablePrettyPrint)
       }
-      let linterOperators = OperatorTable.baseOperators
 
       let activeRules = try configuration(output: output).proofreading.rules.sorted()
       if ¬activeRules.isEmpty ∨ linter ≠ nil {
@@ -129,7 +128,7 @@
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
                 var syntax = try SyntaxParser.parseAndRetry(url)
-                syntax = try linterOperators.foldAll(syntax).as(SourceFileSyntax.self)!
+                syntax = try OperatorTable.baseOperators.foldAll(syntax).as(SourceFileSyntax.self)!
                 try RuleSyntaxScanner(
                   rules: syntaxRules,
                   file: file,
@@ -141,7 +140,7 @@
 
                 try linter?.lint(
                   syntax: syntax,
-                  operatorTable: linterOperators,
+                  operatorTable: OperatorTable.baseOperators,
                   assumingFileURL: url
                 )
               }

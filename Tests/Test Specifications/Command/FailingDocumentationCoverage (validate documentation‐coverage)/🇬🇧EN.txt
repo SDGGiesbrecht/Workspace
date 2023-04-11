@@ -19,12 +19,16 @@ A symbol has no description:
 FailingDocumentationCoverage.zxx
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘Package(name: "FailingDocumentationCoverage"’.)
+Package.swift
+Line 5
 
 
 A symbol has no description:
 FailingDocumentationCoverage.zxx
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘.library(name: "FailingDocumentationCoverage"’.)
+Package.swift
+Line 9
 
 ...FailingDocumentationCoverage...
 
@@ -32,24 +36,34 @@ A symbol has no description:
 FailingDocumentationCoverage.zxx
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘.target(name: "FailingDocumentationCoverage"’.)
+Package.swift
+Line 19
 
 
 A symbol’s documentation contains excessively strong headings:
 excessiveHeading().zxx
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 14
 
 
 A symbol has mismatched parameter descriptions:
 mismatchedParameters(parameterOne:).zxx
 (Expected: parameterOne)
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 21
 
 
 A symbol has no description:
 undocumented().zxx
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 4
 
 
 A symbol has no description:
 inferredType.zxx
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 6
 
 
 ✗ Documentation coverage is incomplete. (See [⌘F] ‘§1’)

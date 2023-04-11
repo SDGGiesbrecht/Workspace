@@ -108,12 +108,16 @@ A symbol has no description:
 Default.🇨🇦EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “Package(name: "Default"”.)
+Package.swift
+Line 6
 
 
 A symbol has no description:
 Default.🇨🇦EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.library(name: "Default"”.)
+Package.swift
+Line 10
 
 ...Default...
 
@@ -121,6 +125,8 @@ A symbol has no description:
 Default.🇨🇦EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.target(name: "Default"”.)
+Package.swift
+Line 22
 
 
 Summary

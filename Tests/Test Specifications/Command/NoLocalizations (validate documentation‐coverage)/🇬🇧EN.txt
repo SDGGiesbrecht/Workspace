@@ -19,12 +19,16 @@ A symbol has no description:
 NoLocalizations.🇬🇧EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘Package(name: "NoLocalizations"’.)
+Package.swift
+Line 5
 
 
 A symbol has no description:
 NoLocalizations.🇬🇧EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘.library(name: "NoLocalizations"’.)
+Package.swift
+Line 9
 
 ...NoLocalizations...
 
@@ -32,6 +36,8 @@ A symbol has no description:
 NoLocalizations.🇬🇧EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above ‘.target(name: "NoLocalizations"’.)
+Package.swift
+Line 19
 
 
 ✗ Documentation coverage is incomplete. (See [⌘F] ‘§1’)

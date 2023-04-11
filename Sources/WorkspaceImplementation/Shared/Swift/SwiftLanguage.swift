@@ -26,6 +26,9 @@
   import SwiftSyntax
   import SDGSwiftSource
   import SwiftFormat
+  import SwiftFormatConfiguration
+  import SwiftOperators
+  import SwiftSyntaxParser
 
   internal enum SwiftLanguage {
 
@@ -206,16 +209,30 @@
     }
 
     internal static func format(
-      generatedCode code: inout String,
+      source: inout String,
       accordingTo configuration: WorkspaceConfiguration,
-      for fileURL: URL
+      for fileURL: URL,
+      assumeManualTasks: Bool
     ) throws {
       if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
-        let formatter = SwiftFormatter(configuration: formatConfiguration)
-        var result: String = ""
-        try formatter.format(source: code, assumingFileURL: fileURL, to: &result)
-        code = result
+        try format(source: &source, accordingTo: formatConfiguration, for: fileURL, assumeManualTasks: assumeManualTasks)
       }
+    }
+
+    internal static func format(
+      source: inout String,
+      accordingTo configuration: SwiftFormatConfiguration.Configuration,
+      for fileURL: URL,
+      assumeManualTasks: Bool
+    ) throws {
+      let modifiedConfiguration = assumeManualTasks ? configuration : configuration.reducedToMachineResponsibilities()
+      let formatter = SwiftFormatter(configuration: modifiedConfiguration)
+      var syntax = try SyntaxParser.parse(source: source)
+      syntax = try OperatorTable.baseOperators.foldAll(syntax).as(SourceFileSyntax.self)!
+      
+      var result: String = ""
+      try formatter.format(syntax: syntax, operatorTable: OperatorTable.baseOperators, assumingFileURL: fileURL, to: &result)
+      source = result
     }
   }
 #endif

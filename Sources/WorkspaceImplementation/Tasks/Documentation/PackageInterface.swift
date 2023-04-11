@@ -504,6 +504,13 @@
           entry.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].exists(in: localization)
+
+          // #workaround(Why are there symbols that still have no path? See SDGCornerstone.)
+          ∧ extensionStorage[
+            entry.extendedPropertiesIndex,
+            default: .default  // @exempt(from: tests) Reachability unknown.
+          ].relativePagePath[localization] ≠ nil
+
       }).sorted(by: { first, second in
         return compare(
           first,
@@ -803,6 +810,7 @@
     internal func outputHTML(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -821,6 +829,7 @@
       try outputPackagePages(
         to: outputDirectory,
         customReplacements: customReplacements,
+        projectRoot: projectRoot,
         status: status,
         output: output,
         coverageCheckOnly: coverageCheckOnly
@@ -835,6 +844,7 @@
       try outputLibraryPages(
         to: outputDirectory,
         customReplacements: customReplacements,
+        projectRoot: projectRoot,
         status: status,
         output: output,
         coverageCheckOnly: coverageCheckOnly
@@ -842,6 +852,7 @@
       try outputModulePages(
         to: outputDirectory,
         customReplacements: customReplacements,
+        projectRoot: projectRoot,
         status: status,
         output: output,
         coverageCheckOnly: coverageCheckOnly
@@ -849,6 +860,7 @@
       try outputTopLevelSymbols(
         to: outputDirectory,
         customReplacements: customReplacements,
+        projectRoot: projectRoot,
         status: status,
         output: output,
         coverageCheckOnly: coverageCheckOnly
@@ -897,6 +909,7 @@
     private func outputPackagePages(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -908,12 +921,13 @@
             for: localization,
             customReplacements: customReplacements,
             extensionStorage: extensionStorage
-          )
+          )!
           try SymbolPage(
             localization: localization,
             allLocalizations: localizations,
             pathToSiteRoot: "../",
             navigationPath: [api],
+            projectRoot: projectRoot,
             packageImport: packageImport,
             index: indices[localization]!,
             sectionIdentifier: .package,
@@ -981,6 +995,7 @@
     private func outputLibraryPages(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -997,12 +1012,13 @@
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
               pathToSiteRoot: "../../",
               navigationPath: [api, library],
+              projectRoot: projectRoot,
               packageImport: packageImport,
               index: indices[localization]!,
               sectionIdentifier: .libraries,
@@ -1026,6 +1042,7 @@
     private func outputModulePages(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -1042,12 +1059,13 @@
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
               pathToSiteRoot: "../../",
               navigationPath: [api, module],
+              projectRoot: projectRoot,
               packageImport: packageImport,
               index: indices[localization]!,
               sectionIdentifier: .modules,
@@ -1071,6 +1089,7 @@
     private func outputTopLevelSymbols(
       to outputDirectory: URL,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -1092,19 +1111,30 @@
         where extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].exists(in: localization) {
+        ].exists(in: localization)
+
+          // #workaround(Why are there symbols that still have no URL? See SDGCornerstone.)
+          ∧ symbol.pageURL(
+            in: outputDirectory,
+            for: localization,
+            customReplacements: customReplacements,
+            extensionStorage: extensionStorage
+          ) ≠ nil
+
+        {
           try purgingAutoreleased {
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
               customReplacements: customReplacements,
               extensionStorage: extensionStorage
-            )
+            )!
             try SymbolPage(
               localization: localization,
               allLocalizations: localizations,
               pathToSiteRoot: "../../",
               navigationPath: [api, symbol],
+              projectRoot: projectRoot,
               packageImport: packageImport,
               index: indices[localization]!,
               sectionIdentifier: symbol.indexSectionIdentifier,
@@ -1133,6 +1163,7 @@
                 to: outputDirectory,
                 localization: localization,
                 customReplacements: customReplacements,
+                projectRoot: projectRoot,
                 status: status,
                 output: output,
                 coverageCheckOnly: coverageCheckOnly
@@ -1150,6 +1181,7 @@
       to outputDirectory: URL,
       localization: LocalizationIdentifier,
       customReplacements: [(StrictString, StrictString)],
+      projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -1173,7 +1205,7 @@
             for: localization,
             customReplacements: customReplacements,
             extensionStorage: extensionStorage
-          )
+          )!
 
           var modifiedRoot: StrictString = "../../"
           for _ in namespace.indices {
@@ -1189,6 +1221,7 @@
             allLocalizations: localizations,
             pathToSiteRoot: modifiedRoot,
             navigationPath: navigation,
+            projectRoot: projectRoot,
             packageImport: packageImport,
             index: indices[localization]!,
             sectionIdentifier: sectionIdentifier,
@@ -1217,6 +1250,7 @@
               to: outputDirectory,
               localization: localization,
               customReplacements: customReplacements,
+              projectRoot: projectRoot,
               status: status,
               output: output,
               coverageCheckOnly: coverageCheckOnly
@@ -1419,7 +1453,7 @@
           for: localization,
           customReplacements: customReplacements,
           extensionStorage: extensionStorage
-        )
+        )!
         if redirectURL ≠ pageURL {
           try DocumentSyntax.redirect(
             language: AnyLocalization(code: localization.code),

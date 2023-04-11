@@ -43,6 +43,7 @@
       allLocalizations: [LocalizationIdentifier],
       pathToSiteRoot: StrictString,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       packageImport: StrictString?,
       index: StrictString,
       sectionIdentifier: IndexSectionIdentifier,
@@ -90,6 +91,7 @@
           symbol: symbol,
           extensionStorage: extensionStorage,
           navigationPath: navigationPath,
+          projectRoot: projectRoot,
           localization: localization,
           editableModules: editableModules,
           graphs: package.symbolGraphs(),
@@ -113,7 +115,9 @@
           localization: localization,
           symbol: symbol,
           extensionStorage: extensionStorage,
+          editableModules: editableModules,
           navigationPath: navigationPath,
+          projectRoot: projectRoot,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
           status: status
@@ -124,6 +128,7 @@
           localization: localization,
           symbol: symbol,
           navigationPath: navigationPath,
+          projectRoot: projectRoot,
           editableModules: editableModules,
           packageIdentifiers: packageIdentifiers,
           symbolLinks: symbolLinks,
@@ -757,6 +762,7 @@
       symbol: SymbolType,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       localization: LocalizationIdentifier,
       editableModules: [String],
       graphs: [SymbolGraph],
@@ -786,6 +792,7 @@
         status.reportMissingDescription(
           symbol: symbol,
           navigationPath: navigationPath,
+          projectRoot: projectRoot,
           localization: localization
         )
       }
@@ -885,7 +892,9 @@
       localization: LocalizationIdentifier,
       symbol: SymbolType,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
+      editableModules: [String],
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       status: DocumentationStatus
@@ -911,11 +920,14 @@
             symbolLinks: symbolLinks
           )
         )
-        if rendered.contains("<h1>".scalars.literal()) ∨ rendered.contains("<h2>".scalars.literal())
+        if rendered.contains("<h1>".scalars.literal())
+          ∨ rendered.contains("<h2>".scalars.literal()),
+          symbol.hasEditableDocumentation(editableModules: editableModules)
         {
           status.reportExcessiveHeading(
             symbol: symbol,
             navigationPath: navigationPath,
+            projectRoot: projectRoot,
             localization: localization
           )
         }
@@ -965,6 +977,7 @@
       localization: LocalizationIdentifier,
       symbol: SymbolLike,
       navigationPath: [SymbolLike],
+      projectRoot: URL,
       editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
@@ -994,6 +1007,7 @@
             expected: parameters,
             symbol: symbol,
             navigationPath: navigationPath,
+            projectRoot: projectRoot,
             localization: localization
           )
         }

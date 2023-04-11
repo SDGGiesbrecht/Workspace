@@ -39,6 +39,18 @@
       output.print(file.in(FontWeight.bold))
     }
 
+    internal static func lineNumberReport(_ integer: Int) -> UserFacing<
+      StrictString, InterfaceLocalization
+    > {
+      return UserFacing<StrictString, InterfaceLocalization>({ localization in
+        switch localization {
+        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+          return "Line " + integer.inDigits()
+        case .deutschDeutschland:
+          return "Zeile " + integer.inDigits()
+        }
+      })
+    }
     private func lineMessage(
       source: String,
       violation: Range<String.ScalarView.Index>
@@ -46,14 +58,7 @@
       let lines = source.lines
       let lineRange = violation.lines(in: lines)
       let lineNumber = lines.distance(from: lines.startIndex, to: lineRange.lowerBound) + 1
-      return UserFacing<StrictString, InterfaceLocalization>({ localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Line " + lineNumber.inDigits()
-        case .deutschDeutschland:
-          return "Zeile " + lineNumber.inDigits()
-        }
-      }).resolved()
+      return CommandLineProofreadingReporter.lineNumberReport(lineNumber).resolved()
     }
 
     private func display(

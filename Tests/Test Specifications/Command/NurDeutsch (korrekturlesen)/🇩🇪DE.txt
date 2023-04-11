@@ -51,23 +51,31 @@ tests += NurDeutschTests.allTests()
 XCTMain(tests)
 
 Tests/NurDeutschTests/NurDeutschTests.swift
+Zeile 17
+Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemicolons])
+refuse to build
+
+Zeile 17
+Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemicolons])
+refuse to build
+
 Tests/NurDeutschTests/XCTestManifests.swift
 Zeile 1
 Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 import XCTest
 
 #if !canImport(ObjectiveC)
-  public func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(NurDeutschTests.allTests)
+        testCase(NurDeutschTests.allTests),
     ]
-  }
+}
 #endif
 
 Zeile 4
 Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
-  public func allTests() -> [XCTestCaseEntry] {
-   func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
+ func allTests() -> [XCTestCaseEntry] {
 
 
 ✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)

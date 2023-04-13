@@ -232,6 +232,14 @@
       
       var result: String = ""
       try formatter.format(syntax: syntax, operatorTable: OperatorTable.baseOperators, assumingFileURL: fileURL, to: &result)
+
+      // #workaround(swift-format 0.50800.0, Abort if formatter ate comments.)
+      let expectedChanges: Set<Unicode.Scalar> = [" ", "\n"]
+      if ¬result.scalars.lazy.filter({ $0 ∈ expectedChanges })
+        .elementsEqual(source.scalars.lazy.filter({ $0 ∈ expectedChanges() })) {
+        return
+      }
+
       source = result
     }
   }

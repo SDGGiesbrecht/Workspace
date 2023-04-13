@@ -1035,7 +1035,7 @@
       }
       switch symbol.kind.identifier {
       case .associatedtype, .class, .deinit, .enum, .`case`, .ivar, .property, .protocol, .snippet,
-        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module, .unknown:
+        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module:
         return []
       case .func, .operator, .`init`, .macro, .method, .subscript, .typeMethod, .typeSubscript:
         guard let fragments = declaration?.declarationFragments else {
@@ -1059,6 +1059,9 @@
             return nil
           }
         })
+      default:
+        symbol.kind.identifier.warnUnknown()
+        return []
       }
     }
   }

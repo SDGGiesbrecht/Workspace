@@ -229,7 +229,7 @@
       let formatter = SwiftFormatter(configuration: modifiedConfiguration)
       var syntax = try SyntaxParser.parse(source: source)
       syntax = try OperatorTable.baseOperators.foldAll(syntax).as(SourceFileSyntax.self)!
-      
+
       var result: String = ""
       try formatter.format(syntax: syntax, operatorTable: OperatorTable.baseOperators, assumingFileURL: fileURL, to: &result)
 

@@ -1,1 +1,1 @@
-public var implit = ""  // Should trigger; needs explicit type.
+public var implit = "" // Should trigger; needs explicit type.

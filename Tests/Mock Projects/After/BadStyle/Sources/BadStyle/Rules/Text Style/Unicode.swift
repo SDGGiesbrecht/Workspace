@@ -17,15 +17,15 @@
 /// Blah blah blah...
 ///
 /// - RecommendedOver: -
-func − (lhs: Int, rhs: Int) -> Int {
-  return lhs - rhs  // Generic strokes must be allowed when aliasing them. @exempt(from: unicode)
+func −(lhs: Int, rhs: Int) -> Int {
+    return lhs - rhs // Generic strokes must be allowed when aliasing them. @exempt(from: unicode)
 }
 
 func useNumeric() -> Int {
-  return 1 - 2  // @exempt(from: unicode)
+    return 1 - 2 // @exempt(from: unicode)
 }
 
-let ln2: Float80 = 0x1.62E42FEFA39EF358p-1  // Generic stroke must be allowed in float literals.
+let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in float literals.
 
 /// ...
 ///
@@ -42,6 +42,7 @@ func shellSource() {
 
 // MARK: - Logic
 
+
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a disjunction sign: a || b
 
@@ -53,24 +54,24 @@ func shellSource() {
 
 // MARK: - Mathematics
 
-let x = a * b  // Trigger, because this is not a multiplication sign.
+let x = a * b // Trigger, because this is not a multiplication sign.
 // Trigger, because this is not a multiplication sign: a *= b
-let x = a / b  // Trigger, because this is not a division sign.
+let x = a / b // Trigger, because this is not a division sign.
 // Trigger, because this is not a division sign: a /= b
 
 // MARK: - Shared Conditions
 
-let x = y - z  // This should trigger and mention aliasing.
+let x = y - z // This should trigger and mention aliasing.
 
-let x = !y  // This should trigger; it is a prefix operator.
+let x = !y // This should trigger; it is a prefix operator.
 
-#if !os(macOS) || os(iOS) && os(tvOS)  // Conditional compilation must be allowed.
+#if !os(macOS) || os(iOS) && os(tvOS) // Conditional compilation must be allowed.
 #endif
 
 /// Entities (&#x2D;) should be allowed.
 
 func useAvailability() {
-  if #available(macOS 10.15, *) {  // Asterisks need to be allowed here.
-    // ...
-  }
+    if #available(macOS 10.15, *) { // Asterisks need to be allowed here.
+        // ...
+    }
 }

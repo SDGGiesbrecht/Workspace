@@ -1,3 +1,3 @@
 struct OnlyBritish {
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 }

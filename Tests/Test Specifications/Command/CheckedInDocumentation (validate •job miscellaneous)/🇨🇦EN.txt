@@ -27,11 +27,11 @@ The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (�
 
 Line 23
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 Line 23
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
 Sources/CheckedInDocumentation/CheckedInDocumentation.swift
@@ -41,27 +41,27 @@ struct CheckedInDocumentation {
 
 Line 4
 Every symbol in a library should have access control. (accessControl)
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 
 Line 49
 Public classes should be open, final or explicitly exempt. (classFinality)
-public class Class: AmericanEnglishProtocol, BritishEnglishProtocol, CanadianEnglishProtocol {}
+public class Class : AmericanEnglishProtocol, BritishEnglishProtocol, CanadianEnglishProtocol {}
 
 Line 66
 Parameters should be grouped under a single callout. (parameterGrouping)
-  /// - Parameter parameterOne: The first parameter.
+    /// - Parameter parameterOne: The first parameter.
 
 Line 67
 Parameters should be grouped under a single callout. (parameterGrouping)
-  /// - Parameter parameterTwo: The second parameter.
+    /// - Parameter parameterTwo: The second parameter.
 
-Line 270
+Line 265
 Public classes should be open, final or explicitly exempt. (classFinality)
 public class BaseClass {
 
-Line 278
+Line 273
 Public classes should be open, final or explicitly exempt. (classFinality)
-public class Subclass: BaseClass {
+public class Subclass : BaseClass {
 
 Sources/EnableBuild/EnableBuild.swift
 Sources/Extensions/Extensions.swift
@@ -77,17 +77,17 @@ Test manifests are no longer necessary. (deprecatedTestManifests)
 import XCTest
 
 #if !os(macOS)
-  public func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(CheckedInDocumentationTests.allTests)
+        testCase(CheckedInDocumentationTests.allTests),
     ]
-  }
+}
 #endif
 
 Line 4
 Executables and tests should not contain access control. (accessControl)
-  public func allTests() -> [XCTestCaseEntry] {
-   func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
+ func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 Line 1

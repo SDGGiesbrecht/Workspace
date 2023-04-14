@@ -1291,7 +1291,7 @@
             .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty,
             .typeSubscript, .var, .module:
             return false
-          default:
+          default:  // @exempt(from: tests)
             child.kind?.identifier.warnUnknown()
             return false
           }

@@ -24,17 +24,17 @@ Proofreading source code... (§1)
 .gitignore
 LICENSE.md
 Package.swift
-Line 38
+Line 37
 Workaround: Test targets don’t work on watchOS. (workaroundReminders)
   // #workaround(xcodebuild -version 11.6, Test targets don’t work on watchOS.) @exempt(from: unicode)
 
 Line 24
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 Line 24
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
 Sources/AllTasks/AllTasks.swift
@@ -44,7 +44,7 @@ struct AllTasks {
 
 Line 12
 Every symbol in a library should have access control. (accessControl)
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 
 Tests/AllTasksTests/AllTasksTests.swift
 Tests/LinuxMain.swift

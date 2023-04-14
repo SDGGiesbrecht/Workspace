@@ -24,11 +24,6 @@ Line 2
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-Line 30
-List separators should only occur between list elements. (listSeparation)
-    ),
-    )
-
 README.md
 Sources/BadStyle/BadStyle.swift
 Line 1
@@ -37,12 +32,12 @@ struct BadStyle {
 
 Line 2
 Every symbol in a library should have access control. (accessControl)
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 
 Sources/BadStyle/Normalization/Decomposition.swift
 Line 3
 Every symbol in a library should have access control. (accessControl)
-let é = "ñ"  // These should be decomposed.
+let é = "ñ" // These should be decomposed.
 
 Sources/BadStyle/Normalization/EmptyIndents.swift
 Line 3
@@ -59,35 +54,35 @@ Language specifier missing. Specify a language for syntax colouring. (syntaxColo
 Sources/BadStyle/Rules/Functionality/AccessControl.swift
 Line 1
 Every symbol in a library should have access control. (accessControl)
-struct Structure {}  // Should warn; no access control.
+struct Structure {} // Should warn; no access control.
 
 Line 3
 Every symbol in a library should have access control. (accessControl)
-class Class {}  // Should warn; no access control.
+class Class {} // Should warn; no access control.
 
 Line 5
 Every symbol in a library should have access control. (accessControl)
-enum Enumeration {}  // Should warn; no access control.
+enum Enumeration {} // Should warn; no access control.
 
 Line 7
 Every symbol in a library should have access control. (accessControl)
-typealias TypeAlias = Structure  // Should warn; no access control.
+typealias TypeAlias = Structure // Should warn; no access control.
 
 Line 9
 Every symbol in a library should have access control. (accessControl)
-protocol Protocol {}  // Should warn; no access control.
+protocol Protocol {} // Should warn; no access control.
 
 Line 11
 Every symbol in a library should have access control. (accessControl)
-func function() {}  // Should warn; no access control.
+func function() {} // Should warn; no access control.
 
 Line 15
 Every symbol in a library should have access control. (accessControl)
-  init() {}  // Should warn; no access control.
+  init() {} // Should warn; no access control.
 
 Line 17
 Every symbol in a library should have access control. (accessControl)
-  var variable: Int  // Should warn; no access control.
+  var variable: Int // Should warn; no access control.
 
 Line 19
 Every symbol in a library should have access control. (accessControl)
@@ -107,11 +102,11 @@ Specify public access level for each member inside the extension. (swiftFormat[N
 Sources/BadStyle/Rules/Functionality/ClassFinality.swift
 Line 1
 Public classes should be open, final or explicitly exempt. (classFinality)
-public class Class {}  // Should warn; neither open nor final.
+public class Class {} // Should warn; neither open nor final.
 
 Line 8
 Every symbol in a library should have access control. (accessControl)
-class ImplicitInternal {}  // Should not warn; compiler can infer finality.
+class ImplicitInternal {} // Should not warn; compiler can infer finality.
 
 Sources/BadStyle/Rules/Functionality/CompatibilityCharacters.swift
 Line 3
@@ -126,7 +121,7 @@ let compatibility = "2"
 Sources/BadStyle/Rules/Functionality/ExplicitTypes.swift
 Line 1
 Public variables should have explicit types. (explicitTypes)
-public var implit = ""  // Should trigger; needs explicit type.
+public var implit = "" // Should trigger; needs explicit type.
 
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Line 3
@@ -137,7 +132,7 @@ Incomplete heading syntax. Use “// MARK: - ”. (marks)
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4
 Missing implementation. (missingImplementation)
-  notImplementedYet()  // This should trigger a warning.
+    notImplementedYet() // This should trigger a warning.
 
 Line 3
 Every symbol in a library should have access control. (accessControl)
@@ -171,7 +166,7 @@ Callouts should be capitalized. (calloutCasing)
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Line 6
 A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
-  parameter in  // Wrong position; should trigger.
+    parameter in // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift
 Line 1
@@ -179,13 +174,13 @@ Every symbol in a library should have access control. (accessControl)
 let array = [
   1,
   2,
-  3,  // Should trigger.
+  3, // Should trigger.
 ]
 
 Line 4
 List separators should only occur between list elements. (listSeparation)
-  3,  // Should trigger.
-  3  // Should trigger.
+  3, // Should trigger.
+  3 // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
 Line 12
@@ -227,7 +222,7 @@ Markdown lists should use ASCII bullets. (bullets)
 Sources/BadStyle/Rules/Text Style/Unicode.swift
 Line 20
 Every symbol in a library should have access control. (accessControl)
-func − (lhs: Int, rhs: Int) -> Int {
+func −(lhs: Int, rhs: Int) -> Int {
 
 Line 5
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
@@ -259,15 +254,15 @@ func useNumeric() -> Int {
 
 Line 28
 Every symbol in a library should have access control. (accessControl)
-let ln2: Float80 = 0x1.62E42FEFA39EF358p-1  // Generic stroke must be allowed in float literals.
+let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in float literals.
 
 Line 35
 Every symbol in a library should have access control. (accessControl)
 func shellSource() {
 
-Line 56
+Line 57
 Every symbol in a library should have access control. (accessControl)
-let x = a * b  // Trigger, because this is not a multiplication sign.
+let x = a * b // Trigger, because this is not a multiplication sign.
 
 Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
@@ -277,86 +272,86 @@ Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
 // 'These quotation marks are generic and should trigger.'
 
-Line 45
+Line 46
 The character sequence “&&” is obsolete. Use the conjunction sign (∧). (unicode)
 // Trigger, because this is not a conjunction sign: a && b
 // Trigger, because this is not a conjunction sign: a ∧ b
 
-Line 46
+Line 47
 The character sequence “||” is obsolete. Use the disjunction sign (∨). (unicode)
 // Trigger, because this is not a disjunction sign: a || b
 // Trigger, because this is not a disjunction sign: a ∨ b
 
-Line 50
+Line 51
 The character sequence “!=” is obsolete. Use the not equal sign (≠). (unicode)
 // Trigger, because this is not a not‐equal sign: a != b
 // Trigger, because this is not a not‐equal sign: a ≠ b
 
-Line 51
+Line 52
 The character sequence “<=” is obsolete. Use the less‐than‐or‐equal sign (≤). (unicode)
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a <= b
 // Trigger, because this is not a less‐than‐or‐equal‐to sign: a ≤ b
 
-Line 52
+Line 53
 The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal sign (≥). (unicode)
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-Line 56
+Line 57
 The character “*” is obsolete. Use the multiplication sign (×). (Create an alias if necessary.) (unicode)
-let x = a * b  // Trigger, because this is not a multiplication sign.
-let x = a × b  // Trigger, because this is not a multiplication sign.
+let x = a * b // Trigger, because this is not a multiplication sign.
+let x = a × b // Trigger, because this is not a multiplication sign.
+
+Line 59
+Every symbol in a library should have access control. (accessControl)
+let x = a / b // Trigger, because this is not a division sign.
 
 Line 58
-Every symbol in a library should have access control. (accessControl)
-let x = a / b  // Trigger, because this is not a division sign.
-
-Line 57
 The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
 // Trigger, because this is not a multiplication sign: a *= b
 // Trigger, because this is not a multiplication sign: a ×= b
 
-Line 58
-The character “/” is obsolete. Use the division sign (÷). (Create an alias if necessary.) (unicode)
-let x = a / b  // Trigger, because this is not a division sign.
-let x = a ÷ b  // Trigger, because this is not a division sign.
-
-Line 63
-Every symbol in a library should have access control. (accessControl)
-let x = y - z  // This should trigger and mention aliasing.
-
 Line 59
+The character “/” is obsolete. Use the division sign (÷). (Create an alias if necessary.) (unicode)
+let x = a / b // Trigger, because this is not a division sign.
+let x = a ÷ b // Trigger, because this is not a division sign.
+
+Line 64
+Every symbol in a library should have access control. (accessControl)
+let x = y - z // This should trigger and mention aliasing.
+
+Line 60
 The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
 
-Line 63
+Line 64
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)
-let x = y - z  // This should trigger and mention aliasing.
+let x = y - z // This should trigger and mention aliasing.
 
-Line 65
+Line 66
 Every symbol in a library should have access control. (accessControl)
-let x = !y  // This should trigger; it is a prefix operator.
+let x = !y // This should trigger; it is a prefix operator.
 
-Line 65
+Line 66
 The character “!” is obsolete. Use the not sign (¬). (Create an alias if necessary.) (unicode)
-let x = !y  // This should trigger; it is a prefix operator.
-let x = ¬y  // This should trigger; it is a prefix operator.
+let x = !y // This should trigger; it is a prefix operator.
+let x = ¬y // This should trigger; it is a prefix operator.
 
-Line 72
+Line 73
 Every symbol in a library should have access control. (accessControl)
 func useAvailability() {
 
 Sources/BadStyle/SwiftFormat.swift
-Line 1
+Line 2
 Every symbol in a library should have access control. (accessControl)
 let TriggerSwiftFormatWithBadCasing = true
 
-Line 2
+Line 3
 Every symbol in a library should have access control. (accessControl)
 let DontTrigger = false  // @exempt(from: swiftFormat[AlwaysUseLowerCamelCase])
 
-Line 1
+Line 2
 Rename constant 'TriggerSwiftFormatWithBadCasing' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 let TriggerSwiftFormatWithBadCasing = true
 
@@ -389,8 +384,8 @@ Workaround: This malformed version check should trigger. (workaroundReminders)
 Sources/executable/AccessControl.swift
 Line 1
 Executables and tests should not contain access control. (accessControl)
-internal struct ShouldNot {}  // Should warn; should not have access control.
- struct ShouldNot {}  // Should warn; should not have access control.
+internal struct ShouldNot {} // Should warn; should not have access control.
+ struct ShouldNot {} // Should warn; should not have access control.
 
 Line 2
 Replace 'fileprivate' with 'private' on file-scoped declarations. (swiftFormat[FileScopedDeclarationPrivacy])
@@ -401,22 +396,22 @@ Tests/BadStyleTests/XCTestManifests.swift
 Line 1
 Test manifests are no longer necessary. (deprecatedTestManifests)
 #if !canImport(ObjectiveC)
-  import XCTest
+import XCTest
 
-  extension BadStyleTests {
+extension BadStyleTests {
     // DO NOT MODIFY: This is autogenerated, use:
     //   `swift test --generate-linuxmain`
     // to regenerate.
     static let __allTests__BadStyleTests = [
-      ("testExample", testExample)
+        ("testExample", testExample),
     ]
-  }
+}
 
-  public func __allTests() -> [XCTestCaseEntry] {
+public func __allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(BadStyleTests.__allTests__BadStyleTests)
+        testCase(BadStyleTests.__allTests__BadStyleTests),
     ]
-  }
+}
 #endif
 
 Line 6
@@ -431,10 +426,20 @@ Line 6
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
     //   `swift test --generate-linuxmain`
 
+Line 9
+List separators should only occur between list elements. (listSeparation)
+        ("testExample", testExample),
+        ("testExample", testExample)
+
 Line 13
 Executables and tests should not contain access control. (accessControl)
-  public func __allTests() -> [XCTestCaseEntry] {
-   func __allTests() -> [XCTestCaseEntry] {
+public func __allTests() -> [XCTestCaseEntry] {
+ func __allTests() -> [XCTestCaseEntry] {
+
+Line 15
+List separators should only occur between list elements. (listSeparation)
+        testCase(BadStyleTests.__allTests__BadStyleTests),
+        testCase(BadStyleTests.__allTests__BadStyleTests)
 
 Line 8
 Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
@@ -442,7 +447,7 @@ Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat
 
 Line 13
 Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
-  public func __allTests() -> [XCTestCaseEntry] {
+public func __allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 Line 1

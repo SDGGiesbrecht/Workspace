@@ -83,7 +83,7 @@
               protocols.append(symbol)
             case .var:
               globalVariables.append(symbol)
-            default:
+            default:  // @exempt(from: tests)
               symbol.kind.identifier.warnUnknown()
             }
           }

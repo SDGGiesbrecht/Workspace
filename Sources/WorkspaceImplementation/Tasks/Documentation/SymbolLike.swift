@@ -122,7 +122,7 @@
           return .variables
         case .protocol:
           return .protocols
-        default:
+        default:  // @exempt(from: tests)
           symbol.kind.identifier.warnUnknown()
           return .functions
         }
@@ -349,7 +349,7 @@
           } else {
             return "var"
           }
-        default:
+        default:  // @exempt(from: tests)
           symbol.kind.identifier.warnUnknown()
           return StrictString(symbol.kind.identifier.identifier)
         }
@@ -785,7 +785,7 @@
           } else {
             return "var"
           }
-        default:
+        default:  // @exempt(from: tests)
           symbol.kind.identifier.warnUnknown()
           return StrictString(symbol.kind.identifier.identifier)
         }
@@ -968,7 +968,7 @@
                 typeMember: true,
                 extensionStorage: extensionStorage
               ) + "/"
-          default:
+          default:  // @exempt(from: tests)
             symbol.kind.identifier.warnUnknown()
           }
         case is Operator, is PrecedenceGroup:
@@ -1059,7 +1059,7 @@
             return nil
           }
         })
-      default:
+      default:  // @exempt(from: tests)
         symbol.kind.identifier.warnUnknown()
         return []
       }

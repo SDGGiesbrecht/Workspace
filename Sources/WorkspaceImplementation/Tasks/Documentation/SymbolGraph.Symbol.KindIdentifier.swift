@@ -19,8 +19,11 @@
 
   extension SymbolGraph.Symbol.KindIdentifier {
 
-    internal func warnUnknown(file: StaticString = #fileID, line: UInt = #line) {
-      #if DEBUG
+    internal func warnUnknown(
+      file: StaticString = #fileID,
+      line: UInt = #line
+    ) {
+      #if DEBUG  // @exempt(from: tests)
         print("Unkown symbol kind: \(identifier), \(file):\(line)")
       #endif
     }

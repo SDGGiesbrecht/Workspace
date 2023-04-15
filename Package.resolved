@@ -24,7 +24,7 @@
       "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
       "state" : {
         "branch" : "master",
-        "revision" : "2000ad20e36225f41fe6cdbb35addf1f8da3231c"
+        "revision" : "1e1030cb760517036ca7c0f66bba18992ece8f6c"
       }
     },
     {
@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/swift-cmark",
       "state" : {
-        "revision" : "ba5e03be521f621fcfd29e63be2cf475b97efd5a",
-        "version" : "0.50700.1"
+        "revision" : "29d9c97e6310b87c4799268eaa2fc76164b2dbd8",
+        "version" : "0.50800.0"
       }
     },
     {

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGCommandLine",
       "state" : {
-        "revision" : "43465a1ea0808b401ef32270d4ecfd709afdd42f",
-        "version" : "3.0.3"
+        "branch" : "dependencies",
+        "revision" : "d141a6e0f938322c7ddb83225781af7dc2ac9781"
       }
     },
     {
@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
       "state" : {
-        "branch" : "master",
-        "revision" : "1e1030cb760517036ca7c0f66bba18992ece8f6c"
+        "revision" : "1e1030cb760517036ca7c0f66bba18992ece8f6c",
+        "version" : "13.0.0"
       }
     },
     {

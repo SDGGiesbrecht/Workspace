@@ -41,15 +41,15 @@ jobs:
         sudo rm -rf /usr/lib/clang/10.0.0
         sudo rm -rf /usr/lib/python3/dist-packages/lldb
         curl \
-          'https://download.swift.org/swift-5.7-release/ubuntu2004/swift-5.7-RELEASE/swift-5.7-RELEASE-ubuntu20.04.tar.gz' \
-          --output '/tmp/swift-5.7-RELEASE-ubuntu20.04.tar.gz' \
+          'https://download.swift.org/swift-5.8-release/ubuntu2004/swift-5.8-RELEASE/swift-5.8-RELEASE-ubuntu20.04.tar.gz' \
+          --output '/tmp/swift-5.8-RELEASE-ubuntu20.04.tar.gz' \
           --location
         tar --extract \
-          --file /tmp/swift-5.7-RELEASE-ubuntu20.04.tar.gz \
+          --file /tmp/swift-5.8-RELEASE-ubuntu20.04.tar.gz \
           --directory /tmp \
           --verbose
         sudo mkdir -p /
-        sudo cp -R /tmp/swift-5.7-RELEASE-ubuntu20.04/* /
+        sudo cp -R /tmp/swift-5.8-RELEASE-ubuntu20.04/* /
         export PATH="/usr/bin:${PATH}"
         echo "PATH=${PATH}" >> $GITHUB_ENV
         swift --version
@@ -58,15 +58,15 @@ jobs:
       run: |
         set -x
         curl \
-          'https://github.com/buttaface/swift-android-sdk/releases/download/5.7/swift-5.7-android-x86_64-24-sdk.tar.xz' \
-          --output '/tmp/swift-5.7-android-x86_64-24-sdk.tar.xz' \
+          'https://github.com/buttaface/swift-android-sdk/releases/download/5.8/swift-5.8-android-24-sdk.tar.xz' \
+          --output '/tmp/swift-5.8-android-24-sdk.tar.xz' \
           --location
         tar --extract \
-          --file /tmp/swift-5.7-android-x86_64-24-sdk.tar.xz \
+          --file /tmp/swift-5.8-android-24-sdk.tar.xz \
           --directory /tmp \
           --verbose
         sudo mkdir -p /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
-        sudo cp -R /tmp/swift-5.7-android-x86_64-24-sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
+        sudo cp -R /tmp/swift-5.8-android-24-sdk/* /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk
         sudo chmod -R a+rwx /Library
         ln \
           /usr/lib/clang/13.0.0 \

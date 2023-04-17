@@ -60,7 +60,7 @@
 
       if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
         let comma = entry.trailingComma,
-        entry.indexInParent == entry.parent?.children.last?.indexInParent
+        entry.indexInParent == entry.parent?.children(viewMode: .sourceAccurate).last?.indexInParent
       {
 
         reportViolation(

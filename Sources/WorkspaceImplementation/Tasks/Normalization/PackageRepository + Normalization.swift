@@ -30,12 +30,7 @@
 
     internal func normalize(output: Command.Output) throws {
 
-      var formatter: SwiftFormatter?
-      if let formatConfiguration = try configuration(output: output).proofreading
-        .swiftFormatConfiguration?.reducedToMachineResponsibilities()
-      {
-        formatter = SwiftFormatter(configuration: formatConfiguration)
-      }
+      let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration
 
       for url in try sourceFiles(output: output) {
         try purgingAutoreleased {
@@ -43,17 +38,15 @@
           if let syntax = FileType(url: url)?.syntax {
             var file = try TextFile(alreadyAt: url)
 
-            if let formatter = formatter,
+            if let formatter = formatConfiguration,
               file.fileType == .swift ∨ file.fileType == .swiftPackageManifest
             {
-              let source = file.contents
-              var result: String = ""
-              try formatter.format(
-                source: source,
-                assumingFileURL: file.location,
-                to: &result
+              try SwiftLanguage.format(
+                source: &file.contents,
+                accordingTo: formatter,
+                for: file.location,
+                assumeManualTasks: false
               )
-              file.contents = result
             }
 
             let lines = file.contents.lines.map({ String($0.line) })

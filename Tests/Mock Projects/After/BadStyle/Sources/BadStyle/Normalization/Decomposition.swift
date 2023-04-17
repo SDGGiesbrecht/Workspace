@@ -1,3 +1,3 @@
 // Header
 
-let é = "ñ"  // These should be decomposed.
+let é = "ñ" // These should be decomposed.

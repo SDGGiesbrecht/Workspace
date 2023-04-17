@@ -18,13 +18,13 @@ Zeile 2
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-Zeile 17
+Zeile 16
 Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
-Zeile 17
+Zeile 16
 Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 Sources/NurDeutsch/NurDeutsch.swift
 Zeile 4
@@ -37,7 +37,7 @@ struct NurDeutsch {
 
 Zeile 2
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 
 Tests/LinuxMain.swift
 Zeile 1
@@ -51,23 +51,31 @@ tests += NurDeutschTests.allTests()
 XCTMain(tests)
 
 Tests/NurDeutschTests/NurDeutschTests.swift
+Zeile 17
+Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemicolons])
+refuse to build
+
+Zeile 17
+Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemicolons])
+refuse to build
+
 Tests/NurDeutschTests/XCTestManifests.swift
 Zeile 1
 Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 import XCTest
 
 #if !canImport(ObjectiveC)
-  public func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(NurDeutschTests.allTests)
+        testCase(NurDeutschTests.allTests),
     ]
-  }
+}
 #endif
 
 Zeile 4
 Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
-  public func allTests() -> [XCTestCaseEntry] {
-   func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
+ func allTests() -> [XCTestCaseEntry] {
 
 
 ✗ Der Quelltext besteht das Korrekturlesen nicht. (Siehe [⌘F] „§1“)

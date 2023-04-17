@@ -108,9 +108,10 @@
           try generateSource(for: resources, of: package, accessControl: accessControl)
         )
         try SwiftLanguage.format(
-          generatedCode: &source,
+          source: &source,
           accordingTo: configuration,
-          for: resourceFileLocation
+          for: resourceFileLocation,
+          assumeManualTasks: true
         )
 
         var resourceFile = try TextFile(possiblyAt: resourceFileLocation)
@@ -139,9 +140,10 @@
             try generateSecondarySource(for: resource, accessControl: accessControl)
           )
           try SwiftLanguage.format(
-            generatedCode: &source,
+            source: &source,
             accordingTo: configuration,
-            for: fileLocation
+            for: fileLocation,
+            assumeManualTasks: true
           )
           var file = try TextFile(possiblyAt: fileLocation)
           file.body = source

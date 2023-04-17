@@ -16,13 +16,13 @@ Line 2
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
-Line 17
+Line 16
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
-Line 17
+Line 16
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
-    // .package(url: /* package url */, from: "1.0.0"),
+        // .package(url: /* package url */, from: "1.0.0"),
 
 README.md
 Sources/Default/Default.swift
@@ -32,7 +32,7 @@ struct Default {
 
 Line 2
 Every symbol in a library should have access control. (accessControl)
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 
 Tests/DefaultTests/DefaultTests.swift
 Tests/DefaultTests/XCTestManifests.swift
@@ -41,17 +41,17 @@ Test manifests are no longer necessary. (deprecatedTestManifests)
 import XCTest
 
 #if !canImport(ObjectiveC)
-  public func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
     return [
-      testCase(DefaultTests.allTests)
+        testCase(DefaultTests.allTests),
     ]
-  }
+}
 #endif
 
 Line 4
 Executables and tests should not contain access control. (accessControl)
-  public func allTests() -> [XCTestCaseEntry] {
-   func allTests() -> [XCTestCaseEntry] {
+public func allTests() -> [XCTestCaseEntry] {
+ func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
 Line 1
@@ -126,7 +126,7 @@ Default.🇨🇦EN
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.target(name: "Default"”.)
 Package.swift
-Line 22
+Line 21
 
 
 Summary

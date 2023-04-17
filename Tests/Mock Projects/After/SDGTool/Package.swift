@@ -29,40 +29,36 @@ import PackageDescription
 /// // 🇨🇦EN
 /// ```
 let package = Package(
-  name: "SDG",
-  products: [
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
-    /// A library.
-    .library(name: "Library", targets: ["Library"]),
-    .executable(name: "tool", targets: ["tool"]),
-    .executable(name: "werkzeug", targets: ["tool"]),
-  ],
-  dependencies: [
-    .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))
-  ],
-  targets: [
-    // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
-    /// A module.
-    .target(
-      name: "Library",
-      dependencies: [
-        .product(name: "Dependency", package: "Dependency")
-      ],
-      resources: [
-        .copy("(Named with) Punctuation!.txt"),
-        .copy("2001‐01‐01 (Named with Numbers).txt"),
-        .copy("Namespace/Data Resource"),
-        .copy("Text Resource.txt"),
-      ]
-    ),
-    .executableTarget(name: "tool", dependencies: [.target(name: "Library")]),
-    .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")]),
-    .executableTarget(
-      name: "test‐tool",
-      path: "Tests/test‐tool",
-      resources: [
-        .copy("Text Resource.txt")
-      ]
-    ),
-  ]
+    name: "SDG",
+    products: [
+        // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
+        /// A library.
+        .library(name: "Library", targets: ["Library"]),
+        .executable(name: "tool", targets: ["tool"]),
+        .executable(name: "werkzeug", targets: ["tool"])
+        ],
+    dependencies: [
+        .package(url: "file:///tmp/Developer/Dependency", from: Version(1, 0, 0))
+    ],
+    targets: [
+        // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(🇫🇷FR) @localization(🇬🇷ΕΛ) @localization(🇮🇱עב) @localization(zxx)
+        /// A module.
+        .target(name: "Library", dependencies: [
+            .product(name: "Dependency", package: "Dependency")
+            ],
+                resources: [
+                  .copy("(Named with) Punctuation!.txt"),
+                  .copy("2001‐01‐01 (Named with Numbers).txt"),
+                  .copy("Namespace/Data Resource"),
+                  .copy("Text Resource.txt")
+                ]
+        ),
+        .executableTarget(name: "tool", dependencies: [.target(name: "Library")]),
+        .testTarget(name: "SDGTests", dependencies: [.target(name: "Library")]),
+        .executableTarget(name: "test‐tool", path: "Tests/test‐tool",
+                resources: [
+                  .copy("Text Resource.txt")
+                ]
+               )
+    ]
 )

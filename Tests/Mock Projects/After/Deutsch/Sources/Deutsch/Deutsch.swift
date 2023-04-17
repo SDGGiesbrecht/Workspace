@@ -1,3 +1,3 @@
 struct Deutsch {
-  var text = "Hello, World!"
+    var text = "Hello, World!"
 }

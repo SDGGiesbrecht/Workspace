@@ -1283,12 +1283,19 @@
       symbolLinks: [String: String]
     ) -> StrictString where SymbolType: SymbolLike {
       let types = symbol.children(package: package).filter({ child in
-        switch child.kind?.identifier {
-        case .associatedtype, .class, .enum, .struct, .typealias:
-          return true
-        case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property,
-          .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty,
-          .typeSubscript, .var, .module, .unknown, .none:
+        if let kind = child.kind?.identifier {
+          switch kind {
+          case .associatedtype, .class, .enum, .struct, .typealias:
+            return true
+          case .deinit, .`case`, .func, .operator, .`init`, .ivar, .macro, .method, .property,
+            .protocol, .snippet, .snippetGroup, .subscript, .typeMethod, .typeProperty,
+            .typeSubscript, .var, .module:
+            return false
+          default:  // @exempt(from: tests)
+            child.kind?.identifier.warnUnknown()
+            return false
+          }
+        } else {
           return false
         }
       })

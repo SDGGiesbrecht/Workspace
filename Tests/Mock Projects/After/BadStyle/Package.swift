@@ -4,29 +4,26 @@
 import PackageDescription
 
 let package = Package(
-  name: "BadStyle",
-  products: [
-    // Products define the executables and libraries produced by a package, and make them visible to other packages.
-    .library(
-      name: "BadStyle",
-      targets: ["BadStyle"]
-    )
-  ],
-  dependencies: [
-    // Dependencies declare other packages that this package depends on.
-    .package(url: "file:///tmp/Developer/Dependency", from: "1.0.0")
-  ],
-  targets: [
-    // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-    // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-    .target(
-      name: "BadStyle",
-      dependencies: ["Dependency"]
-    ),
-    .target(name: "executable"),
-    .testTarget(
-      name: "BadStyleTests",
-      dependencies: ["BadStyle"]
-    ),
-  ]
+    name: "BadStyle",
+    products: [
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library(
+            name: "BadStyle",
+            targets: ["BadStyle"])
+    ],
+    dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        .package(url: "file:///tmp/Developer/Dependency", from: "1.0.0")
+    ],
+    targets: [
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
+        .target(
+            name: "BadStyle",
+            dependencies: ["Dependency"]),
+        .target(name: "executable"),
+        .testTarget(
+            name: "BadStyleTests",
+            dependencies: ["BadStyle"])
+    ]
 )

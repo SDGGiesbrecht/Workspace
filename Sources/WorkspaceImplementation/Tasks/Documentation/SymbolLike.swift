@@ -116,12 +116,15 @@
         case .associatedtype, .class, .enum, .struct, .typealias, .module:
           return .types
         case .deinit, .func, .operator, .`init`, .macro, .method, .snippet, .snippetGroup,
-          .subscript, .typeMethod, .typeSubscript, .unknown:
+          .subscript, .typeMethod, .typeSubscript:
           return .functions
         case .case, .ivar, .property, .typeProperty, .var:
           return .variables
         case .protocol:
           return .protocols
+        default:  // @exempt(from: tests)
+          symbol.kind.identifier.warnUnknown()
+          return .functions
         }
       case is PackageAPI:
         return .package
@@ -199,7 +202,7 @@
           } else {
             return "class"
           }
-        case .deinit, .snippet, .snippetGroup, .module, .unknown:
+        case .deinit, .snippet, .snippetGroup, .module:
           unreachable()
         case .enum:
           if let match = localization._reasonableMatch {
@@ -346,6 +349,9 @@
           } else {
             return "var"
           }
+        default:  // @exempt(from: tests)
+          symbol.kind.identifier.warnUnknown()
+          return StrictString(symbol.kind.identifier.identifier)
         }
       case is Extension:
         if let match = localization._reasonableMatch {
@@ -690,7 +696,7 @@
           } else {
             return "case"
           }
-        case .func, .operator, .macro, .snippet, .snippetGroup, .unknown:
+        case .func, .operator, .macro, .snippet, .snippetGroup:
           if let match = localization._reasonableMatch {
             switch match {
             case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -779,6 +785,9 @@
           } else {
             return "var"
           }
+        default:  // @exempt(from: tests)
+          symbol.kind.identifier.warnUnknown()
+          return StrictString(symbol.kind.identifier.identifier)
         }
       case is Extension:
         if let match = localization._reasonableMatch {
@@ -937,7 +946,7 @@
               ).merging(links, uniquingKeysWith: min)
             }
           case .deinit, .`case`, .`init`, .macro, .snippet, .snippetGroup, .subscript,
-            .typeSubscript, .unknown:
+            .typeSubscript:
             path +=
               namespace
               + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
@@ -959,6 +968,8 @@
                 typeMember: true,
                 extensionStorage: extensionStorage
               ) + "/"
+          default:  // @exempt(from: tests)
+            symbol.kind.identifier.warnUnknown()
           }
         case is Operator, is PrecedenceGroup:
           path +=
@@ -1024,7 +1035,7 @@
       }
       switch symbol.kind.identifier {
       case .associatedtype, .class, .deinit, .enum, .`case`, .ivar, .property, .protocol, .snippet,
-        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module, .unknown:
+        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module:
         return []
       case .func, .operator, .`init`, .macro, .method, .subscript, .typeMethod, .typeSubscript:
         guard let fragments = declaration?.declarationFragments else {
@@ -1048,6 +1059,9 @@
             return nil
           }
         })
+      default:  // @exempt(from: tests)
+        symbol.kind.identifier.warnUnknown()
+        return []
       }
     }
   }

@@ -4,7 +4,7 @@ workspace normalize normalizes the project’s files by removing trailing whites
 
 The general formatting is done by applying Swift’s official formatter, known as swift‐format. More information about it is available at ‹https://github.com/apple/swift-format›.
 
-Inside a Workspace configuration, the configuration for swift‐format is found under “proofreading.swiftFormatConfiguration” and it uses the Swift API from its own SwiftFormatConfiguration module. See ‹https://github.com/apple/swift-format/blob/0.50700.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
+Inside a Workspace configuration, the configuration for swift‐format is found under “proofreading.swiftFormatConfiguration” and it uses the Swift API from its own SwiftFormatConfiguration module. See ‹https://github.com/apple/swift-format/blob/508.0.0/Sources/SwiftFormatConfiguration/Configuration.swift#L20›
 
 Setting the entire property to nil will completely disable swift‐format.
 

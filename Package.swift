@@ -489,13 +489,11 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
-      from: Version(3, 0, 3)
+      from: Version(3, 0, 4)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch)
-      // from: Version(12, 0, 0)
-      branch: "master"
+      from: Version(13, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",
@@ -507,7 +505,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
-      exact: Version(0, 50700, 0)
+      exact: Version(0, 50800, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}format",
@@ -567,6 +565,11 @@ let package = Package(
         ),
         .product(
           name: "SwiftOperators",
+          package: "swift\u{2D}syntax",
+          condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "SwiftParser",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
         ),

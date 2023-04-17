@@ -963,12 +963,13 @@ if true {
     "WorkspaceProjectConfiguration",
     "WorkspaceTool",
     "cross_platform_tool",
-    //"CrossPlatform",
-    //"CrossPlatformC",
-    //"CrossPlatformTests",
+    "CrossPlatform",
+    "CrossPlatformC",
+    "CrossPlatformTests",
     "WorkspaceConfigurationExample",
     "WorkspaceConfigurationTests",
     "WorkspaceTests",
   ]
   package.targets.removeAll(where: { allowed.contains($0.name) })
+  package.targets.append(.testTarget(name: "CartonTests"))
 }

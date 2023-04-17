@@ -952,3 +952,23 @@ for target in package.targets {
     }
   })
 }
+
+// #warning(Debugging.)
+if true {
+  package.products = []
+  let allowed = [
+    "WorkspaceConfiguration",
+    "WorkspaceImplementation",
+    "WorkspaceLocalizations",
+    "WorkspaceProjectConfiguration",
+    "WorkspaceTool",
+    "cross_platform_tool",
+    "CrossPlatform",
+    //"CrossPlatformC",
+    "CrossPlatformTests",
+    "WorkspaceConfigurationExample",
+    "WorkspaceConfigurationTests",
+    "WorkspaceTests",
+  ]
+  package.targets.removeAll(where: { allowed.contains($0.name) })
+}

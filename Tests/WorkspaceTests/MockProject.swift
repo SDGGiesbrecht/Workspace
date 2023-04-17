@@ -252,8 +252,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-                #warning("Debugging...")
-                print(output)
 
                 let any = RepetitionPattern(
                   ConditionalPattern<String.ScalarView>({ _ in true }),

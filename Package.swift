@@ -955,21 +955,21 @@ for target in package.targets {
 
 // #warning(Debugging.)
 if true {
-  package.products = []
   let allowed = [
+    "CrossPlatform",
+    //"CrossPlatformC",
+    "CrossPlatformTests",
+    "cross_platform_tool",
     "WorkspaceConfiguration",
+    "WorkspaceConfigurationExample",
+    "WorkspaceConfigurationTests",
     "WorkspaceImplementation",
     "WorkspaceLocalizations",
     "WorkspaceProjectConfiguration",
-    "WorkspaceTool",
-    "cross_platform_tool",
-    "CrossPlatform",
-    "CrossPlatformC",
-    "CrossPlatformTests",
-    "WorkspaceConfigurationExample",
-    "WorkspaceConfigurationTests",
     "WorkspaceTests",
+    "WorkspaceTool",
   ]
   package.targets.removeAll(where: { allowed.contains($0.name) })
   package.targets.append(.testTarget(name: "CartonTests"))
+  package.products = []
 }

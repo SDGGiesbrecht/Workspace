@@ -358,6 +358,7 @@
           }
         }
         let exemptPaths = try configuration(output: output).testing.exemptPaths.map({
+          // @exempt(from: tests) False positive with Swift 5.8.
           location.appendingPathComponent($0).resolvingSymlinksInPath()
         })
 
@@ -374,6 +375,7 @@
             continue files
           }
           for path in exemptPaths where resolved.is(in: path) {
+            // @exempt(from: tests) False positive with Swift 5.8.
             continue files
           }
 

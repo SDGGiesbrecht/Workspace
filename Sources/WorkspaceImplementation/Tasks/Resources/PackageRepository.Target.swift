@@ -267,7 +267,11 @@
       ) -> [StrictString: Any] {
         var tree: [StrictString: Any] = [:]
         for resource in resources {
-          add(components: resource.namespace[...], to: &tree, for: resource)
+          add(
+            components: resource.namespace[...],  // @exempt(from: tests)
+            to: &tree,
+            for: resource
+          )
         }
         return tree
       }
@@ -388,7 +392,7 @@
 
         // #workaround(Swift 5.7, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem). Not worth removing until SwiftFormat can handle long literals quickly.)
         let problematicLength: Int = 2 ↑ 15
-        var unprocessed: Data.SubSequence = data[...]
+        var unprocessed: Data.SubSequence = data[...]  // @exempt(from: tests)
         var sections: [Data.SubSequence] = []
         while ¬unprocessed.isEmpty {
           let prefix = unprocessed.prefix(problematicLength)

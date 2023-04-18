@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.7
 
 /*
  Package.swift
@@ -493,7 +493,9 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      from: Version(13, 0, 0)
+      // #warning(Branch)
+      branch: "swift‐5.8"
+      //from: Version(13, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

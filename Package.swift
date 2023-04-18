@@ -970,6 +970,8 @@ if true {
     "WorkspaceTool",
   ]
   package.targets.removeAll(where: { allowed.contains($0.name) })
-  package.targets.append(.testTarget(name: "CartonTests"))
+  package.targets.append(.testTarget(name: "CartonTests", dependencies: [
+    "CrossPlatform",
+  ]))
   package.products = []
 }

@@ -62,9 +62,7 @@ jobs:
       shell: bash
       run: |
         set -x
-        # #warning(Debugging.)
-        swift test --filter ./testDefaults
-        # swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift run workspace validate •job ubuntu •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Grant permission to cache
       shell: bash
       run: |

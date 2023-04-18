@@ -956,9 +956,7 @@ for target in package.targets {
 // #warning(Debugging.)
 if true {
   let allowed = [
-    //"CrossPlatform",
-    //"CrossPlatformC",
-    "CrossPlatformTests",
+    //"CrossPlatformTests",
     "cross_platform_tool",
     "WorkspaceConfiguration",
     "WorkspaceConfigurationExample",
@@ -972,6 +970,7 @@ if true {
   package.targets.removeAll(where: { allowed.contains($0.name) })
   package.targets.append(.testTarget(name: "CartonTests", dependencies: [
     "CrossPlatform",
+    "CrossPlatformC",
   ]))
   package.products = []
 }

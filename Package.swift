@@ -956,7 +956,7 @@ for target in package.targets {
 // #warning(Debugging.)
 if true {
   let allowed = [
-    //"CrossPlatformTests",
+    "CrossPlatformTests",
     "cross_platform_tool",
     "WorkspaceConfiguration",
     "WorkspaceConfigurationExample",
@@ -971,6 +971,13 @@ if true {
   package.targets.append(.testTarget(name: "CartonTests", dependencies: [
     "CrossPlatform",
     "CrossPlatformC",
+
+    .product(name: "SDGPersistence", package: "SDGCornerstone"),
+    .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
+    .product(name: "SDGVersioning", package: "SDGCornerstone"),
+    //.product(name: "SDGSwift", package: "SDGSwift"),
+    .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
+    .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
   ]))
   package.products = []
 }

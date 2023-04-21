@@ -954,32 +954,3 @@ for target in package.targets {
     }
   })
 }
-
-// #warning(Debugging.)
-if false {
-  let allowed = [
-    "CrossPlatformTests",
-    "cross_platform_tool",
-    "WorkspaceConfiguration",
-    "WorkspaceConfigurationExample",
-    "WorkspaceConfigurationTests",
-    "WorkspaceImplementation",
-    "WorkspaceLocalizations",
-    "WorkspaceProjectConfiguration",
-    "WorkspaceTests",
-    "WorkspaceTool",
-  ]
-  package.targets.removeAll(where: { allowed.contains($0.name) })
-  package.targets.append(.testTarget(name: "CartonTests", dependencies: [
-    "CrossPlatform",
-    "CrossPlatformC",
-
-    .product(name: "SDGPersistence", package: "SDGCornerstone"),
-    .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
-    .product(name: "SDGVersioning", package: "SDGCornerstone"),
-    //.product(name: "SDGSwift", package: "SDGSwift"),
-    .product(name: "SDGXCTestUtilities", package: "SDGCornerstone"),
-    .product(name: "SDGPersistenceTestUtilities", package: "SDGCornerstone"),
-  ]))
-  package.products = []
-}

@@ -90,6 +90,7 @@ jobs:
           --sdk ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/sysroot \
           -Xswiftc -resource-dir -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \
           -Xswiftc -tools-directory -Xswiftc ${ANDROID_HOME}/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin \
+          -Xswiftc -L -Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64-linux-android \
           -Xcc -fPIC \
           -Xcc -lstdc++
     - name: Copy libraries
@@ -97,9 +98,7 @@ jobs:
       run: |
         set -x
         mkdir -p .build/x86_64-unknown-linux-android24/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/*.so .build/x86_64-unknown-linux-android24/debug
-        mkdir -p .build/x86_64-unknown-linux-android24/debug
-        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/*.so .build/x86_64-unknown-linux-android24/debug
+        cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64-linux-android/*.so .build/x86_64-unknown-linux-android24/debug
     - name: Upload tests
       uses: actions/upload-artifact@v2
       with:

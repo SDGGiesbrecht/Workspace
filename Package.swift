@@ -956,7 +956,7 @@ for target in package.targets {
 }
 
 // #warning(Debugging.)
-if true {
+if false {
   let allowed = [
     "CrossPlatformTests",
     "cross_platform_tool",

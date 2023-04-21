@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
       "state" : {
-        "branch" : "master",
-        "revision" : "9d5d7ec6a3575bddcf0df695d23c476d6838c7e7"
+        "revision" : "f6e2c8e41bf88351580cbad6676079116f493f54",
+        "version" : "13.0.1"
       }
     },
     {

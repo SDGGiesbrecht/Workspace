@@ -50,6 +50,10 @@
       configuration.lineBreakBeforeEachGenericRequirement = true
       // #workaround(swift-format 0.0.507000, Leads to crash.) @exempt(from: unicode)
       // configuration.prioritizeKeepingFunctionOutputTogether = true
+
+      // For consistency across all operators, both standard and custom.
+      configuration.spacesAroundRangeFormationOperators = true
+
       return configuration
     }
   }

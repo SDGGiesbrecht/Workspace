@@ -19,7 +19,7 @@ on: [push, pull_request]
 jobs:
   macOS:
     name: macOS
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
     - name: Check out
       uses: actions/checkout@v2

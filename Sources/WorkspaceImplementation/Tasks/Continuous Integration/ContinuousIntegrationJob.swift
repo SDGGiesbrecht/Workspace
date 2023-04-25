@@ -43,7 +43,7 @@
 
     internal static let currentSwiftVersion = Version(5, 8, 0)
 
-    private static let currentMacOSVersion = Version(12)
+    private static let currentMacOSVersion = Version(13)
     internal static let currentXcodeVersion = Version(14, 3)
     private static let currentVisualStudioVersion = "2019"
     private static let currentCartonVersion = Version(0, 18, 0)

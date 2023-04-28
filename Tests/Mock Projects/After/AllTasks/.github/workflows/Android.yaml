@@ -99,7 +99,7 @@ jobs:
         path: .build/x86_64-unknown-linux-android24/debug
   Android_II:
     name: Android II
-    runs-on: macos-12
+    runs-on: macos-13
     needs: Android
     steps:
     - name: Check out

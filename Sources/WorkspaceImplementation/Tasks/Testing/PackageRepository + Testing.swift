@@ -75,7 +75,7 @@
                   )
                     // #workaround(Swift 5.8, Issue with SwiftPM.)
                     ∨ line.line.contains(
-                      "warning: couldn\u{27}t find pc file for sqlite3"
+                      "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
                     )
                   )
               }

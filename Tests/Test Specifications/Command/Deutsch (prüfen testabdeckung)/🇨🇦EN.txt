@@ -6,9 +6,7 @@ Testing on macOS... (§1)
 
 Checking test coverage on macOS... (§2)
 
-Parsing report for “Sources/Deutsch/Deutsch.swift”...
 Parsing report for “Tests/DeutschTests/DeutschTests.swift”...
-Sources/Deutsch/Deutsch.swift
 
 ✓ Tests pass on macOS.
 ✓ Test coverage is complete on macOS.

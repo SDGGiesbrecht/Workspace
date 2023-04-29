@@ -97,7 +97,10 @@
                   // #workaround(SDGSwift 13.0.1, Toolchain’s fault and irrelevant, since tests only need to support the development environment.)
                   line.line.contains(
                     "/XCTest) was built for newer watchOS version".scalars.literal()
-                  ))
+                  ) ∨ line.line.contains(
+                    "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars.literal()
+                  )
+                  )
               }
               log.lines = LineView<String>(filtered)
 

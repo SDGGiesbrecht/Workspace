@@ -72,12 +72,7 @@
                   line.line.contains(
                     "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
                       .literal()
-                  )
-                    // #workaround(Swift 5.8, Issue with SwiftPM.)
-                    ∨ line.line.contains(
-                      "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
-                    )
-                  )
+                  ))
               }
               log.lines = LineView<String>(filtered)
 

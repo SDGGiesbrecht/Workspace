@@ -6,7 +6,9 @@ Auf macOS wird getestet ... (§1)
 
 Testabdeckung auf macOS wird geprüft ... (§2)
 
+Ergebnisse zu „Sources/Deutsch/Deutsch.swift“ werden zerteilt ...
 Ergebnisse zu „Tests/DeutschTests/DeutschTests.swift“ werden zerteilt ...
+Sources/Deutsch/Deutsch.swift
 
 ✓ Teste werden auf macOS bestanden.
 ✓ Testabdeckung auf macOS ist vollständig.

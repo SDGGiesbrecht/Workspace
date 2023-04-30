@@ -321,6 +321,10 @@
                   for: NestingPattern(opening: "$ xcodebuild".scalars, closing: "\n\n".scalars),
                   with: "[$ xcodebuild...]\n\n".scalars
                 )
+                output.scalars.replaceMatches(
+                  for: NestingPattern(opening: "[0/1] Planning build".scalars, closing: "\n\n".scalars),
+                  with: "[...]\n\n".scalars
+                )
 
                 if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {
                   // Refreshment occurs elswhere in continuous integration.

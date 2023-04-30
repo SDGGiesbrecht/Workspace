@@ -105,6 +105,10 @@
                   ) ∨ line.line.contains(
                     "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars.literal()
                   )
+                  // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
+                  ∨ line.line.contains(
+                    "warning: couldn't find pc file for sqlite3".scalars.literal()
+                  )
                   )
               }
               log.lines = LineView<String>(filtered)

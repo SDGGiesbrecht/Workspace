@@ -6,16 +6,10 @@ Auf macOS wird getestet ... (§1)
 
 Testabdeckung auf macOS wird geprüft ... (§2)
 
-Ergebnisse zu „Sources/FailingTests/Exempt/Exempt.swift“ werden zerteilt ...
-Ergebnisse zu „Sources/FailingTests/FailingTests.swift“ werden zerteilt ...
-Ergebnisse zu „Tests/FailingTestsTests/FailingTestsTests.swift“ werden zerteilt ...
-Sources/FailingTests/FailingTests.swift
-Zeile 7
-        return "???"
-
+[...]
 
 ✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§1“)
-✗ Testabdeckung auf macOS ist unvollständig. (Siehe [⌘F] „§2“)
+✗ Testabdeckung auf macOS konnte nicht verarbeitet werden. (Siehe [⌘F] „§2“)
 
 „FailingTests“ besteht die Überprüfung nicht.
 2

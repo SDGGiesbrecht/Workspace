@@ -252,11 +252,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-                #warning("Debugging...")
-                if location.lastPathComponent == "FailingTests" ∧ command == ["validate", "test‐coverage"] {
-                  print("See here: “\(output)”")
-                }
-
                 let any = RepetitionPattern(
                   ConditionalPattern<String.ScalarView>({ _ in true }),
                   consumption: .lazy

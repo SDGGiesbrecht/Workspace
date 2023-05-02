@@ -75,7 +75,7 @@
                   )
                   // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
                   ∨ line.line.contains(
-                    "warning: couldn't find pc file for sqlite3".scalars.literal()
+                    "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
                   )
                   )
               }
@@ -107,7 +107,7 @@
                   )
                   // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
                   ∨ line.line.contains(
-                    "warning: couldn't find pc file for sqlite3".scalars.literal()
+                    "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
                   )
                   )
               }

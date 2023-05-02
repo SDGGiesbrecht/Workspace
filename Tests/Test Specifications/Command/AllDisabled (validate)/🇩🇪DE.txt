@@ -4,7 +4,7 @@ $ arbeitsbereich validate •no‐colour
 „AllDisabled“ wird geprüft ...
 
 
-Quelltext Korrektur wird gelesen ...
+Quelltext Korrektur wird gelesen ... (§1)
 
 
 Auf macOS wird getestet ... (§2)

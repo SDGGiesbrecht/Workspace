@@ -1,6 +1,6 @@
 $ arbeitsbereich korrekturlesen •no‐colour
 
-Quelltext Korrektur wird gelesen ...
+Quelltext Korrektur wird gelesen ... (§1)
 
 .github/CONTRIBUTING.md
 .github/ISSUE_TEMPLATE/🇬🇧EN Bug Report.md

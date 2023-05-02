@@ -223,7 +223,7 @@
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Generating documentation..." + section.anchor
           case .deutschDeutschland:
-            return "Dokumentation wird erstellt ..."
+            return "Dokumentation wird erstellt ..." + section.anchor
           }
         }).resolved().formattedAsSectionHeader()
       )

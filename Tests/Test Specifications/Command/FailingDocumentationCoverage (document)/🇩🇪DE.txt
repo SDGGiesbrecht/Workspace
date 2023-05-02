@@ -1,6 +1,6 @@
 $ arbeitsbereich document •no‐colour
 
-Dokumentation wird erstellt ...
+Dokumentation wird erstellt ... (§1)
 
 Verstorbene Ressourcenzeiger werden weiterleitet ...
 

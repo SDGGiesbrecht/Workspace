@@ -106,7 +106,7 @@
               case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
                 return "Proofreading source code..." + section.anchor
               case .deutschDeutschland:
-                return "Quelltext Korrektur wird gelesen ..."
+                return "Quelltext Korrektur wird gelesen ..." + section.anchor
               }
             }).resolved().formattedAsSectionHeader()
           )

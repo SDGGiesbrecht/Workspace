@@ -3,7 +3,7 @@ $ arbeitsbereich proofread •no‐colour
 Deteien werden normalisiert ...
 
 
-Quelltext Korrektur wird gelesen ...
+Quelltext Korrektur wird gelesen ... (§1)
 
 Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
 Resources

@@ -1,6 +1,6 @@
 $ arbeitsbereich dokumentieren •no‐colour
 
-Dokumentation wird erstellt ...
+Dokumentation wird erstellt ... (§1)
 
 [$ swift...]
 

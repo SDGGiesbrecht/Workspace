@@ -1,0 +1,21 @@
+$ workspace validate test‐coverage •no‐colour
+
+Testing on macOS... (§1)
+
+[$ swift...]
+
+Checking test coverage on macOS... (§2)
+
+Parsing report for “Sources/FailingTestCoverage/Exempt/Exempt.swift”...
+Parsing report for “Sources/FailingTestCoverage/FailingTestCoverage.swift”...
+Parsing report for “Tests/FailingTestCoverageTests/FailingTestCoverageTests.swift”...
+Sources/FailingTestCoverage/FailingTestCoverage.swift
+Line 7
+    return "???"
+
+
+✓ Tests pass on macOS.
+✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
+
+“FailingTestCoverage” fails validation.
+2

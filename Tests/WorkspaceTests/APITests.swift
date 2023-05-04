@@ -501,7 +501,7 @@
         overwriteSpecificationInsteadOfFailing: false
       )
     }
-    
+
     func testFailingTestCoverage() {
       let configuration = WorkspaceConfiguration()
       configuration.testing.exemptPaths.insert("Sources/FailingTestCoverage/Exempt")

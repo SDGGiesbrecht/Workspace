@@ -501,6 +501,19 @@
         overwriteSpecificationInsteadOfFailing: false
       )
     }
+    
+    func testFailingTestCoverage() {
+      let configuration = WorkspaceConfiguration()
+      configuration.testing.exemptPaths.insert("Sources/FailingTestCoverage/Exempt")
+      PackageRepository(mock: "FailingTestCoverage").test(
+        commands: [
+          ["validate", "test‐coverage"],
+        ],
+        configuration: configuration,
+        localizations: InterfaceLocalization.self,
+        overwriteSpecificationInsteadOfFailing: false
+      )
+    }
 
     func testFailingTests() {
       let configuration = WorkspaceConfiguration()

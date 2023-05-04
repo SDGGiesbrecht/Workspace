@@ -215,7 +215,12 @@
       assumeManualTasks: Bool
     ) throws {
       if let formatConfiguration = configuration.proofreading.swiftFormatConfiguration {
-        try format(source: &source, accordingTo: formatConfiguration, for: fileURL, assumeManualTasks: assumeManualTasks)
+        try format(
+          source: &source,
+          accordingTo: formatConfiguration,
+          for: fileURL,
+          assumeManualTasks: assumeManualTasks
+        )
       }
     }
 
@@ -225,18 +230,25 @@
       for fileURL: URL,
       assumeManualTasks: Bool
     ) throws {
-      let modifiedConfiguration = assumeManualTasks ? configuration : configuration.reducedToMachineResponsibilities()
+      let modifiedConfiguration =
+        assumeManualTasks ? configuration : configuration.reducedToMachineResponsibilities()
       let formatter = SwiftFormatter(configuration: modifiedConfiguration)
       var syntax = try SyntaxParser.parse(source: source)
       syntax = try OperatorTable.baseOperators.foldAll(syntax).as(SourceFileSyntax.self)!
 
       var result: String = ""
-      try formatter.format(syntax: syntax, operatorTable: OperatorTable.baseOperators, assumingFileURL: fileURL, to: &result)
+      try formatter.format(
+        syntax: syntax,
+        operatorTable: OperatorTable.baseOperators,
+        assumingFileURL: fileURL,
+        to: &result
+      )
 
       // #workaround(swift-format 0.50800.0, Abort if formatter ate comments.) @exempt(from: unicode)
       let expectedChanges: Set<Unicode.Scalar> = [" ", "\n"]
       if ¬assumeManualTasks ∧ ¬result.scalars.lazy.filter({ $0 ∈ expectedChanges })
-        .elementsEqual(source.scalars.lazy.filter({ $0 ∈ expectedChanges })) {
+        .elementsEqual(source.scalars.lazy.filter({ $0 ∈ expectedChanges }))
+      {
         return
       }
 

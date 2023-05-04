@@ -507,7 +507,7 @@
       configuration.testing.exemptPaths.insert("Sources/FailingTestCoverage/Exempt")
       PackageRepository(mock: "FailingTestCoverage").test(
         commands: [
-          ["validate", "test‐coverage"],
+          ["validate", "test‐coverage"]
         ],
         configuration: configuration,
         localizations: InterfaceLocalization.self,

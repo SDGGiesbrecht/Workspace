@@ -45,5 +45,5 @@ jobs:
       shell: bash
       run: |
         set -x
-        xcodebuild build -destination generic/platform=watchOS -scheme Workspace-Package
+        xcodebuild test -destination 'platform=watchOS Simulator,name=Apple Watch Series 8 (41mm)' -scheme Workspace-Package -enableCodeCoverage YES
         # swift run workspace validate •job watchos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'

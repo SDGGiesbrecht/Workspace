@@ -54,6 +54,9 @@
             }
           }).resolved().formattedAsSectionHeader()
         )
+        
+#warning("Debugging...")
+return
 
         do {
           let buildCommand: (Command.Output) throws -> Bool

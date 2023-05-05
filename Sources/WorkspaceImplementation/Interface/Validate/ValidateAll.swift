@@ -128,9 +128,6 @@
           )
         }
 
-        #warning("Debugging...")
-        return
-
         // Test
         if try options.project.configuration(output: output).testing.enforceCoverage {
           if let job = options.job,

@@ -56,7 +56,7 @@
         )
         
 #warning("Debugging...")
-return
+fatalError("Made it this far.")
 
         do {
           let buildCommand: (Command.Output) throws -> Bool

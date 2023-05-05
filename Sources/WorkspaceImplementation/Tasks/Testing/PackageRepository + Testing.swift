@@ -95,9 +95,6 @@
                   }
                 }
               ).get()
-              
-#warning("Debugging...")
-fatalError("Made it this far.")
 
               let filtered = log.lines.filter { line in
                 return
@@ -115,6 +112,9 @@ fatalError("Made it this far.")
                   )
               }
               log.lines = LineView<String>(filtered)
+              
+#warning("Debugging...")
+fatalError("Made it this far.")
 
               return ¬Xcode.warningsOccurred(during: log)
             }

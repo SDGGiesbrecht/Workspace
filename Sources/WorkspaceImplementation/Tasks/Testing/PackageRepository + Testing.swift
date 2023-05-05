@@ -54,9 +54,6 @@
             }
           }).resolved().formattedAsSectionHeader()
         )
-        
-#warning("Debugging...")
-fatalError("Made it this far.")
 
         do {
           let buildCommand: (Command.Output) throws -> Bool
@@ -67,6 +64,9 @@ fatalError("Made it this far.")
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
+              
+#warning("Debugging...")
+fatalError("Made it this far.")
 
               let filtered = log.lines.filter { line in
                 return

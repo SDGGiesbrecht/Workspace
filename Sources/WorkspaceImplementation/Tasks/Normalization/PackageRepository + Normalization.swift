@@ -30,7 +30,8 @@
 
     internal func normalize(output: Command.Output) throws {
 
-      let formatConfiguration = try configuration(output: output).proofreading.swiftFormatConfiguration
+      let formatConfiguration = try configuration(output: output).proofreading
+        .swiftFormatConfiguration
 
       for url in try sourceFiles(output: output) {
         try purgingAutoreleased {

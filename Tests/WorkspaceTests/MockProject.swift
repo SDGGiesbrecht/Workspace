@@ -212,7 +212,7 @@
                 {
                   // Differing task set on Linux.
                   if location.lastPathComponent
-                    ∈ Set(["BrokenTests", "FailingTests", "NurDeutsch"])
+                    ∈ Set(["BrokenTests", "FailingTestCoverage", "FailingTests", "NurDeutsch"])
                   {
                     expectFailure()
                   } else {
@@ -243,7 +243,7 @@
                 } else if (command == ["validate"] ∧ location.lastPathComponent
                   ∈ Set(["AllTasks", "Default", "FailingCustomValidation"]))
                   ∨ (command == ["validate", "test‐coverage"]
-                    ∧ location.lastPathComponent ∈ Set(["FailingTests"]))
+                    ∧ location.lastPathComponent ∈ Set(["FailingTestCoverage", "FailingTests"]))
                 {
                   expectFailure()
                   continue

@@ -64,9 +64,6 @@
                 releaseConfiguration: false,
                 reportProgress: { output.print($0) }
               ).get()
-              
-#warning("Debugging...")
-fatalError("Made it this far.")
 
               let filtered = log.lines.filter { line in
                 return
@@ -98,6 +95,9 @@ fatalError("Made it this far.")
                   }
                 }
               ).get()
+              
+#warning("Debugging...")
+fatalError("Made it this far.")
 
               let filtered = log.lines.filter { line in
                 return

@@ -112,9 +112,6 @@
                   )
               }
               log = filtered.joined(separator: "\n")
-              
-#warning("Debugging...")
-fatalError("Made it this far.")
 
               return ¬Xcode.warningsOccurred(during: log)
             }

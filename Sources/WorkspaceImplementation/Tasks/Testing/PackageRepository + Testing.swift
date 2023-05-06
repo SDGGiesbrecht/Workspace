@@ -96,24 +96,22 @@
                 }
               ).get()
 
-              let filtered = log.lines.filter { line in
+              let filtered = log.components(separatedBy: "\n").filter { line in
                 return
                   ¬(
                   // #workaround(SDGSwift 13.0.1, Toolchain’s fault and irrelevant, since tests only need to support the development environment.)
-                  line.line.contains(
+                  line.scalars.contains(
                     "/XCTest) was built for newer watchOS version".scalars.literal()
-                  ) ∨ line.line.contains(
+                  ) ∨ line.scalars.contains(
                     "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars.literal()
                   )
                   // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
-                  ∨ line.line.contains(
+                  ∨ line.scalars.contains(
                     "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
                   )
                   )
               }
-              log = filtered.lazy
-                .map({ String(String.UnicodeScalarView($0.line)) })
-                .joined(separator: "\n")
+              log = filtered.joined(separator: "\n")
               
 #warning("Debugging...")
 fatalError("Made it this far.")

@@ -111,7 +111,9 @@
                   )
                   )
               }
-              log.lines = LineView<String>(filtered)
+              log = filtered.lazy
+                .map({ String(String.UnicodeScalarView($0.line)) })
+                .joined(separator: "\n")
               
 #warning("Debugging...")
 fatalError("Made it this far.")

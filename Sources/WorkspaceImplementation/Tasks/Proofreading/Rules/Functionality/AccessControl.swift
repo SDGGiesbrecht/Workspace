@@ -66,49 +66,53 @@
     private static let allLevels = highLevels ∪ lowLevels
 
     private static func checkLibrary(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       status: ProofreadingStatus
     ) {
+      guard let node = node as? SwiftSyntaxNode else {
+        return
+      }
+
       guard ¬context.isFragmented() else {
         return  // Documentation example
       }
 
       let modifiers: ModifierListSyntax?
       let anchor: Syntax
-      if let structure = node.as(StructDeclSyntax.self) {
+      if let structure = node.swiftSyntaxNode.as(StructDeclSyntax.self) {
         modifiers = structure.modifiers
         anchor = Syntax(structure.identifier)
-      } else if let `class` = node.as(ClassDeclSyntax.self) {
+      } else if let `class` = node.swiftSyntaxNode.as(ClassDeclSyntax.self) {
         modifiers = `class`.modifiers
         anchor = Syntax(`class`.identifier)
-      } else if let enumeration = node.as(EnumDeclSyntax.self) {
+      } else if let enumeration = node.swiftSyntaxNode.as(EnumDeclSyntax.self) {
         modifiers = enumeration.modifiers
         anchor = Syntax(enumeration.identifier)
-      } else if let alias = node.as(TypealiasDeclSyntax.self) {
+      } else if let alias = node.swiftSyntaxNode.as(TypealiasDeclSyntax.self) {
         modifiers = alias.modifiers
         anchor = Syntax(alias.identifier)
-      } else if let `protocol` = node.as(ProtocolDeclSyntax.self) {
+      } else if let `protocol` = node.swiftSyntaxNode.as(ProtocolDeclSyntax.self) {
         modifiers = `protocol`.modifiers
         anchor = Syntax(`protocol`.identifier)
-      } else if let function = node.as(FunctionDeclSyntax.self) {
+      } else if let function = node.swiftSyntaxNode.as(FunctionDeclSyntax.self) {
         modifiers = function.modifiers
         anchor = Syntax(function.identifier)
-      } else if let initializer = node.as(InitializerDeclSyntax.self) {
+      } else if let initializer = node.swiftSyntaxNode.as(InitializerDeclSyntax.self) {
         modifiers = initializer.modifiers
         anchor = Syntax(initializer.initKeyword)
-      } else if let variable = node.as(VariableDeclSyntax.self) {
+      } else if let variable = node.swiftSyntaxNode.as(VariableDeclSyntax.self) {
         modifiers = variable.modifiers
         anchor = Syntax(variable.bindings)
-      } else if let `subscript` = node.as(SubscriptDeclSyntax.self) {
+      } else if let `subscript` = node.swiftSyntaxNode.as(SubscriptDeclSyntax.self) {
         modifiers = `subscript`.modifiers
         anchor = Syntax(`subscript`.subscriptKeyword)
       } else {
         return
       }
       if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false),
-        ¬node.ancestors().contains(where: { ancestor in
+        ¬node.swiftSyntaxNode.ancestors.contains(where: { ancestor in
           // Local variables don’t need access control.
           ancestor.is(FunctionDeclSyntax.self)
             ∨ ancestor.is(InitializerDeclSyntax.self)
@@ -129,12 +133,12 @@
     }
 
     private static func checkOther(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       status: ProofreadingStatus
     ) {
-      if let modifier = node.as(DeclModifierSyntax.self) {
+      if let modifier = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(DeclModifierSyntax.self) {
         if modifier.name.text ∈ highLevels {
           reportViolation(
             in: file,
@@ -150,8 +154,8 @@
     // MARK: - SyntaxRule
 
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,

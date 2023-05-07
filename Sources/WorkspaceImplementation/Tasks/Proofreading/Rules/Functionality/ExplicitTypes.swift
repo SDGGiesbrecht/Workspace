@@ -56,8 +56,8 @@
     // MARK: - SyntaxRule
 
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,

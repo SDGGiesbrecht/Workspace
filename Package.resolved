@@ -24,7 +24,7 @@
       "location" : "https://github.com/SDGGiesbrecht/SDGSwift",
       "state" : {
         "branch" : "syntax‐2",
-        "revision" : "76e0567ae6a116a69cc0ebca12c371ba56ff5ccc"
+        "revision" : "fa0b9879cb835f92acefd392889d6c3ede04f05e"
       }
     },
     {
@@ -105,6 +105,15 @@
       "location" : "https://github.com/SDGGiesbrecht/swift-llbuild",
       "state" : {
         "revision" : "14d9618f53db8ca57ed46ed7b4587155c2a03390",
+        "version" : "0.50800.0"
+      }
+    },
+    {
+      "identity" : "swift-markdown",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDGGiesbrecht/swift-markdown",
+      "state" : {
+        "revision" : "f02c1d1e44fb3280b1df5cd57f0f3bd994354525",
         "version" : "0.50800.0"
       }
     },

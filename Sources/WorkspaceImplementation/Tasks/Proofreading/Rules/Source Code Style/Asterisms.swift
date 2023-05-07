@@ -48,8 +48,8 @@
     })
 
     internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -57,9 +57,9 @@
       output: Command.Output
     ) {
 
-      if let token = node as? ExtendedTokenSyntax,
+      if let token = node as? Token,
         token.kind == .asterism,
-        token.text ≠ "***"
+        token.text() ≠ "***"
       {
 
         reportViolation(

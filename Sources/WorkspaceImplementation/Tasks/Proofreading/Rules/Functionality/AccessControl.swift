@@ -75,10 +75,6 @@
         return
       }
 
-      guard ¬context.isCompiled() else {
-        return  // Documentation example
-      }
-
       let modifiers: ModifierListSyntax?
       let anchor: Syntax
       if let structure = node.swiftSyntaxNode.as(StructDeclSyntax.self) {
@@ -125,7 +121,7 @@
       {
         reportViolation(
           in: file,
-          at: anchor.syntaxRange(in: context),
+          at: file.contents.indices(ofNodeInOutermostTree: anchor),
           message: libraryMessage,
           status: status
         )
@@ -142,7 +138,7 @@
         if modifier.name.text ∈ highLevels {
           reportViolation(
             in: file,
-            at: modifier.name.syntaxRange(in: context),
+            at: file.contents.indices(ofNodeInOutermostTree: modifier),
             replacementSuggestion: "",
             message: otherMessage,
             status: status
@@ -162,6 +158,9 @@
       status: ProofreadingStatus,
       output: Command.Output
     ) {
+      guard ¬context.isCompiled() else {
+        return  // Documentation example
+      }
 
       switch setting {
       case .library:

@@ -506,6 +506,10 @@ let package = Package(
       exact: Version(0, 50800, 0)
     ),
     .package(
+      url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
+      exact: Version(0, 50800, 0)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
       exact: Version(0, 50800, 0)
     ),
@@ -574,6 +578,10 @@ let package = Package(
           name: "SwiftParser",
           package: "swift\u{2D}syntax",
           condition: .when(platforms: [.macOS, .linux])
+        ),
+        .product(
+          name: "Markdown",
+          package: "swift\u{2D}markdown"
         ),
         .product(
           name: "SymbolKit",

@@ -75,7 +75,7 @@
         return
       }
 
-      guard ¬context.isFragmented() else {
+      guard ¬context.isCompiled() else {
         return  // Documentation example
       }
 

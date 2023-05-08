@@ -23,12 +23,8 @@
 
   extension SymbolGraph.LineList {
 
-    internal func documentation() -> MarkdownNode {
-      return MarkdownNode(source: lines.lazy.map({ $0.text }).joined(separator: "\n"))
-    }
-
-    internal func normalizedParameters() -> [ParameterDocumentation] {
-      documentation().normalizedParameters
+    internal func documentation() -> DocumentationContent {
+      return DocumentationContent(source: lines.lazy.map({ $0.text }).joined(separator: "\n"))
     }
   }
 #endif

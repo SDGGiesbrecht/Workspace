@@ -1009,7 +1009,7 @@
         extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.normalizedParameters()
+        ].localizedDocumentation[localization]?.documentation().parameters()
         ?? []
       let documentedParameters = parameterDocumentation.map { $0.name.text }
 

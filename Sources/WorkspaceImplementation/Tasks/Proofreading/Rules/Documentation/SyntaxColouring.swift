@@ -59,8 +59,8 @@
       output: Command.Output
     ) {
 
-      if let codeDelimiter = node as? ExtendedTokenSyntax,
-        codeDelimiter.kind == .codeDelimiter,
+      if let codeDelimiter = node as? Token,
+        case .codeDelimiter = codeDelimiter.kind,
         let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
         codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
       {

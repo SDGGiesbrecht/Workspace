@@ -58,14 +58,16 @@
       output: Command.Output
     ) {
 
-      if let entry = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.asProtocol(WithTrailingCommaSyntax.self),
-        let comma = entry.trailingComma,
-        entry.indexInParent == entry.parent?.children(viewMode: .sourceAccurate).last?.indexInParent
+      if let token = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+        let entry = token.parent?.asProtocol(WithTrailingCommaSyntax.self),
+        token.indexInParent == entry.trailingComma?.indexInParent,
+        let list = entry.parent,
+        entry.indexInParent == list.children(viewMode: .sourceAccurate).last?.indexInParent
       {
 
         reportViolation(
           in: file,
-          at: comma.syntaxRange(in: context),
+          at: context.location,
           replacementSuggestion: "",
           message: message,
           status: status

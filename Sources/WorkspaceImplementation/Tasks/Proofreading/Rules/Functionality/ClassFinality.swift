@@ -65,13 +65,15 @@
 
       switch setting {
       case .library:
-        if let classModifiers = node.as(ClassDeclSyntax.self)?.modifiers,
-          let `public` = classModifiers.first(where: { $0.name.text == "public" }),
-          ¬classModifiers.contains(where: { $0.name.text == "final" })
-        {
+        if let `public` = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+          `public`.tokenKind == .publicKeyword,
+          let modifiers = `public`.parent?.as(ModifierListSyntax.self),
+          let _ = modifiers.parent(as: ClassDeclSyntax.self, ifIsChildAt: \.modifiers),
+          ¬modifiers.contains(where: { $0.name.text == "final" }) {
+
           reportViolation(
             in: file,
-            at: `public`.syntaxRange(in: context),
+            at: context.location,
             message: message,
             status: status
           )

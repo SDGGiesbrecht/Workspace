@@ -58,13 +58,13 @@
     ) {
 
       if let token = node as? Token,
-        token.kind == .asterism,
+        case .asterism = token.kind,
         token.text() ≠ "***"
       {
 
         reportViolation(
           in: file,
-          at: token.range(in: context),
+          at: context.location,
           replacementSuggestion: "***",
           message: message,
           status: status

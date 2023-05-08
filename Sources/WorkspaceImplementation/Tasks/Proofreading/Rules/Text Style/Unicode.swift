@@ -117,7 +117,7 @@
         node,
         range: file.contents.indices(of: range()),
         textFreedom: textFreedom,
-        kind: kind(),
+        kind: kind,
         isPrefix: isPrefix(),
         isInfix: isInfix(),
         isFloatLiteral: isFloatLiteral(),
@@ -132,7 +132,7 @@
       _ node: String,
       range: @escaping @autoclosure () -> Range<String.ScalarView.Index>,
       textFreedom: TextFreedom,
-      kind: @escaping @autoclosure () -> EitherTokenKind,
+      kind: Token.Kind,
       isPrefix: @escaping @autoclosure () -> Bool,
       isInfix: @escaping @autoclosure () -> Bool,
       isFloatLiteral: @escaping @autoclosure () -> Bool,
@@ -147,8 +147,8 @@
         return
       }
       let scope: UnicodeRuleScope
-      switch kind() {
-      case .syntax(let kind):
+      switch kind {
+      case .swiftSyntax(let kind):
         switch kind {
         case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
           .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword,
@@ -185,10 +185,7 @@
         case .stringLiteral, .stringSegment, .regexLiteral:
           scope = .ambiguous  // @exempt(from: tests) Probably unreachable.
         }
-      case .extended(let kind):
-        switch kind {
-        case .quotationMark,  // @exempt(from: tests) Probably unreachable.
-          .lineCommentDelimiter,
+      case .lineCommentDelimiter,  // @exempt(from: tests) Probably unreachable.
           .openingBlockCommentDelimiter,
           .closingBlockCommentDelimiter,
           .commentURL,
@@ -202,21 +199,25 @@
           .source,
           .headingDelimiter,
           .asterism,
-          .fontModificationDelimiter,
-          .linkDelimiter,
+          .emphasisDelimiter,
+          .strengthDelimiter,
+          .openingLinkContentDelimiter,
+          .closingLinkContentDelimiter,
+          .openingLinkTargetDelimiter,
+          .closingLinkTargetDelimiter,
           .linkURL,
           .imageDelimiter,
           .quotationDelimiter,
           .callout,
-          .parameter,
-          .colon,
-          .lineSeparator:
-          scope = .machineIdentifiers
-        case .string, .whitespace, .newlines:
-          scope = .ambiguous
-        case .commentText, .sourceHeadingText, .documentationText:
-          scope = .humanLanguage
-        }
+          .calloutParameter,
+          .calloutColon,
+          .markdownLineBreak,
+          .shebang:
+        scope = .machineIdentifiers
+      case .whitespace, .lineBreaks, .fragment:
+        scope = .ambiguous
+      case .commentText, .sourceHeadingText, .documentationText:
+        scope = .humanLanguage
       }
       let configuredScope = try? project.configuration(output: output).proofreading
         .unicodeRuleScope

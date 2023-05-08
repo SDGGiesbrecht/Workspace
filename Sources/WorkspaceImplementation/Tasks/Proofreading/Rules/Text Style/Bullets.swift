@@ -57,15 +57,15 @@
       output: Command.Output
     ) {
 
-      if let token = node as? ExtendedTokenSyntax,
-        token.kind == .bullet,
-        token.text ≠ "\u{2D}",
-        ¬token.text.contains(".")
+      if let token = node as? Token,
+        case .bullet = token.kind,
+        token.text() ≠ "\u{2D}",
+        ¬token.text().contains(".")
       {
 
         reportViolation(
           in: file,
-          at: token.range(in: context),
+          at: context.location,
           replacementSuggestion: "\u{2D}",
           message: message,
           status: status

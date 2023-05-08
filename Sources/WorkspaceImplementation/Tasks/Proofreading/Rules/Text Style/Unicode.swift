@@ -39,11 +39,6 @@
         }
       })
 
-    private enum EitherTokenKind {
-      case syntax(TokenKind)
-      case extended(ExtendedTokenKind)
-    }
-
     internal static func check(
       _ node: SyntaxNode,
       context: ScanContext,
@@ -53,10 +48,10 @@
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      if let token = node.as(TokenSyntax.self) {
+      if let token = node as? Token {
 
         func isPrefix() -> Bool {
-          if case .prefixOperator = token.tokenKind {
+          if case .swiftSyntax(.prefixOperator) = token.kind {
             return true
           } else {
             return false
@@ -64,8 +59,8 @@
         }
 
         func isInfix() -> Bool {
-          switch token.tokenKind {
-          case .spacedBinaryOperator, .unspacedBinaryOperator:
+          switch token.kind {
+          case .swiftSyntax(.spacedBinaryOperator), .swiftSyntax(.unspacedBinaryOperator):
             return true
           default:
             return false
@@ -73,7 +68,7 @@
         }
 
         func isFloatLiteral() -> Bool {
-          if case .floatingLiteral = token.tokenKind {
+          if case .swiftSyntax(.floatingLiteral) = token.kind {
             return true
           } else {
             return false
@@ -81,14 +76,17 @@
         }
 
         func isInAvailabilityDeclaration() -> Bool {
-          return node.ancestors().contains(where: { $0.is(AvailabilityArgumentSyntax.self) })
+          return context.globalAncestors.contains(where: { ancestor in
+            return (ancestor as? SwiftSyntaxNode)?.swiftSyntaxNode
+              .is(AvailabilityArgumentSyntax.self) == true
+          })
         }
 
         check(
-          token.text,
+          token.text(),
           range: token.syntaxRange(in: context),
-          textFreedom: token.textFreedom,
-          kind: .syntax(token.tokenKind),
+          textFreedom: token.kind.textFreedom(globalAncestors: context.globalAncestors),
+          kind: token.kind,
           isPrefix: isPrefix(),
           isInfix: isInfix(),
           isFloatLiteral: isFloatLiteral(),
@@ -101,39 +99,11 @@
       }
     }
 
-    internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
-      file: TextFile,
-      setting: Setting,
-      project: PackageRepository,
-      status: ProofreadingStatus,
-      output: Command.Output
-    ) {
-      if let token = node as? ExtendedTokenSyntax {
-        check(
-          token.text,
-          range: token.range(in: context),
-          textFreedom: token.kind.textFreedom,
-          kind: .extended(token.kind),
-          isPrefix: false,
-          isInfix: false,
-          isFloatLiteral: false,
-          isInAvailabilityDeclaration: false,  // @exempt(from: tests)
-          // Exempt because all such cases are handled by “isInfix”.
-          file: file,
-          project: project,
-          status: status,
-          output: output
-        )
-      }
-    }
-
     private static func check(
       _ node: String,
       range: @escaping @autoclosure () -> Range<String.ScalarOffset>,
       textFreedom: TextFreedom,
-      kind: @escaping @autoclosure () -> EitherTokenKind,
+      kind: Token.Kind,
       isPrefix: @escaping @autoclosure () -> Bool,
       isInfix: @escaping @autoclosure () -> Bool,
       isFloatLiteral: @escaping @autoclosure () -> Bool,

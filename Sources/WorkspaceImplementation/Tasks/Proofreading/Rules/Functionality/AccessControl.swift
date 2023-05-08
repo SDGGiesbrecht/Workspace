@@ -76,39 +76,47 @@
       }
 
       let modifiers: ModifierListSyntax?
-      let anchor: Syntax
-      if let structure = node.swiftSyntaxNode.as(StructDeclSyntax.self) {
-        modifiers = structure.modifiers
-        anchor = Syntax(structure.identifier)
-      } else if let `class` = node.swiftSyntaxNode.as(ClassDeclSyntax.self) {
-        modifiers = `class`.modifiers
-        anchor = Syntax(`class`.identifier)
-      } else if let enumeration = node.swiftSyntaxNode.as(EnumDeclSyntax.self) {
-        modifiers = enumeration.modifiers
-        anchor = Syntax(enumeration.identifier)
-      } else if let alias = node.swiftSyntaxNode.as(TypealiasDeclSyntax.self) {
-        modifiers = alias.modifiers
-        anchor = Syntax(alias.identifier)
-      } else if let `protocol` = node.swiftSyntaxNode.as(ProtocolDeclSyntax.self) {
-        modifiers = `protocol`.modifiers
-        anchor = Syntax(`protocol`.identifier)
-      } else if let function = node.swiftSyntaxNode.as(FunctionDeclSyntax.self) {
-        modifiers = function.modifiers
-        anchor = Syntax(function.identifier)
-      } else if let initializer = node.swiftSyntaxNode.as(InitializerDeclSyntax.self) {
-        modifiers = initializer.modifiers
-        anchor = Syntax(initializer.initKeyword)
-      } else if let variable = node.swiftSyntaxNode.as(VariableDeclSyntax.self) {
-        modifiers = variable.modifiers
-        anchor = Syntax(variable.bindings)
-      } else if let `subscript` = node.swiftSyntaxNode.as(SubscriptDeclSyntax.self) {
-        modifiers = `subscript`.modifiers
-        anchor = Syntax(`subscript`.subscriptKeyword)
+      let declaration: SyntaxProtocol
+      if let token = node.swiftSyntaxNode.as(TokenSyntax.self) {
+        if let structure = token.parent(as: StructDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = structure.modifiers
+          declaration = structure
+        } else if let `class` = token.parent(as: ClassDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = `class`.modifiers
+          declaration = `class`
+        } else if let enumeration = token.parent(as: EnumDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = enumeration.modifiers
+          declaration = enumeration
+        } else if let typeAlias = token.parent(as: TypealiasDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = typeAlias.modifiers
+          declaration = typeAlias
+        } else if let `protocol` = token.parent(as: ProtocolDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = `protocol`.modifiers
+          declaration = `protocol`
+        } else if let function = token.parent(as: FunctionDeclSyntax.self, ifIsChildAt: \.identifier) {
+          modifiers = function.modifiers
+          declaration = function
+        } else if let initializer = token.parent(as: InitializerDeclSyntax.self, ifIsChildAt: \.initKeyword) {
+          modifiers = initializer.modifiers
+          declaration = initializer
+        } else if let `subscript` = token.parent(as: SubscriptDeclSyntax.self, ifIsChildAt: \.subscriptKeyword) {
+          modifiers = `subscript`.modifiers
+          declaration = `subscript`
+        } else {
+          return
+        }
+      } else if let bindings = node.swiftSyntaxNode.as(PatternBindingListSyntax.self) {
+        if let variable = bindings.parent(as: VariableDeclSyntax.self, ifIsChildAt: \.bindings) {
+          modifiers = variable.modifiers
+          declaration = variable
+        } else {
+          return
+        }
       } else {
         return
       }
       if ¬(modifiers?.contains(where: { $0.name.text ∈ allLevels }) ?? false),
-        ¬node.swiftSyntaxNode.ancestors.contains(where: { ancestor in
+        ¬declaration.ancestors.contains(where: { ancestor in
           // Local variables don’t need access control.
           ancestor.is(FunctionDeclSyntax.self)
             ∨ ancestor.is(InitializerDeclSyntax.self)
@@ -121,7 +129,7 @@
       {
         reportViolation(
           in: file,
-          at: file.contents.indices(ofNodeInOutermostTree: anchor),
+          at: context.location,
           message: libraryMessage,
           status: status
         )
@@ -138,7 +146,7 @@
         if modifier.name.text ∈ highLevels {
           reportViolation(
             in: file,
-            at: file.contents.indices(ofNodeInOutermostTree: modifier),
+            at: context.location,
             replacementSuggestion: "",
             message: otherMessage,
             status: status

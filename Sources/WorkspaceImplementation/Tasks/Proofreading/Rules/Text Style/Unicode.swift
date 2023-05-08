@@ -84,7 +84,7 @@
 
         check(
           token.text(),
-          range: token.syntaxRange(in: context),
+          range: context.location,
           textFreedom: token.kind.textFreedom(globalAncestors: context.globalAncestors),
           kind: token.kind,
           isPrefix: isPrefix(),

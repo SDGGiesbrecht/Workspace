@@ -127,16 +127,18 @@
 
             if file.fileType == .swift ∨ file.fileType == .swiftPackageManifest {
               if ¬syntaxRules.isEmpty ∨ linter ≠ nil {
-                var syntax = try SyntaxParser.parseAndRetry(url)
+                var syntax = try SyntaxParser.parse(url)
                 syntax = try OperatorTable.baseOperators.foldAll(syntax).as(SourceFileSyntax.self)!
-                try RuleSyntaxScanner(
+                let enhanced = SwiftSyntaxNode(Syntax(syntax))
+                var scanner = RuleSyntaxScanner(
                   rules: syntaxRules,
                   file: file,
                   setting: settings[url] ?? .unknown,
                   project: self,
                   status: status,
                   output: output
-                ).scan(syntax)
+                )
+                scanner.scan(enhanced)
 
                 try linter?.lint(
                   syntax: syntax,

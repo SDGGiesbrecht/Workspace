@@ -58,7 +58,7 @@
       output: Command.Output
     ) {
 
-      if let signature = node.as(ClosureSignatureSyntax.self),
+      if let signature = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(ClosureSignatureSyntax.self),
         let closure = signature.parent?.as(ClosureExprSyntax.self),
         closure.signature?.indexInParent == signature.indexInParent,
         let leadingTrivia = signature.leadingTrivia
@@ -67,7 +67,7 @@
         if leadingTrivia.contains(where: { $0.isNewline }) {
           reportViolation(
             in: file,
-            at: signature.syntaxRange(in: context),
+            at: context.location,
             message: message,
             status: status
           )

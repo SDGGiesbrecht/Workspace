@@ -58,7 +58,7 @@
       output: Command.Output
     ) {
 
-      if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
+      if let entry = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.asProtocol(WithTrailingCommaSyntax.self),
         let comma = entry.trailingComma,
         entry.indexInParent == entry.parent?.children(viewMode: .sourceAccurate).last?.indexInParent
       {

@@ -61,8 +61,9 @@
 
       if let codeDelimiter = node as? Token,
         case .codeDelimiter = codeDelimiter.kind,
-        let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
-        codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
+        let codeBlockRelationship = context.localAncestors.last,
+        let codeBlock = codeBlockRelationship.node as? CodeBlockNode,
+         codeBlockRelationship.childIndex == 0
       {
 
         if codeBlock.language == nil {

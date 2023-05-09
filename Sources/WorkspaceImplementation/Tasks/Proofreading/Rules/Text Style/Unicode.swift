@@ -77,7 +77,7 @@
 
         func isInAvailabilityDeclaration() -> Bool {
           return context.globalAncestors.contains(where: { ancestor in
-            return (ancestor as? SwiftSyntaxNode)?.swiftSyntaxNode
+            return (ancestor.node as? SwiftSyntaxNode)?.swiftSyntaxNode
               .is(AvailabilityArgumentSyntax.self) == true
           })
         }
@@ -85,7 +85,7 @@
         check(
           token.text(),
           range: context.location,
-          textFreedom: token.kind.textFreedom(globalAncestors: context.globalAncestors),
+          textFreedom: token.kind.textFreedom(localAncestors: context.localAncestors),
           kind: token.kind,
           isPrefix: isPrefix(),
           isInfix: isInfix(),

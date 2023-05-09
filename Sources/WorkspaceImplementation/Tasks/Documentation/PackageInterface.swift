@@ -29,6 +29,7 @@
   import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
+  import Markdown
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration
@@ -1349,25 +1350,12 @@
           let pageTitle = title(localization)
           let pagePath = location(localization)
 
-          // Parse via proxy.
-          var documentationMarkup: StrictString = ""
-          if ¬specifiedContent.isEmpty {
-            documentationMarkup.append(contentsOf: StrictString("...\n\n"))
-            documentationMarkup.append(contentsOf: specifiedContent)
-          }
-          let documentation = DocumentationSyntax.parse(source: String(documentationMarkup))
-
-          var pageContent = ""
-          for paragraph in documentation.discussionEntries {  // @exempt(from: tests)
-            pageContent.append("\n")
-            pageContent.append(
-              contentsOf: paragraph.renderedHTML(
-                localization: localization.code,
-                symbolLinks: symbolLinks[localization]!
-                  .mapValues({ String(pathToSiteRoot) + $0 })
-              )
+          let pageContent = Document(parsing: String(specifiedContent))
+            .renderedHTML(
+              localization: localization.code,
+              symbolLinks: symbolLinks[localization]!
+                .mapValues({ String(pathToSiteRoot) + $0 })
             )
-          }
 
           let page = Page(
             localization: localization,

@@ -68,7 +68,7 @@
         if codeBlock.language == nil {
           reportViolation(
             in: file,
-            at: codeDelimiter.range(in: context),
+            at: context.location,
             message: message,
             status: status
           )

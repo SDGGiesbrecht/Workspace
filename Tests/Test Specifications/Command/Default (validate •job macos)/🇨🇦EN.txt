@@ -14,7 +14,9 @@ Testing on macOS... (§2)
 
 Checking test coverage on macOS... (§3)
 
+Parsing report for “Sources/Default/Default.swift”...
 Parsing report for “Tests/DefaultTests/DefaultTests.swift”...
+Sources/Default/Default.swift
 
 Summary
 

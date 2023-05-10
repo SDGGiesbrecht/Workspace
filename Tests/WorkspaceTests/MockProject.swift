@@ -107,14 +107,11 @@
                     "name: \u{22}Dependency\u{22},\n    products: [\n        .executable(name: \u{22}Dependency\u{22}, targets: [\u{22}Dependency\u{22}])\n    ],\n    dependencies: ["
                 )
                 try manifestContents.save(to: manifest)
-                try? FileManager.default.removeItem(
-                  at: dependency.appendingPathComponent("Sources/Dependency/Dependency.swift")
-                )
                 try
                   "import Foundation\nprint(\u{22}Hello, world!\u{22})\nif ProcessInfo.processInfo.arguments.count > 1 {\n    exit(1)\n}"
                   .save(
                     to: dependency.appendingPathComponent(
-                      "Sources/Dependency/main.swift"
+                      "Sources/main.swift"
                     )
                   )
               }
@@ -255,7 +252,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-
                 let any = RepetitionPattern(
                   ConditionalPattern<String.ScalarView>({ _ in true }),
                   consumption: .lazy
@@ -319,6 +315,10 @@
                 output.scalars.replaceMatches(
                   for: NestingPattern(opening: "$ xcodebuild".scalars, closing: "\n\n".scalars),
                   with: "[$ xcodebuild...]\n\n".scalars
+                )
+                output.scalars.replaceMatches(
+                  for: NestingPattern(opening: "[0/1] Planning build".scalars, closing: "\n\n".scalars),
+                  with: "[...]\n\n".scalars
                 )
 
                 if command == ["validate"] ∨ command.hasPrefix(["validate", "•job"]) {

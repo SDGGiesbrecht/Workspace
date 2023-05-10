@@ -41,12 +41,12 @@
     case miscellaneous
     case deployment
 
-    internal static let currentSwiftVersion = Version(5, 7, 0)
+    internal static let currentSwiftVersion = Version(5, 8, 0)
 
-    private static let currentMacOSVersion = Version(12)
-    internal static let currentXcodeVersion = Version(14, 0)
+    private static let currentMacOSVersion = Version(13)
+    internal static let currentXcodeVersion = Version(14, 3)
     private static let currentVisualStudioVersion = "2019"
-    private static let currentCartonVersion = Version(0, 18, 0)
+    private static let currentCartonVersion = Version(0, 19, 1)
     private static let currentUbuntuName = "focal"  // Used by Docker image
     private static let currentUbuntuVersion = "20.04"  // Used by GitHub host
     private static let currentAnroidNDKVersion = "25b"
@@ -811,7 +811,7 @@
             localization: interfaceLocalization,
             commands: [
               cURL(
-                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}x86_64\u{2D}24\u{2D}sdk.tar.xz",
+                "https://github.com/buttaface/swift\u{2D}android\u{2D}sdk/releases/download/\(version)/swift\u{2D}\(version)\u{2D}android\u{2D}24\u{2D}sdk.tar.xz",
                 andUntarTo:
                   "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk",
                 sudoCopy: true
@@ -907,6 +907,7 @@
               "  \u{2D}\u{2D}sdk ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/sysroot \u{5C}",
               "  \u{2D}Xswiftc \u{2D}resource\u{2D}dir \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift \u{5C}",
               "  \u{2D}Xswiftc \u{2D}tools\u{2D}directory \u{2D}Xswiftc ${ANDROID_HOME}/ndk\u{2D}bundle/toolchains/llvm/prebuilt/linux\u{2D}x86_64/bin \u{5C}",
+              "  \u{2D}Xswiftc \u{2D}L \u{2D}Xswiftc /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64\u{2D}linux\u{2D}android \u{5C}",
               "  \u{2D}Xcc \u{2D}fPIC \u{5C}",
               "  \u{2D}Xcc \u{2D}lstdc++",
             ]
@@ -921,12 +922,7 @@
             commands: [
               copyFiles(
                 from:
-                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/*.so",
-                to: productsDirectory
-              ),
-              copyFiles(
-                from:
-                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/swift/android/*.so",
+                  "/Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64\u{2D}linux\u{2D}android/*.so",
                 to: productsDirectory
               ),
             ]

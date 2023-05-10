@@ -6,16 +6,10 @@ Testing on macOS... (§1)
 
 Checking test coverage on macOS... (§2)
 
-Parsing report for “Sources/FailingTests/Exempt/Exempt.swift”...
-Parsing report for “Sources/FailingTests/FailingTests.swift”...
-Parsing report for “Tests/FailingTestsTests/FailingTestsTests.swift”...
-Sources/FailingTests/FailingTests.swift
-Line 7
-        return "???"
-
+[...]
 
 ✗ Tests fail on macOS. (See [⌘F] “§1”)
-✗ Test coverage is incomplete on macOS. (See [⌘F] “§2”)
+✗ Test coverage could not be determined on macOS. (See [⌘F] “§2”)
 
 “FailingTests” fails validation.
 2

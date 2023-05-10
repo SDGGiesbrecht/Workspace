@@ -72,7 +72,12 @@
                   line.line.contains(
                     "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
                       .literal()
-                  ))
+                  )
+                  // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
+                  ∨ line.line.contains(
+                    "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
+                  )
+                  )
               }
               log.lines = LineView<String>(filtered)
 
@@ -82,7 +87,7 @@
             unreachable()
           case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
             buildCommand = { output in
-              let log = try self.build(
+              var log = try self.build(
                 for: job.buildPlatform,
                 reportProgress: { report in
                   if let relevant = Xcode.abbreviate(output: report) {
@@ -90,6 +95,24 @@
                   }
                 }
               ).get()
+
+              let filtered = log.components(separatedBy: "\n").filter { line in
+                return
+                  ¬(
+                  // #workaround(SDGSwift 13.0.1, Toolchain’s fault and irrelevant, since tests only need to support the development environment.)
+                  line.scalars.contains(
+                    "/XCTest) was built for newer watchOS version".scalars.literal()
+                  ) ∨ line.scalars.contains(
+                    "libXCTestSwiftSupport.dylib) was built for newer watchOS version".scalars.literal()
+                  )
+                  // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
+                  ∨ line.scalars.contains(
+                    "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
+                  )
+                  )
+              }
+              log = filtered.joined(separator: "\n")
+
               return ¬Xcode.warningsOccurred(during: log)
             }
           }
@@ -358,6 +381,7 @@
           }
         }
         let exemptPaths = try configuration(output: output).testing.exemptPaths.map({
+          // @exempt(from: tests) False positive with Swift 5.8.
           location.appendingPathComponent($0).resolvingSymlinksInPath()
         })
 
@@ -374,6 +398,7 @@
             continue files
           }
           for path in exemptPaths where resolved.is(in: path) {
+            // @exempt(from: tests) False positive with Swift 5.8.
             continue files
           }
 

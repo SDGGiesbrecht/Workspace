@@ -8,7 +8,7 @@ jobs:
   Miscellaneous:
     name: Miscellaneous
     runs-on: ubuntu-20.04
-    container: swift:5.7.0-focal
+    container: swift:5.8.0-focal
     steps:
     - name: Check out
       uses: actions/checkout@v2

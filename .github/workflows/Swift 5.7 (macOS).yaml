@@ -36,13 +36,8 @@ jobs:
         defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
         xcodebuild -version
         swift --version
-    - name: Refresh
-      shell: bash
-      run: |
-        set -x
-        swift run workspace refresh •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
     - name: Validate
       shell: bash
       run: |
         set -x
-        swift run workspace validate •job macos •language '🇬🇧EN;🇺🇸EN;🇨🇦EN;🇩🇪DE'
+        swift test

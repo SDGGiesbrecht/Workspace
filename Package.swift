@@ -953,7 +953,7 @@ for target in package.targets {
   })
 }
 
-// #workaround(Swift 5.7 is permitted on macOS due to hardware constraints; the tools version does not reflect intended support elsewhere.)
+// #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))
 #if compiler(<5.8) && !os(macOS)
   #error("Swift 5.7 is only supported on macOS; elsewhere, please use Swift 5.8 or select an older version of Workspace.")
 #endif

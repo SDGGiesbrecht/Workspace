@@ -253,6 +253,7 @@
               // #workaround(Swift 5.7.2, Hardware compatibility.)
               #if compiler(<5.8)
                 if Tuple2((location.lastPathComponent, command)) ∈ Set([
+                  Tuple2(("BadStyle", ["proofread", "•xcode"])),
                   Tuple2(("CustomProofread", ["proofread"])),
                   Tuple2(("CustomProofread", ["proofread", "•xcode"])),
                   Tuple2(("CustomTasks", ["refresh"])),
@@ -268,7 +269,6 @@
                 if Tuple2((location.lastPathComponent, command)) ∈ Set([
                   Tuple2(("AllTasks", ["validate"])),
                   Tuple2(("BadStyle", ["proofread"])),
-                  Tuple2(("BadStyle", ["proofread", "•xcode"])),
                   Tuple2(("Default", ["validate"])),
                   Tuple2(("FailingTests", ["validate", "test‐coverage"])),
                 ])

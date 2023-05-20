@@ -75,6 +75,9 @@
                   )
                   // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
                   ∨ line.line.contains(
+                    "maybe pkg\u{2D}config is not installed".scalars.literal()
+                  )
+                  ∨ line.line.contains(
                     "warning: couldn\u{27}t find pc file for sqlite3".scalars.literal()
                   )
                   )

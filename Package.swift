@@ -876,16 +876,6 @@ import Foundation
 var impossibleDependencyPackages: [String] = []
 var impossibleDependencyProducts: [String] = []
 
-// #warning(Swift 5.7, Conditional dependencies fail to skip for some platforms.)
-/*if ["WINDOWS", "ANDROID"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
-{
-  impossibleDependencyProducts.append(contentsOf: [
-    "SwiftSyntaxParser",
-    "SwiftFormat",
-  ])
-}*/
-
 // #workaround(Swift 5.7, Some platforms cannot use plugins yet.)
 if ["WINDOWS", "WEB", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })

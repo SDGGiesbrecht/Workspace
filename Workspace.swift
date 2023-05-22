@@ -18,7 +18,7 @@ import WorkspaceConfiguration
 
 public enum Metadata {
 
-  public static let latestStableVersion: Version = Version(0, 43, 0)
+  public static let latestStableVersion: Version = Version(0, 43, 1)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
   public static let thisVersion: Version? = nil
 

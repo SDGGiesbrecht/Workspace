@@ -895,19 +895,6 @@ if ["WINDOWS", "WEB", "ANDROID"]
   }
 }
 
-// #workaround(Swift 5.7.0, Windows toolchain rejects manifests due to plugins.)
-if ProcessInfo.processInfo.environment["TARGETING_WINDOWS"] == "true" {
-  impossibleDependencyPackages.append(contentsOf: [
-    "swift\u{2D}format"  // its constraint on swift‐argument‐parser
-  ])
-  package.dependencies.append(
-    .package(
-      url: "https://github.com/apple/swift\u{2D}argument\u{2D}parser",
-      exact: Version(1, 1, 3)
-    )
-  )
-}
-
 // #workaround(Swift 5.7, Web toolchain rejects manifest due to dynamic library.)
 if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
   impossibleDependencyPackages.append(contentsOf: [

@@ -895,14 +895,6 @@ if ["WINDOWS", "WEB", "ANDROID"]
   }
 }
 
-// #workaround(Swift 5.7, Web toolchain rejects manifest due to dynamic library.)
-if ProcessInfo.processInfo.environment["TARGETING_WEB"] == "true" {
-  impossibleDependencyPackages.append(contentsOf: [
-    "swift\u{2D}format",
-    "swift\u{2D}package\u{2D}manager",
-  ])
-}
-
 // #workaround(xcodebuild -version 14.0.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
 if ["TVOS", "IOS", "WATCHOS"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })

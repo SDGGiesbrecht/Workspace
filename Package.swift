@@ -883,9 +883,6 @@ where target.type != .plugin {  // @exempt(from: unicode)
 
 import Foundation
 
-var impossibleDependencyPackages: [String] = []
-var impossibleDependencyProducts: [String] = []
-
 // #workaround(Swift 5.7, Some platforms cannot use plugins yet.)
 if ["WINDOWS", "WEB", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
@@ -893,43 +890,6 @@ if ["WINDOWS", "WEB", "ANDROID"]
   for target in package.targets {
     target.plugins = nil
   }
-}
-
-// #workaround(xcodebuild -version 14.0.1, Xcode goes hunting for unused binary.) @exempt(from: unicode)
-if ["TVOS", "IOS", "WATCHOS"]
-  .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
-{
-  impossibleDependencyProducts.append(contentsOf: [
-    "SwiftSyntaxParser",
-    "SwiftFormat",
-  ])
-}
-
-package.dependencies.removeAll(where: { dependency in
-  switch dependency.kind {
-  case .sourceControl(name: _, let location, requirement: _):
-    return impossibleDependencyPackages.contains(where: { impossible in
-      return location.contains(impossible)
-    })
-  default:
-    return false
-  }
-})
-for target in package.targets {
-  target.dependencies.removeAll(where: { dependency in
-    switch dependency {
-    case .productItem(let name, let package, moduleAliases: _, condition: _):
-      if let package = package,
-        impossibleDependencyPackages.contains(where: { package == $0 })
-      {
-        return true
-      } else {
-        return impossibleDependencyProducts.contains(where: { name == $0 })
-      }
-    default:
-      return false
-    }
-  })
 }
 
 // #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))

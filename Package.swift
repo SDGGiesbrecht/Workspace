@@ -873,14 +873,14 @@ where target.type != .plugin {  // @exempt(from: unicode)
 
 import Foundation
 
-// #warning(Swift 5.7, Some platforms cannot use plugins yet.)
-/*if ["WINDOWS", "WEB", "ANDROID"]
+// #workaround(Swift 5.8.0, Some platforms cannot use plugins yet.)
+if ["WINDOWS", "WEB", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {
   for target in package.targets {
     target.plugins = nil
   }
-}*/
+}
 
 // #workaround(Swift 5.7.2, Hardware compatibility; tools version does not reflect support.))
 #if compiler(<5.8) && !os(macOS)

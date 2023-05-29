@@ -476,10 +476,10 @@
                 files.insert(file.path(relativeTo: afterLocation))
               }
 
-              #if compiler(>=5.8)
+              #if compiler(<5.8)
                 if location.lastPathComponent == "CheckedInDocumentation" {
                   // Generated documention differs due to toolchain.
-                  continue
+                  return
                 }
               #endif
 

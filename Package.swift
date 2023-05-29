@@ -873,7 +873,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
 
 import Foundation
 
-// #workaround(Swift 5.7, Some platforms cannot use plugins yet.)
+// #workaround(Swift 5.8.0, Some platforms cannot use plugins yet.)
 if ["WINDOWS", "WEB", "ANDROID"]
   .contains(where: { ProcessInfo.processInfo.environment["TARGETING_\($0)"] == "true" })
 {

@@ -260,7 +260,7 @@
                   Tuple2(("CustomTasks", ["validate"])),
                   Tuple2(("Default", ["validate", "test‐coverage"])),
                   Tuple2(("Default", ["validate", "•job", "macos"])),
-                  Tuple2(("Deutsch", ["prüfen", "testabdeckung"])),
+                  Tuple2(("Deutsch", ["prüfen", "testabdeckung"]))
                 ])
                 {
                   requireSuccess()
@@ -475,6 +475,13 @@
               ) {
                 files.insert(file.path(relativeTo: afterLocation))
               }
+
+              #if compiler(>=5.8)
+                if location.lastPathComponent == "CheckedInDocumentation" {
+                  // Generated documention differs due to toolchain.
+                  continue
+                }
+              #endif
 
               for fileName in files {
                 let result = location.appendingPathComponent(fileName)

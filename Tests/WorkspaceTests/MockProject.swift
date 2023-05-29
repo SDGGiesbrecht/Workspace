@@ -202,6 +202,42 @@
                 }
               }
 
+              // #workaround(Swift 5.7.2, Hardware compatibility.)
+              #if compiler(<5.8)
+                if Tuple2((location.lastPathComponent, command)) ∈ Set([
+                  Tuple2(("BadStyle", ["proofread", "•xcode"])),
+                  Tuple2(("CustomProofread", ["proofread"])),
+                  Tuple2(("CustomProofread", ["proofread", "•xcode"])),
+                  Tuple2(("CustomTasks", ["refresh"])),
+                  Tuple2(("CustomTasks", ["validate"])),
+                  Tuple2(("Default", ["validate", "test‐coverage"])),
+                  Tuple2(("Default", ["validate", "•job", "macos"])),
+                  Tuple2(("Deutsch", ["prüfen", "testabdeckung"]))
+                ])
+                {
+                  requireSuccess()
+                  continue
+                }
+                if Tuple2((location.lastPathComponent, command)) ∈ Set([
+                  Tuple2(("AllTasks", ["validate"])),
+                  Tuple2(("BadStyle", ["proofread"])),
+                  Tuple2(("Default", ["validate"])),
+                  Tuple2(("FailingTests", ["validate", "test‐coverage"])),
+                ])
+                {
+                  expectFailure()
+                  continue
+                }
+                if Tuple2((location.lastPathComponent, command)) ∈ Set([
+                  Tuple2(("FailingCustomTasks", ["refresh"])),
+                  Tuple2(("FailingCustomValidation", ["validate"])),
+                ])
+                {
+                  // Switches to failing due to difference in package initialization.
+                  continue
+                }
+              #endif
+
               #if os(Linux)
                 if command == ["refresh", "scripts"]
                   ∨ command == ["auffrischen", "skripte"]
@@ -246,42 +282,6 @@
                     ∧ location.lastPathComponent ∈ Set(["FailingTestCoverage", "FailingTests"]))
                 {
                   expectFailure()
-                  continue
-                }
-              #endif
-
-              // #workaround(Swift 5.7.2, Hardware compatibility.)
-              #if compiler(<5.8)
-                if Tuple2((location.lastPathComponent, command)) ∈ Set([
-                  Tuple2(("BadStyle", ["proofread", "•xcode"])),
-                  Tuple2(("CustomProofread", ["proofread"])),
-                  Tuple2(("CustomProofread", ["proofread", "•xcode"])),
-                  Tuple2(("CustomTasks", ["refresh"])),
-                  Tuple2(("CustomTasks", ["validate"])),
-                  Tuple2(("Default", ["validate", "test‐coverage"])),
-                  Tuple2(("Default", ["validate", "•job", "macos"])),
-                  Tuple2(("Deutsch", ["prüfen", "testabdeckung"]))
-                ])
-                {
-                  requireSuccess()
-                  continue
-                }
-                if Tuple2((location.lastPathComponent, command)) ∈ Set([
-                  Tuple2(("AllTasks", ["validate"])),
-                  Tuple2(("BadStyle", ["proofread"])),
-                  Tuple2(("Default", ["validate"])),
-                  Tuple2(("FailingTests", ["validate", "test‐coverage"])),
-                ])
-                {
-                  expectFailure()
-                  continue
-                }
-                if Tuple2((location.lastPathComponent, command)) ∈ Set([
-                  Tuple2(("FailingCustomTasks", ["refresh"])),
-                  Tuple2(("FailingCustomValidation", ["validate"])),
-                ])
-                {
-                  // Switches to failing due to difference in package initialization.
                   continue
                 }
               #endif

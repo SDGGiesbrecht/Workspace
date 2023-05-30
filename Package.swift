@@ -831,15 +831,15 @@ where target.type != .plugin {  // @exempt(from: unicode)
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
       switch name {
-      // #warning(Swift 5.7, Does not compile for web.)
-      /*case "SwiftFormat":
+      // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
+      case "SwiftFormat":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .linux])
-        )*/
-      // #workaround(Swift 5.7, Does not compile for web.)
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+        // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
       case "SwiftFormatConfiguration":
         return .productItem(
           name: name,
@@ -847,14 +847,14 @@ where target.type != .plugin {  // @exempt(from: unicode)
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
-      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+      /*// #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
       case "SwiftOperators":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
-        )
+        )*/
       // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
       case "SwiftParser":
         return .productItem(
@@ -863,7 +863,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #workaround(SwiftPM 0.50800.0, Does not support Windows yet.)
+      // #workaround(SwiftPM 0.50800.0, Does not compile for many platforms.)
       case "SwiftPMDataModel\u{2D}auto":
         return .productItem(
           name: name,
@@ -871,13 +871,13 @@ where target.type != .plugin {  // @exempt(from: unicode)
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-      // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+        // #warning(SwiftSyntax 0.50800.0, Does not compile for web.)
       case "SwiftSyntaxParser":
         return .productItem(
           name: name,
           package: package,
           moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .linux])
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
       default:
         return dependency

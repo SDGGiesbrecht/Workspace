@@ -547,47 +547,14 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftOperators",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftParser",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SymbolKit",
-          package: "swift\u{2D}docc\u{2D}symbolkit"
-        ),
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
-        .product(
-          name: "SwiftFormat",
-          package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftOperators", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftParser", package: "swift\u{2D}syntax"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
       ],
@@ -707,12 +674,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
       resources: [
         .copy("Configuration/GitHub/Contributing Template.txt"),
@@ -768,12 +730,7 @@ let package = Package(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
       path: "Tests/CrossPlatform",
       resources: [
@@ -869,6 +826,66 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
+  
+  target.dependencies = target.dependencies.map { dependency in
+    switch dependency {
+    case .productItem(name: let name, let package, let moduleAliases, condition: _):
+      switch name {
+      // #warning(Swift 5.7, Does not compile for web.)
+      /*case "SwiftFormat":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )*/
+      // #workaround(Swift 5.7, Does not compile for web.)
+      case "SwiftFormatConfiguration":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+      case "SwiftOperators":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+      case "SwiftParser":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+      // #workaround(SwiftPM 0.50800.0, Does not support Windows yet.)
+      case "SwiftPMDataModel\u{2D}auto":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+      // #workaround(SwiftSyntax 0.50700.0, Does not support Windows yet.)
+      case "SwiftSyntaxParser":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+      default:
+        return dependency
+      }
+    default:
+      return dependency
+    }
+  }
 }
 
 import Foundation

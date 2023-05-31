@@ -825,7 +825,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
-  
+
   target.dependencies = target.dependencies.map { dependency in
     switch dependency {
     case .productItem(name: let name, let package, let moduleAliases, condition: _):
@@ -846,14 +846,6 @@ where target.type != .plugin {  // @exempt(from: unicode)
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
         )
-      // #warning(SwiftSyntax 0.50700.0, Does not support Windows yet.)
-      /*case "SwiftParser":
-        return .productItem(
-          name: name,
-          package: package,
-          moduleAliases: moduleAliases,
-          condition: .when(platforms: [.macOS, .linux])
-        )*/
       // #workaround(SwiftPM 0.50800.0, Does not compile for many platforms.)
       case "SwiftPMDataModel\u{2D}auto":
         return .productItem(
@@ -862,7 +854,7 @@ where target.type != .plugin {  // @exempt(from: unicode)
           moduleAliases: moduleAliases,
           condition: .when(platforms: [.macOS, .linux])
         )
-        // #warning(SwiftSyntax 0.50800.0, Does not compile for web.)
+        // #workaround(SwiftSyntax 0.50800.0, Does not compile for web.)
       case "SwiftSyntaxParser":
         return .productItem(
           name: name,

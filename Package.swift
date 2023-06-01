@@ -547,47 +547,14 @@ let package = Package(
         .product(name: "SDGSwiftSource", package: "SDGSwift"),
         .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
         .product(name: "SDGXcode", package: "SDGSwift"),
-        .product(
-          name: "SwiftPMDataModel\u{2D}auto",
-          package: "swift\u{2D}package\u{2D}manager",
-          // #workaround(SwiftPM 0.50700.2, Does not support Windows yet.)
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftSyntax",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftSyntaxParser",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftOperators",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SwiftParser",
-          package: "swift\u{2D}syntax",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
-        .product(
-          name: "SymbolKit",
-          package: "swift\u{2D}docc\u{2D}symbolkit"
-        ),
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
-        .product(
-          name: "SwiftFormat",
-          package: "swift\u{2D}format",
-          condition: .when(platforms: [.macOS, .linux])
-        ),
+        .product(name: "SwiftPMDataModel\u{2D}auto", package: "swift\u{2D}package\u{2D}manager"),
+        .product(name: "SwiftSyntax", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftOperators", package: "swift\u{2D}syntax"),
+        .product(name: "SwiftParser", package: "swift\u{2D}syntax"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
+        .product(name: "SwiftFormat", package: "swift\u{2D}format"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGCSS", package: "SDGWeb"),
       ],
@@ -707,12 +674,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
         .product(name: "SDGSwiftConfiguration", package: "SDGSwift"),
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
       resources: [
         .copy("Configuration/GitHub/Contributing Template.txt"),
@@ -768,12 +730,7 @@ let package = Package(
       name: "CrossPlatform",
       dependencies: [
         "CrossPlatformC",
-        .product(
-          name: "SwiftFormatConfiguration",
-          package: "swift\u{2D}format",
-          // #workaround(Swift 5.7, Does not compile for web.)
-          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
-        ),
+        .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
       ],
       path: "Tests/CrossPlatform",
       resources: [
@@ -832,43 +789,86 @@ where target.type != .plugin {  // @exempt(from: unicode)
   swiftSettings.append(contentsOf: [
 
     // Internal‐only:
-    // #workaround(Swift 5.7, Plug‐ins do not work everywhere yet.)
+    // #workaround(Swift 5.8.0, Plug‐ins do not work everywhere yet.)
     .define(
       "PLATFORM_CANNOT_USE_PLUG_INS",
       .when(platforms: [.windows, .wasi, .android])
     ),
-    // #workaround(Swift 5.7, Web lacks Dispatch.)
+    // #workaround(Swift 5.8.0, Web lacks Dispatch.)
     .define("PLATFORM_LACKS_DISPATCH", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.7, Web lacks Foundation.FileManager.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.FileManager.)
     .define("PLATFORM_LACKS_FOUNDATION_FILE_MANAGER", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.7, Web lacks Foundation.Process.)
+    // #workaround(Swift 5.8.0, Web lacks Foundation.Process.)
     .define("PLATFORM_LACKS_FOUNDATION_PROCESS_INFO", .when(platforms: [.wasi])),
-    // #workaround(Swift 5.7, FoundationNetworking is broken on Android.)
+    // #workaround(Swift 5.8.0, FoundationNetworking is broken on Android.)
     .define("PLATFORM_LACKS_FOUNDATION_NETWORKING", .when(platforms: [.android])),
-    // #workaround(Swift 5.7, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
+    // #workaround(Swift 5.8.0, Web lacks FoundationNetworking.URLCredential.init(user:password:persistence:).)
     .define(
       "PLATFORM_LACKS_FOUNDATION_NETWORKING_URL_CREDENTIAL_INIT_USER_PASSWORD_PERSISTENCE",
       .when(platforms: [.wasi])
     ),
-    // #workaround(Swift 5.7, FoundationXML is broken on web.)
-    // #workaroung(Swift 5.7, FoundationXML is broken on Android.)
+    // #workaround(Swift 5.8.0, FoundationXML is broken on web.)
+    // #workaroung(Swift 5.8.0, FoundationXML is broken on Android.)
     .define(
       "PLATFORM_LACKS_FOUNDATION_XML",
       .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])
     ),
     .define("PLATFORM_LACKS_GIT", .when(platforms: [.wasi, .tvOS, .iOS, .android, .watchOS])),
-    // #workaround(swift 5.7.0, Has dependencies with rejected manifests; see note about plugins below.) @exempt(from: unicode)
-    // #workaround(swift-format 0.0.507000, SwiftFormatConfiguration does not compile for web.) @exempt(from: unicode)
+    // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_SWIFT_FORMAT_SWIFT_FORMAT_CONFIGURATION",
-      .when(platforms: [.windows, .wasi])
+      .when(platforms: [.wasi])
     ),
-    // #workaround(Swift 5.7, SwiftPM lacks conditional targets.)
+    // #workaround(Swift 5.8.0, SwiftPM lacks conditional targets.)
     .define(
       "PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE",
       .when(platforms: [.windows, .wasi, .tvOS, .iOS, .android, .watchOS])
     ),
   ])
+
+  target.dependencies = target.dependencies.map { dependency in
+    switch dependency {
+    case .productItem(let name, let package, let moduleAliases, _):
+      switch name {
+      // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
+      case "SwiftFormat":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+        // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
+      case "SwiftFormatConfiguration":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      // #workaround(SwiftPM 0.50800.0, Does not compile for many platforms.)
+      case "SwiftPMDataModel\u{2D}auto":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .linux])
+        )
+        // #workaround(SwiftSyntax 0.50800.0, Does not compile for web.)
+      case "SwiftSyntaxParser":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
+      default:
+        return dependency
+      }
+    default:
+      return dependency
+    }
+  }
 }
 
 import Foundation

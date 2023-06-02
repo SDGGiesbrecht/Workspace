@@ -68,13 +68,8 @@
               let filtered = log.lines.filter { line in
                 return
                   ¬(
-                  // #workaround(Swift 5.7, SwiftSyntax not provided for older macOS, but unable to narrow availability.)
-                  line.line.contains(
-                    "lib_InternalSwiftSyntaxParser.dylib) was built for newer macOS version".scalars
-                      .literal()
-                  )
                   // #workaround(Swift 5.8, Currently thrown by SwiftPM, losing its origin in a dependency.)
-                  ∨ line.line.contains(
+                  line.line.contains(
                     "maybe pkg\u{2D}config is not installed".scalars.literal()
                   )
                   ∨ line.line.contains(

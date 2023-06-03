@@ -341,7 +341,7 @@
         {
           return
             ([
-              // #workaround(Swift 5.7, Some platforms do not support bundled resources yet.)
+              // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)
               "#if os(WASI)",
               try embeddedSource(for: resource, named: name, accessControl: accessControl),
               "#else",

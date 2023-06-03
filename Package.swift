@@ -744,7 +744,7 @@ let package = Package(
       ]
     ),
     .executableTarget(
-      // #workaround(Swift 5.7, Name and directory should be “cross‐platform‐tool”, but for Windows bug.)
+      // #workaround(Swift 5.8.0, Name and directory should be “cross‐platform‐tool”, but for Windows bug.)
       name: "cross_platform_tool",
       dependencies: ["CrossPlatform"],
       path: "Tests/cross_platform_tool"

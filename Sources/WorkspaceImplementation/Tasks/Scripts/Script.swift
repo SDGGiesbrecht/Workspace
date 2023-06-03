@@ -63,7 +63,7 @@
 
     internal var isRelevantOnCurrentDevice: Bool {
       #if os(Windows) || os(WASI) || os(tvOS) || os(iOS) || os(Android) || os(watchOS)
-        // #workaround(Swift 5.7, Until Workspace works on these platforms.)
+        // #workaround(Swift 5.8.0, Until Workspace works on these platforms.)
         return false
       #else
         switch self {

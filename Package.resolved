@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGCommandLine",
       "state" : {
-        "revision" : "2bc46ed3e59457b6a5fbf242f6351f0a114c4a99",
-        "version" : "3.0.4"
+        "revision" : "86c8c4c2869c3064af654b39105c40918161bf54",
+        "version" : "3.0.5"
       }
     },
     {
@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SDGGiesbrecht/SDGWeb",
       "state" : {
-        "revision" : "4d024b19ab58afbfe6422b04a732366dcbdfe0ae",
-        "version" : "6.1.1"
+        "revision" : "33021da957a1ccc1a93e09c1559ec1053c636504",
+        "version" : "6.1.2"
       }
     },
     {

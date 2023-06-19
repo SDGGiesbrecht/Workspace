@@ -24,20 +24,17 @@ extension Array where Element: StringFamily {
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(Array.joinedAsLines())
   /// Joins an array of strings so that each entry in the array is a line of the string.
   public func joinedAsLines() -> Element {
-    #if compiler(>=5.3)  // #workaround(SDGCornerstone 10.0.1, Generic “joined” is unavailable.)
-      if isEmpty {
-        return ""
-      } else {
-        var copy = self
-        var result = copy.removeFirst()
-        for entry in copy {
-          result.scalars.append(contentsOf: "\n".scalars)
-          result.scalars.append(contentsOf: entry.scalars)
-        }
-        return result
+    // #workaround(SDGCornerstone 10.1.3, Generic “joined(separator:)” is unavailable.)
+    if isEmpty {
+      return ""
+    } else {
+      var copy = self
+      var result = copy.removeFirst()
+      for entry in copy {
+        result.scalars.append(contentsOf: "\n".scalars)
+        result.scalars.append(contentsOf: entry.scalars)
       }
-    #else  // @exempt(from: tests)
-      return joined(separator: "\n" as Element)
-    #endif
+      return result
+    }
   }
 }

@@ -213,7 +213,7 @@
 
         source.append(contentsOf: "extension Resources {\n".scalars)
 
-        // #workaround(Swift 5.7, Standard accessor tripped by symlinks.)
+        // #workaround(Swift 5.8, Standard accessor tripped by symlinks.)
         if resources.contains(where: { $0.deprecated == false }) {
           source.append(
             contentsOf: [
@@ -390,7 +390,7 @@
 
         let data = try Data(from: resource.origin)
 
-        // #workaround(Swift 5.7, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem). Not worth removing until SwiftFormat can handle long literals quickly.)
+        // #workaround(Swift 5.8, The compiler hangs for some platforms if long literals are used (Workspace’s own licence resources are big enough to trigger the problem). Not worth removing until SwiftFormat can handle long literals quickly.)
         let problematicLength: Int = 2 ↑ 15
         var unprocessed: Data.SubSequence = data[...]  // @exempt(from: tests)
         var sections: [Data.SubSequence] = []

@@ -113,6 +113,7 @@
 
             options.project.test(
               on: job,
+              loadingCoverage: false,
               validationStatus: &validationStatus,
               output: output
             )

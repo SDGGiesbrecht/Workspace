@@ -112,12 +112,14 @@
               }
             #endif
 
-            options.project.test(
+            let coverage = options.project.test(
               on: job,
+              loadingCoverage: true,
               validationStatus: &validationStatus,
               output: output
             )
-            try options.project.validateCodeCoverage(
+            try options.project.validate(
+              testCoverage: coverage,
               on: job,
               validationStatus: &validationStatus,
               output: output

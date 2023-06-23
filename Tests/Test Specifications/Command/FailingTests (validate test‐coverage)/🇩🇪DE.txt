@@ -6,7 +6,7 @@ Auf macOS wird getestet ... (§1)
 
 Testabdeckung auf macOS wird geprüft ... (§2)
 
-[...]
+Teste haben keinen Testabdeckungsbericht erstellt.
 
 ✗ Teste werden auf macOS nicht bestanden. (Siehe [⌘F] „§1“)
 ✗ Testabdeckung auf macOS konnte nicht verarbeitet werden. (Siehe [⌘F] „§2“)

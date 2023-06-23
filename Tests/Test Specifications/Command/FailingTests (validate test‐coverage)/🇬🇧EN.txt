@@ -6,7 +6,7 @@ Testing on macOS... (§1)
 
 Checking test coverage on macOS... (§2)
 
-[...]
+Tests have not produced a coverage report.
 
 ✗ Tests fail on macOS. (See [⌘F] ‘§1’)
 ✗ Test coverage could not be determined on macOS. (See [⌘F] ‘§2’)

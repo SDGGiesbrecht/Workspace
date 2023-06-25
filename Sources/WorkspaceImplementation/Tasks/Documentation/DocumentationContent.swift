@@ -2,6 +2,32 @@ import SDGSwiftSource
 
 extension DocumentationContent {
 
+  internal func descriptionSection(cache: inout ParserCache) -> ParagraphNode? {
+    var cache = ParserCache()
+    return
+      // MarkdownNode(Document)
+      children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // MarkdownNode(Paragraph)
+      .children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // ParagraphNode
+      .children(cache: &cache).first as? ParagraphNode
+  }
+
+  internal func discussionSections(cache: inout ParserCache) -> [SyntaxNode] {
+    var cache = ParserCache()
+    if let result =
+      // MarkdownNode(Document)
+      children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
+      // Paragraphs
+      .children(cache: &cache)
+      // Drop first paragraph and paragraph break.
+      .dropFirst(2) {
+      return Array(result)
+    } else {
+      return []
+    }
+  }
+
   internal func parameters() -> [ParameterDocumentation] {
     var result: [ParameterDocumentation] = []
     scanSyntaxTree({ (node, _) in
@@ -12,7 +38,7 @@ extension DocumentationContent {
               result.append(
                 ParameterDocumentation(
                   name: entry.parameterName.text(),
-                  description: entry.contents.compactMap({ ($0 as? MarkdownNode)?.markdown })
+                  description: entry.contents.compactMap({ ($0 as? MarkdownNode) })
                 )
               )
             }
@@ -22,7 +48,7 @@ extension DocumentationContent {
           result.append(
             ParameterDocumentation(
               name: name.text(),
-              description: callout.contents.compactMap({ ($0 as? MarkdownNode)?.markdown })
+              description: callout.contents.compactMap({ ($0 as? MarkdownNode) })
             )
           )
         }

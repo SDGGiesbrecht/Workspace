@@ -659,10 +659,10 @@
             declNameArguments: nil
           )
         ),
-        leftParen: TokenSyntax(.leftParen),
+        leftParen: TokenSyntax(.leftParen, presence: .present),
         argumentList: TupleExprElementListSyntax([
           TupleExprElementSyntax(
-            label: TokenSyntax(.identifier("name")),
+            label: TokenSyntax(.identifier("name"), presence: .present),
             colon: TokenSyntax(.colon, trailingTrivia: .spaces(1), presence: .present),
             expression: ExprSyntax(
               StringLiteralExprSyntax(
@@ -678,7 +678,7 @@
             trailingComma: TokenSyntax(.comma, trailingTrivia: .spaces(1), presence: .present)
           ),
           TupleExprElementSyntax(
-            label: TokenSyntax(.identifier("package")),
+            label: TokenSyntax(.identifier("package"), presence: .present),
             colon: TokenSyntax(.colon, trailingTrivia: .spaces(1), presence: .present),
             expression: ExprSyntax(
               StringLiteralExprSyntax(
@@ -694,12 +694,12 @@
             trailingComma: nil
           ),
         ]),
-        rightParen: TokenSyntax(.rightParen),
+        rightParen: TokenSyntax(.rightParen, presence: .present),
         trailingClosure: nil,
         additionalTrailingClosures: nil
       )
 
-      let source = dependencyStatement.syntaxHighlightedHTML(
+      let source = SwiftSyntaxNode(Syntax(dependencyStatement)).syntaxHighlightedHTML(
         inline: false,
         internalIdentifiers: [],
         symbolLinks: [:]
@@ -746,7 +746,7 @@
         links[moduleName] = String(pathToSiteRoot + link)
       }
 
-      let source = importStatement.syntaxHighlightedHTML(
+      let source = SwiftSyntaxNode(Syntax(importStatement)).syntaxHighlightedHTML(
         inline: false,
         internalIdentifiers: [moduleName],
         symbolLinks: links
@@ -790,18 +790,20 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
+      var parserCache = ParserCache()
       if let documentation = extensionStorage[
         symbol.extendedPropertiesIndex,
         default: .default  // @exempt(from: tests) Reachability unknown.
       ].localizedDocumentation[localization],
-        let description = documentation.documentation().descriptionSection
+        let description = documentation.documentation().descriptionSection(cache: &parserCache)
       {
         return generateDescriptionSection(
           contents: StrictString(
             description.renderedHTML(
               localization: localization.code,
               internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks
+              symbolLinks: symbolLinks,
+              parserCache: &parserCache
             )
           )
         )
@@ -919,11 +921,12 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
+      var parserCache = ParserCache()
       guard
         let discussion = extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.documentation().discussionEntries,
+        ].localizedDocumentation[localization]?.documentation().discussionSections(cache: &parserCache),
         ¬discussion.isEmpty
       else {
         return ""
@@ -937,7 +940,8 @@
           paragraph.renderedHTML(
             localization: localization.code,
             internalIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
+            symbolLinks: symbolLinks,
+            parserCache: &parserCache
           )
         )
         if rendered.contains("<h1>".scalars.literal())
@@ -1011,7 +1015,7 @@
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].localizedDocumentation[localization]?.documentation().parameters()
         ?? []
-      let documentedParameters = parameterDocumentation.map { $0.name.text }
+      let documentedParameters = parameterDocumentation.map { $0.name }
 
       if symbol.hasEditableDocumentation(editableModules: editableModules),
         parameters ≠ documentedParameters
@@ -1034,7 +1038,7 @@
       }
       let validatedParameters =
         parameterDocumentation
-        .filter { parameters.contains($0.name.text) }
+        .filter { parameters.contains($0.name) }
 
       let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
       return generateParameterLikeSection(
@@ -1044,11 +1048,12 @@
           .map(
             { (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
               let term = StrictString(
-                entry.name.syntaxHighlightedHTML(
-                  inline: true,
-                  internalIdentifiers: [entry.name.text],
-                  symbolLinks: [:]
-                )
+                SwiftSyntaxNode(Syntax(TokenSyntax(.identifier(entry.name), presence: .present)))
+                  .syntaxHighlightedHTML(
+                    inline: true,
+                    internalIdentifiers: [entry.name],
+                    symbolLinks: [:]
+                  )
               )
 
               let description = entry.description.map({ description in

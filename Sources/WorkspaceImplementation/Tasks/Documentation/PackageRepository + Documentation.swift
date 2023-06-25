@@ -181,17 +181,18 @@
               guard #available(macOS 10.15, *) else {
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
+              var parserCache = ParserCache()
               if let packageName = try? package.packageName(),
                 let documentation =
                   package
                   .documentation(packageName: String(packageName))
                   .resolved(localizations: localizations)
                   .documentation[localization],
-                let description = documentation.documentation().descriptionSection
+                let description = documentation.documentation().descriptionSection(cache: &parserCache)
               {
                 markdown += [
                   "",
-                  StrictString(description.text),
+                  StrictString(description.text()),
                 ]
               }
             }

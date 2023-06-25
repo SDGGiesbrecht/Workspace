@@ -67,7 +67,7 @@
       }
       return true
     }
-     
+
     var cache = ParserCache()
   }
 #endif

@@ -59,7 +59,7 @@ extension DocumentationContent {
     })
     return result
   }
-  
+
   internal func returnsCallout() -> CalloutNode? {
     var result: CalloutNode?
     scanSyntaxTree({ (node, _) in

@@ -506,10 +506,6 @@ let package = Package(
       exact: Version(0, 50800, 0)
     ),
     .package(
-      url: "https://github.com/SDGGiesbrecht/swift\u{2D}markdown",
-      exact: Version(0, 50800, 0)
-    ),
-    .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}docc\u{2D}symbolkit",
       exact: Version(0, 50800, 0)
     ),
@@ -558,7 +554,6 @@ let package = Package(
         .product(name: "SwiftSyntaxParser", package: "swift\u{2D}syntax"),
         .product(name: "SwiftOperators", package: "swift\u{2D}syntax"),
         .product(name: "SwiftParser", package: "swift\u{2D}syntax"),
-        .product(name: "Markdown", package: "swift\u{2D}markdown"),
         .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
         .product(name: "SwiftFormatConfiguration", package: "swift\u{2D}format"),
         .product(name: "SwiftFormat", package: "swift\u{2D}format"),

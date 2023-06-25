@@ -1,6 +1,5 @@
 
 import SDGSwiftSource
-import Markdown
 
 internal struct ParameterDocumentation {
 

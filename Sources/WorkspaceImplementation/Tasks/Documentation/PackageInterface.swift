@@ -29,7 +29,6 @@
   import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
-  import Markdown
 
   import WorkspaceLocalizations
   import WorkspaceConfiguration

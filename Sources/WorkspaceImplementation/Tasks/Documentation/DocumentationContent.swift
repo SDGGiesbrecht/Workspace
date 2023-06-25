@@ -1,3 +1,5 @@
+import SDGLogic
+
 import SDGSwiftSource
 
 extension DocumentationContent {
@@ -54,6 +56,38 @@ extension DocumentationContent {
         }
       }
       return node is MarkdownNode
+    })
+    return result
+  }
+  
+  internal func returnsCallout() -> CalloutNode? {
+    var result: CalloutNode?
+    scanSyntaxTree({ (node, _) in
+      if result ≠ nil {
+        return false
+      } else if let callout = node as? CalloutNode,
+        callout.callout == .returns {
+        result = callout
+        return false
+      } else {
+        return true
+      }
+    })
+    return result
+  }
+
+  internal func throwsCallout() -> CalloutNode? {
+    var result: CalloutNode?
+    scanSyntaxTree({ (node, _) in
+      if result ≠ nil {
+        return false
+      } else if let callout = node as? CalloutNode,
+        callout.callout == .throws {
+        result = callout
+        return false
+      } else {
+        return true
+      }
     })
     return result
   }

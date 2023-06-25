@@ -1056,11 +1056,13 @@
                   )
               )
 
+              var parserCache = ParserCache()
               let description = entry.description.map({ description in
                 description.renderedHTML(
                   localization: localization.code,
                   internalIdentifiers: packageIdentifiers,
-                  symbolLinks: symbolLinks
+                  symbolLinks: symbolLinks,
+                  parserCache: &parserCache
                 )
               })
               return (term: term, description: StrictString(description.joinedAsLines()))
@@ -1082,7 +1084,7 @@
         let callout = extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.documentation().throwsCallout
+        ].localizedDocumentation[localization]?.documentation().throwsCallout()
       else {
         return ""
       }
@@ -1090,13 +1092,15 @@
       var section = [
         ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()
       ]
+      var parserCache = ParserCache()
       for contents in callout.contents {
         section.append(
           StrictString(
             contents.renderedHTML(
               localization: localization.code,
               internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks
+              symbolLinks: symbolLinks,
+              parserCache: &parserCache
             )
           )
         )
@@ -1118,7 +1122,7 @@
         let callout = extensionStorage[
           symbol.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.documentation().returnsCallout
+        ].localizedDocumentation[localization]?.documentation().returnsCallout()
       else {
         return ""
       }
@@ -1126,13 +1130,15 @@
       var section = [
         ElementSyntax("h2", contents: returnsHeading, inline: true).normalizedSource()
       ]
+      var parserCache = ParserCache()
       for contents in callout.contents {
         section.append(
           StrictString(
             contents.renderedHTML(
               localization: localization.code,
               internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks
+              symbolLinks: symbolLinks,
+              parserCache: &parserCache
             )
           )
         )
@@ -2013,16 +2019,18 @@
               inline: true
             ).normalizedSource()
           )
+          var parserCache = ParserCache()
           if let description = extensionStorage[
             child.extendedPropertiesIndex,
             default: .default  // @exempt(from: tests) Reachability unknown.
-          ].localizedDocumentation[localization]?.documentation().descriptionSection {
+          ].localizedDocumentation[localization]?.documentation().descriptionSection(cache: &parserCache) {
             entry.append(
               StrictString(
                 description.renderedHTML(
                   localization: localization.code,
                   internalIdentifiers: packageIdentifiers,
-                  symbolLinks: symbolLinks
+                  symbolLinks: symbolLinks,
+                  parserCache: &parserCache
                 )
               )
             )

@@ -17,6 +17,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SymbolKit
 
+  import SDGSwiftSource
   import SwiftSyntax
   import SwiftSyntaxParser
 
@@ -30,12 +31,16 @@
     ) -> String {
       let tokens = declarationFragments.map({ $0.spelling })
       let parsed =
-        (try? SyntaxParser.parse(source: tokens.joined())).map({ Syntax($0) })
-        ?? Syntax(  // @exempt(from: tests)
-          UnexpectedNodesSyntax(
-            tokens.map({ UnexpectedNodesSyntax.Element(TokenSyntax(.unknown($0))) })
-          )
-        )
+        (try? SwiftSyntaxNode(source: tokens.joined()))
+          ?? SwiftSyntaxNode(Syntax(  // @exempt(from: tests)
+            UnexpectedNodesSyntax(
+              tokens.map({ token in
+                return UnexpectedNodesSyntax.Element(
+                  TokenSyntax(.unknown(token), presence: .present)
+                )
+              })
+            )
+          ))
       return parsed.syntaxHighlightedHTML(
         inline: inline,
         internalIdentifiers: internalIdentifiers,

@@ -654,8 +654,8 @@
         calledExpression: ExprSyntax(
           MemberAccessExprSyntax(
             base: ExprSyntax(MissingSyntax()),
-            dot: TokenSyntax(.period),
-            name: TokenSyntax(.identifier("product")),
+            dot: TokenSyntax(.period, presence: .present),
+            name: TokenSyntax(.identifier("product"), presence: .present),
             declNameArguments: nil
           )
         ),
@@ -663,32 +663,32 @@
         argumentList: TupleExprElementListSyntax([
           TupleExprElementSyntax(
             label: TokenSyntax(.identifier("name")),
-            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1)),
+            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1), presence: .present),
             expression: ExprSyntax(
               StringLiteralExprSyntax(
-                openQuote: TokenSyntax(.stringQuote),
+                openQuote: TokenSyntax(.stringQuote, presence: .present),
                 segments: StringLiteralSegmentsSyntax([
                   .stringSegment(
-                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(libraryName)))
+                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(libraryName), presence: .present))
                   )
                 ]),
-                closeQuote: TokenSyntax(.stringQuote)
+                closeQuote: TokenSyntax(.stringQuote, presence: .present)
               )
             ),
-            trailingComma: TokenSyntax(.comma, trailingTrivia: .spaces(1))
+            trailingComma: TokenSyntax(.comma, trailingTrivia: .spaces(1), presence: .present)
           ),
           TupleExprElementSyntax(
             label: TokenSyntax(.identifier("package")),
-            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1)),
+            colon: TokenSyntax(.colon, trailingTrivia: .spaces(1), presence: .present),
             expression: ExprSyntax(
               StringLiteralExprSyntax(
-                openQuote: TokenSyntax(.stringQuote),
+                openQuote: TokenSyntax(.stringQuote, presence: .present),
                 segments: StringLiteralSegmentsSyntax([
                   .stringSegment(
-                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(packageName)))
+                    StringSegmentSyntax(content: TokenSyntax(.stringSegment(packageName), presence: .present))
                   )
                 ]),
-                closeQuote: TokenSyntax(.stringQuote)
+                closeQuote: TokenSyntax(.stringQuote, presence: .present)
               )
             ),
             trailingComma: nil
@@ -728,11 +728,11 @@
       let importStatement = ImportDeclSyntax(
         attributes: nil,
         modifiers: nil,
-        importTok: TokenSyntax(.importKeyword, trailingTrivia: .spaces(1)),
+        importTok: TokenSyntax(.importKeyword, trailingTrivia: .spaces(1), presence: .present),
         importKind: nil,
         path: AccessPathSyntax([
           AccessPathComponentSyntax(
-            name: TokenSyntax(.identifier(moduleName)),
+            name: TokenSyntax(.identifier(moduleName), presence: .present),
             trailingDot: nil
           )
         ])

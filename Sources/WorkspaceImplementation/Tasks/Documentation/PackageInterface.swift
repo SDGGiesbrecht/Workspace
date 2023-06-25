@@ -1350,11 +1350,14 @@
           let pageTitle = title(localization)
           let pagePath = location(localization)
 
-          let pageContent = Document(parsing: String(specifiedContent))
+          var parserCache = ParserCache()
+          let pageContent = MarkdownNode(source: String(specifiedContent))
             .renderedHTML(
               localization: localization.code,
+              internalIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!
-                .mapValues({ String(pathToSiteRoot) + $0 })
+                .mapValues({ String(pathToSiteRoot) + $0 }),
+              parserCache: &parserCache
             )
 
           let page = Page(

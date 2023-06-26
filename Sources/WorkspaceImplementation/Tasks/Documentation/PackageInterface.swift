@@ -708,7 +708,7 @@
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
             return "Processing API..."
           case .deutschDeutschland:
-            return "Die Programmierschnitstelle wird verarbeitet ..."
+            return "Die Programmierschnittstelle wird verarbeitet ..."
           }
         }).resolved()
       )

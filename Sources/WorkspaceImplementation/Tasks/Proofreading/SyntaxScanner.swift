@@ -68,6 +68,6 @@
       return true
     }
 
-    var cache = ParserCache()
+    internal var cache = ParserCache()
   }
 #endif

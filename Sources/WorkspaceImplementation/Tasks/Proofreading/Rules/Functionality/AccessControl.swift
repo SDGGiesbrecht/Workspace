@@ -166,7 +166,7 @@
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      guard ¬context.isCompiled() else {
+      guard context.isCompiled() else {
         return  // Documentation example
       }
 

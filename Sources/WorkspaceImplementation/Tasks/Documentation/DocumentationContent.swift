@@ -55,7 +55,7 @@ extension DocumentationContent {
           )
         }
       }
-      return node is MarkdownNode
+      return ¬(node is SwiftSyntaxNode)  // Prevent scanning into example code.
     })
     return result
   }

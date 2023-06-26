@@ -162,9 +162,9 @@
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A symbol has mismatched parameter descriptions:"
+            return "A symbol has mismatched parameter descriptions: \(parameters.joined(separator: ", "))"
           case .deutschDeutschland:
-            return "Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen."
+            return "Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: \(parameters.joined(separator: ", "))"
           }
         }),
         with: symbol,

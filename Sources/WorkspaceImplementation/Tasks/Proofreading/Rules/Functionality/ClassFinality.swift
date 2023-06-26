@@ -67,7 +67,8 @@
       case .library:
         if let `public` = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
           `public`.tokenKind == .publicKeyword,
-          let modifiers = `public`.parent?.as(ModifierListSyntax.self),
+          let modifier = `public`.parent(as: DeclModifierSyntax.self, ifIsChildAt: \.name),
+          let modifiers = modifier.parent?.as(ModifierListSyntax.self),
           let _ = modifiers.parent(as: ClassDeclSyntax.self, ifIsChildAt: \.modifiers),
           ¬modifiers.contains(where: { $0.name.text == "final" }) {
 

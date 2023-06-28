@@ -58,7 +58,8 @@
       output: Command.Output
     ) {
 
-      if let token = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+      if node is Token,
+        let token = (context.globalAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
         let entry = token.parent?.asProtocol(WithTrailingCommaSyntax.self),
         token.indexInParent == entry.trailingComma?.indexInParent,
         let list = entry.parent,

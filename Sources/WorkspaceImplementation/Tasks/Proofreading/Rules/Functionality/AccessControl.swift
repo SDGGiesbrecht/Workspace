@@ -73,7 +73,7 @@
     ) {
       let modifiers: ModifierListSyntax?
       let declaration: SyntaxProtocol
-      if let withoutTrivia = node as? Token,
+      if node is Token,
         let parent = (context.globalAncestors.last?.node as? SwiftSyntaxNode),
         let token = parent.swiftSyntaxNode.as(TokenSyntax.self) {
         if let structure = token.parent(as: StructDeclSyntax.self, ifIsChildAt: \.identifier) {

@@ -391,12 +391,29 @@
                 }
               }
 
+              #warning("Debugging...")
+              var output: [String] = []
+              var finish = false
+              func gather(_ line: inout String) {
+                postprocess(&line)
+                if location.lastPathComponent == "BadStyle",
+                  command == ["proofread"] {
+                    finish = true
+                    output.append(line)
+                }
+              }
+              defer {
+                if finish {
+                  print(output.joined(separator: "\n"))
+                }
+              }
+
               testCommand(
                 Workspace.command,
                 with: command,
                 localizations: localizations,
                 uniqueTestName: specificationName,
-                postprocess: postprocess,
+                postprocess: gather,
                 overwriteSpecificationInsteadOfFailing:
                   overwriteSpecificationInsteadOfFailing,
                 file: file,

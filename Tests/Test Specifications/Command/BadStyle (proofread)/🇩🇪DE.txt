@@ -164,8 +164,9 @@ Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle
 func callout() {}
 
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
-Zeile 6
+Zeile 5
 Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
+private let bad: (String) -> Void = {
     parameter in // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift

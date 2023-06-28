@@ -166,8 +166,9 @@ Every symbol in a library should have access control. (accessControl)
 func callout() {}
 
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
-Line 6
+Line 5
 A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
+private let bad: (String) -> Void = {
     parameter in // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift

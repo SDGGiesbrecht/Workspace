@@ -43,7 +43,7 @@ extension DocumentationContent {
       .lazy.filter({ node in
         #warning("Debugging...")
         if node.text().contains("Parameters:") {
-          print("node:", type(of: node), ((node as? MarkdownNode)?.markdown).map({ type(of: $0) }))
+          print("node:", type(of: node), ((node as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(node.text())”")
         }
         return true
       }) {

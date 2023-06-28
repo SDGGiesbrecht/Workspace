@@ -47,7 +47,7 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 14
 
 
-A symbol has mismatched parameter descriptions:
+A symbol has mismatched parameter descriptions: paramOne, parameterTwo
 mismatchedParameters(parameterOne:).zxx
 (Expected: parameterOne)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift

@@ -47,7 +47,7 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 14
 
 
-Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen.
+Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: paramOne, parameterTwo
 mismatchedParameters(parameterOne:).zxx
 (Erwartete: parameterOne)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift

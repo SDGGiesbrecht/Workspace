@@ -139,10 +139,6 @@ Every symbol in a library should have access control. (accessControl)
 func unfinished() {
 
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
-Line 16
-Every symbol in a library should have access control. (accessControl)
-func testAsterisms() {}
-
 Line 9
 Markdown asterisms should be composed of asterisks. (asterisms)
 /// ---
@@ -153,15 +149,19 @@ Markdown asterisms should be composed of asterisks. (asterisms)
 /// ___
 /// ***
 
-Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
-Line 6
+Line 16
 Every symbol in a library should have access control. (accessControl)
-func callout() {}
+func testAsterisms() {}
 
+Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Line 5
 Callouts should be capitalized. (calloutCasing)
 /// - warning: This should trigger. It should have been capitalized.
 /// - Warning: This should trigger. It should have been capitalized.
+
+Line 6
+Every symbol in a library should have access control. (accessControl)
+func callout() {}
 
 Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Line 6
@@ -183,10 +183,6 @@ List separators should only occur between list elements. (listSeparation)
   3 // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
-Line 12
-Every symbol in a library should have access control. (accessControl)
-func testHeadings() {}
-
 Line 8
 Markdown headings should use number signs. (markdownHeadings)
 /// -----------------------------------------
@@ -195,20 +191,20 @@ Line 11
 Markdown headings should use number signs. (markdownHeadings)
 /// =========================================
 
-Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
-Line 6
+Line 12
 Every symbol in a library should have access control. (accessControl)
-func parameters(one: Bool, two: Bool) {}
+func testHeadings() {}
 
+Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Line 5
 Parameters should be grouped under a single callout. (parameterGrouping)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
-Sources/BadStyle/Rules/Text Style/Bullets.swift
-Line 12
+Line 6
 Every symbol in a library should have access control. (accessControl)
-func testBullets() {}
+func parameters(one: Bool, two: Bool) {}
 
+Sources/BadStyle/Rules/Text Style/Bullets.swift
 Line 7
 Markdown lists should use ASCII bullets. (bullets)
 /// * Should trigger; asterisks aren’t bullets.
@@ -219,11 +215,11 @@ Markdown lists should use ASCII bullets. (bullets)
 /// + Should trigger; plus signs aren’t bullets.
 /// - Should trigger; plus signs aren’t bullets.
 
-Sources/BadStyle/Rules/Text Style/Unicode.swift
-Line 20
+Line 12
 Every symbol in a library should have access control. (accessControl)
-func −(lhs: Int, rhs: Int) -> Int {
+func testBullets() {}
 
+Sources/BadStyle/Rules/Text Style/Unicode.swift
 Line 5
 The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 // "These quotation marks are generic and should trigger."
@@ -248,6 +244,10 @@ Line 19
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 /// - RecommendedOver: -
 
+Line 20
+Every symbol in a library should have access control. (accessControl)
+func −(lhs: Int, rhs: Int) -> Int {
+
 Line 24
 Every symbol in a library should have access control. (accessControl)
 func useNumeric() -> Int {
@@ -259,10 +259,6 @@ let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in 
 Line 35
 Every symbol in a library should have access control. (accessControl)
 func shellSource() {
-
-Line 57
-Every symbol in a library should have access control. (accessControl)
-let x = a * b // Trigger, because this is not a multiplication sign.
 
 Line 41
 The character U+0027 is obsolete. Use an apostrophe (’), quotation marks (‘, ’), degrees (°) or prime (′). (unicode)
@@ -298,13 +294,13 @@ The character sequence “>=” is obsolete. Use the greater‐than‐or‐equal
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
 Line 57
+Every symbol in a library should have access control. (accessControl)
+let x = a * b // Trigger, because this is not a multiplication sign.
+
+Line 57
 The character “*” is obsolete. Use the multiplication sign (×). (Create an alias if necessary.) (unicode)
 let x = a * b // Trigger, because this is not a multiplication sign.
 let x = a × b // Trigger, because this is not a multiplication sign.
-
-Line 59
-Every symbol in a library should have access control. (accessControl)
-let x = a / b // Trigger, because this is not a division sign.
 
 Line 58
 The character sequence “*=” is obsolete. Use the multiplication sign (×). (unicode)
@@ -312,18 +308,22 @@ The character sequence “*=” is obsolete. Use the multiplication sign (×). (
 // Trigger, because this is not a multiplication sign: a ×= b
 
 Line 59
+Every symbol in a library should have access control. (accessControl)
+let x = a / b // Trigger, because this is not a division sign.
+
+Line 59
 The character “/” is obsolete. Use the division sign (÷). (Create an alias if necessary.) (unicode)
 let x = a / b // Trigger, because this is not a division sign.
 let x = a ÷ b // Trigger, because this is not a division sign.
-
-Line 64
-Every symbol in a library should have access control. (accessControl)
-let x = y - z // This should trigger and mention aliasing.
 
 Line 60
 The character sequence “/=” is obsolete. Use the division sign (÷). (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
+
+Line 64
+Every symbol in a library should have access control. (accessControl)
+let x = y - z // This should trigger and mention aliasing.
 
 Line 64
 The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (Create an alias if necessary.) (unicode)

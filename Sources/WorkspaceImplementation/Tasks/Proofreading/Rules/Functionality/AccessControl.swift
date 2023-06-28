@@ -71,13 +71,11 @@
       file: TextFile,
       status: ProofreadingStatus
     ) {
-      guard let node = node as? SwiftSyntaxNode else {
-        return
-      }
-
       let modifiers: ModifierListSyntax?
       let declaration: SyntaxProtocol
-      if let token = node.swiftSyntaxNode.as(TokenSyntax.self) {
+      if let withoutTrivia = node as? Token,
+        let parent = (context.globalAncestors.last?.node as? SwiftSyntaxNode),
+        let token = parent.swiftSyntaxNode.as(TokenSyntax.self) {
         if let structure = token.parent(as: StructDeclSyntax.self, ifIsChildAt: \.identifier) {
           modifiers = structure.modifiers
           declaration = structure
@@ -105,7 +103,8 @@
         } else {
           return
         }
-      } else if let bindings = node.swiftSyntaxNode.as(PatternBindingListSyntax.self) {
+      } else if let syntax = node as? SwiftSyntaxNode,
+        let bindings = syntax.swiftSyntaxNode.as(PatternBindingListSyntax.self) {
         if let variable = bindings.parent(as: VariableDeclSyntax.self, ifIsChildAt: \.bindings) {
           modifiers = variable.modifiers
           declaration = variable

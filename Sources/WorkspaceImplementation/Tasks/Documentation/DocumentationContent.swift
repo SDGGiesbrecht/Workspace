@@ -48,8 +48,8 @@ extension DocumentationContent {
           markdown.markdown is UnorderedList {
           return markdown.children(cache: &cache).map { child in
             #warning("Debugging...")
-            if node.text().contains("Parameters:") {
-              print("node:", type(of: node), ((node as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(node.text())”")
+            if child.text().contains("Parameters:") {
+              print("child:", type(of: child), ((child as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(child.text())”")
             }
             return child
           }

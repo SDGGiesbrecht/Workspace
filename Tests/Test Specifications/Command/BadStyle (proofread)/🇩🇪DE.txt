@@ -294,7 +294,6 @@ Die Schriftzeichenfolge “>=” ist überholt. Ein größer‐als‐oder‐gl
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a >= b
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
-
 Zeile 57
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 let x = a * b // Trigger, because this is not a multiplication sign.

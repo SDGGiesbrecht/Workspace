@@ -34,7 +34,7 @@ Resources:1:1: warning: Resources now belong inside the target directory. (depre
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:16:6: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:5:7: warning: Callouts should be capitalised. (calloutCasing)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:6:6: warning: Every symbol in a library should have access control. (accessControl)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift:6:5: warning: A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift:5:38: warning: A closure’s signature should be on the same line as its opening brace. (closureSignaturePosition)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift:1:5: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift:4:4: warning: List separators should only occur between list elements. (listSeparation)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift:8:5: warning: Markdown headings should use number signs. (markdownHeadings)

@@ -34,7 +34,7 @@ Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überh
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/Asterisms.swift:16:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:5:7: warning: Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift:6:6: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift:6:5: warning: Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
+[Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift:5:38: warning: Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift:1:5: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift:4:4: warning: Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
 [Temporary]/BadStyle/Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift:8:5: warning: Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)

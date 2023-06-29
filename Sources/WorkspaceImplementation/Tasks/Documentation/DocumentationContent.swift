@@ -19,6 +19,7 @@
 import SDGLogic
 
 import SDGSwiftSource
+import Markdown
 
 extension DocumentationContent {
 
@@ -42,12 +43,19 @@ extension DocumentationContent {
       .children(cache: &cache)
       // Drop first paragraph and paragraph break.
       .dropFirst(2)
-      .lazy.filter({ node in
-        #warning("Debugging...")
-        if node.text().contains("Parameters:") {
-          print("node:", type(of: node), ((node as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(node.text())”")
+      .lazy.flatMap({ (node) -> [SyntaxNode] in
+        if let markdown = node as? MarkdownNode,
+          markdown.markdown is UnorderedList {
+          return markdown.children(cache: &cache).map { child in
+            #warning("Debugging...")
+            if node.text().contains("Parameters:") {
+              print("node:", type(of: node), ((node as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(node.text())”")
+            }
+            return child
+          }
+        } else {
+          return [node]
         }
-        return true
       }) {
         return Array(result)
     } else {

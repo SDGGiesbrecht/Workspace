@@ -391,24 +391,12 @@
                 }
               }
 
-              #warning("Debugging...")
-              var output: [String] = []
-              var finish = false
-              func gather(_ line: inout String) {
-                postprocess(&line)
-              }
-              defer {
-                if finish {
-                  print(output.joined(separator: "\n"))
-                }
-              }
-
               testCommand(
                 Workspace.command,
                 with: command,
                 localizations: localizations,
                 uniqueTestName: specificationName,
-                postprocess: gather,
+                postprocess: postprocess,
                 overwriteSpecificationInsteadOfFailing:
                   overwriteSpecificationInsteadOfFailing,
                 file: file,

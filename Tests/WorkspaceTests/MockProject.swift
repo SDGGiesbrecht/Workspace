@@ -397,11 +397,6 @@
               func gather(_ line: inout String) {
                 postprocess(&line)
                 if location.lastPathComponent == "BadStyle",
-                  command == ["proofread"] {
-                    finish = true
-                    output.append(line)
-                }
-                if location.lastPathComponent == "BadStyle",
                   command == ["proofread", "•xcode"] {
                     finish = true
                     output.append(line)

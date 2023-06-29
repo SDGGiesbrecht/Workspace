@@ -65,7 +65,8 @@
 
       switch setting {
       case .library:
-        if let `public` = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+        if node is Token,
+          let `public` = (context.globalAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
           `public`.tokenKind == .publicKeyword,
           let modifier = `public`.parent(as: DeclModifierSyntax.self, ifIsChildAt: \.name),
           let modifiers = modifier.parent?.as(ModifierListSyntax.self),

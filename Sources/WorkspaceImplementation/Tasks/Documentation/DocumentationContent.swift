@@ -17,6 +17,7 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 
 import SDGLogic
+import SDGCollections
 
 import SDGSwiftSource
 import Markdown
@@ -46,12 +47,12 @@ extension DocumentationContent {
       .lazy.flatMap({ (node) -> [SyntaxNode] in
         if let markdown = node as? MarkdownNode,
           markdown.markdown is UnorderedList {
-          return markdown.children(cache: &cache).map { child in
-            #warning("Debugging...")
-            if child.text().contains("Parameters:") {
-              print("child:", type(of: child), ((child as? MarkdownNode)?.markdown).map({ type(of: $0) }), "“\(child.text())”")
+          return markdown.children(cache: &cache).filter { child in
+            if let callout = child as? CalloutNode,
+              callout.callout ∈ Set([.parameters, .parameter, .returns, .throws]) {
+              return false
             }
-            return child
+            return true
           }
         } else {
           return [node]

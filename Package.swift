@@ -837,6 +837,14 @@ where target.type != .plugin {  // @exempt(from: unicode)
     switch dependency {
     case .productItem(let name, let package, let moduleAliases, _):
       switch name {
+      // #workaround(swift-markdown 0.50800.0, Does not compile for web.) @exempt(from: unicode)
+      case "Markdown":
+        return .productItem(
+          name: name,
+          package: package,
+          moduleAliases: moduleAliases,
+          condition: .when(platforms: [.macOS, .windows, .linux, .tvOS, .iOS, .android, .watchOS])
+        )
       // #workaround(swift-format 0.50800.0, Does not compile for web.) @exempt(from: unicode)
       case "SwiftFormat":
         return .productItem(

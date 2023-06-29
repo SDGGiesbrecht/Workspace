@@ -49,7 +49,7 @@ extension DocumentationContent {
           markdown.markdown is UnorderedList {
           return markdown.children(cache: &cache).filter { child in
             if let callout = child as? CalloutNode,
-               callout.callout ∈ Set([.parameters, .parameter, .returns, .throws, .recommended, .recommendedOver, .localizationKey]) {
+               callout.callout ∈ Set([.parameters, .parameter, .returns, .throws, .localizationKey, .keyword, .recommended, .recommendedOver]) {
               return false
             }
             return true

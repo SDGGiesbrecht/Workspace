@@ -396,16 +396,6 @@
               var finish = false
               func gather(_ line: inout String) {
                 postprocess(&line)
-                if location.lastPathComponent == "BadStyle",
-                  command == ["proofread", "•xcode"] {
-                    finish = true
-                    output.append(line)
-                }
-                if location.lastPathComponent == "CheckedInDocumentation",
-                  command == ["validate", "•job", "miscellaneous"] {
-                    finish = true
-                    output.append(line)
-                }
               }
               defer {
                 if finish {

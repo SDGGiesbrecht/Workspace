@@ -74,7 +74,7 @@ extension DocumentationContent {
               result.append(
                 ParameterDocumentation(
                   name: entry.parameterName.text(),
-                  description: entry.contents.compactMap({ ($0 as? MarkdownNode) })
+                  description: entry.contents
                 )
               )
             }
@@ -84,7 +84,7 @@ extension DocumentationContent {
           result.append(
             ParameterDocumentation(
               name: name.text(),
-              description: callout.contents.compactMap({ ($0 as? MarkdownNode) })
+              description: callout.contents
             )
           )
         }

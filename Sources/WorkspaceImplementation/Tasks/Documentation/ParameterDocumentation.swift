@@ -20,5 +20,5 @@ internal struct ParameterDocumentation {
 
   internal let name: String
 
-  internal let description: [MarkdownNode]
+  internal let description: [SyntaxNode]
 }

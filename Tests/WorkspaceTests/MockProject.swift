@@ -406,6 +406,11 @@
                     finish = true
                     output.append(line)
                 }
+                if location.lastPathComponent == "CheckedInDocumentation",
+                  command == ["validate", "•job", "miscellaneous"] {
+                    finish = true
+                    output.append(line)
+                }
               }
               defer {
                 if finish {

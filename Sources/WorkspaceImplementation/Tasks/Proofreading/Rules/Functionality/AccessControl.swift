@@ -16,6 +16,7 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
   import SDGLogic
+  import SDGMathematics
   import SDGCollections
   import SDGText
   import SDGLocalization
@@ -143,10 +144,15 @@
     ) {
       if let modifier = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(DeclModifierSyntax.self) {
         if modifier.name.text ∈ highLevels {
+          let leadingTrivia = modifier.leadingTrivia.map({ TriviaNode($0) })?.text() ?? ""
+          let trailingTrivia = modifier.trailingTrivia.map({ TriviaNode($0) })?.text() ?? ""
+          let withoutTrivia = context.location.lowerBound + leadingTrivia.scalars.count
+            ..< context.location.upperBound − trailingTrivia.scalars.count
+
           reportViolation(
             in: file,
-            at: context.location,
-            replacementSuggestion: "",
+            at: withoutTrivia,
+            replacementSuggestion: StrictString(),
             message: otherMessage,
             status: status
           )

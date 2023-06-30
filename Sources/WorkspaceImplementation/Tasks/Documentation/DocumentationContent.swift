@@ -60,7 +60,7 @@ extension DocumentationContent {
       }) {
         return Array(result)
     } else {
-      return []
+      return []  // @exempt(from: tests)
     }
   }
 

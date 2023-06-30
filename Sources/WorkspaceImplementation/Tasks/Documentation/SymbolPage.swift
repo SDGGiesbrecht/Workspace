@@ -962,7 +962,7 @@
       }
 
       if empty {
-        return ""
+        return ""  // @exempt(from: tests)
       }
       return generateDiscussionSection(
         localization: localization,

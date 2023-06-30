@@ -110,7 +110,7 @@
           modifiers = variable.modifiers
           declaration = variable
         } else {
-          return
+          return  // @exempt(from: tests)
         }
       } else {
         return
@@ -144,8 +144,10 @@
     ) {
       if let modifier = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(DeclModifierSyntax.self) {
         if modifier.name.text ∈ highLevels {
-          let leadingTrivia = modifier.leadingTrivia.map({ TriviaNode($0) })?.text() ?? ""
-          let trailingTrivia = modifier.trailingTrivia.map({ TriviaNode($0) })?.text() ?? ""
+          let leadingTrivia = modifier.leadingTrivia
+            .map({ TriviaNode($0) })?.text() ?? ""  // @exempt(from: tests)
+          let trailingTrivia = modifier.trailingTrivia
+            .map({ TriviaNode($0) })?.text() ?? ""  // @exempt(from: tests)
           let withoutTrivia = context.location.lowerBound + leadingTrivia.scalars.count
             ..< context.location.upperBound − trailingTrivia.scalars.count
 

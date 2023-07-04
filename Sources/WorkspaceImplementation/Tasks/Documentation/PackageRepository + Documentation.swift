@@ -303,15 +303,6 @@
       coverageCheckOnly: Bool
     ) throws {
 
-      if ProcessInfo.isInContinuousIntegration {
-        DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
-          while true {  // @exempt(from: tests)
-            print("...")
-            Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
-          }
-        }
-      }
-
       let configuration = try self.configuration(output: output)
       let copyright = try resolvedCopyright(
         documentationStatus: documentationStatus,
@@ -338,6 +329,19 @@
 
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
+
+      let bundleName = String(try projectName(in: developmentLocalization, output: output))
+      if ¬coverageCheckOnly {
+        _ = try SwiftCompiler.assembleDocumentation(
+          in: outputDirectory,
+          name: bundleName,
+          symbolGraphs: api.symbolGraphs(),
+          hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/doccexperiment)
+          reportProgress: { output.print($0) }
+        ).get()
+        return
+      }
+      #warning("Determine if any configuration options should be deprecated.")
 
       let interface = PackageInterface(
         localizations: localizations,
@@ -383,6 +387,7 @@
       try siteJavaScript.contents.save(
         to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
       )
+      #warning("↑ Working backwards from here.")
 
       try preventJekyllInterference(outputDirectory: outputDirectory)
     }

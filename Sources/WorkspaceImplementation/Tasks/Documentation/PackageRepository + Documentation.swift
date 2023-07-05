@@ -369,26 +369,11 @@
         output: output,
         coverageCheckOnly: coverageCheckOnly
       )
+      #warning("↑ Working backwards from here.")
     }
 
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL) throws {
-
-      try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-      try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
-      var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
-      siteCSS.header = ""
-      try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
-      var siteJavaScript = TextFile(
-        mockFileWithContents: Resources.script,
-        fileType: .javaScript
-      )
-      siteJavaScript.header = ""
-      try siteJavaScript.contents.save(
-        to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
-      )
-      #warning("↑ Working backwards from here.")
-
       try preventJekyllInterference(outputDirectory: outputDirectory)
     }
 

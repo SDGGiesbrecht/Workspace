@@ -99,8 +99,6 @@ class InternalTests: TestCase {
 
   func testResources() {
     _ = WorkspaceImplementation.Resources.page
-    _ = WorkspaceImplementation.Resources.script
-    _ = WorkspaceImplementation.Resources.site
 
     _ = WorkspaceImplementation.Resources.apache2_0
     _ = WorkspaceImplementation.Resources.copyright

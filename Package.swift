@@ -567,8 +567,6 @@ let package = Package(
       ],
       resources: [
         .copy("Tasks/Documentation/Site Components/Page.html"),
-        .copy("Tasks/Documentation/Site Components/Script.js"),
-        .copy("Tasks/Documentation/Site Components/Site.css"),
         .copy("Tasks/Licence/Licences/Apache 2.0.md"),
         .copy("Tasks/Licence/Licences/Copyright.md"),
         .copy("Tasks/Licence/Licences/GNU General Public 3.0.md"),

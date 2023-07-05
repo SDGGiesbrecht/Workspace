@@ -339,6 +339,7 @@
           hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/sdglogic)
           reportProgress: { output.print($0) }
         ).get()
+        
         return
       }
       #warning("Determine if any configuration options should be deprecated.")

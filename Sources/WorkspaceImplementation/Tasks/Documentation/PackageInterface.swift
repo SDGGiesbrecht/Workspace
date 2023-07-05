@@ -902,8 +902,7 @@
         status: status,
         output: output
       )
-
-      try outputRedirects(to: outputDirectory, customReplacements: customReplacements)
+      #warning("↑ Working backwards from here.")
     }
 
     private func outputPackagePages(
@@ -1392,63 +1391,6 @@
           )
           let url = outputDirectory.appendingPathComponent(String(location(localization)))
           try page.contents.save(to: url)
-        }
-      }
-    }
-
-    private func outputRedirects(
-      to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)]
-    ) throws {
-      // Out of directories.
-      var handled = Set<URL>()
-      for url in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
-        try purgingAutoreleased {
-          var directory = url.deletingLastPathComponent()
-          while directory ∉ handled,
-            directory.is(in: outputDirectory)
-          {
-            defer {
-              handled.insert(directory)
-              directory = directory.deletingLastPathComponent()
-            }
-
-            let redirect = directory.appendingPathComponent("index.html")
-            if (try? redirect.checkResourceIsReachable()) ≠ true {
-              // Do not overwrite if there is a file name clash.
-              try DocumentSyntax.redirect(
-                language: LocalizationIdentifier.localization(of: url, in: outputDirectory),
-                target: URL(fileURLWithPath: "../index.html")
-              ).source().save(to: redirect)
-            }
-          }
-        }
-      }
-
-      // To home page.
-      let root = outputDirectory.appendingPathComponent("index.html")
-      try DocumentSyntax.redirect(
-        language: LocalizationIdentifier.localization(of: root, in: outputDirectory),
-        target: URL(
-          fileURLWithPath: String(developmentLocalization._directoryName) + "/index.html"
-        )
-      ).source().save(to: root)
-      for localization in localizations {
-        let localizationDirectory = outputDirectory.appendingPathComponent(
-          String(localization._directoryName)
-        )
-        let redirectURL = localizationDirectory.appendingPathComponent("index.html")
-        let pageURL = api.pageURL(
-          in: outputDirectory,
-          for: localization,
-          customReplacements: customReplacements,
-          extensionStorage: extensionStorage
-        )!
-        if redirectURL ≠ pageURL {
-          try DocumentSyntax.redirect(
-            language: AnyLocalization(code: localization.code),
-            target: URL(fileURLWithPath: pageURL.lastPathComponent)
-          ).source().save(to: redirectURL)
         }
       }
     }

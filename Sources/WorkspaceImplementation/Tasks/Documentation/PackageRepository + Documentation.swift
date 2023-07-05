@@ -335,8 +335,8 @@
         _ = try SwiftCompiler.assembleDocumentation(
           in: outputDirectory,
           name: bundleName,
-          symbolGraphs: api.symbolGraphs(),
-          hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/doccexperiment)
+          symbolGraphs: api.symbolGraphs().map({ $0.origin }),
+          hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/sdglogic)
           reportProgress: { output.print($0) }
         ).get()
         return

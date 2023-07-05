@@ -23,7 +23,7 @@
     internal func extensions() -> [Extension] {
       var unprocessedExtensionIdentifiers: [String: String] = [:]
       for graph in self.symbolGraphs {
-        for relationship in graph.relationships
+        for relationship in graph.graph.relationships
         where relationship.kind == .memberOf {
           unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
         }
@@ -31,8 +31,8 @@
       var extensionIdentifiers: Set<String> = Set(unprocessedExtensionIdentifiers.keys)
       var symbolLookup: [String: SymbolGraph.Symbol] = [:]
       for graph in self.symbolGraphs {
-        symbolLookup.mergeByOverwriting(from: graph.symbols)
-        for symbol in graph.symbols.values {
+        symbolLookup.mergeByOverwriting(from: graph.graph.symbols)
+        for symbol in graph.graph.symbols.values {
           extensionIdentifiers.remove(symbol.identifier.precise)
         }
       }

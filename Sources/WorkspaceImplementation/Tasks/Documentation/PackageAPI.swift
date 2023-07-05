@@ -46,8 +46,8 @@
           extensionStorage[child.extendedPropertiesIndex, default: .default].homeModule = module
         }
         for graph in module.symbolGraphs {
-          symbolLookup.mergeByOverwriting(from: graph.symbols)
-          for symbol in graph.symbols.values {
+          symbolLookup.mergeByOverwriting(from: graph.graph.symbols)
+          for symbol in graph.graph.symbols.values {
             handle(child: symbol)
             switch symbol.kind.identifier {
             case .associatedtype, .deinit, .case, .`init`, .ivar, .macro, .method, .property,
@@ -55,7 +55,7 @@
               .module:
               break
             case .class, .enum, .struct, .typealias:
-              if ¬graph.relationships.contains(where: { relationship in
+              if ¬graph.graph.relationships.contains(where: { relationship in
                 switch relationship.kind {
                 case .memberOf:
                   return relationship.source == symbol.identifier.precise
@@ -68,7 +68,7 @@
             case .func:
               functions.append(symbol)
             case .operator:
-              if ¬graph.relationships.contains(where: { relationship in
+              if ¬graph.graph.relationships.contains(where: { relationship in
                 switch relationship.kind {
                 case .memberOf:
                   return relationship.source == symbol.identifier.precise
@@ -87,7 +87,7 @@
               symbol.kind.identifier.warnUnknown()
             }
           }
-          for relationship in graph.relationships
+          for relationship in graph.graph.relationships
           where relationship.kind == .memberOf {
             unprocessedExtensionIdentifiers[relationship.target] = relationship.targetFallback
           }
@@ -145,7 +145,7 @@
     internal func identifierList() -> Set<String> {
       var result: Set<String> = []
       for graph in symbolGraphs() {
-        for (_, symbol) in graph.symbols {
+        for (_, symbol) in graph.graph.symbols {
           if let declaration = symbol.declaration {
             for fragment in declaration.declarationFragments {
               switch fragment.kind {

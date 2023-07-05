@@ -94,7 +94,7 @@
           projectRoot: projectRoot,
           localization: localization,
           editableModules: editableModules,
-          graphs: package.symbolGraphs(),
+          graphs: package.symbolGraphs().map({ $0.graph }),
           packageIdentifiers: packageIdentifiers,
           symbolLinks: adjustedSymbolLinks,
           status: status
@@ -1968,7 +1968,7 @@
         if let `extension` = child as? Extension {
           var baseType: SymbolGraph.Symbol?
           for graph in package.symbolGraphs() {
-            for symbol in graph.symbols.values {
+            for symbol in graph.graph.symbols.values {
               if symbol.identifier.precise == `extension`.identifier.precise {
                 baseType = symbol  // @exempt(from: tests) Reachability unknown.
               }

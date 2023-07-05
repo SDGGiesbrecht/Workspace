@@ -398,11 +398,11 @@
       case let symbol as SymbolGraph.Symbol:
         var result: [SymbolGraph.Symbol] = []
         for graph in package.symbolGraphs() {
-          for relationship in graph.relationships {
+          for relationship in graph.graph.relationships {
             switch relationship.kind {
             case .memberOf, .requirementOf, .optionalRequirementOf:
               if relationship.target == symbol.identifier.precise,
-                let child = graph.symbols[relationship.source],
+                let child = graph.graph.symbols[relationship.source],
                 ¬result.contains(where: { $0.identifier.precise == child.identifier.precise })
               {
                 result.append(child)
@@ -420,8 +420,8 @@
       case let module as ModuleAPI:
         var result: [SymbolLike] = []
         for graph in module.symbolGraphs {
-          for (_, symbol) in graph.symbols {
-            if ¬graph.relationships.contains(where: { relationship in
+          for (_, symbol) in graph.graph.symbols {
+            if ¬graph.graph.relationships.contains(where: { relationship in
               guard relationship.source == symbol.identifier.precise else {
                 return false
               }
@@ -443,11 +443,11 @@
       case let `extension` as Extension:
         var result: [SymbolGraph.Symbol] = []
         for graph in package.symbolGraphs() {
-          for relationship in graph.relationships {
+          for relationship in graph.graph.relationships {
             switch relationship.kind {
             case .memberOf, .requirementOf, .optionalRequirementOf:
               if relationship.targetFallback == `extension`.names.title,
-                let child = graph.symbols[relationship.source],
+                let child = graph.graph.symbols[relationship.source],
                 ¬result.contains(where: { $0.identifier.precise == child.identifier.precise })
               {
                 result.append(child)

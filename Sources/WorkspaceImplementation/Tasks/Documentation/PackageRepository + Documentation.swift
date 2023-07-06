@@ -287,11 +287,14 @@
 
     // Preliminary steps irrelevent to validation.
     private func prepare(outputDirectory: URL, output: Command.Output) throws {
-      try retrievePublishedDocumentationIfAvailable(
-        outputDirectory: outputDirectory,
-        output: output
-      )
-      try redirectExistingURLs(outputDirectory: outputDirectory)
+      #warning("Stomped anyway; to accomplish this, it must come afterward.")
+      if false {
+        try retrievePublishedDocumentationIfAvailable(
+          outputDirectory: outputDirectory,
+          output: output
+        )
+        try redirectExistingURLs(outputDirectory: outputDirectory)
+      }
     }
 
     // Steps which participate in validation.
@@ -323,8 +326,11 @@
       )
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
-      if ¬coverageCheckOnly {
-        relatedProjects = try self.relatedProjects(output: output)
+      #warning("Temporary disabled to speed up debugging.")
+      if false {
+        if ¬coverageCheckOnly {
+          relatedProjects = try self.relatedProjects(output: output)
+        }
       }
 
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
@@ -332,14 +338,19 @@
 
       let bundleName = String(try projectName(in: developmentLocalization, output: output))
       if ¬coverageCheckOnly {
-        _ = try SwiftCompiler.assembleDocumentation(
-          in: outputDirectory,
-          name: bundleName,
-          symbolGraphs: api.symbolGraphs().map({ $0.origin }),
-          hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/sdglogic)
-          reportProgress: { output.print($0) }
-        ).get()
-        
+        let bundle = DocumentationBundle(localizations: localizations, about: configuration.documentation.about)
+        try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+          let bundleURL = temporary.appendingPathComponent(DocumentationBundle.fileName)
+          try bundle.write(to: bundleURL)
+          _ = try SwiftCompiler.assembleDocumentation(
+            in: outputDirectory,
+            name: bundleName, // #warning(Placeholder. It is the repository name when using pages.
+            bundle: bundleURL,
+            symbolGraphs: api.symbolGraphs().map({ $0.origin }),
+            hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/sdglogic)
+            reportProgress: { output.print($0) }
+          ).get()
+        }
         return
       }
       #warning("Determine if any configuration options should be deprecated.")

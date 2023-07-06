@@ -113,62 +113,8 @@
       content: StrictString,
       copyright: StrictString
     ) {
-
-      var mutable = Page.template
-      mutable.replaceMatches(
-        for: "[*localization*]".scalars.literal(),
-        with: localization.code.scalars
-      )
-      mutable.replaceMatches(
-        for: "[*text direction*]".scalars.literal(),
-        with: localization.textDirection.htmlAttribute.scalars
-      )
-
-      mutable.replaceMatches(for: "[*navigation path*]", with: navigationPath.scalars)
-
-      mutable.replaceMatches(for: "[*package import*]", with: packageImport ?? "")
-
-      mutable.replaceMatches(for: "[*index*]", with: index)
-      mutable.replaceMatches(
-        for: "[*section identifier*]",
-        with: sectionIdentifier?.htmlIdentifier ?? ""
-      )
-      mutable.replaceMatches(for: "[*platforms*]", with: platforms)
-      mutable.replaceMatches(
-        for: "[*site root*]".scalars.literal(),
-        with: HTML.escapeTextForAttribute(pathToSiteRoot)
-      )
-
-      mutable.replaceMatches(for: "[*imports*]".scalars.literal(), with: symbolImports)
-
-      let symbolTypeLabel: StrictString
-      if let specified = symbolType {
-        symbolTypeLabel = ElementSyntax(
-          "div",
-          attributes: ["class": "symbol‐type"],
-          contents: specified,
-          inline: true
-        )
-        .normalizedSource()
-      } else {
-        symbolTypeLabel = ""  // @exempt(from: tests) Unreachable yet.
-      }
-      mutable.replaceMatches(for: "[*symbol type*]", with: symbolTypeLabel)
-
-      mutable.replaceMatches(for: "[*title*]", with: HTML.escapeTextForCharacterData(title))
-
-      mutable.replaceMatches(
-        for: "[*copyright*]",
-        with: ElementSyntax("span", contents: copyright, inline: false).normalizedSource()
-      )
-      mutable.replaceMatches(
-        for: "[*workspace*]",
-        with: Page.watermark(localization: localization)
-      )
-
-      mutable.replaceMatches(for: "[*content*]", with: content)
-
-      contents = mutable
+      // Converted to Article.init(...)
+      contents = ""
     }
 
     // MARK: - Properties

@@ -894,14 +894,6 @@
         status: status,
         output: output
       )
-      try outputGeneralPage(
-        to: outputDirectory,
-        location: PackageInterface.aboutLocation,
-        title: PackageInterface.about,
-        content: about,
-        status: status,
-        output: output
-      )
       #warning("↑ Working backwards from here.")
     }
 
@@ -1342,57 +1334,7 @@
       status: DocumentationStatus,
       output: Command.Output
     ) throws {
-      for localization in localizations {
-        if let specifiedContent = content[localization] {
-          let pathToSiteRoot: StrictString = "../"
-          let pageTitle = title(localization)
-          let pagePath = location(localization)
-
-          var parserCache = ParserCache()
-          let pageContent = MarkdownNode(source: String(specifiedContent))
-            .renderedHTML(
-              localization: localization.code,
-              internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks[localization]!
-                .mapValues({ String(pathToSiteRoot) + $0 }),
-              parserCache: &parserCache
-            )
-
-          let page = Page(
-            localization: localization,
-            pathToSiteRoot: pathToSiteRoot,
-            navigationPath: SymbolPage.generateNavigationPath(
-              localization: localization,
-              pathToSiteRoot: pathToSiteRoot,
-              allLocalizations: localizations.lazy.filter({ content[$0] ≠ nil })
-                .map({ localization in
-                  return (localization: localization, path: location(localization))
-                }),
-              navigationPath: [
-                (
-                  label: StrictString(api.names.resolvedForNavigation),
-                  path: extensionStorage[
-                    api.extendedPropertiesIndex,
-                    default: .default  // @exempt(from: tests) Reachability unknown.
-                  ].relativePagePath[localization]!
-                ),
-                (label: pageTitle, path: pagePath),
-              ]
-            ),
-            packageImport: packageImport,
-            index: indices[localization]!,
-            sectionIdentifier: nil,
-            platforms: platforms[localization]!,
-            symbolImports: "",
-            symbolType: nil,
-            title: HTML.escapeTextForCharacterData(pageTitle),
-            content: StrictString(pageContent),
-            copyright: copyright(for: localization, status: status)
-          )
-          let url = outputDirectory.appendingPathComponent(String(location(localization)))
-          try page.contents.save(to: url)
-        }
-      }
+      // Converted to outputGeneralArticle(...).
     }
   }
 #endif

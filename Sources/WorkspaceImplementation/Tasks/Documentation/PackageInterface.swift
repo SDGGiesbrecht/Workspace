@@ -1003,6 +1003,7 @@
           }
         }
       }
+      #warning("↑ Working backwards from here.")
     }
 
     private func outputNestedSymbols<Parent>(
@@ -1067,27 +1068,9 @@
             output: output,
             coverageCheckOnly: coverageCheckOnly
           )?.contents.save(to: location)
-
-          switch symbol.indexSectionIdentifier {
-          case .package, .tools, .libraries, .modules, .functions, .variables, .operators,
-            .precedenceGroups:
-            break
-          case .types, .extensions, .protocols:
-            try outputNestedSymbols(
-              of: symbol,
-              namespace: namespace + [symbol],
-              sectionIdentifier: sectionIdentifier,
-              to: outputDirectory,
-              localization: localization,
-              customReplacements: customReplacements,
-              projectRoot: projectRoot,
-              status: status,
-              output: output,
-              coverageCheckOnly: coverageCheckOnly
-            )
-          }
         }
       }
+      #warning("↑ Working backwards from here.")
     }
 
     private func outputNestedCommands(

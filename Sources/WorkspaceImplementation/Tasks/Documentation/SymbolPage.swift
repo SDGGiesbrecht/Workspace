@@ -52,7 +52,6 @@
       package: PackageAPI,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI? = nil,
-      copyright: StrictString,
       editableModules: [String],
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
@@ -176,7 +175,6 @@
         package: package,
         extensionStorage: extensionStorage,
         tools: tools,
-        copyright: copyright,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks,
         adjustedSymbolLinks: adjustedSymbolLinks,
@@ -198,7 +196,6 @@
       package: PackageAPI,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       tools: PackageCLI?,
-      copyright: StrictString,
       packageIdentifiers: Set<String>,
       symbolLinks: [String: String],
       adjustedSymbolLinks: [String: String],
@@ -387,8 +384,7 @@
         ),
         symbolType: symbol.symbolType(localization: localization),
         title: StrictString(symbol.names.title),
-        content: content.joinedAsLines(),
-        copyright: copyright
+        content: content.joinedAsLines()
       )
     }
 

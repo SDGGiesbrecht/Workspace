@@ -41,7 +41,6 @@
       index: StrictString,
       platforms: StrictString,
       command: CommandInterfaceInformation,
-      copyright: StrictString,
       customReplacements: [(StrictString, StrictString)],
       output: Command.Output
     ) {
@@ -149,8 +148,7 @@
         symbolImports: "",
         symbolType: symbolType,
         title: interface.name,
-        content: content.joinedAsLines(),
-        copyright: copyright
+        content: content.joinedAsLines()
       )
     }
 

@@ -214,10 +214,6 @@
       for package: PackageAPI,
       tools: PackageCLI,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
-      installation: [LocalizationIdentifier: StrictString],
-      importing: [LocalizationIdentifier: StrictString],
-      relatedProjects: [LocalizationIdentifier: StrictString],
-      about: [LocalizationIdentifier: StrictString],
       localizations: [LocalizationIdentifier]
     ) -> [LocalizationIdentifier: StrictString] {
       var result: [LocalizationIdentifier: StrictString] = [:]
@@ -227,10 +223,6 @@
             for: package,
             tools: tools,
             extensionStorage: extensionStorage,
-            hasInstallation: installation[localization] ≠ nil,
-            hasImporting: importing[localization] ≠ nil,
-            hasRelatedProjects: relatedProjects[localization] ≠ nil,
-            hasAbout: about[localization] ≠ nil,
             localization: localization
           )
         }
@@ -255,10 +247,6 @@
       for package: PackageAPI,
       tools: PackageCLI,
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
-      hasInstallation: Bool,
-      hasImporting: Bool,
-      hasRelatedProjects: Bool,
-      hasAbout: Bool,
       localization: LocalizationIdentifier
     ) -> StrictString {
       var result: [StrictString] = []
@@ -282,23 +270,6 @@
           ].joinedAsLines()
         )
       )
-
-      if hasInstallation {
-        result.append(
-          generateLoneIndexEntry(
-            named: installation(localization: localization),
-            target: installationLocation(localization: localization)
-          )
-        )
-      }
-      if hasImporting {
-        result.append(
-          generateLoneIndexEntry(
-            named: importing(localization: localization),
-            target: importingLocation(localization: localization)
-          )
-        )
-      }
 
       if ¬tools.commands.isEmpty {
         result.append(
@@ -603,30 +574,6 @@
       ).normalizedSource()
     }
 
-    private static func installation(localization: LocalizationIdentifier) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Installation"
-      case .deutschDeutschland:
-        return "Installierung"
-      }
-    }
-    private static func installationLocation(localization: LocalizationIdentifier) -> StrictString {
-      return "\(localization._directoryName)/\(installation(localization: localization)).html"
-    }
-
-    private static func importing(localization: LocalizationIdentifier) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Importing"
-      case .deutschDeutschland:
-        return "Einführung"
-      }
-    }
-    private static func importingLocation(localization: LocalizationIdentifier) -> StrictString {
-      return "\(localization._directoryName)/\(importing(localization: localization)).html"
-    }
-
     private static func generate(platforms: [StrictString]) -> StrictString {
       var result: [StrictString] = []
       for platform in platforms {
@@ -651,11 +598,6 @@
       packageURL: URL?,
       version: Version?,
       platforms: [LocalizationIdentifier: [StrictString]],
-      installation: [LocalizationIdentifier: StrictString],
-      importing: [LocalizationIdentifier: StrictString],
-      relatedProjects: [LocalizationIdentifier: StrictString],
-      about: [LocalizationIdentifier: StrictString],
-      copyright: [LocalizationIdentifier?: StrictString],
       customReplacements: [(StrictString, StrictString)],
       output: Command.Output
     ) {
@@ -679,11 +621,6 @@
       api.computeMergedAPI(extensionStorage: &extensionStorage)
 
       self.packageImport = PackageInterface.specify(package: packageURL, version: version)
-      self.installation = installation
-      self.importing = importing
-      self.relatedProjects = relatedProjects
-      self.about = about
-      self.copyrightNotices = copyright
 
       self.editableModules = api.modules.map { $0.names.title }
       self.packageIdentifiers = api.identifierList()
@@ -722,10 +659,6 @@
         for: api,
         tools: cli,
         extensionStorage: extensionStorage,
-        installation: installation,
-        importing: importing,
-        relatedProjects: relatedProjects,
-        about: about,
         localizations: localizations
       )
       self.platforms = platforms.mapValues { PackageInterface.generate(platforms: $0) }
@@ -742,26 +675,9 @@
     private let packageImport: StrictString?
     private let indices: [LocalizationIdentifier: StrictString]
     private let platforms: [LocalizationIdentifier: StrictString]
-    private let installation: [LocalizationIdentifier: Markdown]
-    private let importing: [LocalizationIdentifier: Markdown]
-    private let relatedProjects: [LocalizationIdentifier: Markdown]
-    private let about: [LocalizationIdentifier: Markdown]
-    private let copyrightNotices: [LocalizationIdentifier?: StrictString]
     private let editableModules: [String]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
-
-    private func copyright(
-      for localization: LocalizationIdentifier,
-      status: DocumentationStatus
-    ) -> StrictString {
-      if let result = copyrightNotices[localization] {
-        return result
-      } else {
-        status.reportMissingCopyright(localization: localization)
-        return copyrightNotices[nil]!
-      }
-    }
 
     // MARK: - Output
 
@@ -823,27 +739,6 @@
         output: output,
         coverageCheckOnly: coverageCheckOnly
       )
-
-      if coverageCheckOnly {
-        return
-      }
-
-      try outputGeneralPage(
-        to: outputDirectory,
-        location: PackageInterface.installationLocation,
-        title: PackageInterface.installation,
-        content: installation,
-        status: status,
-        output: output
-      )
-      try outputGeneralPage(
-        to: outputDirectory,
-        location: PackageInterface.importingLocation,
-        title: PackageInterface.importing,
-        content: importing,
-        status: status,
-        output: output
-      )
       #warning("↑ Working backwards from here.")
     }
 
@@ -877,7 +772,6 @@
             package: api,
             extensionStorage: extensionStorage,
             tools: cli,
-            copyright: copyright(for: localization, status: status),
             editableModules: editableModules,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
@@ -914,7 +808,6 @@
               index: indices[localization]!,
               platforms: platforms[localization]!,
               command: tool,
-              copyright: copyright(for: localization, status: status),
               customReplacements: customReplacements,
               output: output
             ).contents.save(to: location)
@@ -967,7 +860,6 @@
               symbol: library,
               package: self.api,
               extensionStorage: extensionStorage,
-              copyright: copyright(for: localization, status: status),
               editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
@@ -1014,7 +906,6 @@
               symbol: module,
               package: self.api,
               extensionStorage: extensionStorage,
-              copyright: copyright(for: localization, status: status),
               editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
@@ -1083,7 +974,6 @@
               symbol: symbol,
               package: self.api,
               extensionStorage: extensionStorage,
-              copyright: copyright(for: localization, status: status),
               editableModules: editableModules,
               packageIdentifiers: packageIdentifiers,
               symbolLinks: symbolLinks[localization]!,
@@ -1170,7 +1060,6 @@
             symbol: symbol,
             package: self.api,
             extensionStorage: extensionStorage,
-            copyright: copyright(for: localization, status: status),
             editableModules: editableModules,
             packageIdentifiers: packageIdentifiers,
             symbolLinks: symbolLinks[localization]!,
@@ -1258,7 +1147,6 @@
             index: indices[localization]!,
             platforms: platforms[localization]!,
             command: information,
-            copyright: copyright(for: localization, status: status),
             customReplacements: customReplacements,
             output: output
           ).contents.save(to: location)

@@ -110,8 +110,7 @@
       symbolImports: StrictString,
       symbolType: StrictString?,
       title: StrictString,
-      content: StrictString,
-      copyright: StrictString
+      content: StrictString
     ) {
       // Converted to Article.init(...)
       contents = ""

@@ -338,11 +338,11 @@
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
       #warning("Temporary disabled to speed up debugging.")
-      //if false {
+      if false {
         if ¬coverageCheckOnly {
           relatedProjects = try self.relatedProjects(output: output)
         }
-      //}
+      }
 
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
@@ -354,6 +354,8 @@
           localizations: localizations,
           developmentLocalization: developmentLocalization,
           copyright: copyright,
+          installation: configuration.documentation.installationInstructions.resolve(configuration),
+          importing: configuration.documentation.importingInstructions.resolve(configuration),
           relatedProjects: relatedProjects,
           about: configuration.documentation.about
         )
@@ -412,12 +414,6 @@
         packageURL: configuration.documentation.repositoryURL,
         version: configuration.documentation.currentVersion,
         platforms: try platforms(localizations: localizations, output: output),
-        installation: configuration.documentation.installationInstructions
-          .resolve(configuration),
-        importing: configuration.documentation.importingInstructions.resolve(configuration),
-        relatedProjects: relatedProjects,
-        about: configuration.documentation.about,
-        copyright: copyright,
         customReplacements: customReplacements,
         output: output
       )

@@ -55,6 +55,30 @@ internal struct PackageDocumentationBundle {
     ].joined().data(using: .utf8)!
   }
 
+  private static func installation(localization: LocalizationIdentifier) -> StrictString {
+    switch localization._bestMatch {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Installation"
+    case .deutschDeutschland:
+      return "Installierung"
+    }
+  }
+  private static func installationLocation(localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._directoryName)/\(installation(localization: localization)).md"
+  }
+
+  private static func importing(localization: LocalizationIdentifier) -> StrictString {
+    switch localization._bestMatch {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Importing"
+    case .deutschDeutschland:
+      return "Einführung"
+    }
+  }
+  private static func importingLocation(localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._directoryName)/\(importing(localization: localization)).md"
+  }
+
   private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -87,11 +111,15 @@ internal struct PackageDocumentationBundle {
     localizations: [LocalizationIdentifier],
     developmentLocalization: LocalizationIdentifier,
     copyright: [LocalizationIdentifier?: StrictString],
+    installation: [LocalizationIdentifier: Markdown],
+    importing: [LocalizationIdentifier: Markdown],
     relatedProjects: [LocalizationIdentifier: Markdown],
     about: [LocalizationIdentifier: Markdown]
   ) {
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
+    self.installation = installation
+    self.importing = importing
     self.copyright = copyright
     self.relatedProjects = relatedProjects
     self.about = about
@@ -102,6 +130,8 @@ internal struct PackageDocumentationBundle {
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
   private let copyright: [LocalizationIdentifier?: StrictString]
+  private let installation: [LocalizationIdentifier: Markdown]
+  private let importing: [LocalizationIdentifier: Markdown]
   private let relatedProjects: [LocalizationIdentifier: Markdown]
   private let about: [LocalizationIdentifier: Markdown]
 
@@ -109,6 +139,18 @@ internal struct PackageDocumentationBundle {
 
   internal func write(to outputDirectory: URL) throws {
     var articles: [StrictString: Article] = [:]
+    addGeneralArticle(
+      to: &articles,
+      location: PackageDocumentationBundle.installationLocation,
+      title: PackageDocumentationBundle.installation,
+      content: installation
+    )
+    addGeneralArticle(
+      to: &articles,
+      location: PackageDocumentationBundle.importingLocation,
+      title: PackageDocumentationBundle.importing,
+      content: importing
+    )
     addGeneralArticle(
       to: &articles,
       location: PackageDocumentationBundle.relatedProjectsLocation,

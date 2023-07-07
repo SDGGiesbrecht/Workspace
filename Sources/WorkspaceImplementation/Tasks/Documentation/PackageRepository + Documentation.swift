@@ -175,12 +175,14 @@
 
               markdown += [
                 "",
-                "### [\(name)](\(url.absoluteString))",
+                "### \(name)",  // (DocC ignores links in headers.)
+                "",
               ]
 
               guard #available(macOS 10.15, *) else {
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
+              var linkHandled = false
               var parserCache = ParserCache()
               if let packageName = try? package.packageName(),
                 let documentation =
@@ -190,10 +192,15 @@
                   .documentation[localization],
                 let description = documentation.documentation().descriptionSection(cache: &parserCache)
               {
-                markdown += [
-                  "",
-                  StrictString(description.text()),
-                ]
+                var text = StrictString(description.text())
+                if text.contains(name) {
+                  text.replaceMatches(for: name, with: "[\(name)](\(url.absoluteString))")
+                  linkHandled = true
+                }
+                markdown += [text]
+              }
+              if ¬linkHandled {
+                markdown += ["[\(url.absoluteString)](\(url.absoluteString))"]
               }
             }
           }
@@ -331,11 +338,11 @@
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
       #warning("Temporary disabled to speed up debugging.")
-      if false {
+      //if false {
         if ¬coverageCheckOnly {
           relatedProjects = try self.relatedProjects(output: output)
         }
-      }
+      //}
 
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
@@ -347,6 +354,7 @@
           localizations: localizations,
           developmentLocalization: developmentLocalization,
           copyright: copyright,
+          relatedProjects: relatedProjects,
           about: configuration.documentation.about
         )
         var packageAlreadyHandled = false
@@ -354,10 +362,15 @@
           try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let name = module.names.title
             let bundleURL = temporary.appendingPathComponent("\(name).docc")
+            var embededPackageBundle: PackageDocumentationBundle?
+            if name == String(packageName) {
+              embededPackageBundle = packageBundle
+              packageAlreadyHandled = true
+            }
             let bundle = ModuleDocumentationBundle(
               developmentLocalization: developmentLocalization,
               copyright: copyright,
-              embedPackageBundle: name == String(packageName) ? packageBundle : nil
+              embedPackageBundle: embededPackageBundle
             )
             try bundle.write(to: bundleURL)
             _ = try SwiftCompiler.assembleDocumentation(

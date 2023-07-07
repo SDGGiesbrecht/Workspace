@@ -55,6 +55,20 @@ internal struct PackageDocumentationBundle {
     ].joined().data(using: .utf8)!
   }
 
+  private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
+    switch localization._bestMatch {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Related Projects"
+    case .deutschDeutschland:
+      return "Verwandte Projekte"
+    }
+  }
+  private static func relatedProjectsLocation(
+    localization: LocalizationIdentifier
+  )-> StrictString {
+    return "\(localization._directoryName)/\(relatedProjects(localization: localization)).md"
+  }
+
   private static func about(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -73,11 +87,13 @@ internal struct PackageDocumentationBundle {
     localizations: [LocalizationIdentifier],
     developmentLocalization: LocalizationIdentifier,
     copyright: [LocalizationIdentifier?: StrictString],
+    relatedProjects: [LocalizationIdentifier: Markdown],
     about: [LocalizationIdentifier: Markdown]
   ) {
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
     self.copyright = copyright
+    self.relatedProjects = relatedProjects
     self.about = about
   }
 
@@ -86,13 +102,25 @@ internal struct PackageDocumentationBundle {
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
   private let copyright: [LocalizationIdentifier?: StrictString]
+  private let relatedProjects: [LocalizationIdentifier: Markdown]
   private let about: [LocalizationIdentifier: Markdown]
 
   // MARK: - Ouput
 
   internal func write(to outputDirectory: URL) throws {
     var articles: [StrictString: Article] = [:]
-    addGeneralArticle(to: &articles, location: PackageDocumentationBundle.aboutLocation, title: PackageDocumentationBundle.about, content: about)
+    addGeneralArticle(
+      to: &articles,
+      location: PackageDocumentationBundle.relatedProjectsLocation,
+      title: PackageDocumentationBundle.relatedProjects,
+      content: relatedProjects
+    )
+    addGeneralArticle(
+      to: &articles,
+      location: PackageDocumentationBundle.aboutLocation,
+      title: PackageDocumentationBundle.about,
+      content: about
+    )
     try DocumentationBundle(
       developmentLocalization: developmentLocalization,
       copyright: copyright,

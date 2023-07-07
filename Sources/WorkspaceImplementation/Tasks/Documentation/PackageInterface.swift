@@ -471,22 +471,6 @@
           )
         )
       }
-      if hasRelatedProjects {
-        result.append(
-          generateLoneIndexEntry(
-            named: relatedProjects(localization: localization),
-            target: relatedProjectsLocation(localization: localization)
-          )
-        )
-      }
-      if hasAbout {
-        result.append(
-          generateLoneIndexEntry(
-            named: about(localization: localization),
-            target: aboutLocation(localization: localization)
-          )
-        )
-      }
 
       return result.joinedAsLines()
     }
@@ -641,32 +625,6 @@
     }
     private static func importingLocation(localization: LocalizationIdentifier) -> StrictString {
       return "\(localization._directoryName)/\(importing(localization: localization)).html"
-    }
-
-    private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Related Projects"
-      case .deutschDeutschland:
-        return "Verwandte Projekte"
-      }
-    }
-    private static func relatedProjectsLocation(localization: LocalizationIdentifier)
-      -> StrictString
-    {
-      return "\(localization._directoryName)/\(relatedProjects(localization: localization)).html"
-    }
-
-    private static func about(localization: LocalizationIdentifier) -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "About"
-      case .deutschDeutschland:
-        return "Über"
-      }
-    }
-    private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
-      return "\(localization._directoryName)/\(about(localization: localization)).html"
     }
 
     private static func generate(platforms: [StrictString]) -> StrictString {
@@ -883,14 +841,6 @@
         location: PackageInterface.importingLocation,
         title: PackageInterface.importing,
         content: importing,
-        status: status,
-        output: output
-      )
-      try outputGeneralPage(
-        to: outputDirectory,
-        location: PackageInterface.relatedProjectsLocation,
-        title: PackageInterface.relatedProjects,
-        content: relatedProjects,
         status: status,
         output: output
       )

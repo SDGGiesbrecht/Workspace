@@ -1,6 +1,24 @@
+/*
+ PackageDocumentationBundle.swift
+
+ This source file is part of the Workspace open source project.
+ Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
+ https://github.com/SDGGiesbrecht/Workspace#workspace
+
+ Copyright ©2023 Jeremy David Giesbrecht and the Workspace project contributors.
+ Urheberrecht ©2023 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+
+ Soli Deo gloria.
+
+ Licensed under the Apache Licence, Version 2.0.
+ See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
+ */
+
 import WorkspaceConfiguration
 
 internal struct PackageDocumentationBundle {
+
+  // MARK: - Static Properties
 
   internal static func placeholderSymbolGraphFileName(packageName: StrictString) -> StrictString {
     return "\(packageName).symbols.graph"
@@ -37,8 +55,6 @@ internal struct PackageDocumentationBundle {
     ].joined().data(using: .utf8)!
   }
 
-  // MARK: - Static Properties
-
   private static func about(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -55,15 +71,21 @@ internal struct PackageDocumentationBundle {
 
   internal init(
     localizations: [LocalizationIdentifier],
+    developmentLocalization: LocalizationIdentifier,
+    copyright: [LocalizationIdentifier?: StrictString],
     about: [LocalizationIdentifier: Markdown]
   ) {
     self.localizations = localizations
+    self.developmentLocalization = developmentLocalization
+    self.copyright = copyright
     self.about = about
   }
 
   // MARK: - Properties
 
   private let localizations: [LocalizationIdentifier]
+  private let developmentLocalization: LocalizationIdentifier
+  private let copyright: [LocalizationIdentifier?: StrictString]
   private let about: [LocalizationIdentifier: Markdown]
 
   // MARK: - Ouput
@@ -71,7 +93,11 @@ internal struct PackageDocumentationBundle {
   internal func write(to outputDirectory: URL) throws {
     var articles: [StrictString: Article] = [:]
     addGeneralArticle(to: &articles, location: PackageDocumentationBundle.aboutLocation, title: PackageDocumentationBundle.about, content: about)
-    try DocumentationBundle(articles: articles).write(to: outputDirectory)
+    try DocumentationBundle(
+      developmentLocalization: developmentLocalization,
+      copyright: copyright,
+      articles: articles
+    ).write(to: outputDirectory)
   }
 
   private func addGeneralArticle(

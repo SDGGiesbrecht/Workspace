@@ -235,7 +235,6 @@
         try document(
           outputDirectory: outputDirectory,
           documentationStatus: status,
-          validationStatus: &validationStatus,
           output: output,
           coverageCheckOnly: false
         )
@@ -301,18 +300,23 @@
     private func document(
       outputDirectory: URL,
       documentationStatus: DocumentationStatus,
-      validationStatus: inout ValidationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
     ) throws {
 
       let configuration = try self.configuration(output: output)
+      let developmentLocalization = try self.developmentLocalization(output: output)
+
       let copyright = try resolvedCopyright(
         documentationStatus: documentationStatus,
         output: output
       )
+      for localization in configuration.localizationsOrSystemFallback {
+        if copyright[localization] == nil {
+          documentationStatus.reportMissingCopyright(localization: localization)
+        }
+      }
 
-      let developmentLocalization = try self.developmentLocalization(output: output)
       let customReplacements = try customFileNameReplacements(output: output)
 
       guard #available(macOS 10.15, *) else {
@@ -339,13 +343,20 @@
       if ¬coverageCheckOnly {
         let hostingBasePath = "DocCExperiment"  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/SDGCornerstone/documentation/sdgcornerstone/)
         let packageName = try projectName(in: developmentLocalization, output: output)
-        let packageBundle = PackageDocumentationBundle(localizations: localizations, about: configuration.documentation.about)
+        let packageBundle = PackageDocumentationBundle(
+          localizations: localizations,
+          developmentLocalization: developmentLocalization,
+          copyright: copyright,
+          about: configuration.documentation.about
+        )
         var packageAlreadyHandled = false
         for module in api.modules {
           try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let name = module.names.title
             let bundleURL = temporary.appendingPathComponent("\(name).docc")
             let bundle = ModuleDocumentationBundle(
+              developmentLocalization: developmentLocalization,
+              copyright: copyright,
               embedPackageBundle: name == String(packageName) ? packageBundle : nil
             )
             try bundle.write(to: bundleURL)
@@ -501,7 +512,6 @@
           try document(
             outputDirectory: outputDirectory,
             documentationStatus: status,
-            validationStatus: &validationStatus,
             output: output,
             coverageCheckOnly: true
           )

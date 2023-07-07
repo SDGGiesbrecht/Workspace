@@ -336,21 +336,46 @@
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
 
-      let bundleName = String(try projectName(in: developmentLocalization, output: output))
       if ¬coverageCheckOnly {
-        let bundle = DocumentationBundle(localizations: localizations, about: configuration.documentation.about)
-        try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
-          let bundleURL = temporary.appendingPathComponent(DocumentationBundle.fileName)
-          try bundle.write(to: bundleURL)
-          _ = try SwiftCompiler.assembleDocumentation(
-            in: outputDirectory,
-            name: bundleName, // #warning(Placeholder. It is the repository name when using pages.
-            bundle: bundleURL,
-            symbolGraphs: api.symbolGraphs().map({ $0.origin }),
-            hostingBasePath: "DocCExperiment",  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/documentation/sdglogic)
-            reportProgress: { output.print($0) }
-          ).get()
+        let hostingBasePath = "DocCExperiment"  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/SDGCornerstone/documentation/sdgcornerstone/)
+        let packageName = try projectName(in: developmentLocalization, output: output)
+        let packageBundle = PackageDocumentationBundle(localizations: localizations, about: configuration.documentation.about)
+        var packageAlreadyHandled = false
+        for module in api.modules {
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+            let name = module.names.title
+            let bundleURL = temporary.appendingPathComponent("\(name).docc")
+            let bundle = ModuleDocumentationBundle(
+              embedPackageBundle: name == String(packageName) ? packageBundle : nil
+            )
+            try bundle.write(to: bundleURL)
+            _ = try SwiftCompiler.assembleDocumentation(
+              in: outputDirectory.appendingPathComponent(name),
+              name: name,
+              bundle: bundleURL,
+              symbolGraphs: module.symbolGraphs.map({ $0.origin }),
+              hostingBasePath: hostingBasePath.appending("/" + name),
+              reportProgress: { output.print($0) }
+            ).get()
+          }
         }
+        if ¬packageAlreadyHandled {
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+            let bundleURL = temporary.appendingPathComponent("\(packageName).docc")
+            let placeholerGraphURL = temporary.appendingPathComponent(String(PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: packageName)))
+            try PackageDocumentationBundle.placeholderSymbolGraphData(packageName: packageName).save(to: placeholerGraphURL)
+            try packageBundle.write(to: bundleURL)
+            _ = try SwiftCompiler.assembleDocumentation(
+              in: outputDirectory.appendingPathComponent(String(packageName)),
+              name: String(packageName),
+              bundle: bundleURL,
+              symbolGraphs: [placeholerGraphURL],
+              hostingBasePath: hostingBasePath.appending("/" + String(packageName)),
+              reportProgress: { output.print($0) }
+            ).get()
+          }
+        }
+        #warning("Aborting early to speed testing.")
         return
       }
       #warning("Determine if any configuration options should be deprecated.")

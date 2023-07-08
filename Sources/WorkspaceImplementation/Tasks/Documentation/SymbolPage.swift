@@ -135,17 +135,6 @@
           status: status
         )
       )
-      content.append(
-        SymbolPage.generateThrowsSection(
-          localization: localization,
-          symbol: symbol,
-          extensionStorage: extensionStorage,
-          navigationPath: navigationPath,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks,
-          status: status
-        )
-      )
 
       self.init(
         symbol: symbol
@@ -840,44 +829,6 @@
             }
           )
       )
-    }
-
-    private static func generateThrowsSection<SymbolType>(
-      localization: LocalizationIdentifier,
-      symbol: SymbolType,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
-      navigationPath: [SymbolLike],
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String],
-      status: DocumentationStatus
-    ) -> StrictString where SymbolType: SymbolLike {
-      guard
-        let callout = extensionStorage[
-          symbol.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.documentation().throwsCallout()
-      else {
-        return ""
-      }
-      let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
-      var section = [
-        ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()
-      ]
-      var parserCache = ParserCache()
-      for contents in callout.contents {
-        section.append(
-          StrictString(
-            contents.renderedHTML(
-              localization: localization.code,
-              internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks,
-              parserCache: &parserCache
-            )
-          )
-        )
-      }
-      return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()
     }
 
     internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {

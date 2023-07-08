@@ -469,7 +469,6 @@
 
     internal func determine(
       localizations: [LocalizationIdentifier],
-      customReplacements: [(StrictString, StrictString)],
       package: PackageAPI,
       module: String?,
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties],
@@ -503,7 +502,6 @@
       for child in children(package: package) {
         child.determine(
           localizations: localizations,
-          customReplacements: customReplacements,
           package: package,
           module: module,
           extensionStorage: &extensionStorage,
@@ -527,7 +525,6 @@
               from: group[indexB],
               isSame: indexA == indexB,
               globalScope: globalScope,
-              customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
             )
@@ -540,7 +537,6 @@
       from other: SymbolLike,
       isSame: Bool,
       globalScope: Bool,
-      customReplacements: [(StrictString, StrictString)],
       package: PackageAPI,
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
     ) {
@@ -553,7 +549,7 @@
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].localizedEquivalentFileNames[localization] =
           other
-          .fileName(customReplacements: customReplacements)
+          .fileName()
         extensionStorage[
           extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
@@ -622,11 +618,8 @@
 
     // MARK: - Paths
 
-    private func fileName(customReplacements: [(StrictString, StrictString)]) -> StrictString {
-      return Page.sanitize(
-        fileName: StrictString(names.title),
-        customReplacements: customReplacements
-      )
+    private func fileName() -> StrictString {
+      return StrictString(names.title)
     }
 
     private func directoryName(
@@ -829,7 +822,6 @@
 
     internal func localizedFileName(
       for localization: LocalizationIdentifier,
-      customReplacements: [(StrictString, StrictString)],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> StrictString {
       return
@@ -837,7 +829,7 @@
           self.extendedPropertiesIndex,
           default: .default  // @exempt(from: tests) Reachability unknown.
         ].localizedEquivalentFileNames[localization]
-        ?? fileName(customReplacements: customReplacements)
+        ?? fileName()
     }
 
     internal func localizedDirectoryName(
@@ -860,7 +852,6 @@
     internal func pageURL(
       in outputDirectory: URL,
       for localization: LocalizationIdentifier,
-      customReplacements: [(StrictString, StrictString)],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
     ) -> URL? {
       return extensionStorage[
@@ -873,7 +864,6 @@
 
     internal func determinePaths(
       for localization: LocalizationIdentifier,
-      customReplacements: [(StrictString, StrictString)],
       namespace: StrictString = "",
       package: PackageAPI,
       extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
@@ -888,7 +878,6 @@
           for library in package.libraries {
             links = library.determinePaths(
               for: localization,
-              customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
             ).merging(links, uniquingKeysWith: min)
@@ -899,7 +888,6 @@
           for module in library.modules {
             links = package.modules.first(where: { $0.names.title == module })!.determinePaths(
               for: localization,
-              customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
             ).merging(links, uniquingKeysWith: min)
@@ -910,7 +898,6 @@
           for child in module.children(package: package) {
             links = child.determinePaths(
               for: localization,
-              customReplacements: customReplacements,
               package: package,
               extensionStorage: &extensionStorage
             ).merging(links, uniquingKeysWith: min)
@@ -931,7 +918,6 @@
             newNamespace.append(
               contentsOf: localizedFileName(
                 for: localization,
-                customReplacements: customReplacements,
                 extensionStorage: extensionStorage
               )
                 + "/"
@@ -939,7 +925,6 @@
             for child in symbol.children(package: package) {
               links = child.determinePaths(
                 for: localization,
-                customReplacements: customReplacements,
                 namespace: newNamespace,
                 package: package,
                 extensionStorage: &extensionStorage
@@ -989,7 +974,6 @@
           newNamespace.append(
             contentsOf: localizedFileName(
               for: localization,
-              customReplacements: customReplacements,
               extensionStorage: extensionStorage
             )
               + "/"
@@ -997,7 +981,6 @@
           for child in `extension`.children(package: package) {
             links = child.determinePaths(
               for: localization,
-              customReplacements: customReplacements,
               namespace: newNamespace,
               package: package,
               extensionStorage: &extensionStorage
@@ -1010,7 +993,6 @@
         path +=
           localizedFileName(
             for: localization,
-            customReplacements: customReplacements,
             extensionStorage: extensionStorage
           )
           + ".html"

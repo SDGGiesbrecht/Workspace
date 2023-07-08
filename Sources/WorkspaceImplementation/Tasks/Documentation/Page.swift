@@ -21,17 +21,6 @@
 
   internal class Page {
 
-    internal static func sanitize(
-      fileName: StrictString,
-      customReplacements: [(StrictString, StrictString)]
-    ) -> StrictString {
-      var result = fileName
-      for (key, value) in customReplacements {
-        result.replaceMatches(for: key, with: value)
-      }
-      return result
-    }
-
     // MARK: - Initialization
 
     internal init(

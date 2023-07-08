@@ -44,8 +44,7 @@
 
     internal init(
       tools: [URL],
-      localizations: [LocalizationIdentifier],
-      customReplacements: [(StrictString, StrictString)]
+      localizations: [LocalizationIdentifier]
     ) {
       var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
@@ -63,10 +62,7 @@
             ].interfaces[localization] = modifiedInterface
 
             let directory = PackageCLI.toolsDirectory(for: localization)
-            let filename = Page.sanitize(
-              fileName: interface.name,
-              customReplacements: customReplacements
-            )
+            let filename = interface.name
             let path = directory + "/" + filename + ".html"
 
             commands[interface.identifier]!.relativePagePath[localization] = path

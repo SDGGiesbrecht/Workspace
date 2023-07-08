@@ -113,14 +113,16 @@ internal struct PackageDocumentationBundle {
     copyright: [LocalizationIdentifier?: StrictString],
     installation: [LocalizationIdentifier: Markdown],
     importing: [LocalizationIdentifier: Markdown],
+    cli: PackageCLI,
     relatedProjects: [LocalizationIdentifier: Markdown],
     about: [LocalizationIdentifier: Markdown]
   ) {
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
+    self.copyright = copyright
     self.installation = installation
     self.importing = importing
-    self.copyright = copyright
+    self.cli = cli
     self.relatedProjects = relatedProjects
     self.about = about
   }
@@ -132,6 +134,7 @@ internal struct PackageDocumentationBundle {
   private let copyright: [LocalizationIdentifier?: StrictString]
   private let installation: [LocalizationIdentifier: Markdown]
   private let importing: [LocalizationIdentifier: Markdown]
+  private let cli: PackageCLI
   private let relatedProjects: [LocalizationIdentifier: Markdown]
   private let about: [LocalizationIdentifier: Markdown]
 

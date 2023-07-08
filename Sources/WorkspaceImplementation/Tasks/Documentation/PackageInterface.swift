@@ -598,7 +598,6 @@
       packageURL: URL?,
       version: Version?,
       platforms: [LocalizationIdentifier: [StrictString]],
-      customReplacements: [(StrictString, StrictString)],
       output: Command.Output
     ) {
 
@@ -628,7 +627,6 @@
       var parsingCache: [URL: SymbolGraph.Symbol.CachedSource] = [:]
       api.determine(
         localizations: localizations,
-        customReplacements: customReplacements,
         package: api,
         module: nil,
         extensionStorage: &extensionStorage,
@@ -639,7 +637,6 @@
       for localization in localizations {
         paths[localization] = api.determinePaths(
           for: localization,
-          customReplacements: customReplacements,
           package: api,
           extensionStorage: &extensionStorage
         )
@@ -683,7 +680,6 @@
 
     internal func outputHTML(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -702,7 +698,6 @@
 
       try outputPackagePages(
         to: outputDirectory,
-        customReplacements: customReplacements,
         projectRoot: projectRoot,
         status: status,
         output: output,
@@ -710,14 +705,12 @@
       )
       try outputToolPages(
         to: outputDirectory,
-        customReplacements: customReplacements,
         status: status,
         output: output,
         coverageCheckOnly: coverageCheckOnly
       )
       try outputLibraryPages(
         to: outputDirectory,
-        customReplacements: customReplacements,
         projectRoot: projectRoot,
         status: status,
         output: output,
@@ -725,7 +718,6 @@
       )
       try outputModulePages(
         to: outputDirectory,
-        customReplacements: customReplacements,
         projectRoot: projectRoot,
         status: status,
         output: output,
@@ -733,7 +725,6 @@
       )
       try outputTopLevelSymbols(
         to: outputDirectory,
-        customReplacements: customReplacements,
         projectRoot: projectRoot,
         status: status,
         output: output,
@@ -744,7 +735,6 @@
 
     private func outputPackagePages(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -755,7 +745,6 @@
           let pageURL = api.pageURL(
             in: outputDirectory,
             for: localization,
-            customReplacements: customReplacements,
             extensionStorage: extensionStorage
           )!
           try SymbolPage(
@@ -785,7 +774,6 @@
 
     private func outputToolPages(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       status: DocumentationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
@@ -808,7 +796,6 @@
               index: indices[localization]!,
               platforms: platforms[localization]!,
               command: tool,
-              customReplacements: customReplacements,
               output: output
             ).contents.save(to: location)
 
@@ -817,7 +804,6 @@
               namespace: [tool],
               to: outputDirectory,
               localization: localization,
-              customReplacements: customReplacements,
               status: status,
               output: output
             )
@@ -828,7 +814,6 @@
 
     private func outputLibraryPages(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -844,7 +829,6 @@
             let location = library.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements,
               extensionStorage: extensionStorage
             )!
             try SymbolPage(
@@ -874,7 +858,6 @@
 
     private func outputModulePages(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -890,7 +873,6 @@
             let location = module.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements,
               extensionStorage: extensionStorage
             )!
             try SymbolPage(
@@ -920,7 +902,6 @@
 
     private func outputTopLevelSymbols(
       to outputDirectory: URL,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -949,7 +930,6 @@
           ∧ symbol.pageURL(
             in: outputDirectory,
             for: localization,
-            customReplacements: customReplacements,
             extensionStorage: extensionStorage
           ) ≠ nil
 
@@ -958,7 +938,6 @@
             let location = symbol.pageURL(
               in: outputDirectory,
               for: localization,
-              customReplacements: customReplacements,
               extensionStorage: extensionStorage
             )!
             try SymbolPage(
@@ -993,7 +972,6 @@
                 sectionIdentifier: symbol.indexSectionIdentifier,
                 to: outputDirectory,
                 localization: localization,
-                customReplacements: customReplacements,
                 projectRoot: projectRoot,
                 status: status,
                 output: output,
@@ -1012,7 +990,6 @@
       sectionIdentifier: IndexSectionIdentifier,
       to outputDirectory: URL,
       localization: LocalizationIdentifier,
-      customReplacements: [(StrictString, StrictString)],
       projectRoot: URL,
       status: DocumentationStatus,
       output: Command.Output,
@@ -1035,7 +1012,6 @@
           let location = symbol.pageURL(
             in: outputDirectory,
             for: localization,
-            customReplacements: customReplacements,
             extensionStorage: extensionStorage
           )!
 
@@ -1078,7 +1054,6 @@
       namespace: [CommandInterfaceInformation],
       to outputDirectory: URL,
       localization: LocalizationIdentifier,
-      customReplacements: [(StrictString, StrictString)],
       status: DocumentationStatus,
       output: Command.Output
     ) throws {
@@ -1101,10 +1076,7 @@
             nestedPagePath += "/"
             nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
             nestedPagePath += "/"
-            nestedPagePath += Page.sanitize(
-              fileName: localized.name,
-              customReplacements: customReplacements
-            )
+            nestedPagePath += localized.name
             nestedPagePath += ".html"
             information.relativePagePath[otherLocalization] = nestedPagePath
           }
@@ -1130,7 +1102,6 @@
             index: indices[localization]!,
             platforms: platforms[localization]!,
             command: information,
-            customReplacements: customReplacements,
             output: output
           ).contents.save(to: location)
 
@@ -1139,7 +1110,6 @@
             namespace: navigation,
             to: outputDirectory,
             localization: localization,
-            customReplacements: customReplacements,
             status: status,
             output: output
           )

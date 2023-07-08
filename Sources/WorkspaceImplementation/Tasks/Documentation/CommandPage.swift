@@ -41,7 +41,6 @@
       index: StrictString,
       platforms: StrictString,
       command: CommandInterfaceInformation,
-      customReplacements: [(StrictString, StrictString)],
       output: Command.Output
     ) {
 
@@ -116,8 +115,7 @@
       content.append(
         CommandPage.generateSubcommandsSection(
           localization: localization,
-          interface: interface,
-          customReplacements: customReplacements
+          interface: interface
         )
       )
       content.append(
@@ -207,8 +205,7 @@
 
     private static func generateSubcommandsSection(
       localization: LocalizationIdentifier,
-      interface: CommandInterface,
-      customReplacements: [(StrictString, StrictString)]
+      interface: CommandInterface
     ) -> StrictString {
 
       let heading: StrictString
@@ -242,10 +239,7 @@
             }
             let tokens = [command] + arguments
 
-            var link = Page.sanitize(
-              fileName: interface.name,
-              customReplacements: customReplacements
-            )
+            var link = interface.name
             link += "/"
             link += CommandPage.subcommandsDirectoryName(for: localization)
             link += "/"

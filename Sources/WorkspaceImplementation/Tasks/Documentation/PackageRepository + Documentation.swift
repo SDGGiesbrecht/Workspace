@@ -94,8 +94,7 @@
     }
 
     private func loadCommandLineInterface(
-      output: Command.Output,
-      customReplacements: [(StrictString, StrictString)]
+      output: Command.Output
     ) throws -> PackageCLI {
       let productsURL = try productsDirectory(releaseConfiguration: false).get()
       let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
@@ -110,8 +109,7 @@
       let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
       return PackageCLI(
         tools: toolLocations,
-        localizations: try configuration(output: output).documentation.localizations,
-        customReplacements: customReplacements
+        localizations: try configuration(output: output).documentation.localizations
       )
     }
 
@@ -332,8 +330,7 @@
       // #workaround(Needs to merge graphs from other platforms.)
       let api = try loadSwiftInterface(output: output)
       let cli = try loadCommandLineInterface(
-        output: output,
-        customReplacements: customReplacements
+        output: output
       )
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
@@ -356,6 +353,7 @@
           copyright: copyright,
           installation: configuration.documentation.installationInstructions.resolve(configuration),
           importing: configuration.documentation.importingInstructions.resolve(configuration),
+          cli: cli,
           relatedProjects: relatedProjects,
           about: configuration.documentation.about
         )
@@ -414,13 +412,11 @@
         packageURL: configuration.documentation.repositoryURL,
         version: configuration.documentation.currentVersion,
         platforms: try platforms(localizations: localizations, output: output),
-        customReplacements: customReplacements,
         output: output
       )
 
       try interface.outputHTML(
         to: outputDirectory,
-        customReplacements: customReplacements,
         projectRoot: location,
         status: documentationStatus,
         output: output,

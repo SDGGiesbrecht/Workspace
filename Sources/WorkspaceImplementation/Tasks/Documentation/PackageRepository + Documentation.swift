@@ -350,6 +350,7 @@
         let packageBundle = PackageDocumentationBundle(
           localizations: localizations,
           developmentLocalization: developmentLocalization,
+          docCBundleName: packageName,
           copyright: copyright,
           installation: configuration.documentation.installationInstructions.resolve(configuration),
           importing: configuration.documentation.importingInstructions.resolve(configuration),

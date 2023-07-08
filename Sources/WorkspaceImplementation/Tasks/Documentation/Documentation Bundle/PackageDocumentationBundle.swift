@@ -116,6 +116,7 @@ internal struct PackageDocumentationBundle {
   internal init(
     localizations: [LocalizationIdentifier],
     developmentLocalization: LocalizationIdentifier,
+    docCBundleName: StrictString,
     copyright: [LocalizationIdentifier?: StrictString],
     installation: [LocalizationIdentifier: Markdown],
     importing: [LocalizationIdentifier: Markdown],
@@ -125,6 +126,7 @@ internal struct PackageDocumentationBundle {
   ) {
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
+    self.docCBundleName = docCBundleName
     self.copyright = copyright
     self.installation = installation
     self.importing = importing
@@ -137,6 +139,7 @@ internal struct PackageDocumentationBundle {
 
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
+  private let docCBundleName: StrictString
   private let copyright: [LocalizationIdentifier?: StrictString]
   private let installation: [LocalizationIdentifier: Markdown]
   private let importing: [LocalizationIdentifier: Markdown]
@@ -148,6 +151,7 @@ internal struct PackageDocumentationBundle {
 
   internal func write(to outputDirectory: URL) throws {
     var articles: OrderedDictionary<StrictString, Article> = [:]
+    addLandingPage(to: &articles)
     addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
@@ -178,6 +182,73 @@ internal struct PackageDocumentationBundle {
       copyright: copyright,
       articles: articles
     ).write(to: outputDirectory)
+  }
+
+  private func addLandingPage(to articles: inout OrderedDictionary<StrictString, Article>) {
+    var repeated: Set<StrictString> = []
+    var content: [StrictString] = [
+      "## Topics",
+      "",
+    ]
+    
+    for localization in localizations {
+      var entries: [StrictString] = []
+      if installation[localization] ≠ nil {
+        let link = self.link(toArticle: PackageDocumentationBundle.installation(localization: localization))
+        if repeated.insert(link).inserted {
+          entries.append(link)
+        }
+      }
+      if importing[localization] ≠ nil {
+        let link = self.link(toArticle: PackageDocumentationBundle.importing(localization: localization))
+        if repeated.insert(link).inserted {
+          entries.append(link)
+        }
+      }
+      if relatedProjects[localization] ≠ nil {
+        let link = self.link(toArticle: PackageDocumentationBundle.relatedProjects(localization: localization))
+        if repeated.insert(link).inserted {
+          entries.append(link)
+        }
+      }
+      if about[localization] ≠ nil {
+        let link = self.link(toArticle: PackageDocumentationBundle.about(localization: localization))
+        if repeated.insert(link).inserted {
+          entries.append(link)
+        }
+      }
+      if ¬entries.isEmpty {
+        if localizations.count > 1 {
+          content.append(
+            contentsOf:[
+              "### \(localization._iconOrCode)",
+              ""
+            ]
+          )
+        }
+        content.append(contentsOf: entries)
+        content.append("")
+      }
+    }
+
+    articles["\(docCBundleName).md"] = Article(
+      title: "``\(docCBundleName)``",
+      content: content.joinedAsLines()
+    )
+  }
+
+  private func link(toArticle article: StrictString) -> StrictString {
+    let sanitized = StrictString(
+      // Einführung → Einfu‐rung
+      article.lazy.map({ scalar in
+        if scalar.properties.canonicalCombiningClass ≠ .notReordered {
+          return "\u{2D}"
+        } else {
+          return scalar
+        }
+      })
+    )
+    return "\u{2D} <doc:\(sanitized)>"
   }
 
   private func addCLIArticles(

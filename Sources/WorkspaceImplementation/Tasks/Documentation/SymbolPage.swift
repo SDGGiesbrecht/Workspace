@@ -146,25 +146,11 @@
           status: status
         )
       )
-      content.append(
-        SymbolPage.generateReturnsSection(
-          localization: localization,
-          symbol: symbol,
-          extensionStorage: extensionStorage,
-          navigationPath: navigationPath,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks,
-          status: status
-        )
-      )
-
-      if coverageCheckOnly {
-        return nil
-      }
 
       self.init(
         symbol: symbol
       )
+      #warning("↑ Working backwards from here.")
     }
 
     /// Final initialization which can be skipped when only checking coverage.
@@ -876,44 +862,6 @@
       let throwsHeading: StrictString = Callout.throws.localizedText(localization.code)
       var section = [
         ElementSyntax("h2", contents: throwsHeading, inline: true).normalizedSource()
-      ]
-      var parserCache = ParserCache()
-      for contents in callout.contents {
-        section.append(
-          StrictString(
-            contents.renderedHTML(
-              localization: localization.code,
-              internalIdentifiers: packageIdentifiers,
-              symbolLinks: symbolLinks,
-              parserCache: &parserCache
-            )
-          )
-        )
-      }
-      return ElementSyntax("section", contents: section.joinedAsLines(), inline: false)
-        .normalizedSource()
-    }
-
-    private static func generateReturnsSection<SymbolType>(
-      localization: LocalizationIdentifier,
-      symbol: SymbolType,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
-      navigationPath: [SymbolLike],
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String],
-      status: DocumentationStatus
-    ) -> StrictString where SymbolType: SymbolLike {
-      guard
-        let callout = extensionStorage[
-          symbol.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedDocumentation[localization]?.documentation().returnsCallout()
-      else {
-        return ""
-      }
-      let returnsHeading: StrictString = Callout.returns.localizedText(localization.code)
-      var section = [
-        ElementSyntax("h2", contents: returnsHeading, inline: true).normalizedSource()
       ]
       var parserCache = ParserCache()
       for contents in callout.contents {

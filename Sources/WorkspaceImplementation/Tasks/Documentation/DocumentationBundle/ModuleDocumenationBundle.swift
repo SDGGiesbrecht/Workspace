@@ -47,6 +47,7 @@ internal struct ModuleDocumentationBundle {
     var articles: [StrictString: Article] = [:]
     #warning("Placeholder")
     articles["Placeholder.md"] = Article(title: "Placeholder", content: "Placeholder.")
+    #warning("Handle operators and precedence groups?")
     try DocumentationBundle(
       developmentLocalization: developmentLocalization,
       copyright: copyright,

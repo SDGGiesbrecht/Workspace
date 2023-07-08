@@ -122,19 +122,6 @@
           status: status
         )
       )
-      content.append(
-        SymbolPage.generateParametersSection(
-          localization: localization,
-          symbol: symbol,
-          navigationPath: navigationPath,
-          projectRoot: projectRoot,
-          editableModules: editableModules,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: symbolLinks,
-          extensionStorage: extensionStorage,
-          status: status
-        )
-      )
 
       self.init(
         symbol: symbol
@@ -763,11 +750,10 @@
       navigationPath: [SymbolLike],
       projectRoot: URL,
       editableModules: [String],
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String],
       extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties],
       status: DocumentationStatus
     ) -> StrictString {
+      #warning("Presumably useful elsewhere.")
       let parameters = symbol.parameters()
       let parameterDocumentation =
         extensionStorage[
@@ -796,39 +782,7 @@
           )
         }
       }
-      let validatedParameters =
-        parameterDocumentation
-        .filter { parameters.contains($0.name) }
-
-      let parametersHeading: StrictString = Callout.parameters.localizedText(localization.code)
-      return generateParameterLikeSection(
-        heading: parametersHeading,
-        entries:
-          validatedParameters
-          .map(
-            { (entry: ParameterDocumentation) -> (term: StrictString, description: StrictString) in
-              let term = StrictString(
-                SwiftSyntaxNode(Syntax(TokenSyntax(.identifier(entry.name), presence: .present)))
-                  .syntaxHighlightedHTML(
-                    inline: true,
-                    internalIdentifiers: [entry.name],
-                    symbolLinks: [:]
-                  )
-              )
-
-              var parserCache = ParserCache()
-              let description = entry.description.map({ description in
-                description.renderedHTML(
-                  localization: localization.code,
-                  internalIdentifiers: packageIdentifiers,
-                  symbolLinks: symbolLinks,
-                  parserCache: &parserCache
-                )
-              })
-              return (term: term, description: StrictString(description.joinedAsLines()))
-            }
-          )
-      )
+      return ""
     }
 
     internal static func toolsHeader(localization: LocalizationIdentifier) -> StrictString {

@@ -604,47 +604,6 @@
       )
     }
 
-    internal static func generateDiscussionSection<SymbolType>(
-      localization: LocalizationIdentifier,
-      symbol: SymbolType?,
-      content: StrictString?
-    ) -> StrictString where SymbolType: SymbolLike {
-      #warning("Presumably useful elsewhere.")
-      guard let discussion = content else {
-        return ""
-      }
-
-      var discussionHeading: StrictString
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        discussionHeading = "Discussion"
-      case .deutschDeutschland:
-        discussionHeading = "Einzelheiten"
-      }
-      if let swiftSymbol = symbol {
-        switch swiftSymbol.indexSectionIdentifier {
-        case .package, .libraries, .modules, .types, .protocols, .extensions:
-          switch localization._bestMatch {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            discussionHeading = "Overview"
-          case .deutschDeutschland:
-            discussionHeading = "Übersicht"
-          }
-        case .variables, .functions, .operators, .precedenceGroups, .tools:
-          break
-        }
-      }
-
-      var sectionContents: [StrictString] = [
-        ElementSyntax("h2", contents: discussionHeading, inline: true).normalizedSource()
-      ]
-
-      sectionContents.append(discussion)
-
-      return ElementSyntax("section", contents: sectionContents.joinedAsLines(), inline: false)
-        .normalizedSource()
-    }
-
     private static func generateDiscussionSection<SymbolType>(
       localization: LocalizationIdentifier,
       symbol: SymbolType,
@@ -772,29 +731,6 @@
         heading = "executable"  // From “products: [.executable(...)]”
       }
       return heading
-    }
-
-    internal static func generateToolsSection(
-      localization: LocalizationIdentifier,
-      tools: PackageCLI?,
-      pathToSiteRoot: StrictString
-    ) -> StrictString {
-
-      guard let commands = tools?.commands,
-        ¬commands.isEmpty
-      else {
-        return ""
-      }
-
-      return generateChildrenSection(
-        localization: localization,
-        heading: toolsHeader(localization: localization),
-        children: commands.values.sorted(
-          by: { commandA, commandB in  // @exempt(from: tests)
-            commandA.interfaces[localization]!.name < commandB.interfaces[localization]!.name
-          }),
-        pathToSiteRoot: pathToSiteRoot
-      )
     }
 
     internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {
@@ -1505,56 +1441,6 @@
         extensionStorage: extensionStorage,
         packageIdentifiers: packageIdentifiers,
         symbolLinks: symbolLinks
-      )
-    }
-
-    private static func generateChildrenSection(
-      localization: LocalizationIdentifier,
-      heading: StrictString,
-      children: [CommandInterfaceInformation],
-      pathToSiteRoot: StrictString
-    ) -> StrictString {
-
-      func getEntryContents(_ child: CommandInterfaceInformation) -> [StrictString] {
-        var entry: [StrictString] = []
-
-        let target = pathToSiteRoot + child.relativePagePath[localization]!
-        entry.append(
-          ElementSyntax(
-            "a",
-            attributes: ["href": HTML.percentEncodeURLPath(target)],
-            contents: ElementSyntax(
-              "code",
-              attributes: ["class": "swift code"],
-              contents: ElementSyntax(
-                "span",
-                attributes: ["class": "command"],
-                contents: child.interfaces[localization]!.name,
-                inline: true
-              ).normalizedSource(),
-              inline: true
-            ).normalizedSource(),
-            inline: true
-          ).normalizedSource()
-        )
-
-        entry.append(
-          ElementSyntax(
-            "p",
-            contents: HTML.escapeTextForCharacterData(
-              child.interfaces[localization]!.description
-            ),
-            inline: false
-          ).normalizedSource()
-        )
-
-        return entry
-      }
-
-      return generateChildrenSection(
-        heading: heading,
-        children: children,
-        childContents: getEntryContents
       )
     }
 

@@ -507,21 +507,6 @@
       localization: LocalizationIdentifier
     ) -> StrictString {
       var entries: [StrictString] = []
-      for (_, entry) in tools.commands {
-        if let interface = entry.interfaces[localization] {
-          entries.append(
-            ElementSyntax(
-              "a",
-              attributes: [
-                "href":
-                  "[*site root*]\(HTML.percentEncodeURLPath(entry.relativePagePath[localization]!))"
-              ],
-              contents: HTML.escapeTextForCharacterData(StrictString(interface.name)),
-              inline: false
-            ).normalizedSource()
-          )
-        }
-      }
       return generateIndexSection(
         named: name,
         identifier: identifier,
@@ -703,12 +688,6 @@
         output: output,
         coverageCheckOnly: coverageCheckOnly
       )
-      try outputToolPages(
-        to: outputDirectory,
-        status: status,
-        output: output,
-        coverageCheckOnly: coverageCheckOnly
-      )
       try outputLibraryPages(
         to: outputDirectory,
         projectRoot: projectRoot,
@@ -768,46 +747,6 @@
             output: output,
             coverageCheckOnly: coverageCheckOnly
           )?.contents.save(to: pageURL)
-        }
-      }
-    }
-
-    private func outputToolPages(
-      to outputDirectory: URL,
-      status: DocumentationStatus,
-      output: Command.Output,
-      coverageCheckOnly: Bool
-    ) throws {
-      if coverageCheckOnly {
-        return
-      }
-      for localization in localizations {
-        for tool in cli.commands.values {
-          try purgingAutoreleased {
-            let location = tool.pageURL(in: outputDirectory, for: localization)
-            try CommandPage(
-              localization: localization,
-              allLocalizations: localizations,
-              pathToSiteRoot: "../../",
-              package: api,
-              extensionStorage: extensionStorage,
-              navigationPath: [tool],
-              packageImport: packageImport,
-              index: indices[localization]!,
-              platforms: platforms[localization]!,
-              command: tool,
-              output: output
-            ).contents.save(to: location)
-
-            try outputNestedCommands(
-              of: tool,
-              namespace: [tool],
-              to: outputDirectory,
-              localization: localization,
-              status: status,
-              output: output
-            )
-          }
         }
       }
     }
@@ -1047,74 +986,6 @@
         }
       }
       #warning("↑ Working backwards from here.")
-    }
-
-    private func outputNestedCommands(
-      of parent: CommandInterfaceInformation,
-      namespace: [CommandInterfaceInformation],
-      to outputDirectory: URL,
-      localization: LocalizationIdentifier,
-      status: DocumentationStatus,
-      output: Command.Output
-    ) throws {
-
-      for subcommand in parent.interfaces[localization]!.subcommands {
-        try purgingAutoreleased {
-          var information = CommandInterfaceInformation()
-          information.interfaces[localization] = subcommand
-
-          for otherLocalization in localizations {
-            let localized = parent.interfaces[otherLocalization]!.subcommands.first(where: {
-              $0.identifier == subcommand.identifier
-            })!
-            if otherLocalization ≠ localization {
-              information.interfaces[otherLocalization] = localized
-            }
-
-            var nestedPagePath = parent.relativePagePath[otherLocalization]!
-            nestedPagePath.removeLast(5)  // .html
-            nestedPagePath += "/"
-            nestedPagePath += CommandPage.subcommandsDirectoryName(for: otherLocalization)
-            nestedPagePath += "/"
-            nestedPagePath += localized.name
-            nestedPagePath += ".html"
-            information.relativePagePath[otherLocalization] = nestedPagePath
-          }
-
-          let location = information.pageURL(in: outputDirectory, for: localization)
-
-          var modifiedRoot: StrictString = "../../"
-          for _ in namespace.indices {
-            modifiedRoot += "../../".scalars
-          }
-
-          var navigation = namespace
-          navigation.append(information)
-
-          try CommandPage(
-            localization: localization,
-            allLocalizations: localizations,
-            pathToSiteRoot: modifiedRoot,
-            package: api,
-            extensionStorage: extensionStorage,
-            navigationPath: navigation,
-            packageImport: packageImport,
-            index: indices[localization]!,
-            platforms: platforms[localization]!,
-            command: information,
-            output: output
-          ).contents.save(to: location)
-
-          try outputNestedCommands(
-            of: information,
-            namespace: navigation,
-            to: outputDirectory,
-            localization: localization,
-            status: status,
-            output: output
-          )
-        }
-      }
     }
 
     private func outputGeneralPage(

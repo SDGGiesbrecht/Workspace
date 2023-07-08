@@ -14,7 +14,11 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+import SDGControlFlow
+
 import WorkspaceConfiguration
+
+import SDGExportedCommandLineInterface
 
 internal struct PackageDocumentationBundle {
 
@@ -154,6 +158,7 @@ internal struct PackageDocumentationBundle {
       title: PackageDocumentationBundle.importing,
       content: importing
     )
+    addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
       location: PackageDocumentationBundle.relatedProjectsLocation,
@@ -171,6 +176,61 @@ internal struct PackageDocumentationBundle {
       copyright: copyright,
       articles: articles
     ).write(to: outputDirectory)
+  }
+
+  private func addCLIArticles(
+    to articles: inout [StrictString: Article]
+  ) {
+    for localization in localizations {
+      for tool in cli.commands.values {
+        purgingAutoreleased {
+          articles["\(tool.name).md"] = CommandArticle(
+            localization: localization,
+            navigationPath: [tool],
+            command: tool
+          ).article()
+
+          addNestedCommandArticles(
+            of: tool,
+            namespace: [tool],
+            to: &articles,
+            localization: localization
+          )
+        }
+      }
+    }
+  }
+
+  private func addNestedCommandArticles(
+    of parent: CommandInterface,
+    namespace: [CommandInterface],
+    to articles: inout [StrictString: Article],
+    localization: LocalizationIdentifier
+  ) {
+
+    for subcommand in parent.subcommands {
+      purgingAutoreleased {
+
+        var navigation = namespace
+        navigation.append(parent)
+
+        let call = (navigation.appending(subcommand))
+          .map({ $0.name })
+          .joined(separator: " ")
+        articles["\(call).md"] = CommandArticle(
+          localization: localization,
+          navigationPath: navigation,
+          command: subcommand
+        ).article()
+
+        addNestedCommandArticles(
+          of: subcommand,
+          namespace: navigation,
+          to: &articles,
+          localization: localization
+        )
+      }
+    }
   }
 
   private func addGeneralArticle(

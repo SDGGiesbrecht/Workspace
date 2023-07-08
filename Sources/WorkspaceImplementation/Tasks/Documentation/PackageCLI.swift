@@ -46,7 +46,7 @@
       tools: [URL],
       localizations: [LocalizationIdentifier]
     ) {
-      var commands: [StrictString: CommandInterfaceInformation] = [:]
+      var commands: [StrictString: CommandInterface] = [:]
       for tool in tools {
         for localization in localizations {
           if let interface = try? CommandInterface.loadInterface(
@@ -55,17 +55,7 @@
           ).get() {
             var modifiedInterface = interface
             modifiedInterface.sentenceCaseDescriptions()
-
-            commands[
-              interface.identifier,
-              default: CommandInterfaceInformation()
-            ].interfaces[localization] = modifiedInterface
-
-            let directory = PackageCLI.toolsDirectory(for: localization)
-            let filename = interface.name
-            let path = directory + "/" + filename + ".html"
-
-            commands[interface.identifier]!.relativePagePath[localization] = path
+            commands[interface.identifier] = modifiedInterface
           }
         }
       }
@@ -74,6 +64,6 @@
 
     // MARK: - Properties
 
-    internal let commands: [StrictString: CommandInterfaceInformation]
+    internal let commands: [StrictString: CommandInterface]
   }
 #endif

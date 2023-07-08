@@ -146,6 +146,7 @@ internal struct PackageDocumentationBundle {
 
   internal func write(to outputDirectory: URL) throws {
     var articles: [StrictString: Article] = [:]
+    addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
       location: PackageDocumentationBundle.installationLocation,
@@ -158,7 +159,6 @@ internal struct PackageDocumentationBundle {
       title: PackageDocumentationBundle.importing,
       content: importing
     )
-    addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
       location: PackageDocumentationBundle.relatedProjectsLocation,
@@ -184,15 +184,15 @@ internal struct PackageDocumentationBundle {
     for localization in localizations {
       for tool in cli.commands.values {
         purgingAutoreleased {
-          articles["\(tool.name).md"] = CommandArticle(
+          articles["\(toolsDirectory(for: localization))/\(tool.name).md"] = CommandArticle(
             localization: localization,
-            navigationPath: [tool],
+            navigationPath: [],
             command: tool
           ).article()
 
-          addNestedCommandArticles(
+          addSubcommandArticles(
             of: tool,
-            namespace: [tool],
+            namespace: [],
             to: &articles,
             localization: localization
           )
@@ -201,7 +201,11 @@ internal struct PackageDocumentationBundle {
     }
   }
 
-  private func addNestedCommandArticles(
+  private func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._iconOrCode)/Tools"
+  }
+
+  private func addSubcommandArticles(
     of parent: CommandInterface,
     namespace: [CommandInterface],
     to articles: inout [StrictString: Article],
@@ -217,13 +221,13 @@ internal struct PackageDocumentationBundle {
         let call = (navigation.appending(subcommand))
           .map({ $0.name })
           .joined(separator: " ")
-        articles["\(call).md"] = CommandArticle(
+        articles["\(toolsDirectory(for: localization))/\(call).md"] = CommandArticle(
           localization: localization,
           navigationPath: navigation,
           command: subcommand
         ).article()
 
-        addNestedCommandArticles(
+        addSubcommandArticles(
           of: subcommand,
           namespace: navigation,
           to: &articles,

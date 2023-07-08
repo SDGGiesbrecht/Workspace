@@ -46,6 +46,7 @@ internal struct DocumentationBundle {
 
   internal func write(to outputDirectory: URL) throws {
     try writeFooter(to: outputDirectory)
+    #warning("This should at least take the primary localization in the case of overlap.")
     for (path, article) in articles {
       let url = outputDirectory.appendingPathComponent(String(path))
       try article.source.save(to: url)

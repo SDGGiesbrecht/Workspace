@@ -47,52 +47,33 @@
     // MARK: - Source
 
     internal func article() -> Article {
-
-      let interface = command
-
       var content: [StrictString] = []
-      content.append(interface.description)
-      content.append(
-        declarationSection(
-          interface: interface
-        )
-      )
-      if let discussion = interface.discussion {
+      content.append(command.description)
+      content.append(declarationSection())
+      if let discussion = command.discussion {
         content.append(discussion)
       }
-      content.append(
-        subcommandsSection(
-          interface: interface
-        )
-      )
-      content.append(
-        optionsSection(interface: interface)
-      )
-      content.append(
-        argumentTypesSection(
-          interface: interface
-        )
-      )
-
+      content.append(subcommandsSection())
+      content.append(optionsSection())
+      content.append(argumentTypesSection())
       return Article(
-        title: interface.name,
+        title: navigationPath.appending(command).map({ $0.name }).joined(separator: " "),
         content: content.joinedAsLines()
       )
     }
 
-    private func declarationSection(
-      interface: CommandInterface
-    ) -> StrictString {
+    private func declarationSection() -> StrictString {
+      let commands: [StrictString] = navigationPath.appending(command)
+        .map { command in
+          return command.name
+        }
 
-      let commands: [StrictString] = navigationPath.map { command in
-        return command.name
-      }
-
-      let arguments: [StrictString] = interface.arguments.map { argument in
+      let arguments: [StrictString] = command.arguments.map { argument in
         return "[\(argument.name)]"
       }
 
       return [
+        "",
         "```shell",
         (commands + arguments).joined(separator: " "),
         "```"
@@ -108,9 +89,7 @@
       }
     }
 
-    private func subcommandsSection(
-      interface: CommandInterface
-    ) -> StrictString {
+    private func subcommandsSection() -> StrictString {
 
       let heading: StrictString
       switch localization._bestMatch {
@@ -122,7 +101,7 @@
 
       return definitionListSection(
         heading: heading,
-        entries: interface.subcommands
+        entries: command.subcommands
           .sorted(by: { $0.name < $1.name })
           .map({ subcommand in
             let command: StrictString = "\(subcommand.name)"
@@ -137,9 +116,7 @@
       )
     }
 
-    private func optionsSection(
-      interface: CommandInterface
-    ) -> StrictString {
+    private func optionsSection() -> StrictString {
 
       let heading: StrictString
       switch localization._bestMatch {
@@ -151,7 +128,7 @@
 
       return definitionListSection(
         heading: heading,
-        entries: interface.options
+        entries: command.options
           .sorted(by: { $0.name < $1.name })
           .map({ option in
 
@@ -168,9 +145,7 @@
       )
     }
 
-    private func argumentTypesSection(
-      interface: CommandInterface
-    ) -> StrictString {
+    private func argumentTypesSection() -> StrictString {
 
       let heading: StrictString
       switch localization._bestMatch {
@@ -181,10 +156,10 @@
       }
 
       var arguments: [StrictString: ArgumentInterface] = [:]
-      for argument in interface.arguments {
+      for argument in command.arguments {
         arguments[argument.identifier] = argument
       }
-      for option in interface.options where ¬option.isFlag {
+      for option in command.options where ¬option.isFlag {
         arguments[option.type.identifier] = option.type
       }
       let sortedArguments = arguments.values
@@ -212,6 +187,7 @@
       }
 
       return [
+        "",
         "### \(heading)",
         "",
       ].appending(contentsOf: list).joinedAsLines()

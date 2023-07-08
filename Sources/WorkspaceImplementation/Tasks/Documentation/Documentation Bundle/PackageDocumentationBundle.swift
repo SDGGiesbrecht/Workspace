@@ -185,15 +185,16 @@ internal struct PackageDocumentationBundle {
   ) {
     for localization in localizations {
       for tool in cli.commands.values {
+        let localized = tool.interfaces[localization]!
         purgingAutoreleased {
-          articles["\(toolsDirectory(for: localization))/\(tool.name).md"] = CommandArticle(
+          articles["\(toolsDirectory(for: localization))/\(localized.name).md"] = CommandArticle(
             localization: localization,
             navigationPath: [],
-            command: tool
+            command: localized
           ).article()
 
           addSubcommandArticles(
-            of: tool,
+            of: localized,
             namespace: [],
             to: &articles,
             localization: localization

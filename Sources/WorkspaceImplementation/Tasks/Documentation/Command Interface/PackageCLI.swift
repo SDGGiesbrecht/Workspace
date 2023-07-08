@@ -23,30 +23,13 @@
 
   internal struct PackageCLI {
 
-    // MARK: - Static Methods
-
-    private static func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
-      var result = localization._directoryName + "/"
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          result += "Tools"
-        case .deutschDeutschland:
-          result += "Programme"
-        }
-      } else {
-        result += "executable"
-      }
-      return result
-    }
-
     // MARK: - Initialization
 
     internal init(
       tools: [URL],
       localizations: [LocalizationIdentifier]
     ) {
-      var commands: [StrictString: CommandInterface] = [:]
+      var commands: [StrictString: CommandInterfaceInformation] = [:]
       for tool in tools {
         for localization in localizations {
           if let interface = try? CommandInterface.loadInterface(
@@ -55,7 +38,8 @@
           ).get() {
             var modifiedInterface = interface
             modifiedInterface.sentenceCaseDescriptions()
-            commands[interface.identifier] = modifiedInterface
+            commands[interface.identifier, default: CommandInterfaceInformation()]
+              .interfaces[localization] = modifiedInterface
           }
         }
       }
@@ -64,6 +48,6 @@
 
     // MARK: - Properties
 
-    internal let commands: [StrictString: CommandInterface]
+    internal let commands: [StrictString: CommandInterfaceInformation]
   }
 #endif

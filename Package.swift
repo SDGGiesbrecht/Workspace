@@ -488,6 +488,10 @@ let package = Package(
       from: Version(10, 1, 3)
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}collections",
+      from: Version(1, 0, 4)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
       from: Version(3, 0, 5)
     ),
@@ -545,6 +549,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "OrderedCollections", package: "swift\u{2D}collections"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),

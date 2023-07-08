@@ -16,6 +16,7 @@
 
 import Foundation
 
+import OrderedCollections
 import SDGText
 
 import WorkspaceConfiguration
@@ -29,7 +30,7 @@ internal struct DocumentationBundle {
   internal init(
     developmentLocalization: LocalizationIdentifier,
     copyright: [LocalizationIdentifier?: StrictString],
-    articles: [StrictString: Article]
+    articles: OrderedDictionary<StrictString, Article>
   ) {
     self.developmentLocalization = developmentLocalization
     self.copyright = copyright
@@ -40,16 +41,21 @@ internal struct DocumentationBundle {
 
   private let developmentLocalization: LocalizationIdentifier
   private let copyright: [LocalizationIdentifier?: StrictString]
-  private let articles: [StrictString: Article]
+  private let articles: OrderedDictionary<StrictString, Article>
 
   // MARK: - Output
 
   internal func write(to outputDirectory: URL) throws {
     try writeFooter(to: outputDirectory)
-    #warning("This should at least take the primary localization in the case of overlap.")
+    var existing: Set<StrictString> = []
     for (path, article) in articles {
       let url = outputDirectory.appendingPathComponent(String(path))
-      try article.source.save(to: url)
+      let source = article.source
+      let fileName = StrictString(url.lastPathComponent)
+      if ¬existing.contains(fileName) {
+        existing.insert(fileName)
+        try source.save(to: url)
+      }
     }
   }
 

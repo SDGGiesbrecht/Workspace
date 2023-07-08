@@ -16,6 +16,8 @@
 
 import SDGControlFlow
 
+import OrderedCollections
+
 import WorkspaceConfiguration
 
 import SDGExportedCommandLineInterface
@@ -145,7 +147,7 @@ internal struct PackageDocumentationBundle {
   // MARK: - Ouput
 
   internal func write(to outputDirectory: URL) throws {
-    var articles: [StrictString: Article] = [:]
+    var articles: OrderedDictionary<StrictString, Article> = [:]
     addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
@@ -179,7 +181,7 @@ internal struct PackageDocumentationBundle {
   }
 
   private func addCLIArticles(
-    to articles: inout [StrictString: Article]
+    to articles: inout OrderedDictionary<StrictString, Article>
   ) {
     for localization in localizations {
       for tool in cli.commands.values {
@@ -208,7 +210,7 @@ internal struct PackageDocumentationBundle {
   private func addSubcommandArticles(
     of parent: CommandInterface,
     namespace: [CommandInterface],
-    to articles: inout [StrictString: Article],
+    to articles: inout OrderedDictionary<StrictString, Article>,
     localization: LocalizationIdentifier
   ) {
 
@@ -238,7 +240,7 @@ internal struct PackageDocumentationBundle {
   }
 
   private func addGeneralArticle(
-    to articles: inout [StrictString: Article],
+    to articles: inout OrderedDictionary<StrictString, Article>,
     location: (LocalizationIdentifier) -> StrictString,
     title: (LocalizationIdentifier) -> StrictString,
     content: [LocalizationIdentifier: Markdown]

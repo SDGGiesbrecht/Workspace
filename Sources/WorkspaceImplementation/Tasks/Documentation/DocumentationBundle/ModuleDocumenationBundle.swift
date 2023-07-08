@@ -16,6 +16,7 @@
 
 import Foundation
 
+import OrderedCollections
 import SDGText
 
 import WorkspaceConfiguration
@@ -44,7 +45,7 @@ internal struct ModuleDocumentationBundle {
 
   internal func write(to outputDirectory: URL) throws {
     try embeddedPackageBundle?.write(to: outputDirectory)
-    var articles: [StrictString: Article] = [:]
+    var articles: OrderedDictionary<StrictString, Article> = [:]
     #warning("Placeholder")
     articles["Placeholder.md"] = Article(title: "Placeholder", content: "Placeholder.")
     #warning("Handle operators and precedence groups?")

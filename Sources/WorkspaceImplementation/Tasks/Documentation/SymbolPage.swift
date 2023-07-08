@@ -109,19 +109,6 @@
           status: status
         )
       )
-      content.append(
-        SymbolPage.generateDiscussionSection(
-          localization: localization,
-          symbol: symbol,
-          extensionStorage: extensionStorage,
-          editableModules: editableModules,
-          navigationPath: navigationPath,
-          projectRoot: projectRoot,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: adjustedSymbolLinks,
-          status: status
-        )
-      )
 
       self.init(
         symbol: symbol
@@ -622,6 +609,7 @@
       symbol: SymbolType?,
       content: StrictString?
     ) -> StrictString where SymbolType: SymbolLike {
+      #warning("Presumably useful elsewhere.")
       guard let discussion = content else {
         return ""
       }
@@ -668,6 +656,7 @@
       symbolLinks: [String: String],
       status: DocumentationStatus
     ) -> StrictString where SymbolType: SymbolLike {
+      #warning("Presumably useful elsewhere.")
       var parserCache = ParserCache()
       guard
         let discussion = extensionStorage[
@@ -679,9 +668,6 @@
         return ""
       }
 
-      var sectionContents: [StrictString] = []
-
-      var empty = true
       for paragraph in discussion {
         let rendered = StrictString(
           paragraph.renderedHTML(
@@ -702,20 +688,8 @@
             localization: localization
           )
         }
-        if empty, ¬rendered.isWhitespace {
-          empty = false
-        }
-        sectionContents.append(rendered)
       }
-
-      if empty {
-        return ""  // @exempt(from: tests)
-      }
-      return generateDiscussionSection(
-        localization: localization,
-        symbol: symbol,
-        content: sectionContents.joinedAsLines()
-      )
+      return ""
     }
 
     internal static func generateParameterLikeSection(

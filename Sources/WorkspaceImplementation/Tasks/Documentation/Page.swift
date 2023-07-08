@@ -35,15 +35,6 @@
     // MARK: - Initialization
 
     internal init(
-      localization: LocalizationIdentifier,
-      pathToSiteRoot: StrictString,
-      navigationPath: StrictString,
-      packageImport: StrictString?,
-      index: StrictString,
-      sectionIdentifier: IndexSectionIdentifier?,
-      platforms: StrictString,
-      symbolImports: StrictString,
-      symbolType: StrictString?,
       title: StrictString,
       content: StrictString
     ) {

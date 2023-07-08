@@ -368,21 +368,6 @@
       }
 
       super.init(
-        localization: localization,
-        pathToSiteRoot: pathToSiteRoot,
-        navigationPath: navigationPath,
-        packageImport: packageImport,
-        index: index,
-        sectionIdentifier: sectionIdentifier,
-        platforms: platforms,
-        symbolImports: SymbolPage.generateImportStatement(
-          for: symbol,
-          package: package,
-          localization: localization,
-          pathToSiteRoot: pathToSiteRoot,
-          extensionStorage: extensionStorage
-        ),
-        symbolType: symbol.symbolType(localization: localization),
         title: StrictString(symbol.names.title),
         content: content.joinedAsLines()
       )

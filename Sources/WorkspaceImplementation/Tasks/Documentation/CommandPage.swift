@@ -78,6 +78,8 @@
           symbolType = "Unterbefehl"
         }
       }
+      #warning("Might be useful elsewhere?")
+      _ = symbolType
 
       var navigationPathLinks = navigationPath.map { commandInformation in
         return (
@@ -129,24 +131,6 @@
       )
 
       super.init(
-        localization: localization,
-        pathToSiteRoot: pathToSiteRoot,
-        navigationPath: SymbolPage.generateNavigationPath(
-          localization: localization,
-          pathToSiteRoot: pathToSiteRoot,
-          allLocalizations: allLocalizations.map({ localization in
-            return (
-              localization: localization, path: command.relativePagePath[localization]!
-            )
-          }),
-          navigationPath: navigationPathLinks
-        ),
-        packageImport: packageImport,
-        index: index,
-        sectionIdentifier: .tools,
-        platforms: platforms,
-        symbolImports: "",
-        symbolType: symbolType,
         title: interface.name,
         content: content.joinedAsLines()
       )

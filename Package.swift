@@ -566,7 +566,6 @@ let package = Package(
         .product(name: "SDGCSS", package: "SDGWeb"),
       ],
       resources: [
-        .copy("Tasks/Documentation/Site Components/Page.html"),
         .copy("Tasks/Licence/Licences/Apache 2.0.md"),
         .copy("Tasks/Licence/Licences/Copyright.md"),
         .copy("Tasks/Licence/Licences/GNU General Public 3.0.md"),

@@ -384,7 +384,9 @@
           }
         }
         if ¬packageAlreadyHandled {
-          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporar in
+            #warning("Redirecting for debugging...")
+            let temporary = outputDirectory.deletingLastPathComponent().appendingPathComponent("Temporary")
             let bundleURL = temporary.appendingPathComponent("\(packageName).docc")
             let placeholerGraphURL = temporary.appendingPathComponent(String(PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: packageName)))
             try PackageDocumentationBundle.placeholderSymbolGraphData(packageName: packageName).save(to: placeholerGraphURL)

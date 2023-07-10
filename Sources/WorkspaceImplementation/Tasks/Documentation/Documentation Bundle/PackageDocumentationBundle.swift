@@ -20,6 +20,7 @@ import OrderedCollections
 
 import WorkspaceConfiguration
 
+import SDGSwiftDocumentation
 import SDGExportedCommandLineInterface
 
 internal struct PackageDocumentationBundle {
@@ -106,6 +107,42 @@ internal struct PackageDocumentationBundle {
     }
   }
 
+  internal static func libraries(localization: LocalizationIdentifier) -> StrictString {
+    let heading: StrictString
+    if let match = localization._reasonableMatch {
+      switch match {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        heading = "Library Products"
+      case .deutschDeutschland:
+        heading = "Biblioteksprodukte"
+      }
+    } else {
+      heading = "library"  // From “products: [.library(...)]”
+    }
+    return heading
+  }
+  private static func librariesLocation(localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._directoryName)/\(libraries(localization: localization)).md"
+  }
+
+  internal static func modules(localization: LocalizationIdentifier) -> StrictString {
+    let heading: StrictString
+    if let match = localization._reasonableMatch {
+      switch match {
+      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+        heading = "Modules"
+      case .deutschDeutschland:
+        heading = "Module"
+      }
+    } else {
+      heading = "target"  // From “targets: [.target(...)]”
+    }
+    return heading
+  }
+  private static func modulesLocation(localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._directoryName)/\(libraries(localization: localization)).md"
+  }
+
   private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -141,6 +178,7 @@ internal struct PackageDocumentationBundle {
     copyright: [LocalizationIdentifier?: StrictString],
     installation: [LocalizationIdentifier: Markdown],
     importing: [LocalizationIdentifier: Markdown],
+    api: PackageAPI,
     cli: PackageCLI,
     relatedProjects: [LocalizationIdentifier: Markdown],
     about: [LocalizationIdentifier: Markdown]
@@ -151,6 +189,7 @@ internal struct PackageDocumentationBundle {
     self.copyright = copyright
     self.installation = installation
     self.importing = importing
+    self.api = api
     self.cli = cli
     self.relatedProjects = relatedProjects
     self.about = about
@@ -164,6 +203,7 @@ internal struct PackageDocumentationBundle {
   private let copyright: [LocalizationIdentifier?: StrictString]
   private let installation: [LocalizationIdentifier: Markdown]
   private let importing: [LocalizationIdentifier: Markdown]
+  private let api: PackageAPI
   private let cli: PackageCLI
   private let relatedProjects: [LocalizationIdentifier: Markdown]
   private let about: [LocalizationIdentifier: Markdown]

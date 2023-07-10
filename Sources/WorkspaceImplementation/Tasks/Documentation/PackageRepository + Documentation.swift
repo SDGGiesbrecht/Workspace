@@ -354,6 +354,7 @@
           copyright: copyright,
           installation: configuration.documentation.installationInstructions.resolve(configuration),
           importing: configuration.documentation.importingInstructions.resolve(configuration),
+          api: api,
           cli: cli,
           relatedProjects: relatedProjects,
           about: configuration.documentation.about

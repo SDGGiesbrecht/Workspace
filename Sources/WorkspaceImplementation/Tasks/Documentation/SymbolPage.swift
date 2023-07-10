@@ -75,35 +75,5 @@
         content: ""
       )
     }
-
-    internal static func librariesHeader(localization: LocalizationIdentifier) -> StrictString {
-      let heading: StrictString
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          heading = "Library Products"
-        case .deutschDeutschland:
-          heading = "Biblioteksprodukte"
-        }
-      } else {
-        heading = "library"  // From “products: [.library(...)]”
-      }
-      return heading
-    }
-
-    internal static func modulesHeader(localization: LocalizationIdentifier) -> StrictString {
-      let heading: StrictString
-      if let match = localization._reasonableMatch {
-        switch match {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          heading = "Modules"
-        case .deutschDeutschland:
-          heading = "Module"
-        }
-      } else {
-        heading = "target"  // From “targets: [.target(...)]”
-      }
-      return heading
-    }
   }
 #endif

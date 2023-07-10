@@ -99,16 +99,6 @@
           status: status
         )
       )
-      content.append(
-        SymbolPage.generateDeclarationSection(
-          localization: localization,
-          symbol: symbol,
-          navigationPath: navigationPath,
-          packageIdentifiers: packageIdentifiers,
-          symbolLinks: adjustedSymbolLinks,
-          status: status
-        )
-      )
 
       self.init(
         symbol: symbol
@@ -553,55 +543,6 @@
         )
       }
       return ""
-    }
-
-    internal static func generateDeclarationSection(
-      localization: LocalizationIdentifier,
-      declaration: StrictString
-    ) -> StrictString {
-      let declarationHeading: StrictString
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        declarationHeading = "Declaration"
-      case .deutschDeutschland:
-        declarationHeading = "Festlegung"
-      }
-
-      let sectionContents: [StrictString] = [
-        ElementSyntax("h2", contents: declarationHeading, inline: true).normalizedSource(),
-        declaration,
-      ]
-
-      return ElementSyntax(
-        "section",
-        attributes: ["class": "declaration"],
-        contents: sectionContents.joinedAsLines(),
-        inline: false
-      ).normalizedSource()
-    }
-
-    private static func generateDeclarationSection<SymbolType>(
-      localization: LocalizationIdentifier,
-      symbol: SymbolType,
-      navigationPath: [SymbolLike],
-      packageIdentifiers: Set<String>,
-      symbolLinks: [String: String],
-      status: DocumentationStatus
-    ) -> StrictString where SymbolType: SymbolLike {
-      guard let declaration = symbol.declaration else {
-        return ""
-      }
-
-      return generateDeclarationSection(
-        localization: localization,
-        declaration: StrictString(
-          declaration.syntaxHighlightedHTML(
-            inline: false,
-            internalIdentifiers: packageIdentifiers,
-            symbolLinks: symbolLinks
-          )
-        )
-      )
     }
 
     private static func generateDiscussionSection<SymbolType>(

@@ -987,16 +987,5 @@
       }
       #warning("↑ Working backwards from here.")
     }
-
-    private func outputGeneralPage(
-      to outputDirectory: URL,
-      location: (LocalizationIdentifier) -> StrictString,
-      title: (LocalizationIdentifier) -> StrictString,
-      content: [LocalizationIdentifier: Markdown],
-      status: DocumentationStatus,
-      output: Command.Output
-    ) throws {
-      // Converted to outputGeneralArticle(...).
-    }
   }
 #endif

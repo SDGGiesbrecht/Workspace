@@ -407,22 +407,8 @@
             ).get()
           }
         }
-        #warning("Aborting early to speed testing.")
-        return
       }
       #warning("Determine if any configuration options should be deprecated.")
-
-      let interface = PackageInterface(
-        localizations: localizations,
-        developmentLocalization: developmentLocalization,
-        api: api,
-        cli: cli,
-        packageURL: configuration.documentation.repositoryURL,
-        version: configuration.documentation.currentVersion,
-        platforms: try platforms(localizations: localizations, output: output),
-        output: output
-      )
-      #warning("↑ Working backwards from here.")
     }
 
     // Final steps irrelevent to validation.

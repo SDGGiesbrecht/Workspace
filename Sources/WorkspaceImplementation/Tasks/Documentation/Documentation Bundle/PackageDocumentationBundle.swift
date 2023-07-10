@@ -107,42 +107,6 @@ internal struct PackageDocumentationBundle {
     }
   }
 
-  internal static func libraries(localization: LocalizationIdentifier) -> StrictString {
-    let heading: StrictString
-    if let match = localization._reasonableMatch {
-      switch match {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        heading = "Library Products"
-      case .deutschDeutschland:
-        heading = "Biblioteksprodukte"
-      }
-    } else {
-      heading = "library"  // From “products: [.library(...)]”
-    }
-    return heading
-  }
-  private static func librariesLocation(localization: LocalizationIdentifier) -> StrictString {
-    return "\(localization._directoryName)/\(libraries(localization: localization)).md"
-  }
-
-  internal static func modules(localization: LocalizationIdentifier) -> StrictString {
-    let heading: StrictString
-    if let match = localization._reasonableMatch {
-      switch match {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        heading = "Modules"
-      case .deutschDeutschland:
-        heading = "Module"
-      }
-    } else {
-      heading = "target"  // From “targets: [.target(...)]”
-    }
-    return heading
-  }
-  private static func modulesLocation(localization: LocalizationIdentifier) -> StrictString {
-    return "\(localization._directoryName)/\(libraries(localization: localization)).md"
-  }
-
   private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -168,6 +132,8 @@ internal struct PackageDocumentationBundle {
   private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
     return "\(localization._directoryName)/\(about(localization: localization)).md"
   }
+  
+  private static let libraries: StrictString = "Library Products"
 
   // MARK: - Initialization
 
@@ -175,6 +141,7 @@ internal struct PackageDocumentationBundle {
     localizations: [LocalizationIdentifier],
     developmentLocalization: LocalizationIdentifier,
     docCBundleName: StrictString,
+    hostingBasePath: String,
     copyright: [LocalizationIdentifier?: StrictString],
     installation: [LocalizationIdentifier: Markdown],
     importing: [LocalizationIdentifier: Markdown],
@@ -186,6 +153,7 @@ internal struct PackageDocumentationBundle {
     self.localizations = localizations
     self.developmentLocalization = developmentLocalization
     self.docCBundleName = docCBundleName
+    self.hostingBasePath = hostingBasePath
     self.copyright = copyright
     self.installation = installation
     self.importing = importing
@@ -199,6 +167,7 @@ internal struct PackageDocumentationBundle {
 
   private let localizations: [LocalizationIdentifier]
   private let developmentLocalization: LocalizationIdentifier
+  private let hostingBasePath: String
   private let docCBundleName: StrictString
   private let copyright: [LocalizationIdentifier?: StrictString]
   private let installation: [LocalizationIdentifier: Markdown]
@@ -213,6 +182,7 @@ internal struct PackageDocumentationBundle {
   internal func write(to outputDirectory: URL) throws {
     var articles: OrderedDictionary<StrictString, Article> = [:]
     addLandingPage(to: &articles)
+    addLibraryArticles(to: &articles, hostingBasePath: hostingBasePath)
     addCLIArticles(to: &articles)
     addGeneralArticle(
       to: &articles,
@@ -297,6 +267,13 @@ internal struct PackageDocumentationBundle {
         topics.append("")
       }
     }
+    if ¬api.libraries.isEmpty {
+      topics.append(contentsOf: [
+        "### Products",
+        "",
+        DocumentationBundle.link(toArticle: PackageDocumentationBundle.libraries)
+      ])
+    }
     if ¬topics.isEmpty {
       content.append(
         contentsOf: [
@@ -310,6 +287,36 @@ internal struct PackageDocumentationBundle {
       title: "``\(docCBundleName)``",
       content: content.joinedAsLines()
     )
+  }
+
+  private func addLibraryArticles(
+    to articles: inout OrderedDictionary<StrictString, Article>,
+    hostingBasePath: String
+  ) {
+    if ¬api.libraries.isEmpty {
+      var index: [StrictString] = []
+      for library in api.libraries {
+        purgingAutoreleased {
+          let name = StrictString(library.names.title)
+          index.append(DocumentationBundle.link(toArticle: name))
+          articles["\(PackageDocumentationBundle.libraries)/\(name).md"] = LibraryArticle(
+            library: library,
+            hostingBasePath: hostingBasePath
+          ).article()
+        }
+      }
+      var indexArticle: [StrictString] = [
+        "## Topics",
+        "",
+        "### \(PackageDocumentationBundle.libraries)",
+        "",
+      ]
+      indexArticle.append(contentsOf: index)
+      articles["\(PackageDocumentationBundle.libraries).md"] = Article(
+        title: PackageDocumentationBundle.libraries,
+        content: indexArticle.joinedAsLines()
+      )
+    }
   }
 
   private func addCLIArticles(
@@ -330,7 +337,7 @@ internal struct PackageDocumentationBundle {
               navigationPath: [],
               command: localized
             ).article()
-            
+
             addSubcommandArticles(
               of: localized,
               namespace: [],

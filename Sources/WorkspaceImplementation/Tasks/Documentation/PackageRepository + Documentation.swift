@@ -351,6 +351,7 @@
           localizations: localizations,
           developmentLocalization: developmentLocalization,
           docCBundleName: packageName,
+          hostingBasePath: hostingBasePath,
           copyright: copyright,
           installation: configuration.documentation.installationInstructions.resolve(configuration),
           importing: configuration.documentation.importingInstructions.resolve(configuration),

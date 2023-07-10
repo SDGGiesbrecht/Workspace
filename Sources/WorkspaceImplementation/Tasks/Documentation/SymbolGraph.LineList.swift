@@ -16,6 +16,8 @@
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 
+  import WorkspaceConfiguration
+
   import SymbolKit
 
   import SwiftSyntax
@@ -23,8 +25,12 @@
 
   extension SymbolGraph.LineList {
 
+    internal func source() -> Markdown {
+      return Markdown(lines.lazy.map({ $0.text }).joinedAsLines())
+    }
+
     internal func documentation() -> DocumentationContent {
-      return DocumentationContent(source: lines.lazy.map({ $0.text }).joined(separator: "\n"))
+      return DocumentationContent(source: String(source()))
     }
   }
 #endif

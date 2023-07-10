@@ -248,10 +248,12 @@ internal struct PackageDocumentationBundle {
   private func addLandingPage(to articles: inout OrderedDictionary<StrictString, Article>) {
     var repeated: Set<StrictString> = []
     var content: [StrictString] = [
-      "## Topics",
+      api.documentation.last?.documentationComment.source() ?? "",
       "",
     ]
-    
+
+    var topics: [StrictString] = []
+
     for localization in localizations {
       var entries: [StrictString] = []
       if installation[localization] ≠ nil {
@@ -286,16 +288,22 @@ internal struct PackageDocumentationBundle {
       }
       if ¬entries.isEmpty {
         if localizations.count > 1 {
-          content.append(
-            contentsOf:[
-              "### \(localization._iconOrCode)",
-              ""
-            ]
-          )
+          topics.append("### \(localization._iconOrCode)")
+        } else {
+          topics.append("### Package")
         }
-        content.append(contentsOf: entries)
-        content.append("")
+        topics.append("")
+        topics.append(contentsOf: entries)
+        topics.append("")
       }
+    }
+    if ¬topics.isEmpty {
+      content.append(
+        contentsOf: [
+          "## Topics",
+          "",
+        ] + topics
+      )
     }
 
     articles["\(docCBundleName).md"] = Article(

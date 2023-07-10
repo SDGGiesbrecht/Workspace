@@ -244,7 +244,7 @@
           coverageCheckOnly: false
         )
 
-        try finalizeSite(outputDirectory: outputDirectory)
+        try finalizeSite(outputDirectory: outputDirectory, output: output)
 
         if status.passing {
           validationStatus.passStep(
@@ -291,14 +291,7 @@
 
     // Preliminary steps irrelevent to validation.
     private func prepare(outputDirectory: URL, output: Command.Output) throws {
-      #warning("Stomped anyway; to accomplish this, it must come afterward.")
-      if false {
-        try retrievePublishedDocumentationIfAvailable(
-          outputDirectory: outputDirectory,
-          output: output
-        )
-        try redirectExistingURLs(outputDirectory: outputDirectory)
-      }
+      // Nothing to do anymore.
     }
 
     // Steps which participate in validation.
@@ -412,8 +405,18 @@
     }
 
     // Final steps irrelevent to validation.
-    private func finalizeSite(outputDirectory: URL) throws {
+    private func finalizeSite(outputDirectory: URL, output: Command.Output) throws {
       try preventJekyllInterference(outputDirectory: outputDirectory)
+
+      try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+        let repository = temporary.appendingPathComponent("Repository")
+        try? FileManager.default.createDirectory(at: repository.deletingLastPathComponent())
+        try retrievePublishedDocumentationIfAvailable(
+          outputDirectory: repository,
+          output: output
+        )
+        try redirect(urlsDroppedFrom: repository, for: outputDirectory)
+      }
     }
 
     private func retrievePublishedDocumentationIfAvailable(
@@ -446,26 +449,41 @@
       }
     }
 
-    private func redirectExistingURLs(outputDirectory: URL) throws {
-      let localization = ContentLocalization.englishUnitedStates  // To match DocC
-      if (try? outputDirectory.checkResourceIsReachable()) == true {
-        for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+    private func redirect(urlsDroppedFrom previous: URL, for current: URL) throws {
+      if (try? previous.checkResourceIsReachable()) == true {
+        for file in try FileManager.default.deepFileEnumeration(in: previous) {
           try purgingAutoreleased {
-            if file.pathExtension == "html" {
-              if file.lastPathComponent == "index.html" {
-                try DocumentSyntax.redirect(
-                  language: localization,
-                  target: URL(fileURLWithPath: "../index.html")
-                ).source().save(to: file)
-              } else {
-                try DocumentSyntax.redirect(
-                  language: localization,
-                  target: URL(fileURLWithPath: "index.html")
-                ).source().save(to: file)
-              }
-            } else {
-              try? FileManager.default.removeItem(at: file)
+            try redirectIfDead(relativePath: file.path(relativeTo: previous), in: current)
+          }
+        }
+      }
+    }
+
+    private func redirectIfDead(relativePath: String, in outputDirectory: URL) throws {
+      let url = outputDirectory.appendingPathComponent(relativePath)
+      if url.pathExtension == "html" {
+        if (try? url.checkResourceIsReachable()) ≠ true {
+          let localization = ContentLocalization.englishUnitedStates  // To match DocC
+          if url.lastPathComponent == "index.html" {
+            try DocumentSyntax.redirect(
+              language: localization,
+              target: URL(fileURLWithPath: "../index.html")
+            ).source().save(to: url)
+            let ancestor = url.deletingLastPathComponent()
+            if ancestor.is(in: outputDirectory) {
+              try redirectIfDead(relativePath: ancestor.path(relativeTo: outputDirectory), in: outputDirectory)
             }
+          } else {
+            try DocumentSyntax.redirect(
+              language: localization,
+              target: URL(fileURLWithPath: "index.html")
+            ).source().save(to: url)
+            try redirectIfDead(
+              relativePath: url
+                .deletingLastPathComponent().appendingPathComponent("index.html")
+                .path(relativeTo: outputDirectory),
+              in: outputDirectory
+            )
           }
         }
       }

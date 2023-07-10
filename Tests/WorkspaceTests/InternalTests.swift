@@ -98,8 +98,6 @@ class InternalTests: TestCase {
   #endif
 
   func testResources() {
-    _ = WorkspaceImplementation.Resources.page
-
     _ = WorkspaceImplementation.Resources.apache2_0
     _ = WorkspaceImplementation.Resources.copyright
     _ = WorkspaceImplementation.Resources.gnuGeneralPublic3_0

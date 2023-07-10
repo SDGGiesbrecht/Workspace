@@ -373,6 +373,7 @@
             let bundle = ModuleDocumentationBundle(
               developmentLocalization: developmentLocalization,
               copyright: copyright,
+              module: module,
               embedPackageBundle: embededPackageBundle
             )
             try bundle.write(to: bundleURL)

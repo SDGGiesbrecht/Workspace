@@ -105,38 +105,6 @@
       return symbol.kind as SymbolGraph.Symbol.Kind
     }
 
-    internal var indexSectionIdentifier: IndexSectionIdentifier {
-      switch self {
-      case let symbol as SymbolGraph.Symbol:
-        switch symbol.kind.identifier {
-        case .associatedtype, .class, .enum, .struct, .typealias, .module:
-          return .types
-        case .deinit, .func, .operator, .`init`, .macro, .method, .snippet, .snippetGroup,
-          .subscript, .typeMethod, .typeSubscript:
-          return .functions
-        case .case, .ivar, .property, .typeProperty, .var:
-          return .variables
-        case .protocol:
-          return .protocols
-        default:  // @exempt(from: tests)
-          symbol.kind.identifier.warnUnknown()
-          return .functions
-        }
-      case is PackageAPI:
-        return .package
-      case is LibraryAPI:
-        return .libraries
-      case is ModuleAPI:
-        return .modules
-      case is Operator:
-        return .operators
-      case is PrecedenceGroup:
-        return .precedenceGroups
-      default:
-        unreachable()
-      }
-    }
-
     internal func symbolType(localization: LocalizationIdentifier) -> StrictString {
       switch self {
       case is PackageAPI:

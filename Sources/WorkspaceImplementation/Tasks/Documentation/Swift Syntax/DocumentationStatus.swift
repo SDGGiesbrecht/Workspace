@@ -54,10 +54,10 @@
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
       var symbolName: StrictString
-      switch symbol.indexSectionIdentifier {
-      case .package, .tools, .libraries, .modules:
+      switch symbol {
+      case is PackageAPI, is LibraryAPI, is ModuleAPI:
         symbolName = StrictString(symbol.names.title)
-      case .types, .extensions, .protocols, .functions, .variables, .operators, .precedenceGroups:
+      default:
         symbolName = navigationPath.dropFirst()
           .map({ StrictString($0.names.title.components(separatedBy: ".").last!) })
           .joined(separator: ".")
@@ -99,15 +99,14 @@
       var hint: UserFacing<StrictString, InterfaceLocalization>?
 
       var possibleSearch: StrictString?
-      switch symbol.indexSectionIdentifier {
-      case .package:
+      switch symbol {
+      case is PackageAPI:
         possibleSearch = "Package"
-      case .libraries:
+      case is LibraryAPI:
         possibleSearch = ".library"
-      case .modules:
+      case is ModuleAPI:
         possibleSearch = ".target"
-      case .tools, .types, .extensions, .protocols, .functions, .variables, .operators,
-        .precedenceGroups:
+      default:
         break
       }
       if var search = possibleSearch {

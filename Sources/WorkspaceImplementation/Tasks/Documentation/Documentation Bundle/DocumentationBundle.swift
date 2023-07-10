@@ -25,6 +25,27 @@ import SDGHTML
 
 internal struct DocumentationBundle {
 
+  // MARK: - Static Methods
+
+  internal static func sanitize(title: StrictString) -> StrictString {
+    return StrictString(
+      // Einführung → Einfu\u{2D}rung
+      // workspace check‐for‐updates → workspace\u{2D}check\u{2D}for\u{2D}updates
+      title.lazy.map({ scalar in
+        if ¬scalar.isASCII
+          ∨ scalar ∉ CharacterSet.urlPathAllowed {
+          return "\u{2D}"
+        } else {
+          return scalar
+        }
+      })
+    )
+  }
+
+  internal static func link(toArticle article: StrictString) -> StrictString {
+    return "\u{2D} <doc:\(sanitize(title: article))>"
+  }
+
   // MARK: - Initialization
 
   internal init(

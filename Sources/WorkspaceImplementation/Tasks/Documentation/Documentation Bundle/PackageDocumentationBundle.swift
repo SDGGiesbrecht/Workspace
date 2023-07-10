@@ -85,6 +85,27 @@ internal struct PackageDocumentationBundle {
     return "\(localization._directoryName)/\(importing(localization: localization)).md"
   }
 
+  private static func commandLineTools(localization: LocalizationIdentifier) -> StrictString {
+    switch localization._bestMatch {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Command Line Tools"
+    case .deutschDeutschland:
+      return "Befehlszeilenprogramme"
+    }
+  }
+  private static func toolsLocation(localization: LocalizationIdentifier) -> StrictString {
+    return "\(localization._directoryName)/\(commandLineTools(localization: localization)).md"
+  }
+
+  private static func subcommands(localization: LocalizationIdentifier) -> StrictString {
+    switch localization._bestMatch {
+    case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+      return "Subcommands"
+    case .deutschDeutschland:
+      return "Unterbefehle"
+    }
+  }
+
   private static func relatedProjects(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -194,25 +215,31 @@ internal struct PackageDocumentationBundle {
     for localization in localizations {
       var entries: [StrictString] = []
       if installation[localization] ≠ nil {
-        let link = self.link(toArticle: PackageDocumentationBundle.installation(localization: localization))
+        let link = DocumentationBundle.link(toArticle: PackageDocumentationBundle.installation(localization: localization))
         if repeated.insert(link).inserted {
           entries.append(link)
         }
       }
       if importing[localization] ≠ nil {
-        let link = self.link(toArticle: PackageDocumentationBundle.importing(localization: localization))
+        let link = DocumentationBundle.link(toArticle: PackageDocumentationBundle.importing(localization: localization))
+        if repeated.insert(link).inserted {
+          entries.append(link)
+        }
+      }
+      if ¬cli.commands.isEmpty {
+        let link = DocumentationBundle.link(toArticle: PackageDocumentationBundle.commandLineTools(localization: localization))
         if repeated.insert(link).inserted {
           entries.append(link)
         }
       }
       if relatedProjects[localization] ≠ nil {
-        let link = self.link(toArticle: PackageDocumentationBundle.relatedProjects(localization: localization))
+        let link = DocumentationBundle.link(toArticle: PackageDocumentationBundle.relatedProjects(localization: localization))
         if repeated.insert(link).inserted {
           entries.append(link)
         }
       }
       if about[localization] ≠ nil {
-        let link = self.link(toArticle: PackageDocumentationBundle.about(localization: localization))
+        let link = DocumentationBundle.link(toArticle: PackageDocumentationBundle.about(localization: localization))
         if repeated.insert(link).inserted {
           entries.append(link)
         }
@@ -237,40 +264,55 @@ internal struct PackageDocumentationBundle {
     )
   }
 
-  private func link(toArticle article: StrictString) -> StrictString {
-    let sanitized = StrictString(
-      // Einführung → Einfu‐rung
-      article.lazy.map({ scalar in
-        if scalar.properties.canonicalCombiningClass ≠ .notReordered {
-          return "\u{2D}"
-        } else {
-          return scalar
-        }
-      })
-    )
-    return "\u{2D} <doc:\(sanitized)>"
-  }
-
   private func addCLIArticles(
     to articles: inout OrderedDictionary<StrictString, Article>
   ) {
-    for localization in localizations {
-      for tool in cli.commands.values {
-        let localized = tool.interfaces[localization]!
-        purgingAutoreleased {
-          articles["\(toolsDirectory(for: localization))/\(localized.name).md"] = CommandArticle(
-            localization: localization,
-            navigationPath: [],
-            command: localized
-          ).article()
+    if ¬cli.commands.isEmpty {
+      for localization in localizations {
+        let commandLineTools = PackageDocumentationBundle.commandLineTools(localization: localization)
+        var index: [StrictString] = []
+        var subcommandIndex: [StrictString: StrictString] = [:]
+        for tool in cli.commands.values {
+          purgingAutoreleased {
+            let localized = tool.interfaces[localization]!
+            index.append(DocumentationBundle.link(toArticle: CommandArticle.title(for: localized, in: [])))
 
-          addSubcommandArticles(
-            of: localized,
-            namespace: [],
-            to: &articles,
-            localization: localization
-          )
+            articles["\(localization._iconOrCode)/\(commandLineTools)/\(localized.name).md"] = CommandArticle(
+              localization: localization,
+              navigationPath: [],
+              command: localized
+            ).article()
+            
+            addSubcommandArticles(
+              of: localized,
+              namespace: [],
+              to: &articles,
+              index: &subcommandIndex,
+              localization: localization
+            )
+          }
         }
+        var indexArticle: [StrictString] = [
+          "## Topics",
+          "",
+          "### \(commandLineTools)",
+          "",
+        ]
+        indexArticle.append(contentsOf: index)
+        if ¬subcommandIndex.isEmpty {
+          indexArticle.append(contentsOf: [
+            "",
+            "### \(PackageDocumentationBundle.subcommands(localization: localization))",
+            "",
+          ])
+          for index in subcommandIndex.keys.sorted() {
+            indexArticle.append(subcommandIndex[index]!)
+          }
+        }
+        articles["\(localization._iconOrCode)/\(commandLineTools).md"] = Article(
+          title: commandLineTools,
+          content: indexArticle.joinedAsLines()
+        )
       }
     }
   }
@@ -283,6 +325,7 @@ internal struct PackageDocumentationBundle {
     of parent: CommandInterface,
     namespace: [CommandInterface],
     to articles: inout OrderedDictionary<StrictString, Article>,
+    index: inout [StrictString: StrictString],
     localization: LocalizationIdentifier
   ) {
 
@@ -295,16 +338,19 @@ internal struct PackageDocumentationBundle {
         let call = (navigation.appending(subcommand))
           .map({ $0.name })
           .joined(separator: " ")
-        articles["\(toolsDirectory(for: localization))/\(call).md"] = CommandArticle(
+        articles["\(localization._iconOrCode)/\(PackageDocumentationBundle.commandLineTools(localization: localization))/\(call).md"] = CommandArticle(
           localization: localization,
           navigationPath: navigation,
           command: subcommand
         ).article()
+        let indexTitle = CommandArticle.title(for: subcommand, in: navigation)
+        index[indexTitle] = DocumentationBundle.link(toArticle: indexTitle)
 
         addSubcommandArticles(
           of: subcommand,
           namespace: navigation,
           to: &articles,
+          index: &index,
           localization: localization
         )
       }

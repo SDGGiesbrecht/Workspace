@@ -26,6 +26,12 @@
 
   internal struct CommandArticle {
 
+    // MARK: - Static Methods
+
+    internal static func title(for command: CommandInterface, in navigationPath: [CommandInterface]) -> StrictString {
+      return navigationPath.appending(command).map({ $0.name }).joined(separator: " ")
+    }
+
     // MARK: - Initialization
 
     internal init(
@@ -57,7 +63,7 @@
       content.append(optionsSection())
       content.append(argumentTypesSection())
       return Article(
-        title: navigationPath.appending(command).map({ $0.name }).joined(separator: " "),
+        title: CommandArticle.title(for: command, in: navigationPath) ,
         content: content.joinedAsLines()
       )
     }
@@ -78,15 +84,6 @@
         (commands + arguments).joined(separator: " "),
         "```"
       ].joinedAsLines()
-    }
-
-    internal func subcommandsDirectoryName() -> StrictString {
-      switch localization._bestMatch {
-      case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Subcommands"
-      case .deutschDeutschland:
-        return "Unterbefehle"
-      }
     }
 
     private func subcommandsSection() -> StrictString {
@@ -110,8 +107,9 @@
             }
             let tokens = [command] + arguments
             let term = tokens.joined(separator: " ")
+            let termLink: StrictString = "[`\(term)`](../\(DocumentationBundle.sanitize(title: CommandArticle.title(for: subcommand, in: navigationPath.appending(self.command)))))"
             let description = subcommand.description
-            return (term: "`\(term)`", description: description)
+            return (term: termLink, description: description)
           })
       )
     }

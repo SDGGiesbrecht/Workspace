@@ -374,6 +374,8 @@
               developmentLocalization: developmentLocalization,
               copyright: copyright,
               module: module,
+              package: api,
+              hostingBasePath: hostingBasePath,
               embedPackageBundle: embededPackageBundle
             )
             try bundle.write(to: bundleURL)

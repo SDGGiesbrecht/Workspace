@@ -35,35 +35,6 @@ extension DocumentationContent {
       .children(cache: &cache).first as? ParagraphNode
   }
 
-  internal func discussionSections(cache: inout ParserCache) -> [SyntaxNode] {
-    var cache = ParserCache()
-    if let result =
-      // MarkdownNode(Document)
-      children(cache: &cache).lazy.compactMap({ $0 as? MarkdownNode }).first?
-      // Paragraphs
-      .children(cache: &cache)
-      // Drop first paragraph and paragraph break.
-      .dropFirst(2)
-      .lazy.flatMap({ (node) -> [SyntaxNode] in
-        if let markdown = node as? MarkdownNode,
-          markdown.markdown is UnorderedList {
-          return markdown.children(cache: &cache).filter { child in
-            if let callout = child as? CalloutNode,
-               callout.callout ∈ Set([.parameters, .parameter, .returns, .throws, .localizationKey, .keyword, .recommended, .recommendedOver]) {
-              return false
-            }
-            return true
-          }
-        } else {
-          return [node]
-        }
-      }) {
-        return Array(result)
-    } else {
-      return []  // @exempt(from: tests)
-    }
-  }
-
   internal func parameters() -> [ParameterDocumentation] {
     var result: [ParameterDocumentation] = []
     scanSyntaxTree({ (node, _) in
@@ -90,38 +61,6 @@ extension DocumentationContent {
         }
       }
       return ¬(node is SwiftSyntaxNode)  // Prevent scanning into example code.
-    })
-    return result
-  }
-
-  internal func returnsCallout() -> CalloutNode? {
-    var result: CalloutNode?
-    scanSyntaxTree({ (node, _) in
-      if result ≠ nil {
-        return false
-      } else if let callout = node as? CalloutNode,
-        callout.callout == .returns {
-        result = callout
-        return false
-      } else {
-        return true
-      }
-    })
-    return result
-  }
-
-  internal func throwsCallout() -> CalloutNode? {
-    var result: CalloutNode?
-    scanSyntaxTree({ (node, _) in
-      if result ≠ nil {
-        return false
-      } else if let callout = node as? CalloutNode,
-        callout.callout == .throws {
-        result = callout
-        return false
-      } else {
-        return true
-      }
     })
     return result
   }

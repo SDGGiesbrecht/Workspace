@@ -31,11 +31,15 @@ internal struct ModuleDocumentationBundle {
     developmentLocalization: LocalizationIdentifier,
     copyright: [LocalizationIdentifier?: StrictString],
     module: ModuleAPI,
+    package: PackageAPI,
+    hostingBasePath: String,
     embedPackageBundle: PackageDocumentationBundle?
   ) {
     self.developmentLocalization = developmentLocalization
     self.copyright = copyright
     self.module = module
+    self.package = package
+    self.hostingBasePath = hostingBasePath
     self.embeddedPackageBundle = embedPackageBundle
   }
 
@@ -44,6 +48,8 @@ internal struct ModuleDocumentationBundle {
   private let developmentLocalization: LocalizationIdentifier
   private let copyright: [LocalizationIdentifier?: StrictString]
   private let module: ModuleAPI
+  private let package: PackageAPI
+  private let hostingBasePath: String
   private let embeddedPackageBundle: PackageDocumentationBundle?
 
   // MARK: - Output
@@ -53,6 +59,7 @@ internal struct ModuleDocumentationBundle {
     var articles: OrderedDictionary<StrictString, Article> = [:]
 
     addLandingPage(to: &articles)
+    addPackagePage(to: &articles)
 
     try DocumentationBundle(
       developmentLocalization: developmentLocalization,
@@ -66,9 +73,33 @@ internal struct ModuleDocumentationBundle {
     var content: [StrictString] = [
       module.documentation.last?.documentationComment.source() ?? "",
     ]
+    if embeddedPackageBundle == nil {
+      content.append(contentsOf: [
+        "## Topics",
+        "",
+        "### Package",
+        "",
+        DocumentationBundle.link(toArticle: StrictString(package.names.title))
+      ])
+    }
     articles["\(name).md"] = Article(
       title: "``\(name)``",
       content: content.joinedAsLines()
     )
+  }
+
+  private func addPackagePage(to articles: inout OrderedDictionary<StrictString, Article>) {
+    let name = StrictString(package.names.title)
+
+    if embeddedPackageBundle == nil {
+      articles["\(name).md"] = Article(
+        title: "\(name)",
+        content: [
+          "### Package",
+          "",
+          "→ [\(name)](/\(hostingBasePath)/\(name)/documentation/\(DocumentationBundle.sanitize(title: StrictString(String(name).lowercased()))))"
+        ].joinedAsLines()
+      )
+    }
   }
 }

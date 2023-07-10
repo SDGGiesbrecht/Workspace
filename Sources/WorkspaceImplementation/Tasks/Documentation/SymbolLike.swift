@@ -27,8 +27,6 @@
 
     internal func hasEditableDocumentation(editableModules: [String]) -> Bool {
       switch self {
-      case is Extension:
-        return false
       case let symbol as SymbolGraph.Symbol:
         if symbol.location == nil {  // Synthesized, such as from default conformance.
           return false
@@ -91,8 +89,6 @@
         return "SDG.library.\(library.names.title)"
       case let module as ModuleAPI:
         return "SDG.target.\(module.names.title)"
-      case let `extension` as Extension:
-        return `extension`.identifier.precise
       case let `operator` as Operator:
         return "SDG.operator.\(`operator`.names.title)"
       case let precedenceGroup as PrecedenceGroup:
@@ -132,8 +128,6 @@
         return .libraries
       case is ModuleAPI:
         return .modules
-      case is Extension:
-        return .extensions
       case is Operator:
         return .operators
       case is PrecedenceGroup:
@@ -353,17 +347,6 @@
           symbol.kind.identifier.warnUnknown()
           return StrictString(symbol.kind.identifier.identifier)
         }
-      case is Extension:
-        if let match = localization._reasonableMatch {
-          switch match {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Extension"
-          case .deutschDeutschland:
-            return "Erweiterung"
-          }
-        } else {
-          return "extension"
-        }
       case is Operator:
         if let match = localization._reasonableMatch {
           switch match {
@@ -391,211 +374,7 @@
       }
     }
 
-    // MARK: - Relationships
-
-    internal func children(package: PackageAPI) -> [SymbolLike] {
-      switch self {
-      case let symbol as SymbolGraph.Symbol:
-        var result: [SymbolGraph.Symbol] = []
-        for graph in package.symbolGraphs() {
-          for relationship in graph.graph.relationships {
-            switch relationship.kind {
-            case .memberOf, .requirementOf, .optionalRequirementOf:
-              if relationship.target == symbol.identifier.precise,
-                let child = graph.graph.symbols[relationship.source],
-                ¬result.contains(where: { $0.identifier.precise == child.identifier.precise })
-              {
-                result.append(child)
-              }
-            default:
-              break
-            }
-          }
-        }
-        return result
-      case let package as PackageAPI:
-        return package.libraries + package.modules
-      case is LibraryAPI:
-        return []
-      case let module as ModuleAPI:
-        var result: [SymbolLike] = []
-        for graph in module.symbolGraphs {
-          for (_, symbol) in graph.graph.symbols {
-            if ¬graph.graph.relationships.contains(where: { relationship in
-              guard relationship.source == symbol.identifier.precise else {
-                return false
-              }
-              switch relationship.kind {
-              case .memberOf, .requirementOf, .defaultImplementationOf, .optionalRequirementOf:
-                return true
-              default:
-                return false
-              }
-            }) {
-              result.append(symbol)
-            }
-          }
-        }
-        result.append(contentsOf: module.operators)
-        result.append(contentsOf: module.precedenceGroups)
-        result.append(contentsOf: module.extensions())
-        return result
-      case let `extension` as Extension:
-        var result: [SymbolGraph.Symbol] = []
-        for graph in package.symbolGraphs() {
-          for relationship in graph.graph.relationships {
-            switch relationship.kind {
-            case .memberOf, .requirementOf, .optionalRequirementOf:
-              if relationship.targetFallback == `extension`.names.title,
-                let child = graph.graph.symbols[relationship.source],
-                ¬result.contains(where: { $0.identifier.precise == child.identifier.precise })
-              {
-                result.append(child)
-              }
-            default:
-              break
-            }
-          }
-        }
-        return result
-      case is Operator, is PrecedenceGroup:
-        return []
-      default:
-        unreachable()
-      }
-    }
-
     // MARK: - Localization
-
-    internal func determine(
-      localizations: [LocalizationIdentifier],
-      package: PackageAPI,
-      module: String?,
-      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties],
-      parsingCache: inout [URL: SymbolGraph.Symbol.CachedSource]
-    ) {
-
-      let parsed = parseDocumentation(cache: &parsingCache, module: module)
-        .resolved(localizations: localizations)
-      extensionStorage[extendedPropertiesIndex, default: .default].localizedDocumentation =
-        parsed.documentation
-      extensionStorage[
-        extendedPropertiesIndex,
-        default: .default  // @exempt(from: tests) Reachability unknown.
-      ].crossReference =
-        parsed.crossReference
-      extensionStorage[
-        extendedPropertiesIndex,
-        default: .default  // @exempt(from: tests) Reachability unknown.
-      ].skippedLocalizations =
-        parsed.skipped
-
-      let globalScope: Bool
-      if self is ModuleAPI {
-        globalScope = true
-      } else {
-        globalScope = false
-      }
-
-      var unique = 0
-      var groups: [StrictString: [SymbolLike]] = [:]
-      for child in children(package: package) {
-        child.determine(
-          localizations: localizations,
-          package: package,
-          module: module,
-          extensionStorage: &extensionStorage,
-          parsingCache: &parsingCache
-        )
-        let crossReference =
-          extensionStorage[
-            child.extendedPropertiesIndex,
-            default: .default  // @exempt(from: tests) Reachability unknown.
-          ].crossReference
-          ?? {
-            unique += 1
-            return "\u{7F}\(String(describing: unique))"
-          }()
-        groups[crossReference, default: []].append(child)
-      }
-      for (_, group) in groups {
-        for indexA in group.indices {
-          for indexB in group.indices {
-            group[indexA].addLocalizations(
-              from: group[indexB],
-              isSame: indexA == indexB,
-              globalScope: globalScope,
-              package: package,
-              extensionStorage: &extensionStorage
-            )
-          }
-        }
-      }
-    }
-
-    private func addLocalizations(
-      from other: SymbolLike,
-      isSame: Bool,
-      globalScope: Bool,
-      package: PackageAPI,
-      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) {
-      for (localization, _) in extensionStorage[
-        other.extendedPropertiesIndex,
-        default: .default  // @exempt(from: tests) Reachability unknown.
-      ].localizedDocumentation {
-        extensionStorage[
-          extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedEquivalentFileNames[localization] =
-          other
-          .fileName()
-        extensionStorage[
-          extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedEquivalentDirectoryNames[localization] = other.directoryName(
-          for: localization,
-          globalScope: globalScope
-        )
-        if ¬isSame {
-          extensionStorage[
-            self.extendedPropertiesIndex,
-            default: .default  // @exempt(from: tests) Reachability unknown.
-          ].localizedChildren.append(contentsOf: other.children(package: package))
-        }
-      }
-    }
-
-    internal func determineLocalizedPaths(
-      localizations: [LocalizationIdentifier],
-      package: PackageAPI,
-      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) {
-      var groups: [StrictString: [SymbolLike]] = [:]
-      for child in children(package: package) {
-        child.determineLocalizedPaths(
-          localizations: localizations,
-          package: package,
-          extensionStorage: &extensionStorage
-        )
-        if let crossReference = extensionStorage[
-          child.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].crossReference {
-          groups[crossReference, default: []].append(child)
-        }
-      }
-      for (_, group) in groups {
-        for indexA in group.indices {
-          for indexB in group.indices where indexA ≠ indexB {
-            group[indexA].addLocalizedPaths(
-              from: group[indexB],
-              extensionStorage: &extensionStorage
-            )
-          }
-        }
-      }
-    }
 
     private func addLocalizedPaths(
       from other: SymbolLike,
@@ -782,17 +561,6 @@
           symbol.kind.identifier.warnUnknown()
           return StrictString(symbol.kind.identifier.identifier)
         }
-      case is Extension:
-        if let match = localization._reasonableMatch {
-          switch match {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Extensions"
-          case .deutschDeutschland:
-            return "Erweiterungen"
-          }
-        } else {
-          return "extension"
-        }
       case is Operator:
         if let match = localization._reasonableMatch {
           switch match {
@@ -859,153 +627,6 @@
         default: .default  // @exempt(from: tests) Reachability unknown.
       ].relativePagePath[localization].map { relativePath in
         return outputDirectory.appendingPathComponent(String(relativePath))
-      }
-    }
-
-    internal func determinePaths(
-      for localization: LocalizationIdentifier,
-      namespace: StrictString = "",
-      package: PackageAPI,
-      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) -> [String: String] {
-      return purgingAutoreleased {
-
-        var links: [String: String] = [:]
-        var path = localization._directoryName + "/"
-
-        switch self {
-        case let package as PackageAPI:
-          for library in package.libraries {
-            links = library.determinePaths(
-              for: localization,
-              package: package,
-              extensionStorage: &extensionStorage
-            ).merging(links, uniquingKeysWith: min)
-          }
-        case let library as LibraryAPI:
-          path +=
-            localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-          for module in library.modules {
-            links = package.modules.first(where: { $0.names.title == module })!.determinePaths(
-              for: localization,
-              package: package,
-              extensionStorage: &extensionStorage
-            ).merging(links, uniquingKeysWith: min)
-          }
-        case let module as ModuleAPI:
-          path +=
-            localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-          for child in module.children(package: package) {
-            links = child.determinePaths(
-              for: localization,
-              package: package,
-              extensionStorage: &extensionStorage
-            ).merging(links, uniquingKeysWith: min)
-          }
-        case let symbol as SymbolGraph.Symbol:
-          switch symbol.kind.identifier {
-          case .associatedtype, .class, .enum, .protocol, .struct, .typealias, .module:
-            path +=
-              namespace
-              + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-            var newNamespace = namespace
-            newNamespace.append(
-              contentsOf: localizedDirectoryName(
-                for: localization,
-                extensionStorage: extensionStorage
-              ) + "/"
-            )
-            newNamespace.append(
-              contentsOf: localizedFileName(
-                for: localization,
-                extensionStorage: extensionStorage
-              )
-                + "/"
-            )
-            for child in symbol.children(package: package) {
-              links = child.determinePaths(
-                for: localization,
-                namespace: newNamespace,
-                package: package,
-                extensionStorage: &extensionStorage
-              ).merging(links, uniquingKeysWith: min)
-            }
-          case .deinit, .`case`, .`init`, .macro, .snippet, .snippetGroup, .subscript,
-            .typeSubscript:
-            path +=
-              namespace
-              + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-          case .func, .ivar, .operator, .method, .property, .var:
-            path +=
-              namespace
-              + localizedDirectoryName(
-                for: localization,
-                globalScope: namespace.isEmpty,
-                typeMember: false,
-                extensionStorage: extensionStorage
-              ) + "/"
-          case .typeMethod, .typeProperty:
-            path +=
-              namespace
-              + localizedDirectoryName(
-                for: localization,
-                globalScope: namespace.isEmpty,
-                typeMember: true,
-                extensionStorage: extensionStorage
-              ) + "/"
-          default:  // @exempt(from: tests)
-            symbol.kind.identifier.warnUnknown()
-          }
-        case is Operator, is PrecedenceGroup:
-          path +=
-            namespace
-            + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-        case let `extension` as Extension:
-          path +=
-            namespace
-            + localizedDirectoryName(for: localization, extensionStorage: extensionStorage) + "/"
-          var newNamespace = namespace
-          newNamespace.append(
-            contentsOf: localizedDirectoryName(
-              for: localization,
-              extensionStorage: extensionStorage
-            ) + "/"
-          )
-          newNamespace.append(
-            contentsOf: localizedFileName(
-              for: localization,
-              extensionStorage: extensionStorage
-            )
-              + "/"
-          )
-          for child in `extension`.children(package: package) {
-            links = child.determinePaths(
-              for: localization,
-              namespace: newNamespace,
-              package: package,
-              extensionStorage: &extensionStorage
-            ).merging(links, uniquingKeysWith: min)
-          }
-        default:
-          unreachable()
-        }
-
-        path +=
-          localizedFileName(
-            for: localization,
-            extensionStorage: extensionStorage
-          )
-          + ".html"
-        extensionStorage[
-          self.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].relativePagePath[localization] = path
-        if case .types = self.indexSectionIdentifier {
-          links[names.title.truncated(before: "<")] = String(path)
-        } else {
-          links[names.title] = String(path)
-        }
-        return links
       }
     }
 

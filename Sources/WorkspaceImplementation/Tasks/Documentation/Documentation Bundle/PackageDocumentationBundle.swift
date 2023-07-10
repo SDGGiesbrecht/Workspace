@@ -14,6 +14,7 @@
  See http://www.apache.org/licenses/LICENSE-2.0 for licence information.
  */
 
+#if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import SDGControlFlow
 
 import OrderedCollections
@@ -132,7 +133,7 @@ internal struct PackageDocumentationBundle {
   private static func aboutLocation(localization: LocalizationIdentifier) -> StrictString {
     return "\(localization._directoryName)/\(about(localization: localization)).md"
   }
-  
+
   private static let libraries: StrictString = "Library Products"
 
   // MARK: - Initialization
@@ -426,3 +427,4 @@ internal struct PackageDocumentationBundle {
     }
   }
 }
+#endif

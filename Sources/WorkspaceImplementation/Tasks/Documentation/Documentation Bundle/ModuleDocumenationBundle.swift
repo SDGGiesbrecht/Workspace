@@ -71,7 +71,7 @@ internal struct ModuleDocumentationBundle {
   private func addLandingPage(to articles: inout OrderedDictionary<StrictString, Article>) {
     let name = StrictString(module.names.title)
     var content: [StrictString] = [
-      module.documentation.last?.documentationComment.source() ?? "",
+      module.documentation.last?.documentationComment.source() ?? ""
     ]
     if embeddedPackageBundle == nil {
       content.append(contentsOf: [
@@ -79,7 +79,7 @@ internal struct ModuleDocumentationBundle {
         "",
         "### Package",
         "",
-        DocumentationBundle.link(toArticle: StrictString(package.names.title))
+        DocumentationBundle.link(toArticle: StrictString(package.names.title)),
       ])
     }
     articles["\(name).md"] = Article(
@@ -97,7 +97,7 @@ internal struct ModuleDocumentationBundle {
         content: [
           "### Package",
           "",
-          "→ [\(name)](/\(hostingBasePath)/\(name)/documentation/\(DocumentationBundle.sanitize(title: StrictString(String(name).lowercased()))))"
+          "→ [\(name)](/\(hostingBasePath)/\(name)/documentation/\(DocumentationBundle.sanitize(title: StrictString(String(name).lowercased()))))",
         ].joinedAsLines()
       )
     }

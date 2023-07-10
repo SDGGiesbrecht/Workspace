@@ -353,6 +353,10 @@
           relatedProjects: relatedProjects,
           about: configuration.documentation.about
         )
+        try DocumentSyntax.redirect(
+          language: ContentLocalization.englishUnitedStates,  // To match DocC
+          target: URL(fileURLWithPath: "\(packageName)/documentation/\(String(DocumentationBundle.sanitize(title: packageName)).lowercased())")
+        ).source().save(to: outputDirectory.appendingPathComponent("index.html"))
         var packageAlreadyHandled = false
         for module in api.modules {
           try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in

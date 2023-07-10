@@ -447,18 +447,19 @@
     }
 
     private func redirectExistingURLs(outputDirectory: URL) throws {
+      let localization = ContentLocalization.englishUnitedStates  // To match DocC
       if (try? outputDirectory.checkResourceIsReachable()) == true {
         for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
           try purgingAutoreleased {
             if file.pathExtension == "html" {
               if file.lastPathComponent == "index.html" {
                 try DocumentSyntax.redirect(
-                  language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
+                  language: localization,
                   target: URL(fileURLWithPath: "../index.html")
                 ).source().save(to: file)
               } else {
                 try DocumentSyntax.redirect(
-                  language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
+                  language: localization,
                   target: URL(fileURLWithPath: "index.html")
                 ).source().save(to: file)
               }

@@ -430,28 +430,5 @@
     private let editableModules: [String]
     private let packageIdentifiers: Set<String>
     private let symbolLinks: [LocalizationIdentifier: [String: String]]
-
-    // MARK: - Output
-
-    internal func outputHTML(
-      to outputDirectory: URL,
-      projectRoot: URL,
-      status: DocumentationStatus,
-      output: Command.Output,
-      coverageCheckOnly: Bool
-    ) throws {
-      output.print(
-        UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "Generating HTML..."
-          case .deutschDeutschland:
-            return "Auszeichnung wird erstellt ..."
-          }
-        }).resolved()
-      )
-
-      #warning("↑ Working backwards from here.")
-    }
   }
 #endif

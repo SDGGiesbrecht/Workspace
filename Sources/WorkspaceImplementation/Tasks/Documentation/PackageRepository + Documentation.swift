@@ -422,14 +422,6 @@
         platforms: try platforms(localizations: localizations, output: output),
         output: output
       )
-
-      try interface.outputHTML(
-        to: outputDirectory,
-        projectRoot: location,
-        status: documentationStatus,
-        output: output,
-        coverageCheckOnly: coverageCheckOnly
-      )
       #warning("↑ Working backwards from here.")
     }
 

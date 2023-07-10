@@ -107,9 +107,8 @@
             }
             let tokens = [command] + arguments
             let term = tokens.joined(separator: " ")
-            let termLink: StrictString = "[`\(term)`](../\(DocumentationBundle.sanitize(title: CommandArticle.title(for: subcommand, in: navigationPath.appending(self.command)))))"
             let description = subcommand.description
-            return (term: termLink, description: description)
+            return (term: "`\(term)`", description: description)
           })
       )
     }

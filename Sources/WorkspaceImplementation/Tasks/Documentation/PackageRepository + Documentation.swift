@@ -407,6 +407,21 @@
     // Final steps irrelevent to validation.
     private func finalizeSite(outputDirectory: URL, output: Command.Output) throws {
       try preventJekyllInterference(outputDirectory: outputDirectory)
+      try redirectDeadLinks(outputDirectory: outputDirectory, output: output)
+    }
+
+    private func redirectDeadLinks(outputDirectory: URL, output: Command.Output) throws {
+
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Checking for defunct URLs to redirect..."
+          case .deutschDeutschland:
+            return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
+          }
+        }).resolved()
+      )
 
       try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
         let repository = temporary.appendingPathComponent("Repository")
@@ -424,25 +439,12 @@
       output: Command.Output
     ) throws {
       if let packageURL = try configuration(output: output).documentation.repositoryURL {
-
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Checking for defunct URLs to redirect..."
-            case .deutschDeutschland:
-              return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
-            }
-          }).resolved()
-        )
-
         FileManager.default
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
             do {
               _ = try Git.clone(package, to: temporary).get()
               _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
-              try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}
           }
@@ -453,7 +455,9 @@
       if (try? previous.checkResourceIsReachable()) == true {
         for file in try FileManager.default.deepFileEnumeration(in: previous) {
           try purgingAutoreleased {
-            try redirectIfDead(relativePath: file.path(relativeTo: previous), in: current)
+            let relative = file.resolvingSymlinksInPath()
+              .path(relativeTo: previous.resolvingSymlinksInPath())
+            try redirectIfDead(relativePath: relative, in: current)
           }
         }
       }
@@ -470,8 +474,12 @@
               target: URL(fileURLWithPath: "../index.html")
             ).source().save(to: url)
             let ancestor = url.deletingLastPathComponent()
-            if ancestor.is(in: outputDirectory) {
-              try redirectIfDead(relativePath: ancestor.path(relativeTo: outputDirectory), in: outputDirectory)
+            if ancestor.resolvingSymlinksInPath().is(in: outputDirectory.resolvingSymlinksInPath()) {
+              try redirectIfDead(
+                relativePath: ancestor.resolvingSymlinksInPath()
+                  .path(relativeTo: outputDirectory.resolvingSymlinksInPath()),
+                in: outputDirectory
+              )
             }
           } else {
             try DocumentSyntax.redirect(
@@ -481,7 +489,8 @@
             try redirectIfDead(
               relativePath: url
                 .deletingLastPathComponent().appendingPathComponent("index.html")
-                .path(relativeTo: outputDirectory),
+                .resolvingSymlinksInPath()
+                .path(relativeTo: outputDirectory.resolvingSymlinksInPath()),
               in: outputDirectory
             )
           }

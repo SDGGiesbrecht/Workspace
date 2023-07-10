@@ -342,27 +342,6 @@
       }
     }
 
-    // MARK: - Localization
-
-    private func addLocalizedPaths(
-      from other: SymbolLike,
-      extensionStorage: inout [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) {
-      for (localization, _) in extensionStorage[
-        other.extendedPropertiesIndex,
-        default: .default  // @exempt(from: tests) Reachability unknown.
-      ].localizedDocumentation {
-        extensionStorage[
-          self.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedEquivalentPaths[localization] =
-          extensionStorage[
-            other.extendedPropertiesIndex,
-            default: .default  // @exempt(from: tests) Reachability unknown.
-          ].relativePagePath[localization]
-      }
-    }
-
     // MARK: - Paths
 
     private func fileName() -> StrictString {
@@ -553,48 +532,6 @@
         }
       default:
         unreachable()
-      }
-    }
-
-    internal func localizedFileName(
-      for localization: LocalizationIdentifier,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) -> StrictString {
-      return
-        extensionStorage[
-          self.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedEquivalentFileNames[localization]
-        ?? fileName()
-    }
-
-    internal func localizedDirectoryName(
-      for localization: LocalizationIdentifier,
-      globalScope: Bool = false,
-      typeMember: Bool = false,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) -> StrictString {
-      return
-        extensionStorage[
-          self.extendedPropertiesIndex,
-          default: .default  // @exempt(from: tests) Reachability unknown.
-        ].localizedEquivalentDirectoryNames[localization]
-        ?? directoryName(
-          for: localization,
-          globalScope: globalScope
-        )
-    }
-
-    internal func pageURL(
-      in outputDirectory: URL,
-      for localization: LocalizationIdentifier,
-      extensionStorage: [String: SymbolGraph.Symbol.ExtendedProperties]
-    ) -> URL? {
-      return extensionStorage[
-        self.extendedPropertiesIndex,
-        default: .default  // @exempt(from: tests) Reachability unknown.
-      ].relativePagePath[localization].map { relativePath in
-        return outputDirectory.appendingPathComponent(String(relativePath))
       }
     }
 

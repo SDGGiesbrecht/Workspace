@@ -22,33 +22,64 @@ import SDGSwiftSource
 
 extension PackageAPI {
 
-  internal func validateCoverage(documentationStatus: DocumentationStatus, projectRoot: URL) {
+  internal func validateCoverage(
+    documentationStatus: DocumentationStatus,
+    projectRoot: URL
+  ) {
+    let editableModules = modules.map { $0.names.title }
     for graph in symbolGraphs() {
-      validateCoverage(ofSymbol: self, documentationStatus: documentationStatus, projectRoot: projectRoot)
+      validateCoverage(
+        ofSymbol: self,
+        documentationStatus: documentationStatus,
+        projectRoot: projectRoot,
+        editableModules: editableModules
+      )
       for library in libraries {
-        validateCoverage(ofSymbol: library, documentationStatus: documentationStatus, projectRoot: projectRoot)
+        validateCoverage(
+          ofSymbol: library,
+          documentationStatus: documentationStatus,
+          projectRoot: projectRoot,
+          editableModules: editableModules
+        )
       }
       for module in modules {
-        validateCoverage(ofSymbol: module, documentationStatus: documentationStatus, projectRoot: projectRoot)
+        validateCoverage(
+          ofSymbol: module,
+          documentationStatus: documentationStatus,
+          projectRoot: projectRoot,
+          editableModules: editableModules
+        )
       }
       for (_, symbol) in graph.graph.symbols {
-        validateCoverage(ofSymbol: symbol, documentationStatus: documentationStatus, projectRoot: projectRoot)
+        validateCoverage(
+          ofSymbol: symbol,
+          documentationStatus: documentationStatus,
+          projectRoot: projectRoot,
+          editableModules: editableModules
+        )
       }
     }
   }
 
-  private func validateCoverage(ofSymbol symbol: SymbolLike, documentationStatus: DocumentationStatus, projectRoot: URL) {
-    if let documentation = symbol.docComment {
-      let document = DocumentationContent(source: String(documentation.source()))
-      document.scanSyntaxTree({ node, _ in
-        if let heading = node as? MarkdownHeading,
-          heading.level < 3 {
-          documentationStatus.reportExcessiveHeading(symbol: symbol, projectRoot: projectRoot)
-        }
-        return true
-      })
-    } else {
-      documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
+  private func validateCoverage(
+    ofSymbol symbol: SymbolLike,
+    documentationStatus: DocumentationStatus,
+    projectRoot: URL,
+    editableModules: [String]
+  ) {
+    if symbol.hasEditableDocumentation(editableModules: editableModules) {
+      if let documentation = symbol.docComment {
+        let document = DocumentationContent(source: String(documentation.source()))
+        document.scanSyntaxTree({ node, _ in
+          if let heading = node as? MarkdownHeading,
+             heading.level < 3 {
+            documentationStatus.reportExcessiveHeading(symbol: symbol, projectRoot: projectRoot)
+          }
+          return true
+        })
+      } else {
+        documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
+      }
     }
   }
 }

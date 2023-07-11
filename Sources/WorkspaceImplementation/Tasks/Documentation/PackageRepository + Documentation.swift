@@ -56,17 +56,6 @@
       return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private func customFileNameReplacements(output: Command.Output) throws -> [(
-      StrictString, StrictString
-    )] {
-      let dictionary = try configuration(output: output).documentation.api.fileNameReplacements
-      var array: [(StrictString, StrictString)] = []
-      for key in dictionary.keys.sorted() {
-        array.append((key, dictionary[key]!))
-      }
-      return array
-    }
-
     private func platforms(
       localizations: [LocalizationIdentifier],
       output: Command.Output
@@ -315,8 +304,6 @@
         }
       }
 
-      let customReplacements = try customFileNameReplacements(output: output)
-
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
@@ -327,11 +314,8 @@
       )
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
-      #warning("Temporary disabled to speed up debugging.")
-      if false {
-        if ¬coverageCheckOnly {
-          relatedProjects = try self.relatedProjects(output: output)
-        }
+      if ¬coverageCheckOnly {
+        relatedProjects = try self.relatedProjects(output: output)
       }
 
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
@@ -387,9 +371,7 @@
           }
         }
         if ¬packageAlreadyHandled {
-          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporar in
-            #warning("Redirecting for debugging...")
-            let temporary = outputDirectory.deletingLastPathComponent().appendingPathComponent("Temporary")
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let bundleURL = temporary.appendingPathComponent("\(packageName).docc")
             let placeholerGraphURL = temporary.appendingPathComponent(String(PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: packageName)))
             try PackageDocumentationBundle.placeholderSymbolGraphData(packageName: packageName).save(to: placeholerGraphURL)
@@ -405,7 +387,6 @@
           }
         }
       }
-      #warning("Determine if any configuration options should be deprecated.")
     }
 
     // Final steps irrelevent to validation.

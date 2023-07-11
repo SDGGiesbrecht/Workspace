@@ -146,6 +146,7 @@ public struct APIDocumentationConfiguration: Codable {
     set { serveFromGitHubPagesBranch = newValue }
   }
 
+  // #workaround(The following file name escaping is no longer used; but removing it would interfere with testing.)
   private static func escape(
     _ scalars: [Unicode.Scalar],
     in replacements: inout [StrictString: StrictString]

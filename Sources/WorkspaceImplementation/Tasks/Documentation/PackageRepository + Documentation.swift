@@ -321,6 +321,8 @@
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
 
+      api.validateCoverage(documentationStatus: documentationStatus)
+
       if ¬coverageCheckOnly {
         let packageName = try projectName(in: developmentLocalization, output: output)
         // #workaround(This is not always correct; it needs to be customizable.)

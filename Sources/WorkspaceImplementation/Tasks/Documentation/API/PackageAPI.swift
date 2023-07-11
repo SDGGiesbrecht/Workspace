@@ -18,11 +18,19 @@
 import Foundation
 
 import SDGSwiftDocumentation
+import SDGSwiftSource
 
 extension PackageAPI {
 
   internal func validateCoverage(documentationStatus: DocumentationStatus, projectRoot: URL) {
     for graph in symbolGraphs() {
+      validateCoverage(ofSymbol: self, documentationStatus: documentationStatus, projectRoot: projectRoot)
+      for library in libraries {
+        validateCoverage(ofSymbol: library, documentationStatus: documentationStatus, projectRoot: projectRoot)
+      }
+      for module in modules {
+        validateCoverage(ofSymbol: module, documentationStatus: documentationStatus, projectRoot: projectRoot)
+      }
       for (_, symbol) in graph.graph.symbols {
         validateCoverage(ofSymbol: symbol, documentationStatus: documentationStatus, projectRoot: projectRoot)
       }
@@ -31,6 +39,14 @@ extension PackageAPI {
 
   private func validateCoverage(ofSymbol symbol: SymbolLike, documentationStatus: DocumentationStatus, projectRoot: URL) {
     if let documentation = symbol.docComment {
+      let document = DocumentationContent(source: String(documentation.source()))
+      document.scanSyntaxTree({ node, _ in
+        if let heading = node as? MarkdownHeading,
+          heading.level < 3 {
+          documentationStatus.reportExcessiveHeading(symbol: symbol, projectRoot: projectRoot)
+        }
+        return true
+      })
     } else {
       documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
     }

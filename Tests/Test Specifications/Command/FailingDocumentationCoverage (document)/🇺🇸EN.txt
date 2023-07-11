@@ -2,15 +2,12 @@ $ workspace document •no‐colour
 
 Generating documentation... (§1)
 
-Checking for defunct URLs to redirect...
-
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
 [$ swift...]
 
-Processing API...
-Generating HTML...
+[$ docc...]
 
 A localization has no copyright specified: zxx
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
@@ -65,6 +62,8 @@ A symbol has no description:
 inferredType.zxx
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 6
+
+Checking for defunct URLs to redirect...
 
 
 ✗ Generated documentation, but encountered warnings. (See [⌘F] “§1”)

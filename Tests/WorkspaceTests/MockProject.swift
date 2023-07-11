@@ -389,6 +389,12 @@
                       .scalars
                   )
                 }
+
+                // DocC paths are unpredictable
+                output.scalars.replaceMatches(
+                  for: NestingPattern(opening: "$ docc".scalars, closing: "\n\n".scalars),
+                  with: "[$ docc...]\n\n".scalars
+                )
               }
 
               testCommand(

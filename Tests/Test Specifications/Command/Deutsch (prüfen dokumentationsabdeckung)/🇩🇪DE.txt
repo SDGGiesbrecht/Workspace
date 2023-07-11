@@ -4,9 +4,6 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 
 [$ swift...]
 
-Die Programmierschnittstelle wird verarbeitet ...
-Auszeichnung wird erstellt ...
-... Deutsch ...
 
 ✓ Die Dokumentationsabdeckung ist vollständig.
 

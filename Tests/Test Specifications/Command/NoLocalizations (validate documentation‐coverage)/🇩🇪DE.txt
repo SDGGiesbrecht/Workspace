@@ -8,8 +8,8 @@ Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 
 [$ swift...]
 
-Die Programmierschnittstelle wird verarbeitet ...
-Auszeichnung wird erstellt ...
+[$ docc...]
+
 
 Einer Lokalization fehlt die Urheberrechtsschutzvermerk: Deutsch (Deustchland)
 (Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)

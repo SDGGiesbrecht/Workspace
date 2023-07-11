@@ -8,7 +8,7 @@ A package.
 
 ## Importing
 
-PartialReadMe provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+PartialReadMe provides a library for use with the Swift Package Manager.
 
 Simply add PartialReadMe as a dependency in `Package.swift`:
 
@@ -26,7 +26,7 @@ let package = Package(
     .target(
       name: "MyTarget",
       dependencies: [
-        .product(name: "PartialReadMe", package: "PartialReadMe"),
+        .product(name: "PartialReadMe", package: ""),
       ]
     )
   ]

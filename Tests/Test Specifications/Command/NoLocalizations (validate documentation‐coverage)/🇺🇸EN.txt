@@ -8,8 +8,8 @@ No original copyright date is specified.
 
 [$ swift...]
 
-Processing API...
-Generating HTML...
+[$ docc...]
+
 
 A localization has no copyright specified: English (United States)
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)

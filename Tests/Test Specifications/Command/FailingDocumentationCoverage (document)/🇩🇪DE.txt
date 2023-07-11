@@ -2,12 +2,12 @@ $ arbeitsbereich document •no‐colour
 
 Dokumentation wird erstellt ... (§1)
 
-Verstorbene Ressourcenzeiger werden weiterleitet ...
-
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
 [$ swift...]
+
+[$ docc...]
 
 Die Programmierschnittstelle wird verarbeitet ...
 Auszeichnung wird erstellt ...
@@ -65,6 +65,8 @@ Einem Symbol fehlt die Beschreibung.
 inferredType.zxx
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 6
+
+Verstorbene Ressourcenzeiger werden weiterleitet ...
 
 
 ✗ Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst.

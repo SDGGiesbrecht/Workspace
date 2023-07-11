@@ -48,22 +48,13 @@
     private func report<SymbolType>(
       problem: UserFacing<StrictString, InterfaceLocalization>,
       with symbol: SymbolType,
-      navigationPath: [SymbolLike],
       projectRoot: URL,
       localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
-      var symbolName: StrictString
-      switch symbol {
-      case is PackageAPI, is LibraryAPI, is ModuleAPI:
-        symbolName = StrictString(symbol.names.title)
-      default:
-        symbolName = navigationPath.dropFirst()
-          .map({ StrictString($0.names.title.components(separatedBy: ".").last!) })
-          .joined(separator: ".")
-      }
+      var symbolName = StrictString(symbol.names.prose ?? symbol.names.title)
       if let localized = localization {
-        symbolName += "." + localized._iconOrCode
+        symbolName += " (\(localized._iconOrCode))"
       }
       report(
         problem: UserFacing({ localization in
@@ -92,7 +83,6 @@
 
     internal func reportMissingDescription<SymbolType>(
       symbol: SymbolType,
-      navigationPath: [SymbolLike],
       projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
@@ -142,7 +132,6 @@
           }
         }),
         with: symbol,
-        navigationPath: navigationPath,
         projectRoot: projectRoot,
         localization: localization,
         hint: hint
@@ -153,7 +142,6 @@
       _ parameters: [String],
       expected: [String],
       symbol: SymbolType,
-      navigationPath: [SymbolLike],
       projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
@@ -167,7 +155,6 @@
           }
         }),
         with: symbol,
-        navigationPath: navigationPath,
         projectRoot: projectRoot,
         localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -249,7 +236,6 @@
 
     internal func reportExcessiveHeading<SymbolType>(
       symbol: SymbolType,
-      navigationPath: [SymbolLike],
       projectRoot: URL,
       localization: LocalizationIdentifier
     ) where SymbolType: SymbolLike {
@@ -263,7 +249,6 @@
           }
         }),
         with: symbol,
-        navigationPath: navigationPath,
         projectRoot: projectRoot,
         localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in

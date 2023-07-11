@@ -15,23 +15,24 @@
  */
 
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+import Foundation
+
 import SDGSwiftDocumentation
 
 extension PackageAPI {
 
-  internal func validateCoverage(documentationStatus: DocumentationStatus) {
+  internal func validateCoverage(documentationStatus: DocumentationStatus, projectRoot: URL) {
     for graph in symbolGraphs() {
       for (_, symbol) in graph.graph.symbols {
-        validateCoverage(ofSymbol: symbol, documentationStatus: documentationStatus)
+        validateCoverage(ofSymbol: symbol, documentationStatus: documentationStatus, projectRoot: projectRoot)
       }
     }
   }
 
-  private func validateCoverage(ofSymbol symbol: SymbolLike, documentationStatus: DocumentationStatus) {
+  private func validateCoverage(ofSymbol symbol: SymbolLike, documentationStatus: DocumentationStatus, projectRoot: URL) {
     if let documentation = symbol.docComment {
     } else {
-      #warning("Not implemented yet.")
-      //documentationStatus.reportMissingDescription(symbol: symbol, navigationPath: <#T##[SymbolLike]#>, projectRoot: <#T##URL#>, localization: <#T##LocalizationIdentifier#>)
+      documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
     }
   }
 }

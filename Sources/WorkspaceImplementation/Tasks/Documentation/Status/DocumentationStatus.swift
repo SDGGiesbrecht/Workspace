@@ -49,13 +49,9 @@
       problem: UserFacing<StrictString, InterfaceLocalization>,
       with symbol: SymbolType,
       projectRoot: URL,
-      localization: LocalizationIdentifier? = nil,
       hint: UserFacing<StrictString, InterfaceLocalization>? = nil
     ) where SymbolType: SymbolLike {
-      var symbolName = StrictString(symbol.names.prose ?? symbol.names.title)
-      if let localized = localization {
-        symbolName += " (\(localized._iconOrCode))"
-      }
+      let symbolName = StrictString(symbol.names.prose ?? symbol.names.title)
       report(
         problem: UserFacing({ localization in
           var result: [StrictString] = [
@@ -83,8 +79,7 @@
 
     internal func reportMissingDescription<SymbolType>(
       symbol: SymbolType,
-      projectRoot: URL,
-      localization: LocalizationIdentifier
+      projectRoot: URL
     ) where SymbolType: SymbolLike {
       var hint: UserFacing<StrictString, InterfaceLocalization>?
 
@@ -133,7 +128,6 @@
         }),
         with: symbol,
         projectRoot: projectRoot,
-        localization: localization,
         hint: hint
       )
     }
@@ -142,8 +136,7 @@
       _ parameters: [String],
       expected: [String],
       symbol: SymbolType,
-      projectRoot: URL,
-      localization: LocalizationIdentifier
+      projectRoot: URL
     ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -156,7 +149,6 @@
         }),
         with: symbol,
         projectRoot: projectRoot,
-        localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
@@ -236,8 +228,7 @@
 
     internal func reportExcessiveHeading<SymbolType>(
       symbol: SymbolType,
-      projectRoot: URL,
-      localization: LocalizationIdentifier
+      projectRoot: URL
     ) where SymbolType: SymbolLike {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
@@ -250,7 +241,6 @@
         }),
         with: symbol,
         projectRoot: projectRoot,
-        localization: localization,
         hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
           switch localization {
           case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:

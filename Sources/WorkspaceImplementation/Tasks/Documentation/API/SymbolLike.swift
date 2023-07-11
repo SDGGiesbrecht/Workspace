@@ -32,12 +32,6 @@
           return false
         } else {  // Has somewhere to attach documentation.
           if docComment == nil {  // Undocumented.
-            if declaration?.declarationFragments.contains(where: { fragment in
-              return fragment.spelling == "override"
-                ∨ fragment.spelling == "required"
-            }) == true {  // Override. @exempt(from: tests)
-              return false
-            }
             if symbol.location?.uri.contains(".build/checkouts") == true {
               // Locally synthesized due to a declaration reported in a dependency. @exempt(from: tests)
               return false

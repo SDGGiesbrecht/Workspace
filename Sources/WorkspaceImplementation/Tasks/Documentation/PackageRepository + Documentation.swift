@@ -322,8 +322,9 @@
       let localizations = configuration.localizationsOrSystemFallback
 
       if ¬coverageCheckOnly {
-        let hostingBasePath = "DocCExperiment"  // #warning(Placeholder. It is the repository name when using pages. https://sdggiesbrecht.github.io/DocCExperiment/SDGCornerstone/documentation/sdgcornerstone/)
         let packageName = try projectName(in: developmentLocalization, output: output)
+        // #workaround(This is not always correct; it needs to be customizable.)
+        let hostingBasePath = String(packageName)
         let packageBundle = PackageDocumentationBundle(
           localizations: localizations,
           developmentLocalization: developmentLocalization,

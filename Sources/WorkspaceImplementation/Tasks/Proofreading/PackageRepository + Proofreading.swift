@@ -49,7 +49,7 @@
             status.handle(finding)
           }
         )
-        // #workaround(swift-format, 0.50800.0, This crashes; see testBadStyle.) @exempt(from: unicode)
+        // #workaround(swift-format 0.50800.0, This crashes; see testBadStyle.) @exempt(from: unicode)
         linter?.debugOptions.insert(.disablePrettyPrint)
       }
 

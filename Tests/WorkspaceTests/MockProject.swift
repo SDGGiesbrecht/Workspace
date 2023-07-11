@@ -453,6 +453,8 @@
                 try text.save(to: file)
               }
             }
+            /// DocC output varies.
+            try? FileManager.default.removeItem(at: location.appendingPathComponent("docs"))
 
             let afterLocation = PackageRepository.afterDirectory(
               for: location.lastPathComponent

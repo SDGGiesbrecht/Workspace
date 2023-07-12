@@ -35,29 +35,19 @@ extension DocumentationContent {
       .children(cache: &cache).first as? ParagraphNode
   }
 
-  internal func parameters() -> [ParameterDocumentation] {
-    var result: [ParameterDocumentation] = []
+  internal func parameters() -> [String] {
+    var result: [String] = []
     scanSyntaxTree({ (node, _) in
       if let callout = node as? CalloutNode {
         if callout.callout == .parameters {
           for child in callout.contents {
             if let entry = child as? ParametersEntry {
-              result.append(
-                ParameterDocumentation(
-                  name: entry.parameterName.text(),
-                  description: entry.contents
-                )
-              )
+              result.append(entry.parameterName.text())
             }
           }
         } else if callout.callout == .parameter,
           let name = callout.parameterName {
-          result.append(
-            ParameterDocumentation(
-              name: name.text(),
-              description: callout.contents
-            )
-          )
+          result.append(name.text())
         }
       }
       return ¬(node is SwiftSyntaxNode)  // Prevent scanning into example code.

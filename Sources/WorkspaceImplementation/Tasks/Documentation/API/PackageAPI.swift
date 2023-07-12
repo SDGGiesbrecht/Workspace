@@ -17,6 +17,8 @@
 #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
 import Foundation
 
+import SDGLogic
+
 import SDGSwiftDocumentation
 import SDGSwiftSource
 
@@ -70,6 +72,7 @@ extension PackageAPI {
   ) {
     if symbol.hasEditableDocumentation(editableModules: editableModules) {
       if let documentation = symbol.docComment {
+
         let document = DocumentationContent(source: String(documentation.source()))
         document.scanSyntaxTree({ node, _ in
           if let heading = node as? MarkdownHeading,
@@ -78,6 +81,20 @@ extension PackageAPI {
           }
           return true
         })
+
+        let documentedParameters = document.parameters()
+        if ¬documentedParameters.isEmpty {
+          let expectedParameters = symbol.parameters()
+          if documentedParameters ≠ expectedParameters {
+            documentationStatus.reportMismatchedParameters(
+              documentedParameters,
+              expected: expectedParameters,
+              symbol: symbol,
+              projectRoot: projectRoot
+            )
+          }
+        }
+
       } else {
         documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
       }

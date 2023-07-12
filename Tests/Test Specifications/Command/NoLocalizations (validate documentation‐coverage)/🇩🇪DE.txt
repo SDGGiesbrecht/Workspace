@@ -6,8 +6,6 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-[$ docc...]
-
 
 Einer Lokalization fehlt die Urheberrechtsschutzvermerk: Deutsch (Deustchland)
 (Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)

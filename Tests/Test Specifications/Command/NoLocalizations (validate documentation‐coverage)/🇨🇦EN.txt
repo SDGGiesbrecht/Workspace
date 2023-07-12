@@ -6,7 +6,6 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
-[$ docc...]
 
 A localization has no copyright specified: English (Canada)
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)

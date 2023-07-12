@@ -4,7 +4,6 @@ Checking documentation coverage... (§1)
 
 [$ swift...]
 
-[$ docc...]
 
 ✓ Documentation coverage is complete.
 

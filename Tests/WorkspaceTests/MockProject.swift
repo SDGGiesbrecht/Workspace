@@ -395,8 +395,6 @@
                   for: NestingPattern(opening: "$ docc".scalars, closing: "\n\n".scalars),
                   with: "[$ docc...]\n\n".scalars
                 )
-                #warning("Debugging...")
-                print(output)
               }
 
               testCommand(

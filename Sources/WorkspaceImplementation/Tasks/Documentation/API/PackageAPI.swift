@@ -27,6 +27,28 @@ extension PackageAPI {
     projectRoot: URL
   ) {
     let editableModules = modules.map { $0.names.title }
+    validateCoverage(
+      ofSymbol: self,
+      documentationStatus: documentationStatus,
+      projectRoot: projectRoot,
+      editableModules: editableModules
+    )
+    for library in libraries {
+      validateCoverage(
+        ofSymbol: library,
+        documentationStatus: documentationStatus,
+        projectRoot: projectRoot,
+        editableModules: editableModules
+      )
+    }
+    for module in modules {
+      validateCoverage(
+        ofSymbol: module,
+        documentationStatus: documentationStatus,
+        projectRoot: projectRoot,
+        editableModules: editableModules
+      )
+    }
     for graph in symbolGraphs() {
       validateCoverage(
         ofSymbol: self,
@@ -34,23 +56,8 @@ extension PackageAPI {
         projectRoot: projectRoot,
         editableModules: editableModules
       )
-      for library in libraries {
-        validateCoverage(
-          ofSymbol: library,
-          documentationStatus: documentationStatus,
-          projectRoot: projectRoot,
-          editableModules: editableModules
-        )
-      }
-      for module in modules {
-        validateCoverage(
-          ofSymbol: module,
-          documentationStatus: documentationStatus,
-          projectRoot: projectRoot,
-          editableModules: editableModules
-        )
-      }
-      for (_, symbol) in graph.graph.symbols {
+      for (_, symbol) in graph.graph.symbols
+        .sorted(by: { ($0.value.names.title, $0.key) < ($1.value.names.title, $1.key) }) {
         validateCoverage(
           ofSymbol: symbol,
           documentationStatus: documentationStatus,

@@ -28,7 +28,6 @@ Workspace will look for documentation on the line above “.library(name: "Defau
 Package.swift
 Line 10
 
-...Default...
 
 A symbol has no description:
 Default

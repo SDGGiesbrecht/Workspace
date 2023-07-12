@@ -9,6 +9,9 @@ Generating documentation... (§1)
 [$ swift...]
 
 [$ docc...]
+
+[$ docc...]
+
 Checking for defunct URLs to redirect...
 
 Summary

@@ -371,6 +371,7 @@
               hostingBasePath: hostingBasePath.appending("/" + name),
               reportProgress: { output.print($0) }
             ).get()
+            output.print("")
           }
         }
         if ¬packageAlreadyHandled {
@@ -387,6 +388,7 @@
               hostingBasePath: hostingBasePath.appending("/" + String(packageName)),
               reportProgress: { output.print($0) }
             ).get()
+            output.print("")
           }
         }
       }

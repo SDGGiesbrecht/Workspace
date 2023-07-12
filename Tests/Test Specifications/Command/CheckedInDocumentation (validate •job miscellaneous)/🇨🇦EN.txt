@@ -103,11 +103,14 @@ XCTMain(tests)
 
 Generating documentation... (§2)
 
-Checking for defunct URLs to redirect...
 [$ swift...]
 
 Fetching “Workspace”...
 [$ docc...]
+
+[$ docc...]
+
+Checking for defunct URLs to redirect...
 
 Summary
 

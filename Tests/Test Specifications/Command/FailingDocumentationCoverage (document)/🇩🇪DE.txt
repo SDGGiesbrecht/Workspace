@@ -28,7 +28,6 @@ Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(nam
 Package.swift
 Zeile 9
 
-... FailingDocumentationCoverage ...
 
 Einem Symbol fehlt die Beschreibung.
 FailingDocumentationCoverage

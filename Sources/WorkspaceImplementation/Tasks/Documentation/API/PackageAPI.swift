@@ -50,12 +50,6 @@ extension PackageAPI {
       )
     }
     for graph in symbolGraphs() {
-      validateCoverage(
-        ofSymbol: self,
-        documentationStatus: documentationStatus,
-        projectRoot: projectRoot,
-        editableModules: editableModules
-      )
       for (_, symbol) in graph.graph.symbols
         .sorted(by: { ($0.value.names.title, $0.key) < ($1.value.names.title, $1.key) }) {
         validateCoverage(

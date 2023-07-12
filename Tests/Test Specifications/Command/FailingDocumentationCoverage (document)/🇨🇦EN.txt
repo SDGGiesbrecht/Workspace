@@ -28,7 +28,6 @@ Workspace will look for documentation on the line above “.library(name: "Faili
 Package.swift
 Line 9
 
-...FailingDocumentationCoverage...
 
 A symbol has no description:
 FailingDocumentationCoverage

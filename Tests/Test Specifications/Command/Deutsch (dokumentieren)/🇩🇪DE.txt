@@ -6,6 +6,8 @@ Dokumentation wird erstellt ... (§1)
 
 [$ docc...]
 
+Verstorbene Ressourcenzeiger werden weiterleitet ...
+
 ✓ Dokumentation erstellt.
 
 

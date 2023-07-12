@@ -1,6 +1,7 @@
 $ workspace document •no‐colour
 
 Generating documentation... (§1)
+
 [$ swift...]
 
 [$ docc...]

@@ -27,7 +27,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "MultipleProducts",
       url: "https://somewhere.tld/repository",
       from: Version(1, 0, 0)
     ),

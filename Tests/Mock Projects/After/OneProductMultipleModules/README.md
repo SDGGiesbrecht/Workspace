@@ -17,7 +17,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "OneProductMultipleModules",
       url: "https://somewhere.tld/repository",
       from: Version(1, 0, 0)
     ),

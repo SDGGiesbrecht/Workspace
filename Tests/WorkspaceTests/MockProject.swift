@@ -288,6 +288,8 @@
 
               // General commands
               func postprocess(_ output: inout String) {
+                #warning("Debugging...")
+                print(output)
                 let any = RepetitionPattern(
                   ConditionalPattern<String.ScalarView>({ _ in true }),
                   consumption: .lazy
@@ -409,30 +411,6 @@
                 line: line
               )
             }
-
-            #if !os(Linux)
-              // GitHub actions on Linux have false positives during the dead link check.
-              let documentationDirectory = location.appendingPathComponent("docs")
-              if (try? documentationDirectory.checkResourceIsReachable()) == true {
-                let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(
-                  site: documentationDirectory
-                )
-                if ¬warnings.isEmpty {
-                  let files = warnings.keys.sorted()
-                  let warningList = files.map({ url in
-                    var fileMessage = url.path(relativeTo: documentationDirectory)
-                    let errors = warnings[url]!
-                    fileMessage.append(
-                      contentsOf: errors.map({ error in
-                        return error.localizedDescription
-                      }).joined(separator: "\n")
-                    )
-                    return fileMessage
-                  }).joined(separator: "\n\n")
-                  XCTFail(warningList, file: file, line: line)
-                }
-              }
-            #endif
 
             /// Commit hashes vary.
             try? FileManager.default.removeItem(

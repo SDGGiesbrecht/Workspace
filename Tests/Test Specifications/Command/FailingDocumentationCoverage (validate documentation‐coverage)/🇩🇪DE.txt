@@ -44,6 +44,12 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 14
 
 
+Einem Symbol fehlt die Beschreibung.
+inferredType
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Zeile 6
+
+
 Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: paramOne, parameterTwo
 mismatchedParameters(parameterOne:)
 (Erwartete: parameterOne)
@@ -55,12 +61,6 @@ Einem Symbol fehlt die Beschreibung.
 undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 4
-
-
-Einem Symbol fehlt die Beschreibung.
-inferredType
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Zeile 6
 
 
 ✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)

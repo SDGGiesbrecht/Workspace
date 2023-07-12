@@ -288,8 +288,6 @@
 
               // General commands
               func postprocess(_ output: inout String) {
-                #warning("Debugging...")
-                print(output)
                 let any = RepetitionPattern(
                   ConditionalPattern<String.ScalarView>({ _ in true }),
                   consumption: .lazy
@@ -397,6 +395,8 @@
                   for: NestingPattern(opening: "$ docc".scalars, closing: "\n\n".scalars),
                   with: "[$ docc...]\n\n".scalars
                 )
+                #warning("Debugging...")
+                print(output)
               }
 
               testCommand(

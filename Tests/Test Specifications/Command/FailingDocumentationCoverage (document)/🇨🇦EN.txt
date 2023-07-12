@@ -2,10 +2,10 @@ $ workspace document •no‐colour
 
 Generating documentation... (§1)
 
+
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
 
-[$ docc...]
 
 A localization has no copyright specified: zxx
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇨🇦EN/Types/WorkspaceConfiguration.html.)
@@ -44,6 +44,12 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 14
 
 
+A symbol has no description:
+inferredType
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 6
+
+
 A symbol has mismatched parameter descriptions: paramOne, parameterTwo
 mismatchedParameters(parameterOne:)
 (Expected: parameterOne)
@@ -56,14 +62,9 @@ undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 4
 
-
-A symbol has no description:
-inferredType
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Line 6
+[$ docc...]
 
 Checking for defunct URLs to redirect...
-
 
 ✗ Generated documentation, but encountered warnings. (See [⌘F] “§1”)
 

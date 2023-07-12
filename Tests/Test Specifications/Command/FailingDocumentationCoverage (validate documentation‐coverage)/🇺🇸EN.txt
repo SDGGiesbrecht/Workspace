@@ -44,6 +44,12 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 14
 
 
+A symbol has no description:
+inferredType
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 6
+
+
 A symbol has mismatched parameter descriptions: paramOne, parameterTwo
 mismatchedParameters(parameterOne:)
 (Expected: parameterOne)
@@ -55,12 +61,6 @@ A symbol has no description:
 undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 4
-
-
-A symbol has no description:
-inferredType
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Line 6
 
 
 ✗ Documentation coverage is incomplete. (See [⌘F] “§1”)

@@ -14,9 +14,9 @@ Einer Lokalization fehlt die Urheberrechtsschutzvermerk: zxx
 
 
 Einem Symbol fehlt die Beschreibung.
-FailingDocumentationCoverage
+FailingDocumentationCoveragePackage
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "FailingDocumentationCoverage"“.)
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "FailingDocumentationCoveragePackage"“.)
 Package.swift
 Zeile 5
 
@@ -64,9 +64,11 @@ Zeile 4
 
 [$ docc...]
 
+[$ docc...]
+
 Verstorbene Ressourcenzeiger werden weiterleitet ...
 
 ✗ Dokumentation wurde erstellt, aber Warnungen wurden dabei ausgelöst.
 
-„FailingDocumentationCoverage“ besteht die Überprüfung nicht.
+„FailingDocumentationCoveragePackage“ besteht die Überprüfung nicht.
 2

@@ -14,9 +14,9 @@ A localisation has no copyright specified: zxx
 
 
 A symbol has no description:
-FailingDocumentationCoverage
+FailingDocumentationCoveragePackage
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above ‘Package(name: "FailingDocumentationCoverage"’.)
+Workspace will look for documentation on the line above ‘Package(name: "FailingDocumentationCoveragePackage"’.)
 Package.swift
 Line 5
 
@@ -65,5 +65,5 @@ Line 4
 
 ✗ Documentation coverage is incomplete. (See [⌘F] ‘§1’)
 
-‘FailingDocumentationCoverage’ fails validation.
+‘FailingDocumentationCoveragePackage’ fails validation.
 2

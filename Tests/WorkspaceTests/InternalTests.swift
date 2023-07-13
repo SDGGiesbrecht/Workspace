@@ -33,15 +33,15 @@ import SDGXCTestUtilities
 
 class InternalTests: TestCase {
 
-  func testArticleTitles() {
-    for localization in ContentLocalization.allCases {
-      _ = PackageDocumentationBundle.about(localization: LocalizationIdentifier(localization))
-    }
-    _ = PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: "Package")
-    _ = PackageDocumentationBundle.placeholderSymbolGraphData(packageName: "Package")
-  }
-
   #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+    func testArticleTitles() {
+      for localization in ContentLocalization.allCases {
+        _ = PackageDocumentationBundle.about(localization: LocalizationIdentifier(localization))
+      }
+      _ = PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: "Package")
+      _ = PackageDocumentationBundle.placeholderSymbolGraphData(packageName: "Package")
+    }
+
     func testGitIgnoreCoverage() throws {
       let expectedPrefixes = [
 
@@ -105,34 +105,34 @@ class InternalTests: TestCase {
         }
       }
     }
+
+    func testLocalizationParsing() {
+      let parsed = [
+        SymbolDocumentation(
+          developerComments: SymbolGraph.LineList([
+            SymbolGraph.LineList.Line(text: "@crossReference(something) @notLocalized(🇬🇷ΕΛ)", range: nil)
+          ]),
+          documentationComment: SymbolGraph.LineList([]))
+      ].resolved(localizations: [LocalizationIdentifier("🇮🇱עב")])
+      XCTAssertEqual(parsed.crossReference, "something")
+      XCTAssertEqual(parsed.skipped, [LocalizationIdentifier("🇬🇷ΕΛ")])
+    }
+
+    func testParameterParsing() {
+      XCTAssertEqual(ModuleAPI(name: "Name", documentation: [], location: nil, symbolGraphs: [], sources: []).parameters(), [])
+      XCTAssertEqual(SymbolGraph.Symbol(
+        identifier: SymbolGraph.Symbol.Identifier(precise: "identifier", interfaceLanguage: "swift"),
+        names: SymbolGraph.Symbol.Names(title: "identifier", navigator: nil, subHeading: nil, prose: nil),
+        pathComponents: [],
+        docComment: nil,
+        accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "public"),
+        kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .class, displayName: "class"),
+        mixins: [:]
+      ).parameters(),
+      []
+      )
+    }
   #endif
-
-  func testLocalizationParsing() {
-    let parsed = [
-      SymbolDocumentation(
-        developerComments: SymbolGraph.LineList([
-          SymbolGraph.LineList.Line(text: "@crossReference(something) @notLocalized(🇬🇷ΕΛ)", range: nil)
-        ]),
-        documentationComment: SymbolGraph.LineList([]))
-    ].resolved(localizations: [LocalizationIdentifier("🇮🇱עב")])
-    XCTAssertEqual(parsed.crossReference, "something")
-    XCTAssertEqual(parsed.skipped, [LocalizationIdentifier("🇬🇷ΕΛ")])
-  }
-
-  func testParameterParsing() {
-    XCTAssertEqual(ModuleAPI(name: "Name", documentation: [], location: nil, symbolGraphs: [], sources: []).parameters(), [])
-    XCTAssertEqual(SymbolGraph.Symbol(
-      identifier: SymbolGraph.Symbol.Identifier(precise: "identifier", interfaceLanguage: "swift"),
-      names: SymbolGraph.Symbol.Names(title: "identifier", navigator: nil, subHeading: nil, prose: nil),
-      pathComponents: [],
-      docComment: nil,
-      accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "public"),
-      kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .class, displayName: "class"),
-      mixins: [:]
-    ).parameters(),
-    []
-    )
-  }
 
   func testResources() {
     _ = WorkspaceImplementation.Resources.apache2_0
@@ -150,11 +150,11 @@ class InternalTests: TestCase {
       // .gitignore interferes with testing this reliably in a mock project.
       _ = FileType.xcodeProject.syntax
     }
-  #endif
 
-  func testWatermark() {
-    for localization in ContentLocalization.allCases {
-      _ = DocumentationBundle.watermark(localization: LocalizationIdentifier(localization))
+    func testWatermark() {
+      for localization in ContentLocalization.allCases {
+        _ = DocumentationBundle.watermark(localization: LocalizationIdentifier(localization))
+      }
     }
-  }
+  #endif
 }

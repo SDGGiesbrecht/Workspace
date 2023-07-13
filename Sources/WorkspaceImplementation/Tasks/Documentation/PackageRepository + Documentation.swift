@@ -440,6 +440,7 @@
     }
 
     private func redirectIfDead(relativePath: String, in outputDirectory: URL) throws {
+      // @exempt(from: tests) Not testable.
       let url = outputDirectory.appendingPathComponent(relativePath)
       if url.pathExtension == "html" {
         if (try? url.checkResourceIsReachable()) ≠ true {

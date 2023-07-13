@@ -428,6 +428,7 @@
 
     private func redirect(urlsDroppedFrom previous: URL, for current: URL) throws {
       if (try? previous.checkResourceIsReachable()) == true {
+        // @exempt(from: tests) Not testable.
         for file in try FileManager.default.deepFileEnumeration(in: previous) {
           try purgingAutoreleased {
             let relative = file.resolvingSymlinksInPath()

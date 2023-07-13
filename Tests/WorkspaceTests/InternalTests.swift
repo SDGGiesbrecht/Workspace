@@ -111,6 +111,21 @@ class InternalTests: TestCase {
     XCTAssertEqual(parsed.skipped, [LocalizationIdentifier("🇬🇷ΕΛ")])
   }
 
+  func testParameterParsing() {
+    XCTAssertEqual(ModuleAPI(name: "Name", documentation: [], location: nil, symbolGraphs: [], sources: []).parameters(), [])
+    XCTAssertEqual(SymbolGraph.Symbol(
+      identifier: SymbolGraph.Symbol.Identifier(precise: "identifier", interfaceLanguage: "swift"),
+      names: SymbolGraph.Symbol.Names(title: "identifier", navigator: nil, subHeading: nil, prose: nil),
+      pathComponents: [],
+      docComment: nil,
+      accessLevel: SymbolGraph.Symbol.AccessControl(rawValue: "public"),
+      kind: SymbolGraph.Symbol.Kind(parsedIdentifier: .class, displayName: "class"),
+      mixins: [:]
+    ).parameters(),
+    []
+    )
+  }
+
   func testResources() {
     _ = WorkspaceImplementation.Resources.apache2_0
     _ = WorkspaceImplementation.Resources.copyright

@@ -33,6 +33,14 @@ import SDGXCTestUtilities
 
 class InternalTests: TestCase {
 
+  func testArticleTitles() {
+    for localization in ContentLocalization.allCases {
+      _ = PackageDocumentationBundle.about(localization: LocalizationIdentifier(localization))
+    }
+    _ = PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: "Package")
+    _ = PackageDocumentationBundle.placeholderSymbolGraphData(packageName: "Package")
+  }
+
   #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
     func testGitIgnoreCoverage() throws {
       let expectedPrefixes = [

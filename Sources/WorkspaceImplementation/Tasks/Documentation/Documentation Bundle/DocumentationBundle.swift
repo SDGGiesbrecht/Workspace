@@ -137,15 +137,13 @@ internal struct DocumentationBundle {
     let link = ElementSyntax(
       "a",
       attributes: ["href": targetURL],
-      contents: name,
-      inline: true
+      contents: name
     ).normalizedSource()
 
     let docCLink = ElementSyntax(
       "a",
       attributes: ["href": "https://www.swift.org/documentation/docc/"],
-      contents: "DocC",
-      inline: true
+      contents: "DocC"
     ).normalizedSource()
 
     let generatedUsing: StrictString
@@ -163,8 +161,7 @@ internal struct DocumentationBundle {
       sdg = ElementSyntax(
         "span",
         attributes: ["lang": "la\u{2D}IT"],
-        contents: "Soli Deo gloria.",
-        inline: true
+        contents: "Soli Deo gloria."
       ).normalizedSource()
     }
 
@@ -174,8 +171,7 @@ internal struct DocumentationBundle {
         "lang": StrictString(resolved.code),
         "dir": StrictString(resolved.textDirection.htmlAttribute),
       ],
-      contents: generatedUsing + " " + sdg,
-      inline: true
+      contents: generatedUsing + " " + sdg
     ).normalizedSource()
   }
 }

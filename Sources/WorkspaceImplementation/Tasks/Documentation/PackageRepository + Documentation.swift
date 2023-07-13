@@ -56,21 +56,6 @@
       return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private func platforms(
-      localizations: [LocalizationIdentifier],
-      output: Command.Output
-    ) throws -> [LocalizationIdentifier: [StrictString]] {
-      var result: [LocalizationIdentifier: [StrictString]] = [:]
-      for localization in localizations {
-        var list: [StrictString] = []
-        for platform in try configuration(output: output).supportedPlatforms.sorted() {
-          list.append(platform._isolatedName(for: localization._bestMatch))
-        }
-        result[localization] = list
-      }
-      return result
-    }
-
     @available(macOS 10.15, *)
     private func loadSwiftInterface(
       output: Command.Output

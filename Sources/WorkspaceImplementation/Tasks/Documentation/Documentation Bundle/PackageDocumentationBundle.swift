@@ -95,9 +95,6 @@ internal struct PackageDocumentationBundle {
       return "Befehlszeilenprogramme"
     }
   }
-  private static func toolsLocation(localization: LocalizationIdentifier) -> StrictString {
-    return "\(localization._directoryName)/\(commandLineTools(localization: localization)).md"
-  }
 
   private static func subcommands(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
@@ -122,7 +119,7 @@ internal struct PackageDocumentationBundle {
     return "\(localization._directoryName)/\(relatedProjects(localization: localization)).md"
   }
 
-  private static func about(localization: LocalizationIdentifier) -> StrictString {
+  internal static func about(localization: LocalizationIdentifier) -> StrictString {
     switch localization._bestMatch {
     case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
       return "About"
@@ -371,10 +368,6 @@ internal struct PackageDocumentationBundle {
         )
       }
     }
-  }
-
-  private func toolsDirectory(for localization: LocalizationIdentifier) -> StrictString {
-    return "\(localization._iconOrCode)/Tools"
   }
 
   private func addSubcommandArticles(

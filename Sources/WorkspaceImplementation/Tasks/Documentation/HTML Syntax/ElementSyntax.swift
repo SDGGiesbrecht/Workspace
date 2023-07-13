@@ -25,8 +25,7 @@
     internal init(
       _ element: StrictString,
       attributes: [StrictString: StrictString] = [:],
-      contents: StrictString,
-      inline: Bool
+      contents: StrictString
     ) {
 
       var constructedAttributes: [AttributeSyntax] = []
@@ -43,7 +42,7 @@
         )
       }
 
-      let constructedContents = inline ? contents : "\n\(contents)\n"
+      let constructedContents = contents
 
       let name = TokenSyntax(kind: .elementName(String(element)))
       self = ElementSyntax(

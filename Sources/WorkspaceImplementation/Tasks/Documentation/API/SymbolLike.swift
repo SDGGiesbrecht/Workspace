@@ -51,35 +51,6 @@
       }
     }
 
-    internal func isCapableOfInheritingDocumentation(graphs: [SymbolGraph]) -> Bool {
-      switch self {
-      case let symbol as SymbolGraph.Symbol:  // @exempt(from: tests) Reachability unknown.
-        return graphs.contains(where: { graph in
-          return graph.relationships.contains(
-            where: { relationship in  // @exempt(from: tests) Reachability unknown.
-              if relationship.source == symbol.identifier.precise {
-                switch relationship.kind {
-                case .defaultImplementationOf, .overrides, .requirementOf, .optionalRequirementOf:
-                  return true
-                default:
-                  return false
-                }
-              }
-              return false
-            })
-        })
-      default:
-        return false
-      }
-    }
-
-    internal var kind: SymbolGraph.Symbol.Kind? {
-      guard let symbol = self as? SymbolGraph.Symbol else {
-        return nil
-      }
-      return symbol.kind as SymbolGraph.Symbol.Kind
-    }
-
     // MARK: - Parameters
 
     internal func parameters() -> [String] {

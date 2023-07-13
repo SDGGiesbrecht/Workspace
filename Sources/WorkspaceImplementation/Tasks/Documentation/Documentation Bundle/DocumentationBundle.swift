@@ -91,7 +91,7 @@ internal struct DocumentationBundle {
       " <div class=\u{22}container\u{22}>",
       "  <div>",
       "   <p class=\u{22}copyright\u{22}>\(copyright(localization: developmentLocalization))</p>",
-      "   <p class=\u{22}trademark\u{22}>\(watermark(localization: developmentLocalization))</p>",
+      "   <p class=\u{22}trademark\u{22}>\(DocumentationBundle.watermark(localization: developmentLocalization))</p>",
       "  </div>",
       " </div>",
       "</footer>",
@@ -111,7 +111,7 @@ internal struct DocumentationBundle {
     }
   }
 
-  private func watermark(localization: LocalizationIdentifier) -> StrictString {
+  internal static func watermark(localization: LocalizationIdentifier) -> StrictString {
     let resolved = localization._bestMatch
 
     let targetURL: StrictString

@@ -143,4 +143,10 @@ class InternalTests: TestCase {
       _ = FileType.xcodeProject.syntax
     }
   #endif
+
+  func testWatermark() {
+    for localization in ContentLocalization.allCases {
+      _ = DocumentationBundle.watermark(localization: LocalizationIdentifier(localization))
+    }
+  }
 }

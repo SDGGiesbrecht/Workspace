@@ -731,6 +731,8 @@ let package = Package(
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine"),
         .product(name: "SDGSwift", package: "SDGSwift"),
+        .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
       ]

@@ -20,6 +20,8 @@ import SDGLocalization
 import SDGCommandLine
 
 import SDGSwift
+import SDGSwiftDocumentation
+import SymbolKit
 
 import WorkspaceLocalizations
 import WorkspaceConfiguration
@@ -96,6 +98,18 @@ class InternalTests: TestCase {
       }
     }
   #endif
+
+  func testLocalizationParsing() {
+    let parsed = [
+      SymbolDocumentation(
+        developerComments: SymbolGraph.LineList([
+          SymbolGraph.LineList.Line(text: "@crossReference(something) @notLocalized(🇬🇷ΕΛ)", range: nil)
+        ]),
+        documentationComment: SymbolGraph.LineList([]))
+    ].resolved(localizations: [LocalizationIdentifier("🇮🇱עב")])
+    XCTAssertEqual(parsed.crossReference, "something")
+    XCTAssertEqual(parsed.skipped, [LocalizationIdentifier("🇬🇷ΕΛ")])
+  }
 
   func testResources() {
     _ = WorkspaceImplementation.Resources.apache2_0

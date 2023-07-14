@@ -389,6 +389,12 @@
                       .scalars
                   )
                 }
+
+                // DocC paths are unpredictable
+                output.scalars.replaceMatches(
+                  for: NestingPattern(opening: "$ docc".scalars, closing: "\n\n".scalars),
+                  with: "[$ docc...]\n\n".scalars
+                )
               }
 
               testCommand(
@@ -403,30 +409,6 @@
                 line: line
               )
             }
-
-            #if !os(Linux)
-              // GitHub actions on Linux have false positives during the dead link check.
-              let documentationDirectory = location.appendingPathComponent("docs")
-              if (try? documentationDirectory.checkResourceIsReachable()) == true {
-                let warnings = Site<InterfaceLocalization, SyntaxUnfolder>.validate(
-                  site: documentationDirectory
-                )
-                if ¬warnings.isEmpty {
-                  let files = warnings.keys.sorted()
-                  let warningList = files.map({ url in
-                    var fileMessage = url.path(relativeTo: documentationDirectory)
-                    let errors = warnings[url]!
-                    fileMessage.append(
-                      contentsOf: errors.map({ error in
-                        return error.localizedDescription
-                      }).joined(separator: "\n")
-                    )
-                    return fileMessage
-                  }).joined(separator: "\n\n")
-                  XCTFail(warningList, file: file, line: line)
-                }
-              }
-            #endif
 
             /// Commit hashes vary.
             try? FileManager.default.removeItem(
@@ -453,6 +435,8 @@
                 try text.save(to: file)
               }
             }
+            /// DocC output varies.
+            try? FileManager.default.removeItem(at: location.appendingPathComponent("docs"))
 
             let afterLocation = PackageRepository.afterDirectory(
               for: location.lastPathComponent

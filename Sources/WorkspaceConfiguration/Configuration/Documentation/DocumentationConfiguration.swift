@@ -481,7 +481,7 @@ public struct DocumentationConfiguration: Codable {
               result += "libraries"
             }
             result +=
-              " for use with the [Swift Package Manager](https://swift.org/package\u{2D}manager/)."
+              " for use with the Swift Package Manager." // (DocC rejects links in the first paragraph.)
             return result
           case .deutschDeutschland:
             var result: StrictString = "\(projectName) stellt "
@@ -491,7 +491,7 @@ public struct DocumentationConfiguration: Codable {
               result += "Biblioteken"
             }
             result +=
-              " für zur Verwendung mit dem [Swift‐Paketenverwalter (*Swift Package Manager*)](https://swift.org/package\u{2D}manager/) bereit."
+              " für zur Verwendung mit dem Swift‐Paketenverwalter (*Swift Package Manager*) bereit."
             return result
           }
         }).resolved(for: localization),
@@ -540,7 +540,6 @@ public struct DocumentationConfiguration: Codable {
           }).resolved(for: localization) + "\u{22},") as StrictString,
         "  dependencies: [",
         "    .package(",
-        "      name: \u{22}\(packageName)\u{22},",
         "      url: \u{22}\(packageURL.absoluteString)\u{22},",
         "      \(versionSpecification)",
         "    ),",
@@ -561,7 +560,7 @@ public struct DocumentationConfiguration: Codable {
 
       for library in libraries {
         result += [
-          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(packageName)\u{22}),"
+          "        .product(name: \u{22}\(library.name)\u{22}, package: \u{22}\(packageURL.deletingPathExtension().lastPathComponent)\u{22}),"
         ]
       }
 

@@ -6,34 +6,31 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-[$ swift...]
-
-Die Programmierschnittstelle wird verarbeitet ...
-Auszeichnung wird erstellt ...
 
 Einer Lokalization fehlt die Urheberrechtsschutzvermerk: zxx
 (Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
+[$ swift...]
+
 
 Einem Symbol fehlt die Beschreibung.
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoveragePackage
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
-Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "FailingDocumentationCoverage"“.)
+Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "FailingDocumentationCoveragePackage"“.)
 Package.swift
 Zeile 5
 
 
 Einem Symbol fehlt die Beschreibung.
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoverage
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "FailingDocumentationCoverage"“.)
 Package.swift
 Zeile 9
 
-... FailingDocumentationCoverage ...
 
 Einem Symbol fehlt die Beschreibung.
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoverage
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "FailingDocumentationCoverage"“.)
 Package.swift
@@ -41,32 +38,32 @@ Zeile 19
 
 
 Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:
-excessiveHeading().zxx
+excessiveHeading()
 (Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 14
 
 
+Einem Symbol fehlt die Beschreibung.
+inferredType
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Zeile 6
+
+
 Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: paramOne, parameterTwo
-mismatchedParameters(parameterOne:).zxx
+mismatchedParameters(parameterOne:)
 (Erwartete: parameterOne)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 21
 
 
 Einem Symbol fehlt die Beschreibung.
-undocumented().zxx
+undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 4
 
 
-Einem Symbol fehlt die Beschreibung.
-inferredType.zxx
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Zeile 6
-
-
 ✗ Die Dokumentationsabdeckung ist unvollständig. (Siehe [⌘F] „§1“)
 
-„FailingDocumentationCoverage“ besteht die Überprüfung nicht.
+„FailingDocumentationCoveragePackage“ besteht die Überprüfung nicht.
 2

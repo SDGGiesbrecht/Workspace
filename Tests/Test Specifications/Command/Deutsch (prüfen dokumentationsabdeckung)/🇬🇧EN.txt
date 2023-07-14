@@ -4,9 +4,6 @@ Checking documentation coverage... (§1)
 
 [$ swift...]
 
-Processing API...
-Generating HTML...
-...Deutsch...
 
 ✓ Documentation coverage is complete.
 

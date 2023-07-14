@@ -41,7 +41,7 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the Swift Package Manager.
 
 Simply add SDG as a dependency in `Package.swift`:
 
@@ -50,7 +50,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "SDG",
       url: "https://github.com/JohnDoe/SDG",
       from: Version(1, 0, 0)
     ),

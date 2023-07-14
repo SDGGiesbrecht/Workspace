@@ -488,6 +488,10 @@ let package = Package(
       from: Version(10, 1, 3)
     ),
     .package(
+      url: "https://github.com/apple/swift\u{2D}collections",
+      from: Version(1, 0, 4)
+    ),
+    .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",
       from: Version(3, 0, 5)
     ),
@@ -545,6 +549,7 @@ let package = Package(
         .product(name: "SDGCalendar", package: "SDGCornerstone"),
         .product(name: "SDGExternalProcess", package: "SDGCornerstone"),
         .product(name: "SDGVersioning", package: "SDGCornerstone"),
+        .product(name: "OrderedCollections", package: "swift\u{2D}collections"),
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGExportedCommandLineInterface", package: "SDGCommandLine"),
         .product(name: "SDGSwiftConfigurationLoading", package: "SDGSwift"),
@@ -566,9 +571,6 @@ let package = Package(
         .product(name: "SDGCSS", package: "SDGWeb"),
       ],
       resources: [
-        .copy("Tasks/Documentation/Site Components/Page.html"),
-        .copy("Tasks/Documentation/Site Components/Script.js"),
-        .copy("Tasks/Documentation/Site Components/Site.css"),
         .copy("Tasks/Licence/Licences/Apache 2.0.md"),
         .copy("Tasks/Licence/Licences/Copyright.md"),
         .copy("Tasks/Licence/Licences/GNU General Public 3.0.md"),
@@ -729,6 +731,8 @@ let package = Package(
         .product(name: "SDGCommandLine", package: "SDGCommandLine"),
         .product(name: "SDGCommandLineTestUtilities", package: "SDGCommandLine"),
         .product(name: "SDGSwift", package: "SDGSwift"),
+        .product(name: "SDGSwiftDocumentation", package: "SDGSwift"),
+        .product(name: "SymbolKit", package: "swift\u{2D}docc\u{2D}symbolkit"),
         .product(name: "SDGHTML", package: "SDGWeb"),
         .product(name: "SDGWeb", package: "SDGWeb"),
       ]

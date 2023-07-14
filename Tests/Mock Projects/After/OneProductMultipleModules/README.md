@@ -8,7 +8,7 @@ macOS • Web • Ubuntu • tvOS • iOS • Amazon Linux • watchOS
 
 ## Importing
 
-OneProductMultipleModules provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+OneProductMultipleModules provides a library for use with the Swift Package Manager.
 
 Simply add OneProductMultipleModules as a dependency in `Package.swift`:
 
@@ -17,7 +17,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "OneProductMultipleModules",
       url: "https://somewhere.tld/repository",
       from: Version(1, 0, 0)
     ),
@@ -26,7 +25,7 @@ let package = Package(
     .target(
       name: "MyTarget",
       dependencies: [
-        .product(name: "OneProductMultipleModules", package: "OneProductMultipleModules"),
+        .product(name: "OneProductMultipleModules", package: "repository"),
       ]
     )
   ]

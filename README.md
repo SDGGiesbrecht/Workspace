@@ -123,7 +123,7 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-Workspace provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+Workspace provides a library for use with the Swift Package Manager.
 
 Simply add Workspace as a dependency in `Package.swift`:
 
@@ -132,7 +132,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "Workspace",
       url: "https://github.com/SDGGiesbrecht/Workspace",
       .upToNextMinor(from: Version(0, 43, 1))
     ),

@@ -39,13 +39,13 @@ extension DocumentationContent {
     var result: [String] = []
     scanSyntaxTree({ (node, _) in
       if let callout = node as? CalloutNode {
-        if callout.callout == .parameters {
+        if callout.name.text().lowercased() == "parameters" {
           for child in callout.contents {
             if let entry = child as? ParametersEntry {
               result.append(entry.parameterName.text())
             }
           }
-        } else if callout.callout == .parameter,
+        } else if callout.name.text().lowercased() == "parameter",
           let name = callout.parameterName {
           result.append(name.text())
         }

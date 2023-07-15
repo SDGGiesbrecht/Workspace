@@ -56,32 +56,6 @@
       return location.appendingPathComponent(PackageRepository.documentationDirectoryName)
     }
 
-    private func customFileNameReplacements(output: Command.Output) throws -> [(
-      StrictString, StrictString
-    )] {
-      let dictionary = try configuration(output: output).documentation.api.fileNameReplacements
-      var array: [(StrictString, StrictString)] = []
-      for key in dictionary.keys.sorted() {
-        array.append((key, dictionary[key]!))
-      }
-      return array
-    }
-
-    private func platforms(
-      localizations: [LocalizationIdentifier],
-      output: Command.Output
-    ) throws -> [LocalizationIdentifier: [StrictString]] {
-      var result: [LocalizationIdentifier: [StrictString]] = [:]
-      for localization in localizations {
-        var list: [StrictString] = []
-        for platform in try configuration(output: output).supportedPlatforms.sorted() {
-          list.append(platform._isolatedName(for: localization._bestMatch))
-        }
-        result[localization] = list
-      }
-      return result
-    }
-
     @available(macOS 10.15, *)
     private func loadSwiftInterface(
       output: Command.Output
@@ -94,8 +68,7 @@
     }
 
     private func loadCommandLineInterface(
-      output: Command.Output,
-      customReplacements: [(StrictString, StrictString)]
+      output: Command.Output
     ) throws -> PackageCLI {
       let productsURL = try productsDirectory(releaseConfiguration: false).get()
       let toolNames = try configurationContext().manifest.products.lazy.filter({ product in
@@ -110,8 +83,7 @@
       let toolLocations = Array(toolNames.map({ productsURL.appendingPathComponent($0) }))
       return PackageCLI(
         tools: toolLocations,
-        localizations: try configuration(output: output).documentation.localizations,
-        customReplacements: customReplacements
+        localizations: try configuration(output: output).documentation.localizations
       )
     }
 
@@ -175,24 +147,32 @@
 
               markdown += [
                 "",
-                "### [\(name)](\(url.absoluteString))",
+                "### \(name)",  // (DocC ignores links in headers.)
+                "",
               ]
 
               guard #available(macOS 10.15, *) else {
                 throw SwiftPMUnavailableError()  // @exempt(from: tests)
               }
+              var linkHandled = false
+              var parserCache = ParserCache()
               if let packageName = try? package.packageName(),
                 let documentation =
                   package
                   .documentation(packageName: String(packageName))
                   .resolved(localizations: localizations)
                   .documentation[localization],
-                let description = documentation.documentation().descriptionSection
+                let description = documentation.documentation().descriptionSection(cache: &parserCache)
               {
-                markdown += [
-                  "",
-                  StrictString(description.text),
-                ]
+                var text = StrictString(description.text())
+                if text.contains(name) {
+                  text.replaceMatches(for: name, with: "[\(name)](\(url.absoluteString))")
+                  linkHandled = true
+                }
+                markdown += [text]
+              }
+              if ¬linkHandled {
+                markdown += ["[\(url.absoluteString)](\(url.absoluteString))"]
               }
             }
           }
@@ -234,12 +214,11 @@
         try document(
           outputDirectory: outputDirectory,
           documentationStatus: status,
-          validationStatus: &validationStatus,
           output: output,
           coverageCheckOnly: false
         )
 
-        try finalizeSite(outputDirectory: outputDirectory)
+        try finalizeSite(outputDirectory: outputDirectory, output: output)
 
         if status.passing {
           validationStatus.passStep(
@@ -286,39 +265,29 @@
 
     // Preliminary steps irrelevent to validation.
     private func prepare(outputDirectory: URL, output: Command.Output) throws {
-      try retrievePublishedDocumentationIfAvailable(
-        outputDirectory: outputDirectory,
-        output: output
-      )
-      try redirectExistingURLs(outputDirectory: outputDirectory)
+      // Nothing to do anymore.
     }
 
     // Steps which participate in validation.
     private func document(
       outputDirectory: URL,
       documentationStatus: DocumentationStatus,
-      validationStatus: inout ValidationStatus,
       output: Command.Output,
       coverageCheckOnly: Bool
     ) throws {
 
-      if ProcessInfo.isInContinuousIntegration {
-        DispatchQueue.global(qos: .background).async {  // @exempt(from: tests)
-          while true {  // @exempt(from: tests)
-            print("...")
-            Thread.sleep(until: Date(timeIntervalSinceNow: 9 × 60))
-          }
-        }
-      }
-
       let configuration = try self.configuration(output: output)
+      let developmentLocalization = try self.developmentLocalization(output: output)
+
       let copyright = try resolvedCopyright(
         documentationStatus: documentationStatus,
         output: output
       )
-
-      let developmentLocalization = try self.developmentLocalization(output: output)
-      let customReplacements = try customFileNameReplacements(output: output)
+      for localization in configuration.localizationsOrSystemFallback {
+        if copyright[localization] == nil {
+          documentationStatus.reportMissingCopyright(localization: localization)
+        }
+      }
 
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
@@ -326,8 +295,7 @@
       // #workaround(Needs to merge graphs from other platforms.)
       let api = try loadSwiftInterface(output: output)
       let cli = try loadCommandLineInterface(
-        output: output,
-        customReplacements: customReplacements
+        output: output
       )
 
       var relatedProjects: [LocalizationIdentifier: Markdown] = [:]
@@ -338,52 +306,107 @@
       // Fallback so that documenting produces something the first time a user tries it with an empty configuration, even though the results will change from one device to another.
       let localizations = configuration.localizationsOrSystemFallback
 
-      let interface = PackageInterface(
-        localizations: localizations,
-        developmentLocalization: developmentLocalization,
-        api: api,
-        cli: cli,
-        packageURL: configuration.documentation.repositoryURL,
-        version: configuration.documentation.currentVersion,
-        platforms: try platforms(localizations: localizations, output: output),
-        installation: configuration.documentation.installationInstructions
-          .resolve(configuration),
-        importing: configuration.documentation.importingInstructions.resolve(configuration),
-        relatedProjects: relatedProjects,
-        about: configuration.documentation.about,
-        copyright: copyright,
-        customReplacements: customReplacements,
-        output: output
-      )
+      api.validateCoverage(documentationStatus: documentationStatus, projectRoot: location)
 
-      try interface.outputHTML(
-        to: outputDirectory,
-        customReplacements: customReplacements,
-        projectRoot: location,
-        status: documentationStatus,
-        output: output,
-        coverageCheckOnly: coverageCheckOnly
-      )
+      if ¬coverageCheckOnly {
+        let packageName = try projectName(in: developmentLocalization, output: output)
+        // #workaround(This is not always correct; it needs to be customizable.)
+        let hostingBasePath = String(packageName)
+        let packageBundle = PackageDocumentationBundle(
+          localizations: localizations,
+          developmentLocalization: developmentLocalization,
+          docCBundleName: packageName,
+          hostingBasePath: hostingBasePath,
+          copyright: copyright,
+          installation: configuration.documentation.installationInstructions.resolve(configuration),
+          importing: configuration.documentation.importingInstructions.resolve(configuration),
+          api: api,
+          cli: cli,
+          relatedProjects: relatedProjects,
+          about: configuration.documentation.about
+        )
+        try DocumentSyntax.redirect(
+          language: ContentLocalization.englishUnitedStates,  // To match DocC
+          target: URL(fileURLWithPath: "\(packageName)/documentation/\(String(DocumentationBundle.sanitize(title: packageName)).lowercased())")
+        ).source().save(to: outputDirectory.appendingPathComponent("index.html"))
+        var packageAlreadyHandled = false
+        for module in api.modules {
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+            let name = module.names.title
+            let bundleURL = temporary.appendingPathComponent("\(name).docc")
+            var embededPackageBundle: PackageDocumentationBundle?
+            if name == String(packageName) {
+              embededPackageBundle = packageBundle
+              packageAlreadyHandled = true
+            }
+            let bundle = ModuleDocumentationBundle(
+              developmentLocalization: developmentLocalization,
+              copyright: copyright,
+              module: module,
+              package: api,
+              hostingBasePath: hostingBasePath,
+              embedPackageBundle: embededPackageBundle
+            )
+            try bundle.write(to: bundleURL)
+            _ = try SwiftCompiler.assembleDocumentation(
+              in: outputDirectory.appendingPathComponent(name),
+              name: name,
+              bundle: bundleURL,
+              symbolGraphs: module.symbolGraphs.map({ $0.origin }),
+              hostingBasePath: hostingBasePath.appending("/" + name),
+              reportProgress: { output.print($0) }
+            ).get()
+            output.print("")
+          }
+        }
+        if ¬packageAlreadyHandled {
+          try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+            let bundleURL = temporary.appendingPathComponent("\(packageName).docc")
+            let placeholerGraphURL = temporary.appendingPathComponent(String(PackageDocumentationBundle.placeholderSymbolGraphFileName(packageName: packageName)))
+            try PackageDocumentationBundle.placeholderSymbolGraphData(packageName: packageName).save(to: placeholerGraphURL)
+            try packageBundle.write(to: bundleURL)
+            _ = try SwiftCompiler.assembleDocumentation(
+              in: outputDirectory.appendingPathComponent(String(packageName)),
+              name: String(packageName),
+              bundle: bundleURL,
+              symbolGraphs: [placeholerGraphURL],
+              hostingBasePath: hostingBasePath.appending("/" + String(packageName)),
+              reportProgress: { output.print($0) }
+            ).get()
+            output.print("")
+          }
+        }
+      }
     }
 
     // Final steps irrelevent to validation.
-    private func finalizeSite(outputDirectory: URL) throws {
-
-      try CSS.root.save(to: outputDirectory.appendingPathComponent("CSS/Root.css"))
-      try SyntaxHighlighter.css.save(to: outputDirectory.appendingPathComponent("CSS/Swift.css"))
-      var siteCSS = TextFile(mockFileWithContents: Resources.site, fileType: .css)
-      siteCSS.header = ""
-      try siteCSS.contents.save(to: outputDirectory.appendingPathComponent("CSS/Site.css"))
-      var siteJavaScript = TextFile(
-        mockFileWithContents: Resources.script,
-        fileType: .javaScript
-      )
-      siteJavaScript.header = ""
-      try siteJavaScript.contents.save(
-        to: outputDirectory.appendingPathComponent("JavaScript/Site.js")
-      )
-
+    private func finalizeSite(outputDirectory: URL, output: Command.Output) throws {
       try preventJekyllInterference(outputDirectory: outputDirectory)
+      try redirectDeadLinks(outputDirectory: outputDirectory, output: output)
+    }
+
+    private func redirectDeadLinks(outputDirectory: URL, output: Command.Output) throws {
+
+      output.print(
+        UserFacing<StrictString, InterfaceLocalization>({ localization in
+          switch localization {
+          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+            return "Checking for defunct URLs to redirect..."
+          case .deutschDeutschland:
+            return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
+          }
+        }).resolved()
+      )
+
+      try FileManager.default.withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
+        let repository = temporary.appendingPathComponent("Repository")
+        try? FileManager.default.createDirectory(at: repository.deletingLastPathComponent())
+        try retrievePublishedDocumentationIfAvailable(
+          outputDirectory: repository,
+          output: output
+        )
+        try redirect(urlsDroppedFrom: repository, for: outputDirectory)
+      }
     }
 
     private func retrievePublishedDocumentationIfAvailable(
@@ -391,50 +414,62 @@
       output: Command.Output
     ) throws {
       if let packageURL = try configuration(output: output).documentation.repositoryURL {
-
-        output.print(
-          UserFacing<StrictString, InterfaceLocalization>({ localization in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return "Checking for defunct URLs to redirect..."
-            case .deutschDeutschland:
-              return "Verstorbene Ressourcenzeiger werden weiterleitet ..."
-            }
-          }).resolved()
-        )
-
         FileManager.default
           .withTemporaryDirectory(appropriateFor: outputDirectory) { temporary in
             let package = SDGSwift.Package(url: packageURL)
             do {
               _ = try Git.clone(package, to: temporary).get()
               _ = try PackageRepository(at: temporary).checkout("gh\u{2D}pages").get()
-              try FileManager.default.removeItem(at: outputDirectory)
               try FileManager.default.move(temporary, to: outputDirectory)
             } catch {}
           }
       }
     }
 
-    private func redirectExistingURLs(outputDirectory: URL) throws {
-      if (try? outputDirectory.checkResourceIsReachable()) == true {
-        for file in try FileManager.default.deepFileEnumeration(in: outputDirectory) {
+    private func redirect(urlsDroppedFrom previous: URL, for current: URL) throws {
+      if (try? previous.checkResourceIsReachable()) == true {
+        // @exempt(from: tests) Not testable.
+        for file in try FileManager.default.deepFileEnumeration(in: previous) {
           try purgingAutoreleased {
-            if file.pathExtension == "html" {
-              if file.lastPathComponent == "index.html" {
-                try DocumentSyntax.redirect(
-                  language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
-                  target: URL(fileURLWithPath: "../index.html")
-                ).source().save(to: file)
-              } else {
-                try DocumentSyntax.redirect(
-                  language: LocalizationIdentifier.localization(of: file, in: outputDirectory),
-                  target: URL(fileURLWithPath: "index.html")
-                ).source().save(to: file)
-              }
-            } else {
-              try? FileManager.default.removeItem(at: file)
+            let relative = file.resolvingSymlinksInPath()
+              .path(relativeTo: previous.resolvingSymlinksInPath())
+            try redirectIfDead(relativePath: relative, in: current)
+          }
+        }
+      }
+    }
+
+    private func redirectIfDead(relativePath: String, in outputDirectory: URL) throws {
+      // @exempt(from: tests) Not testable.
+      let url = outputDirectory.appendingPathComponent(relativePath)
+      if url.pathExtension == "html" {
+        if (try? url.checkResourceIsReachable()) ≠ true {
+          let localization = ContentLocalization.englishUnitedStates  // To match DocC
+          if url.lastPathComponent == "index.html" {
+            try DocumentSyntax.redirect(
+              language: localization,
+              target: URL(fileURLWithPath: "../index.html")
+            ).source().save(to: url)
+            let ancestor = url.deletingLastPathComponent()
+            if ancestor.resolvingSymlinksInPath().is(in: outputDirectory.resolvingSymlinksInPath()) {
+              try redirectIfDead(
+                relativePath: ancestor.resolvingSymlinksInPath()
+                  .path(relativeTo: outputDirectory.resolvingSymlinksInPath()),
+                in: outputDirectory
+              )
             }
+          } else {
+            try DocumentSyntax.redirect(
+              language: localization,
+              target: URL(fileURLWithPath: "index.html")
+            ).source().save(to: url)
+            try redirectIfDead(
+              relativePath: url
+                .deletingLastPathComponent().appendingPathComponent("index.html")
+                .resolvingSymlinksInPath()
+                .path(relativeTo: outputDirectory.resolvingSymlinksInPath()),
+              in: outputDirectory
+            )
           }
         }
       }
@@ -473,7 +508,6 @@
           try document(
             outputDirectory: outputDirectory,
             documentationStatus: status,
-            validationStatus: &validationStatus,
             output: output,
             coverageCheckOnly: true
           )

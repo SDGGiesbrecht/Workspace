@@ -53,7 +53,7 @@
 
     // MARK: - SyntaxScanner
 
-    internal func visit(_ node: Syntax, context: SyntaxContext) -> Bool {
+    internal func visit(_ node: SyntaxNode, context: ScanContext) -> Bool {
       for rule in rules {
         rule.check(
           node,
@@ -68,49 +68,6 @@
       return true
     }
 
-    internal func visit(_ node: ExtendedSyntax, context: ExtendedSyntaxContext) -> Bool {
-      for rule in rules {
-        rule.check(
-          node,
-          context: context,
-          file: file,
-          setting: setting,
-          project: project,
-          status: status,
-          output: output
-        )
-      }
-      return true
-    }
-
-    internal func visit(_ node: Trivia, context: TriviaContext) -> Bool {
-      for rule in rules {
-        rule.check(
-          node,
-          context: context,
-          file: file,
-          setting: setting,
-          project: project,
-          status: status,
-          output: output
-        )
-      }
-      return true
-    }
-
-    internal func visit(_ node: TriviaPiece, context: TriviaPieceContext) -> Bool {
-      for rule in rules {
-        rule.check(
-          node,
-          context: context,
-          file: file,
-          setting: setting,
-          project: project,
-          status: status,
-          output: output
-        )
-      }
-      return true
-    }
+    internal var cache = ParserCache()
   }
 #endif

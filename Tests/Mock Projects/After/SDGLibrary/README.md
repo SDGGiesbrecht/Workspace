@@ -31,7 +31,7 @@ A package.
 
 ## Importing
 
-SDG provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+SDG provides a library for use with the Swift Package Manager.
 
 Simply add SDG as a dependency in `Package.swift`:
 
@@ -40,7 +40,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "SDG",
       url: "https://github.com/JohnDoe/SDG",
       from: Version(1, 0, 0)
     ),

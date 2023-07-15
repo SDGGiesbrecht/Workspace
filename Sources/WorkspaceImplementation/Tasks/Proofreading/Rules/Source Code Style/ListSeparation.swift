@@ -49,8 +49,8 @@
     })
 
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -58,14 +58,17 @@
       output: Command.Output
     ) {
 
-      if let entry = node.asProtocol(WithTrailingCommaSyntax.self),
-        let comma = entry.trailingComma,
-        entry.indexInParent == entry.parent?.children(viewMode: .sourceAccurate).last?.indexInParent
+      if node is Token,
+        let token = (context.globalAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+        let entry = token.parent?.asProtocol(WithTrailingCommaSyntax.self),
+        token.indexInParent == entry.trailingComma?.indexInParent,
+        let list = entry.parent,
+        entry.indexInParent == list.children(viewMode: .sourceAccurate).last?.indexInParent
       {
 
         reportViolation(
           in: file,
-          at: comma.syntaxRange(in: context),
+          at: context.location,
           replacementSuggestion: "",
           message: message,
           status: status

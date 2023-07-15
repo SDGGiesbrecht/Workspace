@@ -39,24 +39,19 @@
         }
       })
 
-    private enum EitherTokenKind {
-      case syntax(TokenKind)
-      case extended(ExtendedTokenKind)
-    }
-
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
       status: ProofreadingStatus,
       output: Command.Output
     ) {
-      if let token = node.as(TokenSyntax.self) {
+      if let token = node as? Token {
 
         func isPrefix() -> Bool {
-          if case .prefixOperator = token.tokenKind {
+          if case .swiftSyntax(.prefixOperator) = token.kind {
             return true
           } else {
             return false
@@ -64,8 +59,8 @@
         }
 
         func isInfix() -> Bool {
-          switch token.tokenKind {
-          case .spacedBinaryOperator, .unspacedBinaryOperator:
+          switch token.kind {
+          case .swiftSyntax(.spacedBinaryOperator), .swiftSyntax(.unspacedBinaryOperator):
             return true
           default:
             return false
@@ -73,7 +68,7 @@
         }
 
         func isFloatLiteral() -> Bool {
-          if case .floatingLiteral = token.tokenKind {
+          if case .swiftSyntax(.floatingLiteral) = token.kind {
             return true
           } else {
             return false
@@ -81,14 +76,17 @@
         }
 
         func isInAvailabilityDeclaration() -> Bool {
-          return node.ancestors().contains(where: { $0.is(AvailabilityArgumentSyntax.self) })
+          return context.globalAncestors.contains(where: { ancestor in
+            return (ancestor.node as? SwiftSyntaxNode)?.swiftSyntaxNode
+              .is(AvailabilityArgumentSyntax.self) == true
+          })
         }
 
         check(
-          token.text,
-          range: token.syntaxRange(in: context),
-          textFreedom: token.textFreedom,
-          kind: .syntax(token.tokenKind),
+          token.text(),
+          range: context.location,
+          textFreedom: token.kind.textFreedom(localAncestors: context.localAncestors),
+          kind: token.kind,
           isPrefix: isPrefix(),
           isInfix: isInfix(),
           isFloatLiteral: isFloatLiteral(),
@@ -101,39 +99,11 @@
       }
     }
 
-    internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
-      file: TextFile,
-      setting: Setting,
-      project: PackageRepository,
-      status: ProofreadingStatus,
-      output: Command.Output
-    ) {
-      if let token = node as? ExtendedTokenSyntax {
-        check(
-          token.text,
-          range: token.range(in: context),
-          textFreedom: token.kind.textFreedom,
-          kind: .extended(token.kind),
-          isPrefix: false,
-          isInfix: false,
-          isFloatLiteral: false,
-          isInAvailabilityDeclaration: false,  // @exempt(from: tests)
-          // Exempt because all such cases are handled by “isInfix”.
-          file: file,
-          project: project,
-          status: status,
-          output: output
-        )
-      }
-    }
-
     private static func check(
       _ node: String,
       range: @escaping @autoclosure () -> Range<String.ScalarOffset>,
       textFreedom: TextFreedom,
-      kind: @escaping @autoclosure () -> EitherTokenKind,
+      kind: Token.Kind,
       isPrefix: @escaping @autoclosure () -> Bool,
       isInfix: @escaping @autoclosure () -> Bool,
       isFloatLiteral: @escaping @autoclosure () -> Bool,
@@ -147,7 +117,7 @@
         node,
         range: file.contents.indices(of: range()),
         textFreedom: textFreedom,
-        kind: kind(),
+        kind: kind,
         isPrefix: isPrefix(),
         isInfix: isInfix(),
         isFloatLiteral: isFloatLiteral(),
@@ -162,7 +132,7 @@
       _ node: String,
       range: @escaping @autoclosure () -> Range<String.ScalarView.Index>,
       textFreedom: TextFreedom,
-      kind: @escaping @autoclosure () -> EitherTokenKind,
+      kind: Token.Kind,
       isPrefix: @escaping @autoclosure () -> Bool,
       isInfix: @escaping @autoclosure () -> Bool,
       isFloatLiteral: @escaping @autoclosure () -> Bool,
@@ -177,8 +147,8 @@
         return
       }
       let scope: UnicodeRuleScope
-      switch kind() {
-      case .syntax(let kind):
+      switch kind {
+      case .swiftSyntax(let kind):
         switch kind {
         case .eof, .associatedtypeKeyword, .classKeyword, .deinitKeyword, .enumKeyword,
           .extensionKeyword, .funcKeyword, .importKeyword, .initKeyword, .inoutKeyword,
@@ -215,10 +185,7 @@
         case .stringLiteral, .stringSegment, .regexLiteral:
           scope = .ambiguous  // @exempt(from: tests) Probably unreachable.
         }
-      case .extended(let kind):
-        switch kind {
-        case .quotationMark,  // @exempt(from: tests) Probably unreachable.
-          .lineCommentDelimiter,
+      case .lineCommentDelimiter,  // @exempt(from: tests) Probably unreachable.
           .openingBlockCommentDelimiter,
           .closingBlockCommentDelimiter,
           .commentURL,
@@ -232,21 +199,25 @@
           .source,
           .headingDelimiter,
           .asterism,
-          .fontModificationDelimiter,
-          .linkDelimiter,
+          .emphasisDelimiter,
+          .strengthDelimiter,
+          .openingLinkContentDelimiter,
+          .closingLinkContentDelimiter,
+          .openingLinkTargetDelimiter,
+          .closingLinkTargetDelimiter,
           .linkURL,
           .imageDelimiter,
           .quotationDelimiter,
           .callout,
-          .parameter,
-          .colon,
-          .lineSeparator:
-          scope = .machineIdentifiers
-        case .string, .whitespace, .newlines:
-          scope = .ambiguous
-        case .commentText, .sourceHeadingText, .documentationText:
-          scope = .humanLanguage
-        }
+          .calloutParameter,
+          .calloutColon,
+          .markdownLineBreak,
+          .shebang:
+        scope = .machineIdentifiers
+      case .whitespace, .lineBreaks, .fragment:
+        scope = .ambiguous
+      case .commentText, .sourceHeadingText, .documentationText:
+        scope = .humanLanguage
       }
       let configuredScope = try? project.configuration(output: output).proofreading
         .unicodeRuleScope

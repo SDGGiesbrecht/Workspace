@@ -6,17 +6,15 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
-[$ swift...]
-
-Processing API...
-Generating HTML...
 
 A localization has no copyright specified: English (United States)
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
+[$ swift...]
+
 
 A symbol has no description:
-NoLocalizations.🇺🇸EN
+NoLocalizations
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “Package(name: "NoLocalizations"”.)
 Package.swift
@@ -24,16 +22,15 @@ Line 5
 
 
 A symbol has no description:
-NoLocalizations.🇺🇸EN
+NoLocalizations
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.library(name: "NoLocalizations"”.)
 Package.swift
 Line 9
 
-...NoLocalizations...
 
 A symbol has no description:
-NoLocalizations.🇺🇸EN
+NoLocalizations
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.target(name: "NoLocalizations"”.)
 Package.swift

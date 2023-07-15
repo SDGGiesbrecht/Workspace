@@ -47,8 +47,8 @@
     })
 
     internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -56,14 +56,14 @@
       output: Command.Output
     ) {
 
-      if let token = node as? ExtendedTokenSyntax,
-        token.kind == .callout,
-        token.text.lowercased() == "parameter"
+      if let token = node as? Token,
+        case .callout = token.kind,
+        token.text().lowercased() == "parameter"
       {
 
         reportViolation(
           in: file,
-          at: token.range(in: context),
+          at: context.location,
           message: message,
           status: status
         )

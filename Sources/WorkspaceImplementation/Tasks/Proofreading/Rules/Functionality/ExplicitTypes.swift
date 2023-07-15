@@ -56,8 +56,8 @@
     // MARK: - SyntaxRule
 
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -65,13 +65,13 @@
       output: Command.Output
     ) {
 
-      if let variable = node.as(VariableDeclSyntax.self),
+      if let variable = (node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(VariableDeclSyntax.self),
         variable.modifiers?.contains(where: { $0.name.text == "public" }) == true,
         variable.bindings.first?.typeAnnotation?.type == nil
       {
         reportViolation(
           in: file,
-          at: variable.syntaxRange(in: context),
+          at: context.location,
           message: message,
           status: status
         )

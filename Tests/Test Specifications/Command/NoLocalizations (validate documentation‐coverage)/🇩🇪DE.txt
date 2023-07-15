@@ -6,17 +6,15 @@ Die Dokumentationsabdeckung wird überprüft ... (§1)
 Kein ursprüngliche Urheberrechtsdatum wurde angegeben.
 (Es ist unter „dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
-[$ swift...]
-
-Die Programmierschnitstelle wird verarbeitet ...
-Auszeichnung wird erstellt ...
 
 Einer Lokalization fehlt die Urheberrechtsschutzvermerk: Deutsch (Deustchland)
 (Es ist unter „dokumentation.programmierschnittstelle.urheberrechtsschutzvermerk“ zu konfigurieren. Siehe https://sdggiesbrecht.github.io/Workspace/🇩🇪DE/Typen/ArbeitsbereichKonfiguration.html)
 
+[$ swift...]
+
 
 Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇩🇪DE
+NoLocalizations
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „Package(name: "NoLocalizations"“.)
 Package.swift
@@ -24,16 +22,15 @@ Zeile 5
 
 
 Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇩🇪DE
+NoLocalizations
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.library(name: "NoLocalizations"“.)
 Package.swift
 Zeile 9
 
-... NoLocalizations ...
 
 Einem Symbol fehlt die Beschreibung.
-NoLocalizations.🇩🇪DE
+NoLocalizations
 (Pakete, Produkte und Module (Ziele) können in der Ladeliste wie alle andere Symbole Dokumentiert werden.
 Arbeitsbereich sucht für die Dokumentation in der Zeile über „.target(name: "NoLocalizations"“.)
 Package.swift

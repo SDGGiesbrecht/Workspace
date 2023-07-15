@@ -53,8 +53,8 @@
     })
 
     internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -62,19 +62,19 @@
       output: Command.Output
     ) {
 
-      if let token = node as? ExtendedTokenSyntax,
-        token.kind == .callout,
-        let first = token.text.scalars.first,
+      if let token = node as? Token,
+        case .callout = token.kind,
+        let first = token.text().scalars.first,
         first ∈ CharacterSet.lowercaseLetters
       {
 
-        var replacement = token.text
+        var replacement = token.text()
         let first = replacement.removeFirst()
         replacement.prepend(contentsOf: String(first).uppercased())
 
         reportViolation(
           in: file,
-          at: token.range(in: context),
+          at: context.location,
           replacementSuggestion: StrictString(replacement),
           message: message,
           status: status

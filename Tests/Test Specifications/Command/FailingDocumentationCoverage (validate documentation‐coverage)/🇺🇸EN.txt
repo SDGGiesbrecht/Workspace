@@ -6,34 +6,31 @@ Checking documentation coverage... (§1)
 No original copyright date is specified.
 (Configure it under “documentation.api.yearFirstPublished”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
-[$ swift...]
-
-Processing API...
-Generating HTML...
 
 A localization has no copyright specified: zxx
 (Configure it under “documentation.api.copyrightNotice”. See https://sdggiesbrecht.github.io/Workspace/🇺🇸EN/Types/WorkspaceConfiguration.html.)
 
+[$ swift...]
+
 
 A symbol has no description:
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoveragePackage
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
-Workspace will look for documentation on the line above “Package(name: "FailingDocumentationCoverage"”.)
+Workspace will look for documentation on the line above “Package(name: "FailingDocumentationCoveragePackage"”.)
 Package.swift
 Line 5
 
 
 A symbol has no description:
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoverage
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.library(name: "FailingDocumentationCoverage"”.)
 Package.swift
 Line 9
 
-...FailingDocumentationCoverage...
 
 A symbol has no description:
-FailingDocumentationCoverage.zxx
+FailingDocumentationCoverage
 (Packages, products and modules (targets) can be documented in the package manifest the same way as other symbols.
 Workspace will look for documentation on the line above “.target(name: "FailingDocumentationCoverage"”.)
 Package.swift
@@ -41,32 +38,32 @@ Line 19
 
 
 A symbol’s documentation contains excessively strong headings:
-excessiveHeading().zxx
+excessiveHeading()
 (Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 14
 
 
-A symbol has mismatched parameter descriptions:
-mismatchedParameters(parameterOne:).zxx
+A symbol has no description:
+inferredType
+Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
+Line 6
+
+
+A symbol has mismatched parameter descriptions: paramOne, parameterTwo
+mismatchedParameters(parameterOne:)
 (Expected: parameterOne)
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 21
 
 
 A symbol has no description:
-undocumented().zxx
+undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Line 4
 
 
-A symbol has no description:
-inferredType.zxx
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Line 6
-
-
 ✗ Documentation coverage is incomplete. (See [⌘F] “§1”)
 
-“FailingDocumentationCoverage” fails validation.
+“FailingDocumentationCoveragePackage” fails validation.
 2

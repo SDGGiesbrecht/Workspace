@@ -50,8 +50,8 @@
     })
 
     internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -59,16 +59,17 @@
       output: Command.Output
     ) {
 
-      if let codeDelimiter = node as? ExtendedTokenSyntax,
-        codeDelimiter.kind == .codeDelimiter,
-        let codeBlock = codeDelimiter.parent as? CodeBlockSyntax,
-        codeBlock.openingDelimiter.indexInParent == codeDelimiter.indexInParent
+      if let codeDelimiter = node as? Token,
+        case .codeDelimiter = codeDelimiter.kind,
+        let codeBlockRelationship = context.localAncestors.last,
+        let codeBlock = codeBlockRelationship.node as? CodeBlockNode,
+         codeBlockRelationship.childIndex == 0
       {
 
         if codeBlock.language == nil {
           reportViolation(
             in: file,
-            at: codeDelimiter.range(in: context),
+            at: context.location,
             message: message,
             status: status
           )

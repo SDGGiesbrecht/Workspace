@@ -48,8 +48,8 @@
     })
 
     internal static func check(
-      _ node: ExtendedSyntax,
-      context: ExtendedSyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -57,14 +57,14 @@
       output: Command.Output
     ) {
 
-      if let token = node as? ExtendedTokenSyntax,
-        token.kind == .headingDelimiter,
-        ¬token.text.contains("#")
+      if let token = node as? Token,
+        case .headingDelimiter = token.kind,
+        ¬token.text().contains("#")
       {
 
         reportViolation(
           in: file,
-          at: token.range(in: context),
+          at: context.location,
           message: message,
           status: status
         )

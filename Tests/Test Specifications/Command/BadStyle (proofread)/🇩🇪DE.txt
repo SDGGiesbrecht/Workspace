@@ -139,10 +139,6 @@ Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle
 func unfinished() {
 
 Sources/BadStyle/Rules/Source Code Style/Asterisms.swift
-Zeile 16
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func testAsterisms() {}
-
 Zeile 9
 Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 /// ---
@@ -153,19 +149,24 @@ Markdown‐Sterngruppen sollen aus Sternchen bestehen. (sterngruppen)
 /// ___
 /// ***
 
-Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
-Zeile 6
+Zeile 16
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func callout() {}
+func testAsterisms() {}
 
+Sources/BadStyle/Rules/Source Code Style/CalloutCasing.swift
 Zeile 5
 Hervorhebungen sollen großgeschrieben sein. (hervorhebungsGroßschreibung)
 /// - warning: This should trigger. It should have been capitalized.
 /// - Warning: This should trigger. It should have been capitalized.
 
-Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
 Zeile 6
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func callout() {}
+
+Sources/BadStyle/Rules/Source Code Style/ClosureSignaturePosition.swift
+Zeile 5
 Die Signatur eines Abschluss soll an der selbe Zeile stehen als seine öffnende geschweifte Klammer. (abschlusssignaturplatzierung)
+private let bad: (String) -> Void = {
     parameter in // Wrong position; should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/ListSeparation.swift
@@ -183,10 +184,6 @@ Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
   3 // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
-Zeile 12
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func testHeadings() {}
-
 Zeile 8
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 /// -----------------------------------------
@@ -195,20 +192,20 @@ Zeile 11
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 /// =========================================
 
-Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
-Zeile 6
+Zeile 12
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func parameters(one: Bool, two: Bool) {}
+func testHeadings() {}
 
+Sources/BadStyle/Rules/Source Code Style/ParameterStyle.swift
 Zeile 5
 Übergabewerte sollen unter einer einzigen Hervorhebung gestellt sein. (übergabewertenzusammenstellung)
 /// - Parameter one: A parameter documented the wrong way, so trigger.
 
-Sources/BadStyle/Rules/Text Style/Bullets.swift
-Zeile 12
+Zeile 6
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func testBullets() {}
+func parameters(one: Bool, two: Bool) {}
 
+Sources/BadStyle/Rules/Text Style/Bullets.swift
 Zeile 7
 Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungszeichen)
 /// * Should trigger; asterisks aren’t bullets.
@@ -219,11 +216,11 @@ Markdown‐Listen sollen ASCII‐Aufzählungszeichen verwenden. (aufzählungsz
 /// + Should trigger; plus signs aren’t bullets.
 /// - Should trigger; plus signs aren’t bullets.
 
-Sources/BadStyle/Rules/Text Style/Unicode.swift
-Zeile 20
+Zeile 12
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-func −(lhs: Int, rhs: Int) -> Int {
+func testBullets() {}
 
+Sources/BadStyle/Rules/Text Style/Unicode.swift
 Zeile 5
 Das Schriftzeichen U+0022 ist überholt. Anführungszeichen („, “) oder Doppelprime (′′) verwenden. (unicode)
 // "These quotation marks are generic and should trigger."
@@ -248,6 +245,10 @@ Zeile 19
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 /// - RecommendedOver: -
 
+Zeile 20
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+func −(lhs: Int, rhs: Int) -> Int {
+
 Zeile 24
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 func useNumeric() -> Int {
@@ -259,10 +260,6 @@ let ln2: Float80 = 0x1.62E42FEFA39EF358p-1 // Generic stroke must be allowed in 
 Zeile 35
 Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
 func shellSource() {
-
-Zeile 57
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-let x = a * b // Trigger, because this is not a multiplication sign.
 
 Zeile 41
 Das Schriftzeichen U+0027 ist überholt. Einen Apostrophe (’), Anführungs‐ (‚, ‘), Grad‐ (°) oder Prime‐Zeichen (′) verwenden. (unicode)
@@ -298,13 +295,13 @@ Die Schriftzeichenfolge “>=” ist überholt. Ein größer‐als‐oder‐gl
 // Trigger, because this is not a greater‐than‐or‐equal‐to sign: a ≥ b
 
 Zeile 57
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = a * b // Trigger, because this is not a multiplication sign.
+
+Zeile 57
 Das Schriftzeichen “*” ist überholt. Ein Malzeichen (⋅) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
 let x = a * b // Trigger, because this is not a multiplication sign.
 let x = a × b // Trigger, because this is not a multiplication sign.
-
-Zeile 59
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-let x = a / b // Trigger, because this is not a division sign.
 
 Zeile 58
 Die Schriftzeichenfolge “*=” ist überholt. Ein Malzeichen (⋅) verwenden. (unicode)
@@ -312,18 +309,22 @@ Die Schriftzeichenfolge “*=” ist überholt. Ein Malzeichen (⋅) verwenden.
 // Trigger, because this is not a multiplication sign: a ×= b
 
 Zeile 59
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = a / b // Trigger, because this is not a division sign.
+
+Zeile 59
 Das Schriftzeichen “/” ist überholt. Ein Geteiltzeichen (∶) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)
 let x = a / b // Trigger, because this is not a division sign.
 let x = a ÷ b // Trigger, because this is not a division sign.
-
-Zeile 64
-Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
-let x = y - z // This should trigger and mention aliasing.
 
 Zeile 60
 Die Schriftzeichenfolge “/=” ist überholt. Ein Geteiltzeichen (∶) verwenden. (unicode)
 // Trigger, because this is not a division sign: a /= b
 // Trigger, because this is not a division sign: a ÷= b
+
+Zeile 64
+Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
+let x = y - z // This should trigger and mention aliasing.
 
 Zeile 64
 Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (Wenn nötig, ein Alias erstellen.) (unicode)

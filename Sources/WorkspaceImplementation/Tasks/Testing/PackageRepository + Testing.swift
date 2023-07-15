@@ -174,11 +174,12 @@
       }
     }
 
-    internal func test(
+    @discardableResult internal func test(
       on job: ContinuousIntegrationJob,
+      loadingCoverage: Bool,
       validationStatus: inout ValidationStatus,
       output: Command.Output
-    ) {
+    ) -> TestCoverageReport? {
       PackageRepository.with(environment: job.environmentVariable) {
         let section = validationStatus.newSection()
 
@@ -193,16 +194,24 @@
           }).resolved().formattedAsSectionHeader()
         )
 
-        let testCommand: (Command.Output) -> Bool
+        let testCommand: (Command.Output) -> (succeeded: Bool, coverage: TestCoverageReport?)
         switch job {
         case .macOS, .ubuntu, .amazonLinux:
           // @exempt(from: tests) Tested separately.
           testCommand = { output in
             do {
-              _ = try self.test(reportProgress: { output.print($0) }).get()
-              return true
+              if loadingCoverage {
+                let coverage = try self.testAndLoadCoverageReport(
+                  ignoreCoveredRegions: true,
+                  reportProgress: { output.print($0) }
+                ).get()
+                return (succeeded: true, coverage: coverage)
+              } else {
+                _ = try self.test(reportProgress: { output.print($0) }).get()
+                return (succeeded: true, coverage: nil)
+              }
             } catch {
-              return false
+              return (succeeded: false, coverage: nil)
             }
           }
         case .windows, .web, .android, .miscellaneous, .deployment:
@@ -227,14 +236,29 @@
                 break
               }
               output.print(description.formattedAsError())
-              return false
+              return (succeeded: false, coverage: nil)
             case .success:
-              return true
+              if loadingCoverage {
+                switch codeCoverageReport(
+                  on: job.testPlatform,
+                  ignoreCoveredRegions: true,
+                  reportProgress: { output.print($0) }
+                ) {
+                case .failure(let error):
+                  output.print(StrictString(error.localizedDescription).formattedAsError())
+                  return (succeeded: true, coverage: nil)
+                case .success(let coverage):
+                  return (succeeded: true, coverage: coverage)
+                }
+              } else {
+                return (succeeded: true, coverage: nil)
+              }
             }
           }
         }
 
-        if testCommand(output) {
+        let result = testCommand(output)
+        if result.succeeded {
           validationStatus.passStep(
             message: UserFacing<StrictString, InterfaceLocalization>({ localization in
               switch localization {
@@ -259,10 +283,12 @@
             })
           )
         }
+        return result.coverage
       }
     }
 
-    internal func validateCodeCoverage(
+    internal func validate(
+      testCoverage: TestCoverageReport?,
       on job: ContinuousIntegrationJob,
       validationStatus: inout ValidationStatus,
       output: Command.Output
@@ -305,53 +331,18 @@
       }
 
       do {
-        let report: TestCoverageReport
-        switch job {
-        case .macOS, .ubuntu, .amazonLinux:
-          guard
-            let fromPackageManager = try codeCoverageReport(
-              ignoreCoveredRegions: true,
-              reportProgress: { output.print($0) }
-            ).get()
-          else {  // @exempt(from: tests) Untestable in Xcode due to interference.
-            failStepWithError(
-              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return
-                    "The package manager has not produced a test coverage report."
-                case .deutschDeutschland:
-                  return
-                    "Der Paketverwalter hat keinen Testabdeckungsbericht erstellt."
-                }
-              }).resolved()
-            )
-            return
-          }
-          report = fromPackageManager  // @exempt(from: tests)
-        case .windows, .web, .android, .miscellaneous, .deployment:
-          unreachable()
-        case .tvOS, .iOS, .watchOS:  // @exempt(from: tests) Unreachable from Linux.
-          guard
-            let fromXcode = try codeCoverageReport(
-              on: job.testPlatform,
-              ignoreCoveredRegions: true,
-              reportProgress: { output.print($0) }
-            ).get()
-          else {
-            failStepWithError(
-              message: UserFacing<StrictString, InterfaceLocalization>({ localization in
-                switch localization {
-                case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-                  return "Xcode has not produced a test coverage report."
-                case .deutschDeutschland:
-                  return "Xcode erstellte keinen Testabdeckungsbericht erstellt."
-                }
-              }).resolved()
-            )
-            return
-          }
-          report = fromXcode
+        guard let report = testCoverage else {
+          failStepWithError(
+            message: UserFacing<StrictString, InterfaceLocalization>({ localization in
+              switch localization {
+              case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
+                return "Tests have not produced a coverage report."
+              case .deutschDeutschland:
+                return "Teste haben keinen Testabdeckungsbericht erstellt."
+              }
+            }).resolved()
+          )
+          return
         }
 
         var irrelevantFiles: Set<URL> = []

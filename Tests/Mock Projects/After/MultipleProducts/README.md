@@ -18,7 +18,7 @@ curl -sL https://gist.github.com/SDGGiesbrecht/4d76ad2f2b9c7bf9072ca1da9815d7e2/
 
 ## Importing
 
-MultipleProducts provides libraries for use with the [Swift Package Manager](https://swift.org/package-manager/).
+MultipleProducts provides libraries for use with the Swift Package Manager.
 
 Simply add MultipleProducts as a dependency in `Package.swift` and specify which of the libraries to use:
 
@@ -27,7 +27,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "MultipleProducts",
       url: "https://somewhere.tld/repository",
       from: Version(1, 0, 0)
     ),
@@ -36,8 +35,8 @@ let package = Package(
     .target(
       name: "MyTarget",
       dependencies: [
-        .product(name: "LibraryA", package: "MultipleProducts"),
-        .product(name: "LibraryB", package: "MultipleProducts"),
+        .product(name: "LibraryA", package: "repository"),
+        .product(name: "LibraryB", package: "repository"),
       ]
     )
   ]

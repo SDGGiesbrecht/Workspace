@@ -54,8 +54,8 @@
     // MARK: - SyntaxRule
 
     internal static func check(
-      _ node: Syntax,
-      context: SyntaxContext,
+      _ node: SyntaxNode,
+      context: ScanContext,
       file: TextFile,
       setting: Setting,
       project: PackageRepository,
@@ -65,13 +65,17 @@
 
       switch setting {
       case .library:
-        if let classModifiers = node.as(ClassDeclSyntax.self)?.modifiers,
-          let `public` = classModifiers.first(where: { $0.name.text == "public" }),
-          ¬classModifiers.contains(where: { $0.name.text == "final" })
-        {
+        if node is Token,
+          let `public` = (context.globalAncestors.last?.node as? SwiftSyntaxNode)?.swiftSyntaxNode.as(TokenSyntax.self),
+          `public`.tokenKind == .publicKeyword,
+          let modifier = `public`.parent(as: DeclModifierSyntax.self, ifIsChildAt: \.name),
+          let modifiers = modifier.parent?.as(ModifierListSyntax.self),
+          let _ = modifiers.parent(as: ClassDeclSyntax.self, ifIsChildAt: \.modifiers),
+          ¬modifiers.contains(where: { $0.name.text == "final" }) {
+
           reportViolation(
             in: file,
-            at: `public`.syntaxRange(in: context),
+            at: context.location,
             message: message,
             status: status
           )

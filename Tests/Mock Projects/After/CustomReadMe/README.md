@@ -29,7 +29,7 @@ Build from source at tag `1.2.3` of `https://github.com/User/Repository`.
 
 ## Importing
 
-CustomReadMe provides a library for use with the [Swift Package Manager](https://swift.org/package-manager/).
+CustomReadMe provides a library for use with the Swift Package Manager.
 
 Simply add CustomReadMe as a dependency in `Package.swift`:
 
@@ -38,7 +38,6 @@ let package = Package(
   name: "MyPackage",
   dependencies: [
     .package(
-      name: "CustomReadMe",
       url: "https://github.com/User/Repository",
       from: Version(1, 2, 3)
     ),
@@ -47,7 +46,7 @@ let package = Package(
     .target(
       name: "MyTarget",
       dependencies: [
-        .product(name: "CustomReadMe", package: "CustomReadMe"),
+        .product(name: "CustomReadMe", package: "Repository"),
       ]
     )
   ]

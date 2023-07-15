@@ -497,9 +497,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGSwift",
-      // #warning(Branch.)
-      branch: "master"
-      //from: Version(13, 0, 1)
+      from: Version(14, 0, 0)
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/swift\u{2D}package\u{2D}manager",

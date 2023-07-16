@@ -351,11 +351,6 @@ class APITests: TestCase {
     XCTAssert(configuration.normalise)
     configuration.normalisieren = false
     XCTAssertFalse(configuration.normalisieren)
-    configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen = [:]
-    XCTAssertEqual(
-      configuration.dokumentation.programmierschnittstelle.dateinamensersetzungen,
-      [:]
-    )
     XCTAssertEqual(Schicht.netz, Platform.web)
     XCTAssertEqual(ProofreadingRule.listentrennung, .listSeparation)
     XCTAssertEqual(ProofreadingRule.aufzählungszeichen, .bullets)
@@ -385,7 +380,6 @@ class APITests: TestCase {
       RelatedProjectEntry.project(url: URL(string: "http://example.com")!),
     ]
     filledIn.documentation.primaryAuthor = "..."
-    filledIn.documentation.api.dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
     filledIn.gitHub.developmentNotes = "..."
     filledIn.gitHub.administrators = ["A", "B", "C"]
     #if !PLATFORM_LACKS_FOUNDATION_PROCESS_INFO

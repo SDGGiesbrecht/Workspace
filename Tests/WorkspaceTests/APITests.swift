@@ -186,7 +186,6 @@
         "Stuff about the creators...\n\n...and more stuff..."
       configuration.documentation.about["🇺🇸EN"] = ""
       configuration.documentation.api.yearFirstPublished = 2018
-      configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
       configuration.proofreading.swiftFormatConfiguration?.rules["UseShorthandTypeNames"] =
         false
       configuration.proofreading.swiftFormatConfiguration?.rules["UseEnumForNamespacing"] =
@@ -394,8 +393,6 @@
       konfiguration.dokumentation.programmierschnittstelle
         .durchGitHubSeitenVeröffentlichen = true
       konfiguration.dokumentation.programmierschnittstelle.jahrErsterVeröffentlichung = 2000
-      konfiguration.dokumentation.programmierschnittstelle
-        .dateinamensersetzungenZurWindowsVerträglichkeitHinzufügen()
       PackageRepository(mock: "Deutsch").test(
         commands: [
           ["auffrischen", "skripte"],
@@ -492,7 +489,6 @@
       let configuration = WorkspaceConfiguration()
       configuration.documentation.localizations = ["zxx"]
       configuration.documentation.repositoryURL = URL(string: "http://example.com")!
-      configuration.documentation.api.applyWindowsCompatibilityFileNameReplacements()
       PackageRepository(mock: "FailingDocumentationCoverage").test(
         commands: [
           ["validate", "documentation‐coverage"],

@@ -15,6 +15,7 @@
  */
 
 import SDGCollections
+import SDGText
 
 // @localization(🇩🇪DE) @crossReference(APIDocumentationConfiguration)
 /// Einstellungen zur Programmierschnittstellendokumentation.
@@ -126,6 +127,20 @@ public struct APIDocumentationConfiguration: Codable {
         }
       }
   })
+
+  /// The path from the root of the host to the root of the documentation output directory.
+  ///
+  /// By default, this matches the last path component of the repository URL if there is one. Otherwise it is an empty string.
+  public var hostingBasePath: Lazy<String> = Lazy(resolve: { configuration in
+    return configuration.documentation.repositoryURL?.lastPathComponent ?? ""
+  })
+  /// Der Pfad von der Wurzel des Host zu der Wurzel des Dokumentationsausgabeverzeichnisses.
+  ///
+  /// Wenn nicht angegeben, gleicht diese Einstellung die lezte Pfadteil vom `lagerRessourcenzeiger` wenn es einen gibt. Sonst ist es eine leere Zeichenfolge.
+  public var hostingBasispfad: Lazy<String> {
+    get { return hostingBasePath }
+    set { hostingBasePath = newValue }
+  }
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(APIDocumentationConfiguration.serveFromGitHubPagesBranch)

@@ -37,13 +37,6 @@ Package.swift
 Zeile 19
 
 
-Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:
-excessiveHeading()
-(Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Zeile 14
-
-
 Einem Symbol fehlt die Beschreibung.
 inferredType
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift

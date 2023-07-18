@@ -123,6 +123,15 @@ Line 1
 Public variables should have explicit types. (explicitTypes)
 public var implit = "" // Should trigger; needs explicit type.
 
+Sources/BadStyle/Rules/Functionality/HeadingLevels.swift
+Line 12
+Markdown headings should use number signs. (markdownHeadings)
+/// ===========================
+
+Line 15
+Markdown headings should use number signs. (markdownHeadings)
+/// ---------------------------
+
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Line 3
 Incomplete heading syntax. Use “// MARK: - ”. (marks)

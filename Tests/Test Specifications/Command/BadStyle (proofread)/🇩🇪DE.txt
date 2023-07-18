@@ -123,6 +123,15 @@ Zeile 1
 Öffentliche (public) Variablen sollen ausdrückliche Typen haben. (ausdrücklicheTypen)
 public var implit = "" // Should trigger; needs explicit type.
 
+Sources/BadStyle/Rules/Functionality/HeadingLevels.swift
+Zeile 12
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// ===========================
+
+Zeile 15
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// ---------------------------
+
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Zeile 3
 Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)

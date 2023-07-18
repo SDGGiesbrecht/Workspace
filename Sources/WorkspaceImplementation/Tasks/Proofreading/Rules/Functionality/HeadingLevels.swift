@@ -32,7 +32,7 @@ internal struct HeadingLevels: SyntaxRule {
           "Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert."
       }
     })
-  
+
   internal static func check(
     _ node: SyntaxNode,
     context: ScanContext,
@@ -44,8 +44,7 @@ internal struct HeadingLevels: SyntaxRule {
   ) {
     if let token = node as? Token,
       case .headingDelimiter = token.kind,
-      let headingNode = context.localAncestors.last(where: { $0.node is MarkdownHeading }),
-      let heading = headingNode as? MarkdownHeading,
+      let heading = context.localAncestors.lazy.compactMap({ $0.node as? MarkdownHeading }).last,
       heading.level < 3 {
       reportViolation(
         in: file,

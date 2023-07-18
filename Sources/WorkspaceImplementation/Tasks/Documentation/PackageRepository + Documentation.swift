@@ -310,8 +310,7 @@
 
       if ¬coverageCheckOnly {
         let packageName = try projectName(in: developmentLocalization, output: output)
-        // #workaround(This is not always correct; it needs to be customizable.)
-        let hostingBasePath = String(packageName)
+        let hostingBasePath = configuration.documentation.api.hostingBasePath.resolve(configuration)
         let packageBundle = PackageDocumentationBundle(
           localizations: localizations,
           developmentLocalization: developmentLocalization,

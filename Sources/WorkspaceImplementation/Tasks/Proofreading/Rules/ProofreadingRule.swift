@@ -40,6 +40,8 @@
         return .text(CompatibilityCharacters.self)
       case .explicitTypes:
         return .syntax(ExplicitTypes.self)
+      case .headingLevels:
+        return .syntax(HeadingLevels.self)
       case .marks:
         return .text(Marks.self)
       case .syntaxColouring:

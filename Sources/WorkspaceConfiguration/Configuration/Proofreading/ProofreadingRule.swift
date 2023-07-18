@@ -202,6 +202,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .explicitTypes
   }
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.headingLevels)
+  /// Requires documentation headings to be level three or higher (because DocC reserves levels one and two).
+  case headingLevels
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.headingLevels)
+  /// Erfordert, dass Überschrifte auf mindestens die dritte Ebene stehen (weil DocC die erste und zweite Ebenen reserviert).
+  public static var überschriftsebenen: Korrekturregel {
+    return .headingLevels
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.marks)
   /// Catches broken syntax in source code headings.
@@ -436,6 +445,7 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
       .classFinality,
       .compatibilityCharacters,
       .explicitTypes,
+      .headingLevels,
       .marks:
       return .functionality
 

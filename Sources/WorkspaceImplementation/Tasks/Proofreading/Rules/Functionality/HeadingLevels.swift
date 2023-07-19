@@ -42,7 +42,7 @@ internal struct HeadingLevels: SyntaxRule {
     { localization in
       switch localization {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-        return "Heading’s must be level three or higher; levels one and two are reserved by DocC."
+        return "Headings must be level three or higher; levels one and two are reserved by DocC."
       case .deutschDeutschland:
         return
           "Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert."

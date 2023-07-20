@@ -36,7 +36,7 @@ internal struct ParameterDocumentation: SyntaxRule {
       case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
         return "parameterDocumentation"
       case .deutschDeutschland:
-        return "überschriftsebenen"
+        return "übergabewertDokumentation"
       }
     })
 

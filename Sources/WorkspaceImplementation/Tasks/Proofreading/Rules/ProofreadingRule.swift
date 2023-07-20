@@ -44,6 +44,8 @@
         return .syntax(HeadingLevels.self)
       case .marks:
         return .text(Marks.self)
+      case .parameterDocumentation:
+        return .syntax(ParameterDocumentation.self)
       case .syntaxColouring:
         return .syntax(SyntaxColouring.self)
       case .unicode:

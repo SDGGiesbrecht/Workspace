@@ -43,13 +43,6 @@ Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
 Zeile 6
 
 
-Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: paramOne, parameterTwo
-mismatchedParameters(parameterOne:)
-(Erwartete: parameterOne)
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Zeile 21
-
-
 Einem Symbol fehlt die Beschreibung.
 undocumented()
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift

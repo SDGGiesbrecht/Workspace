@@ -72,16 +72,7 @@ extension PackageAPI {
   ) {
     if symbol.hasEditableDocumentation(editableModules: editableModules) {
       if let documentation = symbol.docComment {
-
         let document = DocumentationContent(source: String(documentation.source()))
-        document.scanSyntaxTree({ node, _ in
-          if let heading = node as? MarkdownHeading,
-             heading.level < 3 {
-            documentationStatus.reportExcessiveHeading(symbol: symbol, projectRoot: projectRoot)
-          }
-          return true
-        })
-
         let documentedParameters = document.parameters()
         if ¬documentedParameters.isEmpty {
           let expectedParameters = symbol.parameters()
@@ -94,7 +85,6 @@ extension PackageAPI {
             )
           }
         }
-
       } else {
         documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
       }

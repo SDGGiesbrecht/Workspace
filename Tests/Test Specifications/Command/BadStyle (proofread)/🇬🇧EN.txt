@@ -125,6 +125,31 @@ Line 1
 Public variables should have explicit types. (explicitTypes)
 public var implit = "" // Should trigger; needs explicit type.
 
+Sources/BadStyle/Rules/Functionality/HeadingLevels.swift
+Line 3
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// # This heading is too strong.
+
+Line 5
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// ## This heading is too strong.
+
+Line 12
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// ===========================
+
+Line 12
+Markdown headings should use number signs. (markdownHeadings)
+/// ===========================
+
+Line 15
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// ---------------------------
+
+Line 15
+Markdown headings should use number signs. (markdownHeadings)
+/// ---------------------------
+
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Line 3
 Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
@@ -186,9 +211,21 @@ List separators should only occur between list elements. (listSeparation)
   3 // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
+Line 5
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// # Should not trigger; this is the right kind of heading.
+
+Line 8
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// -----------------------------------------
+
 Line 8
 Markdown headings should use number signs. (markdownHeadings)
 /// -----------------------------------------
+
+Line 11
+Headings must be level three or higher; levels one and two are reserved by DocC. (headingLevels)
+/// =========================================
 
 Line 11
 Markdown headings should use number signs. (markdownHeadings)

@@ -459,6 +459,7 @@ class APITests: TestCase {
     XCTAssert(configuration.generateResourceAccessors)
     configuration.dokumentation.programmierschnittstelle.hostingBasispfad = Lazy(resolve: { _ in "..." })
     XCTAssertEqual(configuration.dokumentation.programmierschnittstelle.hostingBasispfad.resolve(configuration), "...")
+    XCTAssertEqual(ProofreadingRule.überschriftsebenen, .headingLevels)
   }
 
   func testWorkspaceProjectConfiguration() throws {

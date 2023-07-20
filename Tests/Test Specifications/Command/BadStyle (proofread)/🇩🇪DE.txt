@@ -123,6 +123,31 @@ Zeile 1
 Öffentliche (public) Variablen sollen ausdrückliche Typen haben. (ausdrücklicheTypen)
 public var implit = "" // Should trigger; needs explicit type.
 
+Sources/BadStyle/Rules/Functionality/HeadingLevels.swift
+Zeile 3
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// # This heading is too strong.
+
+Zeile 5
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// ## This heading is too strong.
+
+Zeile 12
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// ===========================
+
+Zeile 12
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// ===========================
+
+Zeile 15
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// ---------------------------
+
+Zeile 15
+Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
+/// ---------------------------
+
 Sources/BadStyle/Rules/Functionality/Mark.swift
 Zeile 3
 Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschrifte)
@@ -184,9 +209,21 @@ Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
   3 // Should trigger.
 
 Sources/BadStyle/Rules/Source Code Style/MarkdownHeadings.swift
+Zeile 5
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// # Should not trigger; this is the right kind of heading.
+
+Zeile 8
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// -----------------------------------------
+
 Zeile 8
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)
 /// -----------------------------------------
+
+Zeile 11
+Überschrifte müssen auf mindestens die dritte Ebene stehen; die erste und zweite Ebenen sind von DocC reserviert. (überschriftsebenen)
+/// =========================================
 
 Zeile 11
 Markdown‐Überschrifte sollen Doppelkreuze verwenden. (markdownÜberschrifte)

@@ -225,33 +225,5 @@
         )
       }
     }
-
-    internal func reportExcessiveHeading<SymbolType>(
-      symbol: SymbolType,
-      projectRoot: URL
-    ) where SymbolType: SymbolLike {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A symbol’s documentation contains excessively strong headings:"
-          case .deutschDeutschland:
-            return "Die Dokumentation eines Symbols enthaltet überstarke Überschrifte:"
-          }
-        }),
-        with: symbol,
-        projectRoot: projectRoot,
-        hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return
-              "(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)"
-          case .deutschDeutschland:
-            return
-              "(Überschriftsebenen drei bis sechs stehen offen. Ebene eins und zwei sind für den umliegenden Rahmen vorbehalten.)"
-          }
-        })
-      )
-    }
   }
 #endif

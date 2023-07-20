@@ -37,13 +37,6 @@ Package.swift
 Line 19
 
 
-A symbol’s documentation contains excessively strong headings:
-excessiveHeading()
-(Use heading levels three to six. Levels one and two are reserved for the surrounding context.)
-Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift
-Line 14
-
-
 A symbol has no description:
 inferredType
 Sources/FailingDocumentationCoverage/FailingDocumentationCoverage.swift

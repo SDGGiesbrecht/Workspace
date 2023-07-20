@@ -70,24 +70,9 @@ extension PackageAPI {
     projectRoot: URL,
     editableModules: [String]
   ) {
-    if symbol.hasEditableDocumentation(editableModules: editableModules) {
-      if let documentation = symbol.docComment {
-        let document = DocumentationContent(source: String(documentation.source()))
-        let documentedParameters = document.parameters()
-        if ¬documentedParameters.isEmpty {
-          let expectedParameters = symbol.parameters()
-          if documentedParameters ≠ expectedParameters {
-            documentationStatus.reportMismatchedParameters(
-              documentedParameters,
-              expected: expectedParameters,
-              symbol: symbol,
-              projectRoot: projectRoot
-            )
-          }
-        }
-      } else {
+    if symbol.docComment == nil,
+      symbol.hasEditableDocumentation(editableModules: editableModules) {
         documentationStatus.reportMissingDescription(symbol: symbol, projectRoot: projectRoot)
-      }
     }
   }
 }

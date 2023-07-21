@@ -85,7 +85,7 @@ internal struct ParameterDocumentation: SyntaxRule {
           if let initializer = ancestor.as(InitializerDeclSyntax.self) {
             parameters = initializer.signature.input
           }
-        case .macroDecl:
+        case .macroDecl:  // @exempt(from: tests) Experimental.
           if let macro = ancestor.as(MacroDeclSyntax.self) {
             switch macro.signature {
             case .functionLike(let signature):

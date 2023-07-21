@@ -36,34 +36,12 @@ Every symbol in a library should have access control. (accessControl)
 
 Tests/DefaultTests/DefaultTests.swift
 Tests/DefaultTests/XCTestManifests.swift
-Line 1
-Test manifests are no longer necessary. (deprecatedTestManifests)
-import XCTest
-
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(DefaultTests.allTests),
-    ]
-}
-#endif
-
 Line 4
 Executables and tests should not contain access control. (accessControl)
 public func allTests() -> [XCTestCaseEntry] {
  func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
-Line 1
-Test manifests are no longer necessary. (deprecatedTestManifests)
-import XCTest
-
-import DefaultTests
-
-var tests = [XCTestCaseEntry]()
-tests += DefaultTests.allTests()
-XCTMain(tests)
-
 
 Checking build for macOS... (§2)
 

@@ -1,7 +1,4 @@
 $ workspace proofread •xcode •no‐colour
-Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
-Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
-Resources:1:1: warning: Resources now belong inside the target directory. (deprecatedResourceDirectory)
 [Temporary]/BadStyle/Package.swift:2:13: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/BadStyle.swift:1:8: warning: Every symbol in a library should have access control. (accessControl)
@@ -97,7 +94,6 @@ Resources:1:1: warning: Resources now belong inside the target directory. (depre
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Workaround: This malformed version check should trigger. (workaroundReminders)
 [Temporary]/BadStyle/Sources/executable/AccessControl.swift:1:1: warning: Executables and tests should not contain access control. (accessControl)
 [Temporary]/BadStyle/Sources/executable/AccessControl.swift:2:1: warning: Replace 'fileprivate' with 'private' on file-scoped declarations. (swiftFormat[FileScopedDeclarationPrivacy])
-[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: The character U+002D is obsolete. Use a hyphen (‐), minus sign (−), dash (—), bullet (•) or range symbol (–). (unicode)
@@ -106,7 +102,6 @@ Resources:1:1: warning: Resources now belong inside the target directory. (depre
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:15:58: warning: List separators should only occur between list elements. (listSeparation)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:13: warning: Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
-[Temporary]/BadStyle/Tests/LinuxMain.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 
 $ Dependency fail
 Hello, world!

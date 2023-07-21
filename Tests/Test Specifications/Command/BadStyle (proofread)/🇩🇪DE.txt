@@ -159,6 +159,18 @@ Zeile 4
 Kein Übergabewert namens „documented“ existiert. (übergabewertDokumentation)
 ///   - documented: A parameter that does not exist.
 
+Zeile 16
+Kein Übergabewert namens „cannot“ existiert. (übergabewertDokumentation)
+///   - cannot: A parameter that cannot exist.
+
+Zeile 22
+Kein Übergabewert namens „documented“ existiert. (übergabewertDokumentation)
+  ///   - documented: A parameter that does not exist.
+
+Zeile 28
+Kein Übergabewert namens „documented“ existiert. (übergabewertDokumentation)
+  ///   - documented: A parameter that does not exist.
+
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)

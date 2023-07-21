@@ -78,15 +78,15 @@ internal struct ParameterDocumentation: SyntaxRule {
         case .actorDecl, .associatedtypeDecl, .classDecl, .deinitializerDecl, .enumCaseDecl, .enumDecl, .extensionDecl, .operatorDecl, .precedenceGroupDecl, .protocolDecl, .structDecl, .typealiasDecl, .variableDecl:
           parameters = nil
         case .functionDecl:
-          if let function = syntaxToken.as(FunctionDeclSyntax.self) {
+          if let function = ancestor.as(FunctionDeclSyntax.self) {
             parameters = function.signature.input
           }
         case .initializerDecl:
-          if let initializer = syntaxToken.as(InitializerDeclSyntax.self) {
+          if let initializer = ancestor.as(InitializerDeclSyntax.self) {
             parameters = initializer.signature.input
           }
         case .macroDecl:
-          if let macro = syntaxToken.as(MacroDeclSyntax.self) {
+          if let macro = ancestor.as(MacroDeclSyntax.self) {
             switch macro.signature {
             case .functionLike(let signature):
               parameters = signature.input
@@ -95,7 +95,7 @@ internal struct ParameterDocumentation: SyntaxRule {
             }
           }
         case .subscriptDecl:
-          if let `subscript` = syntaxToken.as(SubscriptDeclSyntax.self) {
+          if let `subscript` = ancestor.as(SubscriptDeclSyntax.self) {
             parameters = `subscript`.indices
           }
         }

@@ -34,26 +34,6 @@ extension DocumentationContent {
       // ParagraphNode
       .children(cache: &cache).first as? ParagraphNode
   }
-
-  internal func parameters() -> [String] {
-    var result: [String] = []
-    scanSyntaxTree({ (node, _) in
-      if let callout = node as? CalloutNode {
-        if callout.name.text().lowercased() == "parameters" {
-          for child in callout.contents {
-            if let entry = child as? ParametersEntry {
-              result.append(entry.parameterName.text())
-            }
-          }
-        } else if callout.name.text().lowercased() == "parameter",
-          let name = callout.parameterName {
-          result.append(name.text())
-        }
-      }
-      return ¬(node is SwiftSyntaxNode)  // Prevent scanning into example code.
-    })
-    return result
-  }
 }
 
 #endif

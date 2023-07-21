@@ -211,6 +211,15 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
     return .headingLevels
   }
 
+  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN) @crossReference(ProofreadingRule.headingLevels)
+  /// Prohibits mismatched parameter documentation.
+  case parameterDocumentation
+  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.headingLevels)
+  /// Verbietet fehlangepasste Dokumentation von Übergabewerten.
+  public static var übergabewertDokumentation: Korrekturregel {
+    return .parameterDocumentation
+  }
+
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
   // @crossReference(ProofreadingRule.marks)
   /// Catches broken syntax in source code headings.
@@ -446,7 +455,8 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
       .compatibilityCharacters,
       .explicitTypes,
       .headingLevels,
-      .marks:
+      .marks,
+      .parameterDocumentation:
       return .functionality
 
     case .syntaxColouring:

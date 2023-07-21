@@ -156,6 +156,23 @@ Incomplete heading syntax. Use ‘// MARK: - ’. (marks)
 /// MARK: This heading is malformed and should trigger.
 // MARK: - This heading is malformed and should trigger.
 
+Sources/BadStyle/Rules/Functionality/ParameterDocumentation.swift
+Line 4
+No parameter named ‘documented’ exists. (parameterDocumentation)
+///   - documented: A parameter that does not exist.
+
+Line 16
+No parameter named ‘cannot’ exists. (parameterDocumentation)
+///   - cannot: A parameter that cannot exist.
+
+Line 22
+No parameter named ‘documented’ exists. (parameterDocumentation)
+  ///   - documented: A parameter that does not exist.
+
+Line 28
+No parameter named ‘documented’ exists. (parameterDocumentation)
+  ///   - documented: A parameter that does not exist.
+
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Line 4
 Missing implementation. (missingImplementation)

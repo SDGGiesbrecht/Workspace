@@ -132,34 +132,6 @@
       )
     }
 
-    internal func reportMismatchedParameters<SymbolType>(
-      _ parameters: [String],
-      expected: [String],
-      symbol: SymbolType,
-      projectRoot: URL
-    ) where SymbolType: SymbolLike {
-      report(
-        problem: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "A symbol has mismatched parameter descriptions: \(parameters.joined(separator: ", "))"
-          case .deutschDeutschland:
-            return "Ein Symbol hat fehlangepasste Übergabewertenbeschreibungen: \(parameters.joined(separator: ", "))"
-          }
-        }),
-        with: symbol,
-        projectRoot: projectRoot,
-        hint: UserFacing<StrictString, InterfaceLocalization>({ localization in
-          switch localization {
-          case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-            return "(Expected: \(expected.joined(separator: ", ")))"
-          case .deutschDeutschland:
-            return "(Erwartete: \(expected.joined(separator: ", ")))"
-          }
-        })
-      )
-    }
-
     internal func reportMissingYearFirstPublished() {
       report(
         problem: UserFacing<StrictString, InterfaceLocalization>({ localization in

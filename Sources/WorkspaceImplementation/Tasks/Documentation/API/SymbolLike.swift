@@ -31,61 +31,14 @@
         if symbol.location == nil {  // Synthesized, such as from default conformance.
           return false
         } else {  // Has somewhere to attach documentation.
-          if docComment == nil {  // Undocumented.
-            if symbol.location?.uri.contains(".build/checkouts") == true {
-              // Locally synthesized due to a declaration reported in a dependency. @exempt(from: tests)
-              return false
-            }
-            return true
-          }
-          if ¬editableModules.contains(where: { module in
-            return symbol.isDocCommentFromSameModule(symbolModuleName: module) == true
-          }) {  // From dependency.
+          if symbol.location?.uri.contains(".build/checkouts") == true {
+            // Locally synthesized due to a declaration reported in a dependency. @exempt(from: tests)
             return false
-          } else {
-            return true
           }
+          return true
         }
       default:
         return true
-      }
-    }
-
-    // MARK: - Parameters
-
-    internal func parameters() -> [String] {
-      guard let symbol = self as? SymbolGraph.Symbol else {
-        return []
-      }
-      switch symbol.kind.identifier {
-      case .associatedtype, .class, .deinit, .enum, .`case`, .ivar, .property, .protocol, .snippet,
-        .snippetGroup, .struct, .typeProperty, .typealias, .var, .module:
-        return []
-      case .func, .operator, .`init`, .macro, .method, .subscript, .typeMethod, .typeSubscript:
-        guard let fragments = declaration?.declarationFragments else {
-          return []  // @exempt(from: tests) Reachability unknown.
-        }
-        return fragments.indices.compactMap({ index in
-          let fragment = fragments[index]
-          switch fragment.kind {
-          case .externalParameter:
-            let remainder = fragments[index...].dropFirst()
-            let afterWhitespace = remainder.drop(while: { nextFragment in
-              return nextFragment.spelling.scalars.allSatisfy { $0 == " " }
-            })
-            if afterWhitespace.first?.kind == .internalParameter {
-              return nil
-            }
-            return fragment.spelling
-          case .internalParameter:
-            return fragment.spelling
-          default:
-            return nil
-          }
-        })
-      default:  // @exempt(from: tests)
-        symbol.kind.identifier.warnUnknown()
-        return []
       }
     }
   }

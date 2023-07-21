@@ -155,6 +155,10 @@ Unvollständige Überschriftssyntax. „// MARK: - “ verwenden. (überschri
 // MARK: - This heading is malformed and should trigger.
 
 Sources/BadStyle/Rules/Functionality/ParameterDocumentation.swift
+Zeile 4
+Kein Übergabewert namens „documented“ existiert. (übergabewertDokumentation)
+///   - documented: A parameter that does not exist.
+
 Sources/BadStyle/Rules/Intentional/MissingImplementation.swift
 Zeile 4
 Fehlende Implementierung. (fehlendeImplementierung)

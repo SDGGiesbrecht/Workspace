@@ -214,7 +214,7 @@
         source.append(contentsOf: "extension Resources {\n".scalars)
 
         // #workaround(Swift 5.8, Standard accessor tripped by symlinks.)
-        if resources.contains(where: { $0.deprecated == false }) {
+        if ¬resources.isEmpty {
           source.append(
             contentsOf: [
               "#if !os(WASI)",
@@ -336,9 +336,7 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
-        if ¬resource.deprecated,
-          let loadName = resource.bundledName
-        {
+        if let loadName = resource.bundledName {
           return
             ([
               // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)

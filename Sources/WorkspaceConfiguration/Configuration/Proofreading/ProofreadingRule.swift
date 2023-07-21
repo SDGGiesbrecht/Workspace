@@ -27,26 +27,6 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
 
   // ••••••• Deprecation •••••••
 
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(ProofreadingRule.deprecatedTestManifests)
-  /// Catches deprecated test manifests.
-  case deprecatedTestManifests
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedTestManifests)
-  /// Erwischt überholte Testlisten.
-  public static var überholteTestlisten: Korrekturregel {
-    return .deprecatedTestManifests
-  }
-
-  // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
-  // @crossReference(ProofreadingRule.deprecatedResourceDirectory)
-  /// Catches deprecated resource directories.
-  case deprecatedResourceDirectory
-  // @localization(🇩🇪DE) @crossReference(ProofreadingRule.deprecatedResourceDirectory)
-  /// Erwischt überholte Ordner mit Ressourcen.
-  public static var überholteRessourcenOrdner: Korrekturregel {
-    return .deprecatedResourceDirectory
-  }
-
   // ••••••• Intentional •••••••
 
   // @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇨🇦EN)
@@ -442,8 +422,8 @@ public enum ProofreadingRule: String, CaseIterable, Codable {
   /// The category the rule belongs to.
   public var category: Category {
     switch self {
-    case .deprecatedTestManifests, .deprecatedResourceDirectory:
-      return .deprecation
+    /*case ...:
+      return .deprecation*/
 
     case .manualWarnings,
       .missingImplementation,

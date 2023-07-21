@@ -140,7 +140,6 @@ class APITests: TestCase {
   }
 
   func testProofreadingRule() {
-    XCTAssertEqual(Korrekturregel.überholteTestlisten, .deprecatedTestManifests)
     XCTAssertEqual(Korrekturregel.warnungenVonHand, .manualWarnings)
     XCTAssertEqual(Korrekturregel.fehlendeImplementierung, .missingImplementation)
     XCTAssertEqual(Korrekturregel.notlösungsErinnerungen, .workaroundReminders)
@@ -150,13 +149,11 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.hervorhebungsGroßschreibung, .calloutCasing)
     XCTAssertEqual(Korrekturregel.abschlusssignaturplatzierung, .closureSignaturePosition)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung, .parameterGrouping)
-    XCTAssertEqual(Korrekturregel.überholteTestlisten.klasse, .überholung)
     XCTAssertEqual(Korrekturregel.warnungenVonHand.klasse, .absichtlich)
     XCTAssertEqual(Korrekturregel.verträglichkeitsschriftzeichen.klasse, .funktionalität)
     XCTAssertEqual(Korrekturregel.syntaxhervorhebung.klasse, .dokumentation)
     XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
-    XCTAssertEqual(Korrekturregel.überholteRessourcenOrdner, .deprecatedResourceDirectory)
     XCTAssertEqual(Korrekturregel.ausdrücklicheTypen, .explicitTypes)
   }
 

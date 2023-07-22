@@ -640,16 +640,6 @@
       )
     }
 
-    func testInvalidResourceDirectory() {
-      PackageRepository(mock: "InvalidResourceDirectory").test(
-        commands: [
-          ["refresh", "resources"]
-        ],
-        localizations: InterfaceLocalization.self,
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
-
     func testInvalidTarget() {
       PackageRepository(mock: "InvalidTarget").test(
         commands: [

@@ -384,7 +384,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "Deutsch")
-          .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+          .appendingPathComponent("Sources/werkzeug/Deutsch.txt")
       )
 
       let konfiguration = ArbeitsbereichKonfiguration()

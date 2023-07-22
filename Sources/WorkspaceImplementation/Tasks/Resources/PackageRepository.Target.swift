@@ -336,24 +336,20 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
-        if let loadName = resource.bundledName {
-          return
-            ([
-              // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)
-              "#if os(WASI)",
-              try embeddedSource(for: resource, named: name, accessControl: accessControl),
-              "#else",
-              bundledSource(
-                for: resource,
-                named: name,
-                loadName: loadName,
-                accessControl: accessControl
-              ),
-              "#endif",
-            ] as [StrictString]).joinedAsLines()
-        } else {
-          return try embeddedSource(for: resource, named: name, accessControl: accessControl)
-        }
+        return
+          ([
+            // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)
+            "#if os(WASI)",
+            try embeddedSource(for: resource, named: name, accessControl: accessControl),
+            "#else",
+            bundledSource(
+              for: resource,
+              named: name,
+              loadName: resource.bundledName,
+              accessControl: accessControl
+            ),
+            "#endif",
+          ] as [StrictString]).joinedAsLines()
       }
 
       private func bundledSource(

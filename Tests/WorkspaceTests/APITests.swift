@@ -159,7 +159,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-          .appendingPathComponent("Resources/Tool/English.txt")
+          .appendingPathComponent("Sources/Tool/English.txt")
       )
       output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
@@ -172,7 +172,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-          .appendingPathComponent("Resources/Tool/Deutsch.txt")
+          .appendingPathComponent("Sources/Tool/Deutsch.txt")
       )
 
       let configuration = WorkspaceConfiguration()

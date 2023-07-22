@@ -155,6 +155,7 @@ class APITests: TestCase {
     XCTAssertEqual(Korrekturregel.unicode.klasse, .textstil)
     XCTAssertEqual(Korrekturregel.übergabewertenzusammenstellung.klasse, .quellstil)
     XCTAssertEqual(Korrekturregel.ausdrücklicheTypen, .explicitTypes)
+    XCTAssertEqual(Korrekturregel.Category.überholung, .deprecation)
   }
 
   func testRelatedProject() {

@@ -6,7 +6,6 @@ enum Resources {}
 typealias Ressourcen = Resources
 
 extension Resources {
-
   #if !os(WASI)
     static let moduleBundle: Bundle = {
       let main = Bundle.main.executableURL?.resolvingSymlinksInPath().deletingLastPathComponent()
@@ -14,4 +13,5 @@ extension Resources {
       return module.flatMap({ Bundle(url: $0) }) ?? Bundle.module
     }()
   #endif
+
 }

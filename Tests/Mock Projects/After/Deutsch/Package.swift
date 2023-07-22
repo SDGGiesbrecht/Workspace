@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -13,7 +13,7 @@ let package = Package(
     targets: [
         /// ...
         .target(name: "Deutsch"),
-        .target(name: "werkzeug"),
+        .target(name: "werkzeug", resources: [.copy("Deutsch.txt")]),
         .testTarget(name: "DeutschTests", dependencies: ["Deutsch"])
     ]
 )

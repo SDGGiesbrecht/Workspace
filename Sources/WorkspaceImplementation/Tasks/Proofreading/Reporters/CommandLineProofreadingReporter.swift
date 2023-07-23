@@ -107,11 +107,6 @@
             highlight: highlight
           ),
         ]
-      case .file(let url):
-        message = [
-          String(description),
-          url,
-        ]
       }
       output.print(message.joinedAsLines())
     }

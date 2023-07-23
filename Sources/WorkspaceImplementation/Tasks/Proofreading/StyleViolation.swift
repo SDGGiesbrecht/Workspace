@@ -89,18 +89,6 @@
       }
     }
 
-    internal init(
-      file: String,
-      ruleIdentifier: UserFacing<StrictString, InterfaceLocalization>,
-      message: UserFacing<StrictString, InterfaceLocalization>
-    ) {
-      self.location = .file(file)
-      self.replacementSuggestion = nil
-      self.noticeOnly = false
-      self.ruleIdentifier = ruleIdentifier
-      self.message = message
-    }
-
     // MARK: - Properties
 
     internal let location: Location

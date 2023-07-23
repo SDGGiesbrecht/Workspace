@@ -51,8 +51,6 @@
         let column: Int = file.utf16.distance(from: utf16LineStart, to: utf16ViolationStart) + 1
 
         location = "\(path):\(lineNumber):\(column):"
-      case .file(let url):
-        location = "\(url):1:1:"
       }
       output.print(
         "\(location) warning: \(violation.message.resolved()) (\(violation.ruleIdentifier.resolved()))"

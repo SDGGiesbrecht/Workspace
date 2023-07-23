@@ -40,14 +40,6 @@
         return Target(loadedTarget: loaded, package: self)
       }
     }
-    @available(macOS 10.15, *)
-    private func targetsByName() throws -> [String: Target] {
-      var byName: [String: Target] = [:]
-      for target in try targets() {
-        byName[target.name] = target
-      }
-      return byName
-    }
 
     // MARK: - Resources
 

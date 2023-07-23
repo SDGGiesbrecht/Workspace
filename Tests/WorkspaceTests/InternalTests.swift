@@ -131,6 +131,10 @@ class InternalTests: TestCase {
   }
 
   #if !PLATFORM_NOT_SUPPORTED_BY_WORKSPACE_WORKSPACE
+    func testSwiftLanguage() {
+      XCTAssertEqual(SwiftLanguage.identifier(for: "identifier", casing: .type), "Identifier")
+    }
+
     func testXcodeProjectFormat() {
       // .gitignore interferes with testing this reliably in a mock project.
       _ = FileType.xcodeProject.syntax

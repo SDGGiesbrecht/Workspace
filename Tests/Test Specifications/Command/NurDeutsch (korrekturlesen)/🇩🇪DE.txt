@@ -40,16 +40,6 @@ Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle
     var text = "Hello, World!"
 
 Tests/LinuxMain.swift
-Zeile 1
-Testlisten werden nicht mehr benötigt. (überholteTestlisten)
-import XCTest
-
-import NurDeutschTests
-
-var tests = [XCTestCaseEntry]()
-tests += NurDeutschTests.allTests()
-XCTMain(tests)
-
 Tests/NurDeutschTests/NurDeutschTests.swift
 Zeile 17
 Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemicolons])
@@ -60,18 +50,6 @@ Remove ';' and move the next statement to a new line. (swiftFormat[DoNotUseSemic
 refuse to build
 
 Tests/NurDeutschTests/XCTestManifests.swift
-Zeile 1
-Testlisten werden nicht mehr benötigt. (überholteTestlisten)
-import XCTest
-
-#if !canImport(ObjectiveC)
-public func allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(NurDeutschTests.allTests),
-    ]
-}
-#endif
-
 Zeile 4
 Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
 public func allTests() -> [XCTestCaseEntry] {

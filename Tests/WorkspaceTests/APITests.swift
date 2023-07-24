@@ -159,7 +159,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-          .appendingPathComponent("Resources/Tool/English.txt")
+          .appendingPathComponent("Sources/Tool/English.txt")
       )
       output = try mockCommand.withRootBehaviour().execute(with: [
         "export‐interface", "•language", "de",
@@ -172,7 +172,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "CheckedInDocumentation")
-          .appendingPathComponent("Resources/Tool/Deutsch.txt")
+          .appendingPathComponent("Sources/Tool/Deutsch.txt")
       )
 
       let configuration = WorkspaceConfiguration()
@@ -384,7 +384,7 @@
       )
       try output.save(
         to: PackageRepository.beforeDirectory(for: "Deutsch")
-          .appendingPathComponent("Resources/werkzeug/Deutsch.txt")
+          .appendingPathComponent("Sources/werkzeug/Deutsch.txt")
       )
 
       let konfiguration = ArbeitsbereichKonfiguration()
@@ -636,26 +636,6 @@
         with: ["normalize", "help"],
         localizations: InterfaceLocalization.self,
         uniqueTestName: "Help (workspace normalize)",
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
-
-    func testInvalidResourceDirectory() {
-      PackageRepository(mock: "InvalidResourceDirectory").test(
-        commands: [
-          ["refresh", "resources"]
-        ],
-        localizations: InterfaceLocalization.self,
-        overwriteSpecificationInsteadOfFailing: false
-      )
-    }
-
-    func testInvalidTarget() {
-      PackageRepository(mock: "InvalidTarget").test(
-        commands: [
-          ["refresh", "resources"]
-        ],
-        localizations: InterfaceLocalization.self,
         overwriteSpecificationInsteadOfFailing: false
       )
     }

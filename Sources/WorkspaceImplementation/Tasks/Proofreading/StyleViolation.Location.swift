@@ -23,7 +23,6 @@
 
     internal enum Location {
       case text(range: Range<String.ClusterView.Index>, file: TextFile)
-      case file(String)
     }
   }
 #endif

@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:5.3
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -32,7 +32,15 @@ let package = Package(
         .target(name: "Extensions", dependencies: ["CheckedInDocumentation"]),
         // @localization(🇨🇦EN) @localization(🇬🇧EN) @localization(🇺🇸EN) @localization(🇩🇪DE) @localization(zxx)
         /// An executable.
-        .target(name: "Tool", dependencies: ["EnableBuild"]),
+        .target(
+          name: "Tool",
+          dependencies: ["EnableBuild"],
+          resources: [
+            .copy("Deutsch.txt"),
+            .copy("English.txt"),
+            .copy("Namespace/Namespaced.txt")
+          ]
+        ),
         .testTarget(
             name: "CheckedInDocumentationTests",
             dependencies: ["CheckedInDocumentation"]),

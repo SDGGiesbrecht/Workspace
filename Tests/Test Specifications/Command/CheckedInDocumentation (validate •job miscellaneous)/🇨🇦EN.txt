@@ -9,12 +9,6 @@ Normalizing files...
 
 Proofreading source code... (§1)
 
-Resources now belong inside the target directory. (deprecatedResourceDirectory)
-Resources
-Resources now belong inside the target directory. (deprecatedResourceDirectory)
-Resources
-Resources now belong inside the target directory. (deprecatedResourceDirectory)
-Resources
 .gitignore
 Package.swift
 Line 2
@@ -72,34 +66,12 @@ Sources/Tool/Resources/Resources 3.swift
 Sources/Tool/main.swift
 Tests/CheckedInDocumentationTests/CheckedInDocumentationTests.swift
 Tests/CheckedInDocumentationTests/XCTestManifests.swift
-Line 1
-Test manifests are no longer necessary. (deprecatedTestManifests)
-import XCTest
-
-#if !os(macOS)
-public func allTests() -> [XCTestCaseEntry] {
-    return [
-        testCase(CheckedInDocumentationTests.allTests),
-    ]
-}
-#endif
-
 Line 4
 Executables and tests should not contain access control. (accessControl)
 public func allTests() -> [XCTestCaseEntry] {
  func allTests() -> [XCTestCaseEntry] {
 
 Tests/LinuxMain.swift
-Line 1
-Test manifests are no longer necessary. (deprecatedTestManifests)
-import XCTest
-
-import CheckedInDocumentationTests
-
-var tests = [XCTestCaseEntry]()
-tests += CheckedInDocumentationTests.allTests()
-XCTMain(tests)
-
 
 Generating documentation... (§2)
 

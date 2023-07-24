@@ -40,111 +40,14 @@
         return Target(loadedTarget: loaded, package: self)
       }
     }
-    @available(macOS 10.15, *)
-    private func targetsByName() throws -> [String: Target] {
-      var byName: [String: Target] = [:]
-      for target in try targets() {
-        byName[target.name] = target
-      }
-      return byName
-    }
-
-    private static let deprecatedResourceDirectoryName = UserFacing<
-      StrictString, InterfaceLocalization
-    >(
-      { localization in
-        switch localization {
-        case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-          return "Resources"
-        case .deutschDeutschland:
-          return "Ressourcen"
-        }
-      })
-
-    internal func deprecatedResourceDirectories() -> [URL] {
-
-      return InterfaceLocalization.allCases.map { (localization) in
-        return location.appendingPathComponent(
-          String(PackageRepository.deprecatedResourceDirectoryName.resolved(for: localization))
-        )
-      }
-    }
 
     // MARK: - Resources
-
-    private func deprecatedResourceFiles(output: Command.Output) throws -> [URL] {
-      let locations = deprecatedResourceDirectories()
-
-      let result = try trackedFiles(output: output).filter { file in
-        for directory in locations where file.is(in: directory) {
-          return true
-        }
-        // @exempt(from: tests) False coverage result in Xcode 10.1.
-        return false
-      }
-      return result
-    }
-
-    @available(macOS 10.15, *)
-    private func target(for resource: URL, output: Command.Output) throws -> Target {
-      let path = resource.path(relativeTo: location).dropping(through: "/")
-      guard let targetName = path.prefix(upTo: "/")?.contents else {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-            switch localization {
-            case .englishUnitedKingdom, .englishUnitedStates, .englishCanada:
-              return
-                "No target specified for resource:\n\(path)\nFiles must be in subdirectories named corresponding to the intended target."
-            case .deutschDeutschland:
-              return
-                "Kein Ziel wurde für eine Ressource angegeben:\n\(path)\nDateien müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
-            }
-          })
-        )
-      }
-      guard let target = (try targetsByName())[String(targetName)] else {
-        throw Command.Error(
-          description: UserFacing<StrictString, InterfaceLocalization>({ (localization) in
-            switch localization {
-            case .englishUnitedKingdom:
-              return
-                "No target named ‘\(targetName)’.\nResources must be in subdirectories named corresponding to the intended target."
-            case .englishUnitedStates, .englishCanada:
-              return
-                "No target named “\(targetName)”.\nResources must be in subdirectories named corresponding to the intended target."
-            case .deutschDeutschland:
-              return
-                "Kein Ziel Namens „\(targetName)“.\nRessourcen müssen in Unterverzeichnissen sein, dessen Namen mit dem gemeinten Ziel übereinstimmen."
-            }
-          })
-        )
-      }
-      return target
-    }
 
     internal func refreshResources(output: Command.Output) throws {
       guard #available(macOS 10.15, *) else {
         throw SwiftPMUnavailableError()  // @exempt(from: tests)
       }
       var targets: [Target: [Resource]] = [:]
-      for resource in try deprecatedResourceFiles(output: output) {
-        let intendedTarget = try target(for: resource, output: output)
-
-        let pathComponents = resource.path(relativeTo: location)
-          .components(separatedBy: "/")
-          .dropFirst(2)
-          .map({ StrictString(String($0.contents)) })
-
-        targets[intendedTarget, default: []].append(
-          Resource(
-            origin: resource,
-            namespace: pathComponents,
-            deprecated: true,
-            bundledName: nil,
-            bundledExtension: nil
-          )
-        )
-      }
 
       for target in try self.targets() {
         for resource in target.loadedTarget.resources {
@@ -153,7 +56,6 @@
             Resource(
               origin: resource.path.asURL,
               namespace: namespace,
-              deprecated: false,
               bundledName: StrictString(resource.destination.basenameWithoutExt),
               bundledExtension: resource.destination.extension.map({ StrictString($0) })
             )

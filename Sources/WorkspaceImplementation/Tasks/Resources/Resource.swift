@@ -24,8 +24,7 @@
 
     internal let origin: URL
     internal let namespace: [StrictString]
-    internal let deprecated: Bool
-    internal let bundledName: StrictString?
+    internal let bundledName: StrictString
     internal let bundledExtension: StrictString?
 
     internal var constructor: Constructor {

@@ -1,8 +1,0 @@
-$ workspace refresh resources •no‐colour
-
-Refreshing resources...
-
-No target specified for resource:
-Resource.txt
-Files must be in subdirectories named corresponding to the intended target.
-9223372036854775807

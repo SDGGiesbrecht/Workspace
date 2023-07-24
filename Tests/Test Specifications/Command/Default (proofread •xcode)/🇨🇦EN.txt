@@ -5,7 +5,5 @@ $ workspace proofread •xcode •no‐colour
 [Temporary]/Default/Package.swift:16:57: warning: The character U+0022 is obsolete. Use quotation marks (“, ”) or double prime (′′). (unicode)
 [Temporary]/Default/Sources/Default/Default.swift:1:8: warning: Every symbol in a library should have access control. (accessControl)
 [Temporary]/Default/Sources/Default/Default.swift:2:9: warning: Every symbol in a library should have access control. (accessControl)
-[Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 [Temporary]/Default/Tests/DefaultTests/XCTestManifests.swift:4:1: warning: Executables and tests should not contain access control. (accessControl)
-[Temporary]/Default/Tests/LinuxMain.swift:1:1: warning: Test manifests are no longer necessary. (deprecatedTestManifests)
 0

@@ -48,18 +48,6 @@ Every symbol in a library should have access control. (accessControl)
 
 Tests/AllTasksTests/AllTasksTests.swift
 Tests/LinuxMain.swift
-Line 1
-Test manifests are no longer necessary. (deprecatedTestManifests)
-/*
- LinuxMain.swift
-
-
- ©2023
-
- This software is subject to copyright law.
- It may not be used, copied, distributed or modified without first obtaining a private licence from the copyright holder(s).
- */
-
 
 Checking build for macOS... (§2)
 

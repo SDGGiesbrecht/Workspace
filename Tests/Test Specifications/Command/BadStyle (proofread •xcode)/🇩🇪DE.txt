@@ -1,7 +1,4 @@
 $ arbeitsbereich proofread •xcode •no‐colour
-Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
-Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
-Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überholteRessourcenOrdner)
 [Temporary]/BadStyle/Package.swift:2:13: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Package.swift:2:19: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Sources/BadStyle/BadStyle.swift:1:8: warning: Jedes Symbol in einer Bibliotek soll Zugriffskontrolle haben. (zugriffskontrolle)
@@ -97,7 +94,6 @@ Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überh
 [Temporary]/BadStyle/Sources/BadStyle/Warnings/Workaround.swift:13:4: warning: Notlösung: This malformed version check should trigger. (notlösungsErinnerungen)
 [Temporary]/BadStyle/Sources/executable/AccessControl.swift:1:1: warning: Ausfürbare Dateien und Testen sollen keine Zugriffskontrolle enthalten. (zugriffskontrolle)
 [Temporary]/BadStyle/Sources/executable/AccessControl.swift:2:1: warning: Replace 'fileprivate' with 'private' on file-scoped declarations. (swiftFormat[FileScopedDeclarationPrivacy])
-[Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:1:1: warning: Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:22: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:23: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:6:32: warning: Das Schriftzeichen U+002D ist überholt. Einen Bindestrich (‐), Minuszeichen (−), Gedankenstrich (–) oder Aufzählungszeichen (•) verwenden. (unicode)
@@ -106,7 +102,6 @@ Resources:1:1: warning: Ressourcen gehören jetzt im Ordner des Ziels. (überh
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:15:58: warning: Listentrennzeichen sollen nur zwischen Listenelementen stehen. (listentrennung)
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:8:16: warning: Rename constant '__allTests__BadStyleTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
 [Temporary]/BadStyle/Tests/BadStyleTests/XCTestManifests.swift:13:13: warning: Rename function '__allTests' using lower-camel-case. (swiftFormat[AlwaysUseLowerCamelCase])
-[Temporary]/BadStyle/Tests/LinuxMain.swift:1:1: warning: Testlisten werden nicht mehr benötigt. (überholteTestlisten)
 
 $ Dependency fail
 Hello, world!

@@ -151,14 +151,14 @@
         }
       }
 
-      private func generateSecondarySource(
+      internal func generateSecondarySource(
         for resource: Resource,
         accessControl: String
       ) throws -> StrictString {
         var source = generateImports()
 
         var namespace = resource.namespace.dropLast().lazy
-          .map({ directory in
+          .map({ directory in  // @exempt(from: tests) Always empty so far.
             return SwiftLanguage.identifier(
               for: directory,
               casing: .type
@@ -166,7 +166,7 @@
           })
           .joined(separator: ".")
         if ¬namespace.isEmpty {
-          namespace.prepend(".")
+          namespace.prepend(".")  // @exempt(from: tests)
         }
         source.append(contentsOf: "extension Resources\(namespace) {\n")
 
@@ -214,7 +214,7 @@
         source.append(contentsOf: "extension Resources {\n".scalars)
 
         // #workaround(Swift 5.8, Standard accessor tripped by symlinks.)
-        if resources.contains(where: { $0.deprecated == false }) {
+        if ¬resources.isEmpty {
           source.append(
             contentsOf: [
               "#if !os(WASI)",
@@ -284,7 +284,7 @@
         if ¬components.isEmpty {
           if components.count == 1 {
             tree[variableName(for: components.first!)] = resource
-          } else {
+          } else {  // @exempt(from: tests) Always empty so far.
             let name = SwiftLanguage.identifier(
               for: StrictString(components.first!),
               casing: .type
@@ -314,6 +314,7 @@
             if value is Resource {
               // Handled in separate files.
             } else if let namespace = value as? [StrictString: Any] {
+              // @exempt(from: tests) Always empty so far.
               result.append(contentsOf: "\(accessControl)enum " + name + " {\n")
               result.append(contentsOf: try source(for: namespace, accessControl: accessControl))
               result.append(contentsOf: "}\n")
@@ -324,7 +325,7 @@
         }
 
         if result.scalars.last == "\n" {
-          result.scalars.removeLast()
+          result.scalars.removeLast()  // @exempt(from: tests)
         }
         return result.lines.map({ (lineInformation) in
           return "  " + StrictString(lineInformation.line)
@@ -336,26 +337,20 @@
         named name: StrictString,
         accessControl: String
       ) throws -> StrictString {
-        if ¬resource.deprecated,
-          let loadName = resource.bundledName
-        {
-          return
-            ([
-              // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)
-              "#if os(WASI)",
-              try embeddedSource(for: resource, named: name, accessControl: accessControl),
-              "#else",
-              bundledSource(
-                for: resource,
-                named: name,
-                loadName: loadName,
-                accessControl: accessControl
-              ),
-              "#endif",
-            ] as [StrictString]).joinedAsLines()
-        } else {
-          return try embeddedSource(for: resource, named: name, accessControl: accessControl)
-        }
+        return
+          ([
+            // #workaround(Swift 5.8.0, Some platforms do not support bundled resources yet.)
+            "#if os(WASI)",
+            try embeddedSource(for: resource, named: name, accessControl: accessControl),
+            "#else",
+            bundledSource(
+              for: resource,
+              named: name,
+              loadName: resource.bundledName,
+              accessControl: accessControl
+            ),
+            "#endif",
+          ] as [StrictString]).joinedAsLines()
       }
 
       private func bundledSource(

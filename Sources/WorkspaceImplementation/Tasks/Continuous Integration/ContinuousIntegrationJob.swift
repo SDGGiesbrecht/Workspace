@@ -696,6 +696,13 @@
         result += [
           "    container: \(container)"
         ]
+        // #workaround(Swift 5.8, The checkout action requires this to use the container’s older glibc.)
+        if self == .amazonLinux {
+          result += [
+            "    env:",
+            "      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true",
+          ]
+        }
       }
       result += [
         steps(),

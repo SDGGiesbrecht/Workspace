@@ -734,7 +734,7 @@
         result.append(contentsOf: [
           step(installSwiftStepName, localization: interfaceLocalization),
           uses(
-            "compnerd/gha\u{2D}setup\u{2D}swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1",
+            "compnerd/gha\u{2D}setup\u{2D}swift@v0.2.3",
             with: [
               "branch": "swift\u{2D}\(version)\u{2D}release",
               "tag": "\(version)\u{2D}RELEASE",

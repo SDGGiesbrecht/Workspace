@@ -442,7 +442,7 @@
     }
 
     private func checkOut() -> StrictString {
-      return uses("actions/checkout@v4")
+      return uses("actions/checkout@v3")
     }
 
     private func cache() -> StrictString {

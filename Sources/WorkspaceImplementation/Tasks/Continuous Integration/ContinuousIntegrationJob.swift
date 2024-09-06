@@ -442,7 +442,7 @@
     }
 
     private func checkOut() -> StrictString {
-      return uses("actions/checkout@v2")
+      return uses("actions/checkout@v3")
     }
 
     private func cache() -> StrictString {
@@ -464,7 +464,7 @@
         environment = "Amazon‐Linux"
       }
       return uses(
-        "actions/cache@v4",
+        "actions/cache@v3",
         with: [
           "key":
             "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",

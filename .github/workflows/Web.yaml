@@ -23,9 +23,9 @@ jobs:
     container: ghcr.io/swiftwasm/carton:0.19.1
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: Cache Workspace
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         key: Web‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

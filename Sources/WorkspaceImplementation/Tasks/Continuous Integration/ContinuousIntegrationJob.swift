@@ -442,7 +442,7 @@
     }
 
     private func checkOut() -> StrictString {
-      return uses("actions/checkout@v2")
+      return uses("actions/checkout@v4")
     }
 
     private func cache() -> StrictString {
@@ -464,7 +464,7 @@
         environment = "Amazon‐Linux"
       }
       return uses(
-        "actions/cache@v2",
+        "actions/cache@v4",
         with: [
           "key":
             "\(environment)‐${{ hashFiles(\u{27}.github/workflows/**\u{27}) }}",
@@ -938,7 +938,7 @@
         result.append(contentsOf: [
           step(uploadTestsStepName, localization: interfaceLocalization),
           uses(
-            "actions/upload\u{2D}artifact@v2",
+            "actions/upload\u{2D}artifact@v4",
             with: [
               "name": "tests",
               "path": "\(productsDirectory)",
@@ -954,7 +954,7 @@
           checkOut(),
           step(downloadTestsStepName, localization: interfaceLocalization),
           uses(
-            "actions/download\u{2D}artifact@v2",
+            "actions/download\u{2D}artifact@v4.1.7",
             with: [
               "name": "tests",
               "path": "\(productsDirectory)",

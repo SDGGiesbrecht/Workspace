@@ -10,9 +10,9 @@ jobs:
     runs-on: macos-13
     steps:
     - name: Holen
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Arbeitsbereich zwischenspeichern
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: macOS‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

@@ -4,8 +4,8 @@
 # Diese Quelldatei ist Teil des quelloffenen Arbeitsbereich‐Projekt.
 # https://github.com/SDGGiesbrecht/Workspace#workspace
 #
-# Copyright ©2021–2023 Jeremy David Giesbrecht and the Workspace project contributors.
-# Urheberrecht ©2021–2023 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
+# Copyright ©2021–2024 Jeremy David Giesbrecht and the Workspace project contributors.
+# Urheberrecht ©2021–2024 Jeremy David Giesbrecht und die Mitwirkenden des Arbeitsbereich‐Projekts.
 #
 # Soli Deo gloria.
 #
@@ -21,6 +21,8 @@ jobs:
     name: Swift 5.7 (Amazon Linux)
     runs-on: ubuntu-20.04
     container: swift:5.7.0-amazonlinux2
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Check out
       uses: actions/checkout@v2

@@ -9,6 +9,8 @@ jobs:
     name: Amazon Linux
     runs-on: ubuntu-20.04
     container: swift:5.8.0-amazonlinux2
+    env:
+      ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Holen
       uses: actions/checkout@v2

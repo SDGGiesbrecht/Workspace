@@ -23,7 +23,7 @@ jobs:
         key: Windows‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
     - name: Install Swift
-      uses: compnerd/gha-setup-swift@cf2a61060c146203ea6fe10cce367979ae4ec0b1
+      uses: compnerd/gha-setup-swift@v0.2.3
       with:
         branch: swift-5.8-release
         tag: 5.8-RELEASE

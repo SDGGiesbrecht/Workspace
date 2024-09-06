@@ -25,7 +25,7 @@ jobs:
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
     - name: Cache Workspace
       uses: actions/cache@v4
       with:

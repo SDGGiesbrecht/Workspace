@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
     - name: Cache Workspace
       uses: actions/cache@v4
       with:
@@ -109,7 +109,7 @@ jobs:
     needs: Android
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
     - name: Download tests
       uses: actions/download-artifact@v4.1.7
       with:

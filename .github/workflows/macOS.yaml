@@ -22,7 +22,7 @@ jobs:
     runs-on: macos-13
     steps:
     - name: Check out
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
     - name: Cache Workspace
       uses: actions/cache@v4
       with:

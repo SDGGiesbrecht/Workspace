@@ -489,7 +489,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/apple/swift\u{2D}collections",
-      from: Version(1, 0, 4)
+      Version(1, 0, 6) ..< Version(1, 1, 0) // additions clash with SwiftPM
     ),
     .package(
       url: "https://github.com/SDGGiesbrecht/SDGCommandLine",

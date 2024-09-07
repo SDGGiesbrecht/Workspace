@@ -26,9 +26,9 @@ jobs:
       ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Cache Workspace
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: Amazon‐Linux‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

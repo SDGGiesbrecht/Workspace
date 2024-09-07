@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - name: Holen
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Arbeitsbereich zwischenspeichern
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: Android‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace
@@ -87,7 +87,7 @@ jobs:
         mkdir -p .build/x86_64-unknown-linux-android24/debug
         cp -R /Library/Developer/Platforms/Android.platform/Developer/SDKs/Android.sdk/usr/lib/x86_64-linux-android/*.so .build/x86_64-unknown-linux-android24/debug
     - name: Teste hochladen
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug
@@ -97,9 +97,9 @@ jobs:
     needs: Android
     steps:
     - name: Holen
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Teste herunterladen
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v4.1.7
       with:
         name: tests
         path: .build/x86_64-unknown-linux-android24/debug

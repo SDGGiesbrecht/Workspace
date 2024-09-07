@@ -26,9 +26,9 @@ jobs:
     container: swift:5.8.0-focal
     steps:
     - name: Check out
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Cache Workspace
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
         key: Ubuntu‐${{ hashFiles('.github/workflows/**') }}
         path: .build/SDG/Workspace

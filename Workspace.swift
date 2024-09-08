@@ -18,9 +18,9 @@ import WorkspaceConfiguration
 
 public enum Metadata {
 
-  public static let latestStableVersion: Version = Version(0, 44, 0)
+  public static let latestStableVersion: Version = Version(0, 44, 1)
   // Set this to latestStableVersion for release commits, nil the rest of the time.
-  public static let thisVersion: Version? = nil
+  public static let thisVersion: Version? = latestStableVersion
 
   public static let packageURL: URL = URL(string: "https://github.com/SDGGiesbrecht/Workspace")!
   public static let issuesURL: URL = packageURL.appendingPathComponent("issues")
